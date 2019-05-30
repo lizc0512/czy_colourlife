@@ -1,0 +1,52 @@
+<resources>
+    <string name="filter_vcode">0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ</string>
+    <string name="increase_property">新增房产</string>
+    <string name="no_property">还没有添加房产哦</string>
+    <string name="property_surname">姓</string>
+    <string name="property_input_surname">请输入姓</string>
+    <string name="property_name">名</string>
+    <string name="property_input_name">请输入名字</string>
+    <string name="property_phone">手机号</string>
+    <string name="property_input_phone">请输入手机号</string>
+    <string name="property_idcard">身份证号码</string>
+    <string name="property_input_idcard">请输入身份证号码</string>
+    <string name="property_idcard_front">请拍摄身份证照片</string>
+    <string name="property_id_frontpic">身份证正面照</string>
+    <string name="property_id_backpic">身份证背面照</string>
+    <string name="property_picture">请拍摄房产证照片</string>
+    <string name="property_owner">房产证所有权人页</string>
+    <string name="property_page">房产证附记页</string>
+    <string name="property_protect">彩之云会保护您的信息安全</string>
+    <string name="property_sumit">核对无误，确认提交"</string>
+    <string name="property_upload_success">上传图片成功</string>
+    <string name="property_verify_success">认证成功</string>
+    <string name="property_upload_idcard">请上传身份证照片</string>
+    <string name="property_surname_notice">姓氏不能为空</string>
+    <string name="property_name_notice">名字不能为空</string>
+    <string name="property_mobile_error">手机号输入错误</string>
+    <string name="property_idcard_error">身份证号码输入错误</string>
+    <string name="property_upload_fail">上传图片失败，请重试</string>
+
+    <string name="property_property">房产</string>
+    <string name="property_check3">每个用户仅可认证3个房产，以下房产可勾选成为已认证房产，请谨慎选择。</string>
+    <string name="property_cant3">*不可勾选超过3个房产</string>
+    <string name="property_no_auth">暂未认证</string>
+    <string name="property_o">哦</string>
+    <string name="property_done_auth">完成认证即可体验更多线上物业服务</string>
+    <string name="property_employee">员工</string>
+    <string name="property_proprietor">业主</string>
+
+    <string name="property_delect_default">默认地址不能删除</string>
+    <string name="property_delect_success">地址删除成功!</string>
+    <string name="property_set_default_success">设为默认地址成功!</string>
+
+    <string name="property_question1_1">1.房产获得&#160;</string>
+    <string name="property_question1_2">&#160;标识可体验更多线上物业服务。</string>
+    <string name="property_question2_1">2.“已认证”房产限制：</string>
+    <string name="property_question2_2">每个用户仅可获得3个已认证房产。</string>
+    <string name="property_question3_0">3.“已认证”房产判断条件：</string>
+    <string name="property_question3_1">办理了该房号的入伙业务。</string>
+    <string name="property_question3_2">近1年在该小区办理过投诉业务。</string>
+    <string name="property_question3_3">近1年在小区办理了月卡，或者临停业务。</string>
+    <string name="property_question3_4">近1年为该房号缴过物业费。</string>
+</resources>

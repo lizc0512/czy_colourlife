@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:gravity="center"
+              android:orientation="vertical" >
+
+    <RelativeLayout
+        android:layout_width="280dp"
+        android:layout_height="160dp"
+        android:background="@drawable/about_corners4"
+        android:orientation="vertical" >
+
+        <TextView
+            android:id="@+id/tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="25dp"
+            android:layout_marginLeft="15dp"
+            android:layout_marginRight="15dp"
+            android:lineSpacingExtra="5dp"
+            android:gravity="center"
+            android:text="权限已被拒绝\n将到设置页面进行手动授权，否则功能无法正常使用!"
+            android:textColor="@color/black_text_color"
+            android:textSize="17dp" />
+
+        <View
+            android:layout_above="@+id/buttons_ll"
+            android:layout_width="fill_parent"
+            android:layout_height="0.1dp"
+            android:background="@color/gray" />
+
+        <LinearLayout
+            android:id="@+id/buttons_ll"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:background="@drawable/about_corners3"
+            android:orientation="horizontal"
+            android:layout_alignParentBottom="true">
+
+            <Button
+                android:padding="12dp"
+                android:id="@+id/left_button"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="@drawable/about_corners3"
+                android:gravity="center"
+                android:text="取消"
+                android:textColor="@color/blue"
+                android:textSize="17dp" />
+
+            <View
+                android:id="@+id/middle_view"
+                android:layout_width="0.1dp"
+                android:layout_height="match_parent"
+                android:background="@color/gray" />
+
+            <Button
+                android:padding="12dp"
+                android:id="@+id/right_button"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:background="@drawable/about_corners3"
+                android:gravity="center"
+                android:text="确定"
+                android:textColor="@color/blue"
+                android:textSize="17dp" />
+
+        </LinearLayout>
+    </RelativeLayout>
+</LinearLayout>

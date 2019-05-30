@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    android:fitsSystemWindows="true"
+    android:orientation="vertical">
+    <!--e停的车辆信息-->
+
+    <include layout="@layout/top_view" />
+
+
+    <ImageView
+        android:id="@+id/iv_lock_status"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="80dp"
+        android:src="@drawable/eparking_img_canuse" />
+
+
+    <TextView
+        android:id="@+id/tv_parking_lock"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="40dp"
+        android:textColor="@color/color_333b46"
+        android:textSize="18sp" />
+
+    <TextView
+        android:id="@+id/tv_parking_address"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="5dp"
+        android:textColor="@color/color_333b46"
+        android:textSize="14sp" />
+
+    <TextView
+        android:id="@+id/tv_lock_status"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="20dp"
+        android:textColor="@color/color_999faa"
+        android:textSize="14sp" />
+
+    <Button
+        android:id="@+id/btn_lock_operation"
+        android:layout_width="300dp"
+        android:layout_height="48dp"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginBottom="30dp"
+        android:layout_marginTop="40dp"
+        android:background="@drawable/shape_authorizeation_btn"
+        android:text="@string/lock_down"
+        android:textColor="@color/white"
+        android:textSize="18sp" />
+
+
+</LinearLayout>

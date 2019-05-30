@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#3F51B5</color>
+    <color name="colorPrimaryDark">#303F9F</color>
+    <color name="colorAccent">#34AADC</color>
+    <color name="ovalBtnBackground">#34AADC</color>
+    <color name="backgroundColor">#151515</color>
+    <color name="textColor">#FAFAFA</color>
+    <color name="editTextBackground">#49494B</color>
+    <color name="versionCodeColor">#57575A</color>
+    <color name="audio_blue">#FF588CEE</color>
+    <color name="audio_purple">#FFAA66CC</color>
+    <color name="audio_yellow">#F8CF5E</color>
+    <color name="audio_green">#4FA16A</color>
+    <color name="audio_red">#CD5849</color>
+    <color name="audio_cyanBlue">#00FFFF</color>
+    <color name="popupWindowBackground">#353535</color>
+
+    <integer-array name="audioBackgroundColors">
+        <item>@color/audio_blue</item>
+        <item>@color/audio_purple</item>
+        <item>@color/audio_yellow</item>
+        <item>@color/audio_green</item>
+        <item>@color/audio_red</item>
+        <item>@color/audio_cyanBlue</item>
+    </integer-array>
+</resources>

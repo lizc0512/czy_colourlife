@@ -1,0 +1,47 @@
+<resources>
+    <string name="read_more">...</string>
+    <string name="read_less"></string>
+    <string name="home_input_servicename">输入您需要的服务名称</string>
+    <string name="home_create_quick">长按图标创建桌面快捷方式</string>
+    <string name="home_default_community">互联网社区</string>
+    <string name="home_change_community">当前小区为系统默认小区，需要更换您所在的小区吗？</string>
+    <string name="home_change">切换</string>
+    <string name="home_know">我知道了</string>
+    <string name="home_gesture_notice">“我的-设置”中开启手势密码解锁更方便哦！</string>
+    <string name="home_once_see">立即查看</string>
+    <string name="home_recently_use">最近使用</string>
+    <string name="home_recommend_you">为你推荐</string>
+    <string name="home_research_result">搜索结果</string>
+    <string name="home_join">加入</string>
+    <string name="home_enter">进入</string>
+    <string name="stick_top">已置顶</string>
+    <string name="stick_cancel">已取消置顶</string>
+    <string name="im_cancle_stick">取消置顶</string>
+    <string name="im_stick">置顶</string>
+    <string name="im_delete">删除</string>
+    <string name="im_current_district">当前小区</string>
+    <string name="current">当前</string>
+
+    <string-array name="im_menu">
+        <item>发起群聊</item>
+        <item>加好友</item>
+        <item>创建社群</item>
+        <item>邻里圈</item>
+        <item>社群助手</item>
+    </string-array>
+    <string name="exclusive_manager">专属客户经理</string>
+    <string name="unbind_manager">未绑定专属客户经理</string>
+    <string name="open_wallet_success">开通彩钱包成功</string>
+    <string name="cancel_open_wallet">取消开通彩钱包</string>
+
+
+    <string name="return_amount">已返饭票:</string>
+    <string name="return_period">返还期数:</string>
+    <string name="meal_balance">饭票余额:</string>
+    <string name="account_balance">账户余额:</string>
+    <string name="community_notification">社区通知</string>
+    <string name="see_more_notification">更多</string>
+    <string name="no_more_notification">暂无通知哦～</string>
+
+
+</resources>

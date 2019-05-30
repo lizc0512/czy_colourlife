@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<resources>
+
+    <string name="cashier_pay">确认支付</string>
+    <string name="cashier_order_amount">订单金额</string>
+    <string name="cashier_order_amounts">订单金额: %1$s</string>
+    <string name="cashier_pay_amount">消费金额</string>
+    <string name="cashier_total_amount">合计金额</string>
+    <string name="cashier_order_time">下单时间</string>
+    <string name="cashier_pay_time">支付时间</string>
+    <string name="cashier_pay_style">支付方式</string>
+    <string name="cashier_order_no">订单编号</string>
+    <string name="cashier_order_details">订单详情</string>
+    <string name="cashier_cancel_order">取消订单</string>
+    <string name="cashier_return_business">返回商家</string>
+    <string name="cashier_go_pay">去付款</string>
+    <string name="cashier_finish">完成</string>
+
+    <string-array name="orderlist_second_menu">
+        <item>全部</item>
+        <item>待付款</item>
+        <item>交易成功</item>
+        <item>交易关闭</item>
+        <item>已退款</item>
+    </string-array>
+
+</resources>

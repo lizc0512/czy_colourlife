@@ -1,0 +1,10 @@
+<resources>
+
+    <string name="e_notification">E通知</string>
+    <string name="search">搜索</string>
+    <string name="notification_no_msg">暂无消息</string>
+    <string name="notification_history_msg">以下为历史消息</string>
+    <string name="notification_arrive_bottom">到底呢</string>
+    <string name="notification_see_more">查看更多</string>
+    <string name="notification_see_details">查看详情</string>
+</resources>

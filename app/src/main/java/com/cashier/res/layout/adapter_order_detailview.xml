@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/white"
+    android:minHeight="65dp"
+    android:orientation="vertical">
+
+
+    <TextView
+        android:id="@+id/tv_order_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="15dp"
+        android:layout_marginRight="15dp"
+        android:layout_marginTop="15dp"
+        android:text="订单金额"
+        android:textColor="@color/color_a3aaae"
+        android:textSize="16sp" />
+
+
+    <TextView
+        android:id="@+id/tv_order_staus"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:layout_below="@id/tv_order_title"
+        android:layout_marginLeft="15dp"
+        android:layout_marginRight="15dp"
+        android:layout_marginTop="10dp"
+        android:layout_weight="1"
+        android:text="¥100.00"
+        android:textColor="@color/color_333b46"
+        android:textSize="16sp" />
+
+    <View
+        style="@style/order_result_line"
+        android:layout_alignParentBottom="true"
+        android:layout_marginTop="5dp" />
+
+</LinearLayout>

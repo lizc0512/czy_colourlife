@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/bg_color"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/tv_notice_all_time_two"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="12dp"
+        android:textColor="@color/color_bbc0cb"
+        android:textSize="12sp" />
+
+    <RelativeLayout
+        android:id="@+id/rl_notice_all_details_two_all"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="6dp"
+        android:layout_marginRight="6dp"
+        android:layout_marginTop="13dp"
+        android:background="@color/white">
+
+        <TextView
+            android:id="@+id/tv_notice_all_name_two"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="14dp"
+            android:layout_marginTop="14dp"
+            android:textColor="@color/black_text_color"
+            android:textSize="16sp" />
+
+        <TextView
+            android:id="@+id/tv_notice_all_content_two"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="54dp"
+            android:textColor="@color/black_text_color"
+            android:textSize="18sp" />
+
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/rv_notice_all_two"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/tv_notice_all_content_two"
+            android:layout_marginTop="18dp">
+
+        </android.support.v7.widget.RecyclerView>
+
+
+        <RelativeLayout
+            android:id="@+id/rl_notice_all_details_two"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_below="@id/rv_notice_all_two"
+            android:layout_marginTop="12dp">
+
+            <View
+                android:id="@+id/rl_notice_all_line"
+                android:layout_width="match_parent"
+                android:layout_height="1px"
+                android:background="@color/line_color" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="15dp"
+                android:text="@string/notification_see_details"
+                android:textColor="@color/black_text_color"
+                android:textSize="14dp" />
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="10dp"
+                android:src="@drawable/list_icon_more" />
+        </RelativeLayout>
+    </RelativeLayout>
+</LinearLayout>

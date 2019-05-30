@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+
+    <View
+        android:id="@+id/dialog_v"
+        android:layout_above="@+id/dialog_ll"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#05000000"/>
+    <LinearLayout
+        android:id="@+id/dialog_ll"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:background="#FFFFFF"
+        android:orientation="vertical"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp" >
+
+        <TextView
+            android:id="@+id/dialog_delete"
+            android:layout_width="match_parent"
+            android:layout_height="45dp"
+            android:layout_marginBottom="10dp"
+            android:layout_marginTop="16dp"
+            android:background="@drawable/ring_round_gray"
+            android:gravity="center"
+            android:text="@string/message_del"
+            android:textColor="@color/red"
+            android:textSize="16dp" />
+
+
+        <TextView
+            android:id="@+id/dialog_cancel"
+            android:layout_width="match_parent"
+            android:layout_height="45dp"
+            android:layout_marginBottom="10dp"
+            android:background="@drawable/rect_round_avater"
+            android:gravity="center"
+            android:text="@string/message_cancel"
+            android:textColor="#FFFFFF"
+            android:textSize="16dp" />
+    </LinearLayout>
+
+</RelativeLayout>

@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/top_text_default"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:id="@+id/ticket_pay_layout"
+        android:layout_width="match_parent"
+        android:layout_height="44dp"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/tv_ticket_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_marginLeft="15dp"
+            android:maxLines="1"
+            android:text="彩集饭票"
+            android:textColor="@color/color_333b46"
+            android:textSize="15sp" />
+
+        <TextView
+            android:id="@+id/tv_ticket_balance"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_marginLeft="10dp"
+            android:maxLines="1"
+            android:text="可用:50.00"
+            android:textColor="@color/tv_red_bg"
+            android:textSize="12sp" />
+
+
+        <View
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1" />
+
+
+        <ImageView
+            android:id="@+id/select_ticket_pay"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_marginRight="15dp"
+            android:src="@drawable/f3_sel_circle" />
+
+    </LinearLayout>
+
+    <View
+        android:id="@+id/ticket_bottom_line"
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp"
+        android:layout_marginLeft="15dp"
+        android:background="@color/color_bfc7cc" />
+
+
+</LinearLayout>
+

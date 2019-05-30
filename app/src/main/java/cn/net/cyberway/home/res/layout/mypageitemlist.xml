@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/bg_color">
+
+    <TextView
+        android:id="@+id/tv_mypageline"
+        android:layout_width="match_parent"
+        android:layout_height="15dp" />
+
+    <TextView
+        android:id="@+id/mypage_line"
+        android:layout_width="match_parent"
+        android:layout_height="1px"
+        android:layout_below="@id/tv_mypageline"
+        android:layout_marginLeft="15dp"
+        android:background="@color/line_color" />
+
+    <RelativeLayout
+        android:id="@+id/rl_mypage_item"
+        android:layout_width="match_parent"
+        android:layout_height="44dp"
+        android:layout_below="@id/mypage_line"
+        android:background="@color/white">
+
+        <ImageView
+            android:id="@+id/iv_mypage_photo"
+            android:layout_width="40dp"
+            android:layout_height="25dp"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="15dp" />
+
+        <TextView
+            android:id="@+id/tv_mypage_nickname"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginStart="9dp"
+            android:layout_marginLeft="9dp"
+            android:layout_toRightOf="@id/iv_mypage_photo"
+            android:paddingLeft="6dp"
+            android:paddingTop="4dp"
+            android:paddingBottom="4dp"
+            android:textColor="@color/black_text_color"
+            android:textSize="16dp" />
+
+        <ImageView
+            android:id="@+id/iv_point"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:layout_toRightOf="@+id/tv_mypage_nickname"
+            android:background="@drawable/text_point_red"
+            android:visibility="gone" />
+
+        <ImageView
+            android:id="@+id/iv_mypage_next"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="15dp"
+            android:layout_marginRight="15dp"
+            android:src="@drawable/icon_arrow" />
+
+    </RelativeLayout>
+
+</RelativeLayout>

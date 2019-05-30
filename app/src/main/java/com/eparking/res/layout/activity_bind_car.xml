@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    android:fitsSystemWindows="true"
+    android:orientation="vertical">
+
+    <include
+        android:id="@+id/top_layout"
+        layout="@layout/top_view" />
+
+
+    <com.eparking.view.keyboard.view.InputView
+        android:id="@+id/input_view"
+        style="@style/PWKInputViewStyle"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:layout_marginLeft="40dp"
+        android:layout_marginRight="40dp"
+        android:layout_marginTop="60dp"
+        app:pwkInputTextSize="18sp" />
+
+
+    <Button
+        android:id="@+id/tv_change_cartype"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="5dp"
+        android:padding="5dp"
+        android:background="@color/transparent"
+        android:drawableLeft="@drawable/eparking_img_bind_change"
+        android:drawablePadding="3dp"
+        android:gravity="center"
+        android:text="@string/switch_new_energy"
+        android:textColor="@color/color_269fff"
+        android:textSize="12sp" />
+
+
+    <Button
+        android:id="@+id/btn_once_submit"
+        android:layout_width="300dp"
+        android:layout_height="48dp"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginBottom="30dp"
+        android:layout_marginTop="40dp"
+        android:background="@drawable/shape_openticket_default"
+        android:text="@string/once_submit"
+        android:textColor="@color/white"
+        android:textSize="18sp" />
+
+</LinearLayout>

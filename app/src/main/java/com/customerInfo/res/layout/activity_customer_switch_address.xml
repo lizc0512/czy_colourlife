@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/bg_color"
+    android:fitsSystemWindows="true"
+    android:orientation="vertical">
+
+    <include
+        android:id="@+id/title_layout"
+        layout="@layout/top_view" />
+
+    <Button
+        android:id="@+id/btn_add_community"
+        android:layout_width="match_parent"
+        android:layout_height="44dp"
+        android:layout_alignParentBottom="true"
+        android:background="@color/tv_blue_bg"
+        android:paddingBottom="12dp"
+        android:paddingTop="12dp"
+        android:text="@string/customer_increase_community"
+        android:textColor="@color/white"
+        android:textSize="16sp" />
+
+    <com.yanzhenjie.recyclerview.swipe.SwipeMenuRecyclerView
+        android:id="@+id/address_rv"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@id/btn_add_community"
+        android:layout_below="@id/title_layout"
+        android:background="@color/white" />
+
+
+</RelativeLayout>

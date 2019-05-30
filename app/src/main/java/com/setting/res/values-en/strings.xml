@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<resources>
+    <string name="notification_sound">notification_sound</string>
+    <string name="new_message_notify">new_message_notify</string>
+    <string name="notification_btn">notification_btn</string>
+    <string name="gesture_pwd">gesture_pwd</string>
+    <string name="about_colourlife">about_colourlife</string>
+    <string name="choice_language">choice_language</string>
+    <string name="clear_cache">clear_cache</string>
+    <string name="account_safty">account_safty</string>
+    <string name="user_conceal">user_conceal</string>
+    <string name="log_out">log_out</string>
+    <string name="search_user">search_user</string>
+    <string name="search_user_notice">search_user_notice</string>
+    <string name="cache_size">cache_size</string>
+    <string name="clear_cache_notice">clear_cache_notice</string>
+    <string name="once_clear">once_clear</string>
+    <string name="notneed_clear">notneed_clear</string>
+    <string name="change_gesture_pwd">change_gesture_pwd</string>
+    <string name="forget_gesture_pwd">forget_gesture_pwd</string>
+    <string name="change_pay_pwd">change_pay_pwd</string>
+    <string name="change_login_pwd">change_login_pwd</string>
+    <string name="verify_login_pwd">verify_login_pwd</string>
+    <string name="change_mobile">change_mobile</string>
+    <string name="verify">verify</string>
+    <string name="myproperty">myproperty</string>
+    <string name="mycarinfo">mycarinfo</string>
+    <string name="vipfp">vipfp</string>
+    <string name="myvipcard">myvipcard</string>
+
+    <string-array name="language_list">
+        <item>简体中文</item>
+        <item>繁體中文（臺灣）</item>
+        <item>English</item>
+        <item>Français</item>
+        <item>Tiếng Việt</item>
+    </string-array>
+</resources>

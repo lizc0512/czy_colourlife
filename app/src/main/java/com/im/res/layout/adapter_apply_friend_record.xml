@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/white"
+    android:orientation="horizontal">
+
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="68dp"
+        android:background="@color/white">
+
+        <ImageView
+            android:id="@+id/user_photo"
+            android:layout_width="44dp"
+            android:layout_height="44dp"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="15dp"
+            android:src="@drawable/im_icon_default_head" />
+
+        <TextView
+            android:id="@+id/user_nickname"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignTop="@id/user_photo"
+            android:layout_marginLeft="10dp"
+            android:layout_toRightOf="@id/user_photo"
+            android:text="Angle"
+            android:textColor="@color/color_333b46"
+            android:textSize="16sp" />
+
+
+        <TextView
+            android:id="@+id/user_apply_status"
+            android:layout_width="60dp"
+            android:layout_height="26dp"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="15dp"
+            android:gravity="center"
+            android:text="已添加"
+            android:textColor="@color/color_d4d9dc"
+            android:textSize="14sp" />
+
+
+        <TextView
+            android:id="@+id/user_apply_notes"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/user_nickname"
+            android:layout_marginLeft="10dp"
+            android:singleLine="true"
+            android:ellipsize="end"
+            android:layout_marginTop="5dp"
+            android:layout_toLeftOf="@id/user_apply_status"
+            android:layout_toRightOf="@id/user_photo"
+            android:text="我是社群七星商业广场12层Joe"
+            android:textColor="@color/color_a3aaae"
+            android:textSize="14sp" />
+
+
+    </RelativeLayout>
+</LinearLayout>

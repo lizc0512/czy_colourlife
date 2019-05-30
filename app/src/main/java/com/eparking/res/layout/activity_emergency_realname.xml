@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    android:fitsSystemWindows="true"
+    android:orientation="vertical">
+
+    <include
+        android:id="@+id/top_layout"
+        layout="@layout/top_view" />
+    <!--预约停车-->
+
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/tv_user_infor"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="20dp"
+                android:textColor="@color/color_333b46"
+                android:textSize="14sp" />
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="200dp"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginLeft="15dp"
+                android:layout_marginRight="15dp"
+                android:layout_marginTop="15dp">
+
+                <ImageView
+                    android:id="@+id/iv_bg_idfront"
+                    android:layout_width="325dp"
+                    android:layout_height="200dp"
+                    android:src="@drawable/eparking_img_idfront" />
+
+                <ImageView
+                    android:id="@+id/iv_upload_idfront"
+                    android:layout_width="305dp"
+                    android:layout_height="180dp"
+                    android:layout_centerVertical="true"
+                    android:src="@drawable/eparking_img_idfront"
+                    android:visibility="gone" />
+
+                <ImageView
+                    android:id="@+id/iv_front_delete"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:src="@drawable/eparking_img_delete"
+                    android:visibility="gone" />
+
+            </RelativeLayout>
+
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="200dp"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginLeft="15dp"
+                android:layout_marginRight="15dp"
+                android:layout_marginTop="15dp">
+
+                <ImageView
+                    android:id="@+id/iv_bg_idback"
+                    android:layout_width="325dp"
+                    android:layout_height="200dp"
+                    android:src="@drawable/eparking_img_idback"
+                    android:visibility="visible" />
+
+                <ImageView
+                    android:id="@+id/iv_upload_idback"
+                    android:layout_width="305dp"
+                    android:layout_height="180dp"
+                    android:layout_centerVertical="true"
+                    android:src="@drawable/eparking_img_uploadback"
+                    android:visibility="gone" />
+
+
+                <ImageView
+                    android:id="@+id/iv_back_delete"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:src="@drawable/eparking_img_delete"
+                    android:visibility="gone" />
+            </RelativeLayout>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="30dp"
+                android:layout_marginTop="30dp"
+                android:text="@string/takephoto_sample"
+                android:textColor="@color/color_333b46"
+                android:textSize="14sp" />
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="15dp"
+                android:src="@drawable/eparking_license_example" />
+
+
+            <Button
+                android:id="@+id/btn_next"
+                android:layout_width="300dp"
+                android:layout_height="48dp"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginBottom="30dp"
+                android:layout_marginTop="40dp"
+                android:background="@drawable/shape_openticket_default"
+                android:text="@string/next"
+                android:textColor="@color/white"
+                android:textSize="18sp" />
+
+        </LinearLayout>
+    </ScrollView>
+</LinearLayout>

@@ -1,0 +1,244 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fitsSystemWindows="true"
+    android:background="@color/bg_color">
+
+    <include
+        android:id="@+id/findpro_view"
+        layout="@layout/top_view" />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/findpro_view"
+        android:scrollbars="none"
+        android:visibility="visible">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/sv_findpro_show"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"></android.support.v7.widget.RecyclerView>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="15dp" />
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="64dp"
+                android:background="@color/white">
+
+                <RelativeLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true">
+
+                    <ImageView
+                        android:id="@+id/iv_findpro_news"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:src="@drawable/icon_news_empty" />
+
+                    <TextView
+                        android:id="@+id/tv_findpro_notice"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_marginLeft="10dp"
+                        android:layout_toRightOf="@id/iv_findpro_news"
+                        android:text="您还没有收到任何通知哦～"
+                        android:textColor="@color/color_a3aaae" />
+                </RelativeLayout>
+            </RelativeLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="15dp" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="160dp"
+                android:background="@color/white">
+
+                <RelativeLayout
+                    android:id="@+id/rl_findpro_notice"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1">
+
+                    <cn.net.cyberway.home.view.CircleImageView
+                        android:id="@+id/iv_findpro_midlogo"
+                        android:layout_width="60dp"
+                        android:layout_height="60dp"
+                        android:layout_centerHorizontal="true"
+                        android:layout_marginTop="27dp" />
+
+                    <TextView
+                        android:id="@+id/tv_findpro_mindname"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/iv_findpro_midlogo"
+                        android:layout_centerHorizontal="true"
+                        android:layout_marginTop="5dp"
+                        android:text=""
+                        android:textColor="@color/black_text_color"
+                        android:textSize="16dp" />
+
+                    <TextView
+                        android:id="@+id/tv_findpro_minddesr"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/tv_findpro_mindname"
+                        android:layout_centerHorizontal="true"
+                        android:layout_marginTop="10dp"
+                        android:text=""
+                        android:textColor="@color/color_a3aaae"
+                        android:textSize="12dp" />
+                </RelativeLayout>
+
+                <View
+                    android:layout_width="1px"
+                    android:layout_height="match_parent"
+                    android:background="@color/bg_color" />
+
+                <RelativeLayout
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1">
+
+                    <RelativeLayout
+                        android:id="@+id/rl_findpro_midright"
+                        android:layout_width="match_parent"
+                        android:layout_height="80dp">
+
+                        <cn.net.cyberway.home.view.CircleImageView
+                            android:id="@+id/iv_findpro_midright"
+                            android:layout_width="45dp"
+                            android:layout_height="45dp"
+                            android:layout_centerVertical="true"
+                            android:layout_marginLeft="20dp" />
+
+                        <TextView
+                            android:id="@+id/tv_findpro_midrightname"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="10dp"
+                            android:layout_marginTop="23dp"
+                            android:layout_toRightOf="@id/iv_findpro_midright"
+                            android:text=""
+                            android:textColor="@color/black_text_color"
+                            android:textSize="16dp" />
+
+                        <TextView
+                            android:id="@+id/tv_findpro_midrightdesc"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@id/tv_findpro_midrightname"
+                            android:layout_marginLeft="10dp"
+                            android:layout_marginTop="5dp"
+                            android:layout_toRightOf="@id/iv_findpro_midright"
+                            android:text=""
+                            android:textColor="@color/color_a3aaae"
+                            android:textSize="12dp" />
+                    </RelativeLayout>
+
+                    <View
+                        android:id="@+id/findpro_line"
+                        android:layout_width="match_parent"
+                        android:layout_height="1px"
+                        android:layout_below="@id/rl_findpro_midright"
+                        android:background="@color/bg_color" />
+
+                    <RelativeLayout
+                        android:id="@+id/rl_findpro_midbottom"
+                        android:layout_width="match_parent"
+                        android:layout_height="80dp"
+                        android:layout_below="@id/findpro_line">
+
+                        <cn.net.cyberway.home.view.CircleImageView
+                            android:id="@+id/iv_findpro_midbottom"
+                            android:layout_width="45dp"
+                            android:layout_height="45dp"
+                            android:layout_centerVertical="true"
+                            android:layout_marginLeft="20dp" />
+
+                        <TextView
+                            android:id="@+id/tv_findpro_midbottomname"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="10dp"
+                            android:layout_marginTop="23dp"
+                            android:layout_toRightOf="@id/iv_findpro_midbottom"
+                            android:text=""
+                            android:textColor="@color/black_text_color"
+                            android:textSize="16dp" />
+
+                        <TextView
+                            android:id="@+id/tv_findpro_midbottomdesc"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@id/tv_findpro_midbottomname"
+                            android:layout_marginLeft="10dp"
+                            android:layout_marginTop="5dp"
+                            android:layout_toRightOf="@id/iv_findpro_midbottom"
+                            android:text=""
+                            android:textColor="@color/color_a3aaae"
+                            android:textSize="12dp" />
+                    </RelativeLayout>
+                </RelativeLayout>
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="15dp" />
+
+            <LinearLayout
+                android:id="@+id/ll_findpro_addservice"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:background="@color/white">
+
+                    <ImageView
+                        android:layout_width="4dp"
+                        android:layout_height="13dp"
+                        android:layout_centerVertical="true"
+                        android:layout_marginLeft="15dp"
+                        android:background="@color/life_point" />
+
+                    <TextView
+                        android:id="@+id/tv_findpro_name"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_marginLeft="25dp"
+                        android:text="增值服务"
+                        android:textColor="@color/black_text_color"
+                        android:textSize="13dp" />
+                </RelativeLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1px"
+                    android:background="@color/bg_color" />
+
+                <android.support.v7.widget.RecyclerView
+                    android:id="@+id/sv_findpro_addservice"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"></android.support.v7.widget.RecyclerView>
+            </LinearLayout>
+        </LinearLayout>
+    </ScrollView>
+</RelativeLayout>

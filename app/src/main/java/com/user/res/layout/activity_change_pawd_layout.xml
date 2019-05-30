@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/bg_color"
+    android:fitsSystemWindows="true"
+    android:orientation="vertical">
+
+    <include layout="@layout/top_view" />
+
+
+    <android.support.design.widget.TabLayout
+        android:id="@+id/cardholder_tablayout"
+        android:layout_width="match_parent"
+        android:layout_height="44dp"
+        app:tabBackground="@color/white"
+        app:tabMaxWidth="0dp"
+        app:tabPaddingEnd="-1dp"
+        app:tabPaddingStart="-1dp"
+        app:tabTextAppearance="@style/TabLayoutTextSizeStyle" />
+
+
+    <com.eparking.view.NoViewPager
+        android:id="@+id/cardholder_viewpager"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+
+</LinearLayout>

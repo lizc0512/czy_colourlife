@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/activity_my_car_info"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/bg_color"
+    android:fitsSystemWindows="true"
+    android:orientation="vertical"
+    android:gravity="center_horizontal"
+    tools:context="com.mycarinfo.activity.MyCarInfoActivity">
+
+    <include
+        layout="@layout/top_view"/>
+    <com.BeeFramework.swipe.SwipeMenuListView
+        android:id="@+id/mycar_list"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:divider="@null"
+        android:scrollbars="none"/>
+    <ImageView
+        android:id="@+id/img_empty"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="110dp"
+        android:src="@drawable/car_empty3x"
+        android:visibility="gone"/>
+
+    <TextView
+        android:id="@+id/tv_tips"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:textColor="@color/black_text_color"
+        android:layout_marginTop="30dp"
+        android:text="@string/car_no_add"
+        android:textSize="18sp"
+        android:visibility="gone"/>
+
+
+
+    <Button
+        android:id="@+id/btn_addcar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:paddingTop="12dp"
+        android:paddingBottom="12dp"
+        android:background="@color/blue_text_color"
+        android:text="@string/car_increase"
+        android:textSize="16dp"
+        android:textColor="#FFFFFF"/>
+</LinearLayout>

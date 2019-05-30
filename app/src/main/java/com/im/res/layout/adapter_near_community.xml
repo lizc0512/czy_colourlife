@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="68dp"
+        android:background="@color/white">
+
+        <ImageView
+            android:id="@+id/user_photo"
+            android:layout_width="46dp"
+            android:layout_height="46dp"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="15dp"
+            android:src="@drawable/head_default" />
+
+        <TextView
+            android:id="@+id/user_nickname"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignTop="@id/user_photo"
+            android:layout_marginLeft="10dp"
+            android:layout_toRightOf="@id/user_photo"
+            android:text="Angle"
+            android:textColor="@color/color_333b46"
+            android:textSize="14sp" />
+
+        <TextView
+            android:id="@+id/user_community_distance"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/user_nickname"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="5dp"
+            android:layout_toRightOf="@id/user_photo"
+            android:text="七星商业广场"
+            android:textColor="@color/color_a3aaae"
+            android:textSize="12sp" />
+
+        <ImageView
+            android:id="@+id/user_sex"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignTop="@id/user_nickname"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="2dp"
+            android:layout_toRightOf="@id/user_nickname"
+            android:src="@drawable/im_icon_woman" />
+
+    </RelativeLayout>
+
+
+</LinearLayout>

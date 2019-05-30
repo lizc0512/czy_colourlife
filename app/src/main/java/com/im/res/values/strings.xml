@@ -1,0 +1,67 @@
+<resources>
+    <string name="instant_message">消息</string>
+    <string name="instant_search">搜索</string>
+    <string name="instant_netstatus">当前网络连接不可用,请检查手机网络</string>
+    <string name="instant_offline">您的账号已在彩管家登录，点击可重新登录</string>
+    <string name="instant_msgempty">暂无消息</string>
+    <string name="instant_onetip">1. 添加好友，随时与好友畅聊</string>
+    <string name="instant_twotip">2. 加入群聊，分享社区那些事</string>
+    <string name="instant_threetip">3. 创建/加入社群，参与社群活动</string>
+    <string name="instant_add_phone">添加手机联系人</string>
+    <string name="instant_invite_friend">添加或邀请通讯中的朋友</string>
+    <string name="instant_same_person">同小区的人</string>
+    <string name="instant_same_friend">添加同小区的好友</string>
+    <string name="instant_near_person">附近的人</string>
+    <string name="instant_near_friend">添加身边的朋友</string>
+    <string name="instant_scanner">扫一扫</string>
+    <string name="instant_scann_qrcode">扫描二维码名片</string>
+    <string name="instant_verify_infor">填写验证信息，等待对方通过</string>
+    <string name="instant_friend_remark">为朋友设置备注</string>
+    <string name="instant_add_remark">添加备注名</string>
+    <string name="instant_no_apply">暂无好友申请</string>
+    <string name="instant_remark">备注</string>
+    <string name="instant_verify">通过验证</string>
+    <string name="instant_community_name">社群名称</string>
+    <string name="instant_input_name">请输入社群名称（20字内）</string>
+    <string name="instant_households">社群户数</string>
+    <string name="instant_input_households">请输入社群户数</string>
+    <string name="instant_areas">社群面积(㎡)</string>
+    <string name="instant_input_areas">请输入社群面积</string>
+    <string name="instant_owner_name">群主姓名</string>
+    <string name="instant_input_ownername">请输入群主姓名</string>
+    <string name="instant_contact">联系方式</string>
+    <string name="instant_input_contact">请输入联系方式</string>
+    <string name="instant_linli_circle">邻里圈</string>
+    <string name="instant_add_friend">加好友</string>
+    <string name="instant_transfer">转账</string>
+    <string name="instant_send_msg">发消息</string>
+    <string name="instant_send_invite">发送邀请</string>
+    <string name="instant_set_remark">设置备注名</string>
+    <string name="instant_open_contact">开启手机通讯录匹配可以查看手机通讯录中的朋友谁在使用彩之云</string>
+    <string name="instant_upload_contact">上传手机通讯录</string>
+    <string name="instant_manager_assistant">社群管理助手</string>
+    <string name="instant_once_see">立即查看</string>
+    <string name="instant_again_submit">再次提交</string>
+    <string name="instant_revoke">撤销</string>
+    <string name="instant_new_friend">新的朋友</string>
+    <string name="instant_community">社群</string>
+    <string name="instant_group">群聊</string>
+    <string name="instant_upload_notice">彩之云不保存手机通讯录的任何资料，仅做匹配识别。</string>
+    <string name="instant_notice">提示</string>
+    <string name="instant_no_result">该用户不存在</string>
+    <string name="instant_no_find">无法查找该用户，请检查你填写的账号是否正确。</string>
+    <string name="instant_service">彩之云客服</string>
+    <string name="instant_applytime">申请时间</string>
+    <string name="instant_applynumber">申请编号</string>
+    <string name="instant_copy">复制</string>
+    <string name="instant_del_address">确认删除地址吗？</string>
+    <string name="instant_open_conceal">查看附近的人需要开启隐私权限，是否立即前往开启</string>
+    <string name="instant_verify_apply">验证申请</string>
+    <string name="instant_send">发送</string>
+    <string name="instant_detail_infor">详细资料</string>
+    <string name="instant_frind_apply">好友申请</string>
+
+
+
+
+</resources>

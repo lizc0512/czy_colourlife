@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <android.support.v4.view.ViewPager
+        android:overScrollMode="never"
+        android:id="@+id/lead_viewPager"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_gravity="center"
+        android:flipInterval="30"
+        android:persistentDrawingCache="animation" />
+    <TextView
+        android:id="@+id/cancel"
+        android:layout_marginRight="25dp"
+        android:layout_marginTop="10dp"
+        android:layout_gravity="right|bottom"
+        android:layout_width="wrap_content"
+        android:layout_height="68dp"
+        android:gravity="center"
+        android:layout_marginBottom="10dp"
+        android:text="跳过 >>"
+        android:paddingTop="11dp"
+        android:textSize="16dp"
+        android:textColor="@color/gray" />
+    <FrameLayout
+        android:id="@+id/fl_indicator"
+        android:layout_width="170dp"
+        android:layout_height="15dp"
+        android:layout_gravity="center_horizontal|bottom"
+        android:layout_marginBottom="30dp" >
+
+        <com.external.viewpagerindicator.CirclePageIndicator
+            android:id="@+id/indicator"
+            app:strokeColor="#F0F0F0"
+            app:pageColor="#F0F0F0"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:padding="2dp" />
+    </FrameLayout>
+
+</FrameLayout>

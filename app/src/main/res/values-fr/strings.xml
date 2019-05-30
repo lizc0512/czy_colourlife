@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<resources>
+    <string name="bcs_safename">彩之云安全键盘</string>
+    <string name="label_done">完成</string>
+    <string name="app_name">彩之云</string>
+    <string name="app_name_beta">彩之云(预发)</string>
+    <string name="app_name_test">彩之云(测试)</string>
+    <string name="app_name_yuenan">彩之云(越南)</string>
+    <string name="action_settings">Settings</string>
+
+    <!-- XListView -->
+    <string name="xlistview_header_hint_normal">下拉刷新</string>
+    <string name="xlistview_header_hint_ready">松开刷新数据</string>
+    <string name="xlistview_header_hint_loading">正在加载...</string>
+    <string name="xlistview_header_last_time">上次更新时间：</string>
+    <string name="xlistview_footer_hint_normal">查看更多</string>
+    <string name="xlistview_footer_hint_ready">松开载入更多</string>
+    <string name="xlistview_footer_hint_over">没有更多了</string>
+    <string name="nohalfmoney">无可用金额！</string>
+
+
+    <!-- error -->
+    <string name="error_please_check_network">请检查网络。</string>
+    <string name="error_timeout">请求超时，网络不好或者服务器不稳定。</string>
+    <string name="error_not_found_server">未发现指定服务器，请切换网络后重试。</string>
+    <string name="error_url_error">URL错误。</string>
+    <string name="error_not_found_cache">没有找到缓存.</string>
+
+
+    //页面的标题整理
+    <string name="find_property">找物业</string>
+    <string name="join_community">加入你所在的社区</string>
+    <string name="adveice_feedback">意见反馈</string>
+    <string name="feedback_details">反馈详情</string>
+    <string name="feedback_history">反馈历史</string>
+    <string name="my_coupon">我的卡券</string>
+    <string name="pay_order">支付订单</string>
+    <string name="order_list">订单列表</string>
+    <string name="order_payresult">支付</string>
+    <string name="order_result">支付结果</string>
+    <string name="order_details">订单详情</string>
+    <string name="title_increase_property">新增房产</string>
+    <string name="title_choice_community">选择小区</string>
+    <string name="title_choice_address">选择地址</string>
+    <string name="title_personal_infor">个人信息</string>
+    <string name="title_my_qrcode">我的二维码</string>
+    <string name="title_change_pawd">修改密码</string>
+    <string name="title_add_deliveryAddress">新建收货地址</string>
+    <string name="title_edit_deliveryAddress">编辑收货地址</string>
+    <string name="title_manager_deliveryAddress">收货地址管理</string>
+    <string name="title_door_apply">申请</string>
+    <string name="title_door_apply_details">申请详情</string>
+    <string name="title_door_authorize">授权</string>
+    <string name="title_door_authorize_details">授权详情</string>
+
+    <string name="title_openticket_details">开票信息</string>
+    <string name="title_appoint_eparking">预约停车</string>
+    <string name="title_car_authorize">车辆授权</string>
+    <string name="title_authorize_record">授权记录</string>
+    <string name="title_bind_car">绑定车辆</string>
+    <string name="title_apply_monthcard">月卡申请</string>
+    <string name="title_indentify_car">认证车辆</string>
+    <string name="title_choice_build">选择楼栋</string>
+    <string name="title_choice_parking">选择停车场</string>
+    <string name="title_choice_room">选择房号</string>
+    <string name="title_choice_personal">选择身份信息</string>
+    <string name="title_identify_authorize">身份认证</string>
+    <string name="title_emergency_sluice">紧急开闸</string>
+    <string name="title_business_section">商家板块</string>
+    <string name="title_car_infor">车辆信息</string>
+    <string name="title_my_cardwallet">我的卡包</string>
+    <string name="title_history_record">历史记录</string>
+    <string name="title_parking">停车</string>
+    <string name="title_lock_infor">车位锁信息</string>
+    <string name="title_parking_infor">车位信息</string>
+    <string name="title_monthcard_infor">月卡信息</string>
+    <string name="title_fast_moving">一键挪车</string>
+    <string name="title_monthapply_record">月卡申请记录</string>
+    <string name="title_monthcard_renewal">月卡续费</string>
+    <string name="title_ticket_details">发票详情</string>
+    <string name="title_parking_details">停车详情</string>
+    <string name="title_payment_details">缴费详情</string>
+    <string name="title_share_parking">共享车位</string>
+    <string name="title_shareparking_record">车位共享记录</string>
+    <string name="title_surrend_parkfee">帮人缴费</string>
+    <string name="title_parking_order">停车订单</string>
+    <string name="title_publish_feed">发布动态</string>
+    <string name="title_feed_details">个人详情</string>
+    <string name="title_activity_type">选择活动类型</string>
+    <string name="title_change_gesturepawd">修改手势密码</string>
+    <string name="title_set_gesturepawd">设置手势密码</string>
+    <string name="title_user_login">登录</string>
+    <string name="title_add_friend">添加好友</string>
+    <string name="title_choice_cartype">选择车型</string>
+    <string name="title_car_list">我的车辆</string>
+    <string name="title_property_list">我的房产</string>
+    <string name="title_realname_indenty">实名认证</string>
+    <string name="title_message_notification">社区通知</string>
+    <string name="title_message_details">消息详情</string>
+    <string name="title_scanner">扫一扫</string>
+    <string name="title_scanner_result">扫描结果</string>
+    <string name="title_setting">设置</string>
+    <string name="title_find_pawd">找回密码</string>
+    <string name="title_safty_verify">安全验证</string>
+    <string name="title_login_register">登录注册</string>
+
+
+    //代码中动态设置的
+    <string name="lead_go_open">去开启 >></string>
+    <string name="lead_jump">跳过 >></string>
+    <string name="account_extrude_login">你的账号在另一台设备上登录，请重新登录</string>
+    <string name="im_extrude_login">你的IM在另一台设备上登录，请重新登录</string>
+    <string name="use_newaccount__login">"审核已通过，请使用新手机号登录</string>
+    <string name="app_exit_notice">再按一次退出</string>
+    <string name="app_network_error">网络连接异常,请检查你的网络</string>
+    <string name="app_getdate_fail">数据获取失败,请稍后重试</string>
+    <string name="app_requestdate_fail">请求数据失败，请稍后重试</string>
+    <string name="user_callpermission_notice">拨号权限被禁止，请去开启该权限</string>
+    <string name="user_camerapermission_notice">相机权限被禁止，请去开启该权限</string>
+    <string name="user_readcontacts_notice">通讯录权限被禁止，请去开启该权限</string>
+
+    <string name="opendoor_success">开门成功 </string>
+    <string name="continue_next">下次继续 </string>
+    <string name="no_get_ticket">很遗憾，未抢到饭票奖励</string>
+    <string name="ticket_enter_wallet">饭票奖励已存入彩钱包</string>
+    <string name="neterror_tryagain_opendoor">网络不稳定，请尝试重新开门</string>
+    <string name="opendoor_again">重新开门</string>
+
+    <string-array name="app_quick_enter">
+        <item>开门</item>
+        <item>扫一扫</item>
+        <item>分享好友</item>
+        <item>我的二维码</item>
+    </string-array>
+</resources>

@@ -1,0 +1,21 @@
+gradlew assembleRelease  执行的是打基础包的操作
+gradlew buildTinkerPatchRelease 执行打补丁包的操作
+
+包名:cn.net.cyberway
+MD5: 99:EF:81:C4:ED:E8:2A:01:22:9D:55:AC:08:26:F0:4D
+SHA1: A3:ED:2B:C9:33:D9:ED:55:C5:D1:FD:39:DF:26:46:CE:28:75:40:91
+
+钉钉的开发资料
+99ef81c4ede82a01229d55ac0826f04d
+AppId：dingoaklug8ansapsbc9l0
+AppSecret：tyV--ScgRmVo43n_ZZaAMJ-qwMR3bZzy1zRWllrymRtFVbOJe9bNPpKuZLvJ5MCP
+
+
+if (("4.4.3".equals(android.os.Build.VERSION.RELEASE)) || ("4.4.4".equals(android.os.Build.VERSION.RELEASE))) {
+//兼容这两个版本设置referer无效的问题
+view.loadDataWithBaseURL("商户申请H5时提交的授权域名", "<script>window.location.href=\"" + targetUrl + "\";</script>", "text/html", "utf-8", null);
+} else {
+ Map<String, String> extraHeaders = new HashMap<>();
+  extraHeaders.put("Referer", "商户申请H5时提交的授权域名");
+   view.loadUrl(targetUrl, extraHeaders);
+}

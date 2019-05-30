@@ -1,0 +1,315 @@
+<resources>
+    <string name="next">下一步</string>
+    <string name="finish">完成</string>
+    <string name="car_brand_history">车牌历史记录</string>
+    <string name="switch_new_energy">切换为新能源</string>
+    <string name="switch_normal_car">切换为普通蓝牌</string>
+    <string name="monthcard_renewal">月卡续费</string>
+    <string name="monthcard_apply">申请月卡</string>
+    <string name="temporary_stop_fee">临停缴费</string>
+    <string name="temporary_stop">临时停车</string>
+    <string name="payoff_the_count">缴费离场</string>
+    <string name="enter_time">入场时间</string>
+    <string name="parking_time">停车时长</string>
+    <string name="pay_amount">应付费用</string>
+    <string name="help_payoff">帮人缴费</string>
+    <string name="charge_record">缴费记录</string>
+    <string name="car_parking_status">车辆状态</string>
+    <string name="car_parking_leave">已离场</string>
+    <string name="car_parking_present">已入场</string>
+    <string name="monthcard_expire">月卡到期</string>
+    <string name="monthcard">月卡</string>
+    <string name="sparkplace_number">车位编号</string>
+    <string name="use_status">使用状态</string>
+    <string name="share_history">共享记录</string>
+    <string name="share_spark_place">共享车位</string>
+    <string name="bind_car">绑定车辆</string>
+    <string name="quick_enter_splace">,体验极速进出场</string>
+    <string name="service">服务</string>
+    <string name="lock_up">上升</string>
+    <string name="lock_down">下降</string>
+    <string name="continue_pay">续费</string>
+    <string name="apply_authentication">您可以申请</string>
+    <string name="car_authentication">车辆认证</string>
+    <string name="avoid_others_use">，避免他人绑定车牌影响您的使用</string>
+
+    <string name="eparking_type">类型</string>
+    <string name="month_card_place">月卡车场</string>
+    <string name="no_secret_pay">免密支付</string>
+    <string name="auto_lock_car">自动锁车</string>
+    <string name="message_push">消息推送</string>
+    <string name="stop_car_record">停车记录</string>
+    <string name="car_authorization_record">车辆授权记录</string>
+    <string name="car_authorization">车辆授权</string>
+
+    <string name="chargeable_time">计费时间</string>
+    <string name="use_coupon">已优惠</string>
+    <string name="choice_coupon">选择优惠券</string>
+    <string name="order_number">订单编号</string>
+    <string name="remark">备注</string>
+    <string name="go_pay">去支付</string>
+    <string name="payment">支付</string>
+    <string name="have_question">有疑问？</string>
+    <string name="custom_service">联系客服</string>
+
+    <string name="eparking_lock_status">车位锁状态</string>
+    <string name="eparking_lock_number">车位锁编号</string>
+    <string name="eparking_address">停车场地址</string>
+    <string name="eparking_share_record">共享车位记录</string>
+    <string name="eparking_place">车位</string>
+    <string name="share_eparking_number">共享车牌</string>
+    <string name="share_start_time">开始共享时间</string>
+    <string name="share_end_time">结束共享时间</string>
+    <string name="once_share">立即共享</string>
+    <string name="input_share_carnumber">请输入共享车牌号</string>
+
+
+    <string name="out_of_date">到期时间</string>
+    <string name="monthcard_fee">月卡费用</string>
+    <string name="monthcard_payment_record">月卡缴费记录</string>
+
+
+    <string name="car_brand">车牌号</string>
+    <string name="car_type">车辆类型</string>
+    <string name="car_owner">所有人</string>
+    <string name="car_properties">使用性质</string>
+    <string name="car_brand_model">品牌型号</string>
+    <string name="car_id_code">车辆识别代码</string>
+    <string name="car_engine_code">发动机号码</string>
+    <string name="car_owner_address">住址</string>
+    <string name="car_register_date">注册日期</string>
+    <string name="car_certificate_date">发证日期</string>
+    <string name="car_certificate_notice">彩之云停车将对您的信息严格保密，请放心认证您的车辆信息</string>
+    <string name="eparking_name">停车场</string>
+    <string name="fee_rule">收费规则</string>
+    <string name="continue_pay_month">续费月份</string>
+    <string name="continue_datetime">续费到期时间</string>
+
+
+    <string name="go_here">到这去</string>
+
+    <string name="parking_leave_date">离场时间</string>
+    <string name="parking_payment_type">缴费类型</string>
+    <string name="parking_payment_amount">缴费金额</string>
+    <string name="parking_discount_amount">优惠金额</string>
+    <string name="parking_pay_amount">付款金额</string>
+    <string name="parking_payment_time">支付时间</string>
+    <string name="parking_payment_number">缴费编号</string>
+
+    <string name="open_ticket">开发票</string>
+    <string name="ticket_name">名称</string>
+    <string name="ticket_amount">金额</string>
+    <string name="ticket_rate">税率</string>
+    <string name="ticket_type">抬头类型</string>
+    <string name="ticket_header">发票抬头</string>
+    <string name="input_ticket_header">请填写抬头名称</string>
+    <string name="tax_number">税号</string>
+    <string name="taxpayer_identity_number">请填写纳税人识别号</string>
+    <string name="open_vat_invoice">开票</string>
+    <string name="ticket_personal">个人</string>
+    <string name="ticket_enterprise">企业</string>
+
+
+    <string name="supplier_name">供方名称</string>
+    <string name="purchase_name">购方名称</string>
+    <string name="openticket_amount">发票金额</string>
+    <string name="openticket_date">开票时间</string>
+    <string name="openticket_code">开票代码</string>
+    <string name="openticket_number">开票号码</string>
+    <string name="download_pdf">下载PDF</string>
+
+
+    <string name="pop_cancel">取消</string>
+    <string name="pop_define">确定</string>
+    <string name="pop_all">全部</string>
+    <string name="pop_choice_filter">选择筛选项</string>
+    <string name="pop_car">车辆</string>
+
+
+    <string name="once_submit">立即提交</string>
+    <string name="choice_cars">请选择车辆</string>
+    <string name="choice_parking">请选择停车场</string>
+    <string name="authorization_phone">授权手机号</string>
+    <string name="authorization">授权</string>
+    <string name="authorization_user">授权用户</string>
+    <string name="input_authorization_phone">请输入授权的手机号</string>
+
+    <string name="appointment_enter_time">预约入场时间</string>
+    <string name="appointment_leave_time">预约离场时间</string>
+    <string name="once_appointment">立即预约</string>
+    <string name="choice_time">请选择</string>
+
+    <string name="once_opencode">立即开闸</string>
+    <string name="once_apply">立即申请</string>
+    <string name="phone">手机号</string>
+    <string name="your_phone">您的手机号</string>
+    <string name="input_phone">请输入手机号码</string>
+    <string name="condition_desc">情况说明</string>
+
+
+    <string name="apply_phone">申请人手机号</string>
+    <string name="apply_input_phone">请输入申请人手机号</string>
+    <string name="apply_name">申请人姓名</string>
+    <string name="apply_input_name">请输入申请人姓名</string>
+    <string name="apply_parking">停车场</string>
+    <string name="apply_building">楼栋</string>
+    <string name="apply_input_building">填写楼栋</string>
+    <string name="apply_choice_building">选择楼栋</string>
+    <string name="apply_room">房间</string>
+    <string name="apply_input_room">填写房间</string>
+    <string name="apply_choice_room">选择房间</string>
+    <string name="apply_userrole">身份</string>
+    <string name="apply_choice_userrole">选择身份</string>
+
+
+    <string name="status">状态</string>
+    <string name="search_parking">搜索停车场</string>
+    <string name="near_parking">附近的停车场</string>
+    <string name="parking_share_number">共享车牌</string>
+    <string name="parking_lock_number">地锁编号</string>
+    <string name="parking_share_time">共享时间</string>
+    <string name="parking_leave_time">离场时间</string>
+
+    <string name="emergnecy_opencode">紧急开闸码</string>
+    <string name="input_emergnecy_opencode">(请输入道闸中的开闸码)</string>
+    <string name="eparking_hotline">客服热线</string>
+    <string name="more_parking">更多车位</string>
+    <string name="filter_near">附近</string>
+    <string name="filter_order">排序</string>
+    <string name="search_parking_noresult">没有找到相关信息</string>
+    <string name="set_out">出发</string>
+    <string name="takephoto_sample">拍摄示例</string>
+    <string name="check_finish">核对无误，完成</string>
+    <string name="check_next">核对无误，下一步</string>
+
+    <string name="idcard_notice">如果信息识别有误，可点击文字进行修改</string>
+    <string name="idcard_number">身份证号码</string>
+    <string name="idcard_name">姓名</string>
+    <string name="idcard_sex">性别</string>
+    <string name="idcard_nation">民族</string>
+    <string name="idcard_born_date">出生日期</string>
+    <string name="idcard_effective_date">生效日期</string>
+    <string name="idcard_expiry_date">失效日期</string>
+
+
+    <string name="idcard_authorize">身份认证</string>
+    <string name="idcard_authorize_notice">为了提供更安全便捷的服务，需进行身份认证</string>
+    <string name="idcard_no_authorize">暂不认证</string>
+    <string name="idcard_go_authorize">去认证</string>
+    <string name="idcard_required_write">必填</string>
+    <string name="idcard_optional_write">选填</string>
+
+
+    <string name="notice_unbind_start">解除绑定后，将无法查看</string>
+    <string name="notice_stopcar_msg">停车信息</string>
+    <string name="notice_lock_msg">车位信息</string>
+    <string name="notice_unbind_end">,是否确认解绑？</string>
+    <string name="parking_use_notice">当前车位正在使用中，请在车辆离开后再次尝试</string>
+    <string name="moving_car_notice">彩之云将电话通知您和车主,请等候来电！</string>
+    <string name="sweet_notice">温馨提示</string>
+
+
+    <string name="car_authorize_notice">授权后授权人即可使用该车辆,是否确认授权？</string>
+
+
+    <string name="appoinment_record">预约记录</string>
+    <string name="apply_record">申请记录</string>
+    <string name="share_record">共享记录</string>
+    <string name="parking_car_unbind">解绑</string>
+    <string name="parking_filter">筛选</string>
+
+    <string-array name="parking_cardwallet_menu">
+        <item>车辆</item>
+        <item>月卡</item>
+        <item>车位锁</item>
+    </string-array>
+
+    <string-array name="parking_cardbag_rightmenu">
+        <item>绑定车辆</item>
+        <item>月卡</item>
+    </string-array>
+
+    <string-array name="parking_record_menu">
+        <item>缴费记录</item>
+        <item>开票记录</item>
+        <item>停车记录</item>
+    </string-array>
+
+
+    <string-array name="parking_home_menu">
+        <item>申请月卡</item>
+        <item>无感支付</item>
+        <item>一键挪车</item>
+        <item>找车位</item>
+        <item>历史记录</item>
+        <item>紧急开闸</item>
+        <item>预约停车</item>
+        <item>商家板块</item>
+    </string-array>
+
+
+    <string name="apply_phone_emptynotice">申请人手机号码不能为空</string>
+    <string name="apply_phone_lengthnotice">请输入11位的申请人号码</string>
+    <string name="apply_role_notice">请选择用户的角色</string>
+    <string name="apply_name_notice">申请人姓名不能为空</string>
+    <string name="apply_room_notice">房间号不能为空</string>
+    <string name="apply_building_notice">楼栋不能为空</string>
+
+
+    <string name="apply_choice_roleinfor">选择身份信息</string>
+    <string name="input_company_header">请填写单位名称</string>
+    <string name="apply_compmany">公司名称</string>
+
+    <string name="parking_no_appoinmentrecord">暂无预约记录</string>
+    <string name="parking_no_authorizerecord">暂无授权记录</string>
+    <string name="parking_no_applyrecord">暂无申请记录</string>
+    <string name="parking_no_sharerecord">暂无车位共享记录</string>
+    <string name="parking_no_car">暂无车辆</string>
+    <string name="parking_bind_car">绑定车辆</string>
+    <string name="parking_no_lock">暂无车位锁</string>
+    <string name="parking_no_monthcard">暂无月卡</string>
+    <string name="parking_apply_monthcard">申请月卡</string>
+    <string name="parking_no_stoprecord">暂无停车记录</string>
+    <string name="parking_no_morestop">暂无更多停车记录</string>
+    <string name="parking_no_paymentrecord">暂无缴费记录</string>
+    <string name="parking_no_morepayment">暂无更多缴费记录</string>
+    <string name="parking_no_ticketrecord">暂无开票记录</string>
+    <string name="parking_no_moreticket">暂无更多开票记录</string>
+    <string name="parking_payment_timeinterval">缴费时段</string>
+    <string name="temporary">临停</string>
+    <string name="parking_shar_now">共享中</string>
+    <string name="parking_cancel_authorize">取消授权</string>
+    <string name="cancel_authorize_success">取消授权成功</string>
+    <string name="parking_monthcard_remain">剩余</string>
+    <string name="parking_monthcard_outdate">已到期</string>
+    <string name="parking_monthcard_day">天</string>
+    <string name="monthcard_apply_waiting">审核中</string>
+    <string name="contract_apply_waiting">月卡审核中</string>
+    <string name="monthcard_apply_pass">审核通过</string>
+    <string name="monthcard_apply_refuse">审核不通过</string>
+    <string name="payment_opened_ticket">已开票</string>
+    <string name="payment_opening_ticket">去开票</string>
+    <string name="download_ticket_success">发票下载成功</string>
+    <string name="apply_ticket_success">发票申请成功</string>
+    <string name="appoint_parking_success">预约停车成功</string>
+    <string name="car_authorize_success">车辆授权成功</string>
+    <string name="car_vertify_success">车辆认证成功</string>
+    <string name="apply_cardpack_success">申请月卡成功</string>
+    <string name="opencode_send_success">开闸码发送成功</string>
+    <string name="input_open_code">开闸码不能为空</string>
+    <string name="emergency_open_success">紧急开闸成功</string>
+    <string name="lock_share_success">车位锁共享成功</string>
+    <string name="please_compelete_plate">请输入完整的车牌号</string>
+    <string name="search_noparking_result">没有找到相关停车场信息</string>
+    <string name="near_noparking_result">附近暂无停车场信息,试试搜索吧</string>
+    <string name="no_filter_message">暂无相关信息</string>
+    <string name="apply_contract_error">当前车牌号在该停车场已是月卡,请重新选择停车场或更换车牌号</string>
+
+
+    <string name="car_finish_authorize">已认证</string>
+    <string name="car_waiting_authorize">待审核</string>
+    <string name="normal_car_model">燃油车</string>
+    <string name="energy_car_model">新能源</string>
+
+
+</resources>

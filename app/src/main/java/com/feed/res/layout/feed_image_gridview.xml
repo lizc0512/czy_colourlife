@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.feed.view.FeedImageGridView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:id="@+id/feedimgg"
+    android:orientation="vertical">
+
+    <com.feed.view.NoScrollGridView
+        android:id="@+id/feed_image_gridview"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:listSelector="#00000000"
+        android:numColumns="3"
+        android:gravity="center"
+        android:overScrollMode="never"
+        android:scrollbars="none">
+    </com.feed.view.NoScrollGridView>
+
+</com.feed.view.FeedImageGridView>

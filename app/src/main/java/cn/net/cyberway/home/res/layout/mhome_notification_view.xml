@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+
+    <RelativeLayout
+        android:id="@+id/notification_layout"
+        android:layout_width="match_parent"
+        android:layout_height="44dp"
+        android:layout_marginTop="5dp"
+        android:visibility="gone"
+        android:background="@color/textcolor_ffffff">
+
+        <TextView
+            android:id="@+id/tv_new_message"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="10dp"
+            android:paddingBottom="8dp"
+            android:paddingLeft="5dp"
+            android:paddingRight="12dp"
+            android:paddingTop="8dp"
+            android:text="@string/community_notification"
+            android:textColor="@color/color_131719"
+            android:textSize="16sp"
+            android:textStyle="" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="10dp"
+            android:drawablePadding="5dp"
+            android:drawableRight="@drawable/icon_arrow"
+            android:text="@string/see_more_notification"
+            android:textColor="@color/color_647786"
+            android:textSize="12sp" />
+
+    </RelativeLayout>
+
+    <TextView
+        android:id="@+id/tv_no_message"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:background="@color/textcolor_ffffff"
+        android:gravity="center"
+        android:text="@string/no_more_notification"
+        android:textColor="@color/color_647786"
+        android:textSize="14sp"
+        android:visibility="gone" />
+
+    <View
+        android:id="@+id/bottom_empty_view"
+        android:layout_width="match_parent"
+        android:layout_height="1px"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        android:background="@color/color_e6eaed"
+        android:visibility="gone" />
+
+
+    <cn.net.cyberway.home.view.MaxRecyclerView
+        android:id="@+id/rv_notification"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/textcolor_ffffff"
+        android:scrollbars="vertical" />
+
+
+</LinearLayout>

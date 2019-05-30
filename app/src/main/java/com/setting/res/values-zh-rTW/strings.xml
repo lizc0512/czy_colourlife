@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<resources>
+    <string name="notification_sound">tw消息推送</string>
+    <string name="new_message_notify">tw新消息提醒</string>
+    <string name="notification_btn">tw通知栏开关</string>
+    <string name="gesture_pwd">tw手势密码</string>
+    <string name="about_colourlife">tw关于彩之云</string>
+    <string name="choice_language">tw多语言</string>
+    <string name="clear_cache">tw清理存储空间</string>
+    <string name="account_safty">tw账户安全</string>
+    <string name="user_conceal">tw隐私</string>
+    <string name="log_out">tw退出登录</string>
+    <string name="search_user">tw通过地理位置搜索到我</string>
+    <string name="cache_size">tw可清理大小</string>
+    <string name="clear_cache_notice">tw清理后将删除本地的消息缓存，以释放出更多的手机储存空间</string>
+    <string name="once_clear">tw立即清理</string>
+    <string name="notneed_clear">tw不需要清理</string>
+    <string name="change_gesture_pwd">tw手势密码</string>
+    <string name="forget_gesture_pwd">tw忘记手势密码</string>
+    <string name="change_pay_pwd">tw修改手势密码</string>
+    <string name="change_login_pwd">tw修改登录密码</string>
+    <string name="verify_login_pwd">tw验证登录密码</string>
+    <string name="change_mobile">tw更换手机号</string>
+    <string name="verify">tw验证</string>
+    <string name="myproperty">tw我的房产</string>
+    <string name="mycarinfo">tw我的车辆</string>
+    <string name="twpfp">tw尊享饭票</string>
+    <string name="mytwpcard">tw我的会员卡</string>
+</resources>

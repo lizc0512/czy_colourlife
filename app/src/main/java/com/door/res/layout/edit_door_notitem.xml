@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/rl_editdoornot_item"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/bg_color">
+
+    <TextView
+        android:id="@+id/tv_editdoornot_title"
+        android:layout_width="match_parent"
+        android:layout_height="30dp"
+        android:layout_marginLeft="15dp"
+        android:text="@string/door_can_use"
+        android:visibility="gone"
+        android:gravity="fill_vertical"
+        android:textColor="@color/color_333b46"
+        android:textSize="14dp" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="45dp"
+        android:background="@color/white"
+        android:layout_below="@id/tv_editdoornot_title">
+
+        <ImageView
+            android:id="@+id/iv_editdoornot_add"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="15dp"
+            android:src="@drawable/open_icon_add" />
+
+        <ImageView
+            android:id="@+id/iv_editdoornot_logo"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="14dp"
+            android:layout_toRightOf="@id/iv_editdoornot_add"
+            android:scaleType="fitXY"
+            android:src="@drawable/open_icon_small_lift" />
+
+        <TextView
+            android:id="@+id/tv_editdoornot_name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="100dp"
+            android:layout_marginLeft="15dp"
+            android:layout_toRightOf="@id/iv_editdoornot_logo"
+            android:text="A4栋门"
+            android:ellipsize="end"
+            android:singleLine="true"
+            android:textColor="@color/color_333b46"
+            android:textSize="14dp" />
+    </RelativeLayout>
+
+</RelativeLayout>

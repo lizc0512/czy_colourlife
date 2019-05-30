@@ -1,0 +1,286 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/bg_color"
+    android:fitsSystemWindows="true"
+    android:orientation="vertical">
+
+    <include layout="@layout/top_view" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:orientation="vertical">
+
+        <RelativeLayout
+            android:id="@+id/select_address_rl"
+            android:layout_width="match_parent"
+            android:layout_height="64dp"
+            android:background="@color/white"
+            android:paddingLeft="14dp">
+
+            <ImageView
+                android:id="@+id/address_img"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentTop="true"
+                android:layout_marginTop="12dp"
+                android:src="@drawable/address_icon_province" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignBottom="@+id/address_img"
+                android:layout_marginLeft="8dp"
+                android:layout_toRightOf="@id/address_img"
+                android:text="@string/customer_address"
+                android:textColor="@color/edit_text_color"
+                android:textSize="14sp" />
+
+            <TextView
+                android:id="@+id/address_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/address_img"
+                android:layout_alignParentLeft="true"
+                android:layout_marginTop="7dp"
+                android:text="@string/customer_choice_address"
+                android:textColor="@color/black_text_color"
+                android:textSize="16sp" />
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="8dp"
+                android:src="@drawable/arrow_right" />
+        </RelativeLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1px"
+            android:layout_marginLeft="14dp"
+            android:background="@color/line_color" />
+
+        <RelativeLayout
+            android:id="@+id/select_community_rl"
+            android:layout_width="match_parent"
+            android:layout_height="64dp"
+            android:background="@color/white"
+            android:paddingLeft="14dp">
+
+            <ImageView
+                android:id="@+id/community_img"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentTop="true"
+                android:layout_marginTop="12dp"
+                android:src="@drawable/address_icon_community" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignBottom="@+id/community_img"
+                android:layout_marginLeft="8dp"
+                android:layout_toRightOf="@id/community_img"
+                android:text="@string/customer_community"
+                android:textColor="@color/edit_text_color"
+                android:textSize="14sp" />
+
+            <TextView
+                android:id="@+id/community_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/community_img"
+                android:layout_alignParentLeft="true"
+                android:layout_marginTop="7dp"
+                android:text="@string/customer_choice_community"
+                android:textColor="@color/black_text_color"
+                android:textSize="16sp" />
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="8dp"
+                android:src="@drawable/arrow_right" />
+        </RelativeLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1px"
+            android:layout_marginLeft="14dp"
+            android:background="@color/line_color" />
+
+        <RelativeLayout
+            android:id="@+id/select_build_rl"
+            android:layout_width="match_parent"
+            android:layout_height="64dp"
+            android:background="@color/white"
+            android:paddingLeft="14dp">
+
+            <ImageView
+                android:id="@+id/build_img"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentTop="true"
+                android:layout_marginTop="12dp"
+                android:src="@drawable/address_icon_build" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignBottom="@+id/build_img"
+                android:layout_marginLeft="8dp"
+                android:layout_toRightOf="@id/build_img"
+                android:text="@string/customer_build"
+                android:textColor="@color/edit_text_color"
+                android:textSize="14sp" />
+
+            <TextView
+                android:id="@+id/build_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/build_img"
+                android:layout_alignParentLeft="true"
+                android:layout_marginTop="7dp"
+                android:text="@string/customer_choice_build"
+                android:textColor="@color/black_text_color"
+                android:textSize="16sp" />
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="8dp"
+                android:src="@drawable/arrow_right" />
+        </RelativeLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1px"
+            android:layout_marginLeft="14dp"
+            android:background="@color/line_color" />
+
+        <RelativeLayout
+            android:id="@+id/select_unit_rl"
+            android:layout_width="match_parent"
+            android:layout_height="64dp"
+            android:background="@color/white"
+            android:paddingLeft="14dp">
+
+            <ImageView
+                android:id="@+id/unit_img"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentTop="true"
+                android:layout_marginTop="12dp"
+                android:src="@drawable/address_icon_unit" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignBottom="@+id/unit_img"
+                android:layout_marginLeft="8dp"
+                android:layout_toRightOf="@id/unit_img"
+                android:text="@string/customer_unit"
+                android:textColor="@color/edit_text_color"
+                android:textSize="14sp" />
+
+            <TextView
+                android:id="@+id/unit_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/unit_img"
+                android:layout_alignParentLeft="true"
+                android:layout_marginTop="7dp"
+                android:text="@string/customer_choice_unit"
+                android:textColor="@color/black_text_color"
+                android:textSize="16sp" />
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="8dp"
+                android:src="@drawable/arrow_right" />
+        </RelativeLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1px"
+            android:layout_marginLeft="14dp"
+            android:background="@color/line_color" />
+
+        <RelativeLayout
+            android:id="@+id/select_room_rl"
+            android:layout_width="match_parent"
+            android:layout_height="64dp"
+            android:background="@color/white"
+            android:paddingLeft="14dp">
+
+            <ImageView
+                android:id="@+id/room_img"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentTop="true"
+                android:layout_marginTop="12dp"
+                android:src="@drawable/address_icon_room" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignBottom="@+id/room_img"
+                android:layout_marginLeft="8dp"
+                android:layout_toRightOf="@id/room_img"
+                android:text="@string/customer_room"
+                android:textColor="@color/edit_text_color"
+                android:textSize="14sp" />
+
+            <TextView
+                android:id="@+id/room_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/room_img"
+                android:layout_alignParentLeft="true"
+                android:layout_marginTop="7dp"
+                android:text="@string/customer_choice_room"
+                android:textColor="@color/black_text_color"
+                android:textSize="16sp" />
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="8dp"
+                android:src="@drawable/arrow_right" />
+        </RelativeLayout>
+
+        <Button
+            android:id="@+id/complete_btn"
+            android:layout_width="match_parent"
+            android:layout_height="44dp"
+            android:layout_marginLeft="12dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginRight="12dp"
+            android:layout_marginBottom="16dp"
+            android:background="@drawable/rect_round_gray"
+            android:enabled="false"
+            android:text="@string/customer_finish"
+            android:textColor="@color/white"
+            android:textSize="16sp" />
+    </LinearLayout>
+
+</LinearLayout>

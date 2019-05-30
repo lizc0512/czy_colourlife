@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/pay_type_layout"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/top_text_default"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:orientation="horizontal"
+        android:layout_height="50dp">
+
+
+        <ImageView
+            android:id="@+id/iv_pay_icon"
+            android:layout_width="34dp"
+            android:layout_height="34dp"
+            android:layout_gravity="center_vertical"
+            android:layout_marginLeft="15dp"
+            android:src="@drawable/icon_wx" />
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_marginLeft="15dp"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/tv_paystyle_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="饭票"
+                android:textColor="@color/color_333b46"
+                android:textSize="15sp" />
+
+            <TextView
+                android:id="@+id/tv_pay_balance"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:text="可用:230.00"
+                android:textColor="@color/color_a3aaae"
+                android:textSize="12sp" />
+        </LinearLayout>
+
+        <ImageView
+            android:id="@+id/select_pay_type"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_marginRight="15dp"
+            android:src="@drawable/f3_sel_circle" />
+
+    </LinearLayout>
+
+
+   <View
+       android:id="@+id/tv_paystyle_view"
+       android:layout_width="match_parent"
+       android:background="@color/color_bfc7cc"
+       android:layout_height="0.5dp"/>
+</LinearLayout>
+

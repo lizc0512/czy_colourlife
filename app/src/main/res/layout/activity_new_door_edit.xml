@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/bg_color"
+    android:fitsSystemWindows="true">
+    <android.support.v4.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:scrollbars="none"
+        android:layout_marginBottom="65dp">
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:id="@+id/tv_editdoor_confirm"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_marginRight="16dp"
+                    android:layout_marginTop="34dp"
+                    android:text="确定"
+                    android:textColor="@color/color_269fff"
+                    android:textSize="16dp" />
+
+                <TextView
+                    android:id="@+id/tv_editdoor_title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginTop="70dp"
+                    android:text="编辑门禁"
+                    android:textColor="@color/color_333b46"
+                    android:textSize="16dp" />
+
+                <TextView
+                    android:id="@+id/tv_editdoor_message"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/tv_editdoor_title"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginTop="12dp"
+                    android:text="从下方添加并整理您的常用门禁"
+                    android:textColor="@color/c999faa"
+                    android:textSize="14dp" />
+
+                <RelativeLayout
+                    android:id="@+id/rl_editdoor_title1"
+                    android:layout_width="match_parent"
+                    android:layout_height="30dp"
+                    android:layout_below="@id/tv_editdoor_message"
+                    android:layout_marginTop="5dp">
+
+                    <TextView
+                        android:id="@+id/tv_editdoor_title2"
+                        android:layout_width="wrap_content"
+                        android:layout_height="30dp"
+                        android:layout_marginLeft="15dp"
+                        android:gravity="fill_vertical"
+                        android:text="已选门禁"
+                        android:textColor="@color/color_333b46"
+                        android:textSize="14dp" />
+
+                    <TextView
+                        android:id="@+id/tv_editdoor_title3"
+                        android:layout_width="wrap_content"
+                        android:layout_height="30dp"
+                        android:layout_marginLeft="5dp"
+                        android:layout_toRightOf="@id/tv_editdoor_title2"
+                        android:gravity="fill_vertical"
+                        android:text="（按住拖动调整排序）"
+                        android:textColor="@color/c999faa"
+                        android:textSize="12dp" />
+                </RelativeLayout>
+
+                <com.yanzhenjie.recyclerview.swipe.SwipeMenuRecyclerView
+                    android:id="@+id/edit_door_recyclerview"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/rl_editdoor_title1"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginRight="5dp">
+                </com.yanzhenjie.recyclerview.swipe.SwipeMenuRecyclerView>
+
+                <TextView
+                    android:id="@+id/tv_editdoor_title4"
+                    android:layout_width="wrap_content"
+                    android:layout_height="30dp"
+                    android:layout_below="@id/edit_door_recyclerview"
+                    android:layout_marginLeft="15dp"
+                    android:gravity="fill_vertical"
+                    android:text="可选门禁"
+                    android:textColor="@color/color_333b46"
+                    android:textSize="14dp" />
+
+                <android.support.v7.widget.RecyclerView
+                    android:id="@+id/edit_door_notrecyclerview"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/tv_editdoor_title4"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginRight="5dp">
+                </android.support.v7.widget.RecyclerView>
+
+            </RelativeLayout>
+    </android.support.v4.widget.NestedScrollView>
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:layout_alignParentBottom="true">
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1px"
+            android:background="@color/dee3e5" />
+        <ImageView
+            android:id="@+id/iv_editdoor_close"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_centerInParent="true"
+            android:layout_marginBottom="10dp"
+            android:padding="12dp"
+            android:src="@drawable/open_icon_close" />
+    </RelativeLayout>
+
+
+</RelativeLayout>

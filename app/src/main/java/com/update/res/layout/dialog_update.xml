@@ -1,0 +1,63 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center"
+    android:orientation="vertical">
+
+    <RelativeLayout
+        android:layout_width="270dp"
+        android:layout_height="320dp"
+        android:background="@drawable/pic_bg"
+        android:orientation="vertical">
+
+
+        <TextView
+            android:id="@+id/tv_wifi"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="10dp"
+            android:text="建议在WIFI环境下载"
+            android:textColor="@color/color_bbc0cb"
+            android:textSize="11sp" />
+
+
+        <Button
+            android:id="@+id/tv_ok"
+            android:layout_width="160dp"
+            android:layout_height="40dp"
+            android:layout_above="@id/tv_wifi"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="10dp"
+            android:background="@drawable/update_corners"
+            android:text="更新至V4.3.0版本"
+            android:textColor="@color/white" />
+
+
+        <ListView
+            android:id="@+id/list_update"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_above="@id/tv_ok"
+            android:layout_marginBottom="10dp"
+            android:layout_marginLeft="30dp"
+            android:layout_marginTop="160dp"
+            android:divider="#00000000"
+            android:scrollbars="none" />
+
+
+        <ImageView
+            android:id="@+id/iv_close"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentTop="true"
+            android:layout_marginRight="10dp"
+            android:layout_marginTop="20dp"
+            android:src="@drawable/shoots_icon_close" />
+
+    </RelativeLayout>
+
+
+</LinearLayout>

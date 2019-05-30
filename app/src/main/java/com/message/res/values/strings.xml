@@ -1,0 +1,16 @@
+<resources>
+    <string name="notice">通知</string>
+    <string name="system_message">系统通知</string>
+    <string name="shop_message">商家消息</string>
+    <string name="details">详情</string>
+    <string name="no_message">现在暂无任何消息</string>
+    <string name="clear_message">是否清除消息记录</string>
+    <string name="message_define">确定</string>
+    <string name="message_cancel">取消</string>
+    <string name="message_unbind">解绑</string>
+    <string name="message_del">删除</string>
+    <string name="message_edit">编辑</string>
+    <string name="message_open">开启</string>
+    <string name="message_all_read">全部已读</string>
+    <string name="message_mark_success">标记成功</string>
+</resources>

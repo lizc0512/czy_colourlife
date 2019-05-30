@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/activity_bind_fp"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/bg_color"
+    android:fitsSystemWindows="true"
+    android:gravity="center"
+    android:orientation="vertical"
+    tools:context="com.mycarinfo.activity.BindFPActivity">
+
+    <include layout="@layout/top_view" />
+
+    <ListView
+        android:id="@+id/bindfp_listview"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:divider="@null"></ListView>
+
+    <ImageView
+        android:id="@+id/img_empty"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="110dp"
+        android:src="@drawable/f3_buliding_empty"
+        android:visibility="gone" />
+
+    <TextView
+        android:id="@+id/tv_tips"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:layout_marginTop="30dp"
+        android:layout_weight="1"
+        android:text="@string/car_no_ticket"
+        android:textColor="@color/black_text_color"
+        android:textSize="18sp"
+        android:visibility="gone" />
+
+    <Button
+        android:id="@+id/btn_bindfp_ok"
+        android:layout_width="match_parent"
+        android:layout_height="44dp"
+        android:background="@drawable/rect_round_blue"
+        android:text="@string/car_define_bind"
+        android:textColor="@color/white"
+        android:textSize="16dp"
+        android:visibility="invisible" />
+</LinearLayout>

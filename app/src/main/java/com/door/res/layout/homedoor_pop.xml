@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="150dp"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:paddingRight="8dp">
+
+    <LinearLayout
+        android:layout_width="140dp"
+        android:layout_height="wrap_content"
+        android:background="@drawable/open_drop_down_pic_bg"
+        android:orientation="vertical"
+        android:paddingTop="7dp">
+
+        <RelativeLayout
+            android:id="@+id/ll_homedoorpop_apply"
+            android:layout_width="match_parent"
+            android:layout_height="40dp">
+
+            <ImageView
+                android:id="@+id/iv_door_pop1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="20dp"
+                android:src="@drawable/open_drop_down_icon_apply" />
+
+            <TextView
+                android:id="@+id/tv_door_pop1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="10dp"
+                android:layout_toRightOf="@id/iv_door_pop1"
+                android:text="申请权限"
+                android:textColor="#ffffff"
+                android:textSize="16dp" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1px"
+                android:layout_alignParentBottom="true"
+                android:layout_marginLeft="50dp"
+                android:layout_marginRight="25dp"
+                android:background="#626B77" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/ll_homedoorpop_authorization"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:visibility="visible">
+
+            <ImageView
+                android:id="@+id/iv_door_pop2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="20dp"
+                android:src="@drawable/open_drop_down_icon_jurisdiction" />
+
+            <TextView
+                android:id="@+id/tv_door_pop2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="10dp"
+                android:layout_toRightOf="@id/iv_door_pop2"
+                android:text="权限授权"
+                android:textColor="#ffffff"
+                android:textSize="16dp" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1px"
+                android:layout_alignParentBottom="true"
+                android:layout_marginLeft="50dp"
+                android:layout_marginRight="25dp"
+                android:background="#626B77" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/ll_homedoorpop_compile"
+            android:layout_width="match_parent"
+            android:layout_height="40dp">
+
+            <ImageView
+                android:id="@+id/iv_door_pop3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="20dp"
+                android:src="@drawable/open_drop_down_icon_edit" />
+
+            <TextView
+                android:id="@+id/tv_door_pop3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="10dp"
+                android:layout_toRightOf="@id/iv_door_pop3"
+                android:text="编辑门禁"
+                android:textColor="#ffffff"
+                android:textSize="16dp" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1px"
+                android:layout_alignParentBottom="true"
+                android:layout_marginLeft="50dp"
+                android:layout_marginRight="25dp"
+                android:background="#626B77" />
+        </RelativeLayout>
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="5dp"/>
+
+    </LinearLayout>
+</LinearLayout>

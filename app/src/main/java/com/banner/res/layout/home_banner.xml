@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.banner.BannerView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:visibility="gone"
+    android:id="@+id/banner"
+    android:orientation="vertical">
+    <FrameLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content" >
+
+        <com.BeeFramework.view.NoScrollViewPager
+            android:id="@+id/news_banner_pager"
+            android:layout_width="fill_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            android:flipInterval="30"
+            android:persistentDrawingCache="animation" />
+
+        <ImageView
+            android:id="@+id/news_banner_cursor"
+            android:layout_width="100dp"
+            android:layout_height="2.5dp"
+            android:layout_gravity="bottom"
+            android:background="#f40505"
+            android:visibility="gone" />
+
+        <FrameLayout
+            android:id="@+id/fl_indicator"
+            android:layout_width="wrap_content"
+            android:layout_height="15dp"
+            android:layout_gravity="center_horizontal|bottom"
+            android:foregroundGravity="center">
+
+            <com.external.viewpagerindicator.BeeCirclePageIndicator
+                android:id="@+id/indicator"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                app:radius="2dp"
+                app:strokeWidth="0dp"
+                app:strokeColor="#bfc7cc"
+                app:pageColor="#bfc7cc"
+                android:paddingLeft="7dp"
+                android:paddingRight="5dp"
+                android:paddingTop="2dp"
+                android:paddingBottom="2dp"/>
+        </FrameLayout>
+    </FrameLayout>
+
+</com.banner.BannerView>

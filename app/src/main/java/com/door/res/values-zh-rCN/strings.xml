@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<resources>
+    <!-- 开门服务器地址 -->
+    <string-array name="open_door_service_list">
+        <item>service1</item>
+        <item>service2</item>
+    </string-array>
+
+    <string name="long_press_create">长按图标创建桌面快捷方式</string>
+    <string name="no_opening_permission">暂无开门权限</string>
+    <string name="contact_management_apply">请联系管理处申请</string>
+    <string name="please_Tips">温馨提示</string>
+    <string name="createde_sktop_shortcut">创建桌面快捷方式</string>
+    <string name="input_door_name">请输入门禁名称</string>
+    <string name="create_quick_style">已尝试发送到桌面 \n如果在桌面未找到该图标,请检查系统设置-权限中是否开启了 创建桌面快捷方式 功能</string>
+    <string name="edit_door_name">编辑门禁名称</string>
+    <string name="rename_door_name">编辑门禁</string>
+    <string name="authority_authorization">权限授权</string>
+    <string name="request_for_access">申请权限</string>
+    <string name="door_edit_normal">从下方添加并整理您的常用门禁</string>
+    <string name="door_is_used">已选门禁</string>
+    <string name="door_darg_sort">（按住拖动调整排序)</string>
+    <string name="door_can_use">  可选门禁</string>
+
+    <string name="door_remain_amost_one">最少保留1个门禁</string>
+    <string name="door_remove_success">  移除成功</string>
+    <string name="door_edit_success">  编辑成功</string>
+    <string name="door_rename_success">  命名成功</string>
+    <string name="door_most_length">  名字长度不能超过20个字</string>
+    <string name="door_save_content">  是否保存编辑内容</string>
+    <string name="door_add_success">  添加成功</string>
+    <string name="door_most_added">  最多收藏6个门禁</string>
+
+
+
+    <string name="door_apply_details">申请详情</string>
+    <string name="door_apply_wait">未批复</string>
+    <string name="door_apply_phone">电话号码</string>
+    <string name="door_apply_remark">填写备注</string>
+    <string name="door_apply_again">再次申请</string>
+    <string name="door_author_time">门禁授权时间</string>
+    <string name="door_author_phone">请输入被授权人电话号码</string>
+    <string name="door_author_community">授权小区</string>
+    <string name="door_author_choice_community">请选择授权小区</string>
+    <string name="door_author_remark_infor">请填写备注信息</string>
+    <string name="door_author_record">授权记录</string>
+    <string name="door_author_details">授权详情</string>
+    <string name="door_apply_pass">通过</string>
+    <string name="door_author_time_span">授权时长</string>
+    <string name="door_apply_times">申请时间</string>
+    <string name="door_author_cancel">取消授权</string>
+    <string name="door_no_list">还没有门禁哦～</string>
+    <string name="door_once_apply">立即申请～</string>
+    <string name="door_apply_list">门禁申请</string>
+    <string name="door_input_apply_phone">请输入申请人电话号码</string>
+    <string name="door_wo_apply">我的申请</string>
+    <string name="door_apply_refuse">拒绝</string>
+    <string name="door_apply_timeout">已失效</string>
+    <string name="door_apply_community">小区名称:</string>
+    <string name="door_phone_query">请输入至少11位电话号码查询-</string>
+    <string name="door_author_success">授权成功</string>
+    <string name="door_apply_success">申请成功</string>
+    <string name="door_choice_community">选择小区</string>
+    <string name="door_again_author">重新授权</string>
+    <string name="door_author_forver">永久</string>
+    <string name="door_author_day">天</string>
+    <string name="door_author_hour">小时</string>
+    <string name="door_no_grantauthor">您没有授权权限</string>
+
+</resources>

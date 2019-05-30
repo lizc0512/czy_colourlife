@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/bg_color">
+
+    <RelativeLayout
+        android:id="@+id/rl_editdoor_title"
+        android:layout_width="match_parent"
+        android:layout_height="30dp"
+        android:visibility="gone">
+
+        <TextView
+            android:id="@+id/tv_editdoor_title"
+            android:layout_width="wrap_content"
+            android:layout_height="30dp"
+            android:layout_marginLeft="15dp"
+            android:gravity="fill_vertical"
+            android:text="@string/door_is_used"
+            android:textColor="@color/color_333b46"
+            android:textSize="14dp" />
+
+        <TextView
+            android:id="@+id/tv_editdoor_title2"
+            android:layout_width="wrap_content"
+            android:layout_height="30dp"
+            android:layout_marginLeft="5dp"
+            android:layout_toRightOf="@id/tv_editdoor_title"
+            android:gravity="fill_vertical"
+            android:text="@string/door_darg_sort"
+            android:textColor="@color/c999faa"
+            android:textSize="12dp" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/rl_editdoor_item"
+        android:layout_width="match_parent"
+        android:layout_height="45dp"
+        android:layout_below="@id/rl_editdoor_title"
+        android:background="@color/white">
+
+        <ImageView
+            android:id="@+id/iv_editdoor_delete"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="15dp"
+            android:src="@drawable/open_icon_delete" />
+
+        <ImageView
+            android:id="@+id/iv_editdoor_logo"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="14dp"
+            android:layout_toRightOf="@id/iv_editdoor_delete"
+            android:scaleType="fitXY"
+            android:src="@drawable/open_icon_small_lift" />
+
+        <TextView
+            android:id="@+id/tv_editdoor_name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="15dp"
+            android:layout_marginRight="100dp"
+            android:layout_toRightOf="@id/iv_editdoor_logo"
+            android:ellipsize="end"
+            android:lines="1"
+            android:singleLine="true"
+            android:text="A4栋门"
+            android:textColor="@color/color_333b46"
+            android:textSize="14dp" />
+
+        <ImageView
+            android:id="@+id/iv_editdoor_move"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="15dp"
+            android:src="@drawable/open_icon_gripper" />
+    </RelativeLayout>
+</RelativeLayout>

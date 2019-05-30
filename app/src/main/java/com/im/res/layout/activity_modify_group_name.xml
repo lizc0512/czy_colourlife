@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/bg_color"
+    android:fitsSystemWindows="true"
+    android:orientation="vertical">
+
+    <include layout="@layout/top_view" />
+    <!--群名称，群公告，备注名-->
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="30dp"
+        android:gravity="center_vertical"
+        android:layout_marginLeft="10dp"
+        android:text="@string/instant_set_remark"
+        android:textColor="@color/color_626b77"
+        android:textSize="16sp" />
+
+    <EditText
+        android:id="@+id/ed_remark_name"
+        android:layout_width="match_parent"
+        android:layout_height="44dp"
+        android:background="@color/white"
+        android:gravity="left|center_vertical"
+        android:hint="@string/instant_add_remark"
+        android:lineSpacingExtra="3dp"
+        android:maxLength="100"
+        android:paddingLeft="10dp"
+        android:paddingTop="2dp"
+        android:textColor="@color/color_333b46"
+        android:textColorHint="@color/color_bfc7cc"
+        android:textSize="14sp" />
+
+</LinearLayout>

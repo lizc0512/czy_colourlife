@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<resources>
+    <string name="notification_sound">fr消息推送</string>
+    <string name="new_message_notify">fr新消息提醒</string>
+    <string name="notification_btn">fr通知栏开关</string>
+    <string name="gesture_pwd">fr手势密码</string>
+    <string name="about_colourlife">fr关于彩之云</string>
+    <string name="choice_language">fr多语言</string>
+    <string name="clear_cache">fr清理存储空间</string>
+    <string name="account_safty">fr账户安全</string>
+    <string name="user_conceal">fr隐私</string>
+    <string name="log_out">fr退出登录</string>
+    <string name="search_user">fr通过地理位置搜索到我</string>
+    <string name="cache_size">fr可清理大小</string>
+    <string name="clear_cache_notice">fr清理后将删除本地的消息缓存，以释放出更多的手机储存空间</string>
+    <string name="once_clear">fr立即清理</string>
+    <string name="notneed_clear">fr不需要清理</string>
+    <string name="change_gesture_pwd">fr手势密码</string>
+    <string name="forget_gesture_pwd">fr忘记手势密码</string>
+    <string name="change_pay_pwd">fr修改手势密码</string>
+    <string name="change_login_pwd">fr修改登录密码</string>
+    <string name="verify_login_pwd">fr验证登录密码</string>
+    <string name="change_mobile">fr更换手机号</string>
+    <string name="verify">fr验证</string>
+    <string name="myproperty">fr我的房产</string>
+    <string name="mycarinfo">fr我的车辆</string>
+    <string name="vipfp">fr尊享饭票</string>
+    <string name="myvipcard">fr我的会员卡</string>
+</resources>

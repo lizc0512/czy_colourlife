@@ -1,0 +1,176 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fitsSystemWindows="true"
+    android:background="@color/bg_color"
+    android:orientation="vertical">
+    <!--新版支付改版的布局 支付订单页面 2017.11.13-->
+
+    <include
+        android:id="@+id/top_title_layout"
+        layout="@layout/top_view" />
+
+    <RelativeLayout
+        android:id="@+id/bottom_pay_layout"
+        android:layout_width="match_parent"
+        android:layout_height="44dp"
+        android:layout_alignParentBottom="true"
+        android:background="@color/white"
+        android:visibility="gone">
+
+        <Button
+            android:id="@+id/btn_sure_pay"
+            android:layout_width="180dp"
+            android:layout_height="match_parent"
+            android:layout_alignParentRight="true"
+            android:background="@color/color_7caff5"
+            android:gravity="center"
+            android:text="@string/cashier_pay"
+            android:textColor="@color/white"
+            android:textSize="16sp" />
+
+        <TextView
+            android:id="@+id/tv_pay_money"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="10dp"
+            android:layout_toLeftOf="@id/btn_sure_pay"
+            android:textColor="@color/tv_red_bg"
+            android:textSize="22sp" />
+        <ImageView
+            android:id="@+id/iv_pay_meal"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_gravity="center_vertical"
+            android:layout_marginRight="4dp"
+            android:layout_toLeftOf="@id/tv_pay_money"
+            android:src="@drawable/icon_meal" />
+    </RelativeLayout>
+
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@id/bottom_pay_layout"
+        android:layout_below="@id/top_title_layout">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <!--订单支付-->
+            <RelativeLayout
+                android:id="@+id/order_pay_layout"
+                android:layout_width="match_parent"
+                android:layout_height="90dp"
+                android:background="@color/top_text_default"
+                android:visibility="gone">
+
+
+                <TextView
+                    android:id="@+id/tv_order_desc"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="15dp"
+                    android:layout_marginTop="15dp"
+                    android:text="@string/cashier_order_amount"
+                    android:textColor="@color/color_333b46"
+                    android:textSize="14sp" />
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/tv_order_desc"
+                    android:layout_marginLeft="15dp"
+                    android:layout_marginTop="5dp"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="¥"
+                        android:textColor="@color/tv_red_bg"
+                        android:textSize="16sp" />
+
+                    <TextView
+                        android:id="@+id/tv_business_amount"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="5dp"
+                        android:layout_marginTop="3dp"
+                        android:textColor="@color/tv_red_bg"
+                        android:textSize="34sp" />
+
+                    <TextView
+                        android:id="@+id/tv_ticket_amount"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="13dp"
+                        android:textColor="@color/tv_red_bg"
+                        android:textSize="14sp" />
+                </LinearLayout>
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentBottom="true"
+                    android:layout_alignParentRight="true"
+                    android:src="@drawable/f3_money_bg" />
+            </RelativeLayout>
+
+            <!--用户消费支付-->
+            <LinearLayout
+                android:id="@+id/customer_pay_layout"
+                android:layout_width="match_parent"
+                android:layout_height="44dp"
+                android:layout_marginTop="10dp"
+                android:background="@color/white"
+                android:orientation="horizontal"
+                android:visibility="gone">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginLeft="15dp"
+                    android:layout_weight="1"
+                    android:text="@string/cashier_pay_amount"
+                    android:textColor="@color/color_333b46"
+                    android:textSize="16sp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginRight="4dp"
+                    android:text="¥"
+                    android:textColor="@color/tv_red_bg"
+                    android:textSize="16sp" />
+
+                <TextView
+                    android:id="@+id/tv_customer_pay"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical|right"
+                    android:layout_marginRight="15dp"
+                    android:textColor="@color/tv_red_bg"
+                    android:textSize="16sp" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/ticket_payment_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="30dp"
+                android:orientation="vertical" />
+
+        </LinearLayout>
+
+    </ScrollView>
+
+</RelativeLayout>

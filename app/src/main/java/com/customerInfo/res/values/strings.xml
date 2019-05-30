@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<resources>
+    <string name="customer_choice_contact">选联系人</string>
+    <string name="customer_delivery">收货人:</string>
+    <string name="customer_phone">手机号码:</string>
+    <string name="customer_area">所在地区:</string>
+    <string name="customer_detail_address">详细地址:</string>
+    <string name="customer_hint_address">街道,楼牌号等</string>
+    <string name="customer_save_address">保存</string>
+    <string name="customer_area_name">小区名称</string>
+    <string name="customer_address">地址</string>
+    <string name="customer_choice_address">请选择省市区</string>
+    <string name="customer_community">小区</string>
+    <string name="customer_choice_community">请选择小区</string>
+    <string name="customer_build">楼栋</string>
+    <string name="customer_choice_build">请选择楼栋</string>
+    <string name="customer_unit">单元</string>
+    <string name="customer_choice_unit">请选择单元</string>
+    <string name="customer_room">房间号</string>
+    <string name="customer_choice_room">请选择房间号</string>
+    <string name="customer_finish">完成</string>
+    <string name="customer_photo">头像</string>
+    <string name="customer_my_qrcode">我的二维码</string>
+    <string name="customer_nickname">昵称</string>
+    <string name="customer_name">名字</string>
+    <string name="customer_sex">性别</string>
+    <string name="customer_man">男</string>
+    <string name="customer_femal">女</string>
+    <string name="customer_mobile">手机</string>
+    <string name="customer_increase_community">新增小区</string>
+    <string name="customer_increase_address">新增地址</string>
+    <string name="customer_choice_region">选择省市区</string>
+    <string name="customer_scanner_add">使用彩之云扫一扫,加我好友</string>
+
+    <!--我的任务 彩豆-->
+    <string name="customer_my_duty">我的任务</string>
+    <string name="customer_change_tickets">兑换饭票</string>
+    <string name="customer_sign_rule">签到规则</string>
+    <string name="customer_sign_continuity">连续签到</string>
+    <string name="customer_day">天</string>
+    <string name="customer_detail">明细</string>
+    <string name="customer_bean_duty">彩豆任务</string>
+    <string name="customer_forever">永久</string>
+    <string name="customer_this_month">本月</string>
+    <string name="customer_colour_bean">彩豆</string>
+    <string name="customer_today">今天</string>
+    <string name="customer_sign_success">签到成功</string>
+    <string name="customer_can_use_bean">可用彩豆&#160;</string>
+    <string name="customer_can_use_beans">可用彩豆:&#160;</string>
+    <string name="customer_input_num">输入兑换数量</string>
+    <string name="customer_change">兑换</string>
+    <string name="customer_sign1">1. 用户连续签到</string>
+    <string name="customer_sign2">以7个自然日为一个连续签到周期，若连续签到中断，则重新计算天数。</string>
+    <string name="customer_sign3">2.签到奖励对照</string>
+    <string name="customer_sign4">第1天：\t\t2&#160;彩豆\n第2天：\t\t2&#160;彩豆\n第3天：&#160;10&#160;彩豆\n第4天：\t\t2&#160;彩豆\n第5天：\t\t2&#160;彩豆\n第6天：\t\t2&#160;彩豆\n第7天：&#160;30&#160;彩豆</string>
+    <string name="customer_sign5">签到所得彩豆有效期为1年</string>
+    <string name="customer_sign6">本活动最终解释权归彩之云所有</string>
+    <string name="customer_check_year_month">选择年月</string>
+    <string name="customer_input_error">输入有误，请重新输入</string>
+    <string name="customer_no_bean">没有可用彩豆啦~</string>
+    <string name="customer_change_success">兑换成功~</string>
+    <string name="customer_bean_explain">彩豆说明</string>
+    <string name="customer_bean_keep">预留彩豆：</string>
+    <string name="customer_bean_all">全部彩豆：</string>
+    <string name="customer_bean_keep_explain">预留彩豆：付款成功即可获得预留彩豆，预留期间若发生退款行为则系统将回收相应彩豆。</string>
+    <string name="customer_bean_can_explain">可用彩豆：可用于对换饭票，100个彩豆可兑换1元饭票，彩豆将于下一个自然年清空。</string>
+    <string name="customer_cant_outnumber">兑换彩豆数量不可超过可用数量</string>
+
+    <!--实名认证-->
+    <string name="customer_real_already">已实名</string>
+    <string name="customer_real_no">未实名</string>
+
+</resources>

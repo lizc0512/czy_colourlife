@@ -1,0 +1,158 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    android:fitsSystemWindows="true"
+    android:orientation="vertical">
+    <!--开票信息的-->
+
+    <include layout="@layout/top_view" />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:id="@+id/all_ticketinfor_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical" />
+
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="8dp"
+                android:background="@color/line_color" />
+
+            <RadioGroup
+                android:layout_width="match_parent"
+                android:layout_height="44dp"
+                android:background="@color/white"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="64dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="20dp"
+                    android:text="@string/ticket_type"
+                    android:textColor="@color/color_333b46"
+                    android:textSize="16sp" />
+
+                <RadioButton
+                    android:id="@+id/rb_ticket_personal"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginLeft="40dp"
+                    android:button="@null"
+                    android:drawableLeft="@drawable/ticket_header_select"
+                    android:drawablePadding="6dp"
+                    android:text="@string/ticket_personal"
+                    android:textColor="@color/color_626b77"
+                    android:textSize="14sp" />
+
+                <RadioButton
+                    android:id="@+id/rb_ticket_enterprise"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginLeft="30dp"
+                    android:button="@null"
+                    android:checked="true"
+                    android:drawableLeft="@drawable/ticket_header_select"
+                    android:drawablePadding="6dp"
+                    android:paddingRight="6dp"
+                    android:text="@string/ticket_enterprise"
+                    android:textColor="@color/color_626b77"
+                    android:textSize="14sp" />
+            </RadioGroup>
+
+            <View style="@style/dividerlineStyle" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="44dp"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="64dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="20dp"
+                    android:text="@string/ticket_header"
+                    android:textColor="@color/color_333b46"
+                    android:textSize="16sp" />
+
+                <EditText
+                    android:id="@+id/tv_ticket_header"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_marginLeft="40dp"
+                    android:layout_marginRight="20dp"
+                    android:layout_weight="1"
+                    android:background="@null"
+                    android:hint="@string/input_ticket_header"
+                    android:imeOptions="actionSearch"
+                    android:inputType="text"
+                    android:textColor="@color/color_626b77"
+                    android:textSize="14sp" />
+            </LinearLayout>
+
+            <View style="@style/dividerlineStyle" />
+
+            <RelativeLayout
+                android:id="@+id/tax_number_layout"
+                android:layout_width="match_parent"
+                android:layout_height="44dp">
+
+                <TextView
+                    android:layout_width="64dp"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="20dp"
+                    android:text="@string/tax_number"
+                    android:textColor="@color/color_333b46"
+                    android:textSize="16sp" />
+
+                <EditText
+                    android:id="@+id/ed_tax_number"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginLeft="124dp"
+                    android:layout_marginRight="20dp"
+                    android:background="@null"
+                    android:hint="@string/taxpayer_identity_number"
+                    android:textColor="@color/color_626b77"
+                    android:textSize="14sp" />
+
+                <View
+                    style="@style/dividerlineStyle"
+                    android:layout_alignParentBottom="true" />
+            </RelativeLayout>
+
+
+            <Button
+                android:id="@+id/btn_car_authorization"
+                android:layout_width="300dp"
+                android:layout_height="48dp"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginBottom="30dp"
+                android:layout_marginTop="40dp"
+                android:background="@drawable/shape_openticket_default"
+                android:text="@string/open_vat_invoice"
+                android:textColor="@color/white"
+                android:textSize="18sp" />
+
+
+        </LinearLayout>
+    </ScrollView>
+
+
+</LinearLayout>

@@ -1,0 +1,38 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/bg_color"
+    android:orientation="vertical">
+
+    <RelativeLayout
+        android:id="@+id/rl_notification_linebottom"
+        android:layout_width="match_parent"
+        android:layout_height="44dp">
+
+        <View
+            android:id="@+id/view2"
+            android:layout_width="120dp"
+            android:layout_height="1px"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="6dp"
+            android:background="@color/dee3e5" />
+
+        <TextView
+            android:id="@+id/tv_notice_tips"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:text="@string/notification_arrive_bottom"
+            android:textColor="@color/color_bbc0cb"
+            android:textSize="12dp" />
+
+        <View
+            android:layout_width="120dp"
+            android:layout_height="1px"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="6dp"
+            android:background="@color/dee3e5" />
+    </RelativeLayout>
+
+</LinearLayout>

@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:background="@color/white"
+    android:paddingLeft="10dp"
+    android:paddingTop="10dp"
+    android:paddingRight="10dp"
+    android:orientation="vertical"
+    android:layout_height="wrap_content">
+    <com.Neighborhood.view.RoundImageView
+        android:id="@+id/image"
+        android:gravity="center_horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:scaleType="fitXY"
+        android:src="@drawable/img_profit_bg"
+        android:background="@color/white"/>
+    <TextView
+        android:visibility="visible"
+        android:layout_marginRight="10dp"
+        android:layout_gravity="right|bottom"
+        android:layout_marginBottom="16dp"
+        android:text=" 查看更多活动＞"
+        android:textStyle="bold"
+        android:id="@+id/name"
+        android:textColor="#ffffff"
+        android:textSize="14dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+</FrameLayout>

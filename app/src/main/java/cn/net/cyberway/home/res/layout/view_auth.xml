@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center"
+    android:orientation="vertical">
+
+    <FrameLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@null">
+
+        <RelativeLayout
+            android:layout_width="240dp"
+            android:layout_height="220dp"
+            android:layout_marginTop="44dp"
+            android:layout_marginBottom="44dp"
+            android:background="@drawable/shape_auth">
+
+            <ImageView
+                android:id="@+id/iv_close"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentRight="true"
+                android:padding="16dp"
+                android:src="@drawable/ic_auth_close"
+                tools:ignore="ContentDescription" />
+
+            <TextView
+                android:id="@+id/tv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="80dp"
+                android:text="实名提醒"
+                android:textColor="@color/black_text_color"
+                android:textSize="18sp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/tv"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="16dp"
+                android:text="需完成实名认证才可体验该功能"
+                android:textColor="@color/grayred_text_color"
+                android:textSize="14sp" />
+
+            <ImageView
+                android:id="@+id/iv_goto"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:layout_centerHorizontal="true"
+                android:layout_marginBottom="12dp"
+                android:background="@drawable/ic_auth_goto"
+                tools:ignore="ContentDescription" />
+
+        </RelativeLayout>
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center|top"
+            android:background="@drawable/ic_auth_top"
+            tools:ignore="ContentDescription" />
+
+    </FrameLayout>
+
+
+    <!--<RelativeLayout-->
+    <!--android:layout_width="280dp"-->
+    <!--android:layout_height="130dp"-->
+    <!--android:background="@drawable/about_corners4"-->
+    <!--android:orientation="vertical">-->
+
+    <!--<TextView-->
+    <!--android:id="@+id/tv"-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="80dp"-->
+    <!--android:layout_centerHorizontal="true"-->
+    <!--android:gravity="center"-->
+    <!--android:text="是否确认退出?"-->
+    <!--android:textColor="@color/black_text_color"-->
+    <!--android:textSize="16sp" />-->
+
+    <!--<View-->
+    <!--android:layout_width="fill_parent"-->
+    <!--android:layout_height="0.1dp"-->
+    <!--android:layout_above="@+id/buttons_ll"-->
+    <!--android:background="@color/gray" />-->
+
+    <!--<LinearLayout-->
+    <!--android:id="@+id/buttons_ll"-->
+    <!--android:layout_width="fill_parent"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:layout_alignParentBottom="true"-->
+    <!--android:background="@drawable/about_corners3"-->
+    <!--android:gravity="center"-->
+    <!--android:orientation="horizontal">-->
+
+    <!--<Button-->
+    <!--android:id="@+id/left_button"-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:layout_weight="1"-->
+    <!--android:background="@drawable/about_corners3"-->
+    <!--android:gravity="center"-->
+    <!--android:padding="12dp"-->
+    <!--android:text="取消"-->
+    <!--android:textColor="@color/blue"-->
+    <!--android:textSize="16sp" />-->
+
+    <!--<View-->
+    <!--android:layout_width="0.1dp"-->
+    <!--android:layout_height="match_parent"-->
+    <!--android:background="@color/gray" />-->
+
+    <!--<Button-->
+    <!--android:id="@+id/right_button"-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="match_parent"-->
+    <!--android:layout_weight="1"-->
+    <!--android:background="@drawable/about_corners3"-->
+    <!--android:gravity="center"-->
+    <!--android:padding="12dp"-->
+    <!--android:text="确定"-->
+    <!--android:textColor="@color/blue"-->
+    <!--android:textSize="16sp" />-->
+
+    <!--</LinearLayout>-->
+    <!--</RelativeLayout>-->
+</LinearLayout>

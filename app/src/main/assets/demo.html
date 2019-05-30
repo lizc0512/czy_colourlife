@@ -1,0 +1,173 @@
+<html>
+<head>
+    <meta content="text/html; charset=utf-8" http-equiv="content-type">
+    <title>
+        js调用java url="file:///android_asset/demo.html";
+    </title>
+</head>
+
+<body>
+<p>
+    <xmp id="show">
+    </xmp>
+</p>
+<p>
+    <img src="?" id="imgInit">
+</p>
+
+<p>
+    <xmp id="init">
+    </xmp>
+</p>
+<p>
+    <input type="text" id="text1" value="用户名(username)"/>
+</p>
+<p>
+    <input type="text" id="text2" value="password"/>
+</p>
+<p>
+    <input type="button" id="scan_code" value="退出登录" style="font-size: 24px"
+           onclick="window.jsObject.colourlifeWebLogout();"
+    />
+</p>
+<p>
+    <input type="button" id="user" value="分享到第三方的app平台 nnnnnn" style="font-size: 24px"
+           onclick="getUserInfo(this);"
+    />
+</p>
+
+<p>
+    <input type="button" id="photo_album" value="点击去彩住宅小程序" style="font-size: 24px"
+           onclick="chooseImage();"
+    />
+</p>
+
+<p>
+    <input type="button" id="enter1" value="点击上传图片" style="font-size: 24px" onclick="testClick();"
+    />
+</p>
+<p>
+    <input type="button" id="enter2" value="点击去彩钱包" style="font-size: 24px" onclick="testDiv();"/>
+</p>
+<p>
+    <input type="file" value="打开文件" style="font-size: 24px"/>
+</p>
+</body>
+<script>
+        function testDiv() {
+            document.getElementById("show").innerHTML = document.getElementsByTagName("html")[0].innerHTML;
+        }
+
+
+        function scanCode() {
+
+            //call native method
+            window.WebViewJavascriptBridge.callHandler(
+                    'scanCode'
+                    , {needResult: 1}
+                    , function(responseData) {
+                        document.getElementById("show").innerHTML = "send get responseData from java, data = " + responseData
+                    }
+            );
+        }
+
+
+        function getUserInfo(e) {
+              var name ={
+  'title': 'gggggggws',
+  'content': 'retwytwrtwgw',
+ 'url': 'http://m.baidu.com',
+  'image': 'http://pic.58pic.com/58pic/13/19/80/77H58PICYGD_1024.jpg',
+  'platform': '[ShareTypeWeixinSession]'
+};
+               window.jsObject.ColourlifeShareCallBack(JSON.stringify(name));
+        }
+
+
+
+        function chooseImage() {
+
+                    var name ={
+  'userName': 'gh_3e1a058bd323',
+  'path': '',
+};
+               window.jsObject.WXMiniProgramActivity(JSON.stringify(name));
+        }
+
+
+function  colourlifeDeliveryAddressHandler(obj){
+           var  address=JSON.parse(obj);
+          document.getElementById("show").innerHTML =JSON.stringify(address.addressDetail);
+}
+
+
+        function testClick() {
+
+                var name ={
+ 'photoType': 'uploadtest',
+ 'choiceMode':'1'
+};
+               window.jsObject.galleryActivity(JSON.stringify(name));
+
+        }
+
+     function   galleryActivityHandler(obj){
+          var  image=JSON.parse(obj);
+         document.getElementById("show").innerHTML =image.uploadtest;
+     }
+
+        function testClick1() {
+            var str1 = document.getElementById("text1").value;
+            var str2 = document.getElementById("text2").value;
+
+            //call native method
+            window.WebViewJavascriptBridge.callHandler(
+                'submitFromWeb'
+                , {'param': str1}
+                , function(responseData) {
+                    document.getElementById("show").innerHTML = "send get responseData from java, data = " + responseData
+                }
+            );
+        }
+
+        function bridgeLog(logContent) {
+            document.getElementById("show").innerHTML = logContent;
+        }
+
+        function connectWebViewJavascriptBridge(callback) {
+            if (window.WebViewJavascriptBridge) {
+                callback(WebViewJavascriptBridge)
+            } else {
+                document.addEventListener(
+                    'WebViewJavascriptBridgeReady'
+                    , function() {
+                        callback(WebViewJavascriptBridge)
+                    },
+                    false
+                );
+            }
+        }
+
+        connectWebViewJavascriptBridge(function(bridge) {
+            bridge.init(function(message, responseCallback) {
+                console.log('JS got a message', message);
+                var data = {
+                    'Javascript Responds': 'Wee!'
+                };
+                console.log('JS responding with', data);
+                responseCallback(data);
+            });
+
+            bridge.registerHandler("functionInJs", function(data, responseCallback) {
+                document.getElementById("show").innerHTML = ("data from Java: = " + data);
+                var responseData = "Javascript Says Right back aka!";
+                responseCallback(responseData);
+            });
+        })
+
+
+
+
+</script>
+
+</html>

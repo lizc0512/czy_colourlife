@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:background="#ffffff">
+
+        <TextView
+            android:id="@+id/tvs"
+            android:layout_width="match_parent"
+            android:layout_height="25dp"
+            android:gravity="center_vertical"
+            android:paddingLeft="15dp"
+            android:text="热门车型"
+            android:background="@color/bg_color"
+            android:textColor="@color/gray"
+            android:textSize="12dp" />
+        <GridView
+            android:id="@+id/gv_carmodel2"
+            android:layout_width="match_parent"
+            android:layout_height="180dp"
+            android:numColumns="5"
+            android:visibility="visible"
+            android:background="@color/white"
+            android:stretchMode="columnWidth"></GridView>
+
+
+</LinearLayout>
