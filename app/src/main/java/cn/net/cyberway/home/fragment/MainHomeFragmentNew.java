@@ -1146,7 +1146,7 @@ public class MainHomeFragmentNew extends Fragment implements NewHttpResponse, My
                 if (bindStatus == 1) {
                     bind_manager_layout.setVisibility(View.VISIBLE);
                     String username = contentBean.getUsername();
-                    tv_manager_name.setText(username);
+
                     ServiceInfo serviceInfo = new ServiceInfo();
                     if (TextUtils.isEmpty(avatar)) {
                         serviceInfo.setAvatar(" https://cc.colourlife.com/common/v30/logo/app_logo_v30.png");
@@ -1157,13 +1157,20 @@ public class MainHomeFragmentNew extends Fragment implements NewHttpResponse, My
                     serviceInfo.setUuid(contentBean.getUuid());
                     serviceInfo.setPhoneNum(managerPhone);
                     String realName = contentBean.getRealname();
+                    String oa = contentBean.getOa();
                     if (TextUtils.isEmpty(realName)) {
                         serviceInfo.setRealName(username);
+                        tv_manager_name.setText(username);
                     } else {
                         serviceInfo.setRealName(realName);
+                        tv_manager_name.setText(realName);
                     }
                     serviceInfo.setNickName(contentBean.getNickname());
-                    serviceInfo.setUserName(username);
+                    if (TextUtils.isEmpty(oa)) {
+                        serviceInfo.setUserName(username);
+                    } else {
+                        serviceInfo.setUserName(oa);
+                    }
                     HuxinSdkManager.instance().setServiceInfo(serviceInfo);
                 } else {
                     if (isShow == 1) {

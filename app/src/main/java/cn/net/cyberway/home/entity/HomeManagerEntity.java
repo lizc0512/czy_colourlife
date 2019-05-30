@@ -54,6 +54,16 @@ public class HomeManagerEntity extends BaseContentEntity {
         private String mobile;
         private String avatar;
         private String link;
+
+        public String getOa() {
+            return oa;
+        }
+
+        public void setOa(String oa) {
+            this.oa = oa;
+        }
+
+        private String oa;
         private String uuid;
 
         public String getUuid() {
