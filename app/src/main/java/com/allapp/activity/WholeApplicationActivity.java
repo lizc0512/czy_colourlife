@@ -365,10 +365,18 @@ public class WholeApplicationActivity extends BaseActivity implements NewHttpRes
                 authDialog.dismiss();
             }
         });
+        authDialog.tv_pass.setOnClickListener(v1 -> {
+            if (authDialog != null) {
+                authDialog.dismiss();
+            }
+            editor.putString(UserAppConst.COLOUR_AUTH_REAL_NAME + customer_id, "dismiss").commit();//出现过一次
+            authItemClick();
+        });
         authDialog.iv_goto.setOnClickListener(v2 -> {
             if (authDialog != null) {
                 authDialog.dismiss();
             }
+            editor.putString(UserAppConst.COLOUR_AUTH_REAL_NAME + customer_id, "dismiss").commit();//出现过一次
             newUserModel.getRealNameToken(2, WholeApplicationActivity.this, true);
         });
     }

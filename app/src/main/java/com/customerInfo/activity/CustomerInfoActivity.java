@@ -188,7 +188,7 @@ public class CustomerInfoActivity extends BaseActivity implements View.OnClickLi
 
         newUserModel = new NewUserModel(this);
         String realName = mShared.getString(UserAppConst.COLOUR_AUTH_REAL_NAME + customer_id, "");
-        if (!TextUtils.isEmpty(realName)) {
+        if (!TextUtils.isEmpty(realName) || "dismiss".equals(realName)) {
             realNameFormat(realName);
         }
         newUserModel.getIsRealName(2, this);//是否实名认证

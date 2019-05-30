@@ -5,6 +5,7 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import cn.net.cyberway.R;
 
@@ -17,6 +18,7 @@ public class AuthDialog {
 
     public ImageView iv_close;
     public ImageView iv_goto;
+    public TextView tv_pass;
 
     public AuthDialog(Context context) {
         LayoutInflater inflater = LayoutInflater.from(context);
@@ -28,6 +30,7 @@ public class AuthDialog {
 
         iv_close = view.findViewById(R.id.iv_close);
         iv_goto = view.findViewById(R.id.iv_goto);
+        tv_pass = view.findViewById(R.id.tv_pass);
     }
 
     public void show() {
