@@ -236,6 +236,13 @@ public class LifeHomeFragment extends Fragment implements IXListViewListener, Ne
                 authDialog.dismiss();
             }
         });
+//        authDialog.tv_pass.setOnClickListener(v2 -> {
+//            if (authDialog != null) {
+//                authDialog.dismiss();
+//            }
+//            editor.putString(UserAppConst.COLOUR_AUTH_REAL_NAME + customer_id, "pass").commit();//跳过
+//            authItemClick();//跳转
+//        });
         authDialog.iv_goto.setOnClickListener(v2 -> {
             if (authDialog != null) {
                 authDialog.dismiss();
