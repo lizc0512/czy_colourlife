@@ -40,6 +40,9 @@ public class OperationService extends Service {
     private EdenApi mEdenApi;
     private LocalBinder mBinder = new LocalBinder();
 
+    private String acc = "";
+    private String tok = "";
+
     @Nullable
     @Override
     public IBinder onBind(Intent intent) {
@@ -136,6 +139,8 @@ public class OperationService extends Service {
 
     public void syncUserKeys(OnSyncUserKeysCallback callback, String accit, String token) {
         if (mEdenApi != null) {
+            acc = accit;
+            tok = token;
             mEdenApi.syncUserKeys(accit, token, callback);
         }
     }
@@ -148,7 +153,7 @@ public class OperationService extends Service {
     }
 
     public void unlockDevice(Device device) {
-        mEdenApi.unlock(device, AppConst.CONNECT_TIME_OUT, (i, s, i1) -> {
+        mEdenApi.unlock(device, acc, tok, AppConst.CONNECT_TIME_OUT, (i, s, i1) -> {
             //开锁成功的回调
             Log.d(TAG, "开锁成功");
 
@@ -160,5 +165,19 @@ public class OperationService extends Service {
 
     public int getLocalKeySize() {
         return mEdenApi.getKeySize();
+    }
+
+    /**
+     * 在切换账号调用，本次不使用
+     */
+    public void unBindService() {
+        mEdenApi.unBindBleService();
+    }
+
+    /**
+     * 清除key
+     */
+    public void clearLocalKey() {
+        mEdenApi.clearLocalKey();
     }
 }
