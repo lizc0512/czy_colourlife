@@ -33,7 +33,6 @@ import com.feed.activity.FeedOrActivityActivity;
 import com.feed.activity.LinLiActivity;
 import com.invite.activity.ContactsActivity;
 import com.invite.activity.InviteActivity;
-import com.invite.activity.InviteFriendActivity;
 import com.mycarinfo.activity.MyCarInfoActivity;
 import com.myproperty.activity.MyPropertyActivity;
 import com.notification.activity.ENotificationActivity;
@@ -61,6 +60,8 @@ public class LinkParseUtil {
         } else {
             if (!TextUtils.isEmpty(link)) {
                 if (link.trim().startsWith("http://") || link.trim().startsWith("https://")) {
+//                    link="http://h5test.elab-plus.com/H5/index.html";
+//                 link = "file:///android_asset/index.html";
                     Intent intent = new Intent(context, WebViewActivity.class);
                     intent.putExtra(WebViewActivity.WEBURL, link);
                     intent.putExtra(WebViewActivity.WEBTITLE, title);
