@@ -236,6 +236,9 @@ public class CustomerAddPropertyActivity extends BaseActivity implements View.On
             mtitle.setText("编辑房产");
             rl_city.setVisibility(View.GONE);
             rl_address_choose.setVisibility(View.VISIBLE);
+            if (View.VISIBLE == fl_city.getVisibility()) {
+                fl_city.setVisibility(View.GONE);
+            }
             id = intent.getStringExtra(ID);
             community_uuid = intent.getStringExtra(COMMUNITY_UUID) == null ? "" : intent.getStringExtra(COMMUNITY_UUID);
             if (!TextUtils.isEmpty(intent.getStringExtra(COMMUNITY_NAME))) {
@@ -300,6 +303,9 @@ public class CustomerAddPropertyActivity extends BaseActivity implements View.On
                 case 0:
                     rl_city.setVisibility(View.GONE);
                     rl_address_choose.setVisibility(View.VISIBLE);
+                    if (View.VISIBLE == fl_city.getVisibility()) {
+                        fl_city.setVisibility(View.GONE);
+                    }
                     tv_garden.setText(addBeanList.get(position).getName());
                     newCustomerInfoModel.addressSelect(6, city_name, addBeanList.get(position).getName(), page, 200, this);
                     break;
@@ -560,6 +566,9 @@ public class CustomerAddPropertyActivity extends BaseActivity implements View.On
                 if (!TextUtils.isEmpty(result)) {
                     rl_city.setVisibility(View.GONE);
                     rl_address_choose.setVisibility(View.VISIBLE);
+                    if (View.VISIBLE == fl_city.getVisibility()) {
+                        fl_city.setVisibility(View.GONE);
+                    }
                     choiceType = 2;
                     AddListEntity addListEntity = GsonUtils.gsonToBean(result, AddListEntity.class);
                     AddListEntity.ContentBean contentBean = addListEntity.getContent();
