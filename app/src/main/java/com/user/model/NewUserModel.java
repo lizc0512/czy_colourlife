@@ -7,7 +7,6 @@ import android.text.TextUtils;
 
 import com.BeeFramework.Utils.EncryptUtil;
 import com.BeeFramework.Utils.PasswordRSAUtils;
-import com.BeeFramework.Utils.TimeUtil;
 import com.BeeFramework.Utils.ToastUtil;
 import com.BeeFramework.Utils.Utils;
 import com.BeeFramework.model.BaseModel;
@@ -421,8 +420,7 @@ public class NewUserModel extends BaseModel {
                     try {
                         JSONObject jsonObject = new JSONObject(result);
                         if (!jsonObject.isNull("message")) {
-                            long lastSaveTime = shared.getLong(UserAppConst.Colour_get_time, System.currentTimeMillis());
-                            msg.obj = jsonObject.optString("message") + TimeUtil.getDateToString(lastSaveTime / 1000);
+                            msg.obj = jsonObject.optString("message");
                         }
                     } catch (JSONException e) {
                         e.printStackTrace();
@@ -1521,5 +1519,4 @@ public class NewUserModel extends BaseModel {
             }
         }, true, false);
     }
-
 }

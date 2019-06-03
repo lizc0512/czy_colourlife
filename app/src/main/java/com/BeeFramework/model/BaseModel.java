@@ -108,6 +108,9 @@ public class BaseModel {
                     } else {
                         NewUserModel newUserModel = new NewUserModel(mContext);
                         newUserModel.refreshAuthToken(what, request, paramsMap, callback, canCancel, isLoading);
+                        //RefreshTokenModel refreshTokenModel = new RefreshTokenModel(mContext);
+//                        refreshTokenModel.refreshAuthToken();
+//                        CallServer.getInstance().addQuestParams(what, request, paramsMap, callback, canCancel, isLoading);
                     }
                 }
             } else {  //请求access_token
@@ -157,6 +160,9 @@ public class BaseModel {
                     } else {
                         NewUserModel newUserModel = new NewUserModel(mContext);
                         newUserModel.refreshAuthToken(what, request, paramsMap, callback, canCancel, isLoading);
+//                        RefreshTokenModel refreshTokenModel = new RefreshTokenModel(mContext);
+//                        refreshTokenModel.refreshAuthToken();
+//                        CallServer.getInstance().addQuestParams(what, request, paramsMap, callback, canCancel, isLoading);
                     }
                 }
             } else {  //请求access_token
