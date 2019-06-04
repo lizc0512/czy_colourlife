@@ -36,7 +36,7 @@ public class ServiceInfo {
     }
 
     public String getDisplayName() {
-        String res = null;
+        String res = "";
         if (!TextUtils.isEmpty(realName)) {
             res = realName;
         } else if (TextUtils.isEmpty(userName)) {

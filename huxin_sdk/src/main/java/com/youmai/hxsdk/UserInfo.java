@@ -56,9 +56,9 @@ public class UserInfo {
         String res = null;
         if (!TextUtils.isEmpty(realName)) {
             res = realName;
-        } else if (TextUtils.isEmpty(userName)) {
+        } else if (!TextUtils.isEmpty(userName)) {
             res = userName;
-        } else if (TextUtils.isEmpty(nickName)) {
+        } else if (!TextUtils.isEmpty(nickName)) {
             res = nickName;
         }
         return res;
