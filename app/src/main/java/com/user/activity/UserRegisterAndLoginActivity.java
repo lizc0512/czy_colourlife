@@ -249,7 +249,6 @@ public class UserRegisterAndLoginActivity extends BaseActivity implements OnClic
 
             @Override
             public void afterTextChanged(Editable s) {
-                password = user_login_password.getNKeyboardText();
                 if (isWhite == 0) {
                     TCAgent.onEvent(getApplicationContext(), "200003");
                 } else {
@@ -258,14 +257,19 @@ public class UserRegisterAndLoginActivity extends BaseActivity implements OnClic
                 changeLoginBtnStatus();
             }
         });
+        changeLoginBtnStatus();
     }
 
     private void changeLoginBtnStatus() {
+        password = user_login_password.getNKeyboardText();
+        if (TextUtils.isEmpty(password)) {
+            password = user_login_password.getText().toString();
+        }
         if (!TextUtils.isEmpty(mobile) && 11 == mobile.length() && !TextUtils.isEmpty(password)) {
             user_login_btn.setEnabled(true);
             user_login_btn.setBackgroundResource(R.drawable.rect_round_blue);
         } else {
-            user_login_btn.setEnabled(false);
+            user_login_btn.setEnabled(true);
             user_login_btn.setBackgroundResource(R.drawable.rect_round_gray);
         }
     }

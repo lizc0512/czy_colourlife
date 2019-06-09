@@ -17,7 +17,7 @@ import com.nohttp.utils.HttpResponseListener;
 import com.nohttp.utils.RequestEncryptionUtils;
 import com.nohttp.utils.SSLContextUtil;
 import com.user.UserAppConst;
-import com.user.model.NewUserModel;
+import com.user.model.RefreshTokenModel;
 import com.yanzhenjie.nohttp.error.NetworkError;
 import com.yanzhenjie.nohttp.error.NotFoundCacheError;
 import com.yanzhenjie.nohttp.error.TimeoutError;
@@ -106,11 +106,11 @@ public class BaseModel {
                         }
                         CallServer.getInstance().request(what, request, new HttpResponseListener<T>(mContext, request, callback, canCancel, isLoading));
                     } else {
-                        NewUserModel newUserModel = new NewUserModel(mContext);
-                        newUserModel.refreshAuthToken(what, request, paramsMap, callback, canCancel, isLoading);
-                        //RefreshTokenModel refreshTokenModel = new RefreshTokenModel(mContext);
-//                        refreshTokenModel.refreshAuthToken();
-//                        CallServer.getInstance().addQuestParams(what, request, paramsMap, callback, canCancel, isLoading);
+//                        NewUserModel newUserModel = new NewUserModel(mContext);
+//                        newUserModel.refreshAuthToken(what, request, paramsMap, callback, canCancel, isLoading);
+                        CallServer.getInstance().addQuestParams(what, request, paramsMap, callback, canCancel, isLoading);
+                        RefreshTokenModel refreshTokenModel = new RefreshTokenModel(mContext);
+                        refreshTokenModel.refreshAuthToken();
                     }
                 }
             } else {  //请求access_token
@@ -158,11 +158,12 @@ public class BaseModel {
                         }
                         CallServer.getInstance().request(what, request, new HttpResponseListener<T>(mContext, request, callback, canCancel, isLoading));
                     } else {
-                        NewUserModel newUserModel = new NewUserModel(mContext);
-                        newUserModel.refreshAuthToken(what, request, paramsMap, callback, canCancel, isLoading);
-//                        RefreshTokenModel refreshTokenModel = new RefreshTokenModel(mContext);
-//                        refreshTokenModel.refreshAuthToken();
-//                        CallServer.getInstance().addQuestParams(what, request, paramsMap, callback, canCancel, isLoading);
+//                        NewUserModel newUserModel = new NewUserModel(mContext);
+//                        newUserModel.refreshAuthToken(what, request, paramsMap, callback, canCancel, isLoading);
+                        CallServer.getInstance().addQuestParams(what, request, paramsMap, callback, canCancel, isLoading);
+                        RefreshTokenModel refreshTokenModel = new RefreshTokenModel(mContext);
+                        refreshTokenModel.refreshAuthToken();
+
                     }
                 }
             } else {  //请求access_token

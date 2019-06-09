@@ -218,7 +218,6 @@ public class UpdateVerSion implements NewHttpResponse {
                     showUpdateDialog();
                 }
             }
-
         }
     }
 }

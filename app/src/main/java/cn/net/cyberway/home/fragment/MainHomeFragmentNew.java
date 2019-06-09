@@ -1146,7 +1146,6 @@ public class MainHomeFragmentNew extends Fragment implements NewHttpResponse, My
                 if (bindStatus == 1) {
                     bind_manager_layout.setVisibility(View.VISIBLE);
                     String username = contentBean.getUsername();
-
                     ServiceInfo serviceInfo = new ServiceInfo();
                     if (TextUtils.isEmpty(avatar)) {
                         serviceInfo.setAvatar(" https://cc.colourlife.com/common/v30/logo/app_logo_v30.png");

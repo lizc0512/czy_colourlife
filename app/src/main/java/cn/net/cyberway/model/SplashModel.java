@@ -68,12 +68,11 @@ public class SplashModel extends BaseModel {
                         }
                     }
                 }
-                newHttpResponse.OnHttpResponse(what, "");
             }
 
             @Override
             public void onFailed(int what, Response<String> response) {
-                newHttpResponse.OnHttpResponse(what, "");
+
             }
         }, true, false);
     }

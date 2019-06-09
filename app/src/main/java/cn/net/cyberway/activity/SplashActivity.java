@@ -153,9 +153,7 @@ public class SplashActivity extends Activity implements HttpApiResponse, NewHttp
 
                 break;
             case 1:
-                if (TextUtils.isEmpty(result)) {
-                    redirectto("");
-                }
+
                 break;
         }
     }
