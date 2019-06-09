@@ -12,6 +12,7 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.net.ConnectivityManager;
 import android.os.Binder;
+import android.os.Build;
 import android.os.Handler;
 import android.os.HandlerThread;
 import android.os.IBinder;
@@ -231,9 +232,14 @@ public class HuxinService extends Service {
         registerReceiver(mScreenReceiver, filter);
 
         if (android.os.Build.VERSION.SDK_INT <= android.os.Build.VERSION_CODES.N) {
-            if (startService(new Intent(this, ForegroundEnablingService.class)) == null) {
-                throw new RuntimeException("Couldn't find " + ForegroundEnablingService.class.getSimpleName());
+            if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.O){
+                startForegroundService(new Intent(this, ForegroundEnablingService.class));
+            }else{
+                if (startService(new Intent(this, ForegroundEnablingService.class)) == null) {
+                    throw new RuntimeException("Couldn't find " + ForegroundEnablingService.class.getSimpleName());
+                }
             }
+
         }
 
         createTcp();
