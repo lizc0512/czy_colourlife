@@ -40,12 +40,12 @@ public class ColorsConfig {
     /**
      * 文件微服务上传地址
      */
-    private static final String ICE_UPLOAD[] = new String[]{"https://micro-file.colourlife.com/v1/pcUploadFile", "https://micro-file.colourlife.com/v1/pcUploadFile", "https://micro-file.colourlife.com/v1/pcUploadFile"};
+    private static final String ICE_UPLOAD[] = new String[]{"https://micro-file-test.colourlife.com/v1/pcUploadFile", "https://micro-file.colourlife.com/v1/pcUploadFile", "https://micro-file.colourlife.com/v1/pcUploadFile"};
 
     /**
      * 文件微服务下载地址
      */
-    private static final String ICE_DOWNLOAD[] = new String[]{"http://114.119.7.98:3020/v1/down/", "http://120.25.148.153:30020/v1/down/", "http://120.25.148.153:30020/v1/down/"};
+    private static final String ICE_DOWNLOAD[] = new String[]{"https://micro-file-test.colourlife.com/v1/down/", "https://micro-file.colourlife.com/v1/down/", "https://micro-file.colourlife.com/v1/down/"};
 
 
     //彩之云 APPID TOEKN 定义
