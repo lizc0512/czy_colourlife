@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center">
+
+    <RelativeLayout
+        android:layout_width="315dp"
+        android:layout_height="362dp"
+        android:background="@drawable/shape_profit"
+        tools:ignore="UselessParent">
+
+        <ImageView
+            android:id="@+id/iv_close"
+            android:layout_width="18dp"
+            android:layout_height="18dp"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:layout_margin="16dp"
+            android:background="@drawable/ic_auth_close"
+            tools:ignore="ContentDescription" />
+
+        <ImageView
+            android:id="@+id/iv_code"
+            android:layout_width="200dp"
+            android:layout_height="200dp"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="44dp"
+            tools:ignore="ContentDescription" />
+
+        <TextView
+            android:id="@+id/tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/iv_code"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="30dp"
+            android:text="让朋友扫一扫上示二维码"
+            android:textColor="@color/black_text_color"
+            android:textSize="18sp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/tv"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="16dp"
+            android:text="邀请Ta加入彩之云吧"
+            android:textColor="@color/black_text_color"
+            android:textSize="18sp" />
+
+    </RelativeLayout>
+
+</LinearLayout>
