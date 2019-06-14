@@ -22,42 +22,31 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.BeeFramework.Utils.NetworkUtil;
 import com.BeeFramework.Utils.ThemeStyleHelper;
 import com.BeeFramework.Utils.ToastUtil;
 import com.BeeFramework.activity.BaseActivity;
 import com.BeeFramework.model.Constants;
 import com.BeeFramework.model.NewHttpResponse;
 import com.BeeFramework.view.ClearEditText;
-import com.BeeFramework.view.MyProgressDialog;
 import com.eparking.helper.CustomDialog;
 import com.external.eventbus.EventBus;
-import com.geetest.onepass.BaseGOPListener;
-import com.geetest.onepass.GOPGeetestUtils;
 import com.gesturepwd.activity.UnlockGesturePasswordActivity;
 import com.jpush.Constant;
 import com.mob.MobSDK;
 import com.mob.tools.utils.UIHandler;
-import com.nohttp.entity.BaseContentEntity;
 import com.nohttp.utils.GsonUtils;
-import com.nohttp.utils.RequestEncryptionUtils;
 import com.permission.AndPermission;
 import com.permission.PermissionListener;
 import com.smileback.bankcommunicationsstyle.BCSIJMInputEditText;
 import com.tendcloud.tenddata.TCAgent;
 import com.user.UserAppConst;
 import com.user.UserMessageConstant;
-import com.user.Utils.TokenUtils;
 import com.user.entity.CheckAuthRegisterEntity;
-import com.user.entity.CheckGatewayEntity;
 import com.user.entity.CheckRegisterEntity;
 import com.user.entity.CheckWhiteEntity;
 import com.user.entity.IsGestureEntity;
 import com.user.model.NewUserModel;
 import com.user.model.TokenModel;
-import com.user.protocol.CustomerThirdloginPostRequest;
-
-import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -75,7 +64,6 @@ import cn.sharesdk.wechat.friends.Wechat;
 
 import static cn.net.cyberway.utils.IMFriendDataUtils.userInitImData;
 import static com.BeeFramework.model.Constants.GESTURE_PWD_SET_FIVE_ERROR;
-import static com.BeeFramework.model.Constants.GOP_VERIFYURL;
 
 /*
  * @date 创建时间 2017/4/17
@@ -113,13 +101,11 @@ public class UserRegisterAndLoginActivity extends BaseActivity implements OnClic
     private BCSIJMInputEditText user_login_password;
     private TextView user_login_find_password;
     private Button user_login_btn;
-    private LinearLayout quickLoginLayout;
     private LinearLayout thridLoginlayout;
-    private ImageView img_wechat_login;
-    private ImageView img_qq_login;
+    private LinearLayout wechat_layout;
+    private LinearLayout qq_layout;
     private int isRegister = 1;
     private int isWhite = 0;
-    private int onePassResult = 0; //是否有拿到onepass的回调 没有进去获取验证码的页面
     /**
      * 用户禁止注册的提示语
      **/
@@ -127,10 +113,6 @@ public class UserRegisterAndLoginActivity extends BaseActivity implements OnClic
     private String setGesturePawd;
     private String portraitUrl = "";
     private PlatformDb loginPlatformDb;
-    private CustomerThirdloginPostRequest request = new CustomerThirdloginPostRequest();
-    private GOPGeetestUtils gopGeetestUtils;
-    private MyProgressDialog progressDialog;
-    private BaseGOPListener baseGOPListener = null;
     private String hotLine = "4008893893";
 
     @Override
@@ -165,7 +147,6 @@ public class UserRegisterAndLoginActivity extends BaseActivity implements OnClic
             startActivity(intent);
             finish();
         }
-        initGop();
     }
 
     @Override
@@ -173,9 +154,6 @@ public class UserRegisterAndLoginActivity extends BaseActivity implements OnClic
         super.onDestroy();
         if (EventBus.getDefault().isregister(this)) {
             EventBus.getDefault().unregister(this);
-        }
-        if (null != gopGeetestUtils) {
-            gopGeetestUtils.cancelUtils();
         }
     }
 
@@ -189,20 +167,19 @@ public class UserRegisterAndLoginActivity extends BaseActivity implements OnClic
         user_login_password = (BCSIJMInputEditText) findViewById(R.id.user_login_password);
         user_login_find_password = (TextView) findViewById(R.id.user_login_find_password);
         user_login_btn = (Button) findViewById(R.id.user_login_btn);
-        quickLoginLayout = (LinearLayout) findViewById(R.id.quickLoginLayout);
         thridLoginlayout = (LinearLayout) findViewById(R.id.thridLoginlayout);
-        img_wechat_login = (ImageView) findViewById(R.id.img_wechat_login);
-        img_qq_login = (ImageView) findViewById(R.id.img_qq_login);
-        user_top_view_title.setText(getResources().getString(R.string.title_login_register));
+        wechat_layout = findViewById(R.id.wechat_layout);
+        qq_layout = findViewById(R.id.qq_layout);
+        findViewById(R.id.line).setVisibility(View.GONE);
         user_top_view_right.setText(getResources().getString(R.string.title_login_verify));
-        user_top_view_right.setTextColor(Color.parseColor("#27a2f0"));
+        user_top_view_right.setTextColor(Color.parseColor("#329dfa"));
         user_top_view_back.setOnClickListener(this);
         user_top_view_right.setOnClickListener(this);
         img_gesture_pwd.setOnClickListener(this);
         user_login_find_password.setOnClickListener(this);
         user_login_btn.setOnClickListener(this);
-        img_wechat_login.setOnClickListener(this);
-        img_qq_login.setOnClickListener(this);
+        wechat_layout.setOnClickListener(this);
+        qq_layout.setOnClickListener(this);
         user_login_password.setNlicenseKey(UserAppConst.IJIAMINLICENSEKEY);
         user_login_password.setKeyboardNoRandom(true);
         user_login_password.setNKeyboardKeyBg(true);
@@ -308,7 +285,7 @@ public class UserRegisterAndLoginActivity extends BaseActivity implements OnClic
                     newUserModel.getCheckWhite(2, mobile, isRegister, this);
                 }
                 break;
-            case R.id.img_qq_login:
+            case R.id.qq_layout:
                 if (fastClick()) {
                     loginSource = "qq";
                     loginType = 5;
@@ -316,7 +293,7 @@ public class UserRegisterAndLoginActivity extends BaseActivity implements OnClic
                     authorize(qq);
                 }
                 break;
-            case R.id.img_wechat_login:
+            case R.id.wechat_layout:
                 if (fastClick()) {
                     loginSource = "wechat";
                     loginType = 4;
@@ -334,6 +311,7 @@ public class UserRegisterAndLoginActivity extends BaseActivity implements OnClic
                     }
                     startActivity(verifyIntent);
                 }
+                finish();
                 break;
         }
     }
@@ -345,7 +323,7 @@ public class UserRegisterAndLoginActivity extends BaseActivity implements OnClic
             user_top_view_title.setText(getResources().getString(R.string.user_login));
             user_login_password.setHint(getResources().getString(R.string.user_input_pawd));
             user_login_btn.setText(getResources().getString(R.string.user_login));
-            quickLoginLayout.setVisibility(View.GONE);
+            thridLoginlayout.setVisibility(View.GONE);
             thridLoginlayout.setVisibility(View.GONE);
             user_login_find_password.setVisibility(View.GONE);
         } else {
@@ -577,26 +555,7 @@ public class UserRegisterAndLoginActivity extends BaseActivity implements OnClic
                 } else { //跳转去注册页面
                     if (isWhite == 1) {
                         /****进行onepass认证******/
-                        if (!NetworkUtil.haveIntent(UserRegisterAndLoginActivity.this)) {
-                            //未开启移动数据直接去发送短信验证码那里
-                            goRegisterPage();
-                        } else {
-                            gopGeetestUtils.getOnePass(mobile, null, UserSafetyVerficationActivity.CUSTOM_ID, baseGOPListener);
-                            progressDialog = new MyProgressDialog(UserRegisterAndLoginActivity.this, "");
-                            progressDialog.setCanceledOnTouchOutside(false);
-                            progressDialog.show();
-                            new Handler().postDelayed(new Runnable() {
-                                @Override
-                                public void run() {
-                                    if (onePassResult == 0) {
-                                        if (null != progressDialog) {
-                                            progressDialog.dismiss();
-                                        }
-                                        goRegisterPage();
-                                    }
-                                }
-                            }, 15000);
-                        }
+                        goRegisterPage();
                     } else {
                         if (isWhite == 4) {
                             if (TextUtils.isEmpty(forbidNotice)) {
@@ -829,121 +788,6 @@ public class UserRegisterAndLoginActivity extends BaseActivity implements OnClic
         } else if (resultCode == 500) {
             newUserModel.getAuthToken(4, mobile, loginPawd, "1", true, UserRegisterAndLoginActivity.this);
         }
-    }
-
-    /**
-     * 初始化onepass
-     */
-    private void initGop() {
-        gopGeetestUtils = GOPGeetestUtils.getInstance(UserRegisterAndLoginActivity.this);
-        /**
-         * 初始化onepass监听类(必须实现的有四个接口，处理流程中实现的问题)
-         */
-        baseGOPListener = new BaseGOPListener() {
-            @Override
-            public void gopOnError(String s) {
-                onePassResult = 1;
-                /**
-                 * 过程中的错误
-                 */
-                if (progressDialog != null) {
-                    progressDialog.dismiss();
-                }
-                goRegisterPage();
-            }
-
-            @Override
-            public void gopOnResult(String result) {
-                onePassResult = 1;
-                if (progressDialog != null) {
-                    progressDialog.dismiss();
-                }
-                if (!TextUtils.isEmpty(result)) {
-                    try {
-                        BaseContentEntity baseContentEntity = GsonUtils.gsonToBean(result, BaseContentEntity.class);
-                        if (baseContentEntity.getCode() == 0) {
-                            CheckGatewayEntity checkGatewayEntity = GsonUtils.gsonToBean(result, CheckGatewayEntity.class);
-                            CheckGatewayEntity.ContentBean contentBean = checkGatewayEntity.getContent();
-                            /**
-                             * 验证成功的回调  进行注册 登录和获取用户信息
-                             */
-                            if (contentBean.getCheck_result() == 1) {
-                                String code = contentBean.getSms_token();
-                                if (TextUtils.isEmpty(code)) {
-                                    goRegisterPage();
-                                } else {
-                                    newUserModel.userRegister(11, mobile, code, loginPawd, UserRegisterAndLoginActivity.this);
-                                    user_login_password.hideNKeyboard();
-                                }
-                            } else {
-                                goRegisterPage();
-                            }
-                        } else {
-                            goRegisterPage();
-                        }
-                    } catch (Exception e) {
-                        goRegisterPage();
-                    }
-                } else {
-                    goRegisterPage();
-                }
-            }
-
-            @Override
-            public int gopOnAnalysisVerifyUrl(JSONObject jsonObject) {
-                /**
-                 * 返回VerifyUrl的请求结果，并拿到result值回传给sdk
-                 * 默认为：
-                 *  try {
-                 return var1.getInt("result");
-                 }    catch (JSONException var3) {
-                 var3.printStackTrace();
-                 return 0;
-                 }
-                 */
-                return super.gopOnAnalysisVerifyUrl(jsonObject);
-            }
-
-            @Override
-            public String gopOnVerifyUrl() {
-                /**
-                 * 回传给sdk内部使用的VerifyUrl(必填)
-                 */
-                return GOP_VERIFYURL;
-            }
-
-            @Override
-            public boolean gopOnDefaultSwitch() {
-                return false;
-            }
-
-            public Map<String, String> gopOnVerifyUrlBody() {
-                Map<String, Object> objectMap = new HashMap<String, Object>();
-                objectMap.put("device_uuid", TokenUtils.getUUID(UserRegisterAndLoginActivity.this));
-                Map<String, String> stringMap = RequestEncryptionUtils.getStringMap(RequestEncryptionUtils.getNewSaftyMap(UserRegisterAndLoginActivity.this, objectMap));
-                return stringMap;
-            }
-
-            @Override
-            public void gopOnSendMsg(boolean b, Map<String, String> map, JSONObject jsonObject) {
-                onePassResult = 1;
-                /**
-                 * 发短信原因（JSON形式）
-                 *
-                 * 数据格式为json
-                 * error_code与error
-                 */
-                /**
-                 * 短信分发接口
-                 */
-                if (progressDialog != null) {
-                    progressDialog.dismiss();
-                }
-                if (!b) {
-                    goRegisterPage();
-                }
-            }
-        };
     }
 
     private void goRegisterPage() {

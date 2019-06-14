@@ -1,7 +1,10 @@
 package com.user.activity;
 
+import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.os.CountDownTimer;
+import android.os.Handler;
 import android.os.Message;
 import android.text.Editable;
 import android.text.TextUtils;
@@ -11,6 +14,7 @@ import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.BeeFramework.Utils.ToastUtil;
@@ -19,18 +23,28 @@ import com.BeeFramework.model.NewHttpResponse;
 import com.BeeFramework.view.ClearEditText;
 import com.external.eventbus.EventBus;
 import com.mob.MobSDK;
+import com.mob.tools.utils.UIHandler;
 import com.nohttp.utils.GsonUtils;
 import com.user.UserAppConst;
 import com.user.UserMessageConstant;
+import com.user.entity.CheckAuthRegisterEntity;
 import com.user.entity.SendCodeEntity;
 import com.user.model.NewUserModel;
 import com.user.model.TokenModel;
 
+import java.util.HashMap;
+
 import cn.net.cyberway.R;
-import cn.net.cyberway.home.model.NewHomeModel;
+import cn.sharesdk.framework.Platform;
+import cn.sharesdk.framework.PlatformActionListener;
+import cn.sharesdk.framework.PlatformDb;
+import cn.sharesdk.framework.ShareSDK;
+import cn.sharesdk.tencent.qq.QQ;
+import cn.sharesdk.wechat.friends.Wechat;
 
 import static cn.net.cyberway.utils.IMFriendDataUtils.userInitImData;
 import static com.user.activity.UserRegisterAndLoginActivity.MOBILE;
+import static com.user.activity.UserRegisterAndLoginActivity.SUCCEED;
 
 /**
  * @name ${yuansk}
@@ -42,16 +56,23 @@ import static com.user.activity.UserRegisterAndLoginActivity.MOBILE;
  * @chang time
  * @class describe   短信验证码登录
  */
-public class UserIdentityLoginActivity extends BaseActivity implements OnClickListener, NewHttpResponse {
+public class UserIdentityLoginActivity extends BaseActivity implements OnClickListener, NewHttpResponse, Handler.Callback {
 
     private ImageView user_top_view_back;
     private TextView user_top_view_title;
+    private TextView user_top_view_right;
     private ClearEditText user_login_phone;
     private EditText ed_sms;
     private TextView tv_get_sms;
     private TextView tv_voice_code;
     private Button user_login_btn;
+    private LinearLayout wechat_layout;
+    private LinearLayout qq_layout;
     private NewUserModel newUserModel;
+    private String loginSource = "";
+    private PlatformDb loginPlatformDb;
+    private String openCode = "";
+    private int loginType = 0;
     private String mobile;
     private String smsCode;
 
@@ -67,16 +88,25 @@ public class UserIdentityLoginActivity extends BaseActivity implements OnClickLi
     private void initView() {
         user_top_view_back = findViewById(R.id.user_top_view_back);
         user_top_view_title = findViewById(R.id.user_top_view_title);
+        user_top_view_right = findViewById(R.id.user_top_view_right);
+        user_top_view_right.setText("密码登录");
+        user_top_view_right.setTextColor(Color.parseColor("#329dfa"));
+        user_top_view_back.setOnClickListener(this);
+        user_top_view_right.setOnClickListener(this);
         user_login_phone = findViewById(R.id.user_login_phone);
         ed_sms = findViewById(R.id.ed_sms);
         tv_get_sms = findViewById(R.id.tv_get_sms);
         tv_voice_code = findViewById(R.id.tv_voice_code);
         user_login_btn = findViewById(R.id.user_login_btn);
-        user_top_view_title.setText(getResources().getString(R.string.title_login_verify));
+        wechat_layout = findViewById(R.id.wechat_layout);
+        qq_layout = findViewById(R.id.qq_layout);
+        findViewById(R.id.line).setVisibility(View.GONE);
         user_top_view_back.setOnClickListener(this);
         user_login_btn.setOnClickListener(this);
         tv_get_sms.setOnClickListener(this);
         tv_voice_code.setOnClickListener(this);
+        wechat_layout.setOnClickListener(this);
+        qq_layout.setOnClickListener(this);
         mobile = getIntent().getStringExtra(MOBILE);
         if (!TextUtils.isEmpty(mobile)) {
             user_login_phone.setText(mobile);
@@ -124,10 +154,10 @@ public class UserIdentityLoginActivity extends BaseActivity implements OnClickLi
     private void setBtnStatus() {
         if (!TextUtils.isEmpty(mobile) && 11 == mobile.length() && !TextUtils.isEmpty(smsCode)) {
             user_login_btn.setEnabled(true);
-            user_login_btn.setBackgroundResource(R.drawable.rect_round_blue);
+            user_login_btn.setBackgroundResource(R.drawable.onekey_login_bg);
         } else {
             user_login_btn.setEnabled(false);
-            user_login_btn.setBackgroundResource(R.drawable.rect_round_gray);
+            user_login_btn.setBackgroundResource(R.drawable.onekey_login_default_bg);
         }
     }
 
@@ -159,6 +189,29 @@ public class UserIdentityLoginActivity extends BaseActivity implements OnClickLi
             case R.id.user_login_btn:
                 //进行短信验证码的登录操作
                 newUserModel.getAuthToken(2, mobile, smsCode, "3", true, this);
+                break;
+            case R.id.qq_layout:
+                if (fastClick()) {
+                    loginSource = "qq";
+                    loginType = 5;
+                    Platform qq = ShareSDK.getPlatform(QQ.NAME);
+                    authorize(qq);
+                }
+                break;
+            case R.id.wechat_layout:
+                if (fastClick()) {
+                    loginSource = "wechat";
+                    loginType = 4;
+                    Platform wechat = ShareSDK.getPlatform(Wechat.NAME);
+                    authorize(wechat);
+                }
+                break;
+            case R.id.user_top_view_right:
+                if (fastClick()) {
+                    Intent verifyIntent = new Intent(UserIdentityLoginActivity.this, UserRegisterAndLoginActivity.class);
+                    startActivity(verifyIntent);
+                    finish();
+                }
                 break;
         }
     }
@@ -203,6 +256,38 @@ public class UserIdentityLoginActivity extends BaseActivity implements OnClickLi
                 EventBus.getDefault().post(msg);
                 finish();
                 break;
+            case 7:
+                if (!TextUtils.isEmpty(result)) {
+                    //根据状态值
+                    try {
+                        CheckAuthRegisterEntity checkAuthRegisterEntity = GsonUtils.gsonToBean(result, CheckAuthRegisterEntity.class);
+                        CheckAuthRegisterEntity.ContentBean contentBean = checkAuthRegisterEntity.getContent();
+                        int status = contentBean.getIs_register();
+                        String loginMobile = contentBean.getMobile();
+                        if (status == 1) { //用户已注册,根据返回的mobile获取access_token
+                            newUserModel.getAuthToken(2, loginMobile, openCode, String.valueOf(loginType), true, UserIdentityLoginActivity.this);
+                        } else {
+                            Intent intent = new Intent(UserIdentityLoginActivity.this, UserThridRegisterActivity.class);
+                            String gender = loginPlatformDb.getUserGender();
+                            if ("m".equals(gender)) {
+                                gender = "1";
+                            } else if ("f".equals(gender)) {
+                                gender = "2";
+                            } else {
+                                gender = "0";
+                            }
+                            intent.putExtra(UserThridRegisterActivity.GENDER, gender);
+                            intent.putExtra(UserThridRegisterActivity.NICKNAME, loginPlatformDb.getUserName());
+                            intent.putExtra(UserThridRegisterActivity.OPENCODE, openCode);
+                            intent.putExtra(UserThridRegisterActivity.SOURCE, loginSource);
+                            intent.putExtra(UserThridRegisterActivity.PORTRAIT, loginPlatformDb.getUserIcon());
+                            startActivity(intent);
+                        }
+                    } catch (Exception e) {
+
+                    }
+                }
+                break;
 
         }
     }
@@ -223,7 +308,7 @@ public class UserIdentityLoginActivity extends BaseActivity implements OnClickLi
     private void initTimeCount() {
         cancelTimeCount();
         tv_get_sms.setClickable(false);
-        tv_get_sms.setTextColor(getResources().getColor(R.color.color_a3aaae));
+        tv_get_sms.setTextColor(getResources().getColor(R.color.color_b5b5b5));
         myTimeCount = new MyTimeCount(60000, 1000);
         myTimeCount.start();
     }
@@ -246,7 +331,7 @@ public class UserIdentityLoginActivity extends BaseActivity implements OnClickLi
         @Override
         public void onFinish() {// 计时完毕时触发
             tv_get_sms.setText(getResources().getString(R.string.user_again_getcode));
-            tv_get_sms.setTextColor(getResources().getColor(R.color.tv_blue_bg));
+            tv_get_sms.setTextColor(getResources().getColor(R.color.color_329dfa));
             tv_get_sms.setClickable(true);
             tv_get_sms.requestFocus();
         }
@@ -261,6 +346,64 @@ public class UserIdentityLoginActivity extends BaseActivity implements OnClickLi
                 tv_voice_code.setVisibility(View.GONE);
             }
         }
+    }
+
+    private void authorize(final Platform plat) {
+        if (plat == null) {
+            return;
+        }
+        //判断指定平台是否已经完成授权
+        if (plat.isAuthValid()) {
+            //如果已经授权，直接调用第三方登录接口
+            String userId = plat.getDb().getUserId();
+            if (userId != null) {
+                Message msg = new Message();
+                msg.what = SUCCEED;
+                msg.obj = plat;
+                UIHandler.sendMessage(msg, this);
+                return;
+            }
+        }
+        plat.setPlatformActionListener(new PlatformActionListener() {
+            @Override
+            public void onComplete(Platform platform, int i, HashMap<String, Object> hashMap) {
+                //判断当前的opencode是否注册
+                loginPlatformDb = platform.getDb();
+                openCode = loginPlatformDb.getUserId();
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        newUserModel.authRegister(7, loginSource, openCode, UserIdentityLoginActivity.this);
+                    }
+                });
+            }
+
+            @Override
+            public void onError(Platform platform, int i, Throwable throwable) {
+                ToastUtil.toastShow(UserIdentityLoginActivity.this, "授权失败:" + throwable.getMessage());
+            }
+
+            @Override
+            public void onCancel(Platform platform, int i) {
+
+            }
+        });
+        // true不使用SSO授权，false使用SSO授权(调用客户端)
+        plat.SSOSetting(false);
+        //获取用户资料
+        plat.authorize();
+    }
+
+    public boolean handleMessage(Message msg) {
+        switch (msg.what) {
+            case SUCCEED:
+                Platform platform = (Platform) msg.obj;
+                loginPlatformDb = platform.getDb();
+                openCode = loginPlatformDb.getUserId();
+                newUserModel.authRegister(7, loginSource, openCode, UserIdentityLoginActivity.this);
+                break;
+        }
+        return false;
     }
 }
 

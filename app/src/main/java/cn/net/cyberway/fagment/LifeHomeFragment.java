@@ -1,7 +1,6 @@
 package cn.net.cyberway.fagment;
 
 
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Message;
@@ -37,7 +36,6 @@ import com.tencent.authsdk.callback.IdentityCallback;
 import com.tendcloud.tenddata.TCAgent;
 import com.user.UserAppConst;
 import com.user.UserMessageConstant;
-import com.user.activity.UserRegisterAndLoginActivity;
 import com.user.model.NewUserModel;
 
 import org.json.JSONArray;
@@ -407,8 +405,7 @@ public class LifeHomeFragment extends Fragment implements IXListViewListener, Ne
                         uploadAppClickLister(String.valueOf(recommendListBean.getId()));
                     }
                 } else {
-                    Intent intent = new Intent(getActivity(), UserRegisterAndLoginActivity.class);
-                    startActivity(intent);
+                    LinkParseUtil.parse(getActivity(), "", "");
                 }
             }
         });

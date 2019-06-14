@@ -13,10 +13,10 @@
     <string name="user_change_phone">更换手机号</string>
     <string name="user_input_phone">请输入手机号码</string>
     <string name="user_input_pawd">请输入密码</string>
-    <string name="user_forget_pawd">忘记密码</string>
+    <string name="user_forget_pawd">忘记密码?</string>
     <string name="user_login">登录</string>
     <string name="user_register">注册并登录</string>
-    <string name="user_quick_login">快捷登录</string>
+    <string name="user_quick_login">第三方账号登录</string>
     <string name="user_agree_register">点击注册表示同意</string>
     <string name="user_colouelife_agreement">《彩生活注册协议》</string>
     <string name="user_bind_phone_explain">*绑定手机后即可快捷登录</string>

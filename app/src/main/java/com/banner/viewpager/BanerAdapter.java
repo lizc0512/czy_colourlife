@@ -1,7 +1,6 @@
 package com.banner.viewpager;
 
 import android.content.Context;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.support.v4.view.PagerAdapter;
 import android.view.LayoutInflater;
@@ -12,7 +11,6 @@ import android.widget.ImageView;
 import com.BeeFramework.BeeFrameworkApp;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.user.UserAppConst;
-import com.user.activity.UserRegisterAndLoginActivity;
 
 import java.util.List;
 
@@ -79,8 +77,7 @@ public class BanerAdapter extends PagerAdapter
                 if (mShared.getBoolean(UserAppConst.IS_LOGIN, false)) {
                     LinkParseUtil.parse(mContext, banner.url, banner.name);
                 } else {
-                    Intent intent = new Intent(mContext, UserRegisterAndLoginActivity.class);
-                    mContext.startActivity(intent);
+                    LinkParseUtil.parse(mContext, "", "");
                 }
 
             }

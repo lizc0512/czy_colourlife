@@ -1,7 +1,6 @@
 package cn.net.cyberway.home.fragment;
 
 
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -29,7 +28,6 @@ import com.nohttp.utils.GridSpacingItemDecoration;
 import com.nohttp.utils.GsonUtils;
 import com.tmall.ultraviewpager.UltraViewPager;
 import com.user.UserAppConst;
-import com.user.activity.UserRegisterAndLoginActivity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -43,6 +41,7 @@ import cn.net.cyberway.home.adapter.HomeDoorAdapter;
 import cn.net.cyberway.home.adapter.HomeFunctionAdapter;
 import cn.net.cyberway.home.entity.HomeFuncEntity;
 import cn.net.cyberway.home.model.NewHomeModel;
+import cn.net.cyberway.utils.LinkParseUtil;
 
 
 /**
@@ -195,8 +194,7 @@ public class NologinHomeFragment extends Fragment implements NewHttpResponse, Vi
                 @Override
                 public void onItemClick(int i) {
                     if (i >= 0) {
-                        Intent intent = new Intent(getActivity(), UserRegisterAndLoginActivity.class);
-                        getActivity().startActivity(intent);
+                        LinkParseUtil.parse(getActivity(),"","");
                     }
                 }
             });
@@ -226,8 +224,7 @@ public class NologinHomeFragment extends Fragment implements NewHttpResponse, Vi
                     @Override
                     public void onItemClick(int i) {
                         if (i >= 0) {
-                            Intent intent = new Intent(getActivity(), UserRegisterAndLoginActivity.class);
-                            getActivity().startActivity(intent);
+                            LinkParseUtil.parse(getActivity(),"","");
                         }
                     }
                 });
@@ -262,8 +259,7 @@ public class NologinHomeFragment extends Fragment implements NewHttpResponse, Vi
             advise_banner.setDelegate(new BGABanner.Delegate<ImageView, String>() {
                 @Override
                 public void onBannerItemClick(BGABanner banner, ImageView itemView, String model, int position) {
-                    Intent intent = new Intent(getActivity(), UserRegisterAndLoginActivity.class);
-                    getActivity().startActivity(intent);
+                    LinkParseUtil.parse(getActivity(),"","");
                 }
             });
             advise_banner.setData(bannerUrlList, null);
@@ -340,8 +336,7 @@ public class NologinHomeFragment extends Fragment implements NewHttpResponse, Vi
             case R.id.open_door_layout:
             case R.id.tv_no_message:
             case R.id.tv_register_login:
-                Intent intent = new Intent(getActivity(), UserRegisterAndLoginActivity.class);
-                getActivity().startActivity(intent);
+                LinkParseUtil.parse(getActivity(),"","");
                 break;
         }
     }

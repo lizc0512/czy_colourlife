@@ -1,7 +1,6 @@
 package com.feed.activity;
 
 import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
 import android.os.Message;
 import android.text.TextUtils;
@@ -37,12 +36,12 @@ import com.feed.protocol.VerFeedUnlikeApi;
 import com.im.activity.IMInviteRegisterActivity;
 import com.user.UserAppConst;
 import com.user.UserMessageConstant;
-import com.user.activity.UserRegisterAndLoginActivity;
 import com.user.protocol.USER;
 
 import java.util.ArrayList;
 
 import cn.net.cyberway.R;
+import cn.net.cyberway.utils.LinkParseUtil;
 
 /**
  * 个人的朋友圈页面
@@ -372,7 +371,6 @@ public class PersonalFeedActivity extends BaseActivity implements View.OnClickLi
 
     private void Login() {
         ToastUtil.toastShow(this, "请先登录");
-        Intent intent = new Intent(this, UserRegisterAndLoginActivity.class);
-        startActivity(intent);
+        LinkParseUtil.parse(this, "", "");
     }
 }

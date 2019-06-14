@@ -13,7 +13,7 @@
     <string name="user_change_phone">更换手机号</string>
     <string name="user_input_phone">请输入手机号码</string>
     <string name="user_input_pawd">请输入密码</string>
-    <string name="user_forget_pawd">忘记密码</string>
+    <string name="user_forget_pawd">忘记密码?</string>
     <string name="user_login">登录</string>
     <string name="user_register">注册</string>
     <string name="user_quick_login">快捷登录</string>

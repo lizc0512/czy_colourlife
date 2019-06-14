@@ -36,7 +36,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 import cn.net.cyberway.R;
-import cn.net.cyberway.home.model.NewHomeModel;
 
 import static cn.net.cyberway.utils.IMFriendDataUtils.userInitImData;
 
@@ -92,7 +91,7 @@ public class UserRegisterActivity extends BaseActivity implements View.OnClickLi
         tv_voice_code = (TextView) findViewById(R.id.tv_voice_code);
         btn_user_register = (Button) findViewById(R.id.btn_user_register);
         user_register_protocol = (LinearLayout) findViewById(R.id.user_register_protocol);
-        user_top_view_title.setText("注册登录");
+        findViewById(R.id.line).setVisibility(View.GONE);
         user_top_view_back.setOnClickListener(this);
         tv_get_sms.setOnClickListener(this);
         tv_voice_code.setOnClickListener(this);
@@ -115,10 +114,10 @@ public class UserRegisterActivity extends BaseActivity implements View.OnClickLi
                 code = s.toString().trim();
                 if (!TextUtils.isEmpty(code)) {
                     btn_user_register.setEnabled(true);
-                    btn_user_register.setBackgroundResource(R.drawable.rect_round_blue);
+                    btn_user_register.setBackgroundResource(R.drawable.onekey_login_bg);
                 } else {
                     btn_user_register.setEnabled(false);
-                    btn_user_register.setBackgroundResource(R.drawable.rect_round_gray);
+                    btn_user_register.setBackgroundResource(R.drawable.onekey_login_default_bg);
                 }
             }
         });
@@ -283,7 +282,7 @@ public class UserRegisterActivity extends BaseActivity implements View.OnClickLi
     private void initTimeCount() {
         cancelTimeCount();
         tv_get_sms.setClickable(false);
-        tv_get_sms.setTextColor(getResources().getColor(R.color.color_a3aaae));
+        tv_get_sms.setTextColor(getResources().getColor(R.color.color_b5b5b5));
         myTimeCount = new MyTimeCount(60000, 1000);
         myTimeCount.start();
     }
@@ -306,7 +305,7 @@ public class UserRegisterActivity extends BaseActivity implements View.OnClickLi
         @Override
         public void onFinish() {// 计时完毕时触发
             tv_get_sms.setText(getResources().getString(R.string.user_again_getcode));
-            tv_get_sms.setTextColor(getResources().getColor(R.color.tv_blue_bg));
+            tv_get_sms.setTextColor(getResources().getColor(R.color.color_329dfa));
             tv_get_sms.setClickable(true);
             tv_get_sms.requestFocus();
         }

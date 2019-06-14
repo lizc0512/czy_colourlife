@@ -53,7 +53,6 @@ import com.gem.GemConstant;
 import com.gem.util.GemDialogUtil;
 import com.im.activity.IMCustomerInforActivity;
 import com.im.activity.IMFriendInforActivity;
-import com.im.activity.IMMobileBookActivity;
 import com.im.activity.IMUserSelfInforActivity;
 import com.im.entity.UserIdInforEntity;
 import com.im.helper.CacheFriendInforHelper;
@@ -63,7 +62,6 @@ import com.tendcloud.tenddata.TCAgent;
 import com.umeng.analytics.MobclickAgent;
 import com.user.UserAppConst;
 import com.user.UserMessageConstant;
-import com.user.activity.UserRegisterAndLoginActivity;
 import com.user.protocol.USER;
 
 import org.json.JSONException;
@@ -77,6 +75,7 @@ import java.util.Map;
 import cn.net.cyberway.R;
 import cn.net.cyberway.protocol.ATTR;
 import cn.net.cyberway.utils.CityCustomConst;
+import cn.net.cyberway.utils.LinkParseUtil;
 
 /**
  * 邻里
@@ -608,8 +607,7 @@ public class CommunityFragment extends Fragment implements IXListViewListener, H
                     startActivity(intent);
                     getActivity().overridePendingTransition(0, 0);
                 } else {
-                    intent = new Intent(getActivity(), UserRegisterAndLoginActivity.class);
-                    startActivity(intent);
+                    LinkParseUtil.parse(getActivity(), "", "");
                 }
                 break;
             case R.id.empty_activity:
@@ -617,8 +615,7 @@ public class CommunityFragment extends Fragment implements IXListViewListener, H
                     intent = new Intent(getActivity(), ReleaseActivity.class);
                     startActivity(intent);
                 } else {
-                    intent = new Intent(getActivity(), UserRegisterAndLoginActivity.class);
-                    startActivity(intent);
+                    LinkParseUtil.parse(getActivity(), "", "");
                 }
                 break;
             case R.id.empty_feed:
@@ -626,8 +623,7 @@ public class CommunityFragment extends Fragment implements IXListViewListener, H
                     intent = new Intent(getActivity(), CreateNormalFeedActivity.class);
                     startActivity(intent);
                 } else {
-                    intent = new Intent(getActivity(), UserRegisterAndLoginActivity.class);
-                    startActivity(intent);
+                    LinkParseUtil.parse(getActivity(), "", "");
                 }
                 break;
             case R.id.feed_comment_submit:
@@ -663,8 +659,7 @@ public class CommunityFragment extends Fragment implements IXListViewListener, H
 
     private void Login() {
         ToastUtil.toastShow(mContext, "请先登录");
-        Intent intent = new Intent(getActivity(), UserRegisterAndLoginActivity.class);
-        startActivity(intent);
+        LinkParseUtil.parse(mContext, "", "");
     }
 
     /**

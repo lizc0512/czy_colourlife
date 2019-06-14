@@ -55,6 +55,7 @@ public class UserSmsCodeActivity extends BaseActivity implements View.OnClickLis
     private String code;
     private int smsType = 0;
     private String workType = "verifyLogin";
+    private TextView tv_sub_title;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -84,9 +85,11 @@ public class UserSmsCodeActivity extends BaseActivity implements View.OnClickLis
         tv_get_sms = (TextView) findViewById(R.id.tv_get_sms);
         tv_voice_code = (TextView) findViewById(R.id.tv_voice_code);
         btn_user_register = (Button) findViewById(R.id.btn_user_register);
+        tv_sub_title = findViewById(R.id.tv_sub_title);
         user_register_protocol = (LinearLayout) findViewById(R.id.user_register_protocol);
         user_register_protocol.setVisibility(View.GONE);
-        user_top_view_title.setText(getResources().getString(R.string.title_safty_verify));
+        findViewById(R.id.line).setVisibility(View.GONE);
+        tv_sub_title.setText(getResources().getString(R.string.title_safty_verify));
         btn_user_register.setText(getResources().getString(R.string.user_finish));
         tv_register_number.setText(mobile);
         user_top_view_back.setOnClickListener(this);
@@ -220,7 +223,7 @@ public class UserSmsCodeActivity extends BaseActivity implements View.OnClickLis
     private void initTimeCount() {
         cancelTimeCount();
         tv_get_sms.setClickable(false);
-        tv_get_sms.setTextColor(getResources().getColor(R.color.color_a3aaae));
+        tv_get_sms.setTextColor(getResources().getColor(R.color.color_b5b5b5));
         myTimeCount = new MyTimeCount(60000, 1000);
         myTimeCount.start();
     }
@@ -243,7 +246,7 @@ public class UserSmsCodeActivity extends BaseActivity implements View.OnClickLis
         @Override
         public void onFinish() {// 计时完毕时触发
             tv_get_sms.setText(getResources().getString(R.string.user_again_getcode));
-            tv_get_sms.setTextColor(getResources().getColor(R.color.tv_blue_bg));
+            tv_get_sms.setTextColor(getResources().getColor(R.color.color_329dfa));
             tv_get_sms.setClickable(true);
             tv_get_sms.requestFocus();
         }
@@ -261,6 +264,7 @@ public class UserSmsCodeActivity extends BaseActivity implements View.OnClickLis
             }
         }
     }
+
     /**
      * 跳转到本地发送短信
      */

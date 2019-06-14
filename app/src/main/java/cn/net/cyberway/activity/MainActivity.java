@@ -53,7 +53,6 @@ import com.update.activity.UpdateVerSion;
 import com.update.service.UpdateService;
 import com.user.UserAppConst;
 import com.user.UserMessageConstant;
-import com.user.activity.UserRegisterAndLoginActivity;
 import com.user.entity.CheckRegisterEntity;
 import com.user.model.NewUserModel;
 import com.user.model.TokenModel;
@@ -78,7 +77,6 @@ import cn.net.cyberway.home.entity.PopMessageEntity;
 import cn.net.cyberway.home.entity.PushNotificationEntity;
 import cn.net.cyberway.home.fragment.MainHomeFragmentNew;
 import cn.net.cyberway.home.fragment.NologinHomeFragment;
-import cn.net.cyberway.home.view.HomeViewUtils;
 import cn.net.cyberway.model.MyListModel;
 import cn.net.cyberway.model.ThemeModel;
 import cn.net.cyberway.protocol.ThemeEntity;
@@ -564,8 +562,7 @@ public class MainActivity extends BaseFragmentActivity implements View.OnClickLi
                     intent.putExtra(CaptureActivity.QRCODE_SOURCE, "default");
                     startActivity(intent);
                 } else {
-                    Intent intent = new Intent(this, UserRegisterAndLoginActivity.class);
-                    startActivity(intent);
+                    LinkParseUtil.parse(MainActivity.this,"","");
                 }
                 break;
         }
@@ -653,8 +650,7 @@ public class MainActivity extends BaseFragmentActivity implements View.OnClickLi
                 mDiscovery.setSelected(false);
                 mProfile.setSelected(false);
             } else {
-                Intent intent = new Intent(this, UserRegisterAndLoginActivity.class);
-                startActivity(intent);
+              LinkParseUtil.parse(MainActivity.this,"","");
             }
         } else if (flagTab == FLAG_TAB_THREE) {//邻里
             if (mShared.getBoolean(UserAppConst.IS_LOGIN, false)) {
@@ -673,8 +669,7 @@ public class MainActivity extends BaseFragmentActivity implements View.OnClickLi
                 mDiscovery.setSelected(true);
                 mProfile.setSelected(false);
             } else {
-                Intent intent = new Intent(this, UserRegisterAndLoginActivity.class);
-                startActivity(intent);
+                LinkParseUtil.parse(MainActivity.this,"","");
             }
         } else if (flagTab == FLAG_TAB_FOUR) {
             if (mShared.getBoolean(UserAppConst.IS_LOGIN, false)) {
@@ -693,8 +688,7 @@ public class MainActivity extends BaseFragmentActivity implements View.OnClickLi
                 mDiscovery.setSelected(false);
                 mProfile.setSelected(true);
             } else {
-                Intent intent = new Intent(this, UserRegisterAndLoginActivity.class);
-                startActivity(intent);
+                LinkParseUtil.parse(MainActivity.this,"","");
             }
 
         }

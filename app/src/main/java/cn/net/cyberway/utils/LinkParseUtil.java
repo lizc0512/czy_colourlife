@@ -13,6 +13,9 @@ import com.about.activity.FeedBackActivity;
 import com.allapp.activity.WholeApplicationActivity;
 import com.cardcoupons.activity.CardCouponsActivity;
 import com.cashier.activity.OrderListActivity;
+import com.chuanglan.shanyan_sdk.OneKeyLoginManager;
+import com.chuanglan.shanyan_sdk.listener.OneKeyLoginListener;
+import com.chuanglan.shanyan_sdk.listener.OpenLoginAuthListener;
 import com.customerInfo.activity.CustomerColourBeanActivity;
 import com.customerInfo.activity.CustomerInfoActivity;
 import com.customerInfo.activity.DeliveryAddressListActivity;
@@ -55,8 +58,7 @@ public class LinkParseUtil {
 
         SharedPreferences mShared = context.getSharedPreferences(UserAppConst.USERINFO, 0);
         if (!mShared.getBoolean(UserAppConst.IS_LOGIN, false)) {
-            Intent intent = new Intent(context, UserRegisterAndLoginActivity.class);
-            context.startActivity(intent);
+           new ConfigUtils(context).jumpOneKeyLogin();
         } else {
             if (!TextUtils.isEmpty(link)) {
                 if (link.trim().startsWith("http://") || link.trim().startsWith("https://")) {
@@ -81,7 +83,7 @@ public class LinkParseUtil {
                     }
                     Intent intent = null;
                     switch (value) {
-                        case "EntranceGuard":  //门禁colourlife://proto?type=notificationList
+                        case "EntranceGuard":  //门禁colourlife://proto?type=orderList
                         case "Guard":
                             intent = new Intent(context, NewDoorActivity.class);
                             ((Activity) context).startActivityForResult(intent, 2000);

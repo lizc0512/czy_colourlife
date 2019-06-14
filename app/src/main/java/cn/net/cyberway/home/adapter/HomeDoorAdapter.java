@@ -11,7 +11,6 @@ import android.widget.TextView;
 
 import com.door.activity.DoorApplyActivity;
 import com.door.entity.SingleCommunityEntity;
-import com.user.activity.UserRegisterAndLoginActivity;
 
 import java.util.ArrayList;
 
@@ -65,8 +64,7 @@ public class HomeDoorAdapter extends PagerAdapter {
                         Intent intent = new Intent(mContext, DoorApplyActivity.class);
                         mContext.startActivity(intent);
                     } else {
-                        Intent intent = new Intent(mContext, UserRegisterAndLoginActivity.class);
-                        mContext.startActivity(intent);
+                        LinkParseUtil.parse(mContext, "", "");
                     }
                 }
             });

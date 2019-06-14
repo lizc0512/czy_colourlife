@@ -34,10 +34,10 @@
         android:id="@+id/btn_start"
         android:layout_width="match_parent"
         android:layout_height="45dp"
-        android:layout_marginLeft="15dp"
-        android:layout_marginRight="15dp"
+        android:layout_marginLeft="26dp"
+        android:layout_marginRight="26dp"
         android:layout_marginTop="40dp"
-        android:background="@drawable/rect_round_blue"
+        android:background="@drawable/onekey_login_bg"
         android:text="开始"
         android:textColor="@color/white"
         android:textSize="16sp" />

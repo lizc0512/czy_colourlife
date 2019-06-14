@@ -21,8 +21,6 @@ import com.BeeFramework.model.NewHttpResponse;
 import com.BeeFramework.view.MyProgressDialog;
 import com.geetest.deepknow.DPAPI;
 import com.geetest.deepknow.bean.DPJudgementBean;
-import com.geetest.onepass.BaseGOPListener;
-import com.geetest.onepass.GOPGeetestUtils;
 import com.geetest.sensebot.SEAPI;
 import com.geetest.sensebot.listener.BaseSEListener;
 import com.nohttp.entity.BaseContentEntity;
@@ -32,6 +30,8 @@ import com.user.Utils.TokenUtils;
 import com.user.entity.CheckGatewayEntity;
 import com.user.entity.LoginVerifyEntity;
 import com.user.model.TokenModel;
+import com.geetest.onepassv2.OnePassHelper;
+import com.geetest.onepassv2.listener.OnePassListener;
 
 import org.json.JSONObject;
 
@@ -55,14 +55,6 @@ import static com.BeeFramework.model.Constants.GOP_VERIFYURL;
 
 public class UserSafetyVerficationActivity extends BaseActivity implements View.OnClickListener, NewHttpResponse {
     public final String activityName = "UserSafetyVerficationActivity";
-    /**
-     * onepass的工具类
-     */
-    private GOPGeetestUtils gopGeetestUtils;
-    /**
-     * onepass的监听类
-     */
-    private BaseGOPListener baseGOPListener;
 
 
     /**
@@ -104,7 +96,6 @@ public class UserSafetyVerficationActivity extends BaseActivity implements View.
             ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.READ_PHONE_STATE}, 1);
         }
         initGT3();
-        initGop();
         if (isRegister == 0) {
             tv_safety_notice.setText(getResources().getString(R.string.user_register_verifysafty));
         } else {
@@ -134,7 +125,7 @@ public class UserSafetyVerficationActivity extends BaseActivity implements View.
                 if (isRegister == 1) {
                     //登录需要极验验证
                     if (isWhite == 2) { //3个月未登录
-                        openOnePass(null);
+                        goSmsCodePage();
                     } else {  //更换设备  更换设备以及三个月未登录
                         showGeetest(2);
                     }
@@ -263,9 +254,6 @@ public class UserSafetyVerficationActivity extends BaseActivity implements View.
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        if (gopGeetestUtils != null) {
-            gopGeetestUtils.cancelUtils();
-        }
     }
 
 
@@ -277,130 +265,31 @@ public class UserSafetyVerficationActivity extends BaseActivity implements View.
 
     /**
      * onepass的方法，执行onepass只需拿到验证码的validate，兼容所有公版验证码
-     *
-     * @param validate
      */
-    private void openOnePass(String validate) {
+    private void openOnePass() {
         /**
          *    第一参数为填写的手机号
          *    第二个参数为验证后的validate
          *    第三个参数为customid
          *    第四个参数为回调
          */
-        gopGeetestUtils.getOnePass(mobile, validate, CUSTOM_ID, baseGOPListener);
+        OnePassHelper.with().init(UserSafetyVerficationActivity.this);
+        OnePassHelper.with().getToken(mobile, CUSTOM_ID, new OnePassListener() {
+            @Override
+            public void onTokenFail(JSONObject jsonObject) {
+                goSmsCodePage();
+            }
+
+            @Override
+            public void onTokenSuccess(JSONObject jsonObject) {
+
+            }
+        });
         progressDialog = new MyProgressDialog(UserSafetyVerficationActivity.this, "");
         progressDialog.setCanceledOnTouchOutside(false);
         progressDialog.show();
     }
 
-    /**
-     * 初始化onepass
-     */
-    private void initGop() {
-        gopGeetestUtils = GOPGeetestUtils.getInstance(UserSafetyVerficationActivity.this);
-        /**
-         * 初始化onepass监听类(必须实现的有四个接口，处理流程中实现的问题)
-         */
-        baseGOPListener = new BaseGOPListener() {
-            @Override
-            public void gopOnError(String s) {
-                /**
-                 * 过程中的错误
-                 */
-                if (progressDialog != null) {
-                    progressDialog.dismiss();
-                }
-                goSmsCodePage();
-            }
-
-            @Override
-            public void gopOnResult(String result) {
-                if (progressDialog != null) {
-                    progressDialog.dismiss();
-                }
-                String code = "";
-                if (!TextUtils.isEmpty(result)) {
-                    try {
-                        BaseContentEntity baseContentEntity = GsonUtils.gsonToBean(result, BaseContentEntity.class);
-                        if (baseContentEntity.getCode() == 0) {
-                            CheckGatewayEntity checkGatewayEntity = GsonUtils.gsonToBean(result, CheckGatewayEntity.class);
-                            CheckGatewayEntity.ContentBean contentBean = checkGatewayEntity.getContent();
-                            if (contentBean.getCheck_result() == 1) { /**
-                             * 验证成功的回调  进行注册 登录和获取用户信息
-                             */
-                                code = contentBean.getSms_token();
-                            }
-                        }
-                    } catch (Exception e) {
-
-                    }
-                }
-                if (!TextUtils.isEmpty(code)) {
-                    Intent intent = new Intent();
-                    intent.putExtra(UserRegisterAndLoginActivity.SMSCODE, code);
-                    setResult(200, intent);
-                    finish();
-                } else {
-                    goSmsCodePage();
-                }
-            }
-
-            @Override
-            public int gopOnAnalysisVerifyUrl(JSONObject jsonObject) {
-                /**
-                 * 返回VerifyUrl的请求结果，并拿到result值回传给sdk
-                 * 默认为：
-                 *  try {
-                 return var1.getInt("result");
-                 }    catch (JSONException var3) {
-                 var3.printStackTrace();
-                 return 0;
-                 }
-                 */
-                return super.gopOnAnalysisVerifyUrl(jsonObject);
-            }
-
-            @Override
-            public String gopOnVerifyUrl() {
-                /**
-                 * 回传给sdk内部使用的VerifyUrl(必填)
-                 */
-                return GOP_VERIFYURL;
-            }
-
-            @Override
-            public boolean gopOnDefaultSwitch() {
-                return false;
-            }
-
-            public Map<String, String> gopOnVerifyUrlBody() {
-                Map<String, Object> objectMap = new HashMap<String, Object>();
-                objectMap.put("device_uuid", TokenUtils.getUUID(UserSafetyVerficationActivity.this));
-                Map<String, String> stringMap = RequestEncryptionUtils.getStringMap(RequestEncryptionUtils.getNewSaftyMap(UserSafetyVerficationActivity.this, objectMap));
-                return stringMap;
-            }
-
-            @Override
-            public void gopOnSendMsg(boolean b, Map<String, String> map, JSONObject
-                    jsonObject) {
-                /**
-                 * 发短信原因（JSON形式）
-                 *
-                 * 数据格式为json
-                 * error_code与error
-                 */
-                /**
-                 * 短信分发接口
-                 */
-                if (progressDialog != null) {
-                    progressDialog.dismiss();
-                }
-                if (!b) {
-                    goSmsCodePage();
-                }
-            }
-        };
-    }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {

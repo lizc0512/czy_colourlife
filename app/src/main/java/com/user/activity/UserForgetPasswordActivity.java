@@ -68,8 +68,8 @@ public class UserForgetPasswordActivity extends BaseActivity implements View.OnC
         tv_forget_number = (TextView) findViewById(R.id.tv_forget_number);
         ed_new_pawd = (BCSIJMInputEditText) findViewById(R.id.ed_new_pawd);
         btn_finish = (Button) findViewById(R.id.btn_finish);
+        findViewById(R.id.line).setVisibility(View.GONE);
         btn_finish.setEnabled(false);
-        user_top_view_title.setText(getResources().getString(R.string.title_find_pawd));
         user_top_view_back.setOnClickListener(this);
         btn_finish.setOnClickListener(this);
         ed_new_pawd.setKeyboardNoRandom(true);
@@ -93,11 +93,11 @@ public class UserForgetPasswordActivity extends BaseActivity implements View.OnC
                 password = ed_new_pawd.getNKeyboardText();
                 if (TextUtils.isEmpty(password)) {
                     btn_finish.setEnabled(false);
-                    btn_finish.setBackgroundResource(R.drawable.rect_round_gray);
+                    btn_finish.setBackgroundResource(R.drawable.onekey_login_default_bg);
                 } else {
                     TCAgent.onEvent(getApplicationContext(), "202012");
                     btn_finish.setEnabled(true);
-                    btn_finish.setBackgroundResource(R.drawable.rect_round_blue);
+                    btn_finish.setBackgroundResource(R.drawable.onekey_login_bg);
                 }
             }
         });

@@ -28,11 +28,9 @@ import com.customerInfo.activity.CustomerMakeZXingActivity;
 import com.door.entity.OpenDoorResultEntity;
 import com.door.view.AdvisementBannerAdapter;
 import com.door.view.ShowOpenDoorDialog;
-import com.gesturepwd.activity.UnlockGesturePasswordActivity;
 import com.invite.activity.InviteActivity;
 import com.scanCode.activity.CaptureActivity;
 import com.user.UserAppConst;
-import com.user.activity.UserRegisterAndLoginActivity;
 
 import java.lang.reflect.Field;
 import java.text.DecimalFormat;
@@ -261,7 +259,7 @@ public class TableLayoutUtils {
     }
 
     public static void jumpLoginPage(Activity activity, SharedPreferences mShared, int requestCode) {
-        if (mShared.getString(UserAppConst.Colour_login_mobile + UserAppConst.GESTURE_OPENED, "").equals("1")) {
+       /* if (mShared.getString(UserAppConst.Colour_login_mobile + UserAppConst.GESTURE_OPENED, "").equals("1")) {
             //如果是开启手势密码跳转到手势密码登录页面
             Intent intent = new Intent(activity, UnlockGesturePasswordActivity.class);
             activity.startActivityForResult(intent, requestCode);
@@ -269,7 +267,8 @@ public class TableLayoutUtils {
             //跳转到普通登录页面
             Intent intent = new Intent(activity, UserRegisterAndLoginActivity.class);
             activity.startActivityForResult(intent, requestCode);
-        }
+        }*/
+        LinkParseUtil.parse(activity, "", "");
     }
 
     public static void showOpenDoorResultDialog(final Activity activity, final ShowOpenDoorDialog showOpenDoorDialog, OpenDoorResultEntity.ContentBean contentBean) {

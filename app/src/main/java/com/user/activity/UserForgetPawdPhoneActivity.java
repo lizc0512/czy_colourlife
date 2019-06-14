@@ -84,7 +84,7 @@ public class UserForgetPawdPhoneActivity extends BaseActivity implements View.On
         tv_get_sms = (TextView) findViewById(R.id.tv_get_sms);
         btn_next = (Button) findViewById(R.id.btn_next);
         tv_change_mobile = (TextView) findViewById(R.id.tv_change_mobile);
-        user_top_view_title.setText(getResources().getString(R.string.title_find_pawd));
+        findViewById(R.id.line).setVisibility(View.GONE);
         user_top_view_back.setOnClickListener(this);
         btn_next.setOnClickListener(this);
         tv_get_sms.setOnClickListener(this);
@@ -136,10 +136,10 @@ public class UserForgetPawdPhoneActivity extends BaseActivity implements View.On
     private void changeBtnStatus() {
         if (!TextUtils.isEmpty(mobile) && 11 == mobile.length() && !TextUtils.isEmpty(code)) {
             btn_next.setEnabled(true);
-            btn_next.setBackgroundResource(R.drawable.rect_round_blue);
+            btn_next.setBackgroundResource(R.drawable.onekey_login_bg);
         } else {
             btn_next.setEnabled(false);
-            btn_next.setBackgroundResource(R.drawable.rect_round_gray);
+            btn_next.setBackgroundResource(R.drawable.onekey_login_default_bg);
         }
     }
 
@@ -284,7 +284,7 @@ public class UserForgetPawdPhoneActivity extends BaseActivity implements View.On
     private void initTimeCount() {
         cancelTimeCount();
         tv_get_sms.setClickable(false);
-        tv_get_sms.setTextColor(getResources().getColor(R.color.color_a3aaae));
+        tv_get_sms.setTextColor(getResources().getColor(R.color.color_b5b5b5));
         myTimeCount = new MyTimeCount(60000, 1000);
         myTimeCount.start();
     }
@@ -307,7 +307,7 @@ public class UserForgetPawdPhoneActivity extends BaseActivity implements View.On
         @Override
         public void onFinish() {// 计时完毕时触发
             tv_get_sms.setText(getResources().getString(R.string.user_again_getcode));
-            tv_get_sms.setTextColor(getResources().getColor(R.color.tv_blue_bg));
+            tv_get_sms.setTextColor(getResources().getColor(R.color.color_329dfa));
             tv_get_sms.setClickable(true);
             tv_get_sms.requestFocus();
         }

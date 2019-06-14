@@ -23,6 +23,8 @@ import android.view.Display;
 import android.view.WindowManager;
 
 import com.BeeFramework.model.Constants;
+import com.chuanglan.shanyan_sdk.OneKeyLoginManager;
+import com.chuanglan.shanyan_sdk.listener.InitListener;
 import com.external.eventbus.EventBus;
 import com.facebook.stetho.Stetho;
 import com.geetest.deepknow.DPAPI;
@@ -111,6 +113,13 @@ public class BeeFrameworkApp extends MultiDexApplication {
         initEdenApi();//乐开
 //        initSWLocation();//数位
         initBugly();
+        OneKeyLoginManager.getInstance().init(getApplicationContext(), "DbBj26Nj", "DOMYqkZR", new InitListener() {
+            @Override
+            public void getInitStatus(int code, String result) {
+
+
+            }
+        });
         closeAndroidPDialog();
     }
 

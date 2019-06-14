@@ -17,21 +17,23 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
-            <ImageView
-                android:layout_width="115dp"
-                android:layout_height="40dp"
-                android:layout_gravity="center_horizontal"
-                android:layout_marginTop="40dp"
-                android:layout_marginBottom="40dp"
-                android:src="@drawable/icon_czy_logo" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="26dp"
+                android:layout_marginTop="48dp"
+                android:layout_marginBottom="20dp"
+                android:text="验证码登录"
+                android:textColor="@color/color_25282e"
+                android:textSize="28sp" />
 
 
             <com.BeeFramework.view.ClearEditText
                 android:id="@+id/user_login_phone"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
-                android:layout_marginLeft="15dp"
-                android:layout_marginRight="15dp"
+                android:layout_marginLeft="26dp"
+                android:layout_marginRight="26dp"
                 android:background="@null"
                 android:hint="@string/user_input_phone"
                 android:inputType="number"
@@ -42,17 +44,25 @@
                 android:textColorHint="@color/color_a3aaae"
                 android:textSize="16sp" />
 
+            <View
+                android:layout_width="fill_parent"
+                android:layout_height="1px"
+                android:layout_marginLeft="26dp"
+                android:layout_marginRight="26dp"
+                android:background="@color/line_color" />
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
+                android:layout_marginLeft="26dp"
+                android:layout_marginRight="26dp"
                 android:orientation="horizontal">
 
                 <EditText
                     android:id="@+id/ed_sms"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
-                    android:layout_marginLeft="15dp"
-                    android:layout_marginRight="15dp"
+                    android:layout_marginRight="10dp"
                     android:layout_weight="1"
                     android:background="@null"
                     android:hint="@string/user_input_code"
@@ -69,10 +79,17 @@
                     android:layout_height="match_parent"
                     android:layout_marginRight="15dp"
                     android:gravity="center"
-                    android:text="@string/user_get_code"
-                    android:textColor="@color/tv_blue_bg"
+                    android:text="获取验证码"
+                    android:textColor="@color/color_329dfa"
                     android:textSize="14sp" />
             </LinearLayout>
+
+            <View
+                android:layout_width="fill_parent"
+                android:layout_height="1px"
+                android:layout_marginLeft="26dp"
+                android:layout_marginRight="26dp"
+                android:background="@color/line_color" />
 
             <TextView
                 android:id="@+id/tv_voice_code"
@@ -83,7 +100,7 @@
                 android:layout_marginRight="10dp"
                 android:padding="5dp"
                 android:text="语音验证码"
-                android:textColor="@color/tv_blue_bg"
+                android:textColor="@color/color_329dfa"
                 android:textSize="14sp"
                 android:visibility="gone" />
 
@@ -92,10 +109,10 @@
                 android:id="@+id/user_login_btn"
                 android:layout_width="match_parent"
                 android:layout_height="44dp"
-                android:layout_marginLeft="15dp"
+                android:layout_marginLeft="26dp"
                 android:layout_marginTop="30dp"
-                android:layout_marginRight="15dp"
-                android:background="@drawable/rect_round_blue"
+                android:layout_marginRight="26dp"
+                android:background="@drawable/onekey_login_default_bg"
                 android:text="@string/user_login"
                 android:textColor="@color/white"
                 android:textSize="16sp" />
@@ -110,6 +127,78 @@
                 android:textColor="@color/textcolor_bfc7cc"
                 android:textSize="14sp" />
 
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="100dp"
+                android:text="@string/user_quick_login"
+                android:textColor="@color/color_a3aaae"
+                android:textSize="12sp" />
+
+
+            <LinearLayout
+                android:id="@+id/thridLoginlayout"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="20dp"
+                android:orientation="horizontal">
+
+                <LinearLayout
+                    android:id="@+id/wechat_layout"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="56dp"
+                    android:orientation="vertical">
+
+                    <ImageView
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:scaleType="centerCrop"
+                        android:src="@drawable/new_icon_wechat" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal"
+                        android:layout_marginTop="6dp"
+                        android:text="微信"
+                        android:textColor="@color/color_646566"
+                        android:textSize="11sp" />
+
+
+                </LinearLayout>
+
+
+                <LinearLayout
+                    android:id="@+id/qq_layout"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <ImageView
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:scaleType="centerCrop"
+                        android:src="@drawable/new_icon_qq" />
+
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal"
+                        android:layout_marginTop="6dp"
+                        android:text="QQ"
+                        android:textColor="@color/color_646566"
+                        android:textSize="11sp" />
+
+
+                </LinearLayout>
+
+
+            </LinearLayout>
 
         </LinearLayout>
 

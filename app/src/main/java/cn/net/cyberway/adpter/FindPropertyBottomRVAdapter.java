@@ -1,7 +1,6 @@
 package cn.net.cyberway.adpter;
 
 import android.content.Context;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -14,7 +13,6 @@ import android.widget.TextView;
 import com.BeeFramework.BeeFrameworkApp;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.user.UserAppConst;
-import com.user.activity.UserRegisterAndLoginActivity;
 
 import java.util.ArrayList;
 
@@ -59,8 +57,7 @@ public class FindPropertyBottomRVAdapter extends RecyclerView.Adapter<RecyclerVi
                     String linkUrl = content.get(position).url;
                     LinkParseUtil.parse(mInflater.getContext(), linkUrl, content.get(position).name);
                 } else {
-                    Intent intent = new Intent(mInflater.getContext(), UserRegisterAndLoginActivity.class);
-                    mInflater.getContext().startActivity(intent);
+                    LinkParseUtil.parse(mInflater.getContext(), "", "");
                 }
             }
         });

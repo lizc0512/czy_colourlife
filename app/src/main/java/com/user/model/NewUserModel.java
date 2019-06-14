@@ -88,6 +88,7 @@ public class NewUserModel extends BaseModel {
     private String submitRealUrl = "user/identity";
     private String isNewUrl = "user/isNew";
     private String getDoorUrl = "app/door/getToken";
+    private String oneKeyLoginUrl = "user/onekey/login";
 
 
     public NewUserModel(Context context) {
@@ -1500,6 +1501,31 @@ public class NewUserModel extends BaseModel {
      */
     public void getLekaiDoor(int what, final NewHttpResponse newHttpResponse) {
         final Request<String> request = NoHttp.createStringRequest(RequestEncryptionUtils.getCombileMD5(mContext, 11, getDoorUrl, null), RequestMethod.GET);
+        request(what, request, null, new HttpListener<String>() {
+            @Override
+            public void onSucceed(int what, Response<String> response) {
+                int responseCode = response.getHeaders().getResponseCode();
+                String result = response.get();
+                if (responseCode == RequestEncryptionUtils.responseSuccess) {
+                    int resultCode = showSuccesResultMessageTheme(result);
+                    if (resultCode == 0) {
+                        newHttpResponse.OnHttpResponse(what, result);
+                    }
+                }
+            }
+
+            @Override
+            public void onFailed(int what, Response<String> response) {
+                newHttpResponse.OnHttpResponse(what, "");
+            }
+        }, true, false);
+    }
+
+
+    public void oneKeyLoginByBlue(int what, String identifySign, final NewHttpResponse newHttpResponse) {
+        Map<String, Object> params = new HashMap<>();
+        params.put("identifySign", identifySign);
+        final Request<String> request = NoHttp.createStringRequest(RequestEncryptionUtils.postCombileMD5(mContext, 6, oneKeyLoginUrl), RequestMethod.POST);
         request(what, request, null, new HttpListener<String>() {
             @Override
             public void onSucceed(int what, Response<String> response) {

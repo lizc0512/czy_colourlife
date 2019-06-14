@@ -23,7 +23,6 @@ import com.facebook.rebound.SpringConfig;
 import com.facebook.rebound.SpringSystem;
 import com.popupScreen.adapter.ImagePagerAdapter;
 import com.user.UserAppConst;
-import com.user.activity.UserRegisterAndLoginActivity;
 
 import java.util.List;
 
@@ -98,8 +97,7 @@ public class PopupActivity extends BaseActivity {
                         LinkParseUtil.parse(PopupActivity.this, url, name);
                         PopupActivity.this.finish();
                     } else {
-                        Intent intent = new Intent(PopupActivity.this, UserRegisterAndLoginActivity.class);
-                        startActivity(intent);
+                        LinkParseUtil.parse(PopupActivity.this, "", "");
                     }
                 }
             }

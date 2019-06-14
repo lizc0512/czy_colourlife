@@ -42,12 +42,12 @@ import com.feed.protocol.VerFeedUnlikeApi;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.user.UserAppConst;
 import com.user.UserMessageConstant;
-import com.user.activity.UserRegisterAndLoginActivity;
 import com.user.protocol.USER;
 
 import java.util.ArrayList;
 
 import cn.net.cyberway.R;
+import cn.net.cyberway.utils.LinkParseUtil;
 
 /**
  * 邻里活动列表页面
@@ -272,8 +272,7 @@ public class ActiveDirectoryActivity extends BaseActivity implements HttpApiResp
                     startActivityForResult(intent, 5);
                     overridePendingTransition(R.anim.push_right_in, R.anim.push_right_out);
                 } else {
-                    Intent intent = new Intent(this, UserRegisterAndLoginActivity.class);
-                    startActivity(intent);
+                    LinkParseUtil.parse(getApplicationContext(), "", "");
                 }
                 break;
             case R.id.feed_comment_submit:
@@ -325,8 +324,7 @@ public class ActiveDirectoryActivity extends BaseActivity implements HttpApiResp
 
     private void Login() {
         ToastUtil.toastShow(this, "请先登录");
-        Intent intent = new Intent(this, UserRegisterAndLoginActivity.class);
-        startActivity(intent);
+        LinkParseUtil.parse(getApplicationContext(), "", "");
     }
 
     /**
@@ -354,8 +352,7 @@ public class ActiveDirectoryActivity extends BaseActivity implements HttpApiResp
                     intent = new Intent(ActiveDirectoryActivity.this, ReleaseActivity.class);
                     startActivity(intent);
                 } else {
-                    intent = new Intent(ActiveDirectoryActivity.this, UserRegisterAndLoginActivity.class);
-                    startActivity(intent);
+                    LinkParseUtil.parse(getApplicationContext(), "", "");
                 }
             }
         });

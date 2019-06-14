@@ -1,7 +1,6 @@
 package cn.net.cyberway.adpter;
 
 import android.content.Context;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -13,7 +12,6 @@ import android.widget.TextView;
 
 import com.nohttp.utils.GlideImageLoader;
 import com.user.UserAppConst;
-import com.user.activity.UserRegisterAndLoginActivity;
 
 import java.util.ArrayList;
 
@@ -33,7 +31,7 @@ public class LifeHomeRVAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
     public LifeHomeRVAdapter(Context context, ArrayList<HomeLifeEntity.ContentBean.ListBean> contentBanner) {
         mInflater = LayoutInflater.from(context);
         content = contentBanner;
-        this.mContext=context;
+        this.mContext = context;
     }
 
     public void setData(ArrayList<HomeLifeEntity.ContentBean.ListBean> content) {
@@ -51,18 +49,17 @@ public class LifeHomeRVAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, final int position) {
         ((MyTicketBottomViewHolder) holder).name.setText(content.get(position).getName());
-        GlideImageLoader.loadImageDefaultDisplay(mContext,content.get(position).getImg(),((MyTicketBottomViewHolder) holder).img,R.drawable.default_image,R.drawable.default_image);
+        GlideImageLoader.loadImageDefaultDisplay(mContext, content.get(position).getImg(), ((MyTicketBottomViewHolder) holder).img, R.drawable.default_image, R.drawable.default_image);
         ((MyTicketBottomViewHolder) holder).rl_findpro_bottom.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 SharedPreferences mShared = mInflater.getContext().getSharedPreferences(UserAppConst.USERINFO, 0);
                 if (mShared.getBoolean(UserAppConst.IS_LOGIN, false)) {
-                    if (content.size()>0) {
+                    if (content.size() > 0) {
                         LinkParseUtil.parse(mInflater.getContext(), content.get(position).getUrl(), content.get(position).getName());
                     }
                 } else {
-                    Intent intent = new Intent(mInflater.getContext(), UserRegisterAndLoginActivity.class);
-                    mInflater.getContext().startActivity(intent);
+                    LinkParseUtil.parse(mInflater.getContext(), "", content.get(position).getName());
                 }
             }
         });

@@ -1,7 +1,6 @@
 package cn.net.cyberway.home.adapter;
 
 import android.content.Context;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.support.v4.view.PagerAdapter;
 import android.view.LayoutInflater;
@@ -12,7 +11,6 @@ import android.widget.ImageView;
 import com.banner.viewpager.LoopViewPager;
 import com.nohttp.utils.GlideImageLoader;
 import com.user.UserAppConst;
-import com.user.activity.UserRegisterAndLoginActivity;
 
 import java.util.List;
 
@@ -60,7 +58,7 @@ public class NewBanerAdapter extends PagerAdapter {
         holder.image = (ImageView) imageLayout.findViewById(R.id.news_banner_image);
         if (list.size() > 0) {
             final MODULELISTCONTENT banner = list.get(position);
-            GlideImageLoader.loadImageDefaultDisplay(mContext,banner.img,holder.image,R.drawable.home_banner,R.drawable.home_banner);
+            GlideImageLoader.loadImageDefaultDisplay(mContext, banner.img, holder.image, R.drawable.home_banner, R.drawable.home_banner);
             ((LoopViewPager) view).addView(imageLayout, 0);
             imageLayout.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -69,8 +67,7 @@ public class NewBanerAdapter extends PagerAdapter {
                     if (mShared.getBoolean(UserAppConst.IS_LOGIN, false)) {
                         LinkParseUtil.parse(mContext, banner.url, banner.name);
                     } else {
-                        Intent intent = new Intent(mContext, UserRegisterAndLoginActivity.class);
-                        mContext.startActivity(intent);
+                        LinkParseUtil.parse(mContext, "", "");
                     }
 
                 }
