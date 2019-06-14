@@ -2,18 +2,17 @@ package com.invite.activity;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.support.v7.widget.CardView;
+import android.text.TextUtils;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
-import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -21,18 +20,23 @@ import android.widget.TextView;
 import com.BeeFramework.Utils.ToastUtil;
 import com.BeeFramework.activity.BaseActivity;
 import com.BeeFramework.model.NewHttpResponse;
-import com.gem.GemConstant;
-import com.gem.util.GemDialogUtil;
+import com.google.zxing.WriterException;
+import com.invite.model.NewInviteModel;
+import com.invite.protocol.InviteShareFriendEntity;
+import com.invite.view.InviteDialog;
 import com.nohttp.utils.GsonUtils;
 import com.user.UserAppConst;
-import com.user.entity.InviteCodeEntity;
-import com.user.entity.InviteEntity;
-import com.user.model.NewUserModel;
+import com.youmai.hxsdk.utils.ZXingUtil;
+import com.youmai.hxsdk.view.camera.util.LogUtil;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.HashMap;
 
 import cn.net.cyberway.R;
 import cn.net.cyberway.sharesdk.onekeyshare.OnekeyShare;
+import cn.net.cyberway.utils.LinkParseUtil;
 import cn.sharesdk.framework.Platform;
 import cn.sharesdk.framework.PlatformActionListener;
 import cn.sharesdk.framework.ShareSDK;
@@ -46,17 +50,6 @@ import cn.sharesdk.wechat.moments.WechatMoments;
  */
 public class InviteFriendActivity extends BaseActivity implements View.OnClickListener, NewHttpResponse {
 
-    private EditText edit_mobile;        // 手机号码
-    private ImageView img_contact;        // 通讯录
-    private Button btn_invite;         // 立即邀请
-    private TextView tv_invite_record;   // 邀请记录
-    private TextView tv_invite_success;  // 邀请战绩
-    private String inviteTitle;
-    private String inviteContent;
-    private String inviteUrl;
-    private String inviteIcon;
-    private ImageView ivGem;
-    private TextView tvRight;
     private TextView tvTitle;
     private TextView tv_invite_cancel;
     private PopupWindow popupWindow;
@@ -66,13 +59,22 @@ public class InviteFriendActivity extends BaseActivity implements View.OnClickLi
 
     private TextView tv_activity, tv_detail, tv_save_poster, tv_save_face_invite;
     private TextView tv_avail_profit, tv_all_profit, tv_invite_num;
-    private CardView cv_invite, cv_change;
+    private CardView cv_invite, cv_reward;
     private ImageView imgBack, iv_share;
-    private LinearLayout ll_all_profit, ll_invite_num;
 
+    private String inviteTitle;
+    private String inviteContent;
+    private String inviteUrl;
+    private String inviteIcon;
+
+    private String posterUrl;//海报
+    private String activityRuleUrl;//活动
+    private String allProfit;//累计收益
+    private String inviteNum;//邀请人数
+    private String splitbillUrl;//及时奖励URL
 
     private OnekeyShare oks;
-    private NewUserModel newUserModel;
+    private NewInviteModel newInviteModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -89,34 +91,37 @@ public class InviteFriendActivity extends BaseActivity implements View.OnClickLi
         tv_activity = findViewById(R.id.tv_activity);
         tv_detail = findViewById(R.id.tv_detail);
         cv_invite = findViewById(R.id.cv_invite);
-        cv_change = findViewById(R.id.cv_change);
+        cv_reward = findViewById(R.id.cv_reward);
         iv_share = findViewById(R.id.iv_share);
         tv_save_poster = findViewById(R.id.tv_save_poster);
         tv_save_face_invite = findViewById(R.id.tv_save_face_invite);
         tv_avail_profit = findViewById(R.id.tv_avail_profit);
         tv_all_profit = findViewById(R.id.tv_all_profit);
         tv_invite_num = findViewById(R.id.tv_invite_num);
-//        ll_all_profit = findViewById(R.id.ll_all_profit);
-//        ll_invite_num = findViewById(R.id.ll_invite_num);
 
         imgBack.setOnClickListener(this);
         tv_activity.setOnClickListener(this);
         tv_detail.setOnClickListener(this);
         cv_invite.setOnClickListener(this);
-        cv_change.setOnClickListener(this);
+        cv_reward.setOnClickListener(this);
         iv_share.setOnClickListener(this);
         tv_save_poster.setOnClickListener(this);
         tv_save_face_invite.setOnClickListener(this);
         tv_all_profit.setOnClickListener(this);
         tv_avail_profit.setOnClickListener(this);
-//        ll_all_profit.setOnClickListener(this);
-//        ll_invite_num.setOnClickListener(this);
     }
 
     private void initData() {
         tvTitle.setText(getString(R.string.invite_title));
-        newUserModel = new NewUserModel(this);
-        newUserModel.inviteCode(0, this);
+        newInviteModel = new NewInviteModel(this);
+        String inviteCache = shared.getString(UserAppConst.INVITE_FRIEND, "");
+        String inviteNumCache = shared.getString(UserAppConst.INVITE_INVITE, "");
+
+        setInviteData(inviteCache);
+        setInviteNum(inviteNumCache);
+
+        newInviteModel.shareFriend(0, this);
+        newInviteModel.getInviteNum(1, this);
     }
 
     @Override
@@ -127,36 +132,69 @@ public class InviteFriendActivity extends BaseActivity implements View.OnClickLi
                 finish();
                 break;
             case R.id.tv_activity://活动
-                intent = new Intent(this, InviteActivityActivity.class);
-                intent.putExtra(InviteActivityActivity.ENTER_TYPE, "act");
-                startActivity(intent);
+                LinkParseUtil.parse(this, activityRuleUrl, "");
                 break;
             case R.id.tv_detail://明细
-                intent = new Intent(this, InviteActivityActivity.class);
-                intent.putExtra(InviteActivityActivity.ENTER_TYPE, "detail");
+                intent = new Intent(this, InviteDetailPoster.class);
+                intent.putExtra(InviteDetailPoster.ENTER_TYPE, "detail");
                 startActivity(intent);
                 break;
             case R.id.cv_invite://我的邀请
-                intent = new Intent(this, InviteMyActivity.class);
+                intent = new Intent(this, InviteListActivity.class);
+                intent.putExtra(InviteListActivity.FROM_PROFIT, false);
+                intent.putExtra(InviteListActivity.SUM, inviteNum);
                 startActivity(intent);
                 break;
-            case R.id.cv_change://收益兑换
-                intent = new Intent(this, InviteChangeActivity.class);
-                startActivity(intent);
+            case R.id.cv_reward://及时奖励
+                LinkParseUtil.parse(this, splitbillUrl, "");
                 break;
             case R.id.iv_share://分享
                 initPopup();
                 break;
             case R.id.tv_save_poster://保存海报
+                intent = new Intent(this, InviteDetailPoster.class);
+                intent.putExtra(InviteDetailPoster.ENTER_TYPE, "poster");
+                intent.putExtra(InviteDetailPoster.POSTER_URL, posterUrl);
+                intent.putExtra(InviteDetailPoster.INVITE_URL, inviteUrl);
+                startActivity(intent);
                 break;
             case R.id.tv_save_face_invite://当面邀请
+                showInvite();
                 break;
             case R.id.tv_all_profit://累计收益
             case R.id.tv_avail_profit://累计收益
-                intent = new Intent(this, InviteProfitActivity.class);
+                intent = new Intent(this, InviteListActivity.class);
+                intent.putExtra(InviteListActivity.FROM_PROFIT, true);
+                intent.putExtra(InviteListActivity.SUM, allProfit);
                 startActivity(intent);
                 break;
         }
+    }
+
+    private InviteDialog inviteDialog;
+
+    /**
+     * 显示邀请二维码
+     */
+    private void showInvite() {
+        if (inviteDialog == null) {
+            inviteDialog = new InviteDialog(this);
+        }
+        Bitmap encodeBitmap = null;
+        try {
+            if (!TextUtils.isEmpty(inviteUrl)) {
+                encodeBitmap = ZXingUtil.encode(inviteUrl, 300, 300);
+            }
+        } catch (WriterException e) {
+            e.printStackTrace();
+        }
+        inviteDialog.iv_code.setImageBitmap(encodeBitmap);
+        inviteDialog.iv_close.setOnClickListener(v1 -> {
+            if (inviteDialog != null) {
+                inviteDialog.dismiss();
+            }
+        });
+        inviteDialog.show();
     }
 
     /**
@@ -266,26 +304,56 @@ public class InviteFriendActivity extends BaseActivity implements View.OnClickLi
     public void OnHttpResponse(int what, String result) {
         switch (what) {
             case 0:
-                try {
-                    InviteCodeEntity inviteCodeEntity = GsonUtils.gsonToBean(result, InviteCodeEntity.class);
-                    InviteCodeEntity.ContentBean contentBean = inviteCodeEntity.getContent();
-                    inviteContent = contentBean.getContent();
-                    inviteIcon = contentBean.getIcon();
-                    inviteUrl = contentBean.getRedirect_url();
-                    inviteTitle = contentBean.getTitle();
-                } catch (Exception e) {
-
-                }
+                setInviteData(result);
                 break;
             case 1:
-                try {
-                    InviteEntity inviteEntity = GsonUtils.gsonToBean(result, InviteEntity.class);
-                    ToastUtil.toastShow(InviteFriendActivity.this, inviteEntity.getContent().getInvite_message());
-                    GemDialogUtil.showGemDialog(ivGem, this, GemConstant.mineInvite, "");
-                } catch (Exception e) {
-
-                }
+                setInviteNum(result);
                 break;
+        }
+    }
+
+    /**
+     * 邀请页面数据
+     */
+    private void setInviteData(String result) {
+        if (!TextUtils.isEmpty(result)) {
+            try {
+                LogUtil.e("setInviteData", result);
+                InviteShareFriendEntity inviteShareFriendEntity = GsonUtils.gsonToBean(result, InviteShareFriendEntity.class);
+                InviteShareFriendEntity.ContentBean contentBean = inviteShareFriendEntity.getContent();
+                InviteShareFriendEntity.ContentBean.ShareBean shareBean = contentBean.getShare();
+
+                allProfit = contentBean.getAccumulated_income();
+                inviteContent = shareBean.getDescribe();
+                inviteIcon = shareBean.getIcon();
+                inviteUrl = contentBean.getInvite_url();
+                inviteTitle = shareBean.getTitle();
+                posterUrl = contentBean.getPoster_url();
+                activityRuleUrl = contentBean.getActivity_rule_url();
+                splitbillUrl = contentBean.getSplitbill_url();
+
+                tv_avail_profit.setText(allProfit);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    /**
+     * 我的邀请数量
+     */
+    private void setInviteNum(String result) {
+        if (!TextUtils.isEmpty(result)) {
+            LogUtil.e("setInviteNum", result);
+            try {
+                JSONObject jsonObject = new JSONObject(result);
+                String content = jsonObject.getString("content");
+                JSONObject data = new JSONObject(content);
+                inviteNum = data.getString("quantity");
+                tv_invite_num.setText(inviteNum);
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
         }
     }
 }

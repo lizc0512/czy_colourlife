@@ -21,33 +21,40 @@ import cn.net.cyberway.R;
 public class InviteDetailAdapter extends RecyclerView.Adapter<InviteDetailAdapter.DefaultViewHolder> {
 
     public Context mContext;
-    private List<InviteDetailListEntity.ContentBean.DataBean> mList;
+    private List<InviteDetailListEntity.ContentBean.ListBean> mList;
 
-    public InviteDetailAdapter(Context context, List<InviteDetailListEntity.ContentBean.DataBean> list) {
+    public InviteDetailAdapter(Context context, List<InviteDetailListEntity.ContentBean.ListBean> list) {
         this.mContext = context;
         this.mList = list;
     }
 
     @NonNull
     @Override
-    public InviteDetailAdapter.DefaultViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(mContext).inflate(R.layout.item_bean_detail, parent, false);
+    public DefaultViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        View view = LayoutInflater.from(mContext).inflate(R.layout.item_invite_detail, parent, false);
         return new DefaultViewHolder(view);
     }
 
     @SuppressLint("SetTextI18n")
     @Override
-    public void onBindViewHolder(@NonNull InviteDetailAdapter.DefaultViewHolder holder, int position) {
-        final InviteDetailListEntity.ContentBean.DataBean item = mList.get(position);
-        holder.tv_title.setText(item.getComment());
-        holder.tv_time.setText(item.getAdd_time());
-        String number = "0";
-        if (item.getQuantity() > 0) {
-            number = "+" + item.getQuantity();
-        } else if (item.getQuantity() < 0) {
-            number = "" + item.getQuantity();
+    public void onBindViewHolder(@NonNull DefaultViewHolder holder, int position) {
+        final InviteDetailListEntity.ContentBean.ListBean item = mList.get(position);
+
+        holder.tv_detail.setText(item.getDescribe());
+        holder.tv_time.setText(item.getCreate_time());
+        //item.getType() 1：收入 2：支出
+        int num = 1;
+        try {
+            num = Integer.parseInt(item.getAmount());
+        } catch (NumberFormatException e) {
+            e.printStackTrace();
         }
-        holder.tv_num.setText(number);
+        //0不处理
+        if (0 == num) {
+            holder.tv_money.setText(item.getAmount());
+        } else {
+            holder.tv_money.setText(2 == item.getType() ? "-" + item.getAmount() : "+" + item.getAmount());
+        }
     }
 
     @Override
@@ -56,15 +63,15 @@ public class InviteDetailAdapter extends RecyclerView.Adapter<InviteDetailAdapte
     }
 
     public class DefaultViewHolder extends RecyclerView.ViewHolder {
-        TextView tv_title;
+        TextView tv_detail;
         TextView tv_time;
-        TextView tv_num;
+        TextView tv_money;
 
         public DefaultViewHolder(View itemView) {
             super(itemView);
-            tv_title = itemView.findViewById(R.id.tv_title);
+            tv_detail = itemView.findViewById(R.id.tv_detail);
             tv_time = itemView.findViewById(R.id.tv_time);
-            tv_num = itemView.findViewById(R.id.tv_num);
+            tv_money = itemView.findViewById(R.id.tv_money);
         }
     }
 }

@@ -160,6 +160,19 @@ public class UserAppConst {
     public static final String SOURCE = "SOURCE_THIRD";//第三方登录（qq wechat）
     public static SharedPreferences shared;
 
+    /**
+     * 我的 彩豆
+     */
+    public static final String BEAN_NUMBER = "bean_number";//彩豆数量
+    public static final String BEAN_SIGN = "bean_sign";//彩豆签到
+    public static final String BEAN_DUTY = "bean_duty";//彩豆任务
+
+    /**
+     * 邀请好友
+     */
+    public static final String INVITE_FRIEND = "invite_friend";//邀请好友数据
+    public static final String INVITE_INVITE = "invite_invite";//我的邀请
+
     public static com.user.protocol.USER getUser(Context context) {
         USER user = new USER();
         if (null != context) {
@@ -178,10 +191,4 @@ public class UserAppConst {
         return user;
     }
 
-    /**
-     * 我的 彩豆
-     */
-    public static final String BEAN_NUMBER = "bean_number";//彩豆数量
-    public static final String BEAN_SIGN = "bean_sign";//彩豆签到
-    public static final String BEAN_DUTY = "bean_duty";//彩豆任务
 }

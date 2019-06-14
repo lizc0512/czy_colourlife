@@ -71,7 +71,7 @@ public class OperationService extends Service {
             String channelId = Build.VERSION.SDK_INT >= Build.VERSION_CODES.O ? createNotificationChannel() : "";
             NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(this, channelId);
             Notification notification = notificationBuilder.setOngoing(true)
-                    .setSmallIcon(R.drawable.icon)
+                    .setSmallIcon(R.drawable.img_msg)
                     .setContentTitle("彩之云")
                     .setContentText("彩之云正在运行")
                     .setPriority(NotificationCompat.PRIORITY_MAX)

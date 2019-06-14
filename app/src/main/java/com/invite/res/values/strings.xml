@@ -26,5 +26,18 @@
     <string name="invite_title">彩之云合伙人</string>
     <string name="invite_activity">活动规则</string>
     <string name="invite_detail">收益明细</string>
+    <string name="invite_poster">保存海报</string>
+    <string name="invite_empty">暂无记录</string>
+
+    <string-array name="invite_invite">
+        <item>直接邀请</item>
+        <item>间接邀请</item>
+    </string-array>
+
+    <string-array name="invite_profit">
+        <item>已发放</item>
+        <item>待发放</item>
+        <item>已失效</item>
+    </string-array>
 
 </resources>

@@ -63,8 +63,6 @@
     <uses-permission
         android:name="android.permission.READ_LOGS"
         tools:ignore="ProtectedPermissions" />
-    <!--Android 8.0需添加 请求安装apk 权限-->
-    <!--<uses-permission android:name="android.permission.REQUEST_INSTALL_PACKAGES" />-->
 
     <uses-permission
         android:name="android.permission.CHANGE_CONFIGURATION"
@@ -1008,25 +1006,16 @@
             android:name="com.invite.activity.InviteFriendActivity"
             android:screenOrientation="portrait" />
 
-        <!-- 活动规则 -->
+        <!-- 明细，保存草稿页 -->
         <activity
-            android:name="com.invite.activity.InviteActivityActivity"
+            android:name="com.invite.activity.InviteDetailPoster"
             android:screenOrientation="portrait" />
 
-        <!-- 累计收益 -->
+        <!-- 我的邀请，累计收益 -->
         <activity
-            android:name="com.invite.activity.InviteProfitActivity"
-            android:screenOrientation="portrait" />
-
-        <!-- 我的邀请 -->
-        <activity
-            android:name="com.invite.activity.InviteMyActivity"
-            android:screenOrientation="portrait" />
-
-        <!-- 我的邀请 -->
-        <activity
-            android:name="com.invite.activity.InviteChangeActivity"
-            android:screenOrientation="portrait" />
+            android:name="com.invite.activity.InviteListActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.AppCompat"/>
 
         <!-- 房产详情 -->
         <activity

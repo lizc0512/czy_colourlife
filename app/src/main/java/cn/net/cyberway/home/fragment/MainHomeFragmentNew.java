@@ -1339,17 +1339,7 @@ public class MainHomeFragmentNew extends Fragment implements NewHttpResponse, My
         View inflate = View.inflate(getActivity(), R.layout.view_home_guide, null);
         tv_next = inflate.findViewById(R.id.tv_next);
         tv_next.setOnClickListener(this);
-        if (null == guideView) {
-            guideView = new GuideView.Builder(getActivity())
-                    .setTargetView(R.id.rl_local)
-                    .setHintView(inflate)
-                    .setHintViewDirection(GuideView.Direction.BOTTOM)
-                    .setmForm(GuideView.Form.ELLIPSE)
-                    .create();
-        }
-        if (!guideView.show()) {
-            rl_local.setVisibility(View.GONE);
-        }
+        guideView = HomeViewUtils.guideView(getActivity(), inflate, guideView, rl_local);
     }
 
     //提示设置手势密码的对话框  保留

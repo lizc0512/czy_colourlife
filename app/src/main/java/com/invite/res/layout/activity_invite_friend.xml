@@ -20,188 +20,188 @@
             android:background="@null"
             android:orientation="vertical">
 
-            <ImageView
-                android:layout_width="match_parent"
-                android:layout_height="235dp"
-                android:background="@drawable/bg_invite_l" />
-
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="-235dp"
-                android:background="@null"
-                android:orientation="horizontal">
+                android:layout_height="235dp"
+                android:background="@drawable/bg_invite_l"
+                android:orientation="vertical">
 
-                <TextView
-                    android:id="@+id/tv_activity"
-                    android:layout_width="0dp"
+                <LinearLayout
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:layout_marginStart="4dp"
-                    android:layout_marginLeft="4dp"
-                    android:layout_weight="1"
-                    android:drawableStart="@drawable/ic_invite_question"
-                    android:drawableLeft="@drawable/ic_invite_question"
-                    android:drawablePadding="6dp"
-                    android:padding="12dp"
-                    android:text="活动规则"
-                    android:textColor="@color/white"
-                    android:textSize="12sp" />
+                    android:background="@null"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/tv_activity"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_marginStart="4dp"
+                        android:layout_marginLeft="4dp"
+                        android:layout_weight="1"
+                        android:drawableStart="@drawable/ic_invite_question"
+                        android:drawableLeft="@drawable/ic_invite_question"
+                        android:drawablePadding="6dp"
+                        android:padding="12dp"
+                        android:text="活动规则"
+                        android:textColor="@color/white"
+                        android:textSize="12sp" />
+
+                    <TextView
+                        android:id="@+id/tv_detail"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_marginStart="150dp"
+                        android:layout_marginLeft="150dp"
+                        android:drawableStart="@drawable/ic_invite_detail"
+                        android:drawableLeft="@drawable/ic_invite_detail"
+                        android:drawablePadding="6dp"
+                        android:gravity="end"
+                        android:padding="12dp"
+                        android:text="收益明细"
+                        android:textColor="@color/white"
+                        android:textSize="12sp" />
+
+                </LinearLayout>
 
                 <TextView
-                    android:id="@+id/tv_detail"
+                    android:id="@+id/tv_all_profit"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:layout_marginStart="150dp"
-                    android:layout_marginLeft="150dp"
-                    android:drawableStart="@drawable/ic_invite_detail"
-                    android:drawableLeft="@drawable/ic_invite_detail"
-                    android:drawablePadding="6dp"
-                    android:gravity="end"
-                    android:padding="12dp"
-                    android:text="收益明细"
+                    android:drawableEnd="@drawable/ic_invite_more"
+                    android:drawableRight="@drawable/ic_invite_more"
+                    android:text="累计收益（元）"
                     android:textColor="@color/white"
-                    android:textSize="12sp" />
+                    android:textSize="14sp" />
 
-            </LinearLayout>
-
-            <TextView
-                android:id="@+id/tv_all_profit"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:drawableEnd="@drawable/ic_invite_more"
-                android:drawableRight="@drawable/ic_invite_more"
-                android:text="累计收益（元）"
-                android:textColor="@color/white"
-                android:textSize="14sp" />
-
-            <TextView
-                android:id="@+id/tv_avail_profit"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:text="1732.21"
-                android:textColor="@color/white"
-                android:textSize="36sp" />
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="120dp"
-                android:layout_marginTop="4dp"
-                android:background="@null"
-                android:orientation="horizontal">
-
-                <android.support.v7.widget.CardView
-                    android:id="@+id/cv_invite"
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
+                <TextView
+                    android:id="@+id/tv_avail_profit"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:layout_marginStart="16dp"
-                    android:layout_marginLeft="16dp"
-                    android:layout_marginTop="12dp"
-                    android:layout_marginEnd="8dp"
-                    android:layout_marginRight="8dp"
-                    android:layout_marginBottom="12dp"
-                    android:layout_weight="1"
-                    app:cardBackgroundColor="@color/white"
-                    app:cardCornerRadius="8dp"
-                    app:cardElevation="4dp">
+                    android:textColor="@color/white"
+                    android:textSize="36sp" />
 
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:background="@null"
-                        android:orientation="vertical">
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="120dp"
+                    android:layout_marginTop="4dp"
+                    android:background="@null"
+                    android:orientation="horizontal">
 
-                        <TextView
-                            android:layout_width="wrap_content"
+                    <android.support.v7.widget.CardView
+                        android:id="@+id/cv_invite"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_gravity="center"
+                        android:layout_marginStart="16dp"
+                        android:layout_marginLeft="16dp"
+                        android:layout_marginTop="12dp"
+                        android:layout_marginEnd="8dp"
+                        android:layout_marginRight="8dp"
+                        android:layout_marginBottom="12dp"
+                        android:layout_weight="1"
+                        app:cardBackgroundColor="@color/white"
+                        app:cardCornerRadius="8dp"
+                        app:cardElevation="4dp">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_gravity="center"
-                            android:layout_marginTop="8dp"
-                            android:gravity="center"
-                            android:text="我的邀请（人）"
-                            android:textColor="@color/black_text_color"
-                            android:textSize="16sp" />
+                            android:background="@null"
+                            android:orientation="vertical">
 
-                        <TextView
-                            android:id="@+id/tv_invite_num"
-                            android:layout_width="wrap_content"
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center"
+                                android:layout_marginTop="8dp"
+                                android:gravity="center"
+                                android:text="我的邀请（人）"
+                                android:textColor="@color/black_text_color"
+                                android:textSize="16sp" />
+
+                            <TextView
+                                android:id="@+id/tv_invite_num"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center"
+                                android:layout_marginTop="4dp"
+                                android:gravity="center"
+                                android:textColor="@color/grayred_text_color"
+                                android:textSize="14sp" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center"
+                                android:layout_marginTop="8dp"
+                                android:background="@drawable/shape_text_goto"
+                                android:gravity="center"
+                                android:text="立即前往"
+                                android:textColor="@color/white"
+                                android:textSize="14sp" />
+                        </LinearLayout>
+
+                    </android.support.v7.widget.CardView>
+
+                    <android.support.v7.widget.CardView
+                        android:id="@+id/cv_reward"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_gravity="center"
+                        android:layout_marginStart="8dp"
+                        android:layout_marginLeft="8dp"
+                        android:layout_marginTop="12dp"
+                        android:layout_marginEnd="16dp"
+                        android:layout_marginRight="16dp"
+                        android:layout_marginBottom="12dp"
+                        android:layout_weight="1"
+                        app:cardBackgroundColor="@color/white"
+                        app:cardCornerRadius="8dp"
+                        app:cardElevation="4dp">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_gravity="center"
-                            android:layout_marginTop="4dp"
-                            android:gravity="center"
-                            android:text="8"
-                            android:textColor="@color/grayred_text_color"
-                            android:textSize="14sp" />
+                            android:background="@null"
+                            android:orientation="vertical">
 
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center"
-                            android:layout_marginTop="8dp"
-                            android:background="@drawable/shape_text_goto"
-                            android:gravity="center"
-                            android:text="立即前往"
-                            android:textColor="@color/white"
-                            android:textSize="14sp" />
-                    </LinearLayout>
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center"
+                                android:layout_marginTop="8dp"
+                                android:gravity="center"
+                                android:text="及时奖励"
+                                android:textColor="@color/black_text_color"
+                                android:textSize="16sp" />
 
-                </android.support.v7.widget.CardView>
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="4dp"
+                                android:textSize="14sp"
+                                android:visibility="invisible" />
 
-                <android.support.v7.widget.CardView
-                    android:id="@+id/cv_change"
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_gravity="center"
-                    android:layout_marginStart="8dp"
-                    android:layout_marginLeft="8dp"
-                    android:layout_marginTop="12dp"
-                    android:layout_marginEnd="16dp"
-                    android:layout_marginRight="16dp"
-                    android:layout_marginBottom="12dp"
-                    android:layout_weight="1"
-                    app:cardBackgroundColor="@color/white"
-                    app:cardCornerRadius="8dp"
-                    app:cardElevation="4dp">
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center"
+                                android:layout_marginTop="8dp"
+                                android:background="@drawable/shape_text_goto"
+                                android:gravity="center"
+                                android:text="立即前往"
+                                android:textColor="@color/white"
+                                android:textSize="14sp" />
+                        </LinearLayout>
 
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:background="@null"
-                        android:orientation="vertical">
+                    </android.support.v7.widget.CardView>
 
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center"
-                            android:layout_marginTop="8dp"
-                            android:gravity="center"
-                            android:text="收益兑换"
-                            android:textColor="@color/black_text_color"
-                            android:textSize="16sp" />
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="4dp"
-                            android:textSize="14sp"
-                            android:visibility="invisible" />
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center"
-                            android:layout_marginTop="8dp"
-                            android:background="@drawable/shape_text_goto"
-                            android:gravity="center"
-                            android:text="立即前往"
-                            android:textColor="@color/white"
-                            android:textSize="14sp" />
-                    </LinearLayout>
-
-                </android.support.v7.widget.CardView>
+                </LinearLayout>
 
             </LinearLayout>
 
@@ -223,6 +223,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
+                android:layout_marginBottom="56dp"
                 android:background="@null"
                 android:orientation="horizontal">
 
