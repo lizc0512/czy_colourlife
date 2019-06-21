@@ -130,7 +130,6 @@
     </RelativeLayout>
 
 
-
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="44dp"
@@ -161,10 +160,10 @@
             android:layout_centerVertical="true"
             android:layout_marginRight="15dp"
             android:layout_toLeftOf="@id/sb_open_wechat"
-            android:visibility="gone"
             android:text="秦先生"
             android:textColor="@color/black_text_color"
-            android:textSize="16sp" />
+            android:textSize="16sp"
+            android:visibility="gone" />
 
     </RelativeLayout>
 
@@ -206,10 +205,50 @@
             android:layout_centerVertical="true"
             android:layout_marginRight="15dp"
             android:layout_toLeftOf="@id/sb_open_qq"
-            android:visibility="gone"
             android:text="未绑定"
+            android:textColor="@color/black_text_color"
+            android:textSize="16sp"
+            android:visibility="gone" />
+
+    </RelativeLayout>
+
+
+    <RelativeLayout
+        android:id="@+id/logout_phone_layout"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:layout_marginTop="8dp"
+        android:background="@color/white">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_marginLeft="15dp"
+            android:layout_marginTop="10dp"
+            android:text="注销手机号"
             android:textColor="@color/black_text_color"
             android:textSize="16sp" />
 
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_marginLeft="15dp"
+            android:layout_marginBottom="10dp"
+            android:text="提交申请，删除所有数据，永久注销彩之云账号"
+            android:textColor="@color/black_text_color"
+            android:textSize="12sp" />
+
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="15dp"
+            android:src="@drawable/icon_arrow" />
     </RelativeLayout>
+
+
 </LinearLayout>

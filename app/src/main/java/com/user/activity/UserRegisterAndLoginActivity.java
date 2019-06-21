@@ -373,7 +373,6 @@ public class UserRegisterAndLoginActivity extends BaseActivity implements OnClic
             Intent intent = new Intent(UserRegisterAndLoginActivity.this, UnlockGesturePasswordActivity.class);
             startActivity(intent);
             overridePendingTransition(R.anim.push_right_in, R.anim.push_right_out);
-            finish();
         } else if (Constants.GESTURE_PWD_SET_AND_DISABLED.equals(setGesturePawd)) {
             // 手势密码已设置且关闭，弹出提示框
             String tips = getResources().getString(R.string.user_unopen_gesturepswd);

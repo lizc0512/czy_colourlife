@@ -55,6 +55,7 @@ public class UserAccountSaftyActivity extends BaseActivity implements View.OnCli
     private RelativeLayout gesture_pwd_layout;
     private RelativeLayout pay_pswd_layout;
     private RelativeLayout change_mobile_layout;
+    private RelativeLayout logout_phone_layout;
     private String changeMobileUrl;
     private int is_show = 0;
     private LinearLayout set_pwd_layout;
@@ -80,6 +81,7 @@ public class UserAccountSaftyActivity extends BaseActivity implements View.OnCli
         gesture_pwd_layout = findViewById(R.id.gesture_pwd_layout);
         pay_pswd_layout = findViewById(R.id.pay_pswd_layout);
         change_mobile_layout = findViewById(R.id.change_mobile_layout);
+        logout_phone_layout = findViewById(R.id.logout_phone_layout);
         set_pwd_layout = findViewById(R.id.set_pwd_layout);  //为设置密码显示
         sb_open_qq = findViewById(R.id.sb_open_qq);
         sb_open_wechat = findViewById(R.id.sb_open_wechat);
@@ -89,6 +91,7 @@ public class UserAccountSaftyActivity extends BaseActivity implements View.OnCli
         gesture_pwd_layout.setOnClickListener(this);
         pay_pswd_layout.setOnClickListener(this);
         change_mobile_layout.setOnClickListener(this);
+        logout_phone_layout.setOnClickListener(this);
         set_pwd_layout.setOnClickListener(this);
         //忘记手势密码  有登录密码验证登录密码   没有就通过短信验证码的方式进行
         sb_open_qq.setOnStateChangedListener(new SwitchButton.OnStateChangedListener() {
@@ -165,6 +168,9 @@ public class UserAccountSaftyActivity extends BaseActivity implements View.OnCli
                 if (!TextUtils.isEmpty(changeMobileUrl)) {
                     LinkParseUtil.parse(UserAccountSaftyActivity.this, changeMobileUrl, "");
                 }
+                break;
+            case R.id.logout_phone_layout:
+
                 break;
         }
     }

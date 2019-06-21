@@ -103,7 +103,6 @@ public class ProfileFragment extends Fragment implements View.OnClickListener, I
         }
         prepareView();
         initData();
-        initTotals();
         return mView;
     }
 
@@ -209,22 +208,6 @@ public class ProfileFragment extends Fragment implements View.OnClickListener, I
         }
     }
 
-    /**
-     * 初始化饭票和个人最下一个栏目
-     */
-    private void initTotals() {
-        lv_myprofile_info.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                String linkUrl = list.get(position).url;
-                try {
-                    LinkParseUtil.parse(getActivity(), linkUrl, list.get(position).name);
-                } catch (IllegalArgumentException e) {
-
-                }
-            }
-        });
-    }
 
     private void prepareView() {
         millis = 500;
@@ -246,6 +229,15 @@ public class ProfileFragment extends Fragment implements View.OnClickListener, I
         rl_profile_info.setOnClickListener(this);
         TCAgent.onEvent(getActivity(), "203001");
         ListenerUtils.setCallBack(this);
+        lv_myprofile_info.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                if (position >= 0) {
+                    OPTIONSDATA optionsdata = list.get(position);
+                    LinkParseUtil.parse(getActivity(), optionsdata.url, optionsdata.name);
+                }
+            }
+        });
     }
 
     @Override

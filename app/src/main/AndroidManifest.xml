@@ -645,6 +645,7 @@
 
         <activity
             android:name="com.user.activity.UserIdentityLoginActivity"
+            android:launchMode="singleTop"
             android:screenOrientation="portrait"
             android:theme="@style/AppResultTheme"
             android:windowSoftInputMode="adjustPan" />
