@@ -2,11 +2,9 @@ package com.user.model;
 
 import android.content.Context;
 import android.os.Handler;
-import android.os.Message;
 import android.text.TextUtils;
 
 import com.BeeFramework.model.BaseModel;
-import com.external.eventbus.EventBus;
 import com.nohttp.utils.CallServer;
 import com.nohttp.utils.HttpListener;
 import com.nohttp.utils.RequestEncryptionUtils;
@@ -24,8 +22,6 @@ import org.json.JSONObject;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-import static com.user.UserMessageConstant.SQUEEZE_OUT;
 
 /**
  * @name ${yuansk}
@@ -86,52 +82,58 @@ public class RefreshTokenModel extends BaseModel {
                                                 callServer.getRequestMap().get(j), callServer.getRequestLister().get(j),
                                                 callServer.getRequestCancel().get(j), callServer.getRequestLoading().get(j));
                                     }
+                                    callServer.clearAllQuest();
                                 } else {
-                                    tokenInvaildLoginOut(result);
+                                    againRequsetAgain();
                                 }
                             } catch (JSONException e) {
                                 e.printStackTrace();
-                                tokenInvaildLoginOut(result);
+                                againRequsetAgain();
                             }
                         } else {
-                            tokenInvaildLoginOut(result);
+                            againRequsetAgain();
                         }
                     } else {
-                        tokenInvaildLoginOut(result);
+                        againRequsetAgain();
                     }
                 }
 
                 @Override
                 public void onFailed(int what, Response<String> response) {
-                    tokenInvaildLoginOut("");
+                    againRequsetAgain();
                 }
             }, true, false);
         }
     }
 
 
-    private void tokenInvaildLoginOut(String result) {
-        new Handler().postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                boolean refreshStatus = shared.getBoolean(UserAppConst.Colour_refresh_status, false);
-                if (!refreshStatus) {
-                    editor.putBoolean(UserAppConst.IS_LOGIN, false);
-                    editor.putBoolean(UserAppConst.Colour_refresh_status, false);
-                    editor.apply();
-                    Message msg = android.os.Message.obtain();
-                    msg.what = SQUEEZE_OUT;
-                    try {
-                        JSONObject jsonObject = new JSONObject(result);
-                        if (!jsonObject.isNull("message")) {
-                            msg.obj = jsonObject.optString("message");
+    private <T> void againRequsetAgain() {
+        CallServer callServer = CallServer.getInstance();
+        List<Integer> requestWhatList = callServer.getRequestWhat();
+        for (int j = 0; j < requestWhatList.size(); j++) {
+            int what = requestWhatList.get(j);
+            Request<T> request = callServer.getRequestList().get(j);
+            Map<String, Object> paramsMap = callServer.getRequestMap().get(j);
+            boolean canCancel = callServer.getRequestCancel().get(j);
+            boolean isLoading = callServer.getRequestLoading().get(j);
+            HttpListener httpListener = callServer.getRequestLister().get(j);
+            new Handler().postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    boolean refreshStatus = shared.getBoolean(UserAppConst.Colour_refresh_status, false);
+                    int waitSize = requestWhatList.size();
+                    if (waitSize != 0) {  //单个刷新refrshtoken失败
+                        if (refreshStatus) {  //根据队列去隔5秒进行轮询请求
+                            request(what, request, paramsMap, httpListener, canCancel, isLoading);
+                            callServer.deleteSendRequsetDelete(what, request, paramsMap, httpListener, canCancel, isLoading);
+                        } else {
+                            NewUserModel newUserModel = new NewUserModel(mContext);
+                            newUserModel.refreshAuthToken(what, request, paramsMap, httpListener, canCancel, isLoading);
                         }
-                    } catch (JSONException e) {
-                        e.printStackTrace();
                     }
-                    EventBus.getDefault().post(msg);
                 }
-            }
-        }, 300000);
+            }, 5000 * j);
+        }
     }
 }
+

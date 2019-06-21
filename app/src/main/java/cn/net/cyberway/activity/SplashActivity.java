@@ -15,8 +15,6 @@ import android.widget.TextView;
 import com.BeeFramework.model.HttpApi;
 import com.BeeFramework.model.HttpApiResponse;
 import com.BeeFramework.model.NewHttpResponse;
-import com.chuanglan.shanyan_sdk.OneKeyLoginManager;
-import com.chuanglan.shanyan_sdk.listener.GetPhoneInfoListener;
 import com.nohttp.utils.GlideImageLoader;
 import com.update.activity.UpdateVerSion;
 import com.user.UserAppConst;
@@ -27,7 +25,7 @@ import org.json.JSONObject;
 import cn.net.cyberway.R;
 import cn.net.cyberway.model.SplashModel;
 import cn.net.cyberway.model.ThemeModel;
-import cn.net.cyberway.utils.ConfigUtils;
+
 
 /**
  * 欢迎页
@@ -53,6 +51,7 @@ public class SplashActivity extends Activity implements HttpApiResponse, NewHttp
         splashModel = new SplashModel(this);
         themeModel = new ThemeModel(this);
         splashModel.getStartImage(1, this);
+        splashModel.getOneKeyShow();
         themeModel.getTheme(0, this);
         ad = (ImageView) findViewById(R.id.ad);
         cancel = (TextView) findViewById(R.id.cancel);
@@ -98,15 +97,6 @@ public class SplashActivity extends Activity implements HttpApiResponse, NewHttp
         });
         timeCount = new TimeCount(delayTime, 1000);
         timeCount.start();
-        if (!shared.getBoolean(UserAppConst.IS_LOGIN, false)) {
-            OneKeyLoginManager.getInstance().setAuthThemeConfig(ConfigUtils.getCJSConfig(getApplicationContext()));
-            OneKeyLoginManager.getInstance().getPhoneInfo(new GetPhoneInfoListener() {
-                @Override
-                public void getPhoneInfoStatus(int code, String result) {
-
-                }
-            });
-        }
 
     }
 

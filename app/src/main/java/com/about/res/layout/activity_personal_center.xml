@@ -6,67 +6,87 @@
     <ImageView
         android:id="@+id/icon_my_background"
         android:layout_width="match_parent"
-        android:layout_height="174dp"
+        android:layout_height="155dp"
         android:background="@color/white"
         android:scaleType="fitXY"
         android:src="@drawable/icon_my_background" />
 
-    <ImageView
-        android:id="@+id/my_qrcode_image"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentRight="true"
-        android:paddingTop="20dp"
-        android:paddingRight="15dp"
-        android:src="@drawable/icon_my_code" />
 
-    <RelativeLayout
-        android:id="@+id/rl_profile_info"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true">
+    <LinearLayout
+        android:id="@+id/center_menu_layout"
+        android:layout_width="match_parent"
+        android:layout_height="155dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginTop="86dp"
+        android:layout_marginRight="16dp"
+        android:background="@drawable/shape_manager_border"
+        android:orientation="vertical">
 
-        <cn.net.cyberway.home.view.CircleImageView
-            android:id="@+id/profile_head_img"
-            android:layout_width="80dp"
-            android:layout_height="80dp"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="20dp"
-            android:src="@drawable/icon_my_tx"
-            app:civ_border_color="@color/white"
-            app:civ_border_width="1dp" />
 
-        <TextView
-            android:id="@+id/profile_username"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/profile_head_img"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="7dp"
-            android:gravity="center"
-            android:text="昵称"
-            android:textColor="@color/white"
-            android:textSize="16dp" />
+        <RelativeLayout
+            android:id="@+id/rl_profile_info"
+            android:layout_width="match_parent"
+            android:layout_height="70dp">
 
-        <TextView
-            android:id="@+id/profile_community"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/profile_username"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="4dp"
-            android:layout_marginBottom="4dp"
-            android:gravity="center"
-            android:text="彩悦大厦"
-            android:textColor="@color/white"
-            android:textSize="13dp" />
-    </RelativeLayout>
+            <cn.net.cyberway.home.view.CircleImageView
+                android:id="@+id/profile_head_img"
+                android:layout_width="45dp"
+                android:layout_height="45dp"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="18dp"
+                android:src="@drawable/icon_my_tx"
+                app:civ_border_color="@color/white"
+                app:civ_border_width="1dp" />
+
+            <TextView
+                android:id="@+id/profile_username"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignTop="@id/profile_head_img"
+                android:layout_marginLeft="10dp"
+                android:layout_toRightOf="@id/profile_head_img"
+                android:text="寻静之梦"
+                android:textColor="@color/color_25282e"
+                android:textSize="16sp" />
+
+
+            <TextView
+                android:id="@+id/profile_community"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignBottom="@id/profile_head_img"
+                android:layout_marginLeft="10dp"
+                android:layout_toRightOf="@id/profile_head_img"
+                android:text="彩悦大厦"
+                android:textColor="@color/color_909399"
+                android:textSize="14dp" />
+
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="16dp"
+                android:background="@drawable/arrow_right" />
+
+        </RelativeLayout>
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/rv_property_menu"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="10dp" />
+
+
+    </LinearLayout>
+
 
     <com.feed.view.NoScrollListView
         android:id="@+id/lv_myprofile_info"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@id/rl_profile_info"
+        android:layout_below="@id/center_menu_layout"
         android:layout_marginBottom="25dp"
         android:divider="@null"
         android:scrollbars="none" />

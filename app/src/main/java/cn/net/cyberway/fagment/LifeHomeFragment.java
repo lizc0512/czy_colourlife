@@ -2,6 +2,7 @@ package cn.net.cyberway.fagment;
 
 
 import android.content.SharedPreferences;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Message;
 import android.support.v4.app.Fragment;
@@ -47,7 +48,6 @@ import java.util.List;
 
 import cn.csh.colourful.life.listener.OnItemClickListener;
 import cn.net.cyberway.R;
-import cn.net.cyberway.activity.MainActivity;
 import cn.net.cyberway.adpter.HomeMoreCellAdapter;
 import cn.net.cyberway.adpter.LifeHomeRVAdapter;
 import cn.net.cyberway.adpter.RecentlyUsedServiceAdapter;
@@ -56,6 +56,8 @@ import cn.net.cyberway.home.model.NewHomeModel;
 import cn.net.cyberway.home.view.AuthDialog;
 import cn.net.cyberway.protocol.HomeLifeEntity;
 import cn.net.cyberway.utils.LinkParseUtil;
+
+import static com.youmai.hxsdk.utils.DisplayUtil.getStatusBarHeight;
 
 /**
  * 生活页面
@@ -134,9 +136,17 @@ public class LifeHomeFragment extends Fragment implements IXListViewListener, Ne
         }
     }
 
+    private void setTabViewHeight(View tabBarView) {
+        RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, getStatusBarHeight(getActivity()));
+        tabBarView.setLayoutParams(layoutParams);
+    }
+
     private void initView() {
         myView = LayoutInflater.from(getActivity()).inflate(R.layout.life_more, null);
         xListView = (XListView) mView.findViewById(R.id.life_home_list);
+        View life_tabbar_view = mView.findViewById(R.id.life_tabbar_view);
+        life_tabbar_view.setBackgroundColor(Color.parseColor("#ffffff"));
+        setTabViewHeight(life_tabbar_view);
         xListView.setAdapter(null);
         xListView.setPullRefreshEnable(true);
         xListView.loadMoreHide();
@@ -422,14 +432,14 @@ public class LifeHomeFragment extends Fragment implements IXListViewListener, Ne
             TCAgent.onPageEnd(getActivity(), "新彩富人生");
             editor.putString("CurrentLinkUrl", "").commit();
         }
-        ((MainActivity) getActivity()).changeStyle();
+//        ((MainActivity) getActivity()).changeStyle();
     }
 
     @Override
     public void onHiddenChanged(boolean hidden) {
         super.onHiddenChanged(hidden);
         if (!hidden) {
-            ((MainActivity) getActivity()).changeStyle();
+//            ((MainActivity) getActivity()).changeStyle();
         } else {
             saveRecentlyCache();
         }

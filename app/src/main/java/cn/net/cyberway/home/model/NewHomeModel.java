@@ -30,6 +30,7 @@ public class NewHomeModel extends BaseModel {
     private String homeMsgReadgUrl = "app/home/msg/setMsgRead";
     private String homeModuleBannerUrl = "app/home/v5/getBanner";
     private String homeModelActivityUrl = "app/home/v5/getAdMsgByView";
+    private String homeModelNewAdMsgUrl = "app/home/v5/getNewAdMsg";
     private String homeBeanSignIn = "integral/user/getPopup";
     private String homeBeanSignUrl = "integral/user/getSignIn";
     private String SignInUrl = "v5/isManager";
@@ -328,6 +329,34 @@ public class NewHomeModel extends BaseModel {
     public void getHomeModelActivity(int what, final NewHttpResponse newHttpResponse) {
         final Request<String> request = NoHttp.createStringRequest(
                 RequestEncryptionUtils.getCombileMD5(mContext, 1, homeModelActivityUrl, null), RequestMethod.GET);
+        request(what, request, null, new HttpListener<String>() {
+            @Override
+            public void onSucceed(int what, Response<String> response) {
+                int responseCode = response.getHeaders().getResponseCode();
+                String result = response.get();
+                if (responseCode == RequestEncryptionUtils.responseSuccess) {
+                    int code = showSuccesResultMessageTheme(result);
+                    if (code == 0) {
+                        newHttpResponse.OnHttpResponse(what, result);
+                        editor.putString(UserAppConst.COLOR_HOME_ACTIVITY, result).apply();
+                    } else {
+                        newHttpResponse.OnHttpResponse(what, "");
+                    }
+                } else {
+                    newHttpResponse.OnHttpResponse(what, "");
+                }
+            }
+
+            @Override
+            public void onFailed(int what, Response<String> response) {
+                newHttpResponse.OnHttpResponse(what, "");
+            }
+        }, true, false);
+    }
+
+    public void getHomeNewAdMsgActivity(int what, final NewHttpResponse newHttpResponse) {
+        final Request<String> request = NoHttp.createStringRequest(
+                RequestEncryptionUtils.getCombileMD5(mContext, 1, homeModelNewAdMsgUrl, null), RequestMethod.GET);
         request(what, request, null, new HttpListener<String>() {
             @Override
             public void onSucceed(int what, Response<String> response) {

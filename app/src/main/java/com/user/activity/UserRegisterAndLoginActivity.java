@@ -28,6 +28,8 @@ import com.BeeFramework.activity.BaseActivity;
 import com.BeeFramework.model.Constants;
 import com.BeeFramework.model.NewHttpResponse;
 import com.BeeFramework.view.ClearEditText;
+import com.chuanglan.shanyan_sdk.OneKeyLoginManager;
+import com.chuanglan.shanyan_sdk.listener.GetPhoneInfoListener;
 import com.eparking.helper.CustomDialog;
 import com.external.eventbus.EventBus;
 import com.gesturepwd.activity.UnlockGesturePasswordActivity;
@@ -55,6 +57,7 @@ import java.util.Map;
 
 import cn.net.cyberway.OauthWebviewActivity;
 import cn.net.cyberway.R;
+import cn.net.cyberway.utils.ConfigUtils;
 import cn.sharesdk.framework.Platform;
 import cn.sharesdk.framework.PlatformActionListener;
 import cn.sharesdk.framework.PlatformDb;
@@ -141,12 +144,20 @@ public class UserRegisterAndLoginActivity extends BaseActivity implements OnClic
             user_login_phone.setText(mobile);
             user_login_phone.setSelection(mobile.length());
         }
-        setGesturePawd = shared.getString(UserAppConst.Colour_login_mobile + UserAppConst.GESTURE_OPENED, "");
-        if (Constants.GESTURE_PWD_SET_AND_ENABLED.equals(setGesturePawd) && mobile.length() == 11 && !fromThridSource) {
-            Intent intent = new Intent(UserRegisterAndLoginActivity.this, UnlockGesturePasswordActivity.class);
-            startActivity(intent);
-            finish();
+        String oneKeyShow = shared.getString(UserAppConst.COLOUR_ONEKEY_SHOW, "1");
+        boolean isLogin = shared.getBoolean(UserAppConst.IS_LOGIN, false);
+        if ("1".equals(oneKeyShow) && !isLogin) {
+            OneKeyLoginManager.getInstance().getPhoneInfo(new GetPhoneInfoListener() {
+                @Override
+                public void getPhoneInfoStatus(int code, String result) {
+                    if (1022 == code) {
+                        OneKeyLoginManager.getInstance().setAuthThemeConfig(ConfigUtils.getCJSConfig(UserRegisterAndLoginActivity.this));
+                        new ConfigUtils(UserRegisterAndLoginActivity.this).jumpOneKeyLogin();
+                    }
+                }
+            });
         }
+
     }
 
     @Override
@@ -244,10 +255,10 @@ public class UserRegisterAndLoginActivity extends BaseActivity implements OnClic
         }
         if (!TextUtils.isEmpty(mobile) && 11 == mobile.length() && !TextUtils.isEmpty(password)) {
             user_login_btn.setEnabled(true);
-            user_login_btn.setBackgroundResource(R.drawable.rect_round_blue);
+            user_login_btn.setBackgroundResource(R.drawable.onekey_login_bg);
         } else {
             user_login_btn.setEnabled(true);
-            user_login_btn.setBackgroundResource(R.drawable.rect_round_gray);
+            user_login_btn.setBackgroundResource(R.drawable.onekey_login_default_bg);
         }
     }
 
@@ -311,7 +322,6 @@ public class UserRegisterAndLoginActivity extends BaseActivity implements OnClic
                     }
                     startActivity(verifyIntent);
                 }
-                finish();
                 break;
         }
     }

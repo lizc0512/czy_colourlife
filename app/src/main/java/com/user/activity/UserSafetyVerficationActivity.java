@@ -21,26 +21,19 @@ import com.BeeFramework.model.NewHttpResponse;
 import com.BeeFramework.view.MyProgressDialog;
 import com.geetest.deepknow.DPAPI;
 import com.geetest.deepknow.bean.DPJudgementBean;
-import com.geetest.sensebot.SEAPI;
-import com.geetest.sensebot.listener.BaseSEListener;
-import com.nohttp.entity.BaseContentEntity;
-import com.nohttp.utils.GsonUtils;
-import com.nohttp.utils.RequestEncryptionUtils;
-import com.user.Utils.TokenUtils;
-import com.user.entity.CheckGatewayEntity;
-import com.user.entity.LoginVerifyEntity;
-import com.user.model.TokenModel;
 import com.geetest.onepassv2.OnePassHelper;
 import com.geetest.onepassv2.listener.OnePassListener;
+import com.geetest.sensebot.SEAPI;
+import com.geetest.sensebot.listener.BaseSEListener;
+import com.nohttp.utils.GsonUtils;
+import com.user.entity.LoginVerifyEntity;
+import com.user.model.TokenModel;
 
 import org.json.JSONObject;
 
 import java.util.HashMap;
-import java.util.Map;
 
 import cn.net.cyberway.R;
-
-import static com.BeeFramework.model.Constants.GOP_VERIFYURL;
 
 /**
  * @name ${yuansk}

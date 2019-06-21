@@ -8,8 +8,8 @@ android {
         applicationId "cn.net.cyberway"
         minSdkVersion MIN_SDK_VERSION as int
         targetSdkVersion TARGET_SDK_VERSION as int
-        versionCode 84
-        versionName "6.6.10.1"
+        versionCode 86
+        versionName "6.6.12"
         multiDexEnabled true
         javaCompileOptions {
             annotationProcessorOptions {
@@ -158,6 +158,9 @@ dependencies {
     implementation('com.alibaba.android:ultraviewpager:1.0.7.7@aar') {
         transitive = true
     }
+    compile ('com.alibaba.android:vlayout:1.2.8@aar') {
+        transitive = true
+    }
     implementation 'com.yanzhenjie:recyclerview-swipe:1.1.4'
     implementation(name: 'geetest_deepknow_android_v0.3.8', ext: 'aar')
     implementation(name: 'geetest_sensebot_android_v0.1.3', ext: 'aar')
@@ -197,6 +200,7 @@ dependencies {
     implementation(name: 'lekai-open-sdk', ext: 'aar')
     //数位场景识别 保留
 //    implementation files('libs/location_sdk_batman_x-release-3.2.0.jar')
+
 }
 
 project.afterEvaluate {

@@ -91,4 +91,25 @@ public class CallServer {
     public List<HttpListener> getRequestLister() {
         return requestLister;
     }
+
+    public <T> void deleteSendRequsetDelete(int what, Request<T> request, Map<String, Object> paramsMap, HttpListener<T> callback, boolean canCancel, boolean
+            isLoading) { //轮询刷新成功删除已经发起的请求
+        requestWhat.remove((Object) what);
+        requestList.remove(request);
+        requestMap.remove(paramsMap);
+        requestLister.remove(callback);
+        requestCancel.remove(canCancel);
+        requestLoading.remove(isLoading);
+    }
+
+    public void clearAllQuest() {  //单个刷新成功清除队列
+        requestWhat.clear();
+        requestList.clear();
+        requestMap.clear();
+        requestLister.clear();
+        requestCancel.clear();
+        requestLoading.clear();
+    }
+
+
 }

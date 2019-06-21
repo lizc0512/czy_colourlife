@@ -20,6 +20,7 @@ public class UserAppConst {
     public static final String USER = "user";
     public static final String ADDRESSLISTCACHE = "addresslistcache";//改版地址的缓存
     public static final String MYPAGELIST = "mypagelist";
+    public static final String MYPAGESUBMENU ="mypagesubmenu";
     public static final String NEWHOMEMANAGER = "newhomwmanager";
     public static final String SYSTEMMESSAGE = "systemmessage";
     public static final String SHOPMESSAGE = "shopmessage";
@@ -40,17 +41,16 @@ public class UserAppConst {
     public static final String Colour_token_type = "colorLifeTokenType";
     public static final String Colour_expires_in = "colorLifeExpiresIn";
     public static final String Colour_get_time = "lastTime";
+    public static final String COLOUR_ONEKEY_SHOW= "colour_onekey_show";
+
     /****auth2.0的参数*****/
     public static final String Colour_mDeviceID = "Colour_mDeviceID";   //极光推送唯一码
     public static final String Colour_token = "Colour_token";   //检验登录的唯一性时用到的token
     public static final String Colour_login_info = "Colour_login_info";
     public static final String Colour_login_mobile = "Colour_login_mobile";
-    public static final String Colour_set_gesture = "Colour_set_gesture";//是否设置手势密码
     public static final String Colour_set_password = "Colour_set_password";//是否设置登录密码
     public static final String Colour_login_password = "Colour_login_password";
     public static final String Colour_login_gesture_password = "Colour_login_password";//手势密码
-    public static final String Temp_login_key = "Temp_login_key";
-    public static final String Temp_login_secret = "Temp_login_secret";
 //    public static final String COLOUR_ACTIVITY_DIALOG = "colour_is_dialog";//首页是否有弹窗
     public static final String COLOUR_BEAN_SIGN_POINT = "colour_bean_sign_point";//我的任务（彩豆）是否有小红点
 

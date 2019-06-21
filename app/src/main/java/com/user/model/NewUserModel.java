@@ -12,11 +12,13 @@ import com.BeeFramework.Utils.Utils;
 import com.BeeFramework.model.BaseModel;
 import com.BeeFramework.model.NewHttpResponse;
 import com.external.eventbus.EventBus;
+import com.nohttp.utils.CallServer;
 import com.nohttp.utils.GsonUtils;
 import com.nohttp.utils.HttpListener;
 import com.nohttp.utils.RequestEncryptionUtils;
 import com.user.UserAppConst;
 import com.user.Utils.TokenUtils;
+import com.user.entity.OneKeyShowEntity;
 import com.user.entity.UserInformationEntity;
 import com.user.protocol.AuthTokenApi;
 import com.user.protocol.AuthTokenRequest;
@@ -469,6 +471,8 @@ public class NewUserModel extends BaseModel {
                                 editor.putLong(UserAppConst.Colour_get_time, System.currentTimeMillis());
                                 editor.commit();
                                 request(requestWhat, request, paramsMap, callback, canCancel, isLoading);
+                                CallServer callServer = CallServer.getInstance();
+                                callServer.deleteSendRequsetDelete(what, request, paramsMap, callback, canCancel, isLoading);
                             } else {
                                 tokenInvaildLoginOut(result);
                             }
@@ -1522,27 +1526,74 @@ public class NewUserModel extends BaseModel {
     }
 
 
-    public void oneKeyLoginByBlue(int what, String identifySign, final NewHttpResponse newHttpResponse) {
+    public void oneKeyLoginByBlue(int what, String flash_data, final NewHttpResponse newHttpResponse) {
         Map<String, Object> params = new HashMap<>();
-        params.put("identifySign", identifySign);
-        final Request<String> request = NoHttp.createStringRequest(RequestEncryptionUtils.postCombileMD5(mContext, 6, oneKeyLoginUrl), RequestMethod.POST);
-        request(what, request, null, new HttpListener<String>() {
+        params.put("client_id", 2);
+        params.put("client_secret", "oy4x7fSh5RI4BNc78UoV4fN08eO5C4pj0daM0B8M");
+        params.put("grant_type", "password");
+        params.put("flash_data", flash_data);
+        params.put("password", "1");
+        params.put("username", "1");
+        params.put("type", 7);
+        String basePath = "/oauth/token";
+        final Request<String> request_oauthRegister = NoHttp.createStringRequest(RequestEncryptionUtils.postCombileMD5(mContext, 1, basePath), RequestMethod.POST);
+        request(what, request_oauthRegister, params, new HttpListener<String>() {
             @Override
             public void onSucceed(int what, Response<String> response) {
                 int responseCode = response.getHeaders().getResponseCode();
                 String result = response.get();
                 if (responseCode == RequestEncryptionUtils.responseSuccess) {
-                    int resultCode = showSuccesResultMessageTheme(result);
-                    if (resultCode == 0) {
-                        newHttpResponse.OnHttpResponse(what, result);
+                    JSONObject jsonObject = showSuccesCodeMessage(result);
+                    if (null != jsonObject) {
+                        AuthTokenResponse authTokenResponse = new AuthTokenResponse();
+                        try {
+                            authTokenResponse.fromJson(jsonObject);
+                            if (!TextUtils.isEmpty(authTokenResponse.access_token)) {
+                                editor.putBoolean(UserAppConst.IS_LOGIN, true);
+                                editor.putString(UserAppConst.Colour_access_token, authTokenResponse.access_token);
+                                editor.putString(UserAppConst.Colour_refresh_token, authTokenResponse.refresh_token);
+                                editor.putLong(UserAppConst.Colour_expires_in, Long.valueOf(authTokenResponse.expires_in));
+                                editor.putString(UserAppConst.Colour_token_type, authTokenResponse.token_type);
+                                editor.putLong(UserAppConst.Colour_get_time, System.currentTimeMillis());
+                                editor.commit();
+                                newHttpResponse.OnHttpResponse(what, result);
+                            } else {
+                                editor.putBoolean(UserAppConst.IS_LOGIN, false);
+                                editor.commit();
+                                newHttpResponse.OnHttpResponse(what, "");
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                            editor.putBoolean(UserAppConst.IS_LOGIN, false);
+                            editor.commit();
+                            newHttpResponse.OnHttpResponse(what, "");
+                        }
+                    } else {
+                        editor.putBoolean(UserAppConst.IS_LOGIN, false);
+                        editor.commit();
+                        newHttpResponse.OnHttpResponse(what, "");
                     }
+                } else if (responseCode == RequestEncryptionUtils.responseRequest) {
+                    editor.putBoolean(UserAppConst.IS_LOGIN, false);
+                    editor.commit();
+                    showErrorCodeMessage(responseCode, response);
+                    newHttpResponse.OnHttpResponse(what, "");
+                } else {
+                    editor.putBoolean(UserAppConst.IS_LOGIN, false);
+                    editor.commit();
+                    showErrorCodeMessage(responseCode, response);
+                    newHttpResponse.OnHttpResponse(what, "");
                 }
             }
 
             @Override
             public void onFailed(int what, Response<String> response) {
+                editor.putBoolean(UserAppConst.IS_LOGIN, false);
+                editor.commit();
+                showExceptionMessage(what, response);
                 newHttpResponse.OnHttpResponse(what, "");
             }
         }, true, false);
     }
+
 }

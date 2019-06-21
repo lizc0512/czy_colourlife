@@ -77,7 +77,6 @@ import cn.net.cyberway.home.entity.PopMessageEntity;
 import cn.net.cyberway.home.entity.PushNotificationEntity;
 import cn.net.cyberway.home.fragment.MainHomeFragmentNew;
 import cn.net.cyberway.home.fragment.NologinHomeFragment;
-import cn.net.cyberway.model.MyListModel;
 import cn.net.cyberway.model.ThemeModel;
 import cn.net.cyberway.protocol.ThemeEntity;
 import cn.net.cyberway.utils.BuryingPointUtils;
@@ -150,7 +149,6 @@ public class MainActivity extends BaseFragmentActivity implements View.OnClickLi
     private ThemeModel themeModel;
     private ThemeEntity.ContentBean.DefaultThemeBean.TabbarBean themeBean;
     private ThemeEntity themeEntity;
-    private MyListModel myListModel;
     private ShowOpenDoorDialog showOpenDoorDialog;
     private NewDoorModel openModel;
     private String door_code;
@@ -198,6 +196,7 @@ public class MainActivity extends BaseFragmentActivity implements View.OnClickLi
         showUnReadMsg(totalUnRead);
         HuxinSdkManager.instance().getStackAct().addActivity(this);
         newUserModel = new NewUserModel(MainActivity.this);
+        tintManager.setStatusBarTintColor(Color.TRANSPARENT);
 //        HomeViewUtils.downLoadStartImage(MainActivity.this);
 //        initSW();//深圳数位 保留
     }
@@ -562,7 +561,7 @@ public class MainActivity extends BaseFragmentActivity implements View.OnClickLi
                     intent.putExtra(CaptureActivity.QRCODE_SOURCE, "default");
                     startActivity(intent);
                 } else {
-                    LinkParseUtil.parse(MainActivity.this,"","");
+                    LinkParseUtil.parse(MainActivity.this, "", "");
                 }
                 break;
         }
@@ -650,7 +649,7 @@ public class MainActivity extends BaseFragmentActivity implements View.OnClickLi
                 mDiscovery.setSelected(false);
                 mProfile.setSelected(false);
             } else {
-              LinkParseUtil.parse(MainActivity.this,"","");
+                LinkParseUtil.parse(MainActivity.this, "", "");
             }
         } else if (flagTab == FLAG_TAB_THREE) {//邻里
             if (mShared.getBoolean(UserAppConst.IS_LOGIN, false)) {
@@ -669,7 +668,7 @@ public class MainActivity extends BaseFragmentActivity implements View.OnClickLi
                 mDiscovery.setSelected(true);
                 mProfile.setSelected(false);
             } else {
-                LinkParseUtil.parse(MainActivity.this,"","");
+                LinkParseUtil.parse(MainActivity.this, "", "");
             }
         } else if (flagTab == FLAG_TAB_FOUR) {
             if (mShared.getBoolean(UserAppConst.IS_LOGIN, false)) {
@@ -688,7 +687,7 @@ public class MainActivity extends BaseFragmentActivity implements View.OnClickLi
                 mDiscovery.setSelected(false);
                 mProfile.setSelected(true);
             } else {
-                LinkParseUtil.parse(MainActivity.this,"","");
+                LinkParseUtil.parse(MainActivity.this, "", "");
             }
 
         }
@@ -757,10 +756,10 @@ public class MainActivity extends BaseFragmentActivity implements View.OnClickLi
                     }
                 }
                 String colorToken = mShared.getString(UserAppConst.Colour_access_token, "");
-                if (isLoin && !TextUtils.isEmpty(colorToken)) {
-                    myListModel = new MyListModel(this);
-                    myListModel.getmypageList(this, false);
-                }
+//                if (isLoin && !TextUtils.isEmpty(colorToken)) {
+//                    myListModel = new MyListModel(this);
+//                    myListModel.getmypageList(1000, false, MainActivity.this);
+//                }
             }
         }
     }
@@ -906,7 +905,7 @@ public class MainActivity extends BaseFragmentActivity implements View.OnClickLi
     public void changeStyle() {
         try {
             if (choiceType == 2) {
-                tintManager.setStatusBarTintColor(Color.parseColor("#74acf0"));
+                tintManager.setStatusBarTintColor(Color.parseColor("#2D8DE0"));
             } else if (choiceType == 1) {
                 tintManager.setStatusBarTintColor(Color.parseColor("#ffffff"));
             } else {

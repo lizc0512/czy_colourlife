@@ -103,10 +103,6 @@ public class UnlockGesturePasswordActivity extends BaseActivity implements NewHt
             @Override
             public void onClick(View v) {
                 //切换账号登录
-                Intent intent = new Intent(UnlockGesturePasswordActivity.this, UserRegisterAndLoginActivity.class);
-                editor.putString(UserAppConst.Colour_login_mobile + UserAppConst.GESTURE_OPENED, "");
-                editor.commit();
-                startActivity(intent);
                 finish();
             }
         });
@@ -115,10 +111,6 @@ public class UnlockGesturePasswordActivity extends BaseActivity implements NewHt
 
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(UnlockGesturePasswordActivity.this, UserRegisterAndLoginActivity.class);
-                editor.putString(UserAppConst.Colour_login_mobile + UserAppConst.GESTURE_OPENED, "");
-                editor.commit();
-                startActivity(intent);
                 finish();
             }
         });

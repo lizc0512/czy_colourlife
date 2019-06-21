@@ -13,9 +13,6 @@ import com.about.activity.FeedBackActivity;
 import com.allapp.activity.WholeApplicationActivity;
 import com.cardcoupons.activity.CardCouponsActivity;
 import com.cashier.activity.OrderListActivity;
-import com.chuanglan.shanyan_sdk.OneKeyLoginManager;
-import com.chuanglan.shanyan_sdk.listener.OneKeyLoginListener;
-import com.chuanglan.shanyan_sdk.listener.OpenLoginAuthListener;
 import com.customerInfo.activity.CustomerColourBeanActivity;
 import com.customerInfo.activity.CustomerInfoActivity;
 import com.customerInfo.activity.DeliveryAddressListActivity;
@@ -58,7 +55,8 @@ public class LinkParseUtil {
 
         SharedPreferences mShared = context.getSharedPreferences(UserAppConst.USERINFO, 0);
         if (!mShared.getBoolean(UserAppConst.IS_LOGIN, false)) {
-           new ConfigUtils(context).jumpOneKeyLogin();
+            Intent intent = new Intent(context, UserRegisterAndLoginActivity.class);
+            context.startActivity(intent);
         } else {
             if (!TextUtils.isEmpty(link)) {
                 if (link.trim().startsWith("http://") || link.trim().startsWith("https://")) {

@@ -43,11 +43,14 @@ import com.BeeFramework.model.Constants;
 import com.BeeFramework.model.NewHttpResponse;
 import com.BeeFramework.view.Util;
 import com.ScreenManager;
+import com.alibaba.android.vlayout.DelegateAdapter;
+import com.alibaba.android.vlayout.VirtualLayoutManager;
+import com.alibaba.android.vlayout.layout.GridLayoutHelper;
+import com.alibaba.android.vlayout.layout.OnePlusNLayoutHelper;
 import com.allapp.model.AllAppModel;
 import com.customerInfo.protocol.RealNameTokenEntity;
 import com.dashuview.library.keep.ListenerUtils;
 import com.dashuview.library.keep.MyListener;
-import com.door.activity.DoorApplyActivity;
 import com.door.entity.SingleCommunityEntity;
 import com.door.model.NewDoorModel;
 import com.eparking.helper.PermissionUtils;
@@ -76,6 +79,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Objects;
 
@@ -85,11 +89,13 @@ import cn.csh.colourful.life.view.recycleview.WrapHeightLinearLayoutManager;
 import cn.net.cyberway.R;
 import cn.net.cyberway.activity.MainActivity;
 import cn.net.cyberway.home.activity.BannerVideoActivity;
-import cn.net.cyberway.home.adapter.HomeActivityAdapter;
+import cn.net.cyberway.home.adapter.GridLayoutAdapter;
 import cn.net.cyberway.home.adapter.HomeApplicationAdapter;
 import cn.net.cyberway.home.adapter.HomeCommunityMsgAdapter;
 import cn.net.cyberway.home.adapter.HomeDoorAdapter;
 import cn.net.cyberway.home.adapter.HomeFunctionAdapter;
+import cn.net.cyberway.home.adapter.OnePlusNLayoutAdapter;
+import cn.net.cyberway.home.entity.HomeBottomAdviseEntity;
 import cn.net.cyberway.home.entity.HomeCommunityMsgEntity;
 import cn.net.cyberway.home.entity.HomeFuncEntity;
 import cn.net.cyberway.home.entity.HomeHeaderEntity;
@@ -116,6 +122,7 @@ import static cn.net.cyberway.home.view.HomeViewUtils.setBadgeCommonPro;
 import static cn.net.cyberway.home.view.HomeViewUtils.smoothScrollTop;
 import static cn.net.cyberway.utils.TableLayoutUtils.jumpLoginPage;
 import static com.user.UserAppConst.COLOR_HOME_USEDOOR;
+import static com.youmai.hxsdk.utils.DisplayUtil.getStatusBarHeight;
 
 /**
  * 2017/10/18
@@ -172,6 +179,58 @@ public class MainHomeFragmentNew extends Fragment implements NewHttpResponse, My
         initNetWorkListener();
 
         checkPermission();//乐开 保留
+    }
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        mView = inflater.inflate(R.layout.fragment_home_new_main, container, false);
+        initBasicalData();
+        initHeaderView();
+        loadCacheData();
+        EventBus.getDefault().register(this);
+        ListenerUtils.setCallBack(this);
+//        showFristNotice();//切换小区弹窗 保留
+//        showGestureNotice();//手势密码弹窗 保留
+        guide();
+//        getSignIn();//彩豆签到 保留
+        return mView;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        MobclickAgent.onPageStart("首页");
+        TCAgent.onPageStart(getActivity(), "首页");
+        if (isClick) {
+            if (!TextUtils.isEmpty(linkUrl) && !linkUrl.startsWith("http")) {
+                isClick = false;
+                String uploadContent = appCode + BuryingPointUtils.divisionSign + appName + BuryingPointUtils.divisionSign + funCode;
+                ((MainActivity) getActivity()).uploadPageStayTime(startTime / 1000, System.currentTimeMillis() / 1000, uploadContent);
+            }
+        }
+        HuxinSdkManager.instance().setImMsgCallback(this);
+        showUnReadMsg(HuxinSdkManager.instance().unreadServiceManagerMessage());
+    }
+
+    public void onPause() {
+        super.onPause();
+        MobclickAgent.onPageEnd("首页");
+        TCAgent.onPageEnd(getActivity(), "首页");
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        if (EventBus.getDefault().isregister(getActivity())) {
+            EventBus.getDefault().unregister(this);
+        }
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            if (null != connectivityManager && null != networkCallback) {
+                connectivityManager.unregisterNetworkCallback(networkCallback);
+            }
+        }
+        getActivity().unbindService(mConn);//乐开
+        getActivity().stopService(new Intent(getActivity(), OperationService.class));//乐开
     }
 
     private String[] permissions = {Manifest.permission.ACCESS_COARSE_LOCATION};
@@ -242,21 +301,6 @@ public class MainHomeFragmentNew extends Fragment implements NewHttpResponse, My
         }
     }
 
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        mView = inflater.inflate(R.layout.fragment_home_new, container, false);
-        initBasicalData();
-        initHeaderView();
-        loadCacheData();
-        EventBus.getDefault().register(this);
-        ListenerUtils.setCallBack(this);
-//        showFristNotice();//切换小区弹窗 保留
-//        showGestureNotice();//手势密码弹窗 保留
-        guide();
-//        getSignIn();//彩豆签到 保留
-        return mView;
-    }
-
     private void guide() {
         String guide = mShared.getString(UserAppConst.COLOR_HOME_GUIDE_STEP + customer_id, "");
         if (TextUtils.isEmpty(guide)) {//遮罩引导
@@ -269,7 +313,7 @@ public class MainHomeFragmentNew extends Fragment implements NewHttpResponse, My
     public void onHiddenChanged(boolean hidden) {
         super.onHiddenChanged(hidden);
         if (!hidden) {
-            ((MainActivity) getActivity()).setHomeStyle(tabColor);
+//            ((MainActivity) getActivity()).setHomeStyle(tabColor);
         }
     }
 
@@ -301,43 +345,6 @@ public class MainHomeFragmentNew extends Fragment implements NewHttpResponse, My
         }
     }
 
-    @Override
-    public void onResume() {
-        super.onResume();
-        MobclickAgent.onPageStart("首页");
-        TCAgent.onPageStart(getActivity(), "首页");
-        if (isClick) {
-            if (!TextUtils.isEmpty(linkUrl) && !linkUrl.startsWith("http")) {
-                isClick = false;
-                String uploadContent = appCode + BuryingPointUtils.divisionSign + appName + BuryingPointUtils.divisionSign + funCode;
-                ((MainActivity) getActivity()).uploadPageStayTime(startTime / 1000, System.currentTimeMillis() / 1000, uploadContent);
-            }
-        }
-        HuxinSdkManager.instance().setImMsgCallback(this);
-        showUnReadMsg(HuxinSdkManager.instance().unreadServiceManagerMessage());
-    }
-
-    public void onPause() {
-        super.onPause();
-        MobclickAgent.onPageEnd("首页");
-        TCAgent.onPageEnd(getActivity(), "首页");
-    }
-
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-        if (EventBus.getDefault().isregister(getActivity())) {
-            EventBus.getDefault().unregister(this);
-        }
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            if (null != connectivityManager && null != networkCallback) {
-                connectivityManager.unregisterNetworkCallback(networkCallback);
-            }
-        }
-        getActivity().unbindService(mConn);//乐开
-        getActivity().stopService(new Intent(getActivity(), OperationService.class));//乐开
-    }
-
     private void initBasicalData() {
         community_name = mShared.getString(UserAppConst.Colour_login_community_name, "");
         community_uuid = mShared.getString(UserAppConst.Colour_login_community_uuid, "03b98def-b5bd-400b-995f-a9af82be01da");
@@ -352,12 +359,15 @@ public class MainHomeFragmentNew extends Fragment implements NewHttpResponse, My
     private View bga_view = null;
     private ImageView iv_video = null;
     private View activity_view = null;
+    private View footer_view = null;
     private HomeRecycleAdapter homeRecycleAdapter = null;
 
     private void initHeaderView() {
         refresh_layout = mView.findViewById(R.id.refresh_layout);
         refresh_layout.setColorSchemeColors(Color.parseColor("#3290FF"), Color.parseColor("#6ABDF9"));
         home_rv = mView.findViewById(R.id.home_rv);
+        View alpha_tabbar_view = mView.findViewById(R.id.alpha_tabbar_view);
+        setLinearTabViewHeight(alpha_tabbar_view);
         alpha_title_layout = mView.findViewById(R.id.alpha_title_layout);
         rl_local = mView.findViewById(R.id.rl_local);
         alpha_community = mView.findViewById(R.id.alpha_community);
@@ -369,11 +379,12 @@ public class MainHomeFragmentNew extends Fragment implements NewHttpResponse, My
         home_rv.loadMoreFinish(true, false);
         homeRecycleAdapter = new HomeRecycleAdapter();
         home_rv.setAdapter(homeRecycleAdapter);
-        top_view = LayoutInflater.from(getActivity()).inflate(R.layout.mhome_home_header, null);
+        top_view = LayoutInflater.from(getActivity()).inflate(R.layout.mhome_home_new_header, null);
         home_rv.addHeaderView(top_view);
         initTopView();
         initHomeClick();
     }
+
 
     private RecyclerView rv_application;
     private LinearLayout bind_manager_layout;
@@ -386,7 +397,6 @@ public class MainHomeFragmentNew extends Fragment implements NewHttpResponse, My
     private UltraViewPager viewpage_door;
     private ImageView iv_left_arrow;
     private ImageView iv_right_arrow;
-    private ImageView iv_open_door;
     private RelativeLayout notification_layout;
     private TextView tv_new_message;
     private RecyclerView rv_notification;
@@ -395,7 +405,6 @@ public class MainHomeFragmentNew extends Fragment implements NewHttpResponse, My
     private BGABanner bga_banner;
     private RelativeLayout rl_banner;
     private RecyclerView rv_activity;
-
     private LinearLayout head_layout;
     private ImageView iv_local;
     private TextView tv_show_community;
@@ -440,8 +449,15 @@ public class MainHomeFragmentNew extends Fragment implements NewHttpResponse, My
         textView.setTextColor(Color.parseColor(colorValue));
     }
 
+    private void setLinearTabViewHeight(View tabBarView) {
+        LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, getStatusBarHeight(getActivity()));
+        tabBarView.setLayoutParams(layoutParams);
+    }
+
     private void initTopView() {
         head_layout = top_view.findViewById(R.id.head_layout);
+        View head_tabbar_view = top_view.findViewById(R.id.head_tabbar_view);
+        setLinearTabViewHeight(head_tabbar_view);
         iv_local = top_view.findViewById(R.id.iv_local);
         tv_show_community = top_view.findViewById(R.id.tv_show_community);
         head_enter_chat = top_view.findViewById(R.id.head_enter_chat);
@@ -540,7 +556,7 @@ public class MainHomeFragmentNew extends Fragment implements NewHttpResponse, My
         if (identity == 3) {
             height = 40;
             LinearLayout.LayoutParams viewLayoutParams = (LinearLayout.LayoutParams) colour_wallet_view.getLayoutParams();
-            viewLayoutParams.height = Util.DensityUtil.dip2px(getActivity(), 115.0f);
+            viewLayoutParams.height = Util.DensityUtil.dip2px(getActivity(), 115.0f) + getStatusBarHeight(getActivity());
             colour_wallet_view.setLayoutParams(viewLayoutParams);
             home_parking_layout.setVisibility(View.GONE);
             head_banner.setVisibility(View.VISIBLE);
@@ -550,20 +566,20 @@ public class MainHomeFragmentNew extends Fragment implements NewHttpResponse, My
         } else {
             height = 110;
             LinearLayout.LayoutParams viewLayoutParams = (LinearLayout.LayoutParams) colour_wallet_view.getLayoutParams();
-            viewLayoutParams.height = Util.DensityUtil.dip2px(getActivity(), 70.0f);
+            viewLayoutParams.height = Util.DensityUtil.dip2px(getActivity(), 60.0f) + getStatusBarHeight(getActivity());
             colour_wallet_view.setLayoutParams(viewLayoutParams);
             home_parking_layout.setVisibility(View.VISIBLE);
             head_banner.setVisibility(View.GONE);
         }
         if (!TextUtils.isEmpty(title_bg)) {  //c12832
             alpha_title_layout.setAlpha(0);
-            ((MainActivity) getActivity()).setHomeStyle(tabColor);
+//            ((MainActivity) getActivity()).setHomeStyle(tabColor);
             alpha_title_layout.setBackgroundColor(Color.parseColor("#00000000"));
             GlideImageLoader.loadStableHeightLayouBg(getActivity(), title_bg, alpha_title_layout);
         } else {
             alpha_title_layout.setBackground(new TransparentDrawable());
             alpha_title_layout.setBackgroundColor(Color.parseColor("#ffffff"));
-            ((MainActivity) getActivity()).setHomeStyle("#ffffff");
+//            ((MainActivity) getActivity()).setHomeStyle("#ffffff");
         }
         if (!TextUtils.isEmpty(head_bg)) {
             GlideImageLoader.loadWrapHeightLayouBg(getActivity(), head_bg, head_layout);
@@ -1021,41 +1037,54 @@ public class MainHomeFragmentNew extends Fragment implements NewHttpResponse, My
         }
     }
 
-    private List<HomeNotifyEntity.ContentBean> notifyEntityList = new ArrayList<>();
-    private HomeActivityAdapter homeActivityAdapter;
+    private List<HomeBottomAdviseEntity.ContentBean> homeBottomList = new ArrayList<>();
+
+    private DelegateAdapter delegateAdapter;
+    final List<DelegateAdapter.Adapter> adapters = new LinkedList<>();
 
     /***底部彩住宅,彩惠***/
     private void homeActivityShow(String result) {
         try {
-            HomeNotifyEntity homeNotifyEntity = GsonUtils.gsonToBean(result, HomeNotifyEntity.class);
-            notifyEntityList.clear();
-            notifyEntityList.addAll(homeNotifyEntity.getContent());
-            if (null == homeActivityAdapter) {
-                homeActivityAdapter = new HomeActivityAdapter(getActivity(), notifyEntityList);
-                rv_activity.setLayoutManager(new GridLayoutManager(getActivity(), 2, GridLayoutManager.VERTICAL, false));
-                rv_activity.addItemDecoration(new GridSpacingItemDecoration(2, Utils.dip2px(getActivity(), 10), false));
-                rv_activity.setAdapter(homeActivityAdapter);
+            HomeBottomAdviseEntity homeBottomAdviseEntity = GsonUtils.gsonToBean(result, HomeBottomAdviseEntity.class);
+            homeBottomList.clear();
+            adapters.clear();
+            homeBottomList.addAll(homeBottomAdviseEntity.getContent());
+            RecyclerView.RecycledViewPool viewPool = new RecyclerView.RecycledViewPool();
+            rv_activity.setRecycledViewPool(viewPool);
+            viewPool.setMaxRecycledViews(0, 10);
+            if (homeBottomList.size() == 3) {
+                adapters.add(initOnePlusNLayout(getActivity()));
             } else {
-                homeActivityAdapter.notifyDataSetChanged();
+                adapters.add(initLinerLayout(getActivity()));
             }
-            homeActivityAdapter.setOnItemClickListener(new OnItemClickListener() {
-                @Override
-                public void onItemClick(int i) {
-                    if (i >= 0) {
-                        HomeNotifyEntity.ContentBean contentBean = notifyEntityList.get(i);
-                        initUploadData(contentBean);
-                        funCode = BuryingPointUtils.homeActivityCode;
-                        if (TextUtils.isEmpty(appCode)) {
-                            LinkParseUtil.parse(getActivity(), contentBean.getMsg_url(), contentBean.getMsg_title());
-                        } else {
-                            LinkParseUtil.parse(getActivity(), contentBean.getMsg_url(), appCode + BuryingPointUtils.divisionSign + appName + BuryingPointUtils.divisionSign + funCode);
-                        }
-                    }
-                }
-            });
+            VirtualLayoutManager manager = new VirtualLayoutManager(getActivity());
+            rv_activity.setLayoutManager(manager);
+            delegateAdapter = new DelegateAdapter(manager);
+            delegateAdapter.setAdapters(adapters);
+            rv_activity.setAdapter(delegateAdapter);
         } catch (Exception e) {
             editor.putString(UserAppConst.COLOR_HOME_ACTIVITY, "").apply();
         }
+    }
+
+
+    public GridLayoutAdapter initLinerLayout(Context context) {
+        GridLayoutHelper gridLayoutHelper = new GridLayoutHelper(2);
+        //设置间隔高度
+        gridLayoutHelper.setAutoExpand(true);
+        //设置布局底部与下个布局的间隔
+        //设置间距
+        gridLayoutHelper.setMargin(10, 10, 10, 10);// 设置LayoutHelper的子元素相对LayoutHelper边缘的距离
+        GridLayoutAdapter delegateRecyclerAdapter = new GridLayoutAdapter(context, gridLayoutHelper, homeBottomList);
+        return delegateRecyclerAdapter;
+    }
+
+    public OnePlusNLayoutAdapter initOnePlusNLayout(Context context) {
+        OnePlusNLayoutHelper onePlusNLayoutHelper = new OnePlusNLayoutHelper();
+        //设置布局底部与下个布局的间隔
+        onePlusNLayoutHelper.setMargin(10, 10, 10, 10);// 设置LayoutHelper的子元素相对LayoutHelper边缘的距离
+        OnePlusNLayoutAdapter onePlusNLayoutAdapter = new OnePlusNLayoutAdapter(context, onePlusNLayoutHelper, homeBottomList);
+        return onePlusNLayoutAdapter;
     }
 
     private ArrayList<SingleCommunityEntity.ContentBean.CommonUseBean> commonUseBeanList = new ArrayList<>();
@@ -1073,45 +1102,18 @@ public class MainHomeFragmentNew extends Fragment implements NewHttpResponse, My
             if (useDoorSize == 0) {
                 commonUseBeanList.addAll(addCommmonDoorList(contentBean));
             }
-            SingleCommunityEntity.ContentBean.CommonUseBean singleCommonUse = new SingleCommunityEntity.ContentBean.CommonUseBean();
-            iv_open_door.setImageResource(R.drawable.home_icon_yaoshi);
             useDoorSize = commonUseBeanList.size();
             if (useDoorSize == 0) {
+                SingleCommunityEntity.ContentBean.CommonUseBean singleCommonUse = new SingleCommunityEntity.ContentBean.CommonUseBean();
+                useDoorSize = commonUseBeanList.size();
                 singleCommonUse.setDoor_name("申请门禁");
-            } else {
-                singleCommonUse.setDoor_name("设置");
+                commonUseBeanList.add(singleCommonUse);
             }
-            commonUseBeanList.add(singleCommonUse);
             updateDoorView();
         } catch (Exception e) {
             editor.putString(UserAppConst.COLOR_HOME_USEDOOR, "").apply();
             showExceptionDoorData();
         }
-        viewpage_door.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
-            @Override
-            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-
-            }
-
-            @Override
-            public void onPageSelected(int position) {
-                try {
-                    choiceIndex = position;
-                    if (choiceIndex == useDoorSize - 1) {
-                        iv_open_door.setImageResource(R.drawable.home_set);
-                    } else {
-                        iv_open_door.setImageResource(R.drawable.home_icon_yaoshi);
-                    }
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-
-            @Override
-            public void onPageScrollStateChanged(int state) {
-
-            }
-        });
     }
 
     private void updateDoorView() {
@@ -1250,7 +1252,7 @@ public class MainHomeFragmentNew extends Fragment implements NewHttpResponse, My
                     break;
                 case 7:
                     needRequestNumber++;
-                    newHomeModel.getHomeModelActivity(7, MainHomeFragmentNew.this);
+                    newHomeModel.getHomeNewAdMsgActivity(7, MainHomeFragmentNew.this);
                     break;
                 case 9:
                     newHomeModel.setHomeModelSignInBean(9, MainHomeFragmentNew.this);
@@ -1501,10 +1503,8 @@ public class MainHomeFragmentNew extends Fragment implements NewHttpResponse, My
                                 viewpage_door = opendoor_view.findViewById(R.id.viewpage_door);
                                 iv_left_arrow = opendoor_view.findViewById(R.id.iv_left_arrow);
                                 iv_right_arrow = opendoor_view.findViewById(R.id.iv_right_arrow);
-                                iv_open_door = opendoor_view.findViewById(R.id.iv_open_door);
                                 iv_left_arrow.setOnClickListener(this);
                                 iv_right_arrow.setOnClickListener(this);
-                                iv_open_door.setOnClickListener(this);
                                 open_door_layout.setOnClickListener(this);
                             }
                             if (is_show == 1) {
@@ -1595,19 +1595,21 @@ public class MainHomeFragmentNew extends Fragment implements NewHttpResponse, My
                                 rv_activity = activity_view.findViewById(R.id.rv_activity);
                             }
                             if (is_show == 1) {
+                                rv_activity.setVisibility(View.VISIBLE);
                                 String homeActivityCache = mShared.getString(UserAppConst.COLOR_HOME_ACTIVITY, "");
                                 if (!TextUtils.isEmpty(homeActivityCache) && loadCacheData) {
                                     homeActivityShow(homeActivityCache);
                                 }
                                 handler.sendEmptyMessageDelayed(7, 7000);
                             } else {
-                                if (null != homeActivityAdapter) {
-                                    notifyEntityList.clear();
-                                    homeActivityAdapter.notifyDataSetChanged();
-                                }
+                                rv_activity.setVisibility(View.GONE);
                             }
                             break;
                     }
+                }
+                if (footer_view == null) {
+                    footer_view = LayoutInflater.from(getActivity()).inflate(R.layout.mhome_footer_view, null);
+                    home_rv.addHeaderView(footer_view);
                 }
             }
         } catch (Exception e) {
@@ -1618,7 +1620,6 @@ public class MainHomeFragmentNew extends Fragment implements NewHttpResponse, My
     private void showExceptionDoorData() {
         commonUseBeanList.clear();
         SingleCommunityEntity.ContentBean.CommonUseBean singleCommonUse = new SingleCommunityEntity.ContentBean.CommonUseBean();
-        iv_open_door.setImageResource(R.drawable.home_icon_yaoshi);
         singleCommonUse.setDoor_name("申请门禁");
         commonUseBeanList.add(singleCommonUse);
         updateDoorView();
@@ -1895,24 +1896,6 @@ public class MainHomeFragmentNew extends Fragment implements NewHttpResponse, My
                     if (choiceIndex < useDoorSize - 1) {
                         choiceIndex++;
                         viewpage_door.setCurrentItem(choiceIndex);
-                    }
-                } catch (Exception e) {
-
-                }
-                break;
-            case R.id.iv_open_door:
-                try {
-                    if (useDoorSize == 1) {  //去开门的页面
-                        Intent intent = new Intent(getActivity(), DoorApplyActivity.class);
-                        startActivity(intent);
-                    } else if (choiceIndex == useDoorSize - 1) {
-                        BuryingPointUtils.uploadClickMethod(getActivity(), BuryingPointUtils.homePageName, BuryingPointUtils.homeDoorCode, "门禁", "10401");
-                        LinkParseUtil.parse(getActivity(), "colourlife://proto?type=EntranceGuard", "");
-                    } else { //直接开当前的门禁
-                        if (useDoorSize > 1) {
-                            BuryingPointUtils.uploadClickMethod(getActivity(), BuryingPointUtils.homePageName, BuryingPointUtils.homeDoorCode, "门禁", "10401");
-                            ((MainActivity) getActivity()).openDoor(commonUseBeanList.get(choiceIndex).getQr_code());
-                        }
                     }
                 } catch (Exception e) {
 

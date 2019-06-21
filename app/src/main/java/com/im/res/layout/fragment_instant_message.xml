@@ -6,6 +6,11 @@
     android:background="@color/bg_color"
     android:orientation="vertical">
 
+    <View
+        android:id="@+id/instant_tabbar_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
     <LinearLayout
         android:id="@+id/top_layout"
         android:layout_width="match_parent"
@@ -20,8 +25,8 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
             android:layout_marginLeft="15dp"
-            android:paddingRight="10dp"
             android:paddingTop="10dp"
+            android:paddingRight="10dp"
             android:src="@drawable/im_icon_address_list" />
 
 
@@ -54,9 +59,9 @@
         android:id="@+id/search_layout"
         android:layout_width="match_parent"
         android:layout_height="30dp"
-        android:layout_marginBottom="7dp"
         android:layout_marginLeft="8dp"
         android:layout_marginRight="8dp"
+        android:layout_marginBottom="7dp"
         android:background="@drawable/shape_white_border"
         android:visibility="gone">
 

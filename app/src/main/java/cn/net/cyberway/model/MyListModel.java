@@ -5,6 +5,7 @@ import android.text.TextUtils;
 
 import com.BeeFramework.model.BaseModel;
 import com.BeeFramework.model.HttpApiResponse;
+import com.BeeFramework.model.NewHttpResponse;
 import com.nohttp.utils.HttpListener;
 import com.nohttp.utils.RequestEncryptionUtils;
 import com.user.UserAppConst;
@@ -32,60 +33,55 @@ public class MyListModel extends BaseModel {
         super(context);
     }
 
-    private MyOptionsGetApi myOptionsGetApi;
-
     /**
      * 我的页面配置列表
      */
-    public void getmypageList(HttpApiResponse businessResponse, final boolean isShow) {
-        myOptionsGetApi = new MyOptionsGetApi();
-        myOptionsGetApi.httpApiResponse = businessResponse;
-        Map<String, Object> params = new HashMap<String, Object>();
-        params.put("device_type", 1);
-        String basePath = myOptionsGetApi.apiURI;
+    public void getmypageList(int what, final boolean isShow, NewHttpResponse newHttpResponse) {
+        String basePath = "app/home/my/options";
         final Request<String> request = NoHttp.createStringRequest(
-                RequestEncryptionUtils.getCombileMD5(mContext, 1, basePath, params), RequestMethod.GET);
-        request(0, request, params, new HttpListener<String>() {
+                RequestEncryptionUtils.getCombileMD5(mContext, 1, basePath, null), RequestMethod.GET);
+        request(what, request, null, new HttpListener<String>() {
             @Override
             public void onSucceed(int what, Response<String> response) {
                 int responseCode = response.getHeaders().getResponseCode();
                 String result = response.get();
                 if (responseCode == RequestEncryptionUtils.responseSuccess) {
-                    String MYPAGELISTCache = shared.getString(UserAppConst.MYPAGELIST, "");
-                    JSONObject jsonObject = null;
-                    if (TextUtils.isEmpty(MYPAGELISTCache) && isShow) {
-                        jsonObject = showSuccesCodeMessage(result);
-                    } else {
-                        jsonObject = showSuccesCodeNullMessage(result);
-                    }
-                    if (null != jsonObject) {
-                        try {
-                            myOptionsGetApi.response.fromJson(jsonObject);
-                            if (myOptionsGetApi.response.code == 0) {
-                                saveCache(UserAppConst.MYPAGELIST, jsonObject.toString());
-                                myOptionsGetApi.httpApiResponse.OnHttpResponse(myOptionsGetApi);
-                            }
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
-                    }
-                } else if (responseCode == RequestEncryptionUtils.responseRequest) {
-                    String MYPAGELISTCache = shared.getString(UserAppConst.MYPAGELIST, "");
-                    if (TextUtils.isEmpty(MYPAGELISTCache) && isShow) {
-                        showErrorCodeMessage(responseCode, response);
-                    }
-                } else {
-                    String MYPAGELISTCache = shared.getString(UserAppConst.MYPAGELIST, "");
-                    if (TextUtils.isEmpty(MYPAGELISTCache) && isShow) {
-                        showErrorCodeMessage(responseCode, response);
+                    int code = showSuccesResultMessageTheme(result);
+                    if (code == 0) {
+                        newHttpResponse.OnHttpResponse(what, result);
                     }
                 }
             }
 
             @Override
             public void onFailed(int what, Response<String> response) {
-//                showExceptionMessage(what, response);
+
             }
         }, true, false);
+    }
+
+    public void getMySubMenuList(int what, NewHttpResponse newHttpResponse) {
+        String basePath = "app/home/v5/appProfile";
+        final Request<String> request = NoHttp.createStringRequest(
+                RequestEncryptionUtils.getCombileMD5(mContext, 1, basePath, null), RequestMethod.GET);
+        request(what, request, null, new HttpListener<String>() {
+            @Override
+            public void onSucceed(int what, Response<String> response) {
+                int responseCode = response.getHeaders().getResponseCode();
+                String result = response.get();
+                if (responseCode == RequestEncryptionUtils.responseSuccess) {
+                    int code = showSuccesResultMessageTheme(result);
+                    if (code == 0) {
+                        newHttpResponse.OnHttpResponse(what, result);
+                    }
+                }
+            }
+
+            @Override
+            public void onFailed(int what, Response<String> response) {
+
+            }
+        }, true, false);
+
     }
 }

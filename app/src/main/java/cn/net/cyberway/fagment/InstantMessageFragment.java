@@ -64,6 +64,7 @@ import cn.net.cyberway.activity.MainActivity;
 import q.rorbin.badgeview.QBadgeView;
 
 import static cn.net.cyberway.utils.TableLayoutUtils.jumpLoginPage;
+import static com.youmai.hxsdk.utils.DisplayUtil.getStatusBarHeight;
 
 /**
  * @name ${yuansk}
@@ -121,11 +122,19 @@ public class InstantMessageFragment extends Fragment implements View.OnClickList
         }
     }
 
+    private void setTabViewHeight(View tabBarView) {
+        LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, getStatusBarHeight(getActivity()));
+        tabBarView.setLayoutParams(layoutParams);
+    }
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         EventBus.getDefault().register(this);
         View rootView = inflater.inflate(R.layout.fragment_instant_message, container, false);
+        View life_tabbar_view = rootView.findViewById(R.id.instant_tabbar_view);
+        life_tabbar_view.setBackgroundColor(Color.parseColor("#ffffff"));
+        setTabViewHeight(life_tabbar_view);
         iv_phone_book = rootView.findViewById(R.id.iv_phone_book);
         iv_add_friend = rootView.findViewById(R.id.iv_add_friend);
         search_layout = rootView.findViewById(R.id.search_layout);
@@ -367,7 +376,7 @@ public class InstantMessageFragment extends Fragment implements View.OnClickList
     public void onResume() {
         super.onResume();
         HuxinSdkManager.instance().setImMsgCallback(this);
-        ((MainActivity) getActivity()).changeStyle();
+//        ((MainActivity) getActivity()).changeStyle();
         showApplyNumber();
         initUnreadList();
         String userUUid = mShared.getString(UserAppConst.Colour_User_uuid, "");
@@ -420,7 +429,7 @@ public class InstantMessageFragment extends Fragment implements View.OnClickList
     public void onHiddenChanged(boolean hidden) {
         super.onHiddenChanged(hidden);
         if (!hidden) {
-            ((MainActivity) getActivity()).changeStyle();
+//            ((MainActivity) getActivity()).changeStyle();
         }
     }
 

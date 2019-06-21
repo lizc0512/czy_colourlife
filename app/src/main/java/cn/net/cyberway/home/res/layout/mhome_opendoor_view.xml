@@ -9,8 +9,8 @@
         android:layout_width="match_parent"
         android:layout_height="70dp"
         android:layout_marginLeft="8dp"
-        android:layout_marginRight="8dp"
         android:layout_marginTop="10dp"
+        android:layout_marginRight="8dp"
         android:background="@drawable/shape_manager_border"
         android:orientation="horizontal">
 
@@ -26,15 +26,14 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
                 android:layout_marginLeft="30dp"
-                android:src="@drawable/home_icon_kaimen" />
+                android:src="@drawable/home_icon_kaimen"
+                android:visibility="gone" />
 
             <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
-                android:layout_marginLeft="30dp"
-                android:layout_marginTop="8dp"
-                android:text="开门"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:text="门禁"
                 android:textColor="@color/color_647786"
                 android:textSize="12sp" />
 
@@ -56,30 +55,20 @@
 
         <com.tmall.ultraviewpager.UltraViewPager
             android:id="@+id/viewpage_door"
-            android:layout_width="130dp"
+            android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_marginLeft="5dp"
-            android:layout_marginRight="5dp" />
+            android:layout_marginRight="5dp"
+            android:layout_weight="1" />
 
         <ImageView
             android:id="@+id/iv_right_arrow"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
+            android:layout_marginRight="25dp"
             android:src="@drawable/home_more_right" />
 
-        <View
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1" />
-
-        <ImageView
-            android:id="@+id/iv_open_door"
-            android:layout_width="36dp"
-            android:layout_height="36dp"
-            android:layout_marginRight="15dp"
-            android:layout_gravity="center_vertical"
-            android:src="@drawable/home_icon_yaoshi" />
 
     </LinearLayout>
 </LinearLayout>

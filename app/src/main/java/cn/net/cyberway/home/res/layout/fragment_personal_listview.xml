@@ -2,7 +2,6 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/bg_color"
-    android:fitsSystemWindows="true"
     android:scrollbars="none">
 
     <com.external.maxwin.view.XListView
@@ -16,13 +15,4 @@
         android:listSelector="#00000000"
         android:overScrollMode="never"
         android:scrollbars="none" />
-
-    <ImageView
-        android:id="@+id/iv_gem"
-        android:layout_width="55dp"
-        android:layout_height="55dp"
-        android:layout_gravity="bottom|right"
-        android:layout_marginBottom="180dp"
-        android:layout_marginRight="10dp"
-        android:visibility="gone" />
 </RelativeLayout>

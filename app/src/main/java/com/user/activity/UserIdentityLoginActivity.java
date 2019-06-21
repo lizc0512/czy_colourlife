@@ -1,11 +1,13 @@
 package com.user.activity;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.os.Handler;
 import android.os.Message;
+import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
@@ -18,7 +20,6 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.BeeFramework.Utils.ToastUtil;
-import com.BeeFramework.activity.BaseActivity;
 import com.BeeFramework.model.NewHttpResponse;
 import com.BeeFramework.view.ClearEditText;
 import com.external.eventbus.EventBus;
@@ -56,7 +57,7 @@ import static com.user.activity.UserRegisterAndLoginActivity.SUCCEED;
  * @chang time
  * @class describe   短信验证码登录
  */
-public class UserIdentityLoginActivity extends BaseActivity implements OnClickListener, NewHttpResponse, Handler.Callback {
+public class UserIdentityLoginActivity extends AppCompatActivity implements OnClickListener, NewHttpResponse, Handler.Callback {
 
     private ImageView user_top_view_back;
     private TextView user_top_view_title;
@@ -75,11 +76,15 @@ public class UserIdentityLoginActivity extends BaseActivity implements OnClickLi
     private int loginType = 0;
     private String mobile;
     private String smsCode;
+    public SharedPreferences shared;
+    public SharedPreferences.Editor editor;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_identitycode_login_layout);
+        shared = getSharedPreferences(UserAppConst.USERINFO, 0);
+        editor = shared.edit();
         MobSDK.init(getApplicationContext());
         initView();
         newUserModel = new NewUserModel(this);
@@ -207,11 +212,7 @@ public class UserIdentityLoginActivity extends BaseActivity implements OnClickLi
                 }
                 break;
             case R.id.user_top_view_right:
-                if (fastClick()) {
-                    Intent verifyIntent = new Intent(UserIdentityLoginActivity.this, UserRegisterAndLoginActivity.class);
-                    startActivity(verifyIntent);
-                    finish();
-                }
+                finish();
                 break;
         }
     }
@@ -404,6 +405,15 @@ public class UserIdentityLoginActivity extends BaseActivity implements OnClickLi
                 break;
         }
         return false;
+    }
+
+    protected boolean fastClick() {
+        long lastClick = 0;
+        if (System.currentTimeMillis() - lastClick <= 1000) {
+            return false;
+        }
+        lastClick = System.currentTimeMillis();
+        return true;
     }
 }
 

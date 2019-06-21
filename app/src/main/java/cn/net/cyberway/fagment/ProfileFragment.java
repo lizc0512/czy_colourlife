@@ -7,6 +7,8 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -18,19 +20,16 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.BeeFramework.Utils.ToastUtil;
-import com.BeeFramework.model.HttpApi;
-import com.BeeFramework.model.HttpApiResponse;
+import com.BeeFramework.model.NewHttpResponse;
 import com.customerInfo.activity.CustomerInfoActivity;
-import com.customerInfo.activity.CustomerMakeZXingActivity;
 import com.dashuview.library.keep.ListenerUtils;
 import com.dashuview.library.keep.MyListener;
 import com.external.eventbus.EventBus;
 import com.external.maxwin.view.IXListViewListener;
 import com.external.maxwin.view.XListView;
-import com.gem.GemConstant;
-import com.gem.util.GemDialogUtil;
 import com.myproperty.activity.MyPropertyActivity;
 import com.nohttp.utils.GlideImageLoader;
+import com.nohttp.utils.GsonUtils;
 import com.tendcloud.tenddata.TCAgent;
 import com.umeng.analytics.MobclickAgent;
 import com.user.UserAppConst;
@@ -41,12 +40,15 @@ import org.json.JSONObject;
 
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
+import cn.csh.colourful.life.listener.OnItemClickListener;
 import cn.net.cyberway.R;
 import cn.net.cyberway.activity.MainActivity;
 import cn.net.cyberway.home.adapter.MyPageItemListAdapter;
-import cn.net.cyberway.home.protocol.MyOptionsGetApi;
+import cn.net.cyberway.home.adapter.MyPageMenuAdapter;
+import cn.net.cyberway.home.entity.HomeBottomAdviseEntity;
 import cn.net.cyberway.home.protocol.MyOptionsGetResponse;
 import cn.net.cyberway.home.protocol.OPTIONSCONTENT;
 import cn.net.cyberway.home.protocol.OPTIONSDATA;
@@ -55,18 +57,20 @@ import cn.net.cyberway.home.view.GuideView;
 import cn.net.cyberway.model.MyListModel;
 import cn.net.cyberway.utils.LinkParseUtil;
 
+import static com.user.UserAppConst.MYPAGESUBMENU;
+
 
 /**
  * 个人中心
  */
 
-public class ProfileFragment extends Fragment implements View.OnClickListener, HttpApiResponse, IXListViewListener, MyListener {
-    private ImageView ivGem;
+public class ProfileFragment extends Fragment implements View.OnClickListener, IXListViewListener, MyListener, NewHttpResponse {
     private View mView;
     private CircleImageView mHeadImg;
     private TextView mUsername;
     private TextView mCommunity;
     private ListView lv_myprofile_info;
+    private RecyclerView rv_property_menu;
     private MyPageItemListAdapter myItemListAdapter;
     private MyListModel myListModel;
     private ArrayList<OPTIONSDATA> list = new ArrayList();
@@ -110,32 +114,68 @@ public class ProfileFragment extends Fragment implements View.OnClickListener, H
         customer_id = mShared.getInt(UserAppConst.Colour_User_id, 0);
         beanPoint = mShared.getBoolean(UserAppConst.COLOUR_BEAN_SIGN_POINT + customer_id, false);
         String listCache = mShared.getString(UserAppConst.MYPAGELIST, "");
-
-        if (!hasData) {
-            if (!TextUtils.isEmpty(listCache)) {
-                JSONObject object = null;
-                try {
-                    object = new JSONObject(listCache);
-                    MyOptionsGetResponse myOptionsGetResponse = new MyOptionsGetResponse();
-                    myOptionsGetResponse.fromJson(object);
-                    ArrayList<OPTIONSCONTENT> myitemlist = myOptionsGetResponse.content;
-                    showProfileData(myitemlist);
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-                myListModel.getmypageList(this, false);
-            }
+        String subMenuCache = mShared.getString(MYPAGESUBMENU, "");
+        if (!TextUtils.isEmpty(listCache)) {
+            showProfileData(listCache);
+            myListModel.getmypageList(0, false, ProfileFragment.this);
         } else {
-            myListModel.getmypageList(this, false);
+            xListView.startHeaderRefresh();
+        }
+        if (!TextUtils.isEmpty(subMenuCache)) {
+            showSubMenuData(subMenuCache);
+            myListModel.getMySubMenuList(1, ProfileFragment.this);
+        } else {
+            xListView.startHeaderRefresh();
         }
     }
 
-    private void showProfileData(ArrayList<OPTIONSCONTENT> myitemlist) {
-        list.clear();
-        for (int i = 0; i < myitemlist.size(); i++) {
-            list.addAll(myitemlist.get(i).data);
+
+    private void showProfileData(String result) {
+        JSONObject object = null;
+        try {
+            object = new JSONObject(result);
+            MyOptionsGetResponse myOptionsGetResponse = new MyOptionsGetResponse();
+            myOptionsGetResponse.fromJson(object);
+            ArrayList<OPTIONSCONTENT> myitemlist = myOptionsGetResponse.content;
+            list.clear();
+            for (int i = 0; i < myitemlist.size(); i++) {
+                list.addAll(myitemlist.get(i).data);
+            }
+            myInfoAdapter(list);
+        } catch (JSONException e) {
+            e.printStackTrace();
         }
-        myInfoAdapter(list);
+    }
+
+    private MyPageMenuAdapter myPageMenuAdapter;
+    private List<HomeBottomAdviseEntity.ContentBean> contentBeanList = new ArrayList<>();
+
+    private void showSubMenuData(String result) {
+        try {
+            contentBeanList.clear();
+            HomeBottomAdviseEntity homeBottomAdviseEntity = GsonUtils.gsonToBean(result, HomeBottomAdviseEntity.class);
+            contentBeanList.addAll(homeBottomAdviseEntity.getContent());
+            if (null == myPageMenuAdapter) {
+                myPageMenuAdapter = new MyPageMenuAdapter(getActivity(), contentBeanList);
+                rv_property_menu.setLayoutManager(new GridLayoutManager(getActivity(), 3));
+                rv_property_menu.setAdapter(myPageMenuAdapter);
+            } else {
+                myPageMenuAdapter.notifyDataSetChanged();
+            }
+        } catch (Exception e) {
+
+        }
+        if (null != myPageMenuAdapter) {
+            myPageMenuAdapter.setOnItemClickListener(new OnItemClickListener() {
+                @Override
+                public void onItemClick(int i) {
+                    if (i >= 0) {
+                        HomeBottomAdviseEntity.ContentBean contentBean = contentBeanList.get(i);
+                        LinkParseUtil.parse(getActivity(), contentBean.getUrl(), "");
+                    }
+                }
+            });
+        }
     }
 
     /**
@@ -198,14 +238,12 @@ public class ProfileFragment extends Fragment implements View.OnClickListener, H
         xListView.addHeaderView(myView);
         xListView.setXListViewListener(this, 0);
         lv_myprofile_info = (ListView) myView.findViewById(R.id.lv_myprofile_info);
+        rv_property_menu = myView.findViewById(R.id.rv_property_menu);
         mHeadImg = (CircleImageView) myView.findViewById(R.id.profile_head_img);
         mUsername = (TextView) myView.findViewById(R.id.profile_username);
         mCommunity = (TextView) myView.findViewById(R.id.profile_community);
         rl_profile_info = (RelativeLayout) myView.findViewById(R.id.rl_profile_info);
         rl_profile_info.setOnClickListener(this);
-        myView.findViewById(R.id.my_qrcode_image).setOnClickListener(this);//二维码
-        ivGem = (ImageView) myView.findViewById(R.id.iv_gem);
-        GemDialogUtil.showGemDialog(ivGem, getActivity(), GemConstant.mineIndex, "");
         TCAgent.onEvent(getActivity(), "203001");
         ListenerUtils.setCallBack(this);
     }
@@ -230,7 +268,7 @@ public class ProfileFragment extends Fragment implements View.OnClickListener, H
             TCAgent.onPageStart(getActivity(), "我的");
             boolean isLogin = mShared.getBoolean(UserAppConst.IS_LOGIN, false);
             if (isLogin) {
-                ((MainActivity) getActivity()).changeStyle();
+//                ((MainActivity) getActivity()).changeStyle();
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -243,30 +281,16 @@ public class ProfileFragment extends Fragment implements View.OnClickListener, H
         if (!isHidden()) {
             boolean isLogin = mShared.getBoolean(UserAppConst.IS_LOGIN, false);
             if (isLogin) {
-                ((MainActivity) getActivity()).changeStyle();
+//                ((MainActivity) getActivity()).changeStyle();
             }
         }
     }
 
-    @Override
-    public void OnHttpResponse(HttpApi api) {
-        if (api.getClass().equals(MyOptionsGetApi.class)) {//我的item列表
-            MyOptionsGetApi myListGetApi = (MyOptionsGetApi) api;
-            ArrayList<OPTIONSCONTENT> myitemlist = myListGetApi.response.content;
-            showProfileData(myitemlist);
-            xListView.stopRefresh();
-            hasData = true;
-        }
-    }
 
     @Override
     public void onClick(View v) {
         Intent intent;
         switch (v.getId()) {
-            case R.id.my_qrcode_image://我的二维码
-                intent = new Intent(getActivity(), CustomerMakeZXingActivity.class);
-                startActivity(intent);
-                break;
             case R.id.rl_profile_info:
                 TCAgent.onEvent(getActivity(), "203002");
                 intent = new Intent(getActivity(), CustomerInfoActivity.class);
@@ -288,10 +312,6 @@ public class ProfileFragment extends Fragment implements View.OnClickListener, H
             millis = 500;
             isShow = false;
             hasData = false;
-            xListView.startHeaderRefresh();
-            GemDialogUtil.showGemDialog(ivGem, getActivity(), GemConstant.mineIndex, "");
-        } else if (message.what == UserMessageConstant.LOGOUT) {
-            GemDialogUtil.showGemDialog(ivGem, getActivity(), GemConstant.mineIndex, "");
         } else if (message.what == UserMessageConstant.CHANGE_DIFF_LANG) {
             millis = 500;
             isShow = false;
@@ -337,7 +357,8 @@ public class ProfileFragment extends Fragment implements View.OnClickListener, H
 
     @Override
     public void onRefresh(int id) {
-        myListModel.getmypageList(this, false);
+        myListModel.getmypageList(0, false, ProfileFragment.this);
+        myListModel.getMySubMenuList(1, ProfileFragment.this);
     }
 
     @Override
@@ -424,6 +445,28 @@ public class ProfileFragment extends Fragment implements View.OnClickListener, H
     public void onDestroyView() {
         super.onDestroyView();
         mHandler.removeCallbacksAndMessages(null);
+    }
+
+    private int questNum = 0;
+
+    @Override
+    public void OnHttpResponse(int what, String result) {
+        switch (what) {
+            case 0:
+                questNum++;
+                mEditor.putString(UserAppConst.MYPAGELIST, result).apply();
+                showProfileData(result);
+                break;
+            case 1:
+                questNum++;
+                mEditor.putString(MYPAGESUBMENU, result).apply();
+                showSubMenuData(result);
+                break;
+        }
+        if (questNum == 2) {
+            xListView.stopRefresh();
+            questNum = 0;
+        }
     }
 
     private static class InterHandler extends Handler {

@@ -335,6 +335,22 @@ public class Util {
             return (int) (dpValue * scale + 0.5f);
         }
 
+        public static int getScreenWidth(Context context,boolean isDp){
+            int screenWidth = 0;
+            WindowManager wm = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
+            DisplayMetrics dm = new DisplayMetrics();
+            wm.getDefaultDisplay().getMetrics(dm);
+            int width = dm.widthPixels;       // 屏幕高度（像素）
+
+            if(!isDp){
+                return width;
+            }
+
+            float density = dm.density;         // 屏幕密度（0.75 / 1.0 / 1.5）
+            screenWidth = (int) (width / density);// 屏幕高度(dp)
+            return screenWidth;
+        }
+
         /**
          * px to dp
          */

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="174dp"
+    android:layout_height="180dp"
     android:background="@color/white">
 
 
@@ -9,6 +9,8 @@
         android:id="@+id/iv_activity"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_marginTop="5dp"
+        android:layout_marginRight="5dp"
         android:background="@drawable/home_banner_caizhuzai"
         android:scaleType="fitXY" />
 
@@ -24,20 +26,22 @@
         android:singleLine="true"
         android:text="你购物我送物业费"
         android:textColor="@color/color_647786"
-        android:textSize="12sp" />
+        android:textSize="12sp"
+        android:visibility="gone" />
 
     <TextView
         android:id="@+id/tv_activity_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_above="@id/tv_activity_desc"
-        android:layout_marginBottom="2dp"
         android:layout_marginLeft="55dp"
+        android:layout_marginBottom="2dp"
         android:ellipsize="end"
         android:singleLine="true"
         android:text="彩惠人生"
         android:textColor="@color/color_131719"
-        android:textSize="16sp" />
+        android:textSize="16sp"
+        android:visibility="gone" />
 
 
 </RelativeLayout>

@@ -2,6 +2,7 @@ package cn.net.cyberway.home.fragment;
 
 
 import android.content.SharedPreferences;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -43,6 +44,8 @@ import cn.net.cyberway.home.entity.HomeFuncEntity;
 import cn.net.cyberway.home.model.NewHomeModel;
 import cn.net.cyberway.utils.LinkParseUtil;
 
+import static com.youmai.hxsdk.utils.DisplayUtil.getStatusBarHeight;
+
 
 /**
  * 2017/10/18
@@ -80,8 +83,16 @@ public class NologinHomeFragment extends Fragment implements NewHttpResponse, Vi
 
     private TextView tv_register_login;
 
+    private void setLinearTabViewHeight(View tabBarView) {
+        LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, getStatusBarHeight(getActivity()));
+        tabBarView.setLayoutParams(layoutParams);
+    }
+
     private void initHeaderView() {
         home_rv = mView.findViewById(R.id.home_rv);
+        View nologin_tabbar_view = mView.findViewById(R.id.nologin_tabbar_view);
+        nologin_tabbar_view.setBackgroundColor(Color.parseColor("#ffffff"));
+        setLinearTabViewHeight(nologin_tabbar_view);
         tv_register_login = mView.findViewById(R.id.tv_register_login);
         LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
         home_rv.setLayoutManager(layoutManager);
@@ -139,7 +150,6 @@ public class NologinHomeFragment extends Fragment implements NewHttpResponse, Vi
     private UltraViewPager viewpage_door;
     private ImageView iv_left_arrow;
     private ImageView iv_right_arrow;
-    private ImageView iv_open_door;
     private BGABanner advise_banner;
 
     private void initChildView() {
@@ -162,11 +172,9 @@ public class NologinHomeFragment extends Fragment implements NewHttpResponse, Vi
         viewpage_door = opendoor_view.findViewById(R.id.viewpage_door);
         iv_left_arrow = opendoor_view.findViewById(R.id.iv_left_arrow);
         iv_right_arrow = opendoor_view.findViewById(R.id.iv_right_arrow);
-        iv_open_door = opendoor_view.findViewById(R.id.iv_open_door);
         iv_left_arrow.setOnClickListener(this);
         open_door_layout.setOnClickListener(this);
         iv_right_arrow.setOnClickListener(this);
-        iv_open_door.setOnClickListener(this);
         tv_no_message.setOnClickListener(this);
         notification_layout.setOnClickListener(this);
         advise_banner = banner_view.findViewById(R.id.bga_banner);
@@ -194,7 +202,7 @@ public class NologinHomeFragment extends Fragment implements NewHttpResponse, Vi
                 @Override
                 public void onItemClick(int i) {
                     if (i >= 0) {
-                        LinkParseUtil.parse(getActivity(),"","");
+                        LinkParseUtil.parse(getActivity(), "", "");
                     }
                 }
             });
@@ -224,7 +232,7 @@ public class NologinHomeFragment extends Fragment implements NewHttpResponse, Vi
                     @Override
                     public void onItemClick(int i) {
                         if (i >= 0) {
-                            LinkParseUtil.parse(getActivity(),"","");
+                            LinkParseUtil.parse(getActivity(), "", "");
                         }
                     }
                 });
@@ -259,7 +267,7 @@ public class NologinHomeFragment extends Fragment implements NewHttpResponse, Vi
             advise_banner.setDelegate(new BGABanner.Delegate<ImageView, String>() {
                 @Override
                 public void onBannerItemClick(BGABanner banner, ImageView itemView, String model, int position) {
-                    LinkParseUtil.parse(getActivity(),"","");
+                    LinkParseUtil.parse(getActivity(), "", "");
                 }
             });
             advise_banner.setData(bannerUrlList, null);
@@ -331,12 +339,11 @@ public class NologinHomeFragment extends Fragment implements NewHttpResponse, Vi
             case R.id.bind_manager_layout:
             case R.id.iv_left_arrow:
             case R.id.iv_right_arrow:
-            case R.id.iv_open_door:
             case R.id.notification_layout:
             case R.id.open_door_layout:
             case R.id.tv_no_message:
             case R.id.tv_register_login:
-                LinkParseUtil.parse(getActivity(),"","");
+                LinkParseUtil.parse(getActivity(), "", "");
                 break;
         }
     }
@@ -379,7 +386,7 @@ public class NologinHomeFragment extends Fragment implements NewHttpResponse, Vi
     public void onHiddenChanged(boolean hidden) {
         super.onHiddenChanged(hidden);
         if (!hidden) {
-            ((MainActivity) getActivity()).setHomeStyle("#ffffff");
+//            ((MainActivity) getActivity()).setHomeStyle("#ffffff");
         }
     }
 

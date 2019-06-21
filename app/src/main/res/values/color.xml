@@ -29,7 +29,7 @@
     <color name="line_chart">#ffffffff</color>
     <color name="translucent_background">#88000000</color>
     <color name="statusbar">#FF0000</color>
-    <color name="white">#ffffff</color>
+    <color name="white">#ffffffff</color>
     <color name="edit_text_color">#999999</color>
     <color name="line_color">#e6e9ea</color>
     <color name="orange_text_color">#FF8236</color>
@@ -119,5 +119,8 @@
     <color name="color_25282e">#25282E</color>
     <color name="color_646566">#646566</color>
     <color name="color_b5b5b5">#b5b5b5</color>
+    <color name="color_f7f8fa">#f7f8fa</color>
+    <color name="color_909399">#909399</color>
+    <color name="color_e8e8e8">#e8e8e8</color>
 
 </resources>

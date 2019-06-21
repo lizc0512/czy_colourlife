@@ -6,9 +6,11 @@ import android.text.TextUtils;
 
 import com.BeeFramework.model.BaseModel;
 import com.BeeFramework.model.NewHttpResponse;
+import com.nohttp.utils.GsonUtils;
 import com.nohttp.utils.HttpListener;
 import com.nohttp.utils.RequestEncryptionUtils;
 import com.user.UserAppConst;
+import com.user.entity.OneKeyShowEntity;
 import com.yanzhenjie.nohttp.NoHttp;
 import com.yanzhenjie.nohttp.RequestMethod;
 import com.yanzhenjie.nohttp.rest.Request;
@@ -77,4 +79,32 @@ public class SplashModel extends BaseModel {
         }, true, false);
     }
 
+
+    public void getOneKeyShow() {
+        String basePath = "app/home/isFlashLogin";
+        final Request<String> request = NoHttp.createStringRequest(RequestEncryptionUtils.getCombileMD5(mContext, 1, basePath, null), RequestMethod.GET);
+        request(0, request, null, new HttpListener<String>() {
+            @Override
+            public void onSucceed(int what, Response<String> response) {
+                int responseCode = response.getHeaders().getResponseCode();
+                String result = response.get();
+                if (responseCode == RequestEncryptionUtils.responseSuccess) {
+                    int resultCode = showSuccesResultMessageTheme(result);
+                    if (resultCode == 0) {
+                        try {
+                            OneKeyShowEntity oneKeyShowEntity = GsonUtils.gsonToBean(result, OneKeyShowEntity.class);
+                            editor.putString(UserAppConst.COLOUR_ONEKEY_SHOW, oneKeyShowEntity.getContent().getIs_show());
+                        } catch (Exception e) {
+
+                        }
+                    }
+                }
+            }
+
+            @Override
+            public void onFailed(int what, Response<String> response) {
+
+            }
+        }, true, false);
+    }
 }
