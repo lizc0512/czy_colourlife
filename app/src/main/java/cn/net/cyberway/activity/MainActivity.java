@@ -597,9 +597,6 @@ public class MainActivity extends BaseFragmentActivity implements View.OnClickLi
 
     public void guide() {
         onTabSelected(FLAG_TAB_FOUR);
-        if (profileFragment != null) {
-            profileFragment.guideTimer(2);//刷新列表 出现引导
-        }
     }
 
     /**

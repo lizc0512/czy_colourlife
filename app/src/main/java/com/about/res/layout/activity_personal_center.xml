@@ -78,48 +78,17 @@
             android:layout_height="match_parent"
             android:layout_marginTop="10dp" />
 
-
     </LinearLayout>
 
 
     <com.feed.view.NoScrollListView
         android:id="@+id/lv_myprofile_info"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:layout_below="@id/center_menu_layout"
         android:layout_marginBottom="25dp"
         android:divider="@null"
         android:scrollbars="none" />
-
-    <RelativeLayout
-        android:id="@+id/rl_home"
-        android:layout_width="120dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="10dp"
-        android:layout_marginLeft="10dp"
-        android:layout_marginTop="300dp"
-        android:background="@drawable/img_my_ellipse"
-        android:visibility="gone">
-
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:layout_marginStart="12dp"
-            android:layout_marginLeft="12dp"
-            android:background="@drawable/icon_guide_home" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:layout_marginStart="60dp"
-            android:layout_marginLeft="60dp"
-            android:text="@string/property_property"
-            android:textColor="@color/black_text_color"
-            android:textSize="16sp" />
-
-    </RelativeLayout>
 
 </RelativeLayout>
 

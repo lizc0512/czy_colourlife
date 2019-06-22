@@ -1,10 +1,8 @@
 package cn.net.cyberway.fagment;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.os.Handler;
 import android.os.Message;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.GridLayoutManager;
@@ -14,7 +12,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -27,7 +24,6 @@ import com.dashuview.library.keep.MyListener;
 import com.external.eventbus.EventBus;
 import com.external.maxwin.view.IXListViewListener;
 import com.external.maxwin.view.XListView;
-import com.myproperty.activity.MyPropertyActivity;
 import com.nohttp.utils.GlideImageLoader;
 import com.nohttp.utils.GsonUtils;
 import com.tendcloud.tenddata.TCAgent;
@@ -38,7 +34,6 @@ import com.user.UserMessageConstant;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -53,7 +48,6 @@ import cn.net.cyberway.home.protocol.MyOptionsGetResponse;
 import cn.net.cyberway.home.protocol.OPTIONSCONTENT;
 import cn.net.cyberway.home.protocol.OPTIONSDATA;
 import cn.net.cyberway.home.view.CircleImageView;
-import cn.net.cyberway.home.view.GuideView;
 import cn.net.cyberway.model.MyListModel;
 import cn.net.cyberway.utils.LinkParseUtil;
 
@@ -76,28 +70,18 @@ public class ProfileFragment extends Fragment implements View.OnClickListener, I
     private ArrayList<OPTIONSDATA> list = new ArrayList();
     private SharedPreferences mShared;
     public SharedPreferences.Editor mEditor;
-    private ImageView icon_my_background;
     private XListView xListView;
     private View myView;
     private RelativeLayout rl_profile_info;
-    private Activity activity;
-    private GuideView guideView;
-    private RelativeLayout rl_home;
-    private TextView tv_enter;
-
-    private int num = 0;
     private int customer_id = 0;
     private boolean beanPoint = false;//是否有彩豆小红点
-    private boolean isShow = false;//是否显示过
-    private boolean hasData = false;//是否显示过
-    private int millis = 500;
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         mView = inflater.inflate(R.layout.fragment_personal_listview, container, false);
         mShared = getActivity().getSharedPreferences(UserAppConst.USERINFO, 0);
         mEditor = mShared.edit();
-        activity = getActivity();
         if (!EventBus.getDefault().isregister(this)) {
             EventBus.getDefault().register(this);
         }
@@ -117,13 +101,12 @@ public class ProfileFragment extends Fragment implements View.OnClickListener, I
         if (!TextUtils.isEmpty(listCache)) {
             showProfileData(listCache);
             myListModel.getmypageList(0, false, ProfileFragment.this);
-        } else {
-            xListView.startHeaderRefresh();
         }
         if (!TextUtils.isEmpty(subMenuCache)) {
             showSubMenuData(subMenuCache);
             myListModel.getMySubMenuList(1, ProfileFragment.this);
-        } else {
+        }
+        if (TextUtils.isEmpty(listCache) || TextUtils.isEmpty(subMenuCache)) {
             xListView.startHeaderRefresh();
         }
     }
@@ -183,35 +166,16 @@ public class ProfileFragment extends Fragment implements View.OnClickListener, I
      * @param list
      */
     private void myInfoAdapter(ArrayList<OPTIONSDATA> list) {
-        if (null != activity) {
-            if (myItemListAdapter == null) {
-                myItemListAdapter = new MyPageItemListAdapter(activity, list);
-                lv_myprofile_info.setAdapter(myItemListAdapter);
-            } else {
-                myItemListAdapter.setData(list);
-            }
-        }
-        try {
-            String guide = mShared.getString(UserAppConst.COLOR_HOME_GUIDE_STEP + customer_id, "my");
-            if ("my".equals(guide)) {//有首页引导
-                icon_my_background = mView.findViewById(R.id.icon_my_background);
-                for (int i = 0; i < list.size(); i++) {
-                    if ("房产".equals(list.get(i).name)) {
-                        num = i;
-                        break;
-                    }
-                }
-                guideTimer(1);
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
+        if (myItemListAdapter == null) {
+            myItemListAdapter = new MyPageItemListAdapter(getActivity(), list);
+            lv_myprofile_info.setAdapter(myItemListAdapter);
+        } else {
+            myItemListAdapter.setData(list);
         }
     }
 
 
     private void prepareView() {
-        millis = 500;
-        isShow = false;
         myView = LayoutInflater.from(getActivity()).inflate(R.layout.activity_personal_center, null);
         xListView = (XListView) mView.findViewById(R.id.mypage_home_list);
         xListView.setAdapter(null);
@@ -288,29 +252,14 @@ public class ProfileFragment extends Fragment implements View.OnClickListener, I
                 intent = new Intent(getActivity(), CustomerInfoActivity.class);
                 startActivityForResult(intent, 6);
                 break;
-            case R.id.tv_enter:
-                rl_home.setVisibility(View.GONE);
-                guideView.hide();
-                guideView = null;
-                intent = new Intent(activity, MyPropertyActivity.class);
-                startActivityForResult(intent, 0);
-                break;
         }
     }
 
     public void onEvent(Object event) {
         final Message message = (Message) event;
-        if (message.what == UserMessageConstant.SIGN_IN_SUCCESS) {
-            millis = 500;
-            isShow = false;
-            hasData = false;
-        } else if (message.what == UserMessageConstant.CHANGE_DIFF_LANG) {
-            millis = 500;
-            isShow = false;
+        if (message.what == UserMessageConstant.CHANGE_DIFF_LANG) {
             xListView.startHeaderRefresh();
         } else if (message.what == UserMessageConstant.CHANGE_COMMUNITY) {
-            millis = 500;
-            isShow = false;
             xListView.startHeaderRefresh();
         }
     }
@@ -322,8 +271,6 @@ public class ProfileFragment extends Fragment implements View.OnClickListener, I
             case 0:
                 if (resultCode == 1) {
                     ((MainActivity) Objects.requireNonNull(getActivity())).onTabSelected(MainActivity.FLAG_TAB_ONE);//返回首页
-                    ((MainActivity) activity).delayIntoPoup(false);
-                    ((MainActivity) activity).laterIntoPopup();
                 }
                 break;
             case 1:
@@ -376,68 +323,6 @@ public class ProfileFragment extends Fragment implements View.OnClickListener, I
         }
     }
 
-    /**
-     * 遮罩引导
-     */
-    private void guideView() {
-        rl_home = myView.findViewById(R.id.rl_home);
-        rl_home.setVisibility(View.VISIBLE);
-        mHandler.sendEmptyMessageDelayed(3, 400);
-    }
-
-    /**
-     * 遮罩引导
-     */
-    private void showView() {
-        RelativeLayout.LayoutParams layoutParam = (RelativeLayout.LayoutParams) rl_home.getLayoutParams();
-        layoutParam.topMargin = icon_my_background.getHeight() + ((icon_my_background.getHeight() / 174) * 44) * num - 20;//图片高度 加 每个item高度
-        rl_home.setLayoutParams(layoutParam);
-        rl_home.post(this::guide);
-    }
-
-    /**
-     * 遮罩引导
-     */
-    private void guide() {
-        View inflate = View.inflate(getActivity(), R.layout.view_my_guide, null);
-        tv_enter = inflate.findViewById(R.id.tv_enter);
-        tv_enter.setOnClickListener(this);
-        if (null == guideView) {
-            guideView = new GuideView.Builder(getActivity())
-                    .setTargetView(rl_home)
-                    .setHintView(inflate)
-                    .setHintViewDirection(GuideView.Direction.BOTTOM)
-                    .setmForm(GuideView.Form.ELLIPSE)
-                    .create();
-        }
-        if (!guideView.show()) {
-            rl_home.setVisibility(View.GONE);
-        }
-        millis = 400;
-    }
-
-    private InterHandler mHandler = new InterHandler(this);
-
-    /**
-     * @param type 1 我的进入 2 延迟刷新
-     */
-    public void guideTimer(int type) {
-        if (!isShow) {//没有显示过
-            if (1 == type) {
-                isShow = true;
-                mHandler.sendEmptyMessageDelayed(1, millis);
-            } else if (2 == type) {
-                hasData = false;
-                mHandler.sendEmptyMessageDelayed(2, 400);
-            }
-        }
-    }
-
-    @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-        mHandler.removeCallbacksAndMessages(null);
-    }
 
     private int questNum = 0;
 
@@ -458,33 +343,6 @@ public class ProfileFragment extends Fragment implements View.OnClickListener, I
         if (questNum == 2) {
             xListView.stopRefresh();
             questNum = 0;
-        }
-    }
-
-    private static class InterHandler extends Handler {
-        private WeakReference<ProfileFragment> mActivity;
-
-        InterHandler(ProfileFragment activity) {
-            mActivity = new WeakReference<>(activity);
-        }
-
-        @Override
-        public void handleMessage(Message msg) {
-            ProfileFragment activity = mActivity.get();
-            if (activity != null) {
-                switch (msg.what) {
-                    case 1:
-                        activity.guideView();
-                        break;
-                    case 2:
-                        activity.initData();
-                        break;
-                    case 3:
-                        activity.showView();
-                }
-            } else {
-                super.handleMessage(msg);
-            }
         }
     }
 }

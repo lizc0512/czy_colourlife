@@ -71,6 +71,7 @@ public class TokenUtils {
         mEditor.putString(UserAppConst.COLOR_HOME_BANNER, "");
         mEditor.putString(UserAppConst.COLOR_HOME_ACTIVITY, "");
         mEditor.putString(UserAppConst.MYPAGELIST, "");
+        mEditor.putString(UserAppConst.MYPAGESUBMENU, "");
         mEditor.putString(UserAppConst.ADDRESSLISTCACHE, "");
         mEditor.putString(UserAppConst.JOINCOMMUNITY, "");
         mEditor.putInt(UserAppConst.Colour_User_id, 0);
