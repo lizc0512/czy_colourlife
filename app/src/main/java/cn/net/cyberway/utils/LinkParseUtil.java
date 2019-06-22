@@ -44,6 +44,7 @@ import com.user.activity.UserRegisterAndLoginActivity;
 
 import cn.net.cyberway.R;
 import cn.net.cyberway.activity.FindPropertyActivity;
+import cn.net.cyberway.home.activity.LekaiListActivity;
 
 /**
  * 所有link解析 解析文档 见 svn 彩之云linkprotocol
@@ -227,6 +228,10 @@ public class LinkParseUtil {
                         case "Colorbean":
                             intent = new Intent(context, CustomerColourBeanActivity.class);
                             ((Activity) context).startActivityForResult(intent, 1);
+                            break;
+                        case "BloothKeyList"://蓝牙钥匙  colourlife://proto?type=BloothKeyList
+                            intent = new Intent(context, LekaiListActivity.class);
+                            context.startActivity(intent);
                             break;
                     }
                 }

@@ -91,35 +91,35 @@
         android:divider="@null"
         android:scrollbars="none" />
 
-    <RelativeLayout
-        android:id="@+id/rl_home"
-        android:layout_width="120dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="10dp"
-        android:layout_marginLeft="10dp"
-        android:layout_marginTop="300dp"
-        android:background="@drawable/img_my_ellipse"
-        android:visibility="gone">
+    <!--<RelativeLayout-->
+        <!--android:id="@+id/rl_home"-->
+        <!--android:layout_width="120dp"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_marginStart="10dp"-->
+        <!--android:layout_marginLeft="10dp"-->
+        <!--android:layout_marginTop="300dp"-->
+        <!--android:background="@drawable/img_my_ellipse"-->
+        <!--android:visibility="gone">-->
 
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:layout_marginStart="12dp"
-            android:layout_marginLeft="12dp"
-            android:background="@drawable/icon_guide_home" />
+        <!--<ImageView-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_centerVertical="true"-->
+            <!--android:layout_marginStart="12dp"-->
+            <!--android:layout_marginLeft="12dp"-->
+            <!--android:background="@drawable/icon_guide_home" />-->
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:layout_marginStart="60dp"
-            android:layout_marginLeft="60dp"
-            android:text="@string/property_property"
-            android:textColor="@color/black_text_color"
-            android:textSize="16sp" />
+        <!--<TextView-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_centerVertical="true"-->
+            <!--android:layout_marginStart="60dp"-->
+            <!--android:layout_marginLeft="60dp"-->
+            <!--android:text="@string/property_property"-->
+            <!--android:textColor="@color/black_text_color"-->
+            <!--android:textSize="16sp" />-->
 
-    </RelativeLayout>
+    <!--</RelativeLayout>-->
 
 </RelativeLayout>
 

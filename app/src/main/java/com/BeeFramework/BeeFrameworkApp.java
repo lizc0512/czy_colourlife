@@ -32,7 +32,6 @@ import com.im.activity.IMApplyFriendRecordActivity;
 import com.im.entity.ApplyRecordEntity;
 import com.im.greendao.IMGreenDaoManager;
 import com.im.helper.CacheApplyRecorderHelper;
-import com.intelspace.library.EdenApi;
 import com.nostra13.universalimageloader.cache.disc.naming.Md5FileNameGenerator;
 import com.nostra13.universalimageloader.cache.memory.impl.WeakMemoryCache;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
@@ -55,18 +54,13 @@ import java.lang.reflect.Method;
 import cn.csh.colourful.life.utils.ColourLifeSDK;
 import cn.net.cyberway.R;
 import cn.net.cyberway.activity.MainActivity;
+import cn.net.cyberway.utils.ActivityLifecycleListener;
 import cn.net.cyberway.utils.ChangeLanguageHelper;
 
 public class BeeFrameworkApp extends MultiDexApplication {
     private static BeeFrameworkApp instance;
 
     public static DisplayImageOptions optionsImage;        // DisplayImageOptions是用于设置图片显示的类
-
-    private static EdenApi sEdenApi;//乐开 保留
-
-    public static EdenApi getEdenApi() {
-        return sEdenApi;
-    }
 
     public static BeeFrameworkApp getInstance() {
         if (instance == null) {
@@ -110,8 +104,9 @@ public class BeeFrameworkApp extends MultiDexApplication {
         });
         QNRTCEnv.init(getApplicationContext());
 //        LeakCanary.install(this);
-        initEdenApi();//乐开
 //        initSWLocation();//数位
+        registerActivityLifecycleCallbacks(new ActivityLifecycleListener());//乐开
+
         initBugly();
         OneKeyLoginManager.getInstance().init(getApplicationContext(), "DbBj26Nj", "DOMYqkZR", new InitListener() {
             @Override
@@ -128,13 +123,6 @@ public class BeeFrameworkApp extends MultiDexApplication {
      */
     private void initBugly() {
         Bugly.init(this, Constants.BUGLY_KEY, false);
-    }
-
-    /**
-     * 乐开 保留 门禁
-     */
-    private void initEdenApi() {
-        sEdenApi = EdenApi.getInstance(this, AppConst.APP_KEY, false);
     }
 
     /**

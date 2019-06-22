@@ -129,6 +129,33 @@
             android:src="@drawable/icon_arrow" />
     </RelativeLayout>
 
+    <LinearLayout
+        android:id="@+id/ll_auth_manege"
+        android:layout_width="match_parent"
+        android:layout_height="44dp"
+        android:layout_marginTop="8dp"
+        android:background="@color/white">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_marginStart="15dp"
+            android:layout_marginLeft="15dp"
+            android:layout_weight="1"
+            android:text="授权管理"
+            android:textColor="@color/black_text_color"
+            android:textSize="16sp" />
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_marginEnd="15dp"
+            android:layout_marginRight="15dp"
+            android:src="@drawable/icon_arrow" />
+
+    </LinearLayout>
 
     <RelativeLayout
         android:layout_width="match_parent"

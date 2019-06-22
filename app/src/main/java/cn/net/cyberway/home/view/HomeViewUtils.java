@@ -48,7 +48,7 @@ import q.rorbin.badgeview.QBadgeView;
 public class HomeViewUtils {
 
     public static void showChangeCommunityDialog(final Activity activity) {
-        ((MainActivity) activity).delayIntoPoup(true);
+//        ((MainActivity) activity).delayIntoPoup(true);
         final MyDialog dialog = new MyDialog(activity, activity.getResources().getString(R.string.home_change_community));
         dialog.positive.setText(activity.getResources().getString(R.string.home_change));
         dialog.positive.setOnClickListener(new View.OnClickListener() {
@@ -64,8 +64,8 @@ public class HomeViewUtils {
             @Override
             public void onClick(View v) {
                 dialog.dismiss();
-                ((MainActivity) activity).delayIntoPoup(false);
-                ((MainActivity) activity).laterIntoPopup();
+//                ((MainActivity) activity).delayIntoPoup(false);
+//                ((MainActivity) activity).laterIntoPopup();
             }
         });
         dialog.show();
@@ -88,7 +88,7 @@ public class HomeViewUtils {
         leadGestureDialog.btn_cancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ((MainActivity) activity).delayIntoPoup(false);
+//                ((MainActivity) activity).delayIntoPoup(false);
                 leadGestureDialog.dismiss();
             }
         });
@@ -190,18 +190,18 @@ public class HomeViewUtils {
     /**
      * 遮罩引导
      */
-    public static GuideView guideView(Context c, View hintView, GuideView guideView, View layoutView) {
-        if (null == guideView) {
-            guideView = new GuideView.Builder(c)
-                    .setTargetView(R.id.rl_local)
-                    .setHintView(hintView)
-                    .setHintViewDirection(GuideView.Direction.BOTTOM)
-                    .setmForm(GuideView.Form.ELLIPSE)
-                    .create();
-        }
-        if (!guideView.show()) {
-            layoutView.setVisibility(View.GONE);
-        }
-        return guideView;
-    }
+//    public static GuideView guideView(Context c, View hintView, GuideView guideView, View layoutView) {
+//        if (null == guideView) {
+//            guideView = new GuideView.Builder(c)
+//                    .setTargetView(R.id.rl_local)
+//                    .setHintView(hintView)
+//                    .setHintViewDirection(GuideView.Direction.BOTTOM)
+//                    .setmForm(GuideView.Form.ELLIPSE)
+//                    .create();
+//        }
+//        if (!guideView.show()) {
+//            layoutView.setVisibility(View.GONE);
+//        }
+//        return guideView;
+//    }
 }

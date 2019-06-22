@@ -52,7 +52,7 @@ public class UserAppConst {
     public static final String Colour_login_password = "Colour_login_password";
     public static final String Colour_login_gesture_password = "Colour_login_password";//手势密码
 //    public static final String COLOUR_ACTIVITY_DIALOG = "colour_is_dialog";//首页是否有弹窗
-    public static final String COLOUR_BEAN_SIGN_POINT = "colour_bean_sign_point";//我的任务（彩豆）是否有小红点
+//    public static final String COLOUR_BEAN_SIGN_POINT = "colour_bean_sign_point";//我的任务（彩豆）是否有小红点  UserAppConst.COLOUR_BEAN_SIGN_POINT + customer_id
 
     public static final String Colour_login_key = "Colour_login_key";
     public static final String Colour_user_login = "Colour_user_login";//判断是不是用户操作登录(手动登录不是静默登录)
@@ -141,7 +141,7 @@ public class UserAppConst {
     public static final String COLOR_HOME_NOTIFICATION = "color_home_notification";//首页的消息通知
     public static final String COLOR_HOME_BANNER = "color_home_banner";//首页的banner
     public static final String COLOR_HOME_ACTIVITY = "color_home_activity";//首页的彩住宅活动
-    public static final String COLOR_HOME_GUIDE_STEP = "color_home_guide_step";//首页的引导遮罩步骤
+//    public static final String COLOR_HOME_GUIDE_STEP = "color_home_guide_step";//首页的引导遮罩步骤
 
     public static final String COLOR_NOLOGIN_FUNCTION = "color_nologin_function";//首页未登录功能模块
     public static final String COLOR_NOLOGIN_APPLICATION = "color_nologin_application";//首页未登录应用模块

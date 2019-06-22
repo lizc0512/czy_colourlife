@@ -1,11 +1,7 @@
 package cn.net.cyberway.home.fragment;
 
-import android.Manifest;
-import android.app.AlertDialog;
-import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
-import android.content.ServiceConnection;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
@@ -14,11 +10,9 @@ import android.net.NetworkRequest;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
-import android.os.IBinder;
 import android.os.Message;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
@@ -55,7 +49,6 @@ import com.door.entity.SingleCommunityEntity;
 import com.door.model.NewDoorModel;
 import com.eparking.helper.PermissionUtils;
 import com.external.eventbus.EventBus;
-import com.intelspace.library.api.OnSyncUserKeysCallback;
 import com.nohttp.utils.GlideImageLoader;
 import com.nohttp.utils.GridSpacingItemDecoration;
 import com.nohttp.utils.GsonUtils;
@@ -105,14 +98,12 @@ import cn.net.cyberway.home.entity.HomeNotifyEntity;
 import cn.net.cyberway.home.entity.HomeRecycleAdapter;
 import cn.net.cyberway.home.entity.HomeResourceEntity;
 import cn.net.cyberway.home.model.NewHomeModel;
-import cn.net.cyberway.home.service.OperationService;
 import cn.net.cyberway.home.view.AuthDialog;
-import cn.net.cyberway.home.view.GuideView;
-import cn.net.cyberway.home.view.HomeViewUtils;
 import cn.net.cyberway.home.view.TransparentDrawable;
 import cn.net.cyberway.utils.BuryingPointUtils;
 import cn.net.cyberway.utils.CityCustomConst;
 import cn.net.cyberway.utils.CityManager;
+import cn.net.cyberway.utils.LekaiHelper;
 import cn.net.cyberway.utils.LinkParseUtil;
 import q.rorbin.badgeview.QBadgeView;
 
@@ -134,7 +125,6 @@ public class MainHomeFragmentNew extends Fragment implements NewHttpResponse, My
     private SwipeRefreshLayout refresh_layout;
     private SwipeMenuRecyclerView home_rv;
     private LinearLayout alpha_title_layout;
-    private RelativeLayout rl_local;
     private ImageView iv_local_up;
     private TextView alpha_community;
     private ImageView iv_enter_chat;
@@ -152,22 +142,6 @@ public class MainHomeFragmentNew extends Fragment implements NewHttpResponse, My
     private int height = 120;
     private String realName = "";
 
-    //乐开 保留
-    private OperationService mOperationService;
-    private ServiceConnection mConn = new ServiceConnection() {
-        @Override
-        public void onServiceConnected(ComponentName name, IBinder service) {
-            OperationService.LocalBinder binder = (OperationService.LocalBinder) service;
-            mOperationService = binder.getService();
-            mOperationService.initEdenApi(getActivity());
-        }
-
-        @Override
-        public void onServiceDisconnected(ComponentName name) {
-            mOperationService = null;
-        }
-    };
-
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -178,7 +152,7 @@ public class MainHomeFragmentNew extends Fragment implements NewHttpResponse, My
         newUserModel = new NewUserModel(getActivity());
         initNetWorkListener();
 
-        checkPermission();//乐开 保留
+        LekaiHelper.init(getActivity());//开启乐开
     }
 
     @Override
@@ -189,10 +163,6 @@ public class MainHomeFragmentNew extends Fragment implements NewHttpResponse, My
         loadCacheData();
         EventBus.getDefault().register(this);
         ListenerUtils.setCallBack(this);
-//        showFristNotice();//切换小区弹窗 保留
-//        showGestureNotice();//手势密码弹窗 保留
-        guide();
-//        getSignIn();//彩豆签到 保留
         return mView;
     }
 
@@ -229,66 +199,7 @@ public class MainHomeFragmentNew extends Fragment implements NewHttpResponse, My
                 connectivityManager.unregisterNetworkCallback(networkCallback);
             }
         }
-        getActivity().unbindService(mConn);//乐开
-        getActivity().stopService(new Intent(getActivity(), OperationService.class));//乐开
-    }
-
-    private String[] permissions = {Manifest.permission.ACCESS_COARSE_LOCATION};
-
-    //      乐开 保留
-//      动态申请定位权限
-//      Android 6.0后扫描Ble设备需开启位置权限
-    private void checkPermission() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            // 检查该权限是否已经获取
-            int i = ContextCompat.checkSelfPermission(getActivity(), permissions[0]);
-            if (i != PackageManager.PERMISSION_GRANTED) {
-                // 如果没有授予该权限，就去提示用户请求
-                showDialogTipUserRequestPermission();
-            } else {
-                startOperationService();
-            }
-        } else {
-            startOperationService();
-        }
-    }
-
-    //乐开 保留
-    private void showDialogTipUserRequestPermission() {
-        new AlertDialog.Builder(getActivity())
-                .setTitle("定位权限不可用")
-                .setMessage("由于蓝牙扫描需要定位权限，所以在使用前请授予定位权限；\n否则，您将无法正常使用")
-                .setPositiveButton("立即开启", (dialog, which) -> startRequestPermission())
-                .setNegativeButton("取消", (dialog, which) -> getActivity().finish()).setCancelable(false).show();
-    }
-
-    //乐开 保留 开始提交请求权限
-    private void startRequestPermission() {
-        ActivityCompat.requestPermissions(getActivity(), permissions, 100);
-    }
-
-    //乐开 保留
-    @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        if (requestCode == 100) {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                if (!(grantResults[0] != PackageManager.PERMISSION_GRANTED)) {
-                    startOperationService();
-                }
-            }
-        }
-    }
-
-    //乐开 保留 启动开锁服务
-    private void startOperationService() {
-        Intent intent = new Intent(getActivity(), OperationService.class);
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            getActivity().startForegroundService(intent);
-        } else {
-            getActivity().startService(intent);
-        }
-        getActivity().bindService(intent, mConn, Context.BIND_AUTO_CREATE);
+        LekaiHelper.stop(getActivity());
     }
 
     private void initNetWorkListener() {
@@ -298,14 +209,6 @@ public class MainHomeFragmentNew extends Fragment implements NewHttpResponse, My
             NetworkRequest request = builder.build();
             connectivityManager = (ConnectivityManager) getActivity().getSystemService(Context.CONNECTIVITY_SERVICE);
             connectivityManager.registerNetworkCallback(request, networkCallback);
-        }
-    }
-
-    private void guide() {
-        String guide = mShared.getString(UserAppConst.COLOR_HOME_GUIDE_STEP + customer_id, "");
-        if (TextUtils.isEmpty(guide)) {//遮罩引导
-            ((MainActivity) getActivity()).delayIntoPoup(true);
-            handler.sendEmptyMessageDelayed(13, 100);//是否新用户
         }
     }
 
@@ -369,7 +272,6 @@ public class MainHomeFragmentNew extends Fragment implements NewHttpResponse, My
         View alpha_tabbar_view = mView.findViewById(R.id.alpha_tabbar_view);
         setLinearTabViewHeight(alpha_tabbar_view);
         alpha_title_layout = mView.findViewById(R.id.alpha_title_layout);
-        rl_local = mView.findViewById(R.id.rl_local);
         alpha_community = mView.findViewById(R.id.alpha_community);
         iv_enter_chat = mView.findViewById(R.id.iv_enter_chat);
         iv_local_up = mView.findViewById(R.id.iv_local_up);
@@ -429,13 +331,8 @@ public class MainHomeFragmentNew extends Fragment implements NewHttpResponse, My
     private TextView tv_account_amount;
     private View colour_wallet_view;
     private RecyclerView rv_fuction;
-
-    private GuideView guideView;
-    private TextView tv_next;
-
     private String colourWalletUrl = "";
     private String colourHomeUrl = "";
-    private String identityName = "";
 
     private void setImageLogo(String path, ImageView imageView, int defaultId) {
         if (!TextUtils.isEmpty(path)) {
@@ -626,7 +523,6 @@ public class MainHomeFragmentNew extends Fragment implements NewHttpResponse, My
             HomeHeaderEntity.ContentBean contentBean = homeHeaderEntity.getContent();
             colourWalletUrl = contentBean.getIcon_redirect_01();
             colourHomeUrl = contentBean.getIcon_redirect_02();
-            identityName = contentBean.getIdentity_name();
             if (TextUtils.isEmpty(contentBean.getReturn_total())) {
                 tv_return_amount.setText("0.00");
             } else {
@@ -1254,24 +1150,12 @@ public class MainHomeFragmentNew extends Fragment implements NewHttpResponse, My
                     needRequestNumber++;
                     newHomeModel.getHomeNewAdMsgActivity(7, MainHomeFragmentNew.this);
                     break;
-                case 9:
-                    newHomeModel.setHomeModelSignInBean(9, MainHomeFragmentNew.this);
-                    break;
-                case 10:
-                    laterInitGuideView();
-                    break;
                 case 12:
                     newUserModel.getIsRealName(12, MainHomeFragmentNew.this);
-                    break;
-                case 13:
-                    newUserModel.isNew(13, MainHomeFragmentNew.this);
                     break;
                 case 14://乐开
                     newUserModel.getLekaiDoor(14, MainHomeFragmentNew.this);
                     break;
-//                case 15://乐开
-//                    ToastUtil.toastShow(getActivity(), "钥匙数量：" + mOperationService.getLocalKeySize());
-//                    break;
             }
         }
     };
@@ -1307,60 +1191,12 @@ public class MainHomeFragmentNew extends Fragment implements NewHttpResponse, My
         }
         handler.sendEmptyMessageDelayed(0, 500);
         handler.sendEmptyMessageDelayed(1, 1000);
-        handler.sendEmptyMessageDelayed(14, 800);//乐开 获取钥匙
+        handler.sendEmptyMessageDelayed(14, 100);//乐开 获取钥匙
         String realName = mShared.getString(UserAppConst.COLOUR_AUTH_REAL_NAME + customer_id, "");
         if (TextUtils.isEmpty(realName)) {
             handler.sendEmptyMessageDelayed(12, 5000);
         }
     }
-
-    //切换小区弹窗
-    private void showFristNotice() {
-        editor.putString(UserAppConst.COLOR_HOME_GUIDE_STEP + customer_id, "hide").commit();//关闭遮罩
-        HomeViewUtils.showChangeCommunityDialog(getActivity());
-    }
-
-    /**
-     * 设置我的-我的任务（彩豆） 红点 保留
-     */
-    private void getSignIn() {
-        boolean isLogin = mShared.getBoolean(UserAppConst.IS_LOGIN, false);
-        if (isLogin) {
-            handler.sendEmptyMessageDelayed(9, 100);
-        }
-    }
-
-    private void laterInitGuideView() {
-        rl_local.post(this::guideView);
-    }
-
-    /**
-     * 房产遮罩引导
-     */
-    private void guideView() {
-        View inflate = View.inflate(getActivity(), R.layout.view_home_guide, null);
-        tv_next = inflate.findViewById(R.id.tv_next);
-        tv_next.setOnClickListener(this);
-        guideView = HomeViewUtils.guideView(getActivity(), inflate, guideView, rl_local);
-    }
-
-    //提示设置手势密码的对话框  保留
-//    private void showGestureNotice() {
-//        boolean isLogin = mShared.getBoolean(UserAppConst.IS_LOGIN, false);
-//        if (isLogin) {
-//            String isSetGesture = mShared.getString(UserAppConst.Colour_login_mobile + UserAppConst.GESTURE_OPENED, "");
-//            boolean isNotice = false;
-//            int loginTimes = mShared.getInt(UserAppConst.Colour_login_times + customer_id, 1);
-//            if (mShared.contains(UserAppConst.Colour_gesture_notice + customer_id)) {
-//                isNotice = mShared.getBoolean(UserAppConst.Colour_gesture_notice + customer_id, false);
-//            }
-//            if ("0".equals(isSetGesture) && !isNotice && loginTimes == 2) {
-//                //未设置手势密码             //未弹出过提示   第二次登录
-//                ((MainActivity) getActivity()).delayIntoPoup(true);
-//                showSetGestureDialog(getActivity());
-//            }
-//        }
-//    }
 
     private void showBuildAndRoom() {
         if (Util.isGps(Objects.requireNonNull(getActivity()))) {
@@ -1402,10 +1238,6 @@ public class MainHomeFragmentNew extends Fragment implements NewHttpResponse, My
         switch (message.what) {
             case UserMessageConstant.SIGN_IN_SUCCESS:
                 showUserData();
-//                showFristNotice();
-//                showGestureNotice();
-                guide();
-//                getSignIn(); 保留
                 if (null != home_rv) {
                     refreshData();
                 }
@@ -1686,25 +1518,6 @@ public class MainHomeFragmentNew extends Fragment implements NewHttpResponse, My
                     themeSuccess = 0;
                 }
                 break;
-            case 9://获取是否签到状态设置小红点
-                if (!TextUtils.isEmpty(result)) {
-                    try {
-                        JSONObject jsonObject = new JSONObject(result);
-                        String content = jsonObject.getString("content");
-                        JSONObject data = new JSONObject(content);
-                        int show = data.getInt("show");
-                        if (1 == show) {
-                            editor.putBoolean(UserAppConst.COLOUR_BEAN_SIGN_POINT + customer_id, true);//我的任务 有小红点
-                            editor.commit();
-                        } else {
-                            editor.putBoolean(UserAppConst.COLOUR_BEAN_SIGN_POINT + customer_id, false);
-                            editor.commit();
-                        }
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    }
-                }
-                break;
             case 10://获取实名token
                 if (!TextUtils.isEmpty(result)) {
                     try {
@@ -1763,48 +1576,8 @@ public class MainHomeFragmentNew extends Fragment implements NewHttpResponse, My
                     }
                 }
                 break;
-            case 13://是否新用户
-                if (!TextUtils.isEmpty(result)) {
-                    try {
-                        JSONObject jsonObject = new JSONObject(result);
-                        String content = jsonObject.getString("content");
-                        JSONObject data = new JSONObject(content);
-                        String is_first = data.getString("is_first");
-                        if ("1".equals(is_first)) {//1：是，0：否
-                            showFristNotice();//房产弹框引导
-                        } else {
-                            rl_local.setVisibility(View.VISIBLE);//房产遮罩引导
-                            handler.sendEmptyMessageDelayed(10, 150);
-                        }
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    }
-                }
-                break;
             case 14://乐开
-                if (!TextUtils.isEmpty(result)) {
-                    try {
-                        JSONObject jsonObject = new JSONObject(result);
-                        String content = jsonObject.getString("content");
-                        JSONObject data = new JSONObject(content);
-                        String accid = data.getString("accid");
-                        String token = data.getString("token");
-//                        handler.sendEmptyMessageDelayed(15, 2000);//钥匙数量
-                        if (mOperationService != null) {
-                            mOperationService.syncUserKeys(new OnSyncUserKeysCallback() {
-                                @Override
-                                public void syncSuccess(int code, String msg) {
-                                }
-
-                                @Override
-                                public void syncFailed(Throwable throwable) {
-                                }
-                            }, accid, token);
-                        }
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    }
-                }
+                LekaiHelper.startService(getActivity(), result);
                 break;
         }
         questReturnNumber++;
@@ -1832,8 +1605,6 @@ public class MainHomeFragmentNew extends Fragment implements NewHttpResponse, My
 
     @Override
     public void onClick(View v) {
-        //保留
-//        String auth = mShared.getString(UserAppConst.Colour_authentication, "2");//是否认证房产 1：是，2：否
         switch (v.getId()) {
             case R.id.home_wallet_layout:
                 if (!TextUtils.isEmpty(colourWalletUrl)) {
@@ -1848,16 +1619,11 @@ public class MainHomeFragmentNew extends Fragment implements NewHttpResponse, My
                 }
                 break;
             case R.id.bind_manager_layout:
-//                if ("1".equals(auth)) {//保留
                 if (!TextUtils.isEmpty(managerLink)) {
 //                    LinkParseUtil.parse(getActivity(), managerLink, "");
                 }
-//                } else {
-//                    startActProperty();
-//                }
                 break;
             case R.id.iv_call_phone:
-//                if ("1".equals(auth)) {//保留
                 if (bindStatus == 1) {
                     BuryingPointUtils.uploadClickMethod(getActivity(), BuryingPointUtils.homePageName, BuryingPointUtils.homeManagerCode, "拨号", "10601");
                     PermissionUtils.showPhonePermission(getActivity(), managerPhone);
@@ -1866,20 +1632,13 @@ public class MainHomeFragmentNew extends Fragment implements NewHttpResponse, My
 //                        LinkParseUtil.parse(getActivity(), managerLink, "");
                     }
                 }
-//                } else {
-//                    startActProperty();
-//                }
                 break;
             case R.id.iv_enter_chat:
             case R.id.head_enter_chat:
                 HuxinSdkManager.instance().entryServiceManager(getActivity());
                 break;
             case R.id.iv_chat_msg:
-//                if ("1".equals(auth)) {//保留
                 HuxinSdkManager.instance().entryChatService(getActivity());
-//                } else {
-//                    startActProperty();
-//                }
                 break;
             case R.id.iv_left_arrow:
                 try {
@@ -1910,22 +1669,8 @@ public class MainHomeFragmentNew extends Fragment implements NewHttpResponse, My
                 LinkParseUtil.parse(getActivity(), "colourlife://proto?type=notificationList", content);
                 setMessageRead();
                 break;
-            case R.id.tv_next:
-                guideView.hide();
-                guideView = null;
-                rl_local.setVisibility(View.GONE);
-                editor.putString(UserAppConst.COLOR_HOME_GUIDE_STEP + customer_id, "my").commit();//开启我的遮罩
-                ((MainActivity) Objects.requireNonNull(getActivity())).guide();//跳到我的
-                break;
         }
     }
-
-    //保留
-//    private void startActProperty() {
-//        Intent intent = new Intent(getActivity(), MyPropertyActivity.class);
-//        intent.putExtra(MyPropertyActivity.FROM_HOME, "fromHome");
-//        startActivity(intent);
-//    }
 
     private AuthDialog authDialog;
 
@@ -1971,7 +1716,7 @@ public class MainHomeFragmentNew extends Fragment implements NewHttpResponse, My
      */
     private IdentityCallback mListener = data -> {
         boolean identityStatus = data.getBooleanExtra(AuthSDKApi.EXTRA_IDENTITY_STATUS, false);
-        if (identityStatus) {//identityStatus true 已实名
+        if (identityStatus) {//true 已实名
             IDCardInfo idCardInfo = data.getExtras().getParcelable(AuthSDKApi.EXTRA_IDCARD_INFO);
             if (idCardInfo != null) {//身份证信息   idCardInfo.getIDcard();//身份证号码
                 realName = idCardInfo.getName();//姓名
@@ -2042,5 +1787,18 @@ public class MainHomeFragmentNew extends Fragment implements NewHttpResponse, My
     @Override
     public void onOwnerMsgCallback(CacheMsgBean cacheMsgBean) {
         showUnReadMsg(HuxinSdkManager.instance().unreadServiceManagerMessage());
+    }
+
+    //乐开 权限回调
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if (requestCode == 100) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    LekaiHelper.startOperationService(getActivity());
+                }
+            }
+        }
     }
 }

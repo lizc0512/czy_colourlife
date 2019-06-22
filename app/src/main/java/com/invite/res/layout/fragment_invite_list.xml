@@ -5,18 +5,10 @@
     android:layout_height="match_parent"
     android:background="@null">
 
-    <com.external.maxwin.view.XListView
-        android:id="@+id/xlv_invite_list"
+    <com.yanzhenjie.recyclerview.swipe.SwipeMenuRecyclerView
+        android:id="@+id/xrv_invite_list"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:clipToPadding="true"
-        android:descendantFocusability="afterDescendants"
-        android:divider="@null"
-        android:footerDividersEnabled="false"
-        android:headerDividersEnabled="false"
-        android:listSelector="#00000000"
-        android:overScrollMode="never"
-        android:scrollbars="none" />
+        android:layout_height="match_parent" />
 
     <LinearLayout
         android:id="@+id/ll_empty"

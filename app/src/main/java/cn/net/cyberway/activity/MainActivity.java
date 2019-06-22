@@ -62,7 +62,6 @@ import com.youmai.hxsdk.HuxinSdkManager;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -80,6 +79,7 @@ import cn.net.cyberway.home.fragment.NologinHomeFragment;
 import cn.net.cyberway.model.ThemeModel;
 import cn.net.cyberway.protocol.ThemeEntity;
 import cn.net.cyberway.utils.BuryingPointUtils;
+import cn.net.cyberway.utils.LekaiHelper;
 import cn.net.cyberway.utils.LinkParseUtil;
 import q.rorbin.badgeview.QBadgeView;
 
@@ -256,7 +256,7 @@ public class MainActivity extends BaseFragmentActivity implements View.OnClickLi
         mLocalBroadcastManager.unregisterReceiver(mReceiver);
         HuxinSdkManager.instance().getStackAct().finishActivity(this);
         super.onDestroy();
-        mHandler.removeCallbacksAndMessages(null);
+//        mHandler.removeCallbacksAndMessages(null);
 //        SWLocationClient.getInstance().unregisterLocationListener();//深圳数位 保留
 //        SWLocationClient.getInstance().unregisterCycleLocationListener();//深圳数位 保留
     }
@@ -477,8 +477,9 @@ public class MainActivity extends BaseFragmentActivity implements View.OnClickLi
                 }
             }
         } else if (requestCode == 4000) {
-            otherPopShow = false;
-            laterIntoPopup();
+//            otherPopShow = false;
+            intoPopup();
+//            laterIntoPopup();
         }
     }
 
@@ -595,12 +596,12 @@ public class MainActivity extends BaseFragmentActivity implements View.OnClickLi
         }
     };
 
-    public void guide() {
-        onTabSelected(FLAG_TAB_FOUR);
-        if (profileFragment != null) {
-            profileFragment.guideTimer(2);//刷新列表 出现引导
-        }
-    }
+//    public void guide() {
+//        onTabSelected(FLAG_TAB_FOUR);
+//        if (profileFragment != null) {
+//            profileFragment.guideTimer(2);//刷新列表 出现引导
+//        }
+//    }
 
     /**
      * 选择tab
@@ -786,29 +787,30 @@ public class MainActivity extends BaseFragmentActivity implements View.OnClickLi
             urlList.add(contentBean.getLink_url());
             descList.add(contentBean.getMsg_title());
         }
-        laterIntoPopup();
+//        laterIntoPopup();
+        intoPopup();
     }
 
-    public void laterIntoPopup() {
-        mHandler.sendEmptyMessageDelayed(1, 800);//延迟判断是否弹活动框
-    }
+//    public void laterIntoPopup() {
+//        mHandler.sendEmptyMessageDelayed(1, 800);//延迟判断是否弹活动框
+//    }
 
     public void intoPopup() {
-        if (!otherPopShow) {
+//        if (!otherPopShow) {
             try {
                 PopupScUtils.getInstance().jump(this, urlList, imageList, descList);
-                otherPopShow = true;
+//                otherPopShow = true;
             } catch (Exception e) {
 
             }
-        }
+//        }
     }
 
-    private boolean otherPopShow = false;
+//    private boolean otherPopShow = true;
 
-    public void delayIntoPoup(boolean isShow) {
-        otherPopShow = isShow;
-    }
+//    public void delayIntoPoup(boolean isShow) {
+//        otherPopShow = isShow;
+//    }
 
     public void onEvent(Object event) {
         Message message = (Message) event;
@@ -908,7 +910,9 @@ public class MainActivity extends BaseFragmentActivity implements View.OnClickLi
                 tintManager.setStatusBarTintColor(Color.parseColor("#2D8DE0"));
             } else if (choiceType == 1) {
                 tintManager.setStatusBarTintColor(Color.parseColor("#ffffff"));
-            } else {
+            }/* else if (choiceType == 3) {//彩惠人生
+                tintManager.setStatusBarTintColor(Color.parseColor("#ff898b"));
+            }*/ else {
                 setHomeStyle(tab_color);
             }
         } catch (Exception e) {
@@ -1026,6 +1030,9 @@ public class MainActivity extends BaseFragmentActivity implements View.OnClickLi
                     initDealDoorReault(result);
                 }
                 break;
+            case 50://刷新乐开token
+                LekaiHelper.startService(this, result);
+                break;
         }
     }
 
@@ -1092,27 +1099,34 @@ public class MainActivity extends BaseFragmentActivity implements View.OnClickLi
         themeModel.getTheme(0, this);
     }
 
-    private InterHandler mHandler = new InterHandler(this);
-
-    private static class InterHandler extends Handler {
-        private WeakReference<MainActivity> mActivity;
-
-        InterHandler(MainActivity activity) {
-            mActivity = new WeakReference<>(activity);
-        }
-
-        @Override
-        public void handleMessage(Message msg) {
-            MainActivity activity = mActivity.get();
-            if (activity != null) {
-                switch (msg.what) {
-                    case 1:
-                        activity.intoPopup();
-                        break;
-                }
-            } else {
-                super.handleMessage(msg);
-            }
-        }
+    /**
+     * 乐开403重新获取
+     */
+    public void regetLekaiToken() {
+        newUserModel.regetLekaiDoor(50, this);
     }
+
+//    private InterHandler mHandler = new InterHandler(this);
+//
+//    private static class InterHandler extends Handler {
+//        private WeakReference<MainActivity> mActivity;
+//
+//        InterHandler(MainActivity activity) {
+//            mActivity = new WeakReference<>(activity);
+//        }
+//
+//        @Override
+//        public void handleMessage(Message msg) {
+//            MainActivity activity = mActivity.get();
+//            if (activity != null) {
+//                switch (msg.what) {
+//                    case 1:
+//                        activity.intoPopup();
+//                        break;
+//                }
+//            } else {
+//                super.handleMessage(msg);
+//            }
+//        }
+//    }
 }

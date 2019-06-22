@@ -2,7 +2,8 @@ package com.invite.activity;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v4.view.ViewCompat;
+import android.support.v7.widget.DividerItemDecoration;
+import android.support.v7.widget.LinearLayoutManager;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.LinearLayout;
@@ -10,8 +11,6 @@ import android.widget.LinearLayout;
 import com.BeeFramework.Utils.ToastUtil;
 import com.BeeFramework.activity.BaseFragment;
 import com.BeeFramework.model.NewHttpResponse;
-import com.external.maxwin.view.IXListViewListener;
-import com.external.maxwin.view.XListView;
 import com.invite.adapter.InviteMyAdapter;
 import com.invite.adapter.InviteProfitAdapter;
 import com.invite.model.NewInviteModel;
@@ -19,6 +18,7 @@ import com.invite.protocol.InviteDetailListEntity;
 import com.invite.protocol.InviteInviteRecodeEntity;
 import com.nohttp.entity.BaseContentEntity;
 import com.nohttp.utils.GsonUtils;
+import com.yanzhenjie.recyclerview.swipe.SwipeMenuRecyclerView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -34,7 +34,7 @@ public class InviteListFragment extends BaseFragment implements NewHttpResponse 
     private static final String IS_PROFIT = "is_profit";
     private static final String STATUS = "status";
 
-    private XListView xlv_invite_list;
+    private SwipeMenuRecyclerView xrv_invite_list;
     private LinearLayout ll_empty;
 
     private boolean isProfit = false;
@@ -73,57 +73,43 @@ public class InviteListFragment extends BaseFragment implements NewHttpResponse 
 
     @Override
     protected void initView(View rootView) {
-        xlv_invite_list = rootView.findViewById(R.id.xlv_invite_list);
+        xrv_invite_list = rootView.findViewById(R.id.xrv_invite_list);
         ll_empty = rootView.findViewById(R.id.ll_empty);
 
-        xlv_invite_list.setPullRefreshEnable(true);
-        xlv_invite_list.setPullLoadEnable(true);
-        xlv_invite_list.loadMoreHide();
-        xlv_invite_list.setAdapter(null);
-        ViewCompat.setNestedScrollingEnabled(xlv_invite_list, true);
-        xlv_invite_list.setXListViewListener(new IXListViewListener() {
-            @Override
-            public void onRefresh(int id) {
-                page = 1;
-                if (isProfit) {
-                    newInviteModel.allProfit(0, status, page, pageSize, InviteListFragment.this);
-                } else {
-                    newInviteModel.myInvite(1, status, page, pageSize, InviteListFragment.this);
-                }
+        xrv_invite_list.setLayoutManager(new LinearLayoutManager(getActivity()));
+        xrv_invite_list.addItemDecoration(new DividerItemDecoration(getActivity(), LinearLayoutManager.VERTICAL));
+        xrv_invite_list.useDefaultLoadMore();
+        xrv_invite_list.setLoadMoreListener(() -> {
+            page++;
+            if (isProfit) {
+                newInviteModel.allProfit(0, status, page, pageSize, InviteListFragment.this);
+            } else {
+                newInviteModel.myInvite(1, status, page, pageSize, InviteListFragment.this);
             }
-
-            @Override
-            public void onLoadMore(int id) {
-                page++;
-                if (isProfit) {
-                    newInviteModel.allProfit(0, status, page, pageSize, InviteListFragment.this);
-                } else {
-                    newInviteModel.myInvite(1, status, page, pageSize, InviteListFragment.this);
-                }
-            }
-        }, 0);
+        });
     }
 
     @Override
     protected void onFragmentVisibleChange(boolean isVisible) {
         if (isVisible) {
-            xlv_invite_list.startHeaderRefresh();
+            if (isProfit) {
+                newInviteModel.allProfit(0, status, page, pageSize, InviteListFragment.this);
+            } else {
+                newInviteModel.myInvite(1, status, page, pageSize, InviteListFragment.this);
+            }
         }
     }
 
     @Override
     public void OnHttpResponse(int what, String result) {
         switch (what) {
-            case 0:
+            case 0://累计收益
                 isFirst = true;
                 if (!TextUtils.isEmpty(result)) {
                     BaseContentEntity baseContentEntity = GsonUtils.gsonToBean(result, BaseContentEntity.class);
                     if (baseContentEntity.getCode() == 0) {
                         if (page == 1) {
-                            xlv_invite_list.stopRefresh();
                             profitInviteList.clear();
-                        } else {
-                            xlv_invite_list.stopLoadMore();
                         }
 
                         try {
@@ -133,39 +119,32 @@ public class InviteListFragment extends BaseFragment implements NewHttpResponse 
                             profitInviteList.addAll(content.getList());
                             if (null == profitAdapter) {
                                 profitAdapter = new InviteProfitAdapter(getActivity(), profitInviteList, status);
-                                xlv_invite_list.setAdapter(profitAdapter);
+                                xrv_invite_list.setAdapter(profitAdapter);
                             } else {
                                 profitAdapter.notifyDataSetChanged();
+                            }
+
+                            if (0 == profitInviteList.size()) {
+                                ll_empty.setVisibility(View.VISIBLE);
+                            } else {
+                                boolean hasMore = content.getTotal() > profitInviteList.size();
+                                xrv_invite_list.loadMoreFinish(false, hasMore);
                             }
                         } catch (Exception e) {
                             e.printStackTrace();
                         }
-
                     } else {
                         ToastUtil.toastShow(getActivity(), baseContentEntity.getMessage());
                     }
-                } else {
-                    if (page == 1) {
-                        xlv_invite_list.stopRefresh();
-                    } else {
-                        xlv_invite_list.stopLoadMore();
-                    }
-                }
-                ll_empty.setVisibility(profitInviteList.size() == 0 ? View.VISIBLE : View.GONE);
-                if (1 == page) {
-                    xlv_invite_list.setPullRefreshEnable(false);
                 }
                 break;
-            case 1:
+            case 1://我的邀请
                 isFirst = true;
                 if (!TextUtils.isEmpty(result)) {
                     BaseContentEntity baseContentEntity = GsonUtils.gsonToBean(result, BaseContentEntity.class);
                     if (baseContentEntity.getCode() == 0) {
                         if (page == 1) {
-                            xlv_invite_list.stopRefresh();
                             myInviteList.clear();
-                        } else {
-                            xlv_invite_list.stopLoadMore();
                         }
 
                         try {
@@ -175,27 +154,23 @@ public class InviteListFragment extends BaseFragment implements NewHttpResponse 
                             myInviteList.addAll(content.getList());
                             if (null == myAdapter) {
                                 myAdapter = new InviteMyAdapter(getActivity(), myInviteList);
-                                xlv_invite_list.setAdapter(myAdapter);
+                                xrv_invite_list.setAdapter(myAdapter);
                             } else {
                                 myAdapter.notifyDataSetChanged();
+                            }
+
+                            if (0 == myInviteList.size()) {
+                                ll_empty.setVisibility(View.VISIBLE);
+                            } else {
+                                boolean hasMore = content.getTotal() > myInviteList.size();
+                                xrv_invite_list.loadMoreFinish(false, hasMore);
                             }
                         } catch (Exception e) {
                             e.printStackTrace();
                         }
-
                     } else {
                         ToastUtil.toastShow(getActivity(), baseContentEntity.getMessage());
                     }
-                } else {
-                    if (page == 1) {
-                        xlv_invite_list.stopRefresh();
-                    } else {
-                        xlv_invite_list.stopLoadMore();
-                    }
-                }
-                ll_empty.setVisibility(myInviteList.size() == 0 ? View.VISIBLE : View.GONE);
-                if (1 == page) {
-                    xlv_invite_list.setPullRefreshEnable(false);
                 }
                 break;
         }

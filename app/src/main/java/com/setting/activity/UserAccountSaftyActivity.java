@@ -59,6 +59,7 @@ public class UserAccountSaftyActivity extends BaseActivity implements View.OnCli
     private String changeMobileUrl;
     private int is_show = 0;
     private LinearLayout set_pwd_layout;
+    private LinearLayout ll_auth_manege;
     private TextView tv_login_pwd;
     private TextView tv_is_setpawd;
     private SwitchButton sb_open_qq;
@@ -86,12 +87,14 @@ public class UserAccountSaftyActivity extends BaseActivity implements View.OnCli
         sb_open_qq = findViewById(R.id.sb_open_qq);
         sb_open_wechat = findViewById(R.id.sb_open_wechat);
         tv_qq_status = findViewById(R.id.tv_qq_status);
+        ll_auth_manege = findViewById(R.id.ll_auth_manege);
         tv_wechat_status = findViewById(R.id.tv_wechat_status);
         user_top_view_back.setOnClickListener(this);
         gesture_pwd_layout.setOnClickListener(this);
         pay_pswd_layout.setOnClickListener(this);
         change_mobile_layout.setOnClickListener(this);
         logout_phone_layout.setOnClickListener(this);
+        ll_auth_manege.setOnClickListener(this);
         set_pwd_layout.setOnClickListener(this);
         //忘记手势密码  有登录密码验证登录密码   没有就通过短信验证码的方式进行
         sb_open_qq.setOnStateChangedListener(new SwitchButton.OnStateChangedListener() {
@@ -159,6 +162,10 @@ public class UserAccountSaftyActivity extends BaseActivity implements View.OnCli
                     intent.putExtra(PAWDTYPE, 0);
                     startActivityForResult(intent, 2000);
                 }
+                break;
+            case R.id.ll_auth_manege:
+                intent = new Intent(this, AuthManegeListActivity.class);
+                startActivity(intent);
                 break;
             case R.id.gesture_pwd_layout:
                 intent = new Intent(this, GesturePwdMainActivity.class);
