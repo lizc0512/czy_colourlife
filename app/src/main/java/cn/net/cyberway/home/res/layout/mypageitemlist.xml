@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@color/bg_color">
+    android:layout_height="wrap_content"
+    android:background="@color/bg_color"
+    android:orientation="vertical">
 
     <TextView
         android:id="@+id/tv_mypageline"
@@ -13,7 +14,6 @@
         android:id="@+id/mypage_line"
         android:layout_width="match_parent"
         android:layout_height="1px"
-        android:layout_below="@id/tv_mypageline"
         android:layout_marginLeft="15dp"
         android:background="@color/line_color" />
 
@@ -21,7 +21,6 @@
         android:id="@+id/rl_mypage_item"
         android:layout_width="match_parent"
         android:layout_height="44dp"
-        android:layout_below="@id/mypage_line"
         android:background="@color/white">
 
         <ImageView
@@ -66,4 +65,4 @@
 
     </RelativeLayout>
 
-</RelativeLayout>
+</LinearLayout>

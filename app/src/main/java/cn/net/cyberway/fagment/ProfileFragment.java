@@ -6,13 +6,12 @@ import android.os.Bundle;
 import android.os.Message;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -39,6 +38,7 @@ import java.util.List;
 import java.util.Objects;
 
 import cn.csh.colourful.life.listener.OnItemClickListener;
+import cn.csh.colourful.life.view.recycleview.WrapHeightLinearLayoutManager;
 import cn.net.cyberway.R;
 import cn.net.cyberway.activity.MainActivity;
 import cn.net.cyberway.home.adapter.MyPageItemListAdapter;
@@ -63,7 +63,7 @@ public class ProfileFragment extends Fragment implements View.OnClickListener, I
     private CircleImageView mHeadImg;
     private TextView mUsername;
     private TextView mCommunity;
-    private ListView lv_myprofile_info;
+    private RecyclerView lv_myprofile_info;
     private RecyclerView rv_property_menu;
     private MyPageItemListAdapter myItemListAdapter;
     private MyListModel myListModel;
@@ -168,9 +168,21 @@ public class ProfileFragment extends Fragment implements View.OnClickListener, I
     private void myInfoAdapter(ArrayList<OPTIONSDATA> list) {
         if (myItemListAdapter == null) {
             myItemListAdapter = new MyPageItemListAdapter(getActivity(), list);
+            lv_myprofile_info.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false));
             lv_myprofile_info.setAdapter(myItemListAdapter);
         } else {
             myItemListAdapter.setData(list);
+        }
+        if (myItemListAdapter != null) {
+            myItemListAdapter.setOnItemClickListener(new OnItemClickListener() {
+                @Override
+                public void onItemClick(int position) {
+                    if (position >= 0) {
+                        OPTIONSDATA optionsdata = list.get(position);
+                        LinkParseUtil.parse(getActivity(), optionsdata.url, optionsdata.name);
+                    }
+                }
+            });
         }
     }
 
@@ -184,7 +196,7 @@ public class ProfileFragment extends Fragment implements View.OnClickListener, I
         xListView.setPullLoadEnable(false);
         xListView.addHeaderView(myView);
         xListView.setXListViewListener(this, 0);
-        lv_myprofile_info = (ListView) myView.findViewById(R.id.lv_myprofile_info);
+        lv_myprofile_info = myView.findViewById(R.id.lv_myprofile_info);
         rv_property_menu = myView.findViewById(R.id.rv_property_menu);
         mHeadImg = (CircleImageView) myView.findViewById(R.id.profile_head_img);
         mUsername = (TextView) myView.findViewById(R.id.profile_username);
@@ -193,15 +205,6 @@ public class ProfileFragment extends Fragment implements View.OnClickListener, I
         rl_profile_info.setOnClickListener(this);
         TCAgent.onEvent(getActivity(), "203001");
         ListenerUtils.setCallBack(this);
-        lv_myprofile_info.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                if (position >= 0) {
-                    OPTIONSDATA optionsdata = list.get(position);
-                    LinkParseUtil.parse(getActivity(), optionsdata.url, optionsdata.name);
-                }
-            }
-        });
     }
 
     @Override

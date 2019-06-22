@@ -46,7 +46,26 @@ public class ChangeMobileEntity extends BaseContentEntity {
          */
 
         private int show;
+        private int is_logout;  // 1,  // 是否显示注销登录  1显示，2不显示
         private String url;
+
+        public int getIs_logout() {
+            return is_logout;
+        }
+
+        public void setIs_logout(int is_logout) {
+            this.is_logout = is_logout;
+        }
+
+        public String getLogout_url() {
+            return logout_url;
+        }
+
+        public void setLogout_url(String logout_url) {
+            this.logout_url = logout_url;
+        }
+
+        private String logout_url;// 'https://www.baidu.com
 
         public int getShow() {
             return show;

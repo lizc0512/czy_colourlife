@@ -58,6 +58,8 @@ public class UserAccountSaftyActivity extends BaseActivity implements View.OnCli
     private RelativeLayout logout_phone_layout;
     private String changeMobileUrl;
     private int is_show = 0;
+    private int loginout_show = 0;
+    private String loginoutUrl = "";
     private LinearLayout set_pwd_layout;
     private TextView tv_login_pwd;
     private TextView tv_is_setpawd;
@@ -170,7 +172,9 @@ public class UserAccountSaftyActivity extends BaseActivity implements View.OnCli
                 }
                 break;
             case R.id.logout_phone_layout:
-
+                if (!TextUtils.isEmpty(loginoutUrl)) {
+                    LinkParseUtil.parse(UserAccountSaftyActivity.this, loginoutUrl, "");
+                }
                 break;
         }
     }
@@ -186,11 +190,18 @@ public class UserAccountSaftyActivity extends BaseActivity implements View.OnCli
                         if (null != contentBean) {
                             is_show = contentBean.getShow();
                             changeMobileUrl = contentBean.getUrl();
+                            loginout_show = contentBean.getIs_logout();
+                            loginoutUrl = contentBean.getLogout_url();
                         }
                         if (is_show == 1) {
                             change_mobile_layout.setVisibility(View.VISIBLE);
                         } else {
                             change_mobile_layout.setVisibility(View.GONE);
+                        }
+                        if (loginout_show == 1) {
+                            logout_phone_layout.setVisibility(View.VISIBLE);
+                        } else {
+                            logout_phone_layout.setVisibility(View.GONE);
                         }
                     } catch (Exception e) {
 

@@ -2,6 +2,9 @@ package cn.net.cyberway.home.adapter;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.support.annotation.NonNull;
+import android.support.v7.widget.RecyclerView;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -14,6 +17,7 @@ import com.user.UserAppConst;
 
 import java.util.List;
 
+import cn.csh.colourful.life.listener.OnItemClickListener;
 import cn.net.cyberway.R;
 import cn.net.cyberway.home.protocol.OPTIONSDATA;
 
@@ -21,57 +25,43 @@ import cn.net.cyberway.home.protocol.OPTIONSDATA;
  * adapter lizc 我的页面item适配器
  * Created by chenql on 17/10/11.
  */
-public class MyPageItemListAdapter extends BeeBaseAdapter {
+public class MyPageItemListAdapter extends RecyclerView.Adapter<MyPageItemListAdapter.DefaultViewHolder> {
     private Context context;
     private List<OPTIONSDATA> data;
-
+    private OnItemClickListener onClickListener;
     private SharedPreferences mShared;
     private int customer_id;
     private boolean beanPoint;
 
     public void setData(List<OPTIONSDATA> lists) {
-        this.dataList = lists;
+        this.data = lists;
         notifyDataSetChanged();
     }
 
     public MyPageItemListAdapter(Context context, List<OPTIONSDATA> list) {
-        super(context, list);
         this.context = context;
         this.data = list;
-
         mShared = context.getSharedPreferences(UserAppConst.USERINFO, 0);
     }
 
-    public class ViewHolder extends BeeCellHolder {
-        public TextView tv_mypageline;
-        public RelativeLayout rl_mypage_item;
-        public TextView id;//
-        public TextView name;//
-        public ImageView image;//
-        public TextView url;//
-        private TextView view;
-        private ImageView iv_point;//小红点
+    public void setOnItemClickListener(OnItemClickListener onClickListener) {
+        this.onClickListener = onClickListener;
+    }
+
+    @NonNull
+    @Override
+    public DefaultViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        MyPageItemListAdapter.DefaultViewHolder viewHolder = new MyPageItemListAdapter.DefaultViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.mypageitemlist, parent, false));
+        viewHolder.onClickListener = onClickListener;
+        return viewHolder;
     }
 
     @Override
-    protected BeeCellHolder createCellHolder(View cellView) {
-        MyPageItemListAdapter.ViewHolder holder = new MyPageItemListAdapter.ViewHolder();
-        holder.tv_mypageline = (TextView) cellView.findViewById(R.id.tv_mypageline);
-        holder.image = (ImageView) cellView.findViewById(R.id.iv_mypage_photo);
-        holder.name = (TextView) cellView.findViewById(R.id.tv_mypage_nickname);
-        holder.rl_mypage_item = (RelativeLayout) cellView.findViewById(R.id.rl_mypage_item);
-        holder.view = (TextView) cellView.findViewById(R.id.mypage_line);
-        holder.iv_point = cellView.findViewById(R.id.iv_point);
-        return holder;
-    }
-
-    @Override
-    protected View bindData(int position, View cellView, ViewGroup parent, BeeCellHolder h) {
-        MyPageItemListAdapter.ViewHolder holder = (MyPageItemListAdapter.ViewHolder) h;
-        final OPTIONSDATA list = (OPTIONSDATA) dataList.get(position);
+    public void onBindViewHolder(@NonNull DefaultViewHolder holder, int position) {
+        final OPTIONSDATA list = (OPTIONSDATA) data.get(position);
         holder.name.setText(list.name);
         String img = list.img;
-        GlideImageLoader.loadImageDefaultDisplay(mContext, img, holder.image, R.drawable.default_image, R.drawable.default_image);
+        GlideImageLoader.loadImageDefaultDisplay(context, img, holder.image, R.drawable.default_image, R.drawable.default_image);
         int currentStr = data.get(position).group_id;//获取ID
         int previewStr = (position - 1) >= 0 ? (data.get(position - 1).group_id) : 0;
         if (previewStr != (currentStr)) {
@@ -94,12 +84,41 @@ public class MyPageItemListAdapter extends BeeBaseAdapter {
                 holder.iv_point.setVisibility(View.GONE);
             }
         }
-        return cellView;
     }
 
     @Override
-    public View createCellView() {
-        return mInflater.inflate(R.layout.mypageitemlist, null);
+    public int getItemCount() {
+        return data != null ? data.size() : 0;
     }
 
+    static class DefaultViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+        TextView tv_mypageline;
+        RelativeLayout rl_mypage_item;
+        TextView id;//
+        TextView name;//
+        ImageView image;//
+        TextView url;//
+        TextView view;
+        ImageView iv_point;//小红点
+        OnItemClickListener onClickListener;
+
+
+        public DefaultViewHolder(View itemView) {
+            super(itemView);
+            tv_mypageline = itemView.findViewById(R.id.tv_mypageline);
+            image = itemView.findViewById(R.id.iv_mypage_photo);
+            name = itemView.findViewById(R.id.tv_mypage_nickname);
+            rl_mypage_item = itemView.findViewById(R.id.rl_mypage_item);
+            view = itemView.findViewById(R.id.mypage_line);
+            iv_point = itemView.findViewById(R.id.iv_point);
+            itemView.setOnClickListener(this);
+        }
+
+        @Override
+        public void onClick(View v) {
+            if (onClickListener != null) {
+                onClickListener.onItemClick(getAdapterPosition());
+            }
+        }
+    }
 }
