@@ -247,6 +247,10 @@ public class HuxinSdkManager {
             context.getApplicationContext().bindService(intent, serviceConnection, Context.BIND_AUTO_CREATE);
         } catch (IllegalArgumentException e) {
 
+        } catch (IllegalStateException e) {
+
+        } catch (Exception e) {
+
         }
         Log.v(TAG, "HuxinSdkManager in init");
 
