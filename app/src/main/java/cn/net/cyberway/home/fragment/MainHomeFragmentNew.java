@@ -1789,7 +1789,7 @@ public class MainHomeFragmentNew extends Fragment implements NewHttpResponse, My
         showUnReadMsg(HuxinSdkManager.instance().unreadServiceManagerMessage());
     }
 
-    //乐开 权限回调
+    //乐开 100权限回调
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
