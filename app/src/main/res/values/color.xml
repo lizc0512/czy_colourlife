@@ -55,7 +55,6 @@
     <color name="light_blue">#d7ebf8</color>
     <color name="orange">#FFA500</color>
     <color name="color_a3aaae">#a3aaae</color>
-    <color name="color_bfc7cc">#bfc7cc</color>
     <color name="color_7caff5">#7caff5</color>
     <color name="color_aa7caff5">#aa7caff5</color>
     <color name="color_33ffffff">#33ffffff</color>
@@ -131,5 +130,7 @@
     <color name="color_f7f8fa">#f7f8fa</color>
     <color name="color_909399">#909399</color>
     <color name="color_e8e8e8">#e8e8e8</color>
+    <color name="color_bfc7cc">#bfc7c7</color>
+    <color name="color_33000000">#33000000</color>
 
 </resources>

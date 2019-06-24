@@ -11,8 +11,8 @@
 
         <ImageView
             android:id="@+id/iv_door"
-            android:layout_width="24dp"
-            android:layout_height="24dp"
+            android:layout_width="16dp"
+            android:layout_height="16dp"
             android:layout_gravity="center_vertical"
             android:src="@drawable/home_key" />
 

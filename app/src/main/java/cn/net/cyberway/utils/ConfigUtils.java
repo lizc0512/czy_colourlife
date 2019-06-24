@@ -155,7 +155,6 @@ public class ConfigUtils implements NewHttpResponse {
                     ToastUtil.toastShow(mActivity, code + result);
                     OneKeyLoginManager.getInstance().finishAuthActivity();
                 }
-
             }
         }, new OneKeyLoginListener() {
             @Override
