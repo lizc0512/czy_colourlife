@@ -153,6 +153,8 @@ public class UserRegisterAndLoginActivity extends BaseActivity implements OnClic
                     if (1022 == code) {
                         OneKeyLoginManager.getInstance().setAuthThemeConfig(ConfigUtils.getCJSConfig(UserRegisterAndLoginActivity.this));
                         new ConfigUtils(UserRegisterAndLoginActivity.this).jumpOneKeyLogin();
+                    } else {
+                        ToastUtil.toastShow(UserRegisterAndLoginActivity.this, code + result);
                     }
                 }
             });
