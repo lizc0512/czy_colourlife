@@ -113,8 +113,8 @@ public class LekaiHelper {
                     JSONObject data = new JSONObject(content);
                     String accid = data.getString("accid");
                     String token = data.getString("token");
-                    start(activity, "huangxiaoguang", "huangxiaoguang");
-//                    start(accid, token);
+//                    start(activity, "huangxiaoguang", "huangxiaoguang");//测试
+                    start(activity, accid, token);
                 }
             } catch (JSONException e) {
                 e.printStackTrace();
@@ -128,12 +128,10 @@ public class LekaiHelper {
             mLekaiService.syncUserKeys(new OnSyncUserKeysCallback() {
                 @Override
                 public void syncSuccess(int code, String msg, List<LocalKey> list) {
-                    //403
                     if (403 == code && 2 != a[0]) {
                         a[0]++;
                         ((MainActivity) activity).regetLekaiToken();
                     }
-//                    ToastUtil.toastShow(activity, "钥匙数量" + getKeySize());
                 }
 
                 @Override
