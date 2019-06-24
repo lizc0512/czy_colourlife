@@ -50,8 +50,12 @@ public class LekaiListActivity extends BaseActivity implements View.OnClickListe
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        if (null != bluetoothListener) {
-            bluetoothListener = null;
+        try {
+            if (null != bluetoothListener) {
+                bluetoothListener = null;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 
