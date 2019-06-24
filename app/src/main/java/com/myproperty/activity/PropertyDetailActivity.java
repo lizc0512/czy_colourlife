@@ -58,7 +58,6 @@ public class PropertyDetailActivity extends BaseActivity implements View.OnClick
     private boolean defaul = false;
     private String address = "";
     private String authentication = "";
-    private String identityStateName = "";
     private String identityName = "";
     private String employee = "";
 
@@ -67,7 +66,6 @@ public class PropertyDetailActivity extends BaseActivity implements View.OnClick
     private TextView tv_address;
     private TextView tv_community_name;
     private TextView tv_identity;
-//    private TextView tv_wait;
     private LinearLayout ll_has_default;
     private LinearLayout ll_no_default;
     private LinearLayout ll_emp;
@@ -104,7 +102,6 @@ public class PropertyDetailActivity extends BaseActivity implements View.OnClick
         tv_address = findViewById(R.id.tv_address);
         tv_community_name = findViewById(R.id.tv_community_name);
         tv_identity = findViewById(R.id.tv_identity);
-//        tv_wait = findViewById(R.id.tv_wait);
         ll_has_default = findViewById(R.id.ll_has_default);
         ll_no_default = findViewById(R.id.ll_no_default);
         ll_emp = findViewById(R.id.ll_emp);
@@ -164,13 +161,6 @@ public class PropertyDetailActivity extends BaseActivity implements View.OnClick
             ll_no_default.setVisibility(defaul ? View.VISIBLE : View.GONE);
             identityName = intent.getStringExtra(IDENTITY_NAME);
             tv_identity.setText(identityName);
-            identityStateName = intent.getStringExtra(IDENTITY_STATE_NAME);
-
-//            if ("待审核".equals(identityStateName)) {
-//                tv_wait.setVisibility(View.VISIBLE);//审核状态
-//            } else {
-//                tv_wait.setVisibility(View.GONE);
-//            }
         }
     }
 
@@ -273,7 +263,6 @@ public class PropertyDetailActivity extends BaseActivity implements View.OnClick
                 if (!TextUtils.isEmpty(result)) {
                     ToastUtil.toastShow(this, "设置成功");
                     tv_identity.setText(identityName);
-//                    tv_wait.setVisibility(View.GONE);
                 }
                 break;
             case 3:

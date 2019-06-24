@@ -55,8 +55,6 @@
     <uses-permission android:name="com.android.launcher2.permission.READ_SETTINGS" />
     <uses-permission android:name="com.android.launcher3.permission.READ_SETTINGS" />
     <uses-permission android:name="android.permission.REQUEST_INSTALL_PACKAGE" />
-    <!--乐开 保留 前台服务-->
-    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
     <!--乐开 保留-->
     <uses-sdk tools:overrideLibrary="com.intelspace.library" />
     <!--bugly 阅读日志权限-->
@@ -1029,6 +1027,24 @@
             android:name="com.myproperty.activity.PropertyChangeActivity"
             android:screenOrientation="portrait" />
 
+        <!-- 授权列表 -->
+        <activity
+            android:name="com.setting.activity.AuthManegeListActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustPan" />
+
+        <!-- 授权详情 -->
+        <activity
+            android:name="com.setting.activity.AuthManegeDetailActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustPan" />
+
+        <!-- 授权详情 -->
+        <activity
+            android:name="cn.net.cyberway.home.activity.LekaiListActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustPan" />
+
         <!--bugly-->
         <activity
             android:name="com.tencent.bugly.beta.ui.BetaActivity"
@@ -1037,7 +1053,7 @@
 
         <!--乐开 保留-->
         <service android:name="com.intelspace.library.service.BleService" />
-        <service android:name="cn.net.cyberway.home.service.OperationService" />
+        <service android:name="cn.net.cyberway.home.service.LekaiService" />
 
         <!--数位场景识别 保留-->
         <!--<service android:name="com.szshuwei.x.location.service.SWLocationService" />-->

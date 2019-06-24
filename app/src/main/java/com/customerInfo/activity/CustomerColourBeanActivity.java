@@ -41,7 +41,7 @@ import cn.net.cyberway.home.model.NewHomeModel;
 import cn.net.cyberway.utils.LinkParseUtil;
 
 /**
- * 彩豆
+ * 彩豆 弃用
  * Created by hxg on 2019/4/16.
  */
 public class CustomerColourBeanActivity extends BaseActivity implements View.OnClickListener, NewHttpResponse {
@@ -174,20 +174,20 @@ public class CustomerColourBeanActivity extends BaseActivity implements View.OnC
                         String content = jsonObject.getString("content");
                         JSONObject data = new JSONObject(content);
                         int show = data.getInt("show");
-                        boolean hasPoint = mShared.getBoolean(UserAppConst.COLOUR_BEAN_SIGN_POINT + customer_id, false);
-                        if (1 == show) {
-                            iv_sign.setVisibility(View.VISIBLE);
-                            if (!hasPoint) {
-                                editor.putBoolean(UserAppConst.COLOUR_BEAN_SIGN_POINT + customer_id, true);//我的任务 有小红点
-                                editor.commit();
-                            }
-                        } else {
-                            iv_sign.setVisibility(View.GONE);
-                            if (hasPoint) {
-                                editor.putBoolean(UserAppConst.COLOUR_BEAN_SIGN_POINT + customer_id, false);
-                                editor.commit();
-                            }
-                        }
+//                        boolean hasPoint = mShared.getBoolean(UserAppConst.COLOUR_BEAN_SIGN_POINT + customer_id, false);
+//                        if (1 == show) {
+//                            iv_sign.setVisibility(View.VISIBLE);
+//                            if (!hasPoint) {
+//                                editor.putBoolean(UserAppConst.COLOUR_BEAN_SIGN_POINT + customer_id, true);//我的任务 有小红点
+//                                editor.commit();
+//                            }
+//                        } else {
+//                            iv_sign.setVisibility(View.GONE);
+//                            if (hasPoint) {
+//                                editor.putBoolean(UserAppConst.COLOUR_BEAN_SIGN_POINT + customer_id, false);
+//                                editor.commit();
+//                            }
+//                        }
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
@@ -349,14 +349,14 @@ public class CustomerColourBeanActivity extends BaseActivity implements View.OnC
     protected void onPause() {
         super.onPause();
         refresh = true;
-        boolean hasPoint = mShared.getBoolean(UserAppConst.COLOUR_BEAN_SIGN_POINT + customer_id, false);
-        if (View.GONE == iv_sign.getVisibility() && hasPoint) {//再次确保已签到情况隐藏小红点
-            editor.putBoolean(UserAppConst.COLOUR_BEAN_SIGN_POINT + customer_id, false);
-            editor.commit();
-        } else if (View.VISIBLE == iv_sign.getVisibility() && !hasPoint) {
-            editor.putBoolean(UserAppConst.COLOUR_BEAN_SIGN_POINT + customer_id, true);
-            editor.commit();
-        }
+//        boolean hasPoint = mShared.getBoolean(UserAppConst.COLOUR_BEAN_SIGN_POINT + customer_id, false);
+//        if (View.GONE == iv_sign.getVisibility() && hasPoint) {//再次确保已签到情况隐藏小红点
+//            editor.putBoolean(UserAppConst.COLOUR_BEAN_SIGN_POINT + customer_id, false);
+//            editor.commit();
+//        } else if (View.VISIBLE == iv_sign.getVisibility() && !hasPoint) {
+//            editor.putBoolean(UserAppConst.COLOUR_BEAN_SIGN_POINT + customer_id, true);
+//            editor.commit();
+//        }
     }
 
     @Override

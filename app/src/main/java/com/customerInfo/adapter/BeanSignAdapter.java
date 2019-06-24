@@ -17,7 +17,7 @@ import cn.net.cyberway.R;
 import cn.net.cyberway.home.entity.HomeColourBeanFormatEntity;
 
 /**
- * 彩豆签到适配器
+ * 彩豆签到适配器 弃用
  * <p>
  * Created by hxg on 2019/4/16 09:47
  */
@@ -56,9 +56,9 @@ public class BeanSignAdapter extends BeeBaseAdapter {
         int day = position + 1;
 
         customer_id = mShared.getInt(UserAppConst.Colour_User_id, 0);
-        boolean hasSignPoint = mShared.getBoolean(UserAppConst.COLOUR_BEAN_SIGN_POINT + customer_id, false);
+//        boolean hasSignPoint = mShared.getBoolean(UserAppConst.COLOUR_BEAN_SIGN_POINT + customer_id, false);
 
-        if (position + 1 == item.getCurrent() && hasSignPoint || position + 1 < item.getCurrent()) {
+        if (position + 1 == item.getCurrent() /*&& hasSignPoint*/ || position + 1 < item.getCurrent()) {
             holder.tv_today.setVisibility(View.GONE);
             holder.tv_day.setVisibility(View.VISIBLE);
             holder.iv_bean.setBackgroundResource(R.drawable.icon_bean_light);

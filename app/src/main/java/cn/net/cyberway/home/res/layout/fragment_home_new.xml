@@ -70,33 +70,33 @@
                 android:src="@drawable/home_msg_black" />
         </LinearLayout>
 
-        <RelativeLayout
-            android:id="@+id/rl_local"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="@drawable/img_home_ellipse"
-            android:visibility="gone">
+        <!--<RelativeLayout-->
+            <!--android:id="@+id/rl_local"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:background="@drawable/img_home_ellipse"-->
+            <!--android:visibility="gone">-->
 
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerVertical="true"
-                android:layout_marginStart="28dp"
-                android:layout_marginLeft="28dp"
-                android:background="@drawable/icon_local"
-                tools:ignore="ContentDescription" />
+            <!--<ImageView-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:layout_centerVertical="true"-->
+                <!--android:layout_marginStart="28dp"-->
+                <!--android:layout_marginLeft="28dp"-->
+                <!--android:background="@drawable/icon_local"-->
+                <!--tools:ignore="ContentDescription" />-->
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerVertical="true"
-                android:layout_marginStart="56dp"
-                android:layout_marginLeft="56dp"
-                android:text="龙华区梅龙路164号"
-                android:textColor="@color/black_text_color"
-                android:textSize="16sp" />
+            <!--<TextView-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:layout_centerVertical="true"-->
+                <!--android:layout_marginStart="56dp"-->
+                <!--android:layout_marginLeft="56dp"-->
+                <!--android:text="龙华区梅龙路164号"-->
+                <!--android:textColor="@color/black_text_color"-->
+                <!--android:textSize="16sp" />-->
 
-        </RelativeLayout>
+        <!--</RelativeLayout>-->
 
 
     </RelativeLayout>

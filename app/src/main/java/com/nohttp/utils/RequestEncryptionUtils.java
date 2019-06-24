@@ -131,6 +131,9 @@ public class RequestEncryptionUtils {
             case 11:
                 finalUrl = Constants.DOOR_ADDRESS + urlString;  //蓝牙门禁
                 break;
+            case 12:
+                finalUrl = Constants.AUTH_APP_ADDRESS + urlString;  //授权应用
+                break;
             default:
                 finalUrl = urlString;
         }

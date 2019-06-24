@@ -22,7 +22,6 @@ import com.BeeFramework.model.HttpApi;
 import com.BeeFramework.model.HttpApiResponse;
 import com.BeeFramework.model.NewHttpResponse;
 import com.about.activity.AboutActivity;
-import com.customerInfo.activity.CustomerColourBeanActivity;
 import com.external.eventbus.EventBus;
 import com.mob.MobSDK;
 import com.setting.switchButton.SwitchButton;
@@ -48,7 +47,6 @@ import cn.sharesdk.framework.Platform;
 import cn.sharesdk.framework.ShareSDK;
 import cn.sharesdk.tencent.qq.QQ;
 import cn.sharesdk.wechat.friends.Wechat;
-import q.rorbin.badgeview.QBadgeView;
 
 /**
  * 设置
@@ -82,8 +80,6 @@ public class SettingActivity extends BaseActivity implements HttpApiResponse, Vi
     private List<String> languageList = new ArrayList<>();
     private NewUserModel newUserModel;
     private boolean fromColourToast = false;//是否从彩豆进入 和控制只toast一次
-
-//    private QBadgeView guideLoginBadgeView = null;//小红点
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -173,7 +169,6 @@ public class SettingActivity extends BaseActivity implements HttpApiResponse, Vi
         exit_btn.setOnClickListener(this);
         mTokenModel = new TokenModel(this);
         mEditDialog = new EditDialog(this);
-//        guideLoginBadgeView = TextUtil.setPwdGuide(this, guideLoginBadgeView, tv_safe);
     }
 
     private void initData() {

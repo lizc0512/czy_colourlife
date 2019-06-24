@@ -64,12 +64,8 @@ public class AppConst {
         return imageName;
     }
 
-    public static final String APP_KEY = "wxjzzl5rsoli76rpx75nyb17c";//测试demo、七星大门
-//        public static final String TEST_USER_ACCID = "xxxx8848";//测试demo
-//    public static final String TEST_USER_ACCID = "3f2d5d49-a344-4e68-ab69-afcaa76c83d5";//七星大门
-//        public static final String TEST_USER_TOKEN = "xxxxxxxx";//测试demo
-//    public static final String TEST_USER_TOKEN = "1fc3j9pge26cg6ixsgp4dyv4k5z8m5n5ddldkgs7n7";//七星大门
+//    public static final String APP_KEY = "wxjzzl5rsoli76rpx75nyb17c";//测试demo、七星大门
+    public static final String APP_KEY = "vtv9ez7umyhuiocyksun65vu9";//huangxiaoguang 测试账号
 
     public static final long CONNECT_TIME_OUT = 5000;
-
 }

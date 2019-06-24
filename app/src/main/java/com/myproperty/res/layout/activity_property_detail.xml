@@ -105,18 +105,6 @@
                         android:textColor="@color/black_text_color"
                         android:textSize="16sp" />
 
-                    <!--<TextView-->
-                        <!--android:id="@+id/tv_wait"-->
-                        <!--android:layout_width="wrap_content"-->
-                        <!--android:layout_height="wrap_content"-->
-                        <!--android:layout_gravity="center"-->
-                        <!--android:layout_marginStart="12dp"-->
-                        <!--android:layout_marginLeft="12dp"-->
-                        <!--android:background="@drawable/shape_text_property_yellow"-->
-                        <!--android:text="待审核"-->
-                        <!--android:textColor="@color/color_feb83d"-->
-                        <!--android:textSize="12sp"-->
-                        <!--android:visibility="gone" />-->
                 </LinearLayout>
 
             </LinearLayout>
