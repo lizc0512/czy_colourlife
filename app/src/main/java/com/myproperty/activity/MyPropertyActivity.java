@@ -3,12 +3,12 @@ package com.myproperty.activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -125,8 +125,7 @@ public class MyPropertyActivity extends BaseActivity implements View.OnClickList
         btnAddProperty.setOnClickListener(this);
 
         address_rv = findViewById(R.id.address_rv);
-        address_rv.setLayoutManager(new LinearLayoutManager(this));
-        address_rv.addItemDecoration(new DividerItemDecoration(this, LinearLayoutManager.VERTICAL));
+        address_rv.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
         mAdapter = new MyPropertyAdapter(this, communityBeanList);
         address_rv.setAdapter(mAdapter);
         address_rv.useDefaultLoadMore();
@@ -162,8 +161,7 @@ public class MyPropertyActivity extends BaseActivity implements View.OnClickList
         btnAddProperty.setOnClickListener(null);
 
         address_auth_rv = findViewById(R.id.address_auth_rv);
-        address_auth_rv.setLayoutManager(new LinearLayoutManager(this));
-        address_auth_rv.addItemDecoration(new DividerItemDecoration(this, LinearLayoutManager.VERTICAL));
+        address_auth_rv.setLayoutManager(new LinearLayoutManager(this, LinearLayout.VERTICAL, false));
         mAuthAdapter = new MyPropertyAuthAdapter(this, authBeanList);
         address_auth_rv.setAdapter(mAuthAdapter);
         address_auth_rv.useDefaultLoadMore();

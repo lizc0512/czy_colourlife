@@ -2,7 +2,6 @@ package com.invite.activity;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.text.TextUtils;
 import android.view.View;
@@ -18,6 +17,7 @@ import com.invite.protocol.InviteDetailListEntity;
 import com.invite.protocol.InviteInviteRecodeEntity;
 import com.nohttp.entity.BaseContentEntity;
 import com.nohttp.utils.GsonUtils;
+import com.nohttp.utils.SpaceItemDecoration;
 import com.yanzhenjie.recyclerview.swipe.SwipeMenuRecyclerView;
 
 import java.util.ArrayList;
@@ -76,8 +76,7 @@ public class InviteListFragment extends BaseFragment implements NewHttpResponse 
         xrv_invite_list = rootView.findViewById(R.id.xrv_invite_list);
         ll_empty = rootView.findViewById(R.id.ll_empty);
 
-        xrv_invite_list.setLayoutManager(new LinearLayoutManager(getActivity()));
-        xrv_invite_list.addItemDecoration(new DividerItemDecoration(getActivity(), LinearLayoutManager.VERTICAL));
+        xrv_invite_list.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayout.VERTICAL, false));
         xrv_invite_list.useDefaultLoadMore();
         xrv_invite_list.setLoadMoreListener(() -> {
             page++;

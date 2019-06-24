@@ -10,6 +10,7 @@ import android.widget.TextView;
 import cn.net.cyberway.R;
 
 /**
+ * 权限弹框
  * Created by hxg on 2019/5/15.
  */
 public class AuthDialog {

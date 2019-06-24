@@ -7,7 +7,6 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.text.TextUtils;
 import android.view.View;
@@ -97,8 +96,7 @@ public class InviteDetailPoster extends BaseActivity implements View.OnClickList
             rv_detail.setVisibility(View.VISIBLE);
             rl_poster.setVisibility(View.GONE);
             rl_null.setVisibility(View.GONE);
-            rv_detail.setLayoutManager(new LinearLayoutManager(this));
-            rv_detail.addItemDecoration(new DividerItemDecoration(this, LinearLayoutManager.VERTICAL));
+            rv_detail.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
 
             rv_detail.useDefaultLoadMore();
             rv_detail.setLoadMoreListener(() -> {

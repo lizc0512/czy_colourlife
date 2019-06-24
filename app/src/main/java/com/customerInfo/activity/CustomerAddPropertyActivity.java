@@ -5,7 +5,6 @@ import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Message;
-import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.text.Editable;
 import android.text.TextUtils;
@@ -192,15 +191,13 @@ public class CustomerAddPropertyActivity extends BaseActivity implements View.On
         });
 
         rv_area = findViewById(R.id.rv_area);
-        rv_area.setLayoutManager(new LinearLayoutManager(this));
-        rv_area.addItemDecoration(new DividerItemDecoration(this, LinearLayoutManager.VERTICAL));
+        rv_area.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
         areaAdapter = new AreaPropertyAdapter(this, areaBeanList);
         rv_area.setAdapter(areaAdapter);
         rv_area.useDefaultLoadMore();
 
         rv_address = findViewById(R.id.rv_address);
-        rv_address.setLayoutManager(new LinearLayoutManager(this));
-        rv_address.addItemDecoration(new DividerItemDecoration(this, LinearLayoutManager.VERTICAL));
+        rv_address.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
         addAdapter = new AddPropertyAdapter(this, addBeanList);
         rv_address.setAdapter(addAdapter);
         rv_address.useDefaultLoadMore();
