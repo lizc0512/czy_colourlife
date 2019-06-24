@@ -168,7 +168,8 @@ public class ProfileFragment extends Fragment implements View.OnClickListener, I
     private void myInfoAdapter(ArrayList<OPTIONSDATA> list) {
         if (myItemListAdapter == null) {
             myItemListAdapter = new MyPageItemListAdapter(getActivity(), list);
-            lv_myprofile_info.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false));
+            lv_myprofile_info.setLayoutManager(new WrapHeightLinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false));
+            lv_myprofile_info.setNestedScrollingEnabled(false);
             lv_myprofile_info.setAdapter(myItemListAdapter);
         } else {
             myItemListAdapter.setData(list);

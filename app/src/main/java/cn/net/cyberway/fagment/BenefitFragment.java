@@ -14,7 +14,6 @@ import com.external.maxwin.view.IXListViewListener;
 import com.user.UserAppConst;
 
 import cn.net.cyberway.R;
-import cn.net.cyberway.activity.MainActivity;
 
 
 /**
@@ -73,24 +72,6 @@ public class BenefitFragment extends Fragment implements View.OnClickListener, H
     @Override
     public void onHiddenChanged(boolean hidden) {
         super.onHiddenChanged(hidden);
-        if (!isHidden()) {
-            boolean isLogin = mShared.getBoolean(UserAppConst.IS_LOGIN, false);
-            if (isLogin) {
-                ((MainActivity) getActivity()).changeStyle();
-            }
-        }
     }
 
-    @Override
-    public void onResume() {
-        super.onResume();
-        try {
-            boolean isLogin = mShared.getBoolean(UserAppConst.IS_LOGIN, false);
-            if (isLogin) {
-                ((MainActivity) getActivity()).changeStyle();
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
 }

@@ -62,7 +62,6 @@ import com.youmai.hxsdk.HuxinSdkManager;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -80,6 +79,7 @@ import cn.net.cyberway.home.fragment.NologinHomeFragment;
 import cn.net.cyberway.model.ThemeModel;
 import cn.net.cyberway.protocol.ThemeEntity;
 import cn.net.cyberway.utils.BuryingPointUtils;
+import cn.net.cyberway.utils.LekaiHelper;
 import cn.net.cyberway.utils.LinkParseUtil;
 import q.rorbin.badgeview.QBadgeView;
 
@@ -197,29 +197,8 @@ public class MainActivity extends BaseFragmentActivity implements View.OnClickLi
         HuxinSdkManager.instance().getStackAct().addActivity(this);
         newUserModel = new NewUserModel(MainActivity.this);
         tintManager.setStatusBarTintColor(Color.TRANSPARENT);
-//        HomeViewUtils.downLoadStartImage(MainActivity.this);
-//        initSW();//深圳数位 保留
     }
 
-    //深圳数位 保留
-//    private void initSW() {
-//        SWLocationClient.getInstance()
-//                .registerCycleLocationListener(new CycleLocationListener() {
-//                    @Override
-//                    public void onCycleLocationSuccess(int retCode, String msg, LocationData locationData) {
-//                        ToastUtil.toastShow(getApplicationContext(), "成功：\n" + "retCode:" + retCode + "\nmsg:" + msg + "\n locationData:" + locationData);
-//                        LogUtils.e("MainHomeFragmentNew", "onCycleLocationSuccess:" + retCode + "msg" + msg + "locationData" + locationData);
-//                        //定位成功时会回调这个方法
-//                    }
-//
-//                    @Override
-//                    public void onCycleError(int retCode, String msg) {
-//                        ToastUtil.toastShow(getApplicationContext(), "失败：\n" + "retCode:" + retCode + "\nmsg:" + msg);
-//                        LogUtils.e("MainHomeFragmentNew", "onCycleError:" + retCode + "msg" + msg);
-//                        //定位失败时会回调这个方法
-//                    }
-//                });
-//    }
 
     @Override
     protected void onStart() {
@@ -256,9 +235,6 @@ public class MainActivity extends BaseFragmentActivity implements View.OnClickLi
         mLocalBroadcastManager.unregisterReceiver(mReceiver);
         HuxinSdkManager.instance().getStackAct().finishActivity(this);
         super.onDestroy();
-        mHandler.removeCallbacksAndMessages(null);
-//        SWLocationClient.getInstance().unregisterLocationListener();//深圳数位 保留
-//        SWLocationClient.getInstance().unregisterCycleLocationListener();//深圳数位 保留
     }
 
     private QBadgeView badgeView;
@@ -477,8 +453,7 @@ public class MainActivity extends BaseFragmentActivity implements View.OnClickLi
                 }
             }
         } else if (requestCode == 4000) {
-            otherPopShow = false;
-            laterIntoPopup();
+            intoPopup();
         }
     }
 
@@ -752,11 +727,6 @@ public class MainActivity extends BaseFragmentActivity implements View.OnClickLi
                         mEditor.commit();
                     }
                 }
-                String colorToken = mShared.getString(UserAppConst.Colour_access_token, "");
-//                if (isLoin && !TextUtils.isEmpty(colorToken)) {
-//                    myListModel = new MyListModel(this);
-//                    myListModel.getmypageList(1000, false, MainActivity.this);
-//                }
             }
         }
     }
@@ -783,29 +753,18 @@ public class MainActivity extends BaseFragmentActivity implements View.OnClickLi
             urlList.add(contentBean.getLink_url());
             descList.add(contentBean.getMsg_title());
         }
-        laterIntoPopup();
+        intoPopup();
     }
 
-    public void laterIntoPopup() {
-        mHandler.sendEmptyMessageDelayed(1, 800);//延迟判断是否弹活动框
-    }
 
     public void intoPopup() {
-        if (!otherPopShow) {
-            try {
-                PopupScUtils.getInstance().jump(this, urlList, imageList, descList);
-                otherPopShow = true;
-            } catch (Exception e) {
+        try {
+            PopupScUtils.getInstance().jump(this, urlList, imageList, descList);
+        } catch (Exception e) {
 
-            }
         }
     }
 
-    private boolean otherPopShow = false;
-
-    public void delayIntoPoup(boolean isShow) {
-        otherPopShow = isShow;
-    }
 
     public void onEvent(Object event) {
         Message message = (Message) event;
@@ -886,7 +845,6 @@ public class MainActivity extends BaseFragmentActivity implements View.OnClickLi
                 popupModel = new PopupModel(this);
             }
             userId = mShared.getInt(UserAppConst.Colour_User_id, 0);
-//            popupModel.getHomePopupMsg(10, userId, 14, this);
             popupModel.getNewHomePopupMsg(11, this);
         }
     }
@@ -897,33 +855,6 @@ public class MainActivity extends BaseFragmentActivity implements View.OnClickLi
     private void setLayoutPramas(View view, int value) {
         LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(Utils.getDeviceWith(this) / value, Utils.getDeviceWith(this) / value);
         view.setLayoutParams(layoutParams);
-    }
-
-    public void changeStyle() {
-        try {
-            if (choiceType == 2) {
-                tintManager.setStatusBarTintColor(Color.parseColor("#2D8DE0"));
-            } else if (choiceType == 1) {
-                tintManager.setStatusBarTintColor(Color.parseColor("#ffffff"));
-            } else {
-                setHomeStyle(tab_color);
-            }
-        } catch (Exception e) {
-
-        }
-    }
-
-    private String tab_color = "#ffffff";
-
-    public void setHomeStyle(String color) {
-        try {
-            tab_color = color;
-            if (choiceType == 0 && !TextUtils.isEmpty(tab_color)) {
-                tintManager.setStatusBarTintColor(Color.parseColor(tab_color));
-            }
-        } catch (Exception e) {
-
-        }
     }
 
     /**
@@ -1023,6 +954,9 @@ public class MainActivity extends BaseFragmentActivity implements View.OnClickLi
                     initDealDoorReault(result);
                 }
                 break;
+            case 50://刷新乐开token
+                LekaiHelper.startService(this, result);
+                break;
         }
     }
 
@@ -1089,27 +1023,11 @@ public class MainActivity extends BaseFragmentActivity implements View.OnClickLi
         themeModel.getTheme(0, this);
     }
 
-    private InterHandler mHandler = new InterHandler(this);
-
-    private static class InterHandler extends Handler {
-        private WeakReference<MainActivity> mActivity;
-
-        InterHandler(MainActivity activity) {
-            mActivity = new WeakReference<>(activity);
-        }
-
-        @Override
-        public void handleMessage(Message msg) {
-            MainActivity activity = mActivity.get();
-            if (activity != null) {
-                switch (msg.what) {
-                    case 1:
-                        activity.intoPopup();
-                        break;
-                }
-            } else {
-                super.handleMessage(msg);
-            }
-        }
+    /**
+     * 乐开403重新获取
+     */
+    public void regetLekaiToken() {
+        newUserModel.regetLekaiDoor(50, this);
     }
+
 }

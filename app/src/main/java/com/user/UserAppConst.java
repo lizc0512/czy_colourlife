@@ -71,7 +71,7 @@ public class UserAppConst {
 
     public static final String Colour_REGION_ID = "Colour_REGION_ID";
 
-
+    public static final String COLOUR_BEAN_SIGN_POINT = "colour_bean_sign_point";//我的任务（彩豆）是否有小红点
     public static final String Colour_head_img = "Colour_head_img";
     public static final String Colour_User_id = "Colour_User_id";
     public static final String Colour_User_uuid = "Colour_User_uuid";

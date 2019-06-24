@@ -82,9 +82,8 @@ public class CustomerSwitchAddressActivity extends BaseActivity implements View.
         mtitle.setText(getResources().getString(R.string.title_choice_address));
         ThemeStyleHelper.onlyFrameTitileBar(CustomerSwitchAddressActivity.this, czy_title_layout, mback, mtitle);
         newCustomerInfoModel = new NewCustomerInfoModel(this);
-        address_rv.setLayoutManager(new LinearLayoutManager(CustomerSwitchAddressActivity.this));// 布局管理器。
+        address_rv.setLayoutManager(new LinearLayoutManager(CustomerSwitchAddressActivity.this, LinearLayoutManager.VERTICAL, false));// 布局管理器。
         address_rv.setSwipeMenuCreator(swipeMenuCreator);
-        address_rv.addItemDecoration(new DividerItemDecoration(CustomerSwitchAddressActivity.this, LinearLayoutManager.VERTICAL));
         address_rv.setSwipeMenuItemClickListener(mMenuItemClickListener);
         String addressListCache = shared.getString(UserAppConst.ADDRESSLISTCACHE, "");
         switchAddressAdapter = new SwitchAddressAdapter(CustomerSwitchAddressActivity.this, communityBeanList);
