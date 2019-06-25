@@ -89,6 +89,7 @@ public class LekaiListActivity extends BaseActivity implements View.OnClickListe
                     try {
                         mAdapter = new LekaiAdapter(this, keysList);
                         smrv_lekai.setAdapter(mAdapter);
+                        smrv_lekai.loadMoreFinish(false, false);
                     } catch (Exception e) {
                         e.printStackTrace();
                     }

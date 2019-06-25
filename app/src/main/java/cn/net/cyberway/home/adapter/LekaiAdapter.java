@@ -66,6 +66,11 @@ public class LekaiAdapter extends RecyclerView.Adapter<LekaiAdapter.DefaultViewH
                 holder.ll_bg.setBackgroundResource(R.drawable.bg_lekai_home);
                 break;
         }
+        if (position == keys.size() - 1) {
+            holder.v_line.setVisibility(View.GONE);
+        } else {
+            holder.v_line.setVisibility(View.VISIBLE);
+        }
     }
 
     @Override
@@ -81,6 +86,7 @@ public class LekaiAdapter extends RecyclerView.Adapter<LekaiAdapter.DefaultViewH
         TextView tv_user;
         TextView tv_title;
         TextView tv_time;
+        View v_line;
 
         public DefaultViewHolder(View itemView) {
             super(itemView);
@@ -91,6 +97,7 @@ public class LekaiAdapter extends RecyclerView.Adapter<LekaiAdapter.DefaultViewH
             tv_user = itemView.findViewById(R.id.tv_user);
             tv_title = itemView.findViewById(R.id.tv_title);
             tv_time = itemView.findViewById(R.id.tv_time);
+            v_line = itemView.findViewById(R.id.v_line);
         }
     }
 }

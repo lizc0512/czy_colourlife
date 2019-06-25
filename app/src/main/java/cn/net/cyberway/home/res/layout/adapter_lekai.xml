@@ -47,6 +47,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:background="@drawable/icon_lekai_electric"
+                android:visibility="invisible"
                 tools:ignore="ContentDescription" />
 
         </LinearLayout>
@@ -78,7 +79,6 @@
                 android:layout_marginStart="4dp"
                 android:layout_marginLeft="4dp"
                 android:layout_weight="1"
-                android:text="七星商业大厦电梯"
                 android:textColor="@color/white"
                 android:textSize="20sp" />
 
@@ -94,12 +94,12 @@
             android:paddingTop="2dp"
             android:paddingRight="4dp"
             android:paddingBottom="2dp"
-            android:text="有效时间：2017.6.8 - 2020.6.8"
             android:textColor="@color/color_80ffffff" />
 
     </LinearLayout>
 
     <View
+        android:id="@+id/v_line"
         android:layout_width="match_parent"
         android:layout_height="12dp"
         android:background="@color/bg_color" />
