@@ -22,7 +22,6 @@ import android.text.TextUtils;
 import android.view.Display;
 import android.view.WindowManager;
 
-import com.BeeFramework.model.Constants;
 import com.chuanglan.shanyan_sdk.OneKeyLoginManager;
 import com.chuanglan.shanyan_sdk.listener.InitListener;
 import com.external.eventbus.EventBus;
@@ -38,9 +37,7 @@ import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 import com.nostra13.universalimageloader.core.assist.QueueProcessingType;
-import com.qiniu.droid.rtc.QNRTCEnv;
 import com.shell.SdkManager;
-import com.tencent.bugly.Bugly;
 import com.user.UserAppConst;
 import com.user.UserMessageConstant;
 import com.youmai.hxsdk.HuxinSdkManager;
@@ -102,12 +99,7 @@ public class BeeFrameworkApp extends MultiDexApplication {
                 addFriendNotify(srcUuid, dstUuid, optRemark, nickName, userName, avatar, type);
             }
         });
-        QNRTCEnv.init(getApplicationContext());
-//        LeakCanary.install(this);
-//        initSWLocation();//数位
-        registerActivityLifecycleCallbacks(new ActivityLifecycleListener());//乐开
 
-        initBugly();
         OneKeyLoginManager.getInstance().init(getApplicationContext(), "DbBj26Nj", "DOMYqkZR", new InitListener() {
             @Override
             public void getInitStatus(int code, String result) {
@@ -115,15 +107,10 @@ public class BeeFrameworkApp extends MultiDexApplication {
 
             }
         });
+        registerActivityLifecycleCallbacks(new ActivityLifecycleListener());//乐开
         closeAndroidPDialog();
     }
 
-    /**
-     * 腾讯热更新 bugly
-     */
-    private void initBugly() {
-        Bugly.init(this, Constants.BUGLY_KEY, false);
-    }
 
     /**
      * 数位 保留 场景识别
