@@ -107,9 +107,11 @@ public class AuthManegeListActivity extends BaseActivity implements View.OnClick
                             if (null == authManegeAdapter) {
                                 authManegeAdapter = new AuthManegeAdapter(this, list);
                                 smrv_auth.setAdapter(authManegeAdapter);
+                                smrv_auth.loadMoreFinish(false, false);
                             } else {
                                 authManegeAdapter.notifyDataSetChanged();
                             }
+
                         }
                     } catch (Exception e) {
                         e.printStackTrace();
