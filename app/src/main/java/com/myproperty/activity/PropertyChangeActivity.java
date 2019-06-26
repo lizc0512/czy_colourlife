@@ -131,18 +131,20 @@ public class PropertyChangeActivity extends BaseActivity implements View.OnClick
                 setbg(4);
                 break;
             case R.id.bt_done:
-                Intent intent = null;
-                try {
-                    int typeId = bean.get(type - 1).getId();
-                    String name = bean.get(type - 1).getName();
-                    intent = new Intent();
-                    intent.putExtra(IDENTITY_TYPE, typeId + "");
-                    intent.putExtra(IDENTITY_NAME, name);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-                setResult(1, intent);
-                finish();
+//                Intent intent = null;
+////                try {
+////                    int typeId = bean.get(type - 1).getId();
+////                    String name = bean.get(type - 1).getName();
+////                    intent = new Intent();
+////                    intent.putExtra(IDENTITY_TYPE, typeId + "");
+////                    intent.putExtra(IDENTITY_NAME, name);
+////                } catch (Exception e) {
+////                    e.printStackTrace();
+////                }
+////                setResult(1, intent);
+////                finish();
+                Intent intent = new Intent(this, PropertyRealNameActivity.class);
+                startActivity(intent);
                 break;
         }
     }
