@@ -22,7 +22,7 @@ import java.util.List;
 import cn.net.cyberway.R;
 
 /**
- * 身份修改
+ * 身份修改 身份选择
  * Created by hxg on 2019/5/14.
  */
 public class PropertyChangeActivity extends BaseActivity implements View.OnClickListener, NewHttpResponse {
@@ -143,6 +143,8 @@ public class PropertyChangeActivity extends BaseActivity implements View.OnClick
                 }
                 setResult(1, intent);
                 finish();
+//                Intent intent = new Intent(this, PropertyRealNameActivity.class);
+//                startActivity(intent);
                 break;
         }
     }
