@@ -1027,6 +1027,11 @@
             android:name="com.myproperty.activity.PropertyChangeActivity"
             android:screenOrientation="portrait" />
 
+        <!-- 实名认证 -->
+        <activity
+            android:name="com.myproperty.activity.PropertyRealNameActivity"
+            android:screenOrientation="portrait" />
+
         <!-- 授权列表 -->
         <activity
             android:name="com.setting.activity.AuthManegeListActivity"

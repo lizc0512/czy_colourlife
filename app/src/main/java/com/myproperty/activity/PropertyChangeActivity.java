@@ -22,7 +22,7 @@ import java.util.List;
 import cn.net.cyberway.R;
 
 /**
- * 身份修改
+ * 身份修改 身份选择
  * Created by hxg on 2019/5/14.
  */
 public class PropertyChangeActivity extends BaseActivity implements View.OnClickListener, NewHttpResponse {
@@ -131,20 +131,20 @@ public class PropertyChangeActivity extends BaseActivity implements View.OnClick
                 setbg(4);
                 break;
             case R.id.bt_done:
-//                Intent intent = null;
-////                try {
-////                    int typeId = bean.get(type - 1).getId();
-////                    String name = bean.get(type - 1).getName();
-////                    intent = new Intent();
-////                    intent.putExtra(IDENTITY_TYPE, typeId + "");
-////                    intent.putExtra(IDENTITY_NAME, name);
-////                } catch (Exception e) {
-////                    e.printStackTrace();
-////                }
-////                setResult(1, intent);
-////                finish();
-                Intent intent = new Intent(this, PropertyRealNameActivity.class);
-                startActivity(intent);
+                Intent intent = null;
+                try {
+                    int typeId = bean.get(type - 1).getId();
+                    String name = bean.get(type - 1).getName();
+                    intent = new Intent();
+                    intent.putExtra(IDENTITY_TYPE, typeId + "");
+                    intent.putExtra(IDENTITY_NAME, name);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+                setResult(1, intent);
+                finish();
+//                Intent intent = new Intent(this, PropertyRealNameActivity.class);
+//                startActivity(intent);
                 break;
         }
     }
