@@ -32,7 +32,7 @@ import com.feed.activity.CreateNormalFeedActivity;
 import com.feed.activity.FeedOrActivityActivity;
 import com.feed.activity.LinLiActivity;
 import com.invite.activity.ContactsActivity;
-import com.invite.activity.InviteFriendActivity;
+import com.invite.activity.InviteActivity;
 import com.mycarinfo.activity.MyCarInfoActivity;
 import com.myproperty.activity.MyPropertyActivity;
 import com.notification.activity.ENotificationActivity;
@@ -119,8 +119,7 @@ public class LinkParseUtil {
                             Cqb_PayUtil.getInstance((Activity) context).openZCB(Utils.getPublicParams(context), Constants.CAIWALLET_ENVIRONMENT, "zhaocaibao");//进入招财宝
                             break;
                         case "Invite"://邀请好友
-//                            intent = new Intent(context, InviteActivity.class);
-                            intent = new Intent(context, InviteFriendActivity.class);//邀请好友 保留
+                            intent = new Intent(context, InviteActivity.class);
                             context.startActivity(intent);
                             ((Activity) context).overridePendingTransition(R.anim.push_right_in, R.anim.push_right_out);
                             break;

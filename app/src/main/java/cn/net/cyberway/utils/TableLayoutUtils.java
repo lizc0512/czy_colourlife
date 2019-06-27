@@ -29,7 +29,6 @@ import com.door.entity.OpenDoorResultEntity;
 import com.door.view.AdvisementBannerAdapter;
 import com.door.view.ShowOpenDoorDialog;
 import com.invite.activity.InviteActivity;
-import com.invite.activity.InviteFriendActivity;
 import com.scanCode.activity.CaptureActivity;
 import com.user.UserAppConst;
 
@@ -257,7 +256,7 @@ public class TableLayoutUtils {
             }
         } else if (openTyep == 2) {
             if (isLogin) {
-                Intent it = new Intent(activity, InviteFriendActivity.class);
+                Intent it = new Intent(activity, InviteActivity.class);
                 activity.startActivity(it);
             } else {
                 jumpLoginPage(activity, mShared, 3000);
