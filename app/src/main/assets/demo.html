@@ -47,7 +47,8 @@
     />
 </p>
 <p>
-    <input type="button" id="enter2" value="点击去彩钱包" style="font-size: 24px" onclick="testDiv();"/>
+    <input type="button" id="enter2" value="点击去彩钱包实名认证" style="font-size: 24px"
+           onclick="testDiv();"/>
 </p>
 <p>
     <input type="file" value="打开文件" style="font-size: 24px"/>
@@ -55,7 +56,13 @@
 </body>
 <script>
         function testDiv() {
-            document.getElementById("show").innerHTML = document.getElementsByTagName("html")[0].innerHTML;
+               var name ={
+  'name': '张王王',
+  'mobile': '18565830835',
+ 'IDNum': '4202819900418432',
+};
+    window.jsObject.ColourlifeWalletAuth(JSON.stringify(name));
+
         }
 
 
@@ -164,6 +171,7 @@ function  colourlifeDeliveryAddressHandler(obj){
                 responseCallback(responseData);
             });
         })
+
 
 
 

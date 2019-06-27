@@ -969,10 +969,10 @@ public class IMMsgManager {
                 .setAutoCancel(true);
 
         if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            builder.setSmallIcon(R.drawable.img_msg);
+            builder.setSmallIcon(R.drawable.img_icon);
             builder.setColor(mContext.getResources().getColor(R.color.notification_color));
         } else {
-            builder.setSmallIcon(R.drawable.img_msg);
+            builder.setSmallIcon(R.drawable.img_icon);
         }
 
         // Creates an explicit intent for an Activity in your app
