@@ -219,7 +219,7 @@
     <style name="AppResultTheme" parent="Theme.AppCompat.Light.NoActionBar">
         <!-- Customize your theme here. -->
         <item name="colorPrimary">@color/white</item>
-        <item name="colorAccent">@color/white</item>
+        <item name="colorAccent">@color/color_25282e</item>
         <item name="colorPrimaryDark">@color/white</item>
         <item name="android:windowLightStatusBar" tools:ignore="NewApi">true</item>
     </style>
