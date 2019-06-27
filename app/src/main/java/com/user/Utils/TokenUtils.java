@@ -86,7 +86,6 @@ public class TokenUtils {
         mEditor.putString(UserAppConst.OPEN_CODE, "");
         mEditor.putString(UserAppConst.SOURCE, "");
         mEditor.putString(UserAppConst.Colour_access_token, "");
-        mEditor.putString(UserAppConst.Colour_refresh_token, "");
         mEditor.putString(UserAppConst.COLOUR_LIFEUSERECORD, "");
         mEditor.putLong(UserAppConst.Colour_expires_in, 0);
         mEditor.putLong(UserAppConst.Colour_get_time, 0);

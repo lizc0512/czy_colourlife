@@ -2,9 +2,11 @@ package com.user.model;
 
 import android.content.Context;
 import android.os.Handler;
+import android.os.Message;
 import android.text.TextUtils;
 
 import com.BeeFramework.model.BaseModel;
+import com.external.eventbus.EventBus;
 import com.nohttp.utils.CallServer;
 import com.nohttp.utils.HttpListener;
 import com.nohttp.utils.RequestEncryptionUtils;
@@ -23,6 +25,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import cn.net.cyberway.R;
+
+import static com.user.UserMessageConstant.SQUEEZE_OUT;
+
 /**
  * @name ${yuansk}
  * @class name：com.user.model
@@ -35,8 +41,11 @@ import java.util.Map;
  */
 public class RefreshTokenModel extends BaseModel {
 
+    private Context context;
+
     public RefreshTokenModel(Context context) {
         super(context);
+        this.context = context;
     }
 
     /**
@@ -45,64 +54,72 @@ public class RefreshTokenModel extends BaseModel {
      *
      * @param
      */
-    public <T> void refreshAuthToken() {
+    public <T> void refreshAuthToken(boolean isLoading) {
         synchronized (RefreshTokenModel.class) {
-            final AuthTokenApi authTokenApi = new AuthTokenApi();
-            Map<String, Object> params = new HashMap<String, Object>();
-            params.put("grant_type", "refresh_token");
-            params.put("refresh_token", shared.getString(UserAppConst.Colour_refresh_token, ""));
-            params.put("client_id", "2");
-            params.put("client_secret", "oy4x7fSh5RI4BNc78UoV4fN08eO5C4pj0daM0B8M");
-            String basePath = "/oauth/token";
-            final Request<String> request_oauthRegister = NoHttp.createStringRequest(RequestEncryptionUtils.postCombileMD5(mContext, 1, basePath), RequestMethod.POST);
-            request(0, request_oauthRegister, params, new HttpListener<String>() {
-                @Override
-                public void onSucceed(int what, Response<String> response) {
-                    int responseCode = response.getHeaders().getResponseCode();
-                    String result = response.get();
-                    if (responseCode == RequestEncryptionUtils.responseSuccess) {
-                        JSONObject jsonObject = showSuccesCodeMessage(result);
-                        if (null != jsonObject) {
-                            AuthTokenResponse authTokenResponse = authTokenApi.response;
-                            try {
-                                authTokenResponse.fromJson(jsonObject);
-                                if (!TextUtils.isEmpty(authTokenResponse.access_token)) {
-                                    editor.putBoolean(UserAppConst.IS_LOGIN, true);
-                                    editor.putString(UserAppConst.Colour_access_token, authTokenResponse.access_token);
-                                    editor.putString(UserAppConst.Colour_refresh_token, authTokenResponse.refresh_token);
-                                    editor.putLong(UserAppConst.Colour_expires_in, Long.valueOf(authTokenResponse.expires_in));
-                                    editor.putBoolean(UserAppConst.Colour_refresh_status, true);
-                                    editor.putString(UserAppConst.Colour_token_type, authTokenResponse.token_type);
-                                    editor.putLong(UserAppConst.Colour_get_time, System.currentTimeMillis());
-                                    editor.commit();
-                                    CallServer callServer = CallServer.getInstance();
-                                    List<Integer> requestWhatList = callServer.getRequestWhat();
-                                    for (int j = 0; j < requestWhatList.size(); j++) {
-                                        request(requestWhatList.get(j), callServer.getRequestList().get(j),
-                                                callServer.getRequestMap().get(j), callServer.getRequestLister().get(j),
-                                                callServer.getRequestCancel().get(j), callServer.getRequestLoading().get(j));
+            String refresh_token = shared.getString(UserAppConst.Colour_refresh_token, "");
+            if (TextUtils.isEmpty(refresh_token)) {
+                Message msg = android.os.Message.obtain();
+                msg.what = SQUEEZE_OUT;
+                msg.obj = context.getResources().getString(R.string.account_extrude_login);
+                EventBus.getDefault().post(msg);
+            } else {
+                final AuthTokenApi authTokenApi = new AuthTokenApi();
+                Map<String, Object> params = new HashMap<String, Object>();
+                params.put("grant_type", "refresh_token");
+                params.put("refresh_token", refresh_token);
+                params.put("client_id", "2");
+                params.put("client_secret", "oy4x7fSh5RI4BNc78UoV4fN08eO5C4pj0daM0B8M");
+                String basePath = "/oauth/token";
+                final Request<String> request_oauthRegister = NoHttp.createStringRequest(RequestEncryptionUtils.postCombileMD5(mContext, 1, basePath), RequestMethod.POST);
+                request(0, request_oauthRegister, params, new HttpListener<String>() {
+                    @Override
+                    public void onSucceed(int what, Response<String> response) {
+                        int responseCode = response.getHeaders().getResponseCode();
+                        String result = response.get();
+                        if (responseCode == RequestEncryptionUtils.responseSuccess) {
+                            JSONObject jsonObject = showSuccesCodeMessage(result);
+                            if (null != jsonObject) {
+                                AuthTokenResponse authTokenResponse = authTokenApi.response;
+                                try {
+                                    authTokenResponse.fromJson(jsonObject);
+                                    if (!TextUtils.isEmpty(authTokenResponse.access_token)) {
+                                        editor.putBoolean(UserAppConst.IS_LOGIN, true);
+                                        editor.putString(UserAppConst.Colour_access_token, authTokenResponse.access_token);
+                                        editor.putString(UserAppConst.Colour_refresh_token, authTokenResponse.refresh_token);
+                                        editor.putLong(UserAppConst.Colour_expires_in, Long.valueOf(authTokenResponse.expires_in));
+                                        editor.putBoolean(UserAppConst.Colour_refresh_status, true);
+                                        editor.putString(UserAppConst.Colour_token_type, authTokenResponse.token_type);
+                                        editor.putLong(UserAppConst.Colour_get_time, System.currentTimeMillis());
+                                        editor.commit();
+                                        CallServer callServer = CallServer.getInstance();
+                                        List<Integer> requestWhatList = callServer.getRequestWhat();
+                                        for (int j = 0; j < requestWhatList.size(); j++) {
+                                            request(requestWhatList.get(j), callServer.getRequestList().get(j),
+                                                    callServer.getRequestMap().get(j), callServer.getRequestLister().get(j),
+                                                    callServer.getRequestCancel().get(j), callServer.getRequestLoading().get(j));
+                                        }
+                                        callServer.clearAllQuest();
+                                    } else {
+                                        againRequsetAgain();
                                     }
-                                    callServer.clearAllQuest();
-                                } else {
+                                } catch (JSONException e) {
+                                    e.printStackTrace();
                                     againRequsetAgain();
                                 }
-                            } catch (JSONException e) {
-                                e.printStackTrace();
+                            } else {
                                 againRequsetAgain();
                             }
                         } else {
                             againRequsetAgain();
                         }
-                    } else {
+                    }
+
+                    @Override
+                    public void onFailed(int what, Response<String> response) {
                         againRequsetAgain();
                     }
-                }
-
-                @Override
-                public void onFailed(int what, Response<String> response) {
-                    againRequsetAgain();
-                }
-            }, true, false);
+                }, true, isLoading);
+            }
         }
     }
 

@@ -43,11 +43,11 @@
 </p>
 
 <p>
-    <input type="button" id="enter1" value="点击上传图片" style="font-size: 24px" onclick="testClick();"
+    <input type="button" id="enter1" value="实名认证不带用户信息" style="font-size: 24px" onclick="testClick();"
     />
 </p>
 <p>
-    <input type="button" id="enter2" value="点击去彩钱包实名认证" style="font-size: 24px"
+    <input type="button" id="enter2" value="实名认证携带用户信息" style="font-size: 24px"
            onclick="testDiv();"/>
 </p>
 <p>
@@ -57,9 +57,9 @@
 <script>
         function testDiv() {
                var name ={
-  'name': '张王王',
-  'mobile': '18565830835',
- 'IDNum': '4202819900418432',
+  'name': '梁洪',
+  'mobile': '15078707151',
+ 'IDNum': '452122199005203617',
 };
     window.jsObject.ColourlifeWalletAuth(JSON.stringify(name));
 
@@ -110,11 +110,12 @@ function  colourlifeDeliveryAddressHandler(obj){
 
         function testClick() {
 
-                var name ={
- 'photoType': 'uploadtest',
- 'choiceMode':'1'
+          var name ={
+  'name': '',
+  'mobile': '',
+ 'IDNum': '',
 };
-               window.jsObject.galleryActivity(JSON.stringify(name));
+               window.jsObject.ColourlifeWalletAuth(JSON.stringify(name));
 
         }
 

@@ -595,11 +595,16 @@ public class WebViewActivity extends BaseActivity implements View.OnLongClickLis
                 break;
             case 16:
                 //外部实名认证成功
+                ToastUtil.toastShow(WebViewActivity.this,"实名认证成功");
+                webView.loadUrl(url);
+                break;
             case 17:
                 //取消外部实名认证
+                ToastUtil.toastShow(WebViewActivity.this,"已取消实名认证");
+                break;
             case 18:
                 //当前用户已实名认证
-                webView.loadUrl(url);
+                ToastUtil.toastShow(WebViewActivity.this,"已实名认证");
                 break;
         }
     }
