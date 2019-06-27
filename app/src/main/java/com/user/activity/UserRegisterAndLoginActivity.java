@@ -1,6 +1,8 @@
 package com.user.activity;
 
 import android.Manifest;
+import android.app.Activity;
+import android.app.Application;
 import android.content.Intent;
 import android.graphics.Color;
 import android.net.Uri;
@@ -57,6 +59,7 @@ import java.util.Map;
 
 import cn.net.cyberway.OauthWebviewActivity;
 import cn.net.cyberway.R;
+import cn.net.cyberway.utils.ActivityLifecycleListener;
 import cn.net.cyberway.utils.ConfigUtils;
 import cn.sharesdk.framework.Platform;
 import cn.sharesdk.framework.PlatformActionListener;
@@ -150,7 +153,7 @@ public class UserRegisterAndLoginActivity extends BaseActivity implements OnClic
             OneKeyLoginManager.getInstance().getPhoneInfo(new GetPhoneInfoListener() {
                 @Override
                 public void getPhoneInfoStatus(int code, String result) {
-                    if (1022 == code) {
+                    if (1022 == code && ActivityLifecycleListener.authDestoryed) {
                         OneKeyLoginManager.getInstance().setAuthThemeConfig(ConfigUtils.getCJSConfig(UserRegisterAndLoginActivity.this));
                         new ConfigUtils(UserRegisterAndLoginActivity.this).jumpOneKeyLogin();
                     } else {
@@ -798,6 +801,8 @@ public class UserRegisterAndLoginActivity extends BaseActivity implements OnClic
             newUserModel.getAuthToken(4, mobile, loginPawd, "1", true, UserRegisterAndLoginActivity.this);
         } else if (resultCode == 500) {
             newUserModel.getAuthToken(4, mobile, loginPawd, "1", true, UserRegisterAndLoginActivity.this);
+        } else if (resultCode == 1011) {
+            ActivityLifecycleListener.authDestoryed = false;
         }
     }
 

@@ -93,7 +93,7 @@ public class ConfigUtils implements NewHttpResponse {
                 .setNavColor(0xffffffff)  //设置导航栏颜色
                 .setNavText("免密登录")  //设置导航栏标题文字
                 .setNavTextColor(0xff252A2E) //设置标题栏文字颜色
-                .setNavReturnImgPath("new_return_back")  //设置导航栏返回按钮图标
+                .setNavReturnImgPath("new_close")  //设置导航栏返回按钮图标
                 .setAuthBGImgPath("sysdk_login_bg")
                 .setAuthNavTransparent(true)
                 .setAuthNavHidden(false)

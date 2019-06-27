@@ -46,7 +46,7 @@ public class BrowerJumpExcessiveActivity extends BaseActivity implements NewHttp
     public static final String THRIDLINKURL = "thridlinkurl"; //网页的链接
     public static final String THRIDTITLE = "thridtitle";  //网页的标题
     public static final String THRIDDOMAIN = "thriddomain";  //彩白条支付
-    public static final String THRIDSOURCE = "thridsource";  //彩白条支付
+    public static final String THRIDSOURCE = "thridsource";  //彩白条来源
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

@@ -58,11 +58,14 @@ public class LinkParseUtil {
         if (!mShared.getBoolean(UserAppConst.IS_LOGIN, false)) {
             Intent intent = new Intent(context, UserRegisterAndLoginActivity.class);
             context.startActivity(intent);
+            if (context instanceof Activity) {
+                ((Activity) context).overridePendingTransition(R.anim.push_right_in, R.anim.push_buttom_in);
+            }
         } else {
             if (!TextUtils.isEmpty(link)) {
                 if (link.trim().startsWith("http://") || link.trim().startsWith("https://")) {
-//                    link="http://h5test.elab-plus.com/H5/index.html";
-//                 link = "file:///android_asset/index.html";
+//                  link="http://h5test.elab-plus.com/H5/index.html";
+//                  link = "file:///android_asset/index.html";
                     Intent intent = new Intent(context, WebViewActivity.class);
                     intent.putExtra(WebViewActivity.WEBURL, link);
                     intent.putExtra(WebViewActivity.WEBTITLE, title);
