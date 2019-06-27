@@ -34,6 +34,7 @@ import com.customerInfo.protocol.CityListsEntity;
 import com.external.eventbus.EventBus;
 import com.invite.adapter.SideBar;
 import com.myproperty.activity.PropertyChangeActivity;
+import com.myproperty.activity.PropertyRealNameActivity;
 import com.nohttp.utils.GsonUtils;
 import com.user.UserAppConst;
 import com.user.UserMessageConstant;
@@ -352,8 +353,7 @@ public class CustomerAddPropertyActivity extends BaseActivity implements View.On
      */
     private void addOrUpdateAddress() {
         if ("新增房产".equals(mtitle.getText().toString().trim())) {
-            Intent intent = new Intent(this, PropertyChangeActivity.class);
-            startActivityForResult(intent, 1);
+            newCustomerInfoModel.isNeedRealName(13, community_uuid, this);
         } else {//修改
             newCustomerInfoModel.postCustomerUpdateAddress(12, id, community_uuid, community_name, building_uuid, building_name
                     , unit_uuid, unit_name, room_uuid, room_name, this);
@@ -686,6 +686,29 @@ public class CustomerAddPropertyActivity extends BaseActivity implements View.On
                         }
                         setResult(1);
                         finish();
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
+                break;
+            case 13:
+                if (!TextUtils.isEmpty(result)) {
+                    try {
+                        JSONObject jsonObject = new JSONObject(result);
+                        String content = jsonObject.getString("content");
+                        JSONObject data = new JSONObject(content);
+                        int is_verify = data.getInt("is_verify");
+                        if (1 == is_verify) {//1 需要，2 不需要
+                            Intent intent = new Intent(this, PropertyRealNameActivity.class);
+                            intent.putExtra(PropertyRealNameActivity.COMMUNITY_UUID, community_uuid);
+                            intent.putExtra(PropertyRealNameActivity.BUILD_NAME, building_name);
+                            intent.putExtra(PropertyRealNameActivity.UNIT_NAME, unit_name);
+                            intent.putExtra(PropertyRealNameActivity.ROOM_NAME, room_name);
+                            startActivityForResult(intent, 1);
+                        } else {
+                            Intent intent = new Intent(this, PropertyChangeActivity.class);
+                            startActivityForResult(intent, 1);
+                        }
                     } catch (Exception e) {
                         e.printStackTrace();
                     }

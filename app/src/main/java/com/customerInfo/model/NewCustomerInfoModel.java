@@ -36,6 +36,8 @@ public class NewCustomerInfoModel extends BaseModel {
     private String communityCommitUrl = "address/user/property/ensure";
     private String getidentityListUrl = "user/identity/list";
     private String identitychangeUrl = "user/identity/change";
+    private String needrealname = "bjcommunity/verify";
+    private String iswhitename = "bjcommunity/addVerify";
 
     public NewCustomerInfoModel(Context context) {
         super(context);
@@ -565,6 +567,70 @@ public class NewCustomerInfoModel extends BaseModel {
         params.put("identity_id", identity_id);
         params.put("id", id);
         final Request<String> request = NoHttp.createStringRequest(RequestEncryptionUtils.getCombileMD5(mContext, 3, identitychangeUrl, params), RequestMethod.POST);
+        request(what, request, params, new HttpListener<String>() {
+            @Override
+            public void onSucceed(int what, Response<String> response) {
+                int responseCode = response.getHeaders().getResponseCode();
+                String result = response.get();
+                if (responseCode == RequestEncryptionUtils.responseSuccess) {
+                    int resultCode = showSuccesResultMessage(result);
+                    if (resultCode == 0) {
+                        newHttpResponse.OnHttpResponse(what, result);
+                    }
+                } else {
+                    showErrorCodeMessage(responseCode, response);
+                }
+            }
+
+            @Override
+            public void onFailed(int what, Response<String> response) {
+                showExceptionMessage(what, response);
+            }
+        }, true, false);
+    }
+
+    /**
+     * 判断小区是否需要实名验证
+     */
+    public void isNeedRealName(int what, String community_uuid, final NewHttpResponse newHttpResponse) {
+        Map<String, Object> params = new HashMap<>();
+        params.put("community_uuid", community_uuid);
+        final Request<String> request = NoHttp.createStringRequest(RequestEncryptionUtils.getCombileMD5(mContext, 3, needrealname, params), RequestMethod.GET);
+        request(what, request, params, new HttpListener<String>() {
+            @Override
+            public void onSucceed(int what, Response<String> response) {
+                int responseCode = response.getHeaders().getResponseCode();
+                String result = response.get();
+                if (responseCode == RequestEncryptionUtils.responseSuccess) {
+                    int resultCode = showSuccesResultMessage(result);
+                    if (resultCode == 0) {
+                        newHttpResponse.OnHttpResponse(what, result);
+                    }
+                } else {
+                    showErrorCodeMessage(responseCode, response);
+                }
+            }
+
+            @Override
+            public void onFailed(int what, Response<String> response) {
+                showExceptionMessage(what, response);
+            }
+        }, true, false);
+    }
+
+    /**
+     * 判断用户是否是 保障房小区的白名单用户
+     */
+    public void isWhiteName(int what, String user_name, String id_number, String community_uuid,
+                            String build_name, String unit_name, String room_name, final NewHttpResponse newHttpResponse) {
+        Map<String, Object> params = new HashMap<>();
+        params.put("user_name", user_name);
+        params.put("id_number", id_number);
+        params.put("community_uuid", community_uuid);
+        params.put("build_name", build_name);
+        params.put("unit_name", unit_name);
+        params.put("room_name", room_name);
+        final Request<String> request = NoHttp.createStringRequest(RequestEncryptionUtils.getCombileMD5(mContext, 3, iswhitename, params), RequestMethod.POST);
         request(what, request, params, new HttpListener<String>() {
             @Override
             public void onSucceed(int what, Response<String> response) {
