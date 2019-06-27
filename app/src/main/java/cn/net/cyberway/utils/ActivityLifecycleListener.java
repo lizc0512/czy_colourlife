@@ -4,6 +4,10 @@ import android.app.Activity;
 import android.app.Application;
 import android.os.Bundle;
 
+import com.chuanglan.shanyan_sdk.view.ShanYanOneKeyActivity;
+import com.cmic.sso.sdk.activity.LoginAuthActivity;
+import com.sdk.mobile.manager.login.cucc.OauthActivity;
+
 /**
  * 获取前台，后台状态
  * hxg 2019-06-21.
@@ -11,6 +15,7 @@ import android.os.Bundle;
 public class ActivityLifecycleListener implements Application.ActivityLifecycleCallbacks {
 
     private static int activityCount = 0;
+    public static boolean authDestoryed = true;
 
     // true 后台 false 前台
     public static boolean isAppBackground() {
@@ -55,6 +60,8 @@ public class ActivityLifecycleListener implements Application.ActivityLifecycleC
 
     @Override
     public void onActivityDestroyed(Activity activity) {
-
+        if (activity instanceof LoginAuthActivity || activity instanceof OauthActivity || activity instanceof ShanYanOneKeyActivity) {
+            authDestoryed = true;
+        }
     }
 }
