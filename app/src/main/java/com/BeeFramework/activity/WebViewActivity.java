@@ -78,6 +78,7 @@ import com.bumptech.glide.request.target.ImageViewTarget;
 import com.cashier.activity.NewOrderPayActivity;
 import com.customerInfo.activity.CustomerInfoActivity;
 import com.customerInfo.activity.DeliveryAddressListActivity;
+import com.dashuview.library.keep.Cqb_PayUtil;
 import com.dashuview.library.keep.ListenerUtils;
 import com.dashuview.library.keep.MyListener;
 import com.external.eventbus.EventBus;
@@ -153,6 +154,7 @@ import cn.sharesdk.wechat.moments.WechatMoments;
 import static cn.net.cyberway.utils.BuryingPointUtils.ENTER_TIME;
 import static cn.net.cyberway.utils.BuryingPointUtils.LEAVE_TIME;
 import static cn.net.cyberway.utils.BuryingPointUtils.UPLOAD_DETAILS;
+import static com.BeeFramework.Utils.Utils.getAuthPublicParams;
 
 @SuppressLint("SetJavaScriptEnabled")
 public class WebViewActivity extends BaseActivity implements View.OnLongClickListener, OnClickListener, HttpApiResponse, NewHttpResponse, MyListener {
@@ -591,6 +593,14 @@ public class WebViewActivity extends BaseActivity implements View.OnLongClickLis
                 }
                 webView.loadUrl("javascript:window.colourlifeBindCardHandler('" + successJsonObject.toString() + "')");
                 break;
+            case 16:
+                //外部实名认证成功
+            case 17:
+                //取消外部实名认证
+            case 18:
+                //当前用户已实名认证
+                webView.loadUrl(url);
+                break;
         }
     }
 
@@ -652,6 +662,8 @@ public class WebViewActivity extends BaseActivity implements View.OnLongClickLis
             String city = mShared.getString(CityCustomConst.LOCATION_CITY, "");
             String district = mShared.getString(CityCustomConst.LOCATION_DISTRICT, "");
             String address = mShared.getString(CityCustomConst.LOCATION_ADDRESS, "");
+            String buildName = mShared.getString(CityCustomConst.LOCATION_BUILDNAME, "");
+            String floor = mShared.getString(CityCustomConst.LOCATION_FLOOR, "");
             JSONObject jsonObject = new JSONObject();
             try {
                 jsonObject.put("longitude", longitude);
@@ -660,6 +672,8 @@ public class WebViewActivity extends BaseActivity implements View.OnLongClickLis
                 jsonObject.put("city", city);
                 jsonObject.put("district", district);
                 jsonObject.put("address", address);
+                jsonObject.put("buildname", buildName);
+                jsonObject.put("floor", floor);
             } catch (JSONException e) {
                 e.printStackTrace();
             }
@@ -1196,7 +1210,8 @@ public class WebViewActivity extends BaseActivity implements View.OnLongClickLis
                         IWXAPI api = WXAPIFactory.createWXAPI(WebViewActivity.this, Config.WEIXIN_APP_ID);//微信APPID
                         WXLaunchMiniProgram.Req req = new WXLaunchMiniProgram.Req();
                         req.userName = appid; // 小程序原始id
-                        req.path =  URLEncoder.encode(path);  ;//拉起小程序页面的可带参路径，不填默认拉起小程序首页
+                        req.path = URLEncoder.encode(path);
+                        ;//拉起小程序页面的可带参路径，不填默认拉起小程序首页
                         req.miniprogramType = WXLaunchMiniProgram.Req.MINIPTOGRAM_TYPE_RELEASE;// 可选打开 开发版，体验版和正式版
                         api.sendReq(req);
                     }
@@ -1204,6 +1219,11 @@ public class WebViewActivity extends BaseActivity implements View.OnLongClickLis
                     e.printStackTrace();
                 }
             }
+        }
+
+        @JavascriptInterface
+        public void ColourlifeWalletAuth(String authJson) {
+            Cqb_PayUtil.getInstance(WebViewActivity.this).openCertification(getAuthPublicParams(WebViewActivity.this, authJson), Constants.CAIWALLET_ENVIRONMENT, "CertificationFlag");
         }
     }
 

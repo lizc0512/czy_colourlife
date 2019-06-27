@@ -8,6 +8,7 @@ import android.graphics.Matrix;
 import android.graphics.Point;
 import android.text.SpannableString;
 import android.text.Spanned;
+import android.text.TextUtils;
 import android.text.style.ForegroundColorSpan;
 import android.view.Display;
 import android.view.WindowManager;
@@ -15,6 +16,7 @@ import android.view.WindowManager;
 import com.BeeFramework.model.Constants;
 import com.user.UserAppConst;
 
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.security.MessageDigest;
@@ -162,6 +164,31 @@ public class Utils {
         publicParams.put("outUserId", userId + "");
         publicParams.put("order_type", "1");
         publicParams.put("phone", mobileNumber);
+        return publicParams;
+    }
+
+    public static LinkedHashMap<String, String> getAuthPublicParams(Context context, String authJson) {
+        LinkedHashMap<String, String> publicParams = new LinkedHashMap<String, String>();
+        publicParams.put("appId", Constants.PAY_WALLET_APPID);
+        SharedPreferences sharedPreferences = context.getSharedPreferences(UserAppConst.USERINFO, 0);
+        int userId = sharedPreferences.getInt(UserAppConst.Colour_User_id, 0);
+        String mobileNumber = sharedPreferences.getString(UserAppConst.Colour_login_mobile, "0");
+        publicParams.put("outUserId", userId + "");
+        publicParams.put("order_type", "1");
+        publicParams.put("phone", mobileNumber);
+        if (!TextUtils.isEmpty(authJson)) {
+            try {
+                JSONObject jsonObject = new JSONObject(authJson);
+                String phone = jsonObject.optString("mobile");
+                String identityNo = jsonObject.optString("IDNum");
+                String userName = jsonObject.optString("name");
+                publicParams.put("phone", phone);
+                publicParams.put("identityNo", identityNo);
+                publicParams.put("userName", userName);
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
         return publicParams;
     }
 

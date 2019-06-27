@@ -62,7 +62,6 @@ public class LinkParseUtil {
             if (!TextUtils.isEmpty(link)) {
                 if (link.trim().startsWith("http://") || link.trim().startsWith("https://")) {
 //                    link="http://h5test.elab-plus.com/H5/index.html";
-
 //                 link = "file:///android_asset/index.html";
                     Intent intent = new Intent(context, WebViewActivity.class);
                     intent.putExtra(WebViewActivity.WEBURL, link);
@@ -82,6 +81,17 @@ public class LinkParseUtil {
                     }
                     Intent intent = null;
                     switch (value) {
+                        case "testWeb":
+                            intent = new Intent(context, WebViewActivity.class);
+                            link = "file:///android_asset/demo.html";
+                            intent.putExtra(WebViewActivity.WEBURL, link);
+                            intent.putExtra(WebViewActivity.WEBTITLE, title);
+                            intent.putExtra(WebViewActivity.THRIDSOURCE, false);
+                            context.startActivity(intent);
+                            if (context instanceof Activity) {
+                                ((Activity) context).overridePendingTransition(R.anim.push_right_in, R.anim.push_right_out);
+                            }
+                            break;
                         case "EntranceGuard":  //门禁colourlife://proto?type=orderList
                         case "Guard":
                             intent = new Intent(context, NewDoorActivity.class);

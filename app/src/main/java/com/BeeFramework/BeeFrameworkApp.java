@@ -203,10 +203,10 @@ public class BeeFrameworkApp extends MultiDexApplication {
                     .setDefaults(Notification.DEFAULT_ALL)
                     .setAutoCancel(true);
             if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                builder.setSmallIcon(R.drawable.img_msg);
+                builder.setSmallIcon(R.drawable.img_icon); //img_msg
                 builder.setColor(getApplicationContext().getResources().getColor(R.color.white));
             } else {
-                builder.setSmallIcon(R.drawable.img_msg);
+                builder.setSmallIcon(R.drawable.img_icon);
             }
             Intent resultIntent = new Intent(this, IMApplyFriendRecordActivity.class);  //点击打开的activity
             TaskStackBuilder stackBuilder = TaskStackBuilder.create(this);

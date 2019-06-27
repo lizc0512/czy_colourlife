@@ -131,7 +131,7 @@ public class JPushReciever extends BroadcastReceiver {
                 valueMap.put(key, bundle.getString(key));
             }
             BasicPushNotificationBuilder basicPushNotificationBuilder = new BasicPushNotificationBuilder(context);
-            basicPushNotificationBuilder.statusBarDrawable = R.drawable.icon;
+            basicPushNotificationBuilder.statusBarDrawable = R.drawable.img_icon;
             basicPushNotificationBuilder.notificationFlags = Notification.FLAG_AUTO_CANCEL
                     | Notification.FLAG_SHOW_LIGHTS;  //设置为自动消失和呼吸灯闪烁
             basicPushNotificationBuilder.notificationDefaults = Notification.DEFAULT_VIBRATE
@@ -237,7 +237,7 @@ public class JPushReciever extends BroadcastReceiver {
         if (mLocalBroadcastManager == null) {
             mLocalBroadcastManager = LocalBroadcastManager.getInstance(ctx);
         }
-        int icon = R.drawable.icon;
+        int icon = R.drawable.img_icon;
         long when = System.currentTimeMillis();
         NotificationCompat.Builder builder;
         NotificationManager notificationManager = (NotificationManager) ctx.getSystemService(Context.NOTIFICATION_SERVICE);

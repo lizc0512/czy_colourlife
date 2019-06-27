@@ -15,14 +15,14 @@ import com.user.UserAppConst;
 
 /**
  * 百度定位管理类
- *
+ * <p>
  * 【您当前所选择下载的开发包包含如下功能】
  * --------------------------------------------------------------------------------------------
  * 离线定位：在基础定位能力基础之上，提供离线定位能力，可在网络环境不佳时，进行精准定位；
  * 计算工具：包括距离计算、坐标转换、调起百度地图导航等功能；
  * 骑行导航（含基础地图）：包含骑行导航功能全部功能。
  * 支持骑行导航的基础地图：支持骑行导航功能的基础地图。
- *
+ * <p>
  * --------------------------------------------------------------------------------------------
  * 统一下载平台
  * 【产品说明】
@@ -97,6 +97,8 @@ public class CityManager implements BDLocationListener {
             mEditor.putString(CityCustomConst.LOCATION_CITY, bdLocation.getCity());
             mEditor.putString(CityCustomConst.LOCATION_DISTRICT, bdLocation.getDistrict());
             mEditor.putString(CityCustomConst.LOCATION_ADDRESS, bdLocation.getAddrStr());
+            mEditor.putString(CityCustomConst.LOCATION_BUILDNAME, bdLocation.getBuildingName());
+            mEditor.putString(CityCustomConst.LOCATION_FLOOR, bdLocation.getFloor());
             mEditor.putString(CityCustomConst.LOCATION_HOME, bdLocation.getDistrict() + bdLocation.getStreet());
             LatLng latLng = new LatLng(bdLocation.getLatitude(), bdLocation.getLongitude());
             latLng = MapNaviUtils.BD09ToGCJ02(latLng);
