@@ -68,6 +68,8 @@ public class LekaiAdapter extends RecyclerView.Adapter<LekaiAdapter.DefaultViewH
                         holder.ll_bg.setBackgroundResource(R.drawable.bg_lekai_home);
                         break;
                 }
+            } else {
+                holder.ll_bg.setBackgroundResource(R.drawable.bg_lekai_home);
             }
             if (position == keys.size() - 1) {
                 holder.v_line.setVisibility(View.GONE);
