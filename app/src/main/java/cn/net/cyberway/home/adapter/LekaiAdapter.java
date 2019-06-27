@@ -42,34 +42,42 @@ public class LekaiAdapter extends RecyclerView.Adapter<LekaiAdapter.DefaultViewH
     @SuppressLint("SetTextI18n")
     @Override
     public void onBindViewHolder(@NonNull LekaiAdapter.DefaultViewHolder holder, int position) {
-        final LocalKey key = keys.get(position);
-        String valid;
-        if (key.getValidBegin() == 0 || key.getValidEnd() == 0) {
-            valid = "永久有效";
-        } else {
-            valid = StringUtils.formatDate(key.getValidBegin() * 1000, "yyyy-MM-dd") + "至" + StringUtils.formatDate(key.getValidEnd() * 1000, "yyyy-MM-dd");
-        }
-        holder.tv_title.setText(key.getName());
-        holder.tv_time.setText(valid);
+        try {
+            final LocalKey key = keys.get(position);
+            String valid;
+            if (key.getValidBegin() == 0 || key.getValidEnd() == 0) {
+                valid = "永久有效";
+            } else {
+                valid = StringUtils.formatDate(key.getValidBegin() * 1000, "yyyy-MM-dd") + "至" + StringUtils.formatDate(key.getValidEnd() * 1000, "yyyy-MM-dd");
+            }
+            holder.tv_title.setText(key.getName());
+            holder.tv_time.setText(valid);
 
-        switch (key.getDeviceType()) {
-            case Device.LOCK_VERSION_PARK_LOCK://地锁
-            case Device.LOCK_VERSION_BARRIER://道闸
-                holder.ll_bg.setBackgroundResource(R.drawable.bg_lekai_car);
-                break;
-            case Device.LOCK_VERSION_LIFE_CONTROLLER://电梯
-                holder.ll_bg.setBackgroundResource(R.drawable.bg_lekai_elevator);
-                break;
-            case Device.LOCK_VERSION_DOOR://门锁
-            case Device.LOCK_VERSION_ENTRANCE://门禁
-            default://未知
+            if (null != key.getDeviceType()) {
+                switch (key.getDeviceType()) {
+                    case Device.LOCK_VERSION_PARK_LOCK://地锁
+                    case Device.LOCK_VERSION_BARRIER://道闸
+                        holder.ll_bg.setBackgroundResource(R.drawable.bg_lekai_car);
+                        break;
+                    case Device.LOCK_VERSION_LIFE_CONTROLLER://电梯
+                        holder.ll_bg.setBackgroundResource(R.drawable.bg_lekai_elevator);
+                        break;
+                    case Device.LOCK_VERSION_DOOR://门锁
+                    case Device.LOCK_VERSION_ENTRANCE://门禁
+                    default://未知
+                        holder.ll_bg.setBackgroundResource(R.drawable.bg_lekai_home);
+                        break;
+                }
+            } else {
                 holder.ll_bg.setBackgroundResource(R.drawable.bg_lekai_home);
-                break;
-        }
-        if (position == keys.size() - 1) {
-            holder.v_line.setVisibility(View.GONE);
-        } else {
-            holder.v_line.setVisibility(View.VISIBLE);
+            }
+            if (position == keys.size() - 1) {
+                holder.v_line.setVisibility(View.GONE);
+            } else {
+                holder.v_line.setVisibility(View.VISIBLE);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 
