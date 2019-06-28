@@ -18,7 +18,6 @@ import com.nohttp.utils.HttpListener;
 import com.nohttp.utils.RequestEncryptionUtils;
 import com.user.UserAppConst;
 import com.user.Utils.TokenUtils;
-import com.user.entity.OneKeyShowEntity;
 import com.user.entity.UserInformationEntity;
 import com.user.protocol.AuthTokenApi;
 import com.user.protocol.AuthTokenRequest;
@@ -435,7 +434,7 @@ public class NewUserModel extends BaseModel {
                     EventBus.getDefault().post(msg);
                 }
             }
-        }, 300000);
+        }, 15000);
     }
 
 
