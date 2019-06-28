@@ -1567,9 +1567,6 @@ public class MainHomeFragmentNew extends Fragment implements NewHttpResponse, My
                             } else {
                                 editor.putString(UserAppConst.COLOUR_AUTH_REAL_NAME + customer_id, "").commit();
                             }
-                        } else {
-                            String message = jsonObject.getString("message");
-                            ToastUtil.toastShow(getActivity(), message);
                         }
                     } catch (JSONException e) {
                         e.printStackTrace();
