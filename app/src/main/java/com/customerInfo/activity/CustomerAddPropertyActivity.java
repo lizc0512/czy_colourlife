@@ -123,7 +123,7 @@ public class CustomerAddPropertyActivity extends BaseActivity implements View.On
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_property_address);
-        getWindow().setBackgroundDrawable(null);//减少GPU绘制 布局要设为match_parent
+        getWindow().setBackgroundDrawable(null);
         newCustomerInfoModel = new NewCustomerInfoModel(CustomerAddPropertyActivity.this);
         initView();
         initData();
@@ -264,11 +264,11 @@ public class CustomerAddPropertyActivity extends BaseActivity implements View.On
             city_name = intent.getStringExtra(CITY) == null ? "" : intent.getStringExtra(CITY);
             tv_city.setText(city_name);
             if (!TextUtils.isEmpty(room_name)) {//有房号
-                newCustomerInfoModel.getRoomData(9, unit_uuid, page, 400, true, CustomerAddPropertyActivity.this);
+                newCustomerInfoModel.getRoomData(9, unit_uuid, page, 400, false, CustomerAddPropertyActivity.this);
             } else if (!TextUtils.isEmpty(unit_name)) {//有单元
-                newCustomerInfoModel.getUnitData(8, building_uuid, page, 400, true, CustomerAddPropertyActivity.this);
+                newCustomerInfoModel.getUnitData(8, building_uuid, page, 400, false, CustomerAddPropertyActivity.this);
             } else if (!TextUtils.isEmpty(building_name)) {//有楼栋
-                newCustomerInfoModel.getBuildingData(7, community_uuid, page, 400, true, CustomerAddPropertyActivity.this);
+                newCustomerInfoModel.getBuildingData(7, community_uuid, page, 400, false, CustomerAddPropertyActivity.this);
             } else {//只有小区，显示城市下的小区
                 newCustomerInfoModel.addressSelect(6, city_name, "", page, 400, this);
             }
@@ -312,19 +312,19 @@ public class CustomerAddPropertyActivity extends BaseActivity implements View.On
                     community_uuid = addBeanList.get(position).getUuid();
                     community_name = addBeanList.get(position).getName();
                     tv_garden.setText(community_name);
-                    newCustomerInfoModel.getBuildingData(7, community_uuid, page, 400, true, CustomerAddPropertyActivity.this);
+                    newCustomerInfoModel.getBuildingData(7, community_uuid, page, 400, false, CustomerAddPropertyActivity.this);
                     break;
                 case 2:
                     building_uuid = addBeanList.get(position).getUuid();
                     building_name = addBeanList.get(position).getName();
                     tv_block.setText(building_name);
-                    newCustomerInfoModel.getUnitData(8, building_uuid, page, 400, true, CustomerAddPropertyActivity.this);
+                    newCustomerInfoModel.getUnitData(8, building_uuid, page, 400, false, CustomerAddPropertyActivity.this);
                     break;
                 case 3:
                     unit_uuid = addBeanList.get(position).getUuid();
                     unit_name = addBeanList.get(position).getName();
                     tv_dong.setText(unit_name);
-                    newCustomerInfoModel.getRoomData(9, unit_uuid, page, 400, true, CustomerAddPropertyActivity.this);
+                    newCustomerInfoModel.getRoomData(9, unit_uuid, page, 400, false, CustomerAddPropertyActivity.this);
                     break;
             }
         }
@@ -344,7 +344,7 @@ public class CustomerAddPropertyActivity extends BaseActivity implements View.On
             community_uuid = areaBeanList.get(position).getUuid();
             community_name = areaBeanList.get(position).getName();
             tv_garden.setText(community_name);
-            newCustomerInfoModel.getBuildingData(7, community_uuid, page, 400, true, CustomerAddPropertyActivity.this);
+            newCustomerInfoModel.getBuildingData(7, community_uuid, page, 400, false, CustomerAddPropertyActivity.this);
         }
     }
 
@@ -482,19 +482,19 @@ public class CustomerAddPropertyActivity extends BaseActivity implements View.On
                 unit_uuid = "";
                 unit_name = "";
                 setBackground(2);
-                newCustomerInfoModel.getBuildingData(7, community_uuid, page, 400, true, CustomerAddPropertyActivity.this);
+                newCustomerInfoModel.getBuildingData(7, community_uuid, page, 400, false, CustomerAddPropertyActivity.this);
                 break;
             case R.id.tv_dong:
                 choiceType = 2;
                 unit_uuid = "";
                 unit_name = "";
                 setBackground(3);
-                newCustomerInfoModel.getUnitData(8, building_uuid, page, 400, true, CustomerAddPropertyActivity.this);
+                newCustomerInfoModel.getUnitData(8, building_uuid, page, 400, false, CustomerAddPropertyActivity.this);
                 break;
             case R.id.tv_unit:
                 choiceType = 3;
                 setBackground(4);
-                newCustomerInfoModel.getRoomData(9, unit_uuid, page, 400, true, CustomerAddPropertyActivity.this);
+                newCustomerInfoModel.getRoomData(9, unit_uuid, page, 400, false, CustomerAddPropertyActivity.this);
                 break;
         }
     }
@@ -697,8 +697,8 @@ public class CustomerAddPropertyActivity extends BaseActivity implements View.On
                         JSONObject jsonObject = new JSONObject(result);
                         String content = jsonObject.getString("content");
                         JSONObject data = new JSONObject(content);
-                        int is_verify = data.getInt("is_verify");
-                        if (1 == is_verify) {//1 需要，2 不需要
+                        int isVerify = data.getInt("is_verify");
+                        if (1 == isVerify) {//1 需要，2 不需要
                             Intent intent = new Intent(this, PropertyRealNameActivity.class);
                             intent.putExtra(PropertyRealNameActivity.COMMUNITY_UUID, community_uuid);
                             intent.putExtra(PropertyRealNameActivity.BUILD_NAME, building_name);

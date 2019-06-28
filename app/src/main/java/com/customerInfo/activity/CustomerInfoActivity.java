@@ -25,6 +25,7 @@ import com.BeeFramework.view.CircleImageView;
 import com.customerInfo.protocol.RealNameTokenEntity;
 import com.gem.GemConstant;
 import com.gem.util.GemDialogUtil;
+import com.myproperty.activity.MyPropertyActivity;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.permission.AndPermission;
 import com.tencent.authsdk.AuthConfig;
@@ -244,7 +245,7 @@ public class CustomerInfoActivity extends BaseActivity implements View.OnClickLi
                 break;
             case R.id.address_ll:
                 TCAgent.onEvent(getApplicationContext(), "203016");
-                intent = new Intent(this, CustomerSwitchAddressActivity.class);
+                intent = new Intent(this, MyPropertyActivity.class);
                 startActivityForResult(intent, 1);
                 break;
             case R.id.ll_gender:

@@ -55,7 +55,7 @@
     <uses-permission android:name="com.android.launcher2.permission.READ_SETTINGS" />
     <uses-permission android:name="com.android.launcher3.permission.READ_SETTINGS" />
     <uses-permission android:name="android.permission.REQUEST_INSTALL_PACKAGE" />
-    <!--乐开 保留-->
+    <!--乐开-->
     <uses-sdk tools:overrideLibrary="com.intelspace.library" />
     <!--bugly 阅读日志权限-->
     <uses-permission
@@ -1056,7 +1056,7 @@
             android:configChanges="keyboardHidden|orientation|screenSize|locale"
             android:theme="@android:style/Theme.Translucent" />
 
-        <!--乐开 保留-->
+        <!--乐开-->
         <service android:name="com.intelspace.library.service.BleService" />
         <service android:name="cn.net.cyberway.home.service.LekaiService" />
 

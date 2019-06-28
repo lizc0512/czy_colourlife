@@ -9,7 +9,6 @@ import com.cmic.sso.sdk.activity.LoginAuthActivity;
 import com.sdk.mobile.manager.login.cucc.OauthActivity;
 
 /**
- * 获取前台，后台状态
  * hxg 2019-06-21.
  */
 public class ActivityLifecycleListener implements Application.ActivityLifecycleCallbacks {

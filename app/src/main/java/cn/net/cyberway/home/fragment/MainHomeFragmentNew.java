@@ -152,7 +152,7 @@ public class MainHomeFragmentNew extends Fragment implements NewHttpResponse, My
         newUserModel = new NewUserModel(getActivity());
         initNetWorkListener();
 
-        LekaiHelper.init(getActivity());//开启乐开
+        LekaiHelper.init(getActivity());
     }
 
     @Override
@@ -1153,7 +1153,7 @@ public class MainHomeFragmentNew extends Fragment implements NewHttpResponse, My
                 case 12:
                     newUserModel.getIsRealName(12, MainHomeFragmentNew.this);
                     break;
-                case 14://乐开
+                case 14:
                     newUserModel.getLekaiDoor(14, MainHomeFragmentNew.this);
                     break;
             }
@@ -1191,7 +1191,7 @@ public class MainHomeFragmentNew extends Fragment implements NewHttpResponse, My
         }
         handler.sendEmptyMessageDelayed(0, 500);
         handler.sendEmptyMessageDelayed(1, 1000);
-        handler.sendEmptyMessageDelayed(14, 100);//乐开 获取钥匙
+        handler.sendEmptyMessageDelayed(14, 100);
         String realName = mShared.getString(UserAppConst.COLOUR_AUTH_REAL_NAME + customer_id, "");
         if (TextUtils.isEmpty(realName)) {
             handler.sendEmptyMessageDelayed(12, 5000);
@@ -1576,7 +1576,7 @@ public class MainHomeFragmentNew extends Fragment implements NewHttpResponse, My
                     }
                 }
                 break;
-            case 14://乐开
+            case 14:
                 LekaiHelper.startService(getActivity(), result);
                 break;
         }
@@ -1789,7 +1789,6 @@ public class MainHomeFragmentNew extends Fragment implements NewHttpResponse, My
         showUnReadMsg(HuxinSdkManager.instance().unreadServiceManagerMessage());
     }
 
-    //乐开 100权限回调
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
