@@ -143,8 +143,6 @@ public class PropertyChangeActivity extends BaseActivity implements View.OnClick
                 }
                 setResult(1, intent);
                 finish();
-//                Intent intent = new Intent(this, PropertyRealNameActivity.class);
-//                startActivity(intent);
                 break;
         }
     }

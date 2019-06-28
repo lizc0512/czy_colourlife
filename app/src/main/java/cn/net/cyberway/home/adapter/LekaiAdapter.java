@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -54,19 +55,23 @@ public class LekaiAdapter extends RecyclerView.Adapter<LekaiAdapter.DefaultViewH
             holder.tv_time.setText(valid);
 
             if (null != key.getDeviceType()) {
-                switch (key.getDeviceType()) {
-                    case Device.LOCK_VERSION_PARK_LOCK://地锁
-                    case Device.LOCK_VERSION_BARRIER://道闸
-                        holder.ll_bg.setBackgroundResource(R.drawable.bg_lekai_car);
-                        break;
-                    case Device.LOCK_VERSION_LIFE_CONTROLLER://电梯
-                        holder.ll_bg.setBackgroundResource(R.drawable.bg_lekai_elevator);
-                        break;
-                    case Device.LOCK_VERSION_DOOR://门锁
-                    case Device.LOCK_VERSION_ENTRANCE://门禁
-                    default://未知
-                        holder.ll_bg.setBackgroundResource(R.drawable.bg_lekai_home);
-                        break;
+                if (TextUtils.isEmpty(key.getDeviceType())) {
+                    switch (key.getDeviceType()) {
+                        case Device.LOCK_VERSION_PARK_LOCK://地锁
+                        case Device.LOCK_VERSION_BARRIER://道闸
+                            holder.ll_bg.setBackgroundResource(R.drawable.bg_lekai_car);
+                            break;
+                        case Device.LOCK_VERSION_LIFE_CONTROLLER://电梯
+                            holder.ll_bg.setBackgroundResource(R.drawable.bg_lekai_elevator);
+                            break;
+                        case Device.LOCK_VERSION_DOOR://门锁
+                        case Device.LOCK_VERSION_ENTRANCE://门禁
+                        default://未知
+                            holder.ll_bg.setBackgroundResource(R.drawable.bg_lekai_home);
+                            break;
+                    }
+                } else {
+                    holder.ll_bg.setBackgroundResource(R.drawable.bg_lekai_home);
                 }
             } else {
                 holder.ll_bg.setBackgroundResource(R.drawable.bg_lekai_home);

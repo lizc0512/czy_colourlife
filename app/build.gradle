@@ -192,11 +192,7 @@ dependencies {
     //腾讯人脸识别
     implementation(name: 'AuthSdk', ext: 'aar')
     implementation  'com.tencent.mm.opensdk:wechat-sdk-android-without-mta:5.3.1'
-    //leakcanary
-//    debugImplementation 'com.squareup.leakcanary:leakcanary-android:1.6.1'
-//    releaseImplementation 'com.squareup.leakcanary:leakcanary-android-no-op:1.6.1' //发布时用的是无任何操作的版本
-
-    //乐开 保留
+    //乐开
     implementation(name: 'lekai-open-sdk', ext: 'aar')
     //数位场景识别 保留
 //    implementation files('libs/location_sdk_batman_x-release-3.2.0.jar')
