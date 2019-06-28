@@ -21,7 +21,6 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import cn.net.cyberway.activity.MainActivity;
 import cn.net.cyberway.home.service.LekaiService;
@@ -127,7 +126,7 @@ public class LekaiHelper {
         if (null != mLekaiService) {
             mLekaiService.syncUserKeys(new OnSyncUserKeysCallback() {
                 @Override
-                public void syncSuccess(int code, String msg, List<LocalKey> list) {
+                public void syncResponse(int code, String msg) {
                     if (403 == code && 2 != a[0]) {
                         a[0]++;
                         ((MainActivity) activity).regetLekaiToken();
