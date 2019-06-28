@@ -35,36 +35,27 @@
                 android:layout_height="40dp"
                 android:orientation="horizontal">
 
-                <LinearLayout
+
+                <ImageView
+                    android:id="@+id/iv_local_up"
                     android:layout_width="wrap_content"
-                    android:layout_height="30dp"
+                    android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
                     android:layout_marginLeft="15dp"
-                    android:background="@drawable/home_top_bg"
-                    android:orientation="horizontal">
+                    android:padding="4dp"
+                    android:src="@drawable/icon_local" />
 
-                    <ImageView
-                        android:id="@+id/iv_local_up"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center_vertical"
-                        android:padding="4dp"
-                        android:src="@drawable/icon_local" />
-
-                    <TextView
-                        android:id="@+id/alpha_community"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center_vertical"
-                        android:drawablePadding="4dp"
-                        android:ellipsize="end"
-                        android:maxEms="12"
-                        android:singleLine="true"
-                        android:textColor="@color/black"
-                        android:textSize="18sp" />
-
-                </LinearLayout>
-
+                <TextView
+                    android:id="@+id/alpha_community"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:drawablePadding="4dp"
+                    android:ellipsize="end"
+                    android:maxEms="12"
+                    android:singleLine="true"
+                    android:textColor="@color/black"
+                    android:textSize="18sp" />
 
                 <View
                     android:layout_width="0dp"

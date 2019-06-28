@@ -463,7 +463,7 @@ public class MainHomeFragmentNew extends Fragment implements NewHttpResponse, My
         } else {
             height = 110;
             LinearLayout.LayoutParams viewLayoutParams = (LinearLayout.LayoutParams) colour_wallet_view.getLayoutParams();
-            viewLayoutParams.height = Util.DensityUtil.dip2px(getActivity(), 60.0f) + getStatusBarHeight(getActivity());
+            viewLayoutParams.height = Util.DensityUtil.dip2px(getActivity(), 55.0f) + getStatusBarHeight(getActivity());
             colour_wallet_view.setLayoutParams(viewLayoutParams);
             home_parking_layout.setVisibility(View.VISIBLE);
             head_banner.setVisibility(View.GONE);

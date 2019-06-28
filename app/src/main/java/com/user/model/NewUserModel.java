@@ -406,7 +406,7 @@ public class NewUserModel extends BaseModel {
 
             @Override
             public void onFailed(int what, Response<String> response) {
-                tokenInvaildLoginOut("");
+                newHttpResponse.OnHttpResponse(what, "");
             }
         }, true, false);
     }
