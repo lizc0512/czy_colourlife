@@ -15,6 +15,7 @@ import com.customerInfo.model.NewCustomerInfoModel;
 import com.myproperty.protocol.IdentityEntity;
 import com.myproperty.view.PropertyRealNameDialog;
 import com.user.UserAppConst;
+import com.youmai.hxsdk.utils.ToastUtil;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -96,6 +97,14 @@ public class PropertyRealNameActivity extends BaseActivity implements View.OnCli
             case R.id.bt_done:
                 String name = et_name.getText().toString().trim();
                 String idCard = et_id_card.getText().toString().trim();
+                if (TextUtils.isEmpty(name)) {
+                    ToastUtil.showToast(this, "请填写姓名");
+                    return;
+                }
+                if (TextUtils.isEmpty(idCard)) {
+                    ToastUtil.showToast(this, "请填写身份证");
+                    return;
+                }
                 newCustomerInfoModel.isWhiteName(0, name, idCard, community_uuid, build_name, unit_name, room_name, this);
                 break;
         }

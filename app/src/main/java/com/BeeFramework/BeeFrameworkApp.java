@@ -107,7 +107,7 @@ public class BeeFrameworkApp extends MultiDexApplication {
 
             }
         });
-        registerActivityLifecycleCallbacks(new ActivityLifecycleListener());//乐开
+        registerActivityLifecycleCallbacks(new ActivityLifecycleListener());
         closeAndroidPDialog();
     }
 

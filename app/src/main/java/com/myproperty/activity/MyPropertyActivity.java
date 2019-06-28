@@ -79,7 +79,7 @@ public class MyPropertyActivity extends BaseActivity implements View.OnClickList
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_my_property);
-        getWindow().setBackgroundDrawable(null);//减少GPU绘制 布局要设为match_parent
+        getWindow().setBackgroundDrawable(null);
         mShared = this.getSharedPreferences(UserAppConst.USERINFO, 0);
         mEditor = mShared.edit();
         newCustomerInfoModel = new NewCustomerInfoModel(this);
@@ -215,7 +215,7 @@ public class MyPropertyActivity extends BaseActivity implements View.OnClickList
             mAdapter.setDefaultAddressId(defaultAddressId);
             getCommunityList(false);
         } else {
-            getCommunityList(true);
+            getCommunityList(false);
         }
     }
 
@@ -372,6 +372,9 @@ public class MyPropertyActivity extends BaseActivity implements View.OnClickList
                         for (AddressListEntity.ContentBean.DataBean communityBean : communityBeanList) {
                             if (communityBean.getIs_default() == 1) {
                                 defaultAddressId = communityBean.getId();
+                                Intent intent = new Intent();
+                                intent.putExtra("community", communityBean.getCommunity_name());
+                                setResult(1, intent);
                                 break;
                             }
                         }

@@ -1,7 +1,5 @@
 package com.im.entity;
 
-import android.support.annotation.VisibleForTesting;
-
 import com.nohttp.entity.BaseContentEntity;
 
 /**
