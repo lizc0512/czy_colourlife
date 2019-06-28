@@ -1435,7 +1435,7 @@ public class NewUserModel extends BaseModel {
                     if (resultCode == 0) {
                         newHttpResponse.OnHttpResponse(what, result);
                     } else {
-                        newHttpResponse.OnHttpResponse(what, result);
+                        newHttpResponse.OnHttpResponse(what, "");
                     }
                 }
             }

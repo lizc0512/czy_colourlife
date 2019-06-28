@@ -72,7 +72,7 @@ public final class PasswordRSAUtils {
      *
      * */
     public static String encryptByPublicKey(String content) {
-        byte[] keyBytes = Base64Util.decode(Constants.publicKeyString);
+        byte[] keyBytes = Base64Utils.decode(Constants.publicKeyString);
         X509EncodedKeySpec x509KeySpec = new X509EncodedKeySpec(keyBytes);
         KeyFactory keyFactory = null;
         try {
