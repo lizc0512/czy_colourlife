@@ -639,7 +639,6 @@
             android:name="com.user.activity.UserRegisterAndLoginActivity"
             android:launchMode="singleTask"
             android:screenOrientation="portrait"
-            android:theme="@style/AuthActivityAnimation"
             android:windowSoftInputMode="adjustPan" />
 
         <activity

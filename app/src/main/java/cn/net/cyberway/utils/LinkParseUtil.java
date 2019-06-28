@@ -58,9 +58,9 @@ public class LinkParseUtil {
         if (!mShared.getBoolean(UserAppConst.IS_LOGIN, false)) {
             Intent intent = new Intent(context, UserRegisterAndLoginActivity.class);
             context.startActivity(intent);
-//            if (context instanceof Activity) {
-//                ((Activity) context).overridePendingTransition(R.anim.push_right_in, R.anim.push_buttom_in);
-//            }
+            if (context instanceof Activity) {
+                ((Activity) context).overridePendingTransition(R.anim.push_right_in, R.anim.push_right_out);
+            }
         } else {
             if (!TextUtils.isEmpty(link)) {
                 if (link.trim().startsWith("http://") || link.trim().startsWith("https://")) {
