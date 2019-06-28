@@ -50,7 +50,7 @@ import cn.net.cyberway.R;
 import cn.net.cyberway.utils.CityCustomConst;
 
 /**
- * 新增房产
+ * 新增房产 编辑房产
  * hxg 2019/04/02
  */
 public class CustomerAddPropertyActivity extends BaseActivity implements View.OnClickListener, NewHttpResponse {
@@ -186,6 +186,7 @@ public class CustomerAddPropertyActivity extends BaseActivity implements View.On
             if (actionId == EditorInfo.IME_ACTION_SEARCH && !TextUtils.isEmpty(keyword)) {
                 choiceType = 0;
                 //模糊搜索所有小区
+                dismissSoftKeyboard(this);
                 newCustomerInfoModel.addressSelect(3, "", keyword, page, 400, CustomerAddPropertyActivity.this);
             }
             return false;
@@ -222,6 +223,7 @@ public class CustomerAddPropertyActivity extends BaseActivity implements View.On
             city_name = ((CityListsEntity) cityAdapter.getItem(position)).getCity();
             tv_city.setText(city_name);
             iv_city.setVisibility(View.VISIBLE);
+            dismissSoftKeyboard(this);
             newCustomerInfoModel.addressSelect(6, city_name, "", page, 400, this);
         });
 
@@ -264,12 +266,16 @@ public class CustomerAddPropertyActivity extends BaseActivity implements View.On
             city_name = intent.getStringExtra(CITY) == null ? "" : intent.getStringExtra(CITY);
             tv_city.setText(city_name);
             if (!TextUtils.isEmpty(room_name)) {//有房号
+                dismissSoftKeyboard(this);
                 newCustomerInfoModel.getRoomData(9, unit_uuid, page, 400, false, CustomerAddPropertyActivity.this);
             } else if (!TextUtils.isEmpty(unit_name)) {//有单元
+                dismissSoftKeyboard(this);
                 newCustomerInfoModel.getUnitData(8, building_uuid, page, 400, false, CustomerAddPropertyActivity.this);
             } else if (!TextUtils.isEmpty(building_name)) {//有楼栋
+                dismissSoftKeyboard(this);
                 newCustomerInfoModel.getBuildingData(7, community_uuid, page, 400, false, CustomerAddPropertyActivity.this);
             } else {//只有小区，显示城市下的小区
+                dismissSoftKeyboard(this);
                 newCustomerInfoModel.addressSelect(6, city_name, "", page, 400, this);
             }
             identity = intent.getBooleanExtra(IDENTITY, false);//是否跳转选中身份
@@ -281,6 +287,7 @@ public class CustomerAddPropertyActivity extends BaseActivity implements View.On
                 ToastUtil.toastShow(this, "未能获取当前定位");
             } else {
                 tv_city.setText(city_name);
+                dismissSoftKeyboard(this);
                 newCustomerInfoModel.addressSelect(6, city_name, "", page, 400, this);
             }
         }
@@ -306,24 +313,28 @@ public class CustomerAddPropertyActivity extends BaseActivity implements View.On
                         fl_city.setVisibility(View.GONE);
                     }
                     tv_garden.setText(addBeanList.get(position).getName());
+                    dismissSoftKeyboard(this);
                     newCustomerInfoModel.addressSelect(6, city_name, addBeanList.get(position).getName(), page, 400, this);
                     break;
                 case 1://请求楼栋
                     community_uuid = addBeanList.get(position).getUuid();
                     community_name = addBeanList.get(position).getName();
                     tv_garden.setText(community_name);
+                    dismissSoftKeyboard(this);
                     newCustomerInfoModel.getBuildingData(7, community_uuid, page, 400, false, CustomerAddPropertyActivity.this);
                     break;
                 case 2:
                     building_uuid = addBeanList.get(position).getUuid();
                     building_name = addBeanList.get(position).getName();
                     tv_block.setText(building_name);
+                    dismissSoftKeyboard(this);
                     newCustomerInfoModel.getUnitData(8, building_uuid, page, 400, false, CustomerAddPropertyActivity.this);
                     break;
                 case 3:
                     unit_uuid = addBeanList.get(position).getUuid();
                     unit_name = addBeanList.get(position).getName();
                     tv_dong.setText(unit_name);
+                    dismissSoftKeyboard(this);
                     newCustomerInfoModel.getRoomData(9, unit_uuid, page, 400, false, CustomerAddPropertyActivity.this);
                     break;
             }
@@ -344,20 +355,25 @@ public class CustomerAddPropertyActivity extends BaseActivity implements View.On
             community_uuid = areaBeanList.get(position).getUuid();
             community_name = areaBeanList.get(position).getName();
             tv_garden.setText(community_name);
+            dismissSoftKeyboard(this);
             newCustomerInfoModel.getBuildingData(7, community_uuid, page, 400, false, CustomerAddPropertyActivity.this);
         }
     }
 
     /**
-     * 新增或更新
+     * 新增或编辑
      */
     private void addOrUpdateAddress() {
-        if ("新增房产".equals(mtitle.getText().toString().trim())) {
-            newCustomerInfoModel.isNeedRealName(13, community_uuid, this);
-        } else {//修改
-            newCustomerInfoModel.postCustomerUpdateAddress(12, id, community_uuid, community_name, building_uuid, building_name
-                    , unit_uuid, unit_name, room_uuid, room_name, this);
-        }
+        newCustomerInfoModel.isNeedRealName(13, community_uuid, this);
+
+//        if ("新增房产".equals(mtitle.getText().toString().trim())) {
+//            Intent intent = new Intent(this, PropertyChangeActivity.class);
+//            startActivityForResult(intent, 1);
+////            newCustomerInfoModel.isNeedRealName(13, community_uuid, this);
+//        } else {//修改
+//            newCustomerInfoModel.postCustomerUpdateAddress(12, id, community_uuid, community_name, building_uuid, building_name
+//                    , unit_uuid, unit_name, room_uuid, room_name, this);
+//        }
     }
 
     @Override
@@ -365,9 +381,18 @@ public class CustomerAddPropertyActivity extends BaseActivity implements View.On
         switch (requestCode) {
             case 1:
                 if (resultCode == 1) {
-                    String identity = data.getStringExtra(PropertyChangeActivity.IDENTITY_TYPE);
-                    newCustomerInfoModel.postCustomerAddress(10, community_uuid, community_name, building_uuid, building_name
-                            , unit_uuid, unit_name, room_uuid, room_name, identity, this);
+                    try {
+                        if ("新增房产".equals(mtitle.getText().toString().trim())) {
+                            String identity = data.getStringExtra(PropertyChangeActivity.IDENTITY_TYPE);
+                            newCustomerInfoModel.postCustomerAddress(10, community_uuid, community_name, building_uuid, building_name
+                                    , unit_uuid, unit_name, room_uuid, room_name, identity, this);
+                        } else {//修改
+                            newCustomerInfoModel.postCustomerUpdateAddress(12, id, community_uuid, community_name, building_uuid, building_name
+                                    , unit_uuid, unit_name, room_uuid, room_name, this);
+                        }
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
                 }
                 break;
         }
@@ -455,12 +480,14 @@ public class CustomerAddPropertyActivity extends BaseActivity implements View.On
                 tv_choose.setText("选择城市");
                 iv_city.setVisibility(View.GONE);
                 fl_city.setVisibility(View.VISIBLE);
+                dismissSoftKeyboard(this);
                 newCustomerInfoModel.cityListSelect(11, this);
                 break;
             case R.id.iv_city://城市列表 按钮
                 tv_choose.setText("选择城市");
                 iv_city.setVisibility(View.GONE);
                 fl_city.setVisibility(View.VISIBLE);
+                dismissSoftKeyboard(this);
                 newCustomerInfoModel.cityListSelect(11, this);
                 break;
             case R.id.tv_garden://点击花园
@@ -473,6 +500,7 @@ public class CustomerAddPropertyActivity extends BaseActivity implements View.On
                 unit_name = "";
                 rl_city.setVisibility(View.VISIBLE);
                 rl_address_choose.setVisibility(View.GONE);
+                dismissSoftKeyboard(this);
                 newCustomerInfoModel.addressSelect(6, city_name, "", page, 400, this);
                 break;
             case R.id.tv_block:
@@ -482,6 +510,7 @@ public class CustomerAddPropertyActivity extends BaseActivity implements View.On
                 unit_uuid = "";
                 unit_name = "";
                 setBackground(2);
+                dismissSoftKeyboard(this);
                 newCustomerInfoModel.getBuildingData(7, community_uuid, page, 400, false, CustomerAddPropertyActivity.this);
                 break;
             case R.id.tv_dong:
@@ -489,11 +518,13 @@ public class CustomerAddPropertyActivity extends BaseActivity implements View.On
                 unit_uuid = "";
                 unit_name = "";
                 setBackground(3);
+                dismissSoftKeyboard(this);
                 newCustomerInfoModel.getUnitData(8, building_uuid, page, 400, false, CustomerAddPropertyActivity.this);
                 break;
             case R.id.tv_unit:
                 choiceType = 3;
                 setBackground(4);
+                dismissSoftKeyboard(this);
                 newCustomerInfoModel.getRoomData(9, unit_uuid, page, 400, false, CustomerAddPropertyActivity.this);
                 break;
         }
@@ -704,10 +735,16 @@ public class CustomerAddPropertyActivity extends BaseActivity implements View.On
                             intent.putExtra(PropertyRealNameActivity.BUILD_NAME, building_name);
                             intent.putExtra(PropertyRealNameActivity.UNIT_NAME, unit_name);
                             intent.putExtra(PropertyRealNameActivity.ROOM_NAME, room_name);
+                            intent.putExtra(PropertyRealNameActivity.IS_ADD, "新增房产".equals(mtitle.getText().toString().trim()));
                             startActivityForResult(intent, 1);
                         } else {
-                            Intent intent = new Intent(this, PropertyChangeActivity.class);
-                            startActivityForResult(intent, 1);
+                            if ("新增房产".equals(mtitle.getText().toString().trim())) {
+                                Intent intent = new Intent(this, PropertyChangeActivity.class);
+                                startActivityForResult(intent, 1);
+                            } else {//修改
+                                newCustomerInfoModel.postCustomerUpdateAddress(12, id, community_uuid, community_name, building_uuid, building_name
+                                        , unit_uuid, unit_name, room_uuid, room_name, this);
+                            }
                         }
                     } catch (Exception e) {
                         e.printStackTrace();
