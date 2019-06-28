@@ -12,15 +12,12 @@ import com.BeeFramework.activity.BaseActivity;
 import com.BeeFramework.model.NewHttpResponse;
 import com.BeeFramework.view.ClearEditText;
 import com.customerInfo.model.NewCustomerInfoModel;
-import com.myproperty.protocol.IdentityEntity;
 import com.myproperty.view.PropertyRealNameDialog;
 import com.user.UserAppConst;
 import com.youmai.hxsdk.utils.ToastUtil;
 
 import org.json.JSONException;
 import org.json.JSONObject;
-
-import java.util.List;
 
 import cn.net.cyberway.R;
 
@@ -34,11 +31,13 @@ public class PropertyRealNameActivity extends BaseActivity implements View.OnCli
     public final static String BUILD_NAME = "build_name";
     public final static String UNIT_NAME = "unit_name";
     public final static String ROOM_NAME = "room_name";
+    public final static String IS_ADD = "is_add";
 
     private String community_uuid = "";
     private String build_name = "";
     private String unit_name = "";
     private String room_name = "";
+    private boolean isAdd = true;
 
     private ImageView mBack;
     private TextView mTitle;
@@ -51,7 +50,6 @@ public class PropertyRealNameActivity extends BaseActivity implements View.OnCli
     public SharedPreferences.Editor mEditor;
     public int customer_id;
     private NewCustomerInfoModel newCustomerInfoModel;
-    private List<IdentityEntity.ContentBean> bean;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -86,6 +84,7 @@ public class PropertyRealNameActivity extends BaseActivity implements View.OnCli
         build_name = intent.getStringExtra(BUILD_NAME) == null ? "" : intent.getStringExtra(BUILD_NAME);
         unit_name = intent.getStringExtra(UNIT_NAME) == null ? "" : intent.getStringExtra(UNIT_NAME);
         room_name = intent.getStringExtra(ROOM_NAME) == null ? "" : intent.getStringExtra(ROOM_NAME);
+        isAdd = intent.getBooleanExtra(IS_ADD, true);
     }
 
     @Override
@@ -121,10 +120,15 @@ public class PropertyRealNameActivity extends BaseActivity implements View.OnCli
                         JSONObject data = new JSONObject(content);
                         int is_verify = data.getInt("is_white");
                         if (1 == is_verify) {//1：白名单 2：不是白名单
-                            Intent intent = new Intent(this, PropertyChangeActivity.class);
-                            startActivityForResult(intent, 1);
+                            if (isAdd) {
+                                Intent intent = new Intent(this, PropertyChangeActivity.class);
+                                startActivityForResult(intent, 1);
+                            } else {
+                                setResult(1);
+                                this.finish();
+                            }
                         } else {
-                            PropertyRealNameDialog dialog = new PropertyRealNameDialog(this, "您不在白名单范围内");
+                            PropertyRealNameDialog dialog = new PropertyRealNameDialog(this, "您目前无法加入该小区，请确认信息是否有误或联系管理员。");
                             dialog.btn_yes.setOnClickListener(v -> dialog.dismiss());
                             dialog.show();
                         }
@@ -142,12 +146,18 @@ public class PropertyRealNameActivity extends BaseActivity implements View.OnCli
         switch (requestCode) {
             case 1:
                 if (resultCode == 1) {
-                    String identity = data.getStringExtra(PropertyChangeActivity.IDENTITY_TYPE);
+                    try {
+                        String identity = data.getStringExtra(PropertyChangeActivity.IDENTITY_TYPE);
+                        String identityName = data.getStringExtra(PropertyChangeActivity.IDENTITY_NAME);
 
-                    Intent intent = new Intent();
-                    intent.putExtra(PropertyChangeActivity.IDENTITY_TYPE, identity);
-                    setResult(1, intent);
-                    finish();
+                        Intent intent = new Intent();
+                        intent.putExtra(PropertyChangeActivity.IDENTITY_TYPE, identity);
+                        intent.putExtra(PropertyChangeActivity.IDENTITY_NAME, identityName);
+                        setResult(1, intent);
+                        this.finish();
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
                 }
                 break;
         }
