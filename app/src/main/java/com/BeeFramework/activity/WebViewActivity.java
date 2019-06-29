@@ -104,6 +104,7 @@ import com.permission.AndPermission;
 import com.permission.PermissionListener;
 import com.scanCode.activity.CaptureActivity;
 import com.setting.activity.DeliveryOauthDialog;
+import com.setting.activity.UserAccountSaftyActivity;
 import com.tencent.mm.opensdk.modelbiz.WXLaunchMiniProgram;
 import com.tencent.mm.opensdk.openapi.IWXAPI;
 import com.tencent.mm.opensdk.openapi.WXAPIFactory;
@@ -113,6 +114,7 @@ import com.update.activity.UpdateVerSion;
 import com.user.UserAppConst;
 import com.user.UserMessageConstant;
 import com.user.Utils.TokenUtils;
+import com.user.entity.ThridBindStatusEntity;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -179,6 +181,7 @@ public class WebViewActivity extends BaseActivity implements View.OnLongClickLis
     public static final int REQUEST_CALLPHONE = 2000;
     public static final int GUANGCAIPAY = 3000;
     public static final int DELIVERYADDRESS = 4000;
+    public static final int BINDWECHAT = 5000;
     private String webTitle = ""; // 传入的标题字符串
     private String appSectionCode = ""; // 传入的标题字符串
     private String url = "";
@@ -566,6 +569,21 @@ public class WebViewActivity extends BaseActivity implements View.OnLongClickLis
                     finish();
                     break;
                 }
+            case 1:
+                try {
+                    ThridBindStatusEntity thridBindStatusEntity = com.nohttp.utils.GsonUtils.gsonToBean(result, ThridBindStatusEntity.class);
+                    ThridBindStatusEntity.ContentBean contentBean = thridBindStatusEntity.getContent();
+                    if (contentBean.getBind_weixin() == 1) {
+                        // wechat已经绑定
+
+                    } else {
+                        Intent intent = new Intent(WebViewActivity.this, UserAccountSaftyActivity.class);
+                        startActivityForResult(intent, BINDWECHAT);
+                    }
+                } catch (Exception e) {
+
+                }
+                break;
         }
     }
 
@@ -595,16 +613,16 @@ public class WebViewActivity extends BaseActivity implements View.OnLongClickLis
                 break;
             case 16:
                 //外部实名认证成功
-                ToastUtil.toastShow(WebViewActivity.this,"实名认证成功");
+                ToastUtil.toastShow(WebViewActivity.this, "实名认证成功");
                 webView.loadUrl(url);
                 break;
             case 17:
                 //取消外部实名认证
-                ToastUtil.toastShow(WebViewActivity.this,"已取消实名认证");
+                ToastUtil.toastShow(WebViewActivity.this, "已取消实名认证");
                 break;
             case 18:
                 //当前用户已实名认证
-                ToastUtil.toastShow(WebViewActivity.this,"已实名认证");
+                ToastUtil.toastShow(WebViewActivity.this, "已实名认证");
                 break;
         }
     }
@@ -1208,9 +1226,13 @@ public class WebViewActivity extends BaseActivity implements View.OnLongClickLis
         public void WXMiniProgramActivity(String json) {
             if (!TextUtils.isEmpty(json)) {
                 try {
-                    JSONObject jsonObjec = new JSONObject(json);
-                    String appid = jsonObjec.getString("userName");
-                    String path = jsonObjec.getString("path");
+                    JSONObject jsonObject = new JSONObject(json);
+                    String appid = jsonObject.getString("userName");
+                    String path = jsonObject.getString("path");
+//                    if (!jsonObject.isNull("relatedWeChat")) {
+//                        NewUserModel newUserModel = new NewUserModel(WebViewActivity.this);
+//                        newUserModel.getThridBindStatus(1, WebViewActivity.this);
+//                    }
                     if (!TextUtils.isEmpty(appid)) {
                         IWXAPI api = WXAPIFactory.createWXAPI(WebViewActivity.this, Config.WEIXIN_APP_ID);//微信APPID
                         WXLaunchMiniProgram.Req req = new WXLaunchMiniProgram.Req();
@@ -1384,6 +1406,10 @@ public class WebViewActivity extends BaseActivity implements View.OnLongClickLis
                     }
                     webView.loadUrl("javascript:window.colourlifeDeliveryAddressHandler('" + jsonObject.toString() + "')");
                 }
+                break;
+            case BINDWECHAT: //wechat绑定成功后的回调  直接跳转到对应的小程序
+
+
                 break;
             default:
                 mAgentWeb.uploadFileResult(requestCode, resultCode, data);
