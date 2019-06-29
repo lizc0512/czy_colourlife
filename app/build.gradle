@@ -70,8 +70,8 @@ android {
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_7
         targetCompatibility JavaVersion.VERSION_1_7
-        sourceCompatibility JavaVersion.VERSION_1_8//添加jdk1.8
-        targetCompatibility JavaVersion.VERSION_1_8//添加jdk1.8
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
     }
 
     sourceSets {
@@ -193,7 +193,7 @@ dependencies {
     implementation(name: 'AuthSdk', ext: 'aar')
     implementation  'com.tencent.mm.opensdk:wechat-sdk-android-without-mta:5.3.1'
     //乐开
-    implementation(name: 'lekai-open-sdk', ext: 'aar')
+    implementation(name: 'lekai-open-sdk-v3.0.6', ext: 'aar')
     //数位场景识别 保留
 //    implementation files('libs/location_sdk_batman_x-release-3.2.0.jar')
 
