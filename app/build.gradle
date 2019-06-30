@@ -148,9 +148,9 @@ dependencies {
     implementation project(':huxin_sdk')
     implementation(name: 'iJMSafeKeyboard', ext: 'aar')
     implementation(name: 'shanyan_sdk_v2.2.0.1', ext: 'aar')
-    implementation(name: 'mylibrary-release', ext: 'aar')
+    implementation(name: 'CqbSDK_release_v38_enc', ext: 'aar')
     compileOnly files('sdknec/classes123.jar')
-    implementation(name: 'PayChannel-release', ext: 'aar')
+    implementation(name: 'PayChannelSDK_release_v38_enc', ext: 'aar')
     compileOnly files('sdknec/classes.jar')
     implementation 'com.flyco.banner:FlycoBanner_Lib:2.0.2@aar'
     implementation 'com.navercorp.volleyextensions:volley-views:2.0.1'
