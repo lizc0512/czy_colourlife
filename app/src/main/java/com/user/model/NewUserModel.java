@@ -1645,7 +1645,7 @@ public class NewUserModel extends BaseModel {
             public void onFailed(int what, Response<String> response) {
                 showExceptionMessage(what, response);
             }
-        }, true, true);
+        }, true, false);
     }
 
     /**
@@ -1699,7 +1699,7 @@ public class NewUserModel extends BaseModel {
             public void onFailed(int what, Response<String> response) {
                 showExceptionMessage(what, response);
             }
-        }, true, true);
+        }, true, false);
     }
 
 }
