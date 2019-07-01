@@ -365,15 +365,6 @@ public class CustomerAddPropertyActivity extends BaseActivity implements View.On
      */
     private void addOrUpdateAddress() {
         newCustomerInfoModel.isNeedRealName(13, community_uuid, this);
-
-//        if ("新增房产".equals(mtitle.getText().toString().trim())) {
-//            Intent intent = new Intent(this, PropertyChangeActivity.class);
-//            startActivityForResult(intent, 1);
-////            newCustomerInfoModel.isNeedRealName(13, community_uuid, this);
-//        } else {//修改
-//            newCustomerInfoModel.postCustomerUpdateAddress(12, id, community_uuid, community_name, building_uuid, building_name
-//                    , unit_uuid, unit_name, room_uuid, room_name, this);
-//        }
     }
 
     @Override

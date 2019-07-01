@@ -2,6 +2,8 @@ package com.setting.activity;
 
 import android.annotation.SuppressLint;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.ImageView;
@@ -14,6 +16,8 @@ import com.nohttp.utils.GlideImageLoader;
 import com.nohttp.utils.GsonUtils;
 import com.user.entity.AuthManegeDetailEntity;
 import com.user.model.NewUserModel;
+
+import java.lang.ref.WeakReference;
 
 import cn.net.cyberway.R;
 
@@ -112,10 +116,38 @@ public class AuthManegeDetailActivity extends BaseActivity implements View.OnCli
             case 1:
                 if (!TextUtils.isEmpty(result)) {
                     ToastUtil.toastShow(getApplicationContext(), "解约成功");
-                    setResult(200);
-                    finish();
+                    mHandler.sendEmptyMessageDelayed(0, 600);
                 }
                 break;
+        }
+    }
+
+    private AuthManegeDetailActivity.InterHandler mHandler = new AuthManegeDetailActivity.InterHandler(this);
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        mHandler.removeCallbacksAndMessages(null);
+    }
+
+    private static class InterHandler extends Handler {
+        private WeakReference<AuthManegeDetailActivity> mActivity;
+
+        InterHandler(AuthManegeDetailActivity activity) {
+            mActivity = new WeakReference<>(activity);
+        }
+
+        @Override
+        public void handleMessage(Message msg) {
+            AuthManegeDetailActivity activity = mActivity.get();
+            if (activity != null) {
+                if (msg.what == 0) {
+                    activity.setResult(200);
+                    activity.finish();
+                }
+            } else {
+                super.handleMessage(msg);
+            }
         }
     }
 }

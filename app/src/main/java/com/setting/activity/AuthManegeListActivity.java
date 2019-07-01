@@ -109,9 +109,9 @@ public class AuthManegeListActivity extends BaseActivity implements View.OnClick
                                 smrv_auth.setAdapter(authManegeAdapter);
                                 smrv_auth.loadMoreFinish(false, false);
                             } else {
+                                authManegeAdapter.mList = list;
                                 authManegeAdapter.notifyDataSetChanged();
                             }
-
                         }
                     } catch (Exception e) {
                         e.printStackTrace();

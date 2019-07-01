@@ -26,7 +26,7 @@ import cn.net.cyberway.R;
 public class AuthManegeAdapter extends RecyclerView.Adapter<AuthManegeAdapter.DefaultViewHolder> {
 
     public Context mContext;
-    private List<AuthManegeListEntity.ContentBean> mList;
+    public List<AuthManegeListEntity.ContentBean> mList;
 
     public AuthManegeAdapter(Context context, List<AuthManegeListEntity.ContentBean> list) {
         this.mContext = context;
