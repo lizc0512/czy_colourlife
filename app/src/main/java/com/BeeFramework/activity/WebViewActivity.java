@@ -78,7 +78,6 @@ import com.bumptech.glide.request.target.ImageViewTarget;
 import com.cashier.activity.NewOrderPayActivity;
 import com.customerInfo.activity.CustomerInfoActivity;
 import com.customerInfo.activity.DeliveryAddressListActivity;
-import com.dashuview.library.keep.Cqb_PayUtil;
 import com.dashuview.library.keep.ListenerUtils;
 import com.dashuview.library.keep.MyListener;
 import com.external.eventbus.EventBus;
@@ -156,7 +155,6 @@ import cn.sharesdk.wechat.moments.WechatMoments;
 import static cn.net.cyberway.utils.BuryingPointUtils.ENTER_TIME;
 import static cn.net.cyberway.utils.BuryingPointUtils.LEAVE_TIME;
 import static cn.net.cyberway.utils.BuryingPointUtils.UPLOAD_DETAILS;
-import static com.BeeFramework.Utils.Utils.getAuthPublicParams;
 
 @SuppressLint("SetJavaScriptEnabled")
 public class WebViewActivity extends BaseActivity implements View.OnLongClickListener, OnClickListener, HttpApiResponse, NewHttpResponse, MyListener {
@@ -1250,7 +1248,7 @@ public class WebViewActivity extends BaseActivity implements View.OnLongClickLis
 
         @JavascriptInterface
         public void ColourlifeWalletAuth(String authJson) {
-            Cqb_PayUtil.getInstance(WebViewActivity.this).openCertification(getAuthPublicParams(WebViewActivity.this, authJson), Constants.CAIWALLET_ENVIRONMENT, "CertificationFlag");
+//            Cqb_PayUtil.getInstance(WebViewActivity.this).openCertification(getAuthPublicParams(WebViewActivity.this, authJson), Constants.CAIWALLET_ENVIRONMENT, "CertificationFlag");
         }
     }
 

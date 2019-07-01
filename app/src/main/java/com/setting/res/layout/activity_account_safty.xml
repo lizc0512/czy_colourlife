@@ -245,8 +245,8 @@
         android:layout_width="match_parent"
         android:layout_height="60dp"
         android:layout_marginTop="8dp"
-        android:visibility="gone"
-        android:background="@color/white">
+        android:background="@color/white"
+        android:visibility="gone">
 
         <TextView
             android:layout_width="wrap_content"
@@ -254,7 +254,7 @@
             android:layout_alignParentLeft="true"
             android:layout_marginLeft="15dp"
             android:layout_marginTop="10dp"
-            android:text="注销手机号"
+            android:text="注销账号"
             android:textColor="@color/black_text_color"
             android:textSize="16sp" />
 

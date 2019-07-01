@@ -35,7 +35,7 @@
                 android:gravity="center"
                 android:text="门禁"
                 android:textColor="@color/color_647786"
-                android:textSize="12sp" />
+                android:textSize="14sp" />
 
         </LinearLayout>
 
