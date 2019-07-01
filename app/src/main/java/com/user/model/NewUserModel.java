@@ -434,7 +434,7 @@ public class NewUserModel extends BaseModel {
                     EventBus.getDefault().post(msg);
                 }
             }
-        }, 15000);
+        }, 10000);
     }
 
 

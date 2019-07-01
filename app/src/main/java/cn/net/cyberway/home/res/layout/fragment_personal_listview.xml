@@ -1,4 +1,5 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.v4.widget.SwipeRefreshLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/refresh_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/bg_color"
@@ -14,4 +15,4 @@
         android:listSelector="#00000000"
         android:overScrollMode="never"
         android:scrollbars="none" />
-</RelativeLayout>
+</android.support.v4.widget.SwipeRefreshLayout>

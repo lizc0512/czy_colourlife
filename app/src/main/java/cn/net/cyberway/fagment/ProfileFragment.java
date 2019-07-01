@@ -2,9 +2,11 @@ package cn.net.cyberway.fagment;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Message;
 import android.support.v4.app.Fragment;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -21,7 +23,6 @@ import com.customerInfo.activity.CustomerInfoActivity;
 import com.dashuview.library.keep.ListenerUtils;
 import com.dashuview.library.keep.MyListener;
 import com.external.eventbus.EventBus;
-import com.external.maxwin.view.IXListViewListener;
 import com.external.maxwin.view.XListView;
 import com.nohttp.utils.GlideImageLoader;
 import com.nohttp.utils.GsonUtils;
@@ -58,7 +59,7 @@ import static com.user.UserAppConst.MYPAGESUBMENU;
  * 个人中心
  */
 
-public class ProfileFragment extends Fragment implements View.OnClickListener, IXListViewListener, MyListener, NewHttpResponse {
+public class ProfileFragment extends Fragment implements View.OnClickListener, MyListener, NewHttpResponse {
     private View mView;
     private CircleImageView mHeadImg;
     private TextView mUsername;
@@ -71,6 +72,7 @@ public class ProfileFragment extends Fragment implements View.OnClickListener, I
     private SharedPreferences mShared;
     public SharedPreferences.Editor mEditor;
     private XListView xListView;
+    private SwipeRefreshLayout refresh_layout;
     private View myView;
     private RelativeLayout rl_profile_info;
     private int customer_id = 0;
@@ -107,7 +109,7 @@ public class ProfileFragment extends Fragment implements View.OnClickListener, I
             myListModel.getMySubMenuList(1, ProfileFragment.this);
         }
         if (TextUtils.isEmpty(listCache) || TextUtils.isEmpty(subMenuCache)) {
-            xListView.startHeaderRefresh();
+            refresh_layout.setRefreshing(true);
         }
     }
 
@@ -166,13 +168,17 @@ public class ProfileFragment extends Fragment implements View.OnClickListener, I
      * @param list
      */
     private void myInfoAdapter(ArrayList<OPTIONSDATA> list) {
-        if (myItemListAdapter == null) {
-            myItemListAdapter = new MyPageItemListAdapter(getActivity(), list);
-            lv_myprofile_info.setLayoutManager(new WrapHeightLinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false));
-            lv_myprofile_info.setNestedScrollingEnabled(false);
-            lv_myprofile_info.setAdapter(myItemListAdapter);
-        } else {
-            myItemListAdapter.setData(list);
+        try {
+            if (myItemListAdapter == null) {
+                myItemListAdapter = new MyPageItemListAdapter(getActivity(), list);
+                lv_myprofile_info.setLayoutManager(new WrapHeightLinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false));
+                lv_myprofile_info.setNestedScrollingEnabled(false);
+                lv_myprofile_info.setAdapter(myItemListAdapter);
+            } else {
+                myItemListAdapter.setData(list);
+            }
+        } catch (Exception e) {
+
         }
         if (myItemListAdapter != null) {
             myItemListAdapter.setOnItemClickListener(new OnItemClickListener() {
@@ -190,22 +196,32 @@ public class ProfileFragment extends Fragment implements View.OnClickListener, I
 
     private void prepareView() {
         myView = LayoutInflater.from(getActivity()).inflate(R.layout.activity_personal_center, null);
-        xListView = (XListView) mView.findViewById(R.id.mypage_home_list);
+        xListView = mView.findViewById(R.id.mypage_home_list);
+        refresh_layout = mView.findViewById(R.id.refresh_layout);
+        refresh_layout.setColorSchemeColors(Color.parseColor("#3290FF"), Color.parseColor("#6ABDF9"));
         xListView.setAdapter(null);
-        xListView.setPullRefreshEnable(true);
-        xListView.loadMoreHide();
+        xListView.setPullRefreshEnable(false);
         xListView.setPullLoadEnable(false);
+        xListView.stopRefresh();
+        xListView.stopLoadMore();
+        xListView.loadMoreHide();
         xListView.addHeaderView(myView);
-        xListView.setXListViewListener(this, 0);
         lv_myprofile_info = myView.findViewById(R.id.lv_myprofile_info);
         rv_property_menu = myView.findViewById(R.id.rv_property_menu);
-        mHeadImg = (CircleImageView) myView.findViewById(R.id.profile_head_img);
-        mUsername = (TextView) myView.findViewById(R.id.profile_username);
-        mCommunity = (TextView) myView.findViewById(R.id.profile_community);
-        rl_profile_info = (RelativeLayout) myView.findViewById(R.id.rl_profile_info);
+        mHeadImg = myView.findViewById(R.id.profile_head_img);
+        mUsername = myView.findViewById(R.id.profile_username);
+        mCommunity = myView.findViewById(R.id.profile_community);
+        rl_profile_info = myView.findViewById(R.id.rl_profile_info);
         rl_profile_info.setOnClickListener(this);
         TCAgent.onEvent(getActivity(), "203001");
         ListenerUtils.setCallBack(this);
+        refresh_layout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                myListModel.getmypageList(0, false, ProfileFragment.this);
+                myListModel.getMySubMenuList(1, ProfileFragment.this);
+            }
+        });
     }
 
     @Override
@@ -262,9 +278,11 @@ public class ProfileFragment extends Fragment implements View.OnClickListener, I
     public void onEvent(Object event) {
         final Message message = (Message) event;
         if (message.what == UserMessageConstant.CHANGE_DIFF_LANG) {
-            xListView.startHeaderRefresh();
+            questNum = 0;
+            refresh_layout.setRefreshing(true);
         } else if (message.what == UserMessageConstant.CHANGE_COMMUNITY) {
-            xListView.startHeaderRefresh();
+            questNum = 0;
+            refresh_layout.setRefreshing(true);
         }
     }
 
@@ -296,16 +314,6 @@ public class ProfileFragment extends Fragment implements View.OnClickListener, I
         beanPoint = mShared.getBoolean(UserAppConst.COLOUR_BEAN_SIGN_POINT + customer_id, false);//防止切换用户没变化状态
         MobclickAgent.onPageEnd("我的");
         TCAgent.onPageEnd(getActivity(), "我的");
-    }
-
-    @Override
-    public void onRefresh(int id) {
-        myListModel.getmypageList(0, false, ProfileFragment.this);
-        myListModel.getMySubMenuList(1, ProfileFragment.this);
-    }
-
-    @Override
-    public void onLoadMore(int id) {
     }
 
     @Override
@@ -345,7 +353,7 @@ public class ProfileFragment extends Fragment implements View.OnClickListener, I
                 break;
         }
         if (questNum == 2) {
-            xListView.stopRefresh();
+            refresh_layout.setRefreshing(false);
             questNum = 0;
         }
     }

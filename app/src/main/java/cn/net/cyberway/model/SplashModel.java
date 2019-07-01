@@ -66,6 +66,7 @@ public class SplashModel extends BaseModel {
                                 }
                             } catch (Exception e) {
                                 saveCache(UserAppConst.Colour_SPLASH_CACHE, "");
+                                newHttpResponse.OnHttpResponse(what, "");
                             }
                         }
                     }

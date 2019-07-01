@@ -50,6 +50,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
+            android:padding="5dp"
             android:layout_marginLeft="25dp"
             android:src="@drawable/home_more_left" />
 
@@ -65,6 +66,7 @@
             android:id="@+id/iv_right_arrow"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:padding="5dp"
             android:layout_gravity="center_vertical"
             android:layout_marginRight="25dp"
             android:src="@drawable/home_more_right" />

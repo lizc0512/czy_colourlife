@@ -11,7 +11,6 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.BeeFramework.adapter.BeeBaseAdapter;
 import com.nohttp.utils.GlideImageLoader;
 import com.user.UserAppConst;
 
@@ -41,7 +40,9 @@ public class MyPageItemListAdapter extends RecyclerView.Adapter<MyPageItemListAd
     public MyPageItemListAdapter(Context context, List<OPTIONSDATA> list) {
         this.context = context;
         this.data = list;
-        mShared = context.getSharedPreferences(UserAppConst.USERINFO, 0);
+        if (null != context) {
+            mShared = context.getSharedPreferences(UserAppConst.USERINFO, 0);
+        }
     }
 
     public void setOnItemClickListener(OnItemClickListener onClickListener) {

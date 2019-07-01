@@ -6,6 +6,7 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Message;
 import android.support.v4.app.Fragment;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -27,7 +28,6 @@ import com.BeeFramework.view.NoScrollGridView;
 import com.allapp.model.AllAppModel;
 import com.customerInfo.protocol.RealNameTokenEntity;
 import com.external.eventbus.EventBus;
-import com.external.maxwin.view.IXListViewListener;
 import com.external.maxwin.view.XListView;
 import com.nohttp.utils.GsonUtils;
 import com.tencent.authsdk.AuthConfig;
@@ -63,12 +63,13 @@ import static com.youmai.hxsdk.utils.DisplayUtil.getStatusBarHeight;
  * 生活页面
  */
 
-public class LifeHomeFragment extends Fragment implements IXListViewListener, NewHttpResponse {
+public class LifeHomeFragment extends Fragment implements NewHttpResponse {
     public SharedPreferences shared;
     public SharedPreferences.Editor editor;
     private View mView;
     private View myView;
     private XListView xListView;
+    private SwipeRefreshLayout refresh_layout;
     private NewHomeModel newHomeModel;
     private NewUserModel newUserModel;
     private String homeMoreCathe;
@@ -106,7 +107,17 @@ public class LifeHomeFragment extends Fragment implements IXListViewListener, Ne
         initView();
         getRecentlyData();
         initData();
+        initListener();
         return mView;
+    }
+
+    private void initListener() {
+        refresh_layout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                newHomeModel.getlifeInfo(0, LifeHomeFragment.this);
+            }
+        });
     }
 
     /**
@@ -144,16 +155,17 @@ public class LifeHomeFragment extends Fragment implements IXListViewListener, Ne
     private void initView() {
         myView = LayoutInflater.from(getActivity()).inflate(R.layout.life_more, null);
         xListView = (XListView) mView.findViewById(R.id.life_home_list);
+        refresh_layout = mView.findViewById(R.id.refresh_layout);
+        refresh_layout.setColorSchemeColors(Color.parseColor("#3290FF"), Color.parseColor("#6ABDF9"));
         View life_tabbar_view = mView.findViewById(R.id.life_tabbar_view);
         life_tabbar_view.setBackgroundColor(Color.parseColor("#ffffff"));
         setTabViewHeight(life_tabbar_view);
         xListView.setAdapter(null);
-        xListView.setPullRefreshEnable(true);
-        xListView.loadMoreHide();
-        xListView.startHeaderRefresh();
+        xListView.setPullRefreshEnable(false);
         xListView.setPullLoadEnable(false);
+        xListView.loadMoreHide();
         xListView.addHeaderView(myView);
-        xListView.setXListViewListener(this, 0);
+        refresh_layout.setRefreshing(true);
         sv_life_recommend = (NoScrollGridView) myView.findViewById(R.id.sv_life_recommend);
         rv_life_home = (RecyclerView) myView.findViewById(R.id.rv_life_home);
         GridLayoutManager gridLayoutManager = new GridLayoutManager(getActivity(), 4);
@@ -477,16 +489,6 @@ public class LifeHomeFragment extends Fragment implements IXListViewListener, Ne
         EventBus.getDefault().unregister(this);
     }
 
-    @Override
-    public void onRefresh(int id) {
-        newHomeModel.getlifeInfo(0, this);
-    }
-
-    @Override
-    public void onLoadMore(int id) {
-
-    }
-
 
     @Override
     public void OnHttpResponse(int what, String result) {
@@ -497,6 +499,7 @@ public class LifeHomeFragment extends Fragment implements IXListViewListener, Ne
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
+                refresh_layout.setRefreshing(false);
                 break;
             case 1:
                 Message msg = new Message();
@@ -545,7 +548,6 @@ public class LifeHomeFragment extends Fragment implements IXListViewListener, Ne
      */
     private void lifeDataAdapter(String result) {
         list.clear();
-        xListView.stopRefresh();
         if (!TextUtils.isEmpty(result)) {
             HomeLifeEntity homeLifeEntity = GsonUtils.gsonToBean(result, HomeLifeEntity.class);
             list.addAll(homeLifeEntity.getContent());
