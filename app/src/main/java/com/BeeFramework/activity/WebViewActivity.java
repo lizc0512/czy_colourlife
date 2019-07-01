@@ -612,14 +612,18 @@ public class WebViewActivity extends BaseActivity implements View.OnLongClickLis
             case 16:
                 //外部实名认证成功
                 ToastUtil.toastShow(WebViewActivity.this, "实名认证成功");
-                webView.loadUrl(url);
+                JSONObject authSuccessJsonObject = new JSONObject();
+                try {
+                    authSuccessJsonObject.put("result", 200);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+                webView.loadUrl("javascript:window.ColourlifeWalletAuthHandler('" + authSuccessJsonObject.toString() + "')");
                 break;
             case 17:
-                //取消外部实名认证
                 ToastUtil.toastShow(WebViewActivity.this, "已取消实名认证");
                 break;
             case 18:
-                //当前用户已实名认证
                 ToastUtil.toastShow(WebViewActivity.this, "已实名认证");
                 break;
         }
