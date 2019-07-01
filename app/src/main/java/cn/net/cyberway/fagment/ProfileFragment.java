@@ -101,14 +101,18 @@ public class ProfileFragment extends Fragment implements View.OnClickListener, M
         String listCache = mShared.getString(UserAppConst.MYPAGELIST, "");
         String subMenuCache = mShared.getString(MYPAGESUBMENU, "");
         if (!TextUtils.isEmpty(listCache)) {
+            isLoading = false;
             showProfileData(listCache);
-            myListModel.getmypageList(0, false, ProfileFragment.this);
+            myListModel.getmypageList(0, isLoading, ProfileFragment.this);
         }
         if (!TextUtils.isEmpty(subMenuCache)) {
+            isLoading = false;
             showSubMenuData(subMenuCache);
-            myListModel.getMySubMenuList(1, ProfileFragment.this);
+            myListModel.getMySubMenuList(1, isLoading, ProfileFragment.this);
         }
         if (TextUtils.isEmpty(listCache) || TextUtils.isEmpty(subMenuCache)) {
+            myListModel.getmypageList(0, true, ProfileFragment.this);
+            myListModel.getMySubMenuList(1, true, ProfileFragment.this);
             refresh_layout.setRefreshing(true);
         }
     }
@@ -218,11 +222,13 @@ public class ProfileFragment extends Fragment implements View.OnClickListener, M
         refresh_layout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                myListModel.getmypageList(0, false, ProfileFragment.this);
-                myListModel.getMySubMenuList(1, ProfileFragment.this);
+                myListModel.getmypageList(0, isLoading, ProfileFragment.this);
+                myListModel.getMySubMenuList(1, isLoading, ProfileFragment.this);
             }
         });
     }
+
+    private boolean isLoading;
 
     @Override
     public void onResume() {
@@ -343,13 +349,22 @@ public class ProfileFragment extends Fragment implements View.OnClickListener, M
         switch (what) {
             case 0:
                 questNum++;
-                mEditor.putString(UserAppConst.MYPAGELIST, result).apply();
-                showProfileData(result);
+                if (!TextUtils.isEmpty(result)) {
+                    mEditor.putString(UserAppConst.MYPAGELIST, result).apply();
+                    showProfileData(result);
+                    isLoading = true;
+                } else {
+                    isLoading = false;
+                }
                 break;
             case 1:
                 questNum++;
-                mEditor.putString(MYPAGESUBMENU, result).apply();
-                showSubMenuData(result);
+                if (!TextUtils.isEmpty(result)) {
+                    mEditor.putString(MYPAGESUBMENU, result).apply();
+                    showSubMenuData(result);
+                } else {
+                    isLoading = true;
+                }
                 break;
         }
         if (questNum == 2) {
