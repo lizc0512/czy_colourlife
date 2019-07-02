@@ -323,7 +323,14 @@ public class CustomerInfoActivity extends BaseActivity implements View.OnClickLi
         if (resultCode != Activity.RESULT_OK && requestCode == 1) {
             switch (resultCode) {
                 case 1://修改地址
-                    address_tv.setText(data.getStringExtra("community"));
+                    try {
+                        String address = data.getStringExtra("community");
+                        if (null != address) {
+                            address_tv.setText(address);
+                        }
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
                     break;
                 case 2://修改名字
                     isChangeUserInfo = true;

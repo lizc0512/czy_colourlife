@@ -443,7 +443,7 @@ public class MyPropertyActivity extends BaseActivity implements View.OnClickList
                                     mEditor.putString(UserAppConst.COLOR_HOME_GUIDE_STEP + customer_id, "hide").commit();
                                 } else {
                                     v_guide.setVisibility(View.VISIBLE);
-                                    mHandler.sendEmptyMessageDelayed(0, 300);
+                                    mHandler.sendEmptyMessageDelayed(0, 200);
                                 }
                             } else {
                                 mEditor.putString(UserAppConst.COLOR_HOME_GUIDE_STEP + customer_id, "hide").commit();
