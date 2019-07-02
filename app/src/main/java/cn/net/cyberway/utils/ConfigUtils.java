@@ -152,7 +152,7 @@ public class ConfigUtils implements NewHttpResponse {
             public void getOpenLoginAuthStatus(int code, String result) {
                 //拉起授权页监听
                 if (code != 1000) {
-                    ToastUtil.toastShow(mActivity, code + result);
+                    ToastUtil.toastTime(mActivity, result + "(" + code + ")", 3000);
                     OneKeyLoginManager.getInstance().finishAuthActivity();
                 }
             }
@@ -161,7 +161,7 @@ public class ConfigUtils implements NewHttpResponse {
             public void getOneKeyLoginStatus(int code, String result) {
                 //一键登录监听
                 if (code != 1000) {
-                    ToastUtil.toastShow(mActivity, code + result);
+                    ToastUtil.toastTime(mActivity, result + "(" + code + ")", 3000);
                     OneKeyLoginManager.getInstance().finishAuthActivity();
                 } else {
                     oneKeyLogin(result);

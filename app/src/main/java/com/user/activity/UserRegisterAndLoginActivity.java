@@ -1,8 +1,6 @@
 package com.user.activity;
 
 import android.Manifest;
-import android.app.Activity;
-import android.app.Application;
 import android.content.Intent;
 import android.graphics.Color;
 import android.net.Uri;
@@ -156,8 +154,6 @@ public class UserRegisterAndLoginActivity extends BaseActivity implements OnClic
                     if (1022 == code && ActivityLifecycleListener.authDestoryed) {
                         OneKeyLoginManager.getInstance().setAuthThemeConfig(ConfigUtils.getCJSConfig(UserRegisterAndLoginActivity.this));
                         new ConfigUtils(UserRegisterAndLoginActivity.this).jumpOneKeyLogin();
-                    } else {
-                        ToastUtil.toastShow(UserRegisterAndLoginActivity.this, code + result);
                     }
                 }
             });
@@ -255,9 +251,6 @@ public class UserRegisterAndLoginActivity extends BaseActivity implements OnClic
 
     private void changeLoginBtnStatus() {
         password = user_login_password.getNKeyboardText();
-        if (TextUtils.isEmpty(password)) {
-            password = user_login_password.getText().toString();
-        }
         if (!TextUtils.isEmpty(mobile) && 11 == mobile.length() && !TextUtils.isEmpty(password)) {
             user_login_btn.setEnabled(true);
             user_login_btn.setBackgroundResource(R.drawable.onekey_login_bg);
