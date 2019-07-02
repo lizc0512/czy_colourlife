@@ -55,7 +55,7 @@ public class SplashActivity extends Activity implements HttpApiResponse, NewHttp
             long lastSaveTime = shared.getLong(UserAppConst.Colour_get_time, System.currentTimeMillis());
             long nowTime = System.currentTimeMillis();
             long distance = (nowTime - lastSaveTime) / 1000;
-            long expires_in = shared.getLong(UserAppConst.Colour_expires_in, 7200);
+            long expires_in = shared.getLong(UserAppConst.Colour_expires_in, 10800);
             if (distance >= expires_in - 60 * 20) {
                 NewUserModel newUserModel = new NewUserModel(SplashActivity.this);
                 newUserModel.refreshAuthToken(2, this);

@@ -692,7 +692,7 @@ public class MainActivity extends BaseFragmentActivity implements View.OnClickLi
         long lastSaveTime = shared.getLong(UserAppConst.Colour_get_time, System.currentTimeMillis());
         long nowTime = System.currentTimeMillis();
         long distance = (nowTime - lastSaveTime) / 1000;
-        long expires_in = shared.getLong(UserAppConst.Colour_expires_in, 7200);
+        long expires_in = shared.getLong(UserAppConst.Colour_expires_in, 10800);
         if (distance >= expires_in - 60 * 20) {
             newUserModel.refreshAuthToken(40, this);
         } else {
