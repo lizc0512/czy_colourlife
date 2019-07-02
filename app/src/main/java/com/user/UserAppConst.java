@@ -141,7 +141,7 @@ public class UserAppConst {
     public static final String COLOR_HOME_NOTIFICATION = "color_home_notification";//首页的消息通知
     public static final String COLOR_HOME_BANNER = "color_home_banner";//首页的banner
     public static final String COLOR_HOME_ACTIVITY = "color_home_activity";//首页的彩住宅活动
-//    public static final String COLOR_HOME_GUIDE_STEP = "color_home_guide_step";//首页的引导遮罩步骤
+    public static final String COLOR_HOME_GUIDE_STEP = "color_home_guide_step";//首页的引导遮罩步骤
 
     public static final String COLOR_NOLOGIN_FUNCTION = "color_nologin_function";//首页未登录功能模块
     public static final String COLOR_NOLOGIN_APPLICATION = "color_nologin_application";//首页未登录应用模块
