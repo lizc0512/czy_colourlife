@@ -179,6 +179,7 @@ public class LifeHomeFragment extends Fragment implements NewHttpResponse {
         rv_usefulItem = (RecyclerView) myView.findViewById(R.id.rv_usefulItem);
         rv_usefulItem.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false));
         rl_life_tv = (RelativeLayout) myView.findViewById(R.id.rl_life_tv);
+        rl_life_tv.setVisibility(View.GONE);
     }
 
     /***将最新的数据同步更新最近使用的缓存中***/

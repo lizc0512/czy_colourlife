@@ -111,9 +111,7 @@ public class ProfileFragment extends Fragment implements View.OnClickListener, M
             myListModel.getMySubMenuList(1, isLoading, ProfileFragment.this);
         }
         if (TextUtils.isEmpty(listCache) || TextUtils.isEmpty(subMenuCache)) {
-            myListModel.getmypageList(0, true, ProfileFragment.this);
-            myListModel.getMySubMenuList(1, true, ProfileFragment.this);
-            refresh_layout.setRefreshing(true);
+            getData();
         }
     }
 
@@ -284,12 +282,17 @@ public class ProfileFragment extends Fragment implements View.OnClickListener, M
     public void onEvent(Object event) {
         final Message message = (Message) event;
         if (message.what == UserMessageConstant.CHANGE_DIFF_LANG) {
-            questNum = 0;
-            refresh_layout.setRefreshing(true);
+            getData();
         } else if (message.what == UserMessageConstant.CHANGE_COMMUNITY) {
-            questNum = 0;
-            refresh_layout.setRefreshing(true);
+            getData();
         }
+    }
+
+    private void getData() {
+        questNum = 0;
+        myListModel.getmypageList(0, true, ProfileFragment.this);
+        myListModel.getMySubMenuList(1, true, ProfileFragment.this);
+        refresh_layout.setRefreshing(true);
     }
 
     @Override
