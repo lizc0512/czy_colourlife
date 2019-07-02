@@ -10,6 +10,7 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.BeeFramework.Utils.ToastUtil;
 import com.BeeFramework.activity.BaseActivity;
 import com.BeeFramework.model.NewHttpResponse;
 import com.customerInfo.model.NewCustomerInfoModel;
@@ -27,6 +28,7 @@ import cn.net.cyberway.R;
  */
 public class PropertyChangeActivity extends BaseActivity implements View.OnClickListener, NewHttpResponse {
 
+    public final static String CANT_BACK = "cant_back";
     public final static String IDENTITY_TYPE = "identity_type";
     public final static String IDENTITY_NAME = "identity_name";
     public final static String FROM_DEFAULT = "from_default";
@@ -50,6 +52,7 @@ public class PropertyChangeActivity extends BaseActivity implements View.OnClick
     public SharedPreferences.Editor mEditor;
     public int customer_id;
     public int type = 0;
+    private boolean cantBack = false;
     private boolean fromDefault = false;//从设置默认进入
     private NewCustomerInfoModel newCustomerInfoModel;
     private List<IdentityEntity.ContentBean> bean;
@@ -91,6 +94,7 @@ public class PropertyChangeActivity extends BaseActivity implements View.OnClick
     }
 
     private void initData() {
+        cantBack = getIntent().getBooleanExtra(CANT_BACK, false);//不可返回
         fromDefault = getIntent().getBooleanExtra(FROM_DEFAULT, false);//从设置默认进入
         if (fromDefault) {
             mTitle.setText("身份选择");
@@ -112,7 +116,11 @@ public class PropertyChangeActivity extends BaseActivity implements View.OnClick
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.user_top_view_back:
-                finish();
+                if (cantBack) {
+                    ToastUtil.toastShow(this, "请选择您的身份");
+                } else {
+                    finish();
+                }
                 break;
             case R.id.cv_owner:
                 type = 1;
@@ -203,4 +211,12 @@ public class PropertyChangeActivity extends BaseActivity implements View.OnClick
         }
     }
 
+    @Override
+    public void onBackPressed() {
+        if (cantBack) {
+            ToastUtil.toastShow(this, "请选择您的身份");
+        } else {
+            super.onBackPressed();
+        }
+    }
 }

@@ -3,6 +3,8 @@ package com.myproperty.activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.support.v7.widget.LinearLayoutManager;
 import android.text.TextUtils;
 import android.view.View;
@@ -28,11 +30,13 @@ import com.yanzhenjie.recyclerview.swipe.SwipeMenuRecyclerView;
 
 import org.json.JSONObject;
 
+import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
 import cn.net.cyberway.R;
+import cn.net.cyberway.home.view.GuideView;
 import cn.net.cyberway.utils.CityManager;
 
 /**
@@ -42,13 +46,15 @@ import cn.net.cyberway.utils.CityManager;
 public class MyPropertyActivity extends BaseActivity implements View.OnClickListener, NewHttpResponse {
 
     public static final String FROM_HOME = "from_home";
-    public static final String SHOW_ACTIVITY = "show_activity";
 
     private ImageView mBack;
     private TextView mTitle;
     private ImageView img_right;
     private Button btnAddProperty;
     private RelativeLayout rl_content;
+    private View v_guide;
+    private TextView tv_enter;
+    private GuideView guideView;
 
     private int page = 1;
     private NewCustomerInfoModel newCustomerInfoModel;
@@ -56,13 +62,13 @@ public class MyPropertyActivity extends BaseActivity implements View.OnClickList
     private List<AddressListEntity.ContentBean.DataBean> communityBeanList = new ArrayList<>();
     private MyPropertyAdapter mAdapter;
     private MyPropertyAuthAdapter mAuthAdapter;
+    private String guide = "";
     private int totalRecord;
     private String defaultAddressId = "";
     private SharedPreferences mShared;
     public SharedPreferences.Editor mEditor;
     public int customer_id;
     public boolean fromHome = false;
-    public boolean showActivity = false;
     private String id = "";//房产唯一id
 
     //无认证
@@ -85,7 +91,6 @@ public class MyPropertyActivity extends BaseActivity implements View.OnClickList
         newCustomerInfoModel = new NewCustomerInfoModel(this);
         Intent intent = getIntent();
         fromHome = !TextUtils.isEmpty(intent.getStringExtra(FROM_HOME));//从首页进入
-        showActivity = intent.getBooleanExtra(SHOW_ACTIVITY, false);//是否显示首页活动
         initView();
         initLoad();
     }
@@ -95,6 +100,11 @@ public class MyPropertyActivity extends BaseActivity implements View.OnClickList
      */
     private void initLoad() {
         customer_id = mShared.getInt(UserAppConst.Colour_User_id, 0);
+        guide = mShared.getString(UserAppConst.COLOR_HOME_GUIDE_STEP + customer_id, "");
+        if (!"hide".equals(guide)) {
+            mEditor.putString(UserAppConst.COLOR_HOME_GUIDE_STEP + customer_id, "property").commit();//我的房产
+        }
+
         String auth = mShared.getString(UserAppConst.Colour_authentication, "2");//是否认证房产 1：是，2：否
         if ("1".equals(auth)) {
             initData();
@@ -121,6 +131,7 @@ public class MyPropertyActivity extends BaseActivity implements View.OnClickList
         rl_auth = findViewById(R.id.rl_auth);
 
         rl_content = findViewById(R.id.rl_content);
+        v_guide = findViewById(R.id.v_guide);
         btnAddProperty = findViewById(R.id.btn_addproperty);
         btnAddProperty.setOnClickListener(this);
 
@@ -131,7 +142,7 @@ public class MyPropertyActivity extends BaseActivity implements View.OnClickList
         address_rv.useDefaultLoadMore();
         address_rv.setLoadMoreListener(() -> {
             page++;
-            getCommunityList(false);
+            getCommunityList();
         });
     }
 
@@ -213,17 +224,45 @@ public class MyPropertyActivity extends BaseActivity implements View.OnClickList
                 }
             }
             mAdapter.setDefaultAddressId(defaultAddressId);
-            getCommunityList(false);
+            getCommunityList();
         } else {
-            getCommunityList(false);
+            getCommunityList();
+        }
+    }
+
+    /**
+     * 遮罩引导
+     */
+    private void guideView() {
+        v_guide.setVisibility(View.VISIBLE);
+        v_guide.post(this::guide);
+    }
+
+    /**
+     * 遮罩引导
+     */
+    private void guide() {
+        View inflate = View.inflate(this, R.layout.view_property_guide, null);
+        tv_enter = inflate.findViewById(R.id.tv_enter);
+        tv_enter.setOnClickListener(this);
+        if (null == guideView) {
+            guideView = new GuideView.Builder(this)
+                    .setTargetView(v_guide)
+                    .setHintView(inflate)
+                    .setHintViewDirection(GuideView.Direction.BOTTOM)
+                    .setmForm(GuideView.Form.REACTANGLE)
+                    .create();
+        }
+        if (!guideView.show()) {
+            v_guide.setVisibility(View.GONE);
         }
     }
 
     /**
      * 用户房产列表
      */
-    private void getCommunityList(boolean isLoading) {
-        newCustomerInfoModel.getCustomerAddress(0, page, isLoading, this);
+    private void getCommunityList() {
+        newCustomerInfoModel.getCustomerAddress(0, page, false, this);
     }
 
     /**
@@ -283,7 +322,7 @@ public class MyPropertyActivity extends BaseActivity implements View.OnClickList
         if (newCustomerInfoModel == null) {
             newCustomerInfoModel = new NewCustomerInfoModel(this);
         }
-        getCommunityList(false);
+        getCommunityList();
     }
 
     @Override
@@ -291,6 +330,9 @@ public class MyPropertyActivity extends BaseActivity implements View.OnClickList
         Intent intent;
         switch (v.getId()) {
             case R.id.user_top_view_back:
+                if (!"hide".equals(guide)) {
+                    setResult(1);
+                }
                 finish();
                 break;
             case R.id.img_right:
@@ -312,6 +354,18 @@ public class MyPropertyActivity extends BaseActivity implements View.OnClickList
                 break;
             case R.id.tv_property:
                 newCustomerInfoModel.isDialog(3, this);//是否需要选择列表框
+                break;
+            case R.id.tv_enter:
+                guide = "hide";
+                guideView.hide();
+                guideView = null;
+                v_guide.setVisibility(View.GONE);
+                mEditor.putString(UserAppConst.COLOR_HOME_GUIDE_STEP + customer_id, "hide").commit();//隐藏
+                AddressListEntity.ContentBean.DataBean data = communityBeanList.get(0);
+                id = data.getId();
+                intent = new Intent(this, PropertyChangeActivity.class);
+                intent.putExtra(PropertyChangeActivity.CANT_BACK, true);//不可点击返回
+                startActivityForResult(intent, 2);
                 break;
         }
     }
@@ -382,6 +436,19 @@ public class MyPropertyActivity extends BaseActivity implements View.OnClickList
                         boolean dataEmpty = addDataList == null || addDataList.size() == 0;
                         boolean hasMore = totalRecord > communityBeanList.size();
                         address_rv.loadMoreFinish(dataEmpty, hasMore);
+
+                        if (!"hide".equals(guide)) {
+                            if (communityBeanList.size() > 0) {
+                                if (!"0".equals(communityBeanList.get(0).getIdentity_id()) || "1".equals(communityBeanList.get(0).getEmployee()) || 1 != communityBeanList.get(0).getIs_default()) {
+                                    mEditor.putString(UserAppConst.COLOR_HOME_GUIDE_STEP + customer_id, "hide").commit();
+                                } else {
+                                    v_guide.setVisibility(View.VISIBLE);
+                                    mHandler.sendEmptyMessageDelayed(0, 200);
+                                }
+                            } else {
+                                mEditor.putString(UserAppConst.COLOR_HOME_GUIDE_STEP + customer_id, "hide").commit();
+                            }
+                        }
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
@@ -435,6 +502,44 @@ public class MyPropertyActivity extends BaseActivity implements View.OnClickList
                     refreshData();
                 }
                 break;
+        }
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (!"hide".equals(guide)) {
+            setResult(1);
+        }
+        super.onBackPressed();
+    }
+
+    private MyPropertyActivity.InterHandler mHandler = new MyPropertyActivity.InterHandler(this);
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        mHandler.removeCallbacksAndMessages(null);
+    }
+
+    private static class InterHandler extends Handler {
+        private WeakReference<MyPropertyActivity> mActivity;
+
+        InterHandler(MyPropertyActivity activity) {
+            mActivity = new WeakReference<>(activity);
+        }
+
+        @Override
+        public void handleMessage(Message msg) {
+            MyPropertyActivity activity = mActivity.get();
+            if (activity != null) {
+                switch (msg.what) {
+                    case 0:
+                        activity.guideView();
+                        break;
+                }
+            } else {
+                super.handleMessage(msg);
+            }
         }
     }
 

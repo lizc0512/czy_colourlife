@@ -26,6 +26,13 @@
             android:layout_below="@id/title_layout"
             android:background="@null" />
 
+        <View
+            android:id="@+id/v_guide"
+            android:layout_width="match_parent"
+            android:layout_height="96dp"
+            android:layout_below="@id/title_layout"
+            android:visibility="gone" />
+
         <RelativeLayout
             android:id="@+id/rl_auth"
             android:layout_width="match_parent"
