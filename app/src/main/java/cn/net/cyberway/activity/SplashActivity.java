@@ -27,6 +27,8 @@ import cn.net.cyberway.R;
 import cn.net.cyberway.model.SplashModel;
 import cn.net.cyberway.model.ThemeModel;
 
+import static com.BeeFramework.model.BaseModel.refreshDistance;
+
 
 /**
  * 欢迎页
@@ -56,7 +58,7 @@ public class SplashActivity extends Activity implements HttpApiResponse, NewHttp
             long nowTime = System.currentTimeMillis();
             long distance = (nowTime - lastSaveTime) / 1000;
             long expires_in = shared.getLong(UserAppConst.Colour_expires_in, 10800);
-            if (distance >= expires_in - 60 * 20) {
+            if (distance >= expires_in - refreshDistance) {
                 NewUserModel newUserModel = new NewUserModel(SplashActivity.this);
                 newUserModel.refreshAuthToken(2, this);
             }

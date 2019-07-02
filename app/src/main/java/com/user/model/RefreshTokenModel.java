@@ -1,7 +1,6 @@
 package com.user.model;
 
 import android.content.Context;
-import android.os.Handler;
 import android.os.Message;
 import android.text.TextUtils;
 
@@ -47,7 +46,7 @@ public class RefreshTokenModel extends BaseModel {
 
     public static RefreshTokenModel getInstance(Context context) {
         if (refreshTokenModel == null)
-            synchronized (CallServer.class) {
+            synchronized (RefreshTokenModel.class) {
                 if (refreshTokenModel == null)
                     refreshTokenModel = new RefreshTokenModel(context);
             }
@@ -59,6 +58,8 @@ public class RefreshTokenModel extends BaseModel {
         this.context = context;
     }
 
+    public static boolean isExcuted = false;
+
     /**
      * refresh_token去获取access_token
      * 然后重新请求原来的接口数据
@@ -66,7 +67,8 @@ public class RefreshTokenModel extends BaseModel {
      * @param
      */
     public <T> void refreshAuthToken(boolean isLoading) {
-        synchronized (RefreshTokenModel.this) {
+        if (!isExcuted) {
+            isExcuted = true;
             String refresh_token = shared.getString(UserAppConst.Colour_refresh_token, "");
             if (TextUtils.isEmpty(refresh_token)) {
                 Message msg = android.os.Message.obtain();
@@ -85,6 +87,7 @@ public class RefreshTokenModel extends BaseModel {
                 request(0, request_oauthRegister, params, new HttpListener<String>() {
                     @Override
                     public void onSucceed(int what, Response<String> response) {
+                        isExcuted = false;
                         int responseCode = response.getHeaders().getResponseCode();
                         String result = response.get();
                         if (responseCode == RequestEncryptionUtils.responseSuccess) {
@@ -111,23 +114,24 @@ public class RefreshTokenModel extends BaseModel {
                                         }
                                         callServer.clearAllQuest();
                                     } else {
-                                        againRequsetAgain();
+                                        againRequsetAgain(isLoading);
                                     }
                                 } catch (JSONException e) {
                                     e.printStackTrace();
-                                    againRequsetAgain();
+                                    againRequsetAgain(isLoading);
                                 }
                             } else {
-                                againRequsetAgain();
+                                againRequsetAgain(isLoading);
                             }
                         } else {
-                            againRequsetAgain();
+                            againRequsetAgain(isLoading);
                         }
                     }
 
                     @Override
                     public void onFailed(int what, Response<String> response) {
-                        againRequsetAgain();
+                        isExcuted = false;
+                        againRequsetAgain(isLoading);
                     }
                 }, true, isLoading);
             }
@@ -135,33 +139,9 @@ public class RefreshTokenModel extends BaseModel {
     }
 
 
-    private <T> void againRequsetAgain() {
-        CallServer callServer = CallServer.getInstance();
-        List<Integer> requestWhatList = callServer.getRequestWhat();
-        for (int j = 0; j < requestWhatList.size(); j++) {
-            int what = requestWhatList.get(j);
-            Request<T> request = callServer.getRequestList().get(j);
-            Map<String, Object> paramsMap = callServer.getRequestMap().get(j);
-            boolean canCancel = callServer.getRequestCancel().get(j);
-            boolean isLoading = callServer.getRequestLoading().get(j);
-            HttpListener httpListener = callServer.getRequestLister().get(j);
-            new Handler().postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    boolean refreshStatus = shared.getBoolean(UserAppConst.Colour_refresh_status, false);
-                    int waitSize = requestWhatList.size();
-                    if (waitSize != 0) {  //单个刷新refrshtoken失败
-                        if (refreshStatus) {  //根据队列去隔5秒进行轮询请求
-                            request(what, request, paramsMap, httpListener, canCancel, isLoading);
-                            callServer.deleteSendRequsetDelete(what, request, paramsMap, httpListener, canCancel, isLoading);
-                        } else {
-                            NewUserModel newUserModel = new NewUserModel(mContext);
-                            newUserModel.refreshAuthToken(what, request, paramsMap, httpListener, canCancel, isLoading);
-                        }
-                    }
-                }
-            }, 5000 * j);
-        }
+    private <T> void againRequsetAgain(boolean isLoading) {  //失败了重新再试一次
+        NewUserModel newUserModel = new NewUserModel(mContext);
+        newUserModel.refreshAuthToken(isLoading);
     }
 }
 

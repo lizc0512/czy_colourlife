@@ -1251,7 +1251,6 @@ public class MainHomeFragmentNew extends Fragment implements NewHttpResponse, My
             case UserMessageConstant.LOGOUT:
                 ((MainActivity) getActivity()).clearUserData("");
                 smoothScrollTop(home_rv);
-                jumpLoginPage(getActivity(), mShared, 1000);
                 break;
             case UserMessageConstant.SQUEEZE_OUT:
             case UserMessageConstant.AUDIT_PASS_OUT:

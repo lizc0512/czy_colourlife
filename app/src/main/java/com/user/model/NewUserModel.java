@@ -1,7 +1,6 @@
 package com.user.model;
 
 import android.content.Context;
-import android.os.Handler;
 import android.os.Message;
 import android.text.TextUtils;
 
@@ -34,6 +33,7 @@ import org.json.JSONObject;
 
 import java.io.File;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import cn.net.cyberway.utils.CityCustomConst;
@@ -413,28 +413,23 @@ public class NewUserModel extends BaseModel {
 
 
     private void tokenInvaildLoginOut(String result) {
-        new Handler().postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                boolean refreshStatus = shared.getBoolean(UserAppConst.Colour_refresh_status, false);
-                if (!refreshStatus) {
-                    editor.putBoolean(UserAppConst.IS_LOGIN, false);
-                    editor.putBoolean(UserAppConst.Colour_refresh_status, false);
-                    editor.apply();
-                    Message msg = android.os.Message.obtain();
-                    msg.what = SQUEEZE_OUT;
-                    try {
-                        JSONObject jsonObject = new JSONObject(result);
-                        if (!jsonObject.isNull("message")) {
-                            msg.obj = jsonObject.optString("message");
-                        }
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    }
-                    EventBus.getDefault().post(msg);
+        boolean refreshStatus = shared.getBoolean(UserAppConst.Colour_refresh_status, false);
+        if (!refreshStatus) {
+            editor.putBoolean(UserAppConst.IS_LOGIN, false);
+            editor.putBoolean(UserAppConst.Colour_refresh_status, false);
+            editor.apply();
+            Message msg = android.os.Message.obtain();
+            msg.what = SQUEEZE_OUT;
+            try {
+                JSONObject jsonObject = new JSONObject(result);
+                if (!jsonObject.isNull("message")) {
+                    msg.obj = jsonObject.optString("message");
                 }
+            } catch (JSONException e) {
+                e.printStackTrace();
             }
-        }, 10000);
+            EventBus.getDefault().post(msg);
+        }
     }
 
 
@@ -444,7 +439,7 @@ public class NewUserModel extends BaseModel {
      *
      * @param
      */
-    public <T> void refreshAuthToken(final int requestWhat, final Request<T> request, final Map<String, Object> paramsMap, final HttpListener<T> callback, final boolean canCancel, final boolean isLoading) {
+    public <T> void refreshAuthToken(final boolean isLoading) {
         final AuthTokenApi authTokenApi = new AuthTokenApi();
         Map<String, Object> params = new HashMap<String, Object>();
         params.put("grant_type", "refresh_token");
@@ -473,9 +468,14 @@ public class NewUserModel extends BaseModel {
                                 editor.putString(UserAppConst.Colour_token_type, authTokenResponse.token_type);
                                 editor.putLong(UserAppConst.Colour_get_time, System.currentTimeMillis());
                                 editor.commit();
-                                request(requestWhat, request, paramsMap, callback, canCancel, isLoading);
                                 CallServer callServer = CallServer.getInstance();
-                                callServer.deleteSendRequsetDelete(what, request, paramsMap, callback, canCancel, isLoading);
+                                List<Integer> requestWhatList = callServer.getRequestWhat();
+                                for (int j = 0; j < requestWhatList.size(); j++) {
+                                    request(requestWhatList.get(j), callServer.getRequestList().get(j),
+                                            callServer.getRequestMap().get(j), callServer.getRequestLister().get(j),
+                                            callServer.getRequestCancel().get(j), callServer.getRequestLoading().get(j));
+                                }
+                                callServer.clearAllQuest();
                             } else {
                                 tokenInvaildLoginOut(result);
                             }
@@ -495,7 +495,7 @@ public class NewUserModel extends BaseModel {
             public void onFailed(int what, Response<String> response) {
                 tokenInvaildLoginOut("");
             }
-        }, true, false);
+        }, true, isLoading);
     }
 
 
