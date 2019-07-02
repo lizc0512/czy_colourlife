@@ -152,7 +152,6 @@ public class ConfigUtils implements NewHttpResponse {
             public void getOpenLoginAuthStatus(int code, String result) {
                 //拉起授权页监听
                 if (code != 1000) {
-                    ToastUtil.toastTime(mActivity, result + "(" + code + ")", 3000);
                     OneKeyLoginManager.getInstance().finishAuthActivity();
                 }
             }
