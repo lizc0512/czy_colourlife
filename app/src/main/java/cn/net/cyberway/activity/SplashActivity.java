@@ -40,7 +40,7 @@ public class SplashActivity extends Activity implements HttpApiResponse, NewHttp
     private boolean autoJump = true;
     private ThemeModel themeModel;
     private String linkUrl = "";
-    private int delayTime = 1000;
+    private int delayTime = 2000;
     private TimeCount timeCount = null;
 
 
@@ -52,8 +52,14 @@ public class SplashActivity extends Activity implements HttpApiResponse, NewHttp
         splashModel = new SplashModel(this);
         themeModel = new ThemeModel(this);
         if (shared.getBoolean(UserAppConst.IS_LOGIN, false)) {
-            NewUserModel newUserModel = new NewUserModel(SplashActivity.this);
-            newUserModel.refreshAuthToken(2, this);
+            long lastSaveTime = shared.getLong(UserAppConst.Colour_get_time, System.currentTimeMillis());
+            long nowTime = System.currentTimeMillis();
+            long distance = (nowTime - lastSaveTime) / 1000;
+            long expires_in = shared.getLong(UserAppConst.Colour_expires_in, 7200);
+            if (distance >= expires_in - 60 * 20) {
+                NewUserModel newUserModel = new NewUserModel(SplashActivity.this);
+                newUserModel.refreshAuthToken(2, this);
+            }
         }
         splashModel.getStartImage(1, this);
         splashModel.getOneKeyShow();

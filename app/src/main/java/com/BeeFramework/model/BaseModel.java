@@ -109,7 +109,7 @@ public class BaseModel {
 //                        NewUserModel newUserModel = new NewUserModel(mContext);
 //                        newUserModel.refreshAuthToken(what, request, paramsMap, callback, canCancel, isLoading);
                         CallServer.getInstance().addQuestParams(what, request, paramsMap, callback, canCancel, isLoading);
-                        RefreshTokenModel refreshTokenModel = new RefreshTokenModel(mContext);
+                        RefreshTokenModel refreshTokenModel = RefreshTokenModel.getInstance(mContext);
                         refreshTokenModel.refreshAuthToken(isLoading);
                     }
                 }
@@ -161,9 +161,8 @@ public class BaseModel {
 //                        NewUserModel newUserModel = new NewUserModel(mContext);
 //                        newUserModel.refreshAuthToken(what, request, paramsMap, callback, canCancel, isLoading);
                         CallServer.getInstance().addQuestParams(what, request, paramsMap, callback, canCancel, isLoading);
-                        RefreshTokenModel refreshTokenModel = new RefreshTokenModel(mContext);
+                        RefreshTokenModel refreshTokenModel = RefreshTokenModel.getInstance(mContext);
                         refreshTokenModel.refreshAuthToken(isLoading);
-
                     }
                 }
             } else {  //请求access_token

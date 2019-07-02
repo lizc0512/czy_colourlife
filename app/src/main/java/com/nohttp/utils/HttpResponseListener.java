@@ -149,7 +149,7 @@ public class HttpResponseListener<T> implements OnResponseListener<T> {
                         stringBuffer.append(requestUrl + paramString);
                     } else {
                         if (requestUrl.endsWith("oauth/token")) {
-                            requestParams.put("resultTime", TimeUtil.getTime());
+                            requestParams.put("resultTime", TimeUtil.getTime()+System.currentTimeMillis());
                         }
                         paramString = JsonFormatTool.formatJson(GsonUtils.gsonString(requestParams), "  ");
                         stringBuffer.append("请求的url:");

@@ -43,7 +43,18 @@ public class RefreshTokenModel extends BaseModel {
 
     private Context context;
 
-    public RefreshTokenModel(Context context) {
+    private static RefreshTokenModel refreshTokenModel;
+
+    public static RefreshTokenModel getInstance(Context context) {
+        if (refreshTokenModel == null)
+            synchronized (CallServer.class) {
+                if (refreshTokenModel == null)
+                    refreshTokenModel = new RefreshTokenModel(context);
+            }
+        return refreshTokenModel;
+    }
+
+    private RefreshTokenModel(Context context) {
         super(context);
         this.context = context;
     }
@@ -55,7 +66,7 @@ public class RefreshTokenModel extends BaseModel {
      * @param
      */
     public <T> void refreshAuthToken(boolean isLoading) {
-        synchronized (RefreshTokenModel.class) {
+        synchronized (RefreshTokenModel.this) {
             String refresh_token = shared.getString(UserAppConst.Colour_refresh_token, "");
             if (TextUtils.isEmpty(refresh_token)) {
                 Message msg = android.os.Message.obtain();
