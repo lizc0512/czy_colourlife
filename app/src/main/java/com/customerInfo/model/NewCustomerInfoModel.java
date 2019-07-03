@@ -458,7 +458,7 @@ public class NewCustomerInfoModel extends BaseModel {
                 int responseCode = response.getHeaders().getResponseCode();
                 String result = response.get();
                 if (responseCode == RequestEncryptionUtils.responseSuccess) {
-                    int resultCode = showSuccesResultMessage(result);
+                    int resultCode = showSuccesResultMessageTheme(result);
                     if (resultCode == 0) {
                         newHttpResponse.OnHttpResponse(what, result);
                     }
