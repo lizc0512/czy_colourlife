@@ -57,7 +57,7 @@ public class BaseModel {
     }
 
 
-    public static final int refreshDistance = 60 * 10;
+    public static final int refreshDistance = 60 * 10 * 2;//提前20分钟刷新
 
     private boolean againGetToken() {
         long lastSaveTime = shared.getLong(UserAppConst.Colour_get_time, System.currentTimeMillis());

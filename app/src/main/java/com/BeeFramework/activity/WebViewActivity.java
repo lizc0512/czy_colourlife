@@ -826,6 +826,7 @@ public class WebViewActivity extends BaseActivity implements View.OnLongClickLis
             }
         }
 
+
         /**
          * 获取当前应用本地显示版本号
          */

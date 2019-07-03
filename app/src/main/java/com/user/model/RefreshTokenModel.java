@@ -1,6 +1,7 @@
 package com.user.model;
 
 import android.content.Context;
+import android.os.Handler;
 import android.os.Message;
 import android.text.TextUtils;
 
@@ -107,18 +108,44 @@ public class RefreshTokenModel extends BaseModel {
                                         editor.commit();
                                         CallServer callServer = CallServer.getInstance();
                                         List<Integer> requestWhatList = callServer.getRequestWhat();
-                                        for (int j = 0; j < requestWhatList.size(); j++) {
-                                            request(requestWhatList.get(j), callServer.getRequestList().get(j),
-                                                    callServer.getRequestMap().get(j), callServer.getRequestLister().get(j),
-                                                    callServer.getRequestCancel().get(j), callServer.getRequestLoading().get(j));
+                                        int size = requestWhatList.size();
+                                        for (int j = 0; j < size; j++) {
+                                            int k = j;
+                                            int requestWhat = requestWhatList.get(k);
+                                            Request<T> requestAgain = callServer.getRequestList().get(k);
+                                            Map<String, Object> requestParamsMap = callServer.getRequestMap().get(k);
+                                            HttpListener<T> requestCallback = callServer.getRequestLister().get(k);
+                                            boolean requestCanCancel = callServer.getRequestCancel().get(k);
+                                            boolean requestLoading = callServer.getRequestLoading().get(k);
+                                            if (k >= 4) {
+                                                new Handler().postDelayed(new Runnable() {
+                                                    @Override
+                                                    public void run() {
+                                                        request(requestWhat, requestAgain, requestParamsMap,
+                                                                requestCallback, requestCanCancel,
+                                                                requestLoading);
+                                                        if (k == size - 1) {
+                                                            callServer.clearAllQuest();
+                                                        }
+                                                    }
+                                                }, 2000 * (k - 3));
+                                            } else {
+                                                request(requestWhat, requestAgain, requestParamsMap,
+                                                        requestCallback, requestCanCancel,
+                                                        requestLoading);
+                                                if (k == size - 1) {
+                                                    callServer.clearAllQuest();
+                                                }
+                                            }
                                         }
-                                        callServer.clearAllQuest();
                                     } else {
                                         againRequsetAgain(isLoading);
                                     }
                                 } catch (JSONException e) {
                                     e.printStackTrace();
                                     againRequsetAgain(isLoading);
+                                } catch (Exception e) {
+
                                 }
                             } else {
                                 againRequsetAgain(isLoading);

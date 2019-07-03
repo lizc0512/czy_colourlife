@@ -1294,7 +1294,7 @@ public class MainHomeFragmentNew extends Fragment implements NewHttpResponse, My
         smoothScrollTop(home_rv);
     }
 
-    private void showHomeLayout(String layoutResult, boolean loadCacheData) {
+    private void showHomeLayout(String layoutResult, boolean loadCacheData) {  //加载缓存的layout时 不重新请求各个模块的数据
         try {
             HomeLayoutEntity homeLayoutEntity = GsonUtils.gsonToBean(layoutResult, HomeLayoutEntity.class);
             List<HomeLayoutEntity.ContentBean> contentBeanList = homeLayoutEntity.getContent();
@@ -1317,7 +1317,9 @@ public class MainHomeFragmentNew extends Fragment implements NewHttpResponse, My
                                 if (!TextUtils.isEmpty(homeAppCache) && loadCacheData) {
                                     homeApplicationShow(homeAppCache);
                                 }
-                                handler.sendEmptyMessageDelayed(2, 2000);
+                                if (!loadCacheData) {
+                                    handler.sendEmptyMessageDelayed(2, 2000);
+                                }
                             } else {
                                 if (null != homeAppAdapter) {
                                     appDataBeanList.clear();
@@ -1344,7 +1346,9 @@ public class MainHomeFragmentNew extends Fragment implements NewHttpResponse, My
                                 if (!TextUtils.isEmpty(homeUseDoorCache) && loadCacheData) {
                                     homeDoorShow(homeUseDoorCache);
                                 }
-                                handler.sendEmptyMessageDelayed(3, 2000);
+                                if (!loadCacheData) {
+                                    handler.sendEmptyMessageDelayed(3, 2000);
+                                }
                             } else {
                                 door_root_layout.setVisibility(View.GONE);
                             }
@@ -1365,7 +1369,9 @@ public class MainHomeFragmentNew extends Fragment implements NewHttpResponse, My
                                 if (!TextUtils.isEmpty(homeNotifiactionCache) && loadCacheData) {
                                     homeNotificationShow(homeNotifiactionCache);
                                 }
-                                handler.sendEmptyMessageDelayed(4, 4000);
+                                if (!loadCacheData) {
+                                    handler.sendEmptyMessageDelayed(4, 4000);
+                                }
                             } else {
                                 // 处理数据源;
                                 notification_layout.setVisibility(View.GONE);
@@ -1396,7 +1402,9 @@ public class MainHomeFragmentNew extends Fragment implements NewHttpResponse, My
                                 if (!TextUtils.isEmpty(homeManagerCache) && loadCacheData) {
                                     homeManagerShow(homeManagerCache);
                                 }
-                                handler.sendEmptyMessageDelayed(5, 4000);
+                                if (!loadCacheData) {
+                                    handler.sendEmptyMessageDelayed(5, 4000);
+                                }
                             } else {
                                 bind_manager_layout.setVisibility(View.GONE);
                             }
@@ -1414,7 +1422,9 @@ public class MainHomeFragmentNew extends Fragment implements NewHttpResponse, My
                                 if (!TextUtils.isEmpty(homeBannerCache) && loadCacheData) {
                                     homeBannerShow(homeBannerCache);
                                 }
-                                handler.sendEmptyMessageDelayed(6, 7000);
+                                if (!loadCacheData) {
+                                    handler.sendEmptyMessageDelayed(6, 7000);
+                                }
                             } else {
                                 rl_banner.setVisibility(View.GONE);
                             }
@@ -1431,7 +1441,9 @@ public class MainHomeFragmentNew extends Fragment implements NewHttpResponse, My
                                 if (!TextUtils.isEmpty(homeActivityCache) && loadCacheData) {
                                     homeActivityShow(homeActivityCache);
                                 }
-                                handler.sendEmptyMessageDelayed(7, 7000);
+                                if (!loadCacheData) {
+                                    handler.sendEmptyMessageDelayed(7, 7000);
+                                }
                             } else {
                                 rv_activity.setVisibility(View.GONE);
                             }
@@ -1475,7 +1487,12 @@ public class MainHomeFragmentNew extends Fragment implements NewHttpResponse, My
                 if (!TextUtils.isEmpty(result)) {
                     homeFuncShow(result);
                 } else {
-                    homeFuncShow(Constants.defaultHomeFunc);
+                    String homeFuncCache = mShared.getString(UserAppConst.COLOR_HOME_FUNCTION, "");
+                    if (TextUtils.isEmpty(homeFuncCache)) {
+                        homeFuncShow(Constants.defaultHomeFunc);
+                    } else {
+                        homeFuncShow(homeFuncCache);
+                    }
                 }
                 break;
             case 2:
