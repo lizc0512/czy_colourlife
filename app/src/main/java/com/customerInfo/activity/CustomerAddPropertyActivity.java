@@ -267,13 +267,13 @@ public class CustomerAddPropertyActivity extends BaseActivity implements View.On
             tv_city.setText(city_name);
             if (!TextUtils.isEmpty(room_name)) {//有房号
                 dismissSoftKeyboard(this);
-                newCustomerInfoModel.getRoomData(9, unit_uuid, page, 400, false, CustomerAddPropertyActivity.this);
+                newCustomerInfoModel.getRoomData(9, unit_uuid, page, 400, true, CustomerAddPropertyActivity.this);
             } else if (!TextUtils.isEmpty(unit_name)) {//有单元
                 dismissSoftKeyboard(this);
-                newCustomerInfoModel.getUnitData(8, building_uuid, page, 400, false, CustomerAddPropertyActivity.this);
+                newCustomerInfoModel.getUnitData(8, building_uuid, page, 400, true, CustomerAddPropertyActivity.this);
             } else if (!TextUtils.isEmpty(building_name)) {//有楼栋
                 dismissSoftKeyboard(this);
-                newCustomerInfoModel.getBuildingData(7, community_uuid, page, 400, false, CustomerAddPropertyActivity.this);
+                newCustomerInfoModel.getBuildingData(7, community_uuid, page, 400, true, CustomerAddPropertyActivity.this);
             } else {//只有小区，显示城市下的小区
                 dismissSoftKeyboard(this);
                 newCustomerInfoModel.addressSelect(6, city_name, "", page, 400, this);
@@ -321,21 +321,21 @@ public class CustomerAddPropertyActivity extends BaseActivity implements View.On
                     community_name = addBeanList.get(position).getName();
                     tv_garden.setText(community_name);
                     dismissSoftKeyboard(this);
-                    newCustomerInfoModel.getBuildingData(7, community_uuid, page, 400, false, CustomerAddPropertyActivity.this);
+                    newCustomerInfoModel.getBuildingData(7, community_uuid, page, 400, true, CustomerAddPropertyActivity.this);
                     break;
                 case 2:
                     building_uuid = addBeanList.get(position).getUuid();
                     building_name = addBeanList.get(position).getName();
                     tv_block.setText(building_name);
                     dismissSoftKeyboard(this);
-                    newCustomerInfoModel.getUnitData(8, building_uuid, page, 400, false, CustomerAddPropertyActivity.this);
+                    newCustomerInfoModel.getUnitData(8, building_uuid, page, 400, true, CustomerAddPropertyActivity.this);
                     break;
                 case 3:
                     unit_uuid = addBeanList.get(position).getUuid();
                     unit_name = addBeanList.get(position).getName();
                     tv_dong.setText(unit_name);
                     dismissSoftKeyboard(this);
-                    newCustomerInfoModel.getRoomData(9, unit_uuid, page, 400, false, CustomerAddPropertyActivity.this);
+                    newCustomerInfoModel.getRoomData(9, unit_uuid, page, 400, true, CustomerAddPropertyActivity.this);
                     break;
             }
         }
@@ -356,7 +356,7 @@ public class CustomerAddPropertyActivity extends BaseActivity implements View.On
             community_name = areaBeanList.get(position).getName();
             tv_garden.setText(community_name);
             dismissSoftKeyboard(this);
-            newCustomerInfoModel.getBuildingData(7, community_uuid, page, 400, false, CustomerAddPropertyActivity.this);
+            newCustomerInfoModel.getBuildingData(7, community_uuid, page, 400, true, CustomerAddPropertyActivity.this);
         }
     }
 
@@ -502,7 +502,7 @@ public class CustomerAddPropertyActivity extends BaseActivity implements View.On
                 unit_name = "";
                 setBackground(2);
                 dismissSoftKeyboard(this);
-                newCustomerInfoModel.getBuildingData(7, community_uuid, page, 400, false, CustomerAddPropertyActivity.this);
+                newCustomerInfoModel.getBuildingData(7, community_uuid, page, 400, true, CustomerAddPropertyActivity.this);
                 break;
             case R.id.tv_dong:
                 choiceType = 2;
@@ -510,13 +510,13 @@ public class CustomerAddPropertyActivity extends BaseActivity implements View.On
                 unit_name = "";
                 setBackground(3);
                 dismissSoftKeyboard(this);
-                newCustomerInfoModel.getUnitData(8, building_uuid, page, 400, false, CustomerAddPropertyActivity.this);
+                newCustomerInfoModel.getUnitData(8, building_uuid, page, 400, true, CustomerAddPropertyActivity.this);
                 break;
             case R.id.tv_unit:
                 choiceType = 3;
                 setBackground(4);
                 dismissSoftKeyboard(this);
-                newCustomerInfoModel.getRoomData(9, unit_uuid, page, 400, false, CustomerAddPropertyActivity.this);
+                newCustomerInfoModel.getRoomData(9, unit_uuid, page, 400, true, CustomerAddPropertyActivity.this);
                 break;
         }
     }
