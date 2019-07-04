@@ -93,6 +93,7 @@ import static cn.net.cyberway.utils.TableLayoutUtils.addTVSeletor;
 import static cn.net.cyberway.utils.TableLayoutUtils.jumpLoginPage;
 import static cn.net.cyberway.utils.TableLayoutUtils.shortEnter;
 import static cn.net.cyberway.utils.TableLayoutUtils.showOpenDoorResultDialog;
+import static com.BeeFramework.model.BaseModel.refreshDistance;
 import static com.user.Utils.TokenUtils.clearUserCache;
 
 
@@ -689,15 +690,17 @@ public class MainActivity extends BaseFragmentActivity implements View.OnClickLi
 
     /***获取key和secert***/
     private void updateAccessToken() {
-        long lastSaveTime = shared.getLong(UserAppConst.Colour_get_time, System.currentTimeMillis());
-        long nowTime = System.currentTimeMillis();
-        long distance = (nowTime - lastSaveTime) / 1000;
-        long expires_in = shared.getLong(UserAppConst.Colour_expires_in, 7200);
-        if (distance >= expires_in - 60 * 20) {
-            newUserModel.refreshAuthToken(40, this);
-        } else {
-            newUserModel.getUserInformation(5, false, this);
-        }
+//        long lastSaveTime = shared.getLong(UserAppConst.Colour_get_time, System.currentTimeMillis());
+//        long nowTime = System.currentTimeMillis();
+//        long distance = (nowTime - lastSaveTime) / 1000;
+//        long expires_in = shared.getLong(UserAppConst.Colour_expires_in, 10800);
+//        if (distance >= expires_in - refreshDistance) {
+//            newUserModel.refreshAuthToken(40, this);
+//        } else {
+//
+//        }
+
+        newUserModel.getUserInformation(5, false, this);
     }
 
     private void checkMobileStatus() {

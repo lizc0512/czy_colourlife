@@ -7,32 +7,32 @@ package com.BeeFramework.model;
 public class Constants {
 
     //---------------------------生产环境-----------------------------
-//    public static final String SERVER_ADDRESS = "https://cmobile.colourlife.com";//以后用cmobile接口
-//    public static final String TOKEN_ADDRESS = "https://oauth2czy.colourlife.com";
-//    public static final String NEWAPP_ADDRESS = "https://single.colourlife.com/app/"; //新接口的域名
-//    public static final String OAUTH_ADDRESS = "http://oauth2czy.colourlife.com/oauth2/";
-//    public static final String HOMEAPP_ADDRESS = "https://colourhome.colourlife.com/";
-//    public static final String IMAPP_ADDRESS = "https://imapi-czy.colourlife.com";//IM的新域名
-//    public static final String BUSINESS_ADDRESS = "https://business.colourlife.com/app/";
-//    public static final String USERINFO_ADDRESS = "https://user-czy.colourlife.com/app/";
-//    public static final String DELIVERY_ADDRESS = "https://kdaddr-ice.colourlife.com/app/delivery";
-//    public static final String PROPERTY_ADDRESS = "https://property.colourlife.com";
-//    public static final String VERIFY_ADDRESS = "https://verify.colourlife.com";
-//    public static final String LINLI_ADDRESS = "https://linli.colourlife.com/";
-//    public static final String BEAN_ADDRESS = "https://userbackend-czy.colourlife.com/";//彩豆积分
-//    public static final String EPARKING_ADDRESS = "https://ep.colourlife.com";
-//    public static final String FEEDBACK_ADDRESS = "https://service-czy.colourlife.com";
-//    public static final String QRCODE_ADDRESS = "https://qrcode.colourlife.com/";
-//    public static final String BEHAVIOR_ADDRESS = "https://probe-czy.colourlife.com/";
-//    public static final String DOOR_ADDRESS = "https://bluetooth-door.colourlife.com/";
-//    public static final String AUTH_APP_ADDRESS = "https://oauth-czy.colourlife.com/";//授权应用
-//    public static final String PAY_WALLET_APPID = "327494513335603200";  //双乾彩钱包和支付
-//    public static final String publicKeyString = "MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQCTFnAR7ORLx0jGzf9Ux1We7yHvRi+kQXKSRmtgBjDCXQzakGm2mrb6EupCkDbUcj4BUs7S7zm/rICQuVNC9fujeJGj"
-//            + "cNWRg0XWVtm90XpbTqfKiXzGDHI9W8aULYZ3of/JJ9lyCyjqjigyCdLBPtQ27gOu"
-//            + "boDzQuieR2ywPHawzQIDAQAB";
-//    public static final boolean CAIWALLET_ENVIRONMENT = true;  //true为彩钱包的正式环境
-//    public static int SAVENOHTTPRECORD = 0;  // 正式打包为0
-//    public static final String BUTTAGSKEY = "09cbfdabb736305ef0ecb6696650dfdc"; //bugtags的key
+    public static final String SERVER_ADDRESS = "https://cmobile.colourlife.com";//以后用cmobile接口
+    public static final String TOKEN_ADDRESS = "https://oauth2czy.colourlife.com";
+    public static final String NEWAPP_ADDRESS = "https://single.colourlife.com/app/"; //新接口的域名
+    public static final String OAUTH_ADDRESS = "http://oauth2czy.colourlife.com/oauth2/";
+    public static final String HOMEAPP_ADDRESS = "https://colourhome.colourlife.com/";
+    public static final String IMAPP_ADDRESS = "https://imapi-czy.colourlife.com";//IM的新域名
+    public static final String BUSINESS_ADDRESS = "https://business.colourlife.com/app/";
+    public static final String USERINFO_ADDRESS = "https://user-czy.colourlife.com/app/";
+    public static final String DELIVERY_ADDRESS = "https://kdaddr-ice.colourlife.com/app/delivery";
+    public static final String PROPERTY_ADDRESS = "https://property.colourlife.com";
+    public static final String VERIFY_ADDRESS = "https://verify.colourlife.com";
+    public static final String LINLI_ADDRESS = "https://linli.colourlife.com/";
+    public static final String BEAN_ADDRESS = "https://userbackend-czy.colourlife.com/";//彩豆积分
+    public static final String EPARKING_ADDRESS = "https://ep.colourlife.com";
+    public static final String FEEDBACK_ADDRESS = "https://service-czy.colourlife.com";
+    public static final String QRCODE_ADDRESS = "https://qrcode.colourlife.com/";
+    public static final String BEHAVIOR_ADDRESS = "https://probe-czy.colourlife.com/";
+    public static final String DOOR_ADDRESS = "https://bluetooth-door.colourlife.com/";
+    public static final String AUTH_APP_ADDRESS = "https://oauth-czy.colourlife.com/";//授权应用
+    public static final String PAY_WALLET_APPID = "327494513335603200";  //双乾彩钱包和支付
+    public static final String publicKeyString = "MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQCTFnAR7ORLx0jGzf9Ux1We7yHvRi+kQXKSRmtgBjDCXQzakGm2mrb6EupCkDbUcj4BUs7S7zm/rICQuVNC9fujeJGj"
+            + "cNWRg0XWVtm90XpbTqfKiXzGDHI9W8aULYZ3of/JJ9lyCyjqjigyCdLBPtQ27gOu"
+            + "boDzQuieR2ywPHawzQIDAQAB";
+    public static final boolean CAIWALLET_ENVIRONMENT = true;  //true为彩钱包的正式环境
+    public static int SAVENOHTTPRECORD = 1;  // 正式打包为0
+    public static final String BUTTAGSKEY = "09cbfdabb736305ef0ecb6696650dfdc"; //bugtags的key
 
 
     // ---------------------------测试版-----------------------------
@@ -65,33 +65,33 @@ public class Constants {
 
 
     // ---------------------------预发版-----------------------------
-    public static final String SERVER_ADDRESS = "https://cmobile-czybeta.colourlife.com";
-    public static final String TOKEN_ADDRESS = "https://oauth2czy-czybeta.colourlife.com";
-    public static final String NEWAPP_ADDRESS = "https://single.colourlife.com/app/"; //新接口的域名
-    public static final String OAUTH_ADDRESS = "http://oauth2czy.colourlife.com/oauth2/";
-    public static final String HOMEAPP_ADDRESS = "https://colourhome-czybeta.colourlife.com/";
-    public static final String BUSINESS_ADDRESS = "https://business-czybeta.colourlife.com/app/";
-    public static final String IMAPP_ADDRESS = "https://imapi-czybeta.colourlife.com";
-    public static final String USERINFO_ADDRESS = "https://user-czybeta.colourlife.com/app/";
-    public static final String PROPERTY_ADDRESS = "http://property-czybeta.colourlife.com";
-    public static final String VERIFY_ADDRESS = "http://verify-czybeta.colourlife.com";
-    public static final String EPARKING_ADDRESS = "https://ep-beat.colourlife.com";
-    public static final String FEEDBACK_ADDRESS = "https://service-czybeta.colourlife.com";
-    public static final String QRCODE_ADDRESS = "https://qrcode.colourlife.com/";
-    public static final String BEHAVIOR_ADDRESS = "https://probe-czybeta.colourlife.com/";
-    public static final String DELIVERY_ADDRESS = "https://kdaddr-ice-beta.colourlife.com/app/delivery";
-    public static final String LINLI_ADDRESS = "http://linli-czybeta.colourlife.com/";
-    public static final String BEAN_ADDRESS = "https://userbackend-czybeta.colourlife.com/";//彩豆积分
-    public static final String DOOR_ADDRESS = "https://bluetoothbeta-door.colourlife.com/";
-    public static final String AUTH_APP_ADDRESS = "https://oauth-czybeta.colourlife.com/";//授权应用
-    public static final String PAY_WALLET_APPID = "323521861252157440";  //双乾彩钱包和支付
-    /*****关于nohttp请求日记的保存*****/
-    public static final String publicKeyString = "MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQCTFnAR7ORLx0jGzf9Ux1We7yHvRi+kQXKSRmtgBjDCXQzakGm2mrb6EupCkDbUcj4BUs7S7zm/rICQuVNC9fujeJGj"
-            + "cNWRg0XWVtm90XpbTqfKiXzGDHI9W8aULYZ3of/JJ9lyCyjqjigyCdLBPtQ27gOu"
-            + "boDzQuieR2ywPHawzQIDAQAB";
-    /*****关于nohttp请求日记的保存*****/
-    public static final boolean CAIWALLET_ENVIRONMENT = false;  //false为彩钱包的测试环境
-    public static int SAVENOHTTPRECORD = 1;  // 测试为1，正式打包为0
+//    public static final String SERVER_ADDRESS = "https://cmobile-czybeta.colourlife.com";
+//    public static final String TOKEN_ADDRESS = "https://oauth2czy-czybeta.colourlife.com";
+//    public static final String NEWAPP_ADDRESS = "https://single.colourlife.com/app/"; //新接口的域名
+//    public static final String OAUTH_ADDRESS = "http://oauth2czy.colourlife.com/oauth2/";
+//    public static final String HOMEAPP_ADDRESS = "https://colourhome-czybeta.colourlife.com/";
+//    public static final String BUSINESS_ADDRESS = "https://business-czybeta.colourlife.com/app/";
+//    public static final String IMAPP_ADDRESS = "https://imapi-czybeta.colourlife.com";
+//    public static final String USERINFO_ADDRESS = "https://user-czybeta.colourlife.com/app/";
+//    public static final String PROPERTY_ADDRESS = "http://property-czybeta.colourlife.com";
+//    public static final String VERIFY_ADDRESS = "http://verify-czybeta.colourlife.com";
+//    public static final String EPARKING_ADDRESS = "https://ep-beat.colourlife.com";
+//    public static final String FEEDBACK_ADDRESS = "https://service-czybeta.colourlife.com";
+//    public static final String QRCODE_ADDRESS = "https://qrcode.colourlife.com/";
+//    public static final String BEHAVIOR_ADDRESS = "https://probe-czybeta.colourlife.com/";
+//    public static final String DELIVERY_ADDRESS = "https://kdaddr-ice-beta.colourlife.com/app/delivery";
+//    public static final String LINLI_ADDRESS = "http://linli-czybeta.colourlife.com/";
+//    public static final String BEAN_ADDRESS = "https://userbackend-czybeta.colourlife.com/";//彩豆积分
+//    public static final String DOOR_ADDRESS = "https://bluetoothbeta-door.colourlife.com/";
+//    public static final String AUTH_APP_ADDRESS = "https://oauth-czybeta.colourlife.com/";//授权应用
+//    public static final String PAY_WALLET_APPID = "323521861252157440";  //双乾彩钱包和支付
+//    /*****关于nohttp请求日记的保存*****/
+//    public static final String publicKeyString = "MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQCTFnAR7ORLx0jGzf9Ux1We7yHvRi+kQXKSRmtgBjDCXQzakGm2mrb6EupCkDbUcj4BUs7S7zm/rICQuVNC9fujeJGj"
+//            + "cNWRg0XWVtm90XpbTqfKiXzGDHI9W8aULYZ3of/JJ9lyCyjqjigyCdLBPtQ27gOu"
+//            + "boDzQuieR2ywPHawzQIDAQAB";
+//    /*****关于nohttp请求日记的保存*****/
+//    public static final boolean CAIWALLET_ENVIRONMENT = false;  //false为彩钱包的测试环境
+//    public static int SAVENOHTTPRECORD = 1;  // 测试为1，正式打包为0
 
 
     /**

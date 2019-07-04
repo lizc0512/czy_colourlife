@@ -11,8 +11,8 @@
         android:layout_height="match_parent"
         android:layout_marginTop="5dp"
         android:layout_marginRight="5dp"
-        android:background="@drawable/home_banner_caizhuzai"
-        android:scaleType="fitXY" />
+        android:scaleType="fitXY"
+        android:src="@drawable/home_banner_parking" />
 
 
     <TextView

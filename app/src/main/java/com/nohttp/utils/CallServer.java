@@ -110,6 +110,4 @@ public class CallServer {
         requestCancel.clear();
         requestLoading.clear();
     }
-
-
 }

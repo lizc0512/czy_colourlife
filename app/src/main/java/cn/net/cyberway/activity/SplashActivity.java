@@ -18,7 +18,6 @@ import com.BeeFramework.model.NewHttpResponse;
 import com.nohttp.utils.GlideImageLoader;
 import com.update.activity.UpdateVerSion;
 import com.user.UserAppConst;
-import com.user.model.NewUserModel;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -40,7 +39,7 @@ public class SplashActivity extends Activity implements HttpApiResponse, NewHttp
     private boolean autoJump = true;
     private ThemeModel themeModel;
     private String linkUrl = "";
-    private int delayTime = 1000;
+    private int delayTime = 2000;
     private TimeCount timeCount = null;
 
 
@@ -51,10 +50,6 @@ public class SplashActivity extends Activity implements HttpApiResponse, NewHttp
         shared = getSharedPreferences(UserAppConst.USERINFO, 0);
         splashModel = new SplashModel(this);
         themeModel = new ThemeModel(this);
-        if (shared.getBoolean(UserAppConst.IS_LOGIN, false)) {
-            NewUserModel newUserModel = new NewUserModel(SplashActivity.this);
-            newUserModel.refreshAuthToken(2, this);
-        }
         splashModel.getStartImage(1, this);
         splashModel.getOneKeyShow();
         themeModel.getTheme(0, this);

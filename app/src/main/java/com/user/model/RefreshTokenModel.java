@@ -43,10 +43,23 @@ public class RefreshTokenModel extends BaseModel {
 
     private Context context;
 
-    public RefreshTokenModel(Context context) {
+    private static RefreshTokenModel refreshTokenModel;
+
+    public static RefreshTokenModel getInstance(Context context) {
+        if (refreshTokenModel == null)
+            synchronized (RefreshTokenModel.class) {
+                if (refreshTokenModel == null)
+                    refreshTokenModel = new RefreshTokenModel(context);
+            }
+        return refreshTokenModel;
+    }
+
+    private RefreshTokenModel(Context context) {
         super(context);
         this.context = context;
     }
+
+    public static boolean isExcuted = false;
 
     /**
      * refresh_token去获取access_token
@@ -55,7 +68,8 @@ public class RefreshTokenModel extends BaseModel {
      * @param
      */
     public <T> void refreshAuthToken(boolean isLoading) {
-        synchronized (RefreshTokenModel.class) {
+        if (!isExcuted) {
+            isExcuted = true;
             String refresh_token = shared.getString(UserAppConst.Colour_refresh_token, "");
             if (TextUtils.isEmpty(refresh_token)) {
                 Message msg = android.os.Message.obtain();
@@ -74,6 +88,7 @@ public class RefreshTokenModel extends BaseModel {
                 request(0, request_oauthRegister, params, new HttpListener<String>() {
                     @Override
                     public void onSucceed(int what, Response<String> response) {
+                        isExcuted = false;
                         int responseCode = response.getHeaders().getResponseCode();
                         String result = response.get();
                         if (responseCode == RequestEncryptionUtils.responseSuccess) {
@@ -93,30 +108,57 @@ public class RefreshTokenModel extends BaseModel {
                                         editor.commit();
                                         CallServer callServer = CallServer.getInstance();
                                         List<Integer> requestWhatList = callServer.getRequestWhat();
-                                        for (int j = 0; j < requestWhatList.size(); j++) {
-                                            request(requestWhatList.get(j), callServer.getRequestList().get(j),
-                                                    callServer.getRequestMap().get(j), callServer.getRequestLister().get(j),
-                                                    callServer.getRequestCancel().get(j), callServer.getRequestLoading().get(j));
+                                        int size = requestWhatList.size();
+                                        for (int j = 0; j < size; j++) {
+                                            int k = j;
+                                            int requestWhat = requestWhatList.get(k);
+                                            Request<T> requestAgain = callServer.getRequestList().get(k);
+                                            Map<String, Object> requestParamsMap = callServer.getRequestMap().get(k);
+                                            HttpListener<T> requestCallback = callServer.getRequestLister().get(k);
+                                            boolean requestCanCancel = callServer.getRequestCancel().get(k);
+                                            boolean requestLoading = callServer.getRequestLoading().get(k);
+                                            if (k >= 4) {
+                                                new Handler().postDelayed(new Runnable() {
+                                                    @Override
+                                                    public void run() {
+                                                        request(requestWhat, requestAgain, requestParamsMap,
+                                                                requestCallback, requestCanCancel,
+                                                                requestLoading);
+                                                        if (k == size - 1) {
+                                                            callServer.clearAllQuest();
+                                                        }
+                                                    }
+                                                }, 2000 * (k - 3));
+                                            } else {
+                                                request(requestWhat, requestAgain, requestParamsMap,
+                                                        requestCallback, requestCanCancel,
+                                                        requestLoading);
+                                                if (k == size - 1) {
+                                                    callServer.clearAllQuest();
+                                                }
+                                            }
                                         }
-                                        callServer.clearAllQuest();
                                     } else {
-                                        againRequsetAgain();
+                                        againRequsetAgain(isLoading);
                                     }
                                 } catch (JSONException e) {
                                     e.printStackTrace();
-                                    againRequsetAgain();
+                                    againRequsetAgain(isLoading);
+                                } catch (Exception e) {
+
                                 }
                             } else {
-                                againRequsetAgain();
+                                againRequsetAgain(isLoading);
                             }
                         } else {
-                            againRequsetAgain();
+                            againRequsetAgain(isLoading);
                         }
                     }
 
                     @Override
                     public void onFailed(int what, Response<String> response) {
-                        againRequsetAgain();
+                        isExcuted = false;
+                        againRequsetAgain(isLoading);
                     }
                 }, true, isLoading);
             }
@@ -124,33 +166,9 @@ public class RefreshTokenModel extends BaseModel {
     }
 
 
-    private <T> void againRequsetAgain() {
-        CallServer callServer = CallServer.getInstance();
-        List<Integer> requestWhatList = callServer.getRequestWhat();
-        for (int j = 0; j < requestWhatList.size(); j++) {
-            int what = requestWhatList.get(j);
-            Request<T> request = callServer.getRequestList().get(j);
-            Map<String, Object> paramsMap = callServer.getRequestMap().get(j);
-            boolean canCancel = callServer.getRequestCancel().get(j);
-            boolean isLoading = callServer.getRequestLoading().get(j);
-            HttpListener httpListener = callServer.getRequestLister().get(j);
-            new Handler().postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    boolean refreshStatus = shared.getBoolean(UserAppConst.Colour_refresh_status, false);
-                    int waitSize = requestWhatList.size();
-                    if (waitSize != 0) {  //单个刷新refrshtoken失败
-                        if (refreshStatus) {  //根据队列去隔5秒进行轮询请求
-                            request(what, request, paramsMap, httpListener, canCancel, isLoading);
-                            callServer.deleteSendRequsetDelete(what, request, paramsMap, httpListener, canCancel, isLoading);
-                        } else {
-                            NewUserModel newUserModel = new NewUserModel(mContext);
-                            newUserModel.refreshAuthToken(what, request, paramsMap, httpListener, canCancel, isLoading);
-                        }
-                    }
-                }
-            }, 5000 * j);
-        }
+    private <T> void againRequsetAgain(boolean isLoading) {  //失败了重新再试一次
+        NewUserModel newUserModel = new NewUserModel(mContext);
+        newUserModel.refreshAuthToken(isLoading);
     }
 }
 

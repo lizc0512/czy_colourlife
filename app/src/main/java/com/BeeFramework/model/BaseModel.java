@@ -57,12 +57,14 @@ public class BaseModel {
     }
 
 
+    public static final int refreshDistance = 60 * 10 * 2;//提前20分钟刷新
+
     private boolean againGetToken() {
         long lastSaveTime = shared.getLong(UserAppConst.Colour_get_time, System.currentTimeMillis());
         long nowTime = System.currentTimeMillis();
         long distance = (nowTime - lastSaveTime) / 1000;
-        long expires_in = shared.getLong(UserAppConst.Colour_expires_in, 7200);
-        if (distance >= expires_in - 60 * 10) {
+        long expires_in = shared.getLong(UserAppConst.Colour_expires_in, 10800);
+        if (distance >= expires_in - refreshDistance) {
             return true; //需要刷新
         } else {
             return false;
@@ -109,7 +111,7 @@ public class BaseModel {
 //                        NewUserModel newUserModel = new NewUserModel(mContext);
 //                        newUserModel.refreshAuthToken(what, request, paramsMap, callback, canCancel, isLoading);
                         CallServer.getInstance().addQuestParams(what, request, paramsMap, callback, canCancel, isLoading);
-                        RefreshTokenModel refreshTokenModel = new RefreshTokenModel(mContext);
+                        RefreshTokenModel refreshTokenModel = RefreshTokenModel.getInstance(mContext);
                         refreshTokenModel.refreshAuthToken(isLoading);
                     }
                 }
@@ -161,9 +163,8 @@ public class BaseModel {
 //                        NewUserModel newUserModel = new NewUserModel(mContext);
 //                        newUserModel.refreshAuthToken(what, request, paramsMap, callback, canCancel, isLoading);
                         CallServer.getInstance().addQuestParams(what, request, paramsMap, callback, canCancel, isLoading);
-                        RefreshTokenModel refreshTokenModel = new RefreshTokenModel(mContext);
+                        RefreshTokenModel refreshTokenModel = RefreshTokenModel.getInstance(mContext);
                         refreshTokenModel.refreshAuthToken(isLoading);
-
                     }
                 }
             } else {  //请求access_token
