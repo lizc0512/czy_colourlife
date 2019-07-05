@@ -93,7 +93,6 @@ import static cn.net.cyberway.utils.TableLayoutUtils.addTVSeletor;
 import static cn.net.cyberway.utils.TableLayoutUtils.jumpLoginPage;
 import static cn.net.cyberway.utils.TableLayoutUtils.shortEnter;
 import static cn.net.cyberway.utils.TableLayoutUtils.showOpenDoorResultDialog;
-import static com.BeeFramework.model.BaseModel.refreshDistance;
 import static com.user.Utils.TokenUtils.clearUserCache;
 
 
@@ -232,8 +231,12 @@ public class MainActivity extends BaseFragmentActivity implements View.OnClickLi
 
     @Override
     protected void onDestroy() {
-        EventBus.getDefault().unregister(this);
-        mLocalBroadcastManager.unregisterReceiver(mReceiver);
+        if (EventBus.getDefault().isregister(this)) {
+            EventBus.getDefault().unregister(this);
+        }
+        if (mReceiver != null) {
+            mLocalBroadcastManager.unregisterReceiver(mReceiver);
+        }
         HuxinSdkManager.instance().getStackAct().finishActivity(this);
         super.onDestroy();
     }

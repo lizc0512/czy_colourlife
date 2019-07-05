@@ -300,14 +300,18 @@ public class WebViewActivity extends BaseActivity implements View.OnLongClickLis
     private ChromeClientCallbackManager.ReceivedTitleCallback receivedTitleCallback = new ChromeClientCallbackManager.ReceivedTitleCallback() {
         @Override
         public void onReceivedTitle(WebView view, String title) {
-            if (!TextUtils.isEmpty(title) && !Utils.isSpecialharacter(title)) {
-                webTitle = title;
-                if (webTitle.length() > 8) {
-                    webTitle = title.substring(0, 8) + "...";
+            try {
+                if (!TextUtils.isEmpty(title) && !Utils.isSpecialharacter(title)) {
+                    webTitle = title;
+                    if (webTitle.length() > 8) {
+                        webTitle = title.substring(0, 8) + "...";
+                    }
                 }
-            }
-            if (!TextUtils.isEmpty(webTitle) && !webTitle.contains(BuryingPointUtils.divisionSign)) {
-                mTitle.setText(webTitle);
+                if (!TextUtils.isEmpty(webTitle) && !webTitle.contains(BuryingPointUtils.divisionSign)) {
+                    mTitle.setText(webTitle);
+                }
+            } catch (Exception e) {
+                mTitle.setText(title);
             }
         }
     };

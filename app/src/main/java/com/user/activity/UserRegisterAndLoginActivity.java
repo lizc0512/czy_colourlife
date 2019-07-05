@@ -251,6 +251,9 @@ public class UserRegisterAndLoginActivity extends BaseActivity implements OnClic
 
     private void changeLoginBtnStatus() {
         password = user_login_password.getNKeyboardText();
+        if (TextUtils.isEmpty(password)) {
+            password = shared.getString(UserAppConst.Colour_login_password, "");
+        }
         if (!TextUtils.isEmpty(mobile) && 11 == mobile.length() && !TextUtils.isEmpty(password)) {
             user_login_btn.setEnabled(true);
             user_login_btn.setBackgroundResource(R.drawable.onekey_login_bg);
@@ -589,6 +592,7 @@ public class UserRegisterAndLoginActivity extends BaseActivity implements OnClic
                 break;
             case 4://获取用户的信息 ,跳转到主页
                 if (!TextUtils.isEmpty(result)) {
+                    editor.putString(UserAppConst.Colour_login_password, loginPawd).apply();
                     newUserModel.getUserInformation(13, true, this);
                 } else {
                     Map<String, String> loginMap = new HashMap<String, String>();

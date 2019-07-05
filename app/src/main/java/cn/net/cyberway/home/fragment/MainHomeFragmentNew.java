@@ -593,7 +593,7 @@ public class MainHomeFragmentNew extends Fragment implements NewHttpResponse, My
             funCode = BuryingPointUtils.homeFuncCode;
             initUploadData(dataBean);
             if (TextUtils.isEmpty(appCode)) {
-                LinkParseUtil.parse(getActivity(), redirect_uri, dataBean.getName());
+                LinkParseUtil.parse(getActivity(), redirect_uri, appName);
             } else {
                 LinkParseUtil.parse(getActivity(), redirect_uri, appCode + BuryingPointUtils.divisionSign + appName + BuryingPointUtils.divisionSign + funCode);
             }
@@ -603,7 +603,7 @@ public class MainHomeFragmentNew extends Fragment implements NewHttpResponse, My
             initUploadData(dataBean);
             funCode = BuryingPointUtils.homeRecentlyCode;
             if (TextUtils.isEmpty(appCode)) {
-                LinkParseUtil.parse(getActivity(), redirect_uri, dataBean.getName());
+                LinkParseUtil.parse(getActivity(), redirect_uri, appName);
             } else {
                 LinkParseUtil.parse(getActivity(), redirect_uri, appCode + BuryingPointUtils.divisionSign + appName + BuryingPointUtils.divisionSign + funCode);
             }

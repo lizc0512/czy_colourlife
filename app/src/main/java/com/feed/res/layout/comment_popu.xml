@@ -49,6 +49,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_marginLeft="5dp"
+            android:textColor="@color/white"
             android:text="@string/feed_praise"
             android:textSize="12sp" />
     </LinearLayout>
@@ -72,6 +73,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_marginLeft="5dp"
+            android:textColor="@color/white"
             android:text="@string/feed_comment"
             android:textSize="12sp" />
     </LinearLayout>

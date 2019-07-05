@@ -233,7 +233,11 @@ public class CouponsFragment extends Fragment {
 
 
         public void onReceivedError(WebView view, int errorCode, String description, String failingUrl) {
-            LinkParseUtil.parse(getActivity(), WEBURL, "");
+            if (null != getActivity()) {
+                LinkParseUtil.parse(getActivity(), WEBURL, "");
+            } else {
+                webView.loadUrl(failingUrl);
+            }
         }
     }
 }

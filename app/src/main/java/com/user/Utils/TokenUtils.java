@@ -80,7 +80,6 @@ public class TokenUtils {
         mEditor.putString(UserAppConst.Colour_login_info, "");
         mEditor.putString(UserAppConst.Colour_login_community_uuid, "03b98def-b5bd-400b-995f-a9af82be01da");
         mEditor.putString(UserAppConst.Colour_login_community_name, "互联网社区");
-        mEditor.putString(UserAppConst.Colour_login_password, "");
         mEditor.putString(UserAppConst.SHOPMESSAGE, "");
         mEditor.putString(UserAppConst.SYSTEMMESSAGE, "");
         mEditor.putString(UserAppConst.OPEN_CODE, "");
