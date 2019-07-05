@@ -32,7 +32,6 @@ public class Constants {
             + "boDzQuieR2ywPHawzQIDAQAB";
     public static final boolean CAIWALLET_ENVIRONMENT = true;  //true为彩钱包的正式环境
     public static int SAVENOHTTPRECORD = 1;  // 正式打包为0
-    public static final String BUTTAGSKEY = "09cbfdabb736305ef0ecb6696650dfdc"; //bugtags的key
 
 
     // ---------------------------测试版-----------------------------
@@ -90,7 +89,7 @@ public class Constants {
 //            + "cNWRg0XWVtm90XpbTqfKiXzGDHI9W8aULYZ3of/JJ9lyCyjqjigyCdLBPtQ27gOu"
 //            + "boDzQuieR2ywPHawzQIDAQAB";
 //    /*****关于nohttp请求日记的保存*****/
-//    public static final boolean CAIWALLET_ENVIRONMENT = false;  //false为彩钱包的测试环境
+//    public static final boolean CAIWALLET_ENVIRONMENT = true;  //false为彩钱包的测试环境
 //    public static int SAVENOHTTPRECORD = 1;  // 测试为1，正式打包为0
 
 

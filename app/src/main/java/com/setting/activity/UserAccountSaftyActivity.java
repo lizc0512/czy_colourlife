@@ -1,6 +1,7 @@
 package com.setting.activity;
 
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -27,6 +28,7 @@ import com.user.model.NewUserModel;
 import java.util.HashMap;
 
 import cn.net.cyberway.R;
+import cn.net.cyberway.activity.BroadcastReceiverActivity;
 import cn.net.cyberway.utils.LinkParseUtil;
 import cn.sharesdk.framework.Platform;
 import cn.sharesdk.framework.PlatformActionListener;
@@ -71,6 +73,7 @@ public class UserAccountSaftyActivity extends BaseActivity implements View.OnCli
     private String isSetPawd;
     private String source;
     private NewUserModel newUserModel;
+    private BroadcastReceiverActivity broadcast;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -332,5 +335,24 @@ public class UserAccountSaftyActivity extends BaseActivity implements View.OnCli
         if (resultCode == 200) {
             finish();
         }
+    }
+
+    @Override
+    protected void onDestroy() {
+        //销毁广播注册
+        if (broadcast != null) {
+            unregisterReceiver(broadcast);
+            broadcast = null;
+        }
+        super.onDestroy();
+    }
+
+    @Override
+    protected void onResume() {
+        //注册广播
+        broadcast = new BroadcastReceiverActivity(this);
+        IntentFilter intentFilter = new IntentFilter(BroadcastReceiverActivity.GESTURE);
+        registerReceiver(broadcast, intentFilter);
+        super.onResume();
     }
 }

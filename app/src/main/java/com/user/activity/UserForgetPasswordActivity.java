@@ -57,6 +57,7 @@ public class UserForgetPasswordActivity extends BaseActivity implements View.OnC
         mobile = intent.getStringExtra(UserRegisterAndLoginActivity.MOBILE);
         code = intent.getStringExtra(UserRegisterAndLoginActivity.SMSCODE);
         tv_forget_number.setText(mobile);
+        tv_forget_number.setVisibility(View.GONE);
         newUserModel = new NewUserModel(this);
         TCAgent.onEvent(getApplicationContext(), "202011");
     }

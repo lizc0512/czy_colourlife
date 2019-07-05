@@ -91,7 +91,7 @@ public class UserRegisterActivity extends BaseActivity implements View.OnClickLi
         tv_voice_code = (TextView) findViewById(R.id.tv_voice_code);
         btn_user_register = (Button) findViewById(R.id.btn_user_register);
         user_register_protocol = (LinearLayout) findViewById(R.id.user_register_protocol);
-        findViewById(R.id.line).setVisibility(View.GONE);
+        user_top_view_title.setText("注册并登录");
         user_top_view_back.setOnClickListener(this);
         tv_get_sms.setOnClickListener(this);
         tv_voice_code.setOnClickListener(this);
