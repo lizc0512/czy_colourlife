@@ -53,7 +53,6 @@ import cn.net.cyberway.home.activity.LekaiListActivity;
 
 public class LinkParseUtil {
     public static void parse(Context context, String link, String title) {
-
         SharedPreferences mShared = context.getSharedPreferences(UserAppConst.USERINFO, 0);
         if (!mShared.getBoolean(UserAppConst.IS_LOGIN, false)) {
             Intent intent = new Intent(context, UserRegisterAndLoginActivity.class);

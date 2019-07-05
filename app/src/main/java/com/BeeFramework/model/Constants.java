@@ -237,4 +237,111 @@ public class Constants {
             "    \"contentEncrypt\": \"\"\n" +
             "}";
 
+
+    public static final String mySubMenuList = "{\n" +
+            "    \"code\": 0,\n" +
+            "    \"message\": \"success\",\n" +
+            "    \"content\": [\n" +
+            "        {\n" +
+            "            \"id\": 1,\n" +
+            "            \"name\": \"我的钱包\",\n" +
+            "            \"url\": \"colourlife://proto?type=NewTicket\",\n" +
+            "            \"desc\": \"\",\n" +
+            "            \"img_url\": \"https://pics-czy-cdn.colourlife.com/dev-5d0b4c3dd5ac1429079.png\"\n" +
+            "        },\n" +
+            "        {\n" +
+            "            \"id\": 2,\n" +
+            "            \"name\": \"我的订单\",\n" +
+            "            \"url\": \"colourlife://proto?type=orderList\",\n" +
+            "            \"desc\": \"\",\n" +
+            "            \"img_url\": \"https://pics-czy-cdn.colourlife.com/dev-5d0b4c5cb3cbb706035.png\"\n" +
+            "        },\n" +
+            "        {\n" +
+            "            \"id\": 3,\n" +
+            "            \"name\": \"消息通知\",\n" +
+            "            \"url\": \"colourlife://proto?type=notificationList\",\n" +
+            "            \"desc\": \"\",\n" +
+            "            \"img_url\": \"https://pics-czy-cdn.colourlife.com/dev-5d0b4c6bc905e410949.png\"\n" +
+            "        }\n" +
+            "    ],\n" +
+            "    \"contentEncrypt\": \"\"\n" +
+            "}";
+
+    public static final String myPageMainList = "{\n" +
+            "    \"code\": 0,\n" +
+            "    \"message\": \"success\",\n" +
+            "    \"content\": [\n" +
+            "        {\n" +
+            "            \"id\": 1,\n" +
+            "            \"data\": [\n" +
+            "                {\n" +
+            "                    \"id\": 3,\n" +
+            "                    \"img\": \"https://pics-czy-cdn.colourlife.com/pro-5c4ee2cfe7951824849.png\",\n" +
+            "                    \"url\": \"colourlife://proto?type=myCar\",\n" +
+            "                    \"name\": \"车辆\",\n" +
+            "                    \"group_id\": 1\n" +
+            "                },\n" +
+            "                {\n" +
+            "                    \"id\": 4,\n" +
+            "                    \"img\": \"https://pics-czy-cdn.colourlife.com/pro-5c4e77007e201488066.png\",\n" +
+            "                    \"url\": \"colourlife://proto?type=myHouse\",\n" +
+            "                    \"name\": \"房产\",\n" +
+            "                    \"group_id\": 1\n" +
+            "                }\n" +
+            "            ]\n" +
+            "        },\n" +
+            "        {\n" +
+            "            \"id\": 2,\n" +
+            "            \"data\": [\n" +
+            "                {\n" +
+            "                    \"id\": 5,\n" +
+            "                    \"img\": \"https://pics-czy-cdn.colourlife.com/pro-5c4e760c14849362769.png\",\n" +
+            "                    \"url\": \"colourlife://proto?type=FeedBack\",\n" +
+            "                    \"name\": \"意见反馈\",\n" +
+            "                    \"group_id\": 2\n" +
+            "                },\n" +
+            "                {\n" +
+            "                    \"id\": 6,\n" +
+            "                    \"img\": \"https://pics-czy-cdn.colourlife.com/pro-5c4e766fa0b95644650.png\",\n" +
+            "                    \"url\": \"https://user-czy.colourlife.com/distribution/oauth\",\n" +
+            "                    \"name\": \"邀请好友\",\n" +
+            "                    \"group_id\": 2\n" +
+            "                }\n" +
+            "            ]\n" +
+            "        },\n" +
+            "        {\n" +
+            "            \"id\": 3,\n" +
+            "            \"data\": [\n" +
+            "                {\n" +
+            "                    \"id\": 7,\n" +
+            "                    \"img\": \"https://pics-czy-cdn.colourlife.com/pro-5c4e7615ee72e870323.png\",\n" +
+            "                    \"url\": \"colourlife://proto?type=Setting\",\n" +
+            "                    \"name\": \"设置\",\n" +
+            "                    \"group_id\": 3\n" +
+            "                },\n" +
+            "            ]\n" +
+            "        },\n" +
+            "        {\n" +
+            "            \"id\": 4,\n" +
+            "            \"data\": [\n" +
+            "                {\n" +
+            "                    \"id\": 14,\n" +
+            "                    \"img\": \"https://pics-czy-cdn.colourlife.com/pro-5c4e764949437742135.png\",\n" +
+            "                    \"url\": \"http://face.backyard.colourlife.com/redirect\",\n" +
+            "                    \"name\": \"人脸采集\",\n" +
+            "                    \"group_id\": 4\n" +
+            "                },\n" +
+            "                {\n" +
+            "                    \"id\": 27,\n" +
+            "                    \"img\": \"https://pics-czy-cdn.colourlife.com/pro-5d047cb79151b343818.png\",\n" +
+            "                    \"url\": \"https://salesv2-ccw.colourlife.com/oauth/ticket\",\n" +
+            "                    \"name\": \"饭票宝\",\n" +
+            "                    \"group_id\": 4\n" +
+            "                }\n" +
+            "            ]\n" +
+            "        }\n" +
+            "    ],\n" +
+            "    \"contentEncrypt\": \"\"\n" +
+            "}";
+
 }

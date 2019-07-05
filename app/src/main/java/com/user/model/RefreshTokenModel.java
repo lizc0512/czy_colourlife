@@ -25,8 +25,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import cn.net.cyberway.R;
-
 import static com.user.UserMessageConstant.SQUEEZE_OUT;
 
 /**
@@ -72,9 +70,10 @@ public class RefreshTokenModel extends BaseModel {
             isExcuted = true;
             String refresh_token = shared.getString(UserAppConst.Colour_refresh_token, "");
             if (TextUtils.isEmpty(refresh_token)) {
+                isExcuted = false;
                 Message msg = android.os.Message.obtain();
                 msg.what = SQUEEZE_OUT;
-                msg.obj = context.getResources().getString(R.string.account_extrude_login);
+                msg.obj = "refresh token is invalid,Token has been revoked";
                 EventBus.getDefault().post(msg);
             } else {
                 final AuthTokenApi authTokenApi = new AuthTokenApi();
@@ -102,7 +101,6 @@ public class RefreshTokenModel extends BaseModel {
                                         editor.putString(UserAppConst.Colour_access_token, authTokenResponse.access_token);
                                         editor.putString(UserAppConst.Colour_refresh_token, authTokenResponse.refresh_token);
                                         editor.putLong(UserAppConst.Colour_expires_in, Long.valueOf(authTokenResponse.expires_in));
-                                        editor.putBoolean(UserAppConst.Colour_refresh_status, true);
                                         editor.putString(UserAppConst.Colour_token_type, authTokenResponse.token_type);
                                         editor.putLong(UserAppConst.Colour_get_time, System.currentTimeMillis());
                                         editor.commit();

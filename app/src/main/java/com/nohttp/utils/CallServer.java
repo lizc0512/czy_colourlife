@@ -30,7 +30,7 @@ public class CallServer {
     private RequestQueue queue;
 
     private CallServer() {
-        queue = NoHttp.newRequestQueue(4);
+        queue = NoHttp.newRequestQueue(6);
     }
 
     public <T> void request(int what, Request<T> request, HttpResponseListener<T> listener) {

@@ -384,7 +384,6 @@ public class NewUserModel extends BaseModel {
                                 editor.putBoolean(UserAppConst.IS_LOGIN, true);
                                 editor.putString(UserAppConst.Colour_access_token, authTokenResponse.access_token);
                                 editor.putString(UserAppConst.Colour_refresh_token, authTokenResponse.refresh_token);
-                                editor.putBoolean(UserAppConst.Colour_refresh_status, true);
                                 editor.putLong(UserAppConst.Colour_expires_in, Long.valueOf(authTokenResponse.expires_in));
                                 editor.putString(UserAppConst.Colour_token_type, authTokenResponse.token_type);
                                 editor.putLong(UserAppConst.Colour_get_time, System.currentTimeMillis());
@@ -414,23 +413,20 @@ public class NewUserModel extends BaseModel {
 
 
     private void tokenInvaildLoginOut(String result) {
-        boolean refreshStatus = shared.getBoolean(UserAppConst.Colour_refresh_status, false);
-        if (!refreshStatus) {
-            editor.putBoolean(UserAppConst.IS_LOGIN, false);
-            editor.putBoolean(UserAppConst.Colour_refresh_status, false);
-            editor.apply();
-            Message msg = android.os.Message.obtain();
-            msg.what = SQUEEZE_OUT;
-            try {
-                JSONObject jsonObject = new JSONObject(result);
-                if (!jsonObject.isNull("message")) {
-                    msg.obj = jsonObject.optString("message");
-                }
-            } catch (JSONException e) {
-                e.printStackTrace();
+        editor.putBoolean(UserAppConst.IS_LOGIN, false);
+        editor.apply();
+        Message msg = android.os.Message.obtain();
+        msg.what = SQUEEZE_OUT;
+        try {
+            JSONObject jsonObject = new JSONObject(result);
+            if (!jsonObject.isNull("message")) {
+                msg.obj = jsonObject.optString("message");
             }
-            EventBus.getDefault().post(msg);
+        } catch (JSONException e) {
+            e.printStackTrace();
         }
+        EventBus.getDefault().post(msg);
+
     }
 
 
@@ -465,7 +461,6 @@ public class NewUserModel extends BaseModel {
                                 editor.putString(UserAppConst.Colour_access_token, authTokenResponse.access_token);
                                 editor.putString(UserAppConst.Colour_refresh_token, authTokenResponse.refresh_token);
                                 editor.putLong(UserAppConst.Colour_expires_in, Long.valueOf(authTokenResponse.expires_in));
-                                editor.putBoolean(UserAppConst.Colour_refresh_status, true);
                                 editor.putString(UserAppConst.Colour_token_type, authTokenResponse.token_type);
                                 editor.putLong(UserAppConst.Colour_get_time, System.currentTimeMillis());
                                 editor.commit();

@@ -44,6 +44,7 @@ import com.nohttp.utils.GsonUtils;
 import com.user.UserAppConst;
 
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
@@ -266,15 +267,6 @@ public class NewDoorActivity extends BaseActivity implements NewHttpResponse, Vi
                 homedoor_viewpager.setAdapter(viewPagerAdapter);
                 homedoor_viewpager.addOnPageChangeListener(new ViewPagerIndicator(NewDoorActivity.this, linearLayout, list.size()));
                 homedoor_viewpager.setCurrentItem(position);
-                String data = GsonUtils.gsonString(list);
-                JSONObject jsonObject = new JSONObject();
-                JSONArray jsonArray = new JSONArray(data);
-                jsonObject.put("code", 0);
-                jsonObject.put("message", "success");
-                jsonObject.put("content", jsonArray);
-                jsonObject.put("contentEncrypt", "");
-                editor.putString(UserAppConst.HOMEDOOROFTEN, jsonObject.toString());
-                editor.commit();
             }
         } catch (Exception e) {
             System.out.print(e);
@@ -401,6 +393,19 @@ public class NewDoorActivity extends BaseActivity implements NewHttpResponse, Vi
                 }
                 String dooroftenCache = shared.getString(UserAppConst.HOMEDOOROFTEN, "");
                 dataAdapter(dooroftenCache, list_temp);
+                try {
+                    String stringData = GsonUtils.gsonString(list);
+                    JSONObject jsonObject = new JSONObject();
+                    JSONArray jsonArray = new JSONArray(stringData);
+                    jsonObject.put("code", 0);
+                    jsonObject.put("message", "success");
+                    jsonObject.put("content", jsonArray);
+                    jsonObject.put("contentEncrypt", "");
+                    editor.putString(UserAppConst.HOMEDOOROFTEN, jsonObject.toString());
+                    editor.commit();
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
             }
         }
 

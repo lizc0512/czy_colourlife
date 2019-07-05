@@ -63,7 +63,7 @@ public class AllAppModel extends BaseModel {
             public void onFailed(int what, Response<String> response) {
                 newHttpResponse.OnHttpResponse(what, "");
             }
-        }, true, false);
+        }, true, true);
     }
 
     public void uploadAppClick(int what, String resource_id, final NewHttpResponse newHttpResponse) {

@@ -18,6 +18,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.BeeFramework.Utils.ToastUtil;
+import com.BeeFramework.model.Constants;
 import com.BeeFramework.model.NewHttpResponse;
 import com.customerInfo.activity.CustomerInfoActivity;
 import com.dashuview.library.keep.ListenerUtils;
@@ -355,9 +356,11 @@ public class ProfileFragment extends Fragment implements View.OnClickListener, M
                 if (!TextUtils.isEmpty(result)) {
                     mEditor.putString(UserAppConst.MYPAGELIST, result).apply();
                     showProfileData(result);
-                    isLoading = true;
-                } else {
                     isLoading = false;
+                } else {
+                    String mySubMenu = mShared.getString(MYPAGESUBMENU, Constants.myPageMainList);
+                    showProfileData(mySubMenu);
+                    isLoading = true;
                 }
                 break;
             case 1:
@@ -365,7 +368,10 @@ public class ProfileFragment extends Fragment implements View.OnClickListener, M
                 if (!TextUtils.isEmpty(result)) {
                     mEditor.putString(MYPAGESUBMENU, result).apply();
                     showSubMenuData(result);
+                    isLoading = false;
                 } else {
+                    String mySubMenu = mShared.getString(MYPAGESUBMENU, Constants.mySubMenuList);
+                    showProfileData(mySubMenu);
                     isLoading = true;
                 }
                 break;

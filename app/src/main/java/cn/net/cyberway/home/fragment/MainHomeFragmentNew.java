@@ -1504,7 +1504,10 @@ public class MainHomeFragmentNew extends Fragment implements NewHttpResponse, My
                 if (!TextUtils.isEmpty(result)) {
                     homeDoorShow(result);
                 } else {
-                    showExceptionDoorData();
+                    String homeUseDoorCache = mShared.getString(COLOR_HOME_USEDOOR, "");
+                    if (TextUtils.isEmpty(homeUseDoorCache)) {
+                        showExceptionDoorData();
+                    }
                 }
                 break;
             case 4:
