@@ -48,6 +48,7 @@ import static com.user.activity.UserRegisterAndLoginActivity.MOBILE;
 import static com.user.activity.UserRegisterAndLoginActivity.SUCCEED;
 
 /**
+ *
  * @name ${yuansk}
  * @class name：${PACKAGE_NAME}
  * @class describe
@@ -85,6 +86,7 @@ public class UserIdentityLoginActivity extends AppCompatActivity implements OnCl
         setContentView(R.layout.activity_identitycode_login_layout);
         shared = getSharedPreferences(UserAppConst.USERINFO, 0);
         editor = shared.edit();
+        EventBus.getDefault().register(this);
         MobSDK.init(getApplicationContext());
         initView();
         newUserModel = new NewUserModel(this);
@@ -415,5 +417,16 @@ public class UserIdentityLoginActivity extends AppCompatActivity implements OnCl
         lastClick = System.currentTimeMillis();
         return true;
     }
+
+    public void onEvent(Object event) {
+        final Message message = (Message) event;
+        switch (message.what) {
+            case UserMessageConstant.SIGN_IN_SUCCESS:
+                finish();
+                break;
+        }
+    }
+
+
 }
 
