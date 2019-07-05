@@ -94,18 +94,23 @@
                     android:drawablePadding="8dp"
                     android:gravity="center"
                     android:paddingLeft="8dp"
-                    android:paddingRight="8dp"
                     android:textColor="@color/black_text_color"
-                    android:textSize="16sp" />
+                    android:paddingStart="8dp"
+                    android:textSize="16sp"
+                    tools:ignore="RtlSymmetry" />
 
                 <ImageView
                     android:id="@+id/iv_city"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_height="match_parent"
                     android:layout_centerVertical="true"
                     android:layout_toEndOf="@+id/tv_city"
+                    android:paddingStart="12dp"
+                    android:paddingLeft="12dp"
                     android:layout_toRightOf="@+id/tv_city"
-                    android:background="@drawable/icon_down"
+                    android:paddingEnd="36dp"
+                    android:paddingRight="36dp"
+                    android:src="@drawable/icon_down"
                     tools:ignore="ContentDescription" />
             </RelativeLayout>
 
