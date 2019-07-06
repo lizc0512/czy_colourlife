@@ -38,12 +38,12 @@ public class LeadActivity extends BaseActivity implements View.OnClickListener {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_lead);
         //不清除缓存
-     //   editor.putString(UserAppConst.APKNAME, "");
-       // editor.apply();
+        editor.putString(UserAppConst.APKNAME, "");
+        editor.apply();
         //清除缓存
-        String mobilePhone = shared.getString(UserAppConst.Colour_login_mobile, "");
-        editor.clear().apply();
-        editor.putString(UserAppConst.Colour_login_mobile, mobilePhone).apply();
+//        String mobilePhone = shared.getString(UserAppConst.Colour_login_mobile, "");
+//        editor.clear().apply();
+//        editor.putString(UserAppConst.Colour_login_mobile, mobilePhone).apply();
         cancel = (TextView) findViewById(R.id.cancel);
         cancel.setOnClickListener(this);
         leadViewPager = (ViewPager) findViewById(R.id.lead_viewPager);

@@ -542,6 +542,7 @@ public class UserRegisterAndLoginActivity extends BaseActivity implements OnClic
                 if (isRegister == 1) {
                     loginSource = "REGISTERED";
                     if (isWhite == 1) {
+                        editor.putString(UserAppConst.Colour_login_password, loginPawd).apply();
                         newUserModel.getAuthToken(4, mobile, loginPawd, "1", true, UserRegisterAndLoginActivity.this);
                     } else if (isWhite == 5) {
                         if (TextUtils.isEmpty(forbidNotice)) {
@@ -592,7 +593,6 @@ public class UserRegisterAndLoginActivity extends BaseActivity implements OnClic
                 break;
             case 4://获取用户的信息 ,跳转到主页
                 if (!TextUtils.isEmpty(result)) {
-                    editor.putString(UserAppConst.Colour_login_password, loginPawd).apply();
                     newUserModel.getUserInformation(13, true, this);
                 } else {
                     Map<String, String> loginMap = new HashMap<String, String>();
