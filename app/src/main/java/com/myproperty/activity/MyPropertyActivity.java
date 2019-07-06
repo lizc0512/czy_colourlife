@@ -71,10 +71,6 @@ public class MyPropertyActivity extends BaseActivity implements View.OnClickList
     public boolean fromCustomerInfo = false;
     private String id = "";//房产唯一id
 
-    //无认证
-    private RelativeLayout rl_no_auth;
-    private ImageView iv_close;
-    private TextView tv_property;
     //认证列表
     private RelativeLayout rl_auth;
     private SwipeMenuRecyclerView address_auth_rv;
@@ -123,7 +119,6 @@ public class MyPropertyActivity extends BaseActivity implements View.OnClickList
         mBack.setOnClickListener(this);
         img_right.setOnClickListener(this);
 
-        rl_no_auth = findViewById(R.id.rl_no_auth);
         rl_auth = findViewById(R.id.rl_auth);
 
         rl_content = findViewById(R.id.rl_content);
@@ -143,22 +138,9 @@ public class MyPropertyActivity extends BaseActivity implements View.OnClickList
     }
 
     /**
-     * 未认证
-     */
-    private void initNoAuth() {
-        rl_content.setVisibility(View.GONE);
-        rl_no_auth.setVisibility(View.VISIBLE);
-        iv_close = findViewById(R.id.iv_close);
-        tv_property = findViewById(R.id.tv_property);
-        iv_close.setOnClickListener(this);
-        tv_property.setOnClickListener(this);
-    }
-
-    /**
      * 房产认证
      */
     private void initAuth() {
-        rl_no_auth.setVisibility(View.GONE);
         rl_content.setVisibility(View.VISIBLE);
         rl_auth.setVisibility(View.VISIBLE);
         tv_check_property = findViewById(R.id.tv_check_property);
@@ -205,7 +187,6 @@ public class MyPropertyActivity extends BaseActivity implements View.OnClickList
     }
 
     private void initData() {
-        rl_no_auth.setVisibility(View.GONE);
         rl_auth.setVisibility(View.GONE);
         btnAddProperty.setText(getResources().getString(R.string.increase_property));
 
@@ -343,12 +324,6 @@ public class MyPropertyActivity extends BaseActivity implements View.OnClickList
                     intent.setClass(MyPropertyActivity.this, CustomerAddPropertyActivity.class);
                     startActivityForResult(intent, 1);
                 }
-                break;
-            case R.id.iv_close:
-                finish();
-                break;
-            case R.id.tv_property:
-                newCustomerInfoModel.isDialog(3, this);//是否需要选择列表框
                 break;
             case R.id.tv_enter:
                 guide = "hide";
