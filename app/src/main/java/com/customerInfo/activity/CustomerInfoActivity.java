@@ -246,6 +246,7 @@ public class CustomerInfoActivity extends BaseActivity implements View.OnClickLi
             case R.id.address_ll:
                 TCAgent.onEvent(getApplicationContext(), "203016");
                 intent = new Intent(this, MyPropertyActivity.class);
+                intent.putExtra(MyPropertyActivity.FROM_CUSTOMER_INFO, true);
                 startActivityForResult(intent, 1);
                 break;
             case R.id.ll_gender:

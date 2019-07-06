@@ -26,7 +26,6 @@ import com.mycarinfo.model.MyCarInfoModel;
 import com.mycarinfo.protocol.COLOURTICKETMYCARINFOLIST;
 import com.mycarinfo.protocol.VehicleDeletevehiclePostApi;
 import com.mycarinfo.protocol.VehicleGetmyvehicleGetApi;
-import com.myproperty.activity.MyPropertyActivity;
 import com.tendcloud.tenddata.TCAgent;
 
 import java.util.ArrayList;

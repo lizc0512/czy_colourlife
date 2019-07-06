@@ -45,7 +45,7 @@ import cn.net.cyberway.utils.CityManager;
  */
 public class MyPropertyActivity extends BaseActivity implements View.OnClickListener, NewHttpResponse {
 
-    public static final String FROM_HOME = "from_home";
+    public static final String FROM_CUSTOMER_INFO = "from_customer_info";
 
     private ImageView mBack;
     private TextView mTitle;
@@ -68,7 +68,7 @@ public class MyPropertyActivity extends BaseActivity implements View.OnClickList
     private SharedPreferences mShared;
     public SharedPreferences.Editor mEditor;
     public int customer_id;
-    public boolean fromHome = false;
+    public boolean fromCustomerInfo = false;
     private String id = "";//房产唯一id
 
     //无认证
@@ -90,7 +90,7 @@ public class MyPropertyActivity extends BaseActivity implements View.OnClickList
         mEditor = mShared.edit();
         newCustomerInfoModel = new NewCustomerInfoModel(this);
         Intent intent = getIntent();
-        fromHome = !TextUtils.isEmpty(intent.getStringExtra(FROM_HOME));//从首页进入
+        fromCustomerInfo = intent.getBooleanExtra(FROM_CUSTOMER_INFO, false);
         initView();
         initLoad();
     }
@@ -109,11 +109,7 @@ public class MyPropertyActivity extends BaseActivity implements View.OnClickList
         if ("1".equals(auth)) {
             initData();
         } else {
-            if (fromHome) {
-                initNoAuth();
-            } else {
-                newCustomerInfoModel.isDialog(3, this);//是否需要选择列表框
-            }
+            newCustomerInfoModel.isDialog(3, this);//是否需要选择列表框
         }
     }
 
@@ -297,7 +293,6 @@ public class MyPropertyActivity extends BaseActivity implements View.OnClickList
         AddressListEntity.ContentBean.DataBean data = communityBeanList.get(position);
         Intent intent = new Intent();
         intent.setClass(MyPropertyActivity.this, PropertyDetailActivity.class);
-
         intent.putExtra(PropertyDetailActivity.ID, data.getId());
         intent.putExtra(PropertyDetailActivity.COMMUNITY_UUID, data.getCommunity_uuid());
         intent.putExtra(PropertyDetailActivity.COMMUNITY_NAME, data.getCommunity_name());
@@ -426,9 +421,11 @@ public class MyPropertyActivity extends BaseActivity implements View.OnClickList
                         for (AddressListEntity.ContentBean.DataBean communityBean : communityBeanList) {
                             if (communityBean.getIs_default() == 1) {
                                 defaultAddressId = communityBean.getId();
-                                Intent intent = new Intent();
-                                intent.putExtra("community", communityBean.getCommunity_name());
-                                setResult(1, intent);
+                                if (fromCustomerInfo) {
+                                    Intent intent = new Intent();
+                                    intent.putExtra("community", communityBean.getCommunity_name());
+                                    setResult(1, intent);
+                                }
                                 break;
                             }
                         }
