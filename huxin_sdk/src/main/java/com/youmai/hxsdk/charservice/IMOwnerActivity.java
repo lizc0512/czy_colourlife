@@ -134,6 +134,7 @@ public class IMOwnerActivity extends SdkBaseActivity implements
     public static final String DST_PHONE = "DST_PHONE";
     public static final String DST_AVATAR = "DST_AVATAR";
     public static final String DST_USERNAME = "DST_USERNAME";
+    public static final String DST_REALNAME = "DST_REALNAME";
     public static final String EXTRA_SCROLL_POSITION = "EXTRA_SCROLL_POSITION";
 
     private static final int REQUEST_CODE_PICTURE = 200;
@@ -181,6 +182,7 @@ public class IMOwnerActivity extends SdkBaseActivity implements
     private String dstPhone;      //目标手机号
     private String dstAvatar;     //目标的头像
     private String dstUserName;   //目标的username
+    private String dstRealName;   //目标的realname
 
     private boolean isPause = false;
     private boolean isMsgReceive = false;
@@ -281,6 +283,7 @@ public class IMOwnerActivity extends SdkBaseActivity implements
         dstPhone = fromIntent.getStringExtra(DST_PHONE);
         dstAvatar = fromIntent.getStringExtra(DST_AVATAR);
         dstUserName = fromIntent.getStringExtra(DST_USERNAME);
+        dstRealName = fromIntent.getStringExtra(DST_REALNAME);
 
         if (StringUtils.isEmpty(dstUuid)) {
             dstUuid = HuxinSdkManager.instance().getUuid();
@@ -672,13 +675,19 @@ public class IMOwnerActivity extends SdkBaseActivity implements
                 intent.setClass(mContext, ScoreActivity.class);
                 intent.putExtra(IMOwnerActivity.DST_AVATAR, dstAvatar);
                 intent.putExtra(IMOwnerActivity.DST_NAME, dstNickName);
+                intent.putExtra(IMOwnerActivity.DST_REALNAME, dstRealName);
                 startActivity(intent);
             }
         });
 
 
         tvName = view.findViewById(R.id.tv_name);
-        tvName.setText(dstNickName);
+        if (!TextUtils.isEmpty(dstRealName)){
+            tvName.setText(dstRealName);
+        }else{
+            tvName.setText(dstNickName);
+        }
+
         tvPhone = view.findViewById(R.id.tv_phone);
         tvPhone.setText(dstPhone);
     }

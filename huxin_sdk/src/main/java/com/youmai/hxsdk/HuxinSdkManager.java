@@ -1601,6 +1601,7 @@ public class HuxinSdkManager {
         intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
         intent.putExtra(IMOwnerActivity.DST_UUID, mServiceInfo.getUuid());
         intent.putExtra(IMOwnerActivity.DST_NAME, mServiceInfo.getNickName());
+        intent.putExtra(IMOwnerActivity.DST_REALNAME,mServiceInfo.getRealName());
         intent.putExtra(IMOwnerActivity.DST_AVATAR, mServiceInfo.getAvatar());
         intent.putExtra(IMOwnerActivity.DST_USERNAME, mServiceInfo.getUserName());
         intent.putExtra(IMOwnerActivity.DST_PHONE, mServiceInfo.getPhoneNum());

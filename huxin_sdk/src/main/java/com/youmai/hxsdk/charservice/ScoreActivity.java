@@ -87,13 +87,19 @@ public class ScoreActivity extends SdkBaseActivity implements CompoundButton.OnC
     private void initView() {
         String dstAvatar = getIntent().getStringExtra(IMOwnerActivity.DST_AVATAR);
         String dstNickName = getIntent().getStringExtra(IMOwnerActivity.DST_NAME);
+        String dstRealName = getIntent().getStringExtra(IMOwnerActivity.DST_REALNAME);
 
         TextView tvTitle = (TextView) findViewById(R.id.tv_title);
         tvTitle.setText("评价");
 
         tv_ask = (TextView) findViewById(R.id.tv_ask);
         String format = getResources().getString(R.string.hx_im_server_ack);
-        tv_ask.setText(String.format(format, dstNickName));
+        if (TextUtils.isEmpty(dstRealName)) {
+            tv_ask.setText(String.format(format, dstNickName));
+        } else {
+            tv_ask.setText(String.format(format, dstRealName));
+        }
+
 
         tv_result = (TextView) findViewById(R.id.tv_result);
 
