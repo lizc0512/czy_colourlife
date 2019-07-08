@@ -135,6 +135,8 @@ public class PropertyRealNameActivity extends BaseActivity implements View.OnCli
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
+                } else {
+                    ToastUtil.showToast(this, "新增失败请重试");
                 }
                 break;
         }
