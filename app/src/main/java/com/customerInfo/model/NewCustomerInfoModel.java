@@ -641,7 +641,7 @@ public class NewCustomerInfoModel extends BaseModel {
                     int resultCode = showSuccesResultMessageTheme(result);
                     if (resultCode == 0) {
                         newHttpResponse.OnHttpResponse(what, result);
-                    } else if (responseCode == 422) {
+                    } else if (resultCode == 422) {
                         ToastUtil.showToast(mContext, "新增失败请重试");
                     } else {
                         showSuccesResultMessage(result);
