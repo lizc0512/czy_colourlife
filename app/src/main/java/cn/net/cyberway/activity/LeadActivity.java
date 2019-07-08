@@ -3,6 +3,7 @@ package cn.net.cyberway.activity;
 
 import android.Manifest;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
@@ -38,12 +39,14 @@ public class LeadActivity extends BaseActivity implements View.OnClickListener {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_lead);
         //不清除缓存
-//        editor.putString(UserAppConst.APKNAME, "");
-//        editor.apply();
+        editor.putString(UserAppConst.APKNAME, "");
+        editor.apply();
+        SharedPreferences walletShare = getSharedPreferences("cache", 0);
+        walletShare.edit().clear().apply();
         //清除缓存
-        String mobilePhone = shared.getString(UserAppConst.Colour_login_mobile, "");
-        editor.clear().apply();
-        editor.putString(UserAppConst.Colour_login_mobile, mobilePhone).apply();
+//        String mobilePhone = shared.getString(UserAppConst.Colour_login_mobile, "");
+//        editor.clear().apply();
+//        editor.putString(UserAppConst.Colour_login_mobile, mobilePhone).apply();
         cancel = (TextView) findViewById(R.id.cancel);
         cancel.setOnClickListener(this);
         leadViewPager = (ViewPager) findViewById(R.id.lead_viewPager);
