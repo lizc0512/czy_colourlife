@@ -181,17 +181,6 @@ public class CustomerAddPropertyActivity extends BaseActivity implements View.On
             }
         });
 
-        et_search_area.setOnEditorActionListener((v, actionId, event) -> {
-            String keyword = et_search_area.getText().toString().trim();
-            if (actionId == EditorInfo.IME_ACTION_SEARCH && !TextUtils.isEmpty(keyword)) {
-                choiceType = 0;
-                //模糊搜索所有小区
-                dismissSoftKeyboard(this);
-                newCustomerInfoModel.addressSelect(3, "", keyword, page, 400, CustomerAddPropertyActivity.this);
-            }
-            return false;
-        });
-
         rv_area = findViewById(R.id.rv_area);
         rv_area.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
         areaAdapter = new AreaPropertyAdapter(this, areaBeanList);
@@ -202,7 +191,6 @@ public class CustomerAddPropertyActivity extends BaseActivity implements View.On
         rv_address.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
         addAdapter = new AddPropertyAdapter(this, addBeanList);
         rv_address.setAdapter(addAdapter);
-        rv_address.useDefaultLoadMore();
 
         sideBar = findViewById(R.id.sidebar);
         tv_toast = findViewById(R.id.tv_toast);
@@ -217,6 +205,22 @@ public class CustomerAddPropertyActivity extends BaseActivity implements View.On
             }
         });
 
+        et_search_area.setOnEditorActionListener((v, actionId, event) -> {
+            String keyword = et_search_area.getText().toString().trim();
+            if (actionId == EditorInfo.IME_ACTION_SEARCH && !TextUtils.isEmpty(keyword)) {
+                choiceType = 0;
+                //模糊搜索所有小区
+                dismissSoftKeyboard(this);
+                if (null != addAdapter && 0 < addBeanList.size()) {
+                    addBeanList.clear();
+                    addAdapter.notifyDataSetChanged();
+                }
+                newCustomerInfoModel.addressSelect(3, "", keyword, page, 400, CustomerAddPropertyActivity.this);
+            }
+            return false;
+        });
+
+
         lv_city = findViewById(R.id.lv_city);
         lv_city.setOnItemClickListener((parent, view, position, id) -> {
             fl_city.setVisibility(View.GONE);
@@ -224,6 +228,10 @@ public class CustomerAddPropertyActivity extends BaseActivity implements View.On
             tv_city.setText(city_name);
             iv_city.setVisibility(View.VISIBLE);
             dismissSoftKeyboard(this);
+            if (null != addAdapter && 0 < addBeanList.size()) {
+                addBeanList.clear();
+                addAdapter.notifyDataSetChanged();
+            }
             newCustomerInfoModel.addressSelect(6, city_name, "", page, 400, this);
         });
 
@@ -267,13 +275,13 @@ public class CustomerAddPropertyActivity extends BaseActivity implements View.On
             tv_city.setText(city_name);
             if (!TextUtils.isEmpty(room_name)) {//有房号
                 dismissSoftKeyboard(this);
-                newCustomerInfoModel.getRoomData(9, unit_uuid, page, 400, true, CustomerAddPropertyActivity.this);
+                newCustomerInfoModel.getRoomData(9, unit_uuid, page, 400, false, CustomerAddPropertyActivity.this);
             } else if (!TextUtils.isEmpty(unit_name)) {//有单元
                 dismissSoftKeyboard(this);
-                newCustomerInfoModel.getUnitData(8, building_uuid, page, 400, true, CustomerAddPropertyActivity.this);
+                newCustomerInfoModel.getUnitData(8, building_uuid, page, 400, false, CustomerAddPropertyActivity.this);
             } else if (!TextUtils.isEmpty(building_name)) {//有楼栋
                 dismissSoftKeyboard(this);
-                newCustomerInfoModel.getBuildingData(7, community_uuid, page, 400, true, CustomerAddPropertyActivity.this);
+                newCustomerInfoModel.getBuildingData(7, community_uuid, page, 400, false, CustomerAddPropertyActivity.this);
             } else {//只有小区，显示城市下的小区
                 dismissSoftKeyboard(this);
                 newCustomerInfoModel.addressSelect(6, city_name, "", page, 400, this);
@@ -314,6 +322,10 @@ public class CustomerAddPropertyActivity extends BaseActivity implements View.On
                     }
                     tv_garden.setText(addBeanList.get(position).getName());
                     dismissSoftKeyboard(this);
+                    if (null != addAdapter && 0 < addBeanList.size()) {
+                        addBeanList.clear();
+                        addAdapter.notifyDataSetChanged();
+                    }
                     newCustomerInfoModel.addressSelect(6, city_name, addBeanList.get(position).getName(), page, 400, this);
                     break;
                 case 1://请求楼栋
@@ -321,21 +333,33 @@ public class CustomerAddPropertyActivity extends BaseActivity implements View.On
                     community_name = addBeanList.get(position).getName();
                     tv_garden.setText(community_name);
                     dismissSoftKeyboard(this);
-                    newCustomerInfoModel.getBuildingData(7, community_uuid, page, 400, true, CustomerAddPropertyActivity.this);
+                    if (null != addAdapter && 0 < addBeanList.size()) {
+                        addBeanList.clear();
+                        addAdapter.notifyDataSetChanged();
+                    }
+                    newCustomerInfoModel.getBuildingData(7, community_uuid, page, 400, false, CustomerAddPropertyActivity.this);
                     break;
                 case 2:
                     building_uuid = addBeanList.get(position).getUuid();
                     building_name = addBeanList.get(position).getName();
                     tv_block.setText(building_name);
                     dismissSoftKeyboard(this);
-                    newCustomerInfoModel.getUnitData(8, building_uuid, page, 400, true, CustomerAddPropertyActivity.this);
+                    if (null != addAdapter && 0 < addBeanList.size()) {
+                        addBeanList.clear();
+                        addAdapter.notifyDataSetChanged();
+                    }
+                    newCustomerInfoModel.getUnitData(8, building_uuid, page, 400, false, CustomerAddPropertyActivity.this);
                     break;
                 case 3:
                     unit_uuid = addBeanList.get(position).getUuid();
                     unit_name = addBeanList.get(position).getName();
                     tv_dong.setText(unit_name);
                     dismissSoftKeyboard(this);
-                    newCustomerInfoModel.getRoomData(9, unit_uuid, page, 400, true, CustomerAddPropertyActivity.this);
+                    if (null != addAdapter && 0 < addBeanList.size()) {
+                        addBeanList.clear();
+                        addAdapter.notifyDataSetChanged();
+                    }
+                    newCustomerInfoModel.getRoomData(9, unit_uuid, page, 400, false, CustomerAddPropertyActivity.this);
                     break;
             }
         }
@@ -356,7 +380,7 @@ public class CustomerAddPropertyActivity extends BaseActivity implements View.On
             community_name = areaBeanList.get(position).getName();
             tv_garden.setText(community_name);
             dismissSoftKeyboard(this);
-            newCustomerInfoModel.getBuildingData(7, community_uuid, page, 400, true, CustomerAddPropertyActivity.this);
+            newCustomerInfoModel.getBuildingData(7, community_uuid, page, 400, false, CustomerAddPropertyActivity.this);
         }
     }
 
@@ -468,6 +492,10 @@ public class CustomerAddPropertyActivity extends BaseActivity implements View.On
                 }
                 break;
             case R.id.tv_city://城市列表
+                if (null != addAdapter && 0 < addBeanList.size()) {
+                    addBeanList.clear();
+                    addAdapter.notifyDataSetChanged();
+                }
                 tv_choose.setText("选择城市");
                 iv_city.setVisibility(View.GONE);
                 fl_city.setVisibility(View.VISIBLE);
@@ -475,6 +503,10 @@ public class CustomerAddPropertyActivity extends BaseActivity implements View.On
                 newCustomerInfoModel.cityListSelect(11, this);
                 break;
             case R.id.iv_city://城市列表 按钮
+                if (null != addAdapter && 0 < addBeanList.size()) {
+                    addBeanList.clear();
+                    addAdapter.notifyDataSetChanged();
+                }
                 tv_choose.setText("选择城市");
                 iv_city.setVisibility(View.GONE);
                 fl_city.setVisibility(View.VISIBLE);
@@ -482,6 +514,10 @@ public class CustomerAddPropertyActivity extends BaseActivity implements View.On
                 newCustomerInfoModel.cityListSelect(11, this);
                 break;
             case R.id.tv_garden://点击花园
+                if (null != addAdapter && 0 < addBeanList.size()) {
+                    addBeanList.clear();
+                    addAdapter.notifyDataSetChanged();
+                }
                 choiceType = 0;
                 community_uuid = "";
                 community_name = "";
@@ -495,6 +531,10 @@ public class CustomerAddPropertyActivity extends BaseActivity implements View.On
                 newCustomerInfoModel.addressSelect(6, city_name, "", page, 400, this);
                 break;
             case R.id.tv_block:
+                if (null != addAdapter && 0 < addBeanList.size()) {
+                    addBeanList.clear();
+                    addAdapter.notifyDataSetChanged();
+                }
                 choiceType = 1;
                 building_uuid = "";
                 building_name = "";
@@ -502,21 +542,29 @@ public class CustomerAddPropertyActivity extends BaseActivity implements View.On
                 unit_name = "";
                 setBackground(2);
                 dismissSoftKeyboard(this);
-                newCustomerInfoModel.getBuildingData(7, community_uuid, page, 400, true, CustomerAddPropertyActivity.this);
+                newCustomerInfoModel.getBuildingData(7, community_uuid, page, 400, false, CustomerAddPropertyActivity.this);
                 break;
             case R.id.tv_dong:
+                if (null != addAdapter && 0 < addBeanList.size()) {
+                    addBeanList.clear();
+                    addAdapter.notifyDataSetChanged();
+                }
                 choiceType = 2;
                 unit_uuid = "";
                 unit_name = "";
                 setBackground(3);
                 dismissSoftKeyboard(this);
-                newCustomerInfoModel.getUnitData(8, building_uuid, page, 400, true, CustomerAddPropertyActivity.this);
+                newCustomerInfoModel.getUnitData(8, building_uuid, page, 400, false, CustomerAddPropertyActivity.this);
                 break;
             case R.id.tv_unit:
+                if (null != addAdapter && 0 < addBeanList.size()) {
+                    addBeanList.clear();
+                    addAdapter.notifyDataSetChanged();
+                }
                 choiceType = 3;
                 setBackground(4);
                 dismissSoftKeyboard(this);
-                newCustomerInfoModel.getRoomData(9, unit_uuid, page, 400, true, CustomerAddPropertyActivity.this);
+                newCustomerInfoModel.getRoomData(9, unit_uuid, page, 400, false, CustomerAddPropertyActivity.this);
                 break;
         }
     }
