@@ -11,6 +11,7 @@ import com.yanzhenjie.nohttp.NoHttp;
 import com.yanzhenjie.nohttp.RequestMethod;
 import com.yanzhenjie.nohttp.rest.Request;
 import com.yanzhenjie.nohttp.rest.Response;
+import com.youmai.hxsdk.utils.ToastUtil;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -637,14 +638,14 @@ public class NewCustomerInfoModel extends BaseModel {
                 int responseCode = response.getHeaders().getResponseCode();
                 String result = response.get();
                 if (responseCode == RequestEncryptionUtils.responseSuccess) {
-                    int resultCode = showSuccesResultMessage(result);
+                    int resultCode = showSuccesResultMessageTheme(result);
                     if (resultCode == 0) {
                         newHttpResponse.OnHttpResponse(what, result);
+                    } else if (responseCode == 422) {
+                        ToastUtil.showToast(mContext, "新增失败请重试");
                     } else {
-                        newHttpResponse.OnHttpResponse(what, "");
+                        showSuccesResultMessage(result);
                     }
-                } else {
-                    newHttpResponse.OnHttpResponse(what, "");
                 }
             }
 
