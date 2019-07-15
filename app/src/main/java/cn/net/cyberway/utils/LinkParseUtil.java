@@ -39,8 +39,12 @@ import com.notification.activity.ENotificationActivity;
 import com.notification.activity.NotificationActivity;
 import com.scanCode.activity.CaptureActivity;
 import com.setting.activity.SettingActivity;
+import com.sobot.chat.SobotApi;
+import com.sobot.chat.api.model.Information;
 import com.user.UserAppConst;
 import com.user.activity.UserRegisterAndLoginActivity;
+
+import java.util.HashSet;
 
 import cn.net.cyberway.R;
 import cn.net.cyberway.activity.FindPropertyActivity;
@@ -235,6 +239,22 @@ public class LinkParseUtil {
                             context.startActivity(intent);
                             break;
                         case "huxinCalling":
+                            break;
+                        case "smartService":
+                            Information info = new Information();
+                            info.setAppkey(Constants.SMART_SERVICE_KEY);  //分配给App的的密钥
+                            info.setUid(mShared.getString(UserAppConst.Colour_User_uuid,""));
+                            info.setUname(mShared.getString(UserAppConst.Colour_NAME,""));
+                            info.setRealname(mShared.getString(UserAppConst.Colour_Real_name,""));
+                            info.setTel(mShared.getString(UserAppConst.Colour_login_mobile,""));
+                            info.setFace(mShared.getString(UserAppConst.Colour_head_img,""));
+                            info.setArtificialIntelligence(true);
+                            info.setInitModeType(-1);
+                            HashSet<String> tmpSet = new HashSet<>();
+                            tmpSet.add("转人工");
+                            tmpSet.add("人工");
+                            info.setTransferKeyWord(tmpSet);
+                            SobotApi.startSobotChat(context, info);
                             break;
                         case "Colorbean":
                             intent = new Intent(context, CustomerColourBeanActivity.class);

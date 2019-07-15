@@ -31,7 +31,7 @@
     />
 </p>
 <p>
-    <input type="button" id="user" value="分享到第三方的app平台 nnnnnn" style="font-size: 24px"
+    <input type="button" id="user" value="点击跳转到智能客服" style="font-size: 24px"
            onclick="getUserInfo(this);"
     />
 </p>
@@ -81,14 +81,8 @@
 
 
         function getUserInfo(e) {
-              var name ={
-  'title': 'gggggggws',
-  'content': 'retwytwrtwgw',
- 'url': 'http://m.baidu.com',
-  'image': 'http://pic.58pic.com/58pic/13/19/80/77H58PICYGD_1024.jpg',
-  'platform': '[ShareTypeWeixinSession]'
-};
-               window.jsObject.ColourlifeShareCallBack(JSON.stringify(name));
+              var name="colourlife://proto?type=smartService";
+               window.jsObject.jumpPrototype(name);
         }
 
 

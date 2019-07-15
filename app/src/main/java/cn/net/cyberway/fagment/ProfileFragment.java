@@ -14,6 +14,7 @@ import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -21,6 +22,7 @@ import com.BeeFramework.Utils.ToastUtil;
 import com.BeeFramework.model.Constants;
 import com.BeeFramework.model.NewHttpResponse;
 import com.customerInfo.activity.CustomerInfoActivity;
+import com.customerInfo.activity.CustomerMakeZXingActivity;
 import com.dashuview.library.keep.ListenerUtils;
 import com.dashuview.library.keep.MyListener;
 import com.external.eventbus.EventBus;
@@ -214,8 +216,10 @@ public class ProfileFragment extends Fragment implements View.OnClickListener, M
         mHeadImg = myView.findViewById(R.id.profile_head_img);
         mUsername = myView.findViewById(R.id.profile_username);
         mCommunity = myView.findViewById(R.id.profile_community);
+        ImageView iv_qr_code = myView.findViewById(R.id.iv_qr_code);
         rl_profile_info = myView.findViewById(R.id.rl_profile_info);
         rl_profile_info.setOnClickListener(this);
+        iv_qr_code.setOnClickListener(this);
         TCAgent.onEvent(getActivity(), "203001");
         ListenerUtils.setCallBack(this);
         refresh_layout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
@@ -276,6 +280,10 @@ public class ProfileFragment extends Fragment implements View.OnClickListener, M
                 TCAgent.onEvent(getActivity(), "203002");
                 intent = new Intent(getActivity(), CustomerInfoActivity.class);
                 startActivityForResult(intent, 6);
+                break;
+            case R.id.iv_qr_code:
+                intent = new Intent(getActivity(), CustomerMakeZXingActivity.class);
+                startActivity(intent);
                 break;
         }
     }

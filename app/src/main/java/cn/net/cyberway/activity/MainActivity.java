@@ -48,6 +48,7 @@ import com.nohttp.utils.GsonUtils;
 import com.popupScreen.PopupScUtils;
 import com.popupScreen.model.PopupModel;
 import com.scanCode.activity.CaptureActivity;
+import com.sobot.chat.SobotApi;
 import com.umeng.analytics.MobclickAgent;
 import com.update.activity.UpdateVerSion;
 import com.update.service.UpdateService;
@@ -396,6 +397,7 @@ public class MainActivity extends BaseFragmentActivity implements View.OnClickLi
      * 清除用户数据
      */
     public void clearUserData(String notice) {
+        SobotApi.exitSobotChat(MainActivity.this);//退出智齿客服
         showUnReadMsg(0);
         clearUserCache(MainActivity.this);
         myManager.cancel(NOTIFICATION_ID_1);

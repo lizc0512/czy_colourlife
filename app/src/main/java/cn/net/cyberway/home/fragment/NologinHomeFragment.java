@@ -157,6 +157,7 @@ public class NologinHomeFragment extends Fragment implements NewHttpResponse, Vi
         LinearLayout fuction_layout = function_view.findViewById(R.id.fuction_layout);
         rv_application = application_view.findViewById(R.id.rv_application);
         bind_manager_layout = manager_view.findViewById(R.id.bind_manager_layout);
+        bind_manager_layout.setVisibility(View.VISIBLE);
         iv_manager_photo = manager_view.findViewById(R.id.iv_manager_photo);
         tv_manager_name = manager_view.findViewById(R.id.tv_manager_name);
         tv_manager_name.setText("未绑定");

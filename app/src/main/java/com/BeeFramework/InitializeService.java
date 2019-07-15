@@ -10,6 +10,7 @@ import com.chuanglan.shanyan_sdk.OneKeyLoginManager;
 import com.chuanglan.shanyan_sdk.listener.InitListener;
 import com.mob.MobSDK;
 import com.qiniu.droid.rtc.QNRTCEnv;
+import com.sobot.chat.SobotApi;
 import com.tencent.bugly.Bugly;
 import com.tendcloud.tenddata.TCAgent;
 import com.umeng.commonsdk.UMConfigure;
@@ -35,7 +36,7 @@ public class InitializeService extends IntentService {
     protected void onHandleIntent(@Nullable Intent intent) {
         try {
             MobSDK.init(getApplicationContext());
-
+            SobotApi.initSobotSDK(getApplicationContext(), Constants.SMART_SERVICE_KEY, "");
             JPushInterface.setDebugMode(false); // 设置开启日志,发布时请关闭日志
             JPushInterface.init(this);
             //开始定位
@@ -49,6 +50,7 @@ public class InitializeService extends IntentService {
             UMConfigure.setEncryptEnabled(true);
             UMConfigure.setLogEnabled(false);// 设置开启日志,发布时请关闭日志
             QNRTCEnv.init(getApplicationContext());
+
 //        LeakCanary.install(this);
 //        initSWLocation();//数位
             initBugly();
@@ -56,6 +58,7 @@ public class InitializeService extends IntentService {
 
         }
     }
+
     /**
      * 腾讯热更新 bugly
      */
