@@ -1,0 +1,21 @@
+apply plugin: 'com.android.library'
+
+android {
+    compileSdkVersion 28
+
+    defaultConfig {
+        minSdkVersion 16
+    }
+
+    libraryVariants.all {
+        it.generateBuildConfig.enabled = false
+    }
+}
+
+dependencies {
+    api fileTree(include: ['*.jar'], dir: 'libs')
+    compileOnly 'com.squareup.okhttp3:okhttp:3.10.0'
+    compileOnly 'com.android.support:support-v4:28.0.0'
+    compileOnly 'com.github.bumptech.glide:glide:3.7.0'
+    api 'com.sobot.chat:sobotsupport-glidev4:1.0.8'
+}
