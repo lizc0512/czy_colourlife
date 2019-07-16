@@ -86,7 +86,6 @@
     <color name="color_007fff">#007fff</color>
     <color name="color_cceaff">#CCEAFF</color>
     <color name="color_bbc0cb">#bbc0cb</color>
-
     <color name="color_131719">#131719</color>
     <color name="color_7e8b95">#7E8B95</color>
     <color name="color_647786">#647786</color>
@@ -96,31 +95,25 @@
     <color name="color_f5f5f5">#F5F5F5</color>
     <color name="color_8eafea">#8EAFEA</color>
     <color name="color_d95050">#D95050</color>
-
     <color name="color_a0d4ff">#A0D4FF</color>
     <color name="color_657fd4">#657FD4</color>
-
     <color name="color_feb83d">#FEB83D</color>
     <color name="color_f1a348">#f1a348</color>
     <color name="color_80f1a348">#80F1A348</color>
-    <!--彩豆主题色-->
     <color name="color_f28146">#f28146</color>
     <color name="color_ffe5cc">#ffe5cc</color>
     <color name="color_ff943c">#ff943c</color>
     <color name="color_d2d2d2">#D2D2D2</color>
-    <!--邀请好友主题色-->
     <color name="color_ff6a19">#FF6A19</color>
-
     <color name="color_329dfa">#329DFA</color>
+    <color name="color_14329dfa">#14329DFA</color>
     <color name="color_f0632b">#F0632B</color>
     <color name="color_cecfd1">#CECFD1</color>
     <color name="color_f2f5f7">#F2F5F7</color>
-    <!--彩惠人生-->
     <color name="color_ff898b">#FF898B</color>
     <color name="color_fd4600">#FD4600</color>
-
+    <color name="color_14fd4600">#14FD4600</color>
     <color name="color_13ce66">#13CE66</color>
-
     <color name="color_80ffffff">#80FFFFFF</color>
     <color name="color_46ffffff">#46FFFFFF</color>
     <color name="color_1affffff">#1AFFFFFF</color>
@@ -132,5 +125,8 @@
     <color name="color_e8e8e8">#e8e8e8</color>
     <color name="color_bfc7cc">#bfc7c7</color>
     <color name="color_33000000">#33000000</color>
+    <color name="colour_ff5868">#FF5868</color>
+    <color name="colour_ededed">#EDEDED</color>
+
 
 </resources>
