@@ -118,6 +118,9 @@ public class CustomerAddPropertyActivity extends BaseActivity implements View.On
     private int totalRecord;
     private String city_name = "";
     private int page = 1;
+    private int type = 1;
+    private int pageSize = 15;
+    private String keyword = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -181,16 +184,54 @@ public class CustomerAddPropertyActivity extends BaseActivity implements View.On
             }
         });
 
+        et_search_area.setOnEditorActionListener((v, actionId, event) -> {
+            keyword = et_search_area.getText().toString().trim();
+            if (actionId == EditorInfo.IME_ACTION_SEARCH && !TextUtils.isEmpty(keyword)) {
+                choiceType = 0;
+                //模糊搜索所有小区
+                dismissSoftKeyboard(this);
+                page = 1;
+                if (null != addAdapter && 0 < addBeanList.size()) {
+                    addBeanList.clear();
+                    addAdapter.notifyDataSetChanged();
+                }
+                newCustomerInfoModel.addressSelect(3, "", keyword, page, pageSize, CustomerAddPropertyActivity.this);
+            }
+            return false;
+        });
+
         rv_area = findViewById(R.id.rv_area);
         rv_area.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
         areaAdapter = new AreaPropertyAdapter(this, areaBeanList);
         rv_area.setAdapter(areaAdapter);
         rv_area.useDefaultLoadMore();
+        rv_area.setLoadMoreListener(() -> {
+            page++;
+            newCustomerInfoModel.addressSelect(3, "", keyword, page, pageSize, this);
+        });
 
         rv_address = findViewById(R.id.rv_address);
         rv_address.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
         addAdapter = new AddPropertyAdapter(this, addBeanList);
         rv_address.setAdapter(addAdapter);
+        rv_address.useDefaultLoadMore();
+        rv_address.setLoadMoreListener(() -> {
+            page++;
+            switch (type) {
+                case 1:
+                    newCustomerInfoModel.addressSelect(6, city_name, keyword, page, pageSize, this);
+                    break;
+                case 2:
+                    newCustomerInfoModel.getBuildingData(7, community_uuid, page, pageSize, false, this);
+                    break;
+                case 3:
+                    newCustomerInfoModel.getUnitData(8, building_uuid, page, pageSize, false, this);
+                    break;
+                case 4:
+                    newCustomerInfoModel.getRoomData(9, unit_uuid, page, pageSize, false, this);
+                    break;
+            }
+        });
 
         sideBar = findViewById(R.id.sidebar);
         tv_toast = findViewById(R.id.tv_toast);
@@ -205,22 +246,6 @@ public class CustomerAddPropertyActivity extends BaseActivity implements View.On
             }
         });
 
-        et_search_area.setOnEditorActionListener((v, actionId, event) -> {
-            String keyword = et_search_area.getText().toString().trim();
-            if (actionId == EditorInfo.IME_ACTION_SEARCH && !TextUtils.isEmpty(keyword)) {
-                choiceType = 0;
-                //模糊搜索所有小区
-                dismissSoftKeyboard(this);
-                if (null != addAdapter && 0 < addBeanList.size()) {
-                    addBeanList.clear();
-                    addAdapter.notifyDataSetChanged();
-                }
-                newCustomerInfoModel.addressSelect(3, "", keyword, page, 400, CustomerAddPropertyActivity.this);
-            }
-            return false;
-        });
-
-
         lv_city = findViewById(R.id.lv_city);
         lv_city.setOnItemClickListener((parent, view, position, id) -> {
             fl_city.setVisibility(View.GONE);
@@ -228,11 +253,13 @@ public class CustomerAddPropertyActivity extends BaseActivity implements View.On
             tv_city.setText(city_name);
             iv_city.setVisibility(View.VISIBLE);
             dismissSoftKeyboard(this);
+            page = 1;
+            keyword = "";
             if (null != addAdapter && 0 < addBeanList.size()) {
                 addBeanList.clear();
                 addAdapter.notifyDataSetChanged();
             }
-            newCustomerInfoModel.addressSelect(6, city_name, "", page, 400, this);
+            newCustomerInfoModel.addressSelect(6, city_name, keyword, page, pageSize, this);
         });
 
         cityAdapter = new CityPropertyAdapter(this, cityList);
@@ -275,16 +302,21 @@ public class CustomerAddPropertyActivity extends BaseActivity implements View.On
             tv_city.setText(city_name);
             if (!TextUtils.isEmpty(room_name)) {//有房号
                 dismissSoftKeyboard(this);
-                newCustomerInfoModel.getRoomData(9, unit_uuid, page, 400, false, CustomerAddPropertyActivity.this);
+                page = 1;
+                newCustomerInfoModel.getRoomData(9, unit_uuid, page, pageSize, false, CustomerAddPropertyActivity.this);
             } else if (!TextUtils.isEmpty(unit_name)) {//有单元
                 dismissSoftKeyboard(this);
-                newCustomerInfoModel.getUnitData(8, building_uuid, page, 400, false, CustomerAddPropertyActivity.this);
+                page = 1;
+                newCustomerInfoModel.getUnitData(8, building_uuid, page, pageSize, false, CustomerAddPropertyActivity.this);
             } else if (!TextUtils.isEmpty(building_name)) {//有楼栋
                 dismissSoftKeyboard(this);
-                newCustomerInfoModel.getBuildingData(7, community_uuid, page, 400, false, CustomerAddPropertyActivity.this);
+                page = 1;
+                newCustomerInfoModel.getBuildingData(7, community_uuid, page, pageSize, false, CustomerAddPropertyActivity.this);
             } else {//只有小区，显示城市下的小区
                 dismissSoftKeyboard(this);
-                newCustomerInfoModel.addressSelect(6, city_name, "", page, 400, this);
+                page = 1;
+                keyword = "";
+                newCustomerInfoModel.addressSelect(6, city_name, keyword, page, pageSize, this);
             }
             identity = intent.getBooleanExtra(IDENTITY, false);//是否跳转选中身份
         } else {
@@ -296,7 +328,9 @@ public class CustomerAddPropertyActivity extends BaseActivity implements View.On
             } else {
                 tv_city.setText(city_name);
                 dismissSoftKeyboard(this);
-                newCustomerInfoModel.addressSelect(6, city_name, "", page, 400, this);
+                page = 1;
+                keyword = "";
+                newCustomerInfoModel.addressSelect(6, city_name, keyword, page, pageSize, this);
             }
         }
     }
@@ -322,44 +356,49 @@ public class CustomerAddPropertyActivity extends BaseActivity implements View.On
                     }
                     tv_garden.setText(addBeanList.get(position).getName());
                     dismissSoftKeyboard(this);
+                    page = 1;
+                    keyword = addBeanList.get(position).getName();
                     if (null != addAdapter && 0 < addBeanList.size()) {
                         addBeanList.clear();
                         addAdapter.notifyDataSetChanged();
                     }
-                    newCustomerInfoModel.addressSelect(6, city_name, addBeanList.get(position).getName(), page, 400, this);
+                    newCustomerInfoModel.addressSelect(6, city_name, keyword, page, pageSize, this);
                     break;
                 case 1://请求楼栋
                     community_uuid = addBeanList.get(position).getUuid();
                     community_name = addBeanList.get(position).getName();
                     tv_garden.setText(community_name);
                     dismissSoftKeyboard(this);
+                    page = 1;
                     if (null != addAdapter && 0 < addBeanList.size()) {
                         addBeanList.clear();
                         addAdapter.notifyDataSetChanged();
                     }
-                    newCustomerInfoModel.getBuildingData(7, community_uuid, page, 400, false, CustomerAddPropertyActivity.this);
+                    newCustomerInfoModel.getBuildingData(7, community_uuid, page, pageSize, false, CustomerAddPropertyActivity.this);
                     break;
                 case 2:
                     building_uuid = addBeanList.get(position).getUuid();
                     building_name = addBeanList.get(position).getName();
                     tv_block.setText(building_name);
                     dismissSoftKeyboard(this);
+                    page = 1;
                     if (null != addAdapter && 0 < addBeanList.size()) {
                         addBeanList.clear();
                         addAdapter.notifyDataSetChanged();
                     }
-                    newCustomerInfoModel.getUnitData(8, building_uuid, page, 400, false, CustomerAddPropertyActivity.this);
+                    newCustomerInfoModel.getUnitData(8, building_uuid, page, pageSize, false, CustomerAddPropertyActivity.this);
                     break;
                 case 3:
                     unit_uuid = addBeanList.get(position).getUuid();
                     unit_name = addBeanList.get(position).getName();
                     tv_dong.setText(unit_name);
                     dismissSoftKeyboard(this);
+                    page = 1;
                     if (null != addAdapter && 0 < addBeanList.size()) {
                         addBeanList.clear();
                         addAdapter.notifyDataSetChanged();
                     }
-                    newCustomerInfoModel.getRoomData(9, unit_uuid, page, 400, false, CustomerAddPropertyActivity.this);
+                    newCustomerInfoModel.getRoomData(9, unit_uuid, page, pageSize, false, CustomerAddPropertyActivity.this);
                     break;
             }
         }
@@ -374,13 +413,15 @@ public class CustomerAddPropertyActivity extends BaseActivity implements View.On
         if (areaBeanList.size() > 0) {
             et_search_area.setText("");
             choiceType = 1;
+            type = 1;
             setBackground(1);
             rv_area.setVisibility(View.GONE);
             community_uuid = areaBeanList.get(position).getUuid();
             community_name = areaBeanList.get(position).getName();
             tv_garden.setText(community_name);
             dismissSoftKeyboard(this);
-            newCustomerInfoModel.getBuildingData(7, community_uuid, page, 400, false, CustomerAddPropertyActivity.this);
+            page = 1;
+            newCustomerInfoModel.getBuildingData(7, community_uuid, page, pageSize, false, CustomerAddPropertyActivity.this);
         }
     }
 
@@ -528,7 +569,9 @@ public class CustomerAddPropertyActivity extends BaseActivity implements View.On
                 rl_city.setVisibility(View.VISIBLE);
                 rl_address_choose.setVisibility(View.GONE);
                 dismissSoftKeyboard(this);
-                newCustomerInfoModel.addressSelect(6, city_name, "", page, 400, this);
+                page = 1;
+                keyword = "";
+                newCustomerInfoModel.addressSelect(6, city_name, keyword, page, pageSize, this);
                 break;
             case R.id.tv_block:
                 if (null != addAdapter && 0 < addBeanList.size()) {
@@ -540,9 +583,11 @@ public class CustomerAddPropertyActivity extends BaseActivity implements View.On
                 building_name = "";
                 unit_uuid = "";
                 unit_name = "";
+                type = 2;
                 setBackground(2);
                 dismissSoftKeyboard(this);
-                newCustomerInfoModel.getBuildingData(7, community_uuid, page, 400, false, CustomerAddPropertyActivity.this);
+                page = 1;
+                newCustomerInfoModel.getBuildingData(7, community_uuid, page, pageSize, false, CustomerAddPropertyActivity.this);
                 break;
             case R.id.tv_dong:
                 if (null != addAdapter && 0 < addBeanList.size()) {
@@ -552,9 +597,11 @@ public class CustomerAddPropertyActivity extends BaseActivity implements View.On
                 choiceType = 2;
                 unit_uuid = "";
                 unit_name = "";
+                type = 3;
                 setBackground(3);
                 dismissSoftKeyboard(this);
-                newCustomerInfoModel.getUnitData(8, building_uuid, page, 400, false, CustomerAddPropertyActivity.this);
+                page = 1;
+                newCustomerInfoModel.getUnitData(8, building_uuid, page, pageSize, false, CustomerAddPropertyActivity.this);
                 break;
             case R.id.tv_unit:
                 if (null != addAdapter && 0 < addBeanList.size()) {
@@ -562,9 +609,11 @@ public class CustomerAddPropertyActivity extends BaseActivity implements View.On
                     addAdapter.notifyDataSetChanged();
                 }
                 choiceType = 3;
+                type = 4;
                 setBackground(4);
                 dismissSoftKeyboard(this);
-                newCustomerInfoModel.getRoomData(9, unit_uuid, page, 400, false, CustomerAddPropertyActivity.this);
+                page = 1;
+                newCustomerInfoModel.getRoomData(9, unit_uuid, page, pageSize, false, CustomerAddPropertyActivity.this);
                 break;
         }
     }
@@ -600,14 +649,17 @@ public class CustomerAddPropertyActivity extends BaseActivity implements View.On
                 break;
             case 6:
                 if (!TextUtils.isEmpty(result)) {
-                    setBackground(1);
+                    type = 1;
                     rl_city.setVisibility(View.VISIBLE);
                     rl_address_choose.setVisibility(View.GONE);
                     choiceType = 1;
                     AddListEntity addListEntity = GsonUtils.gsonToBean(result, AddListEntity.class);
                     AddListEntity.ContentBean contentBean = addListEntity.getContent();
                     AddListEntity.ContentBean.PagingBean pagingBean;
-                    addBeanList.clear();
+                    if (page == 1) {
+                        addBeanList.clear();
+                        setBackground(1);
+                    }
                     List<AddListEntity.ContentBean.DataBean> addDataList;
                     addDataList = contentBean.getData();
                     addBeanList.addAll(addDataList);
@@ -637,7 +689,9 @@ public class CustomerAddPropertyActivity extends BaseActivity implements View.On
                     AddListEntity addListEntity = GsonUtils.gsonToBean(result, AddListEntity.class);
                     AddListEntity.ContentBean contentBean = addListEntity.getContent();
                     AddListEntity.ContentBean.PagingBean pagingBean;
-                    addBeanList.clear();
+                    if (page == 1) {
+                        addBeanList.clear();
+                    }
                     List<AddListEntity.ContentBean.DataBean> addDataList;
                     addDataList = contentBean.getData();
                     addBeanList.addAll(addDataList);
@@ -652,21 +706,24 @@ public class CustomerAddPropertyActivity extends BaseActivity implements View.On
                         rv_address.setVisibility(View.VISIBLE);
                         addAdapter.notifyDataSetChanged();
                     }
-                    if (!hasMore && dataEmpty) {
+                    if (!hasMore && dataEmpty && 0 == addBeanList.size()) {
                         addOrUpdateAddress();
                     }
                 }
                 break;
             case 8:
                 if (!TextUtils.isEmpty(result)) {
-                    setBackground(2);
                     choiceType = 3;
+                    type = 3;
                     AddListEntity addListEntity = GsonUtils.gsonToBean(result, AddListEntity.class);
                     AddListEntity.ContentBean contentBean = addListEntity.getContent();
                     AddListEntity.ContentBean.PagingBean pagingBean;
-                    addBeanList.clear();
                     List<AddListEntity.ContentBean.DataBean> addDataList;
                     addDataList = contentBean.getData();
+                    if (page == 1) {
+                        addBeanList.clear();
+                        setBackground(2);
+                    }
                     addBeanList.addAll(addDataList);
                     pagingBean = contentBean.getPaging();
                     totalRecord = pagingBean.getTotal_record();
@@ -679,19 +736,22 @@ public class CustomerAddPropertyActivity extends BaseActivity implements View.On
                         rv_address.setVisibility(View.VISIBLE);
                         addAdapter.notifyDataSetChanged();
                     }
-                    if (!hasMore && dataEmpty) {
+                    if (!hasMore && dataEmpty && 0 == addBeanList.size()) {
                         addOrUpdateAddress();
                     }
                 }
                 break;
             case 9:
                 if (!TextUtils.isEmpty(result)) {
-                    setBackground(3);
                     choiceType = -1;
+                    type = 4;
                     AddListEntity addListEntity = GsonUtils.gsonToBean(result, AddListEntity.class);
                     AddListEntity.ContentBean contentBean = addListEntity.getContent();
                     AddListEntity.ContentBean.PagingBean pagingBean;
-                    addBeanList.clear();
+                    if (page == 1) {
+                        addBeanList.clear();
+                        setBackground(3);
+                    }
                     List<AddListEntity.ContentBean.DataBean> addDataList;
                     addDataList = contentBean.getData();
                     addBeanList.addAll(addDataList);
@@ -706,7 +766,7 @@ public class CustomerAddPropertyActivity extends BaseActivity implements View.On
                         rv_address.setVisibility(View.VISIBLE);
                         addAdapter.notifyDataSetChanged();
                     }
-                    if (!hasMore && dataEmpty) {
+                    if (!hasMore && dataEmpty && 0 == addBeanList.size()) {
                         addOrUpdateAddress();
                     }
                 }
