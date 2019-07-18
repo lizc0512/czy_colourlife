@@ -115,7 +115,7 @@ public class JPushReciever extends BroadcastReceiver {
                                     context.startActivity(roomIntent);
                                 }
                             } catch (Exception e) {
-
+                                
                             }
                         }
                     }

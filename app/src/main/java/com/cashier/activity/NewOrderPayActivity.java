@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.graphics.Color;
 import android.icu.math.BigDecimal;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Message;
 import android.text.TextUtils;
@@ -94,7 +95,9 @@ public class NewOrderPayActivity extends BaseActivity implements View.OnClickLis
         setContentView(R.layout.activity_new_pay_order);
         initView();
         initData();
-        PayListenerUtils.setCallBack(this);
+        if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.P) {
+            PayListenerUtils.setCallBack(this);
+        }
     }
 
     private void initData() {
@@ -721,7 +724,11 @@ public class NewOrderPayActivity extends BaseActivity implements View.OnClickLis
                         LinkedHashMap<String, String> publicParams = new LinkedHashMap<String, String>();
                         Map<String, String> resultMap = GsonUtils.gsonObjectToMaps(payResultEntity.getContent());
                         publicParams.putAll(resultMap);
-                        PayUtil.getInstance(NewOrderPayActivity.this).createPay(publicParams, Constants.CAIWALLET_ENVIRONMENT);
+                        if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.P) {
+                            PayUtil.getInstance(NewOrderPayActivity.this).createPay(publicParams, Constants.CAIWALLET_ENVIRONMENT);
+                        } else {
+                            payResultQuery();
+                        }
                     } else {
                         ToastUtil.toastShow(NewOrderPayActivity.this, baseContentEntity.getMessage());
                     }

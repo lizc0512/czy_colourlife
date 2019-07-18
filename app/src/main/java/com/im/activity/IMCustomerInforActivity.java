@@ -1,6 +1,7 @@
 package com.im.activity;
 
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
@@ -83,7 +84,9 @@ public class IMCustomerInforActivity extends BaseActivity implements View.OnClic
         useruuid = intent.getStringExtra(IMFriendInforActivity.USERUUID);
         IMUploadPhoneModel imUploadPhoneModel = new IMUploadPhoneModel(IMCustomerInforActivity.this);
         imUploadPhoneModel.getUserInforByUuid(0, useruuid, true, this);
-        ListenerUtils.setCallBack(this);
+        if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.P) {
+            ListenerUtils.setCallBack(this);
+        }
         HuxinSdkManager.instance().getStackAct().addActivity(this);
     }
 

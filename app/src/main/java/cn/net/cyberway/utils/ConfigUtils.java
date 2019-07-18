@@ -1,6 +1,7 @@
 package cn.net.cyberway.utils;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Message;
@@ -19,6 +20,7 @@ import com.BeeFramework.view.Util;
 import com.chuanglan.shanyan_sdk.OneKeyLoginManager;
 import com.chuanglan.shanyan_sdk.listener.OneKeyLoginListener;
 import com.chuanglan.shanyan_sdk.listener.OpenLoginAuthListener;
+import com.chuanglan.shanyan_sdk.listener.ShanYanCustomInterface;
 import com.chuanglan.shanyan_sdk.tool.ShanYanUIConfig;
 import com.external.eventbus.EventBus;
 import com.jpush.Constant;
@@ -45,30 +47,27 @@ public class ConfigUtils implements NewHttpResponse {
         editor = shared.edit();
     }
 
-    public static ShanYanUIConfig getCJSConfig(final Activity context) {
+    public static ShanYanUIConfig getCJSConfig(final Activity mContext) {
         //标题栏下划线
      /*   View view = new View(context);
         view.setBackgroundColor(0xffe8e8e8);
         RelativeLayout.LayoutParams mLayoutParams3 = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, AbScreenUtils.dp2px(context, 1));
         mLayoutParams3.setMargins(0, AbScreenUtils.dp2px(context, 0), 0, 0);
         view.setLayoutParams(mLayoutParams3);*/
-
-        TextView rightText = new TextView(context);
-        rightText.setText("切换账号");
+        TextView rightText = new TextView(mContext);
+        rightText.setText("密码登录");
         rightText.setTextColor(0xff329dfa);
-        rightText.setTextSize(TypedValue.COMPLEX_UNIT_SP, 13);
+        rightText.setTextSize(13);
         RelativeLayout.LayoutParams rightTextParams = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
-        rightTextParams.setMargins(0, Util.DensityUtil.dip2px(context, 15), Util.DensityUtil.dip2px(context, 15), 0);
-        rightTextParams.width = Util.DensityUtil.dip2px(context, 55);
-        rightTextParams.height = Util.DensityUtil.dip2px(context, 15);
+        rightTextParams.setMargins(0, Util.DensityUtil.dip2px(mContext, 15), Util.DensityUtil.dip2px(mContext, 15), 0);
+        rightTextParams.width = Util.DensityUtil.dip2px(mContext, 55);
+        rightTextParams.height = Util.DensityUtil.dip2px(mContext, 15);
         rightTextParams.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
         rightText.setLayoutParams(rightTextParams);
-
-
-        LayoutInflater inflater = LayoutInflater.from(context);
+        LayoutInflater inflater = LayoutInflater.from(mContext);
         RelativeLayout relativeLayout = (RelativeLayout) inflater.inflate(R.layout.relative_item_view, null);
         RelativeLayout.LayoutParams layoutParamsOther = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
-        layoutParamsOther.setMargins(0, Util.DensityUtil.dip2px(context, 380), 0, 0);
+        layoutParamsOther.setMargins(0, Util.DensityUtil.dip2px(mContext, 380), 0, 0);
         layoutParamsOther.addRule(RelativeLayout.CENTER_HORIZONTAL);
         relativeLayout.setLayoutParams(layoutParamsOther);
         LinearLayout wechat_layout = relativeLayout.findViewById(R.id.wechat_layout);
@@ -85,7 +84,6 @@ public class ConfigUtils implements NewHttpResponse {
 
             }
         });
-
 
         /****************************************************设置授权页*********************************************************/
         ShanYanUIConfig uiConfig = new ShanYanUIConfig.Builder()
@@ -118,7 +116,7 @@ public class ConfigUtils implements NewHttpResponse {
                 .setLogBtnOffsetY(260)   //设置登录按钮相对于标题栏下边缘y偏移
                 .setLogBtnTextSize(15)
                 .setLogBtnHeight(45)
-                .setLogBtnWidth(Util.DensityUtil.getScreenWidth(context, true) - 40)
+                .setLogBtnWidth(Util.DensityUtil.getScreenWidth(mContext, true) - 40)
                 //授权页隐私栏：
 
 
@@ -131,14 +129,12 @@ public class ConfigUtils implements NewHttpResponse {
                 .setSloganTextColor(0xff329DFA)  //设置slogan文字颜色
                 .setSloganOffsetY(160)  //设置slogan相对于标题栏下边缘y偏移
                 .setSloganHidden(true)
-//                .addCustomView(rightText, false, true, new ShanYanCustomInterface() {
-//                    @Override
-//                    public void onClick(Context context, View view) {
-//                        Intent intent = new Intent(context, UserIdentityLoginActivity.class);
-//                        context.startActivity(intent);
-//
-//                    }
-//                })
+                .addCustomView(rightText, false, true, new ShanYanCustomInterface() {
+                    @Override
+                    public void onClick(Context context, View view) {
+                        OneKeyLoginManager.getInstance().finishAuthActivity();
+                    }
+                })
 //                .addCustomView(relativeLayout, false, false, null)
                 //标题栏下划线，可以不写
                 .build();

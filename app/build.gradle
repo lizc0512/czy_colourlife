@@ -97,6 +97,7 @@ android {
                            'src/main/java/com/door/res',
                            "src/main/java/com/cardcoupons/res",
                            "src/main/java/com/about/res",
+                           "src/main/java/com/equipment/res",
                            "src/main/java/com/setting/res",
                            "src/main/java/com/invite/res",
                            "src/main/java/com/customerInfo/res",

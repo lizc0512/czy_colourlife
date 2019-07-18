@@ -3,6 +3,7 @@ package cn.net.cyberway.fagment;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Message;
 import android.support.v4.app.Fragment;
@@ -221,7 +222,9 @@ public class ProfileFragment extends Fragment implements View.OnClickListener, M
         rl_profile_info.setOnClickListener(this);
         iv_qr_code.setOnClickListener(this);
         TCAgent.onEvent(getActivity(), "203001");
-        ListenerUtils.setCallBack(this);
+        if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.P) {
+            ListenerUtils.setCallBack(this);
+        }
         refresh_layout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {

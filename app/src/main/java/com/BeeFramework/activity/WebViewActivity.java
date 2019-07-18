@@ -275,7 +275,9 @@ public class WebViewActivity extends BaseActivity implements View.OnLongClickLis
         CityManager.getInstance(this).initLocation();
         TCAgent.LOG_ON = true;
         webView.setOnLongClickListener(this);
-        ListenerUtils.setCallBack(this);
+        if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.P) {
+            ListenerUtils.setCallBack(this);
+        }
     }
 
     private PermissionInterceptor permissionInterceptor = new PermissionInterceptor() {

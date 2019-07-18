@@ -30,6 +30,7 @@ import com.BeeFramework.Utils.Utils;
 import com.BeeFramework.activity.BaseActivity;
 import com.BeeFramework.model.NewHttpResponse;
 import com.BeeFramework.view.CircleImageView;
+import com.chuanglan.shanyan_sdk.OneKeyLoginManager;
 import com.eparking.helper.CustomDialog;
 import com.external.eventbus.EventBus;
 import com.gesturepwd.utils.LockPatternUtils;
@@ -342,6 +343,7 @@ public class UnlockGesturePasswordActivity extends BaseActivity implements NewHt
                 }
                 break;
             case 5:
+                OneKeyLoginManager.getInstance().finishAuthActivity();
                 ToastUtil.toastShow(this, getResources().getString(R.string.user_login_success));
                 editor.putBoolean(UserAppConst.Colour_user_login, true);
                 editor.commit();

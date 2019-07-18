@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.Build;
 import android.text.TextUtils;
 
 import com.BeeFramework.Utils.Utils;
@@ -116,7 +117,9 @@ public class LinkParseUtil {
                             break;
                         case "Ticket":
                         case "NewTicket"://彩钱包
-                            Cqb_PayUtil.getInstance((Activity) context).createPay(Utils.getPublicParams(context), Constants.CAIWALLET_ENVIRONMENT);//彩钱包
+                            if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.P) {
+                                Cqb_PayUtil.getInstance((Activity) context).createPay(Utils.getPublicParams(context), Constants.CAIWALLET_ENVIRONMENT);//彩钱包
+                            }
                             break;
                         case "OpenColourlifeWallet": // 开通彩钱包
                             Cqb_PayUtil.getInstance((Activity) context).openActivityUI(Utils.getPublicParams(context), Constants.CAIWALLET_ENVIRONMENT);//开通彩钱包
@@ -243,11 +246,11 @@ public class LinkParseUtil {
                         case "smartService":
                             Information info = new Information();
                             info.setAppkey(Constants.SMART_SERVICE_KEY);  //分配给App的的密钥
-                            info.setUid(mShared.getString(UserAppConst.Colour_User_uuid,""));
-                            info.setUname(mShared.getString(UserAppConst.Colour_NAME,""));
-                            info.setRealname(mShared.getString(UserAppConst.Colour_Real_name,""));
-                            info.setTel(mShared.getString(UserAppConst.Colour_login_mobile,""));
-                            info.setFace(mShared.getString(UserAppConst.Colour_head_img,""));
+                            info.setUid(mShared.getString(UserAppConst.Colour_User_uuid, ""));
+                            info.setUname(mShared.getString(UserAppConst.Colour_NAME, ""));
+                            info.setRealname(mShared.getString(UserAppConst.Colour_Real_name, ""));
+                            info.setTel(mShared.getString(UserAppConst.Colour_login_mobile, ""));
+                            info.setFace(mShared.getString(UserAppConst.Colour_head_img, ""));
                             info.setArtificialIntelligence(true);
                             info.setInitModeType(-1);
                             HashSet<String> tmpSet = new HashSet<>();
