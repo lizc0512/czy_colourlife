@@ -36,7 +36,11 @@ public class MyProgressDialog {
 
     public void show() {
         if (null!=mContext&&null!=mDialog){
-            mDialog.show();
+            try {
+                mDialog.show();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
     }
 

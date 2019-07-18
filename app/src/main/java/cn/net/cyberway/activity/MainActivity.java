@@ -70,8 +70,8 @@ import java.util.Set;
 
 import cn.jpush.android.api.JPushInterface;
 import cn.net.cyberway.R;
+import cn.net.cyberway.fagment.BenefitFragment;
 import cn.net.cyberway.fagment.InstantMessageFragment;
-import cn.net.cyberway.fagment.LifeHomeFragment;
 import cn.net.cyberway.fagment.ProfileFragment;
 import cn.net.cyberway.home.entity.PopMessageEntity;
 import cn.net.cyberway.home.entity.PushNotificationEntity;
@@ -112,7 +112,8 @@ public class MainActivity extends BaseFragmentActivity implements View.OnClickLi
     private MainHomeFragmentNew mHomeFragment;
     private NologinHomeFragment nologinHomeFragment;
     private InstantMessageFragment instantMessageFragment;//消息
-    private LifeHomeFragment lifeHomeFragment;//生活页面
+    //    private LifeHomeFragment lifeHomeFragment;//生活页面
+    private BenefitFragment benefitFragment;
     private ProfileFragment profileFragment;
     private LinearLayout mHome;
     private LinearLayout mCommunity;
@@ -610,16 +611,16 @@ public class MainActivity extends BaseFragmentActivity implements View.OnClickLi
             mDiscovery.setSelected(false);
             mProfile.setSelected(false);
             showPopupScreen();
-        } else if (flagTab == FLAG_TAB_TWO) { //生活
+        } else if (flagTab == FLAG_TAB_TWO) { //彩惠人生
             if (mShared.getBoolean(UserAppConst.IS_LOGIN, false)) {
                 choiceType = 1;
                 transaction = fragmentManager.beginTransaction();
                 hideFragments(transaction);
-                if (lifeHomeFragment == null) {
-                    lifeHomeFragment = new LifeHomeFragment();
-                    transaction.add(R.id.main_fragment_container, lifeHomeFragment);
+                if (null == benefitFragment) {
+                    benefitFragment = new BenefitFragment();
+                    transaction.add(R.id.main_fragment_container, benefitFragment);
                 } else {
-                    transaction.show(lifeHomeFragment);
+                    transaction.show(benefitFragment);
                 }
                 transaction.commitAllowingStateLoss();
                 mHome.setSelected(false);
@@ -684,8 +685,8 @@ public class MainActivity extends BaseFragmentActivity implements View.OnClickLi
         if (instantMessageFragment != null) {
             transaction.hide(instantMessageFragment);
         }
-        if (lifeHomeFragment != null) {
-            transaction.hide(lifeHomeFragment);
+        if (benefitFragment != null) {
+            transaction.hide(benefitFragment);
         }
         if (profileFragment != null) {
             transaction.hide(profileFragment);

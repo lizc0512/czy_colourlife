@@ -21,8 +21,13 @@
             android:background="@null"
             android:orientation="vertical">
 
+            <View
+                android:id="@+id/v_benefit_status_bar"
+                android:layout_width="match_parent"
+                android:layout_height="25dp"
+                android:background="@color/color_ff898b" />
+
             <RelativeLayout
-                android:id="@+id/rl_title"
                 android:layout_width="match_parent"
                 android:layout_height="40dp"
                 android:background="@color/color_ff898b"
@@ -37,33 +42,34 @@
                     android:textSize="18sp" />
 
                 <ImageView
-                    android:id="@+id/iv_local_up"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:id="@+id/iv_order"
+                    android:layout_width="32dp"
+                    android:layout_height="32dp"
                     android:layout_centerVertical="true"
-                    android:layout_marginStart="18dp"
-                    android:layout_marginLeft="18dp"
-                    android:layout_toStartOf="@+id/iv_enter_chat"
-                    android:layout_toLeftOf="@+id/iv_enter_chat"
+                    android:layout_marginEnd="16dp"
+                    android:layout_marginRight="16dp"
+                    android:layout_toStartOf="@+id/iv_mine"
+                    android:layout_toLeftOf="@+id/iv_mine"
                     android:padding="4dp"
-                    android:src="@drawable/icon_local" />
+                    android:src="@drawable/ic_benefit_order" />
 
                 <ImageView
-                    android:id="@+id/iv_enter_chat"
-                    android:layout_width="30dp"
-                    android:layout_height="30dp"
+                    android:id="@+id/iv_mine"
+                    android:layout_width="32dp"
+                    android:layout_height="32dp"
                     android:layout_alignParentRight="true"
                     android:layout_centerVertical="true"
                     android:layout_marginEnd="16dp"
                     android:layout_marginRight="16dp"
                     android:padding="4dp"
-                    android:src="@drawable/home_msg_black" />
+                    android:layout_alignParentEnd="true"
+                    android:src="@drawable/ic_benefit_my" />
             </RelativeLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="156dp"
-                android:background="@color/color_ff898b"
+                android:background="@drawable/bg_benefit"
                 android:orientation="vertical">
 
                 <LinearLayout
@@ -76,18 +82,20 @@
                     android:orientation="horizontal">
 
                     <TextView
+                        android:id="@+id/tv_user_name"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="18dp"
+                        android:layout_gravity="center"
                         android:layout_weight="1"
                         android:text="Letty您好~"
                         android:textColor="@color/white"
                         android:textSize="16sp" />
 
                     <ImageView
+                        android:id="@+id/iv_sign"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="16dp"
+                        android:layout_gravity="center"
                         android:background="@drawable/e11_shield_cancel" />
 
                 </LinearLayout>
@@ -95,13 +103,12 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="16dp"
-                    android:layout_marginRight="16dp"
                     android:layout_marginBottom="28dp"
                     android:background="@null"
                     android:orientation="horizontal">
 
                     <LinearLayout
+                        android:id="@+id/ll_owe_address"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
@@ -109,6 +116,7 @@
                         android:orientation="vertical">
 
                         <TextView
+                            android:id="@+id/tv_owe_address"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center"
@@ -128,6 +136,7 @@
                     </LinearLayout>
 
                     <LinearLayout
+                        android:id="@+id/ll_owe_money"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
@@ -135,6 +144,7 @@
                         android:orientation="vertical">
 
                         <TextView
+                            android:id="@+id/tv_owe_money"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center"
@@ -154,6 +164,7 @@
                     </LinearLayout>
 
                     <LinearLayout
+                        android:id="@+id/ll_deduct_money"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
@@ -161,6 +172,7 @@
                         android:orientation="vertical">
 
                         <TextView
+                            android:id="@+id/tv_deduct_money"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center"
@@ -180,6 +192,7 @@
                     </LinearLayout>
 
                     <ImageView
+                        android:id="@+id/iv_pay"
                         android:layout_width="0dp"
                         android:layout_height="56dp"
                         android:layout_weight="1"
@@ -193,13 +206,18 @@
                 android:layout_height="12dp"
                 android:background="@color/bg_color" />
 
-            <!--banner-->
-            <LinearLayout
-                android:layout_width="match_parent"
+            <cn.bingoogolapple.bgabanner.BGABanner
+                android:id="@+id/bga_benefit_banner"
+                style="@style/BannerDefaultStyle"
                 android:layout_height="96dp"
-                android:background="@drawable/alpha_title_bg">
-
-            </LinearLayout>
+                android:layout_marginTop="0dp"
+                app:banner_pageChangeDuration="300"
+                app:banner_pointAutoPlayAble="false"
+                app:banner_pointContainerBackground="@android:color/transparent"
+                app:banner_pointDrawable="@drawable/selector_benefit_banner"
+                app:banner_pointLeftRightMargin="5dp"
+                app:banner_pointTopBottomMargin="5dp"
+                app:banner_transitionEffect="alpha" />
 
             <View
                 android:layout_width="match_parent"
@@ -210,7 +228,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@null"
-                android:orientation="vertical">
+                android:orientation="vertical"
+                android:visibility="gone">
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -223,6 +242,7 @@
                     android:orientation="horizontal">
 
                     <TextView
+                        android:id="@+id/tv_hot"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
@@ -231,6 +251,7 @@
                         android:textSize="18sp" />
 
                     <TextView
+                        android:id="@+id/tv_hot_content"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="bottom"
@@ -249,7 +270,7 @@
                     android:layout_marginRight="16dp"
                     app:cardBackgroundColor="@color/white"
                     app:cardCornerRadius="8dp"
-                    app:cardElevation="4dp">
+                    app:cardElevation="3dp">
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -372,7 +393,7 @@
                     android:layout_marginBottom="16dp"
                     app:cardBackgroundColor="@color/white"
                     app:cardCornerRadius="8dp"
-                    app:cardElevation="4dp">
+                    app:cardElevation="3dp">
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -502,30 +523,71 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="16dp"
-                    android:layout_marginTop="16dp"
-                    android:layout_marginRight="16dp"
+                    android:layout_marginLeft="56dp"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginRight="56dp"
                     android:layout_marginBottom="12dp"
                     android:background="@null"
                     android:orientation="horizontal">
 
-                    <TextView
-                        android:layout_width="wrap_content"
+                    <RelativeLayout
+                        android:id="@+id/rl_recommend"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:text="推荐"
-                        android:textColor="@color/black_text_color"
-                        android:textSize="18sp" />
+                        android:layout_weight="1"
+                        android:background="@null"
+                        android:gravity="center"
+                        android:paddingTop="8dp">
 
-                    <TextView
-                        android:layout_width="wrap_content"
+                        <TextView
+                            android:id="@+id/tv_recommend"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_centerHorizontal="true"
+                            android:text="推荐"
+                            android:textColor="@color/black_text_color"
+                            android:textSize="18sp" />
+
+                        <View
+                            android:id="@+id/v_recommend"
+                            android:layout_width="40dp"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@+id/tv_recommend"
+                            android:layout_centerHorizontal="true"
+                            android:layout_marginTop="4dp"
+                            android:background="@drawable/shape_benefit_text_orange" />
+
+                    </RelativeLayout>
+
+                    <RelativeLayout
+                        android:id="@+id/rl_all"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_gravity="bottom"
-                        android:layout_marginStart="8dp"
-                        android:layout_marginLeft="8dp"
-                        android:text="服务评价享，再送物业费"
-                        android:textColor="@color/grayred_text_color"
-                        android:textSize="14sp" />
+                        android:layout_weight="1"
+                        android:background="@null"
+                        android:gravity="center"
+                        android:paddingTop="8dp">
+
+                        <TextView
+                            android:id="@+id/tv_all"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_centerHorizontal="true"
+                            android:text="全部"
+                            android:textColor="@color/grayred_text_color"
+                            android:textSize="18sp" />
+
+                        <View
+                            android:id="@+id/v_all"
+                            android:layout_width="40dp"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@+id/tv_all"
+                            android:layout_centerHorizontal="true"
+                            android:layout_marginTop="4dp"
+                            android:background="@drawable/shape_benefit_text_orange"
+                            android:visibility="gone" />
+
+                    </RelativeLayout>
 
                 </LinearLayout>
 
@@ -537,34 +599,35 @@
                     android:layout_marginBottom="16dp"
                     app:cardBackgroundColor="@color/white"
                     app:cardCornerRadius="8dp"
-                    app:cardElevation="4dp">
+                    app:cardElevation="3dp">
 
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:background="@null"
-                        android:orientation="vertical">
+                        android:orientation="vertical"
+                        android:padding="12dp">
 
-                        <LinearLayout
-                            android:layout_width="wrap_content"
+                        <RelativeLayout
+                            android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_marginStart="12dp"
-                            android:layout_marginLeft="12dp"
-                            android:layout_marginTop="16dp"
-                            android:background="@null"
-                            android:orientation="horizontal">
+                            android:layout_marginTop="4dp"
+                            android:background="@null">
 
                             <ImageView
+                                android:id="@+id/iv_icon"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:background="@drawable/a1" />
 
                             <LinearLayout
+                                android:layout_toEndOf="@+id/iv_icon"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginStart="12dp"
                                 android:layout_marginLeft="12dp"
                                 android:background="@null"
+                                android:layout_toRightOf="@+id/iv_icon"
                                 android:orientation="vertical">
 
                                 <TextView
@@ -574,76 +637,135 @@
                                     android:textColor="@color/black_text_color"
                                     android:textSize="16sp" />
 
+                                <LinearLayout
+                                    android:id="@+id/ll_text"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginTop="2dp"
+                                    android:background="@null"
+                                    android:orientation="horizontal" />
+
+                            </LinearLayout>
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_alignParentEnd="true"
+                                android:layout_alignParentRight="true"
+                                android:layout_centerVertical="true"
+                                android:drawableEnd="@drawable/home_more_right"
+                                android:drawableRight="@drawable/home_more_right"
+                                android:padding="4dp"
+                                android:text="更多"
+                                android:textColor="@color/grayred_text_color"
+                                android:textSize="14sp" />
+
+                        </RelativeLayout>
+
+                        <LinearLayout
+                            android:id="@+id/ll_item"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="8dp"
+                            android:background="@null"
+                            android:orientation="horizontal">
+
+                            <LinearLayout
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:orientation="vertical">
+
+                                <ImageView
+                                    android:id="@+id/iv1"
+                                    android:layout_width="90dp"
+                                    android:layout_height="100dp"
+                                    android:background="@color/gray" />
+
                                 <TextView
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:layout_marginTop="8dp"
-                                    android:text="品质保障，比官网更优惠"
-                                    android:textColor="@color/grayred_text_color"
+                                    android:layout_marginBottom="4dp"
+                                    android:text="电饭锅"
+                                    android:textColor="@color/black_text_color"
                                     android:textSize="14sp" />
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginBottom="8dp"
+                                    android:text="￥199 送20元"
+                                    android:textColor="@color/color_fd4600"
+                                    android:textSize="14sp" />
+
                             </LinearLayout>
 
-                        </LinearLayout>
+                            <View
+                                android:layout_width="8dp"
+                                android:layout_height="wrap_content" />
 
-                        <LinearLayout
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginStart="16dp"
-                            android:layout_marginLeft="16dp"
-                            android:layout_marginTop="12dp"
-                            android:layout_marginBottom="16dp"
-                            android:background="@null"
-                            android:orientation="horizontal">
-
-                            <TextView
+                            <LinearLayout
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:layout_marginEnd="8dp"
-                                android:layout_marginRight="8dp"
-                                android:background="@drawable/shape_benefit_text_red"
-                                android:text="平均每单送18元"
-                                android:textColor="@color/color_fd4600"
-                                android:textSize="12sp" />
+                                android:orientation="vertical">
 
-                            <TextView
+                                <ImageView
+                                    android:id="@+id/iv2"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="100dp"
+                                    android:background="@color/gray" />
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginTop="8dp"
+                                    android:layout_marginBottom="4dp"
+                                    android:text="饭锅"
+                                    android:textColor="@color/black_text_color"
+                                    android:textSize="14sp" />
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginBottom="8dp"
+                                    android:text="￥99 送20元"
+                                    android:textColor="@color/color_fd4600"
+                                    android:textSize="14sp" />
+
+                            </LinearLayout>
+
+                            <View
+                                android:layout_width="8dp"
+                                android:layout_height="wrap_content" />
+
+                            <LinearLayout
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:layout_marginEnd="8dp"
-                                android:layout_marginRight="8dp"
-                                android:background="@drawable/shape_benefit_text_yellow"
-                                android:text="好评率99.9%"
-                                android:textColor="@color/color_feb83d"
-                                android:textSize="12sp" />
+                                android:orientation="vertical">
 
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_marginEnd="8dp"
-                                android:layout_marginRight="8dp"
-                                android:background="@drawable/shape_benefit_text_blue"
-                                android:text="2343人用过"
-                                android:textColor="@color/color_329dfa"
-                                android:textSize="12sp" />
+                                <ImageView
+                                    android:id="@+id/iv3"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="100dp"
+                                    android:background="@color/gray" />
 
-                        </LinearLayout>
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginTop="8dp"
+                                    android:text="电饭锅"
+                                    android:textColor="@color/black_text_color"
+                                    android:textSize="14sp" />
 
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="80dp"
-                            android:background="@drawable/alpha_title_bg">
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginBottom="8dp"
+                                    android:text="￥199 送20元"
+                                    android:textColor="@color/color_fd4600"
+                                    android:textSize="14sp" />
 
-                            <TextView
-                                android:layout_width="match_parent"
-                                android:layout_height="34dp"
-                                android:layout_gravity="bottom"
-                                android:background="@drawable/shape_benefit_text_bg"
-                                android:gravity="center"
-                                android:maxLines="2"
-                                android:paddingLeft="12dp"
-                                android:paddingRight="12dp"
-                                android:text="送物业费听说京东购物送物业费？官方说：是真的！"
-                                android:textColor="@color/white"
-                                android:textSize="14sp" />
+                            </LinearLayout>
 
                         </LinearLayout>
 
@@ -659,118 +781,90 @@
                     android:layout_marginBottom="16dp"
                     app:cardBackgroundColor="@color/white"
                     app:cardCornerRadius="8dp"
-                    app:cardElevation="4dp">
+                    app:cardElevation="3dp">
 
-                    <LinearLayout
+                    <RelativeLayout
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="4dp"
                         android:background="@null"
-                        android:orientation="vertical">
+                        android:padding="12dp">
+
+                        <ImageView
+                            android:id="@+id/iv_ic"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:background="@drawable/a1" />
 
                         <LinearLayout
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginStart="12dp"
                             android:layout_marginLeft="12dp"
-                            android:layout_marginTop="16dp"
+                            android:layout_toEndOf="@+id/iv_ic"
+                            android:layout_toRightOf="@+id/iv_ic"
                             android:background="@null"
-                            android:orientation="horizontal">
+                            android:orientation="vertical">
 
-                            <ImageView
+                            <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:background="@drawable/a1" />
+                                android:text="京东精选"
+                                android:textColor="@color/black_text_color"
+                                android:textSize="16sp" />
 
                             <LinearLayout
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:layout_marginStart="12dp"
-                                android:layout_marginLeft="12dp"
-                                android:background="@null"
-                                android:orientation="vertical">
+                                android:layout_marginTop="2dp"
+                                android:background="@null">
 
                                 <TextView
                                     android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:text="京东精选"
-                                    android:textColor="@color/black_text_color"
-                                    android:textSize="16sp" />
+                                    android:layout_height="match_parent"
+                                    android:layout_marginEnd="8dp"
+                                    android:layout_marginRight="8dp"
+                                    android:background="@drawable/shape_benefit_text_red"
+                                    android:text="单均送18元"
+                                    android:textColor="@color/color_fd4600"
+                                    android:textSize="12sp" />
 
                                 <TextView
                                     android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_marginTop="8dp"
-                                    android:text="品质保障，比官网更优惠"
-                                    android:textColor="@color/grayred_text_color"
-                                    android:textSize="14sp" />
+                                    android:layout_height="match_parent"
+                                    android:layout_marginEnd="8dp"
+                                    android:layout_marginRight="8dp"
+                                    android:background="@drawable/shape_benefit_text_blue"
+                                    android:text="3243人用过"
+                                    android:textColor="@color/color_329dfa"
+                                    android:textSize="12sp" />
                             </LinearLayout>
 
                         </LinearLayout>
 
-                        <LinearLayout
+                        <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginStart="16dp"
-                            android:layout_marginLeft="16dp"
-                            android:layout_marginTop="12dp"
-                            android:layout_marginBottom="16dp"
-                            android:background="@null"
-                            android:orientation="horizontal">
+                            android:layout_below="@+id/iv_ic"
+                            android:layout_marginTop="8dp"
+                            android:text="平直保障，比官网更优惠，而且还送物业费"
+                            android:textColor="@color/grayred_text_color"
+                            android:textSize="12sp" />
 
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_marginEnd="8dp"
-                                android:layout_marginRight="8dp"
-                                android:background="@drawable/shape_benefit_text_red"
-                                android:text="平均每单送18元"
-                                android:textColor="@color/color_fd4600"
-                                android:textSize="12sp" />
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentEnd="true"
+                            android:layout_alignParentRight="true"
+                            android:layout_centerVertical="true"
+                            android:drawableEnd="@drawable/home_more_right"
+                            android:drawableRight="@drawable/home_more_right"
+                            android:padding="4dp"
+                            android:text="更多"
+                            android:textColor="@color/grayred_text_color"
+                            android:textSize="14sp" />
 
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_marginEnd="8dp"
-                                android:layout_marginRight="8dp"
-                                android:background="@drawable/shape_benefit_text_yellow"
-                                android:text="好评率99.9%"
-                                android:textColor="@color/color_feb83d"
-                                android:textSize="12sp" />
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_marginEnd="8dp"
-                                android:layout_marginRight="8dp"
-                                android:background="@drawable/shape_benefit_text_blue"
-                                android:text="2343人用过"
-                                android:textColor="@color/color_329dfa"
-                                android:textSize="12sp" />
-
-                        </LinearLayout>
-
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="80dp"
-                            android:background="@drawable/alpha_title_bg"
-                            android:visibility="gone">
-
-                            <TextView
-                                android:layout_width="match_parent"
-                                android:layout_height="34dp"
-                                android:layout_gravity="bottom"
-                                android:background="@drawable/shape_benefit_text_bg"
-                                android:gravity="center"
-                                android:maxLines="2"
-                                android:paddingLeft="12dp"
-                                android:paddingRight="12dp"
-                                android:text="送物业费听说京东购物送物业费？官方说：是真的！"
-                                android:textColor="@color/white"
-                                android:textSize="14sp" />
-
-                        </LinearLayout>
-
-                    </LinearLayout>
+                    </RelativeLayout>
 
                 </android.support.v7.widget.CardView>
 
@@ -914,7 +1008,7 @@
                     android:layout_height="wrap_content"
                     android:text="我也是有底线的~"
                     android:textColor="@color/grayred_text_color"
-                    android:textSize="16sp" />
+                    android:textSize="14sp" />
 
             </LinearLayout>
 
