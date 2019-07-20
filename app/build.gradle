@@ -147,6 +147,7 @@ greendao {
 dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
     implementation project(':huxin_sdk')
+    implementation project(':sobotsdk')
     implementation(name: 'iJMSafeKeyboard', ext: 'aar')
     implementation(name: 'shanyan_sdk_v2.2.0.1', ext: 'aar')
     implementation(name: 'mylibrary-release', ext: 'aar')
