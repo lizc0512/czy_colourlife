@@ -95,9 +95,7 @@ public class NewOrderPayActivity extends BaseActivity implements View.OnClickLis
         setContentView(R.layout.activity_new_pay_order);
         initView();
         initData();
-        if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.P) {
-            PayListenerUtils.setCallBack(this);
-        }
+        PayListenerUtils.setCallBack(this);
     }
 
     private void initData() {
@@ -724,11 +722,7 @@ public class NewOrderPayActivity extends BaseActivity implements View.OnClickLis
                         LinkedHashMap<String, String> publicParams = new LinkedHashMap<String, String>();
                         Map<String, String> resultMap = GsonUtils.gsonObjectToMaps(payResultEntity.getContent());
                         publicParams.putAll(resultMap);
-                        if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.P) {
-                            PayUtil.getInstance(NewOrderPayActivity.this).createPay(publicParams, Constants.CAIWALLET_ENVIRONMENT);
-                        } else {
-                            payResultQuery();
-                        }
+                        PayUtil.getInstance(NewOrderPayActivity.this).createPay(publicParams, Constants.CAIWALLET_ENVIRONMENT);
                     } else {
                         ToastUtil.toastShow(NewOrderPayActivity.this, baseContentEntity.getMessage());
                     }

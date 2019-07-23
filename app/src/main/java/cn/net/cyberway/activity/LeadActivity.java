@@ -85,13 +85,14 @@ public class LeadActivity extends BaseActivity implements View.OnClickListener {
             }
         });
 
-        List<String> permissionList = new ArrayList<>();
-        permissionList.add(Manifest.permission.ACCESS_FINE_LOCATION);
-        permissionList.add(Manifest.permission.READ_PHONE_STATE);
-        permissionList.add(Manifest.permission.WRITE_EXTERNAL_STORAGE);
-        permissionList.add(Manifest.permission.CAMERA);
-        permissionList.add(Manifest.permission.RECORD_AUDIO);
+
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            List<String> permissionList = new ArrayList<>();
+            permissionList.add(Manifest.permission.ACCESS_FINE_LOCATION);
+            permissionList.add(Manifest.permission.READ_PHONE_STATE);
+            permissionList.add(Manifest.permission.WRITE_EXTERNAL_STORAGE);
+            permissionList.add(Manifest.permission.CAMERA);
+            permissionList.add(Manifest.permission.RECORD_AUDIO);
             if (AndPermission.hasPermission(LeadActivity.this, permissionList)) {
 
             } else {
@@ -100,6 +101,7 @@ public class LeadActivity extends BaseActivity implements View.OnClickListener {
                                 Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.CAMERA, Manifest.permission.RECORD_AUDIO)
                         .start();
             }
+
         }
     }
 

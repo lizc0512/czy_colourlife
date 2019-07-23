@@ -162,9 +162,7 @@ public class MainHomeFragmentNew extends Fragment implements NewHttpResponse, My
         initHeaderView();
         loadCacheData();
         EventBus.getDefault().register(this);
-        if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.P) {
-            ListenerUtils.setCallBack(this);
-        }
+        ListenerUtils.setCallBack(this);
         return mView;
     }
 

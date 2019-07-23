@@ -275,9 +275,7 @@ public class WebViewActivity extends BaseActivity implements View.OnLongClickLis
         CityManager.getInstance(this).initLocation();
         TCAgent.LOG_ON = true;
         webView.setOnLongClickListener(this);
-        if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.P) {
-            ListenerUtils.setCallBack(this);
-        }
+        ListenerUtils.setCallBack(this);
     }
 
     private PermissionInterceptor permissionInterceptor = new PermissionInterceptor() {
@@ -1054,6 +1052,8 @@ public class WebViewActivity extends BaseActivity implements View.OnLongClickLis
                     }
                 }
             });
+
+
         }
 
         /**
@@ -1262,6 +1262,11 @@ public class WebViewActivity extends BaseActivity implements View.OnLongClickLis
         @JavascriptInterface
         public void ColourlifeWalletAuth(String authJson) {
             Cqb_PayUtil.getInstance(WebViewActivity.this).openCertification(getAuthPublicParams(WebViewActivity.this, authJson), Constants.CAIWALLET_ENVIRONMENT, "CertificationFlag");
+        }
+
+        @JavascriptInterface
+        public void ColourlifeSmartService(String goodsJson) {
+            LinkParseUtil.sendGoodsInfor(WebViewActivity.this, goodsJson);
         }
     }
 

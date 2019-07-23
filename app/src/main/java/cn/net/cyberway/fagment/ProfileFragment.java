@@ -222,9 +222,7 @@ public class ProfileFragment extends Fragment implements View.OnClickListener, M
         rl_profile_info.setOnClickListener(this);
         iv_qr_code.setOnClickListener(this);
         TCAgent.onEvent(getActivity(), "203001");
-        if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.P) {
-            ListenerUtils.setCallBack(this);
-        }
+        ListenerUtils.setCallBack(this);
         refresh_layout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {

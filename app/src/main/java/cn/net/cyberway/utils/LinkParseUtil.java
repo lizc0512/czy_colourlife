@@ -41,9 +41,13 @@ import com.notification.activity.NotificationActivity;
 import com.scanCode.activity.CaptureActivity;
 import com.setting.activity.SettingActivity;
 import com.sobot.chat.SobotApi;
+import com.sobot.chat.api.model.ConsultingContent;
 import com.sobot.chat.api.model.Information;
 import com.user.UserAppConst;
 import com.user.activity.UserRegisterAndLoginActivity;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.HashSet;
 
@@ -118,8 +122,8 @@ public class LinkParseUtil {
                         case "Ticket":
                         case "NewTicket"://彩钱包
                             if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.P) {
-                                Cqb_PayUtil.getInstance((Activity) context).createPay(Utils.getPublicParams(context), Constants.CAIWALLET_ENVIRONMENT);//彩钱包
                             }
+                            Cqb_PayUtil.getInstance((Activity) context).createPay(Utils.getPublicParams(context), Constants.CAIWALLET_ENVIRONMENT);//彩钱包
                             break;
                         case "OpenColourlifeWallet": // 开通彩钱包
                             Cqb_PayUtil.getInstance((Activity) context).openActivityUI(Utils.getPublicParams(context), Constants.CAIWALLET_ENVIRONMENT);//开通彩钱包
@@ -138,7 +142,7 @@ public class LinkParseUtil {
                             context.startActivity(intent);
                             ((Activity) context).overridePendingTransition(R.anim.push_right_in, R.anim.push_right_out);
                             break;
-                        case "Neighborhood"://邻里首页  colourlife://proto?type=orderList
+                        case "Neighborhood"://邻里首页  colourlife://proto?type=OpenColourlifeWallet
                             intent = new Intent(context, LinLiActivity.class);
                             context.startActivity(intent);
                             break;
@@ -251,7 +255,8 @@ public class LinkParseUtil {
                             info.setRealname(mShared.getString(UserAppConst.Colour_Real_name, ""));
                             info.setTel(mShared.getString(UserAppConst.Colour_login_mobile, ""));
                             info.setFace(mShared.getString(UserAppConst.Colour_head_img, ""));
-                            info.setArtificialIntelligence(true);
+                            info.setArtificialIntelligence(false);////默认false：显示转人工按钮。true：智能转人工
+                            info.setArtificialIntelligenceNum(2);//为true时生效
                             info.setInitModeType(-1);
                             HashSet<String> tmpSet = new HashSet<>();
                             tmpSet.add("转人工");
@@ -291,6 +296,59 @@ public class LinkParseUtil {
         intent.putExtra(WebViewActivity.THRIDSOURCE, true);
         context.startActivity(intent);
         ((Activity) context).overridePendingTransition(R.anim.push_right_in, R.anim.push_right_out);
+    }
+
+    public static void sendGoodsInfor(Context context, String goodsInfor) {
+        SharedPreferences mShared = context.getSharedPreferences(UserAppConst.USERINFO, 0);
+        Information info = new Information();
+        info.setAppkey(Constants.SMART_SERVICE_KEY);  //分配给App的的密钥
+        info.setUid(mShared.getString(UserAppConst.Colour_User_uuid, ""));
+        info.setUname(mShared.getString(UserAppConst.Colour_NAME, ""));
+        info.setRealname(mShared.getString(UserAppConst.Colour_Real_name, ""));
+        info.setTel(mShared.getString(UserAppConst.Colour_login_mobile, ""));
+        info.setFace(mShared.getString(UserAppConst.Colour_head_img, ""));
+        info.setArtificialIntelligence(false);////默认false：显示转人工按钮。true：智能转人工
+        info.setArtificialIntelligenceNum(2);//为true时生效
+        info.setInitModeType(-1);
+        HashSet<String> tmpSet = new HashSet<>();
+        tmpSet.add("转人工");
+        tmpSet.add("人工");
+        info.setTransferKeyWord(tmpSet);
+        if (TextUtils.isEmpty(goodsInfor)) {
+            SobotApi.startSobotChat(context, info);
+        } else {
+            JSONObject goodsJson = null;
+            try {
+                goodsJson = new JSONObject(goodsInfor);
+                ConsultingContent consultingContent = new ConsultingContent();
+
+                //咨询内容标题，必填
+
+                consultingContent.setSobotGoodsTitle(goodsJson.optString("goodsTitle"));
+
+                //咨询内容图片，选填 但必须是图片地址
+
+                consultingContent.setSobotGoodsImgUrl(goodsJson.optString("goodsImgUrl"));
+
+                //咨询来源页，必填
+                consultingContent.setSobotGoodsFromUrl(goodsJson.optString("goodsFromUrl"));
+
+                //描述，选填
+
+                consultingContent.setSobotGoodsDescribe(goodsJson.optString("goodsDescribe"));
+
+                //标签，选填
+
+                consultingContent.setSobotGoodsLable(goodsJson.optString("goodsPrice"));
+
+                info.setConsultingContent(consultingContent);
+                //发送商品卡片消息接口
+                SobotApi.startSobotChat(context, info);
+                SobotApi.sendCardMsg(context, consultingContent);
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
     }
 }
 
