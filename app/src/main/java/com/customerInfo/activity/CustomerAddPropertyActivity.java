@@ -161,6 +161,7 @@ public class CustomerAddPropertyActivity extends BaseActivity implements View.On
         tv_block.setOnClickListener(this);
         tv_dong.setOnClickListener(this);
         tv_unit.setOnClickListener(this);
+        et_search_area.setCursorVisible(false);//隐藏光标
         et_search_area.setOnClickListener(this);
         et_search_area.addTextChangedListener(new TextWatcher() {
             @Override
@@ -179,6 +180,7 @@ public class CustomerAddPropertyActivity extends BaseActivity implements View.On
 
             @Override
             public void afterTextChanged(Editable s) {
+                et_search_area.setCursorVisible(!TextUtils.isEmpty(s.toString().trim()));
                 iv_clean.setVisibility(TextUtils.isEmpty(s.toString().trim()) ? View.GONE : View.VISIBLE);
                 ll_address.setVisibility(TextUtils.isEmpty(s.toString().trim()) ? View.VISIBLE : View.GONE);
             }
@@ -192,6 +194,7 @@ public class CustomerAddPropertyActivity extends BaseActivity implements View.On
                 dismissSoftKeyboard(this);
                 page = 1;
                 if (null != addAdapter && 0 < addBeanList.size()) {
+                    rv_address.setVisibility(View.GONE);
                     addBeanList.clear();
                     addAdapter.notifyDataSetChanged();
                 }
@@ -256,6 +259,7 @@ public class CustomerAddPropertyActivity extends BaseActivity implements View.On
             page = 1;
             keyword = "";
             if (null != addAdapter && 0 < addBeanList.size()) {
+                rv_address.setVisibility(View.GONE);
                 addBeanList.clear();
                 addAdapter.notifyDataSetChanged();
             }
@@ -359,6 +363,7 @@ public class CustomerAddPropertyActivity extends BaseActivity implements View.On
                     page = 1;
                     keyword = addBeanList.get(position).getName();
                     if (null != addAdapter && 0 < addBeanList.size()) {
+                        rv_address.setVisibility(View.GONE);
                         addBeanList.clear();
                         addAdapter.notifyDataSetChanged();
                     }
@@ -371,6 +376,7 @@ public class CustomerAddPropertyActivity extends BaseActivity implements View.On
                     dismissSoftKeyboard(this);
                     page = 1;
                     if (null != addAdapter && 0 < addBeanList.size()) {
+                        rv_address.setVisibility(View.GONE);
                         addBeanList.clear();
                         addAdapter.notifyDataSetChanged();
                     }
@@ -383,6 +389,7 @@ public class CustomerAddPropertyActivity extends BaseActivity implements View.On
                     dismissSoftKeyboard(this);
                     page = 1;
                     if (null != addAdapter && 0 < addBeanList.size()) {
+                        rv_address.setVisibility(View.GONE);
                         addBeanList.clear();
                         addAdapter.notifyDataSetChanged();
                     }
@@ -395,6 +402,7 @@ public class CustomerAddPropertyActivity extends BaseActivity implements View.On
                     dismissSoftKeyboard(this);
                     page = 1;
                     if (null != addAdapter && 0 < addBeanList.size()) {
+                        rv_address.setVisibility(View.GONE);
                         addBeanList.clear();
                         addAdapter.notifyDataSetChanged();
                     }
@@ -534,6 +542,7 @@ public class CustomerAddPropertyActivity extends BaseActivity implements View.On
                 break;
             case R.id.tv_city://城市列表
                 if (null != addAdapter && 0 < addBeanList.size()) {
+                    rv_address.setVisibility(View.GONE);
                     addBeanList.clear();
                     addAdapter.notifyDataSetChanged();
                 }
@@ -545,6 +554,7 @@ public class CustomerAddPropertyActivity extends BaseActivity implements View.On
                 break;
             case R.id.iv_city://城市列表 按钮
                 if (null != addAdapter && 0 < addBeanList.size()) {
+                    rv_address.setVisibility(View.GONE);
                     addBeanList.clear();
                     addAdapter.notifyDataSetChanged();
                 }
@@ -556,6 +566,7 @@ public class CustomerAddPropertyActivity extends BaseActivity implements View.On
                 break;
             case R.id.tv_garden://点击花园
                 if (null != addAdapter && 0 < addBeanList.size()) {
+                    rv_address.setVisibility(View.GONE);
                     addBeanList.clear();
                     addAdapter.notifyDataSetChanged();
                 }
@@ -575,6 +586,7 @@ public class CustomerAddPropertyActivity extends BaseActivity implements View.On
                 break;
             case R.id.tv_block:
                 if (null != addAdapter && 0 < addBeanList.size()) {
+                    rv_address.setVisibility(View.GONE);
                     addBeanList.clear();
                     addAdapter.notifyDataSetChanged();
                 }
@@ -591,6 +603,7 @@ public class CustomerAddPropertyActivity extends BaseActivity implements View.On
                 break;
             case R.id.tv_dong:
                 if (null != addAdapter && 0 < addBeanList.size()) {
+                    rv_address.setVisibility(View.GONE);
                     addBeanList.clear();
                     addAdapter.notifyDataSetChanged();
                 }
@@ -605,6 +618,7 @@ public class CustomerAddPropertyActivity extends BaseActivity implements View.On
                 break;
             case R.id.tv_unit:
                 if (null != addAdapter && 0 < addBeanList.size()) {
+                    rv_address.setVisibility(View.GONE);
                     addBeanList.clear();
                     addAdapter.notifyDataSetChanged();
                 }
@@ -620,6 +634,9 @@ public class CustomerAddPropertyActivity extends BaseActivity implements View.On
 
     @Override
     public void OnHttpResponse(int what, String result) {
+        if (View.GONE == rv_address.getVisibility()) {
+            rv_address.setVisibility(View.VISIBLE);
+        }
         switch (what) {
             case 3:
                 if (!TextUtils.isEmpty(result)) {
