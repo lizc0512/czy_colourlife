@@ -4,10 +4,7 @@ import android.app.IntentService;
 import android.content.Intent;
 import android.support.annotation.Nullable;
 
-import com.BeeFramework.Utils.ToastUtil;
 import com.BeeFramework.model.Constants;
-import com.chuanglan.shanyan_sdk.OneKeyLoginManager;
-import com.chuanglan.shanyan_sdk.listener.InitListener;
 import com.mob.MobSDK;
 import com.qiniu.droid.rtc.QNRTCEnv;
 import com.sobot.chat.SobotApi;
@@ -16,7 +13,6 @@ import com.tendcloud.tenddata.TCAgent;
 import com.umeng.commonsdk.UMConfigure;
 
 import cn.jpush.android.api.JPushInterface;
-import cn.net.cyberway.utils.ActivityLifecycleListener;
 import cn.net.cyberway.utils.CityManager;
 
 /**

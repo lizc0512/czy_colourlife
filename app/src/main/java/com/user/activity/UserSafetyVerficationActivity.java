@@ -21,15 +21,11 @@ import com.BeeFramework.model.NewHttpResponse;
 import com.BeeFramework.view.MyProgressDialog;
 import com.geetest.deepknow.DPAPI;
 import com.geetest.deepknow.bean.DPJudgementBean;
-import com.geetest.onepassv2.OnePassHelper;
-import com.geetest.onepassv2.listener.OnePassListener;
 import com.geetest.sensebot.SEAPI;
 import com.geetest.sensebot.listener.BaseSEListener;
 import com.nohttp.utils.GsonUtils;
 import com.user.entity.LoginVerifyEntity;
 import com.user.model.TokenModel;
-
-import org.json.JSONObject;
 
 import java.util.HashMap;
 
@@ -57,7 +53,6 @@ public class UserSafetyVerficationActivity extends BaseActivity implements View.
     /**
      * 进度条
      */
-    private MyProgressDialog progressDialog;
 
     private Button btn_start;
 
@@ -244,43 +239,10 @@ public class UserSafetyVerficationActivity extends BaseActivity implements View.
         finish();
     }
 
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-    }
-
 
     private void initGT3() {
         seapi = new SEAPI(this);
         DPAPI.getInstance(getApplicationContext()).ignoreDPView(btn_start, activityName);
-    }
-
-
-    /**
-     * onepass的方法，执行onepass只需拿到验证码的validate，兼容所有公版验证码
-     */
-    private void openOnePass() {
-        /**
-         *    第一参数为填写的手机号
-         *    第二个参数为验证后的validate
-         *    第三个参数为customid
-         *    第四个参数为回调
-         */
-        OnePassHelper.with().init(UserSafetyVerficationActivity.this);
-        OnePassHelper.with().getToken(mobile, CUSTOM_ID, new OnePassListener() {
-            @Override
-            public void onTokenFail(JSONObject jsonObject) {
-                goSmsCodePage();
-            }
-
-            @Override
-            public void onTokenSuccess(JSONObject jsonObject) {
-
-            }
-        });
-        progressDialog = new MyProgressDialog(UserSafetyVerficationActivity.this, "");
-        progressDialog.setCanceledOnTouchOutside(false);
-        progressDialog.show();
     }
 
 

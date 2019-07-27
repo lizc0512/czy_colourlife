@@ -7,7 +7,8 @@
         android:name="cn.net.cyberway.permission.JPUSH_MESSAGE"
         android:protectionLevel="signature" />
 
-    <uses-permission android:name="android.permission.GET_TASKS" />
+
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
     <uses-permission android:name="cn.net.cyberway.permission.JPUSH_MESSAGE" />
     <uses-permission android:name="android.permission.RECEIVE_USER_PRESENT" />
     <uses-permission android:name="android.permission.WAKE_LOCK" />
@@ -64,6 +65,9 @@
 
     <uses-permission
         android:name="android.permission.CHANGE_CONFIGURATION"
+        tools:ignore="ProtectedPermissions" />
+    <uses-permission
+        android:name="android.permission.PACKAGE_USAGE_STATS"
         tools:ignore="ProtectedPermissions" />
 
     <uses-feature

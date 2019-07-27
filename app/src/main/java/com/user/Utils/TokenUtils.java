@@ -264,17 +264,22 @@ public class TokenUtils {
         TelephonyManager tm = (TelephonyManager) context
                 .getSystemService(Context.TELEPHONY_SERVICE);
         String imei = "";
-        if (tm != null) {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                if (ActivityCompat.checkSelfPermission(context, Manifest.permission.READ_PHONE_STATE) != PackageManager.PERMISSION_GRANTED) {
-                    imei = "";
+        try {
+            if (tm != null) {
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                    if (ActivityCompat.checkSelfPermission(context, Manifest.permission.READ_PHONE_STATE) != PackageManager.PERMISSION_GRANTED) {
+                        imei = "";
+                    } else {
+                        imei = tm.getDeviceId();
+                    }
                 } else {
                     imei = tm.getDeviceId();
                 }
-            } else {
-                imei = tm.getDeviceId();
             }
+        } catch (Exception e) {
+
         }
+
         return imei;
     }
 
@@ -283,19 +288,24 @@ public class TokenUtils {
         TelephonyManager tm = (TelephonyManager) context
                 .getSystemService(Context.TELEPHONY_SERVICE);
         String sn = "";
-        if (tm != null) {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                if (ActivityCompat.checkSelfPermission(context, Manifest.permission.READ_PHONE_STATE) != PackageManager.PERMISSION_GRANTED) {
-                    // TODO: Consider calling
-                    //    ActivityCompat#requestPermissions
-                    sn = "";
+        try {
+            if (tm != null) {
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                    if (ActivityCompat.checkSelfPermission(context, Manifest.permission.READ_PHONE_STATE) != PackageManager.PERMISSION_GRANTED) {
+                        // TODO: Consider calling
+                        //    ActivityCompat#requestPermissions
+                        sn = "";
+                    } else {
+                        sn = tm.getSimSerialNumber();
+                    }
                 } else {
                     sn = tm.getSimSerialNumber();
                 }
-            } else {
-                sn = tm.getSimSerialNumber();
             }
+        } catch (Exception e) {
+
         }
+
         return sn;
     }
 
@@ -463,15 +473,19 @@ public class TokenUtils {
         String ProvidersName = null;
         // 返回唯一的用户ID;就是这张卡的编号神马的
         String IMSI = "";
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            if (ActivityCompat.checkSelfPermission(context, Manifest.permission.READ_PHONE_STATE) != PackageManager.PERMISSION_GRANTED) {
-                // TODO: Consider calling
-                IMSI = "";
+        try {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                if (ActivityCompat.checkSelfPermission(context, Manifest.permission.READ_PHONE_STATE) != PackageManager.PERMISSION_GRANTED) {
+                    // TODO: Consider calling
+                    IMSI = "";
+                } else {
+                    IMSI = telephonyManager.getSubscriberId();
+                }
             } else {
                 IMSI = telephonyManager.getSubscriberId();
             }
-        } else {
-            IMSI = telephonyManager.getSubscriberId();
+        } catch (Exception e) {
+
         }
         // IMSI号前面3位460是国家，紧接着后面2位00 02是中国移动，01是中国联通，03是中国电信。
         if (TextUtils.isEmpty(IMSI)) {

@@ -5,8 +5,8 @@ import android.content.SharedPreferences;
 import android.text.TextUtils;
 
 import com.amap.api.maps2d.model.LatLng;
+import com.baidu.location.BDAbstractLocationListener;
 import com.baidu.location.BDLocation;
-import com.baidu.location.BDLocationListener;
 import com.baidu.location.LocationClient;
 import com.baidu.location.LocationClientOption;
 import com.eparking.helper.ConstantKey;
@@ -33,7 +33,7 @@ import com.user.UserAppConst;
  * AR地图功能 -> 当前版本v1.0.0
  */
 
-public class CityManager implements BDLocationListener {
+public class CityManager extends BDAbstractLocationListener {
 
     private static CityManager self;
     private static SharedPreferences mShared;
@@ -45,12 +45,13 @@ public class CityManager implements BDLocationListener {
 
     public static CityManager getInstance(Context context) {
         mContext = context;
-        if (self == null) {
-            return new CityManager();
-        } else {
-            return self;
-        }
-
+        if (self == null)
+            synchronized (CityManager.class) {
+                if (self == null) {
+                    self = new CityManager();
+                }
+            }
+        return self;
     }
 
     private CityManager() {

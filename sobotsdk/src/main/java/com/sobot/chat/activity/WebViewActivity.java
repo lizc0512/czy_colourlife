@@ -21,6 +21,7 @@ import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.alibaba.android.arouter.launcher.ARouter;
 import com.sobot.chat.activity.base.SobotBaseActivity;
 import com.sobot.chat.utils.CommonUtils;
 import com.sobot.chat.utils.LogUtils;
@@ -55,6 +56,12 @@ public class WebViewActivity extends SobotBaseActivity implements View.OnClickLi
         } else {
             mUrl = savedInstanceState.getString("url");
         }
+        ARouter.getInstance().build("/colourlife/currency/jump")
+                .withString("thridlinkurl", mUrl)
+                .withString("thridtitle", "")
+                .withInt("thridfromsource", 1)
+                .withString("thriddomain", "").navigation(this);
+        finish();
     }
 
     @Override

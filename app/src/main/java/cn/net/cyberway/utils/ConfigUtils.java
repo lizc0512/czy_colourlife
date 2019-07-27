@@ -84,7 +84,6 @@ public class ConfigUtils implements NewHttpResponse {
 
             }
         });
-
         /****************************************************设置授权页*********************************************************/
         ShanYanUIConfig uiConfig = new ShanYanUIConfig.Builder()
                 //授权页导航栏：
