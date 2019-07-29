@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -8,92 +8,91 @@
     android:layout_marginTop="8dp"
     android:layout_marginRight="16dp"
     android:layout_marginBottom="8dp"
-    app:cardBackgroundColor="@color/white"
-    app:cardCornerRadius="8dp"
-    app:cardElevation="3dp">
+    android:background="@null">
 
-    <RelativeLayout
+    <android.support.v7.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="4dp"
-        android:background="@null"
-        android:padding="12dp">
+        android:layout_marginLeft="16dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginRight="16dp"
+        android:layout_marginBottom="8dp"
+        app:cardBackgroundColor="@color/white"
+        app:cardCornerRadius="8dp"
+        app:cardElevation="3dp">
 
-        <ImageView
-            android:id="@+id/iv_ic"
-            android:layout_width="wrap_content"
+        <RelativeLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@drawable/a1"
-            tools:ignore="ContentDescription" />
-
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="12dp"
-            android:layout_marginLeft="12dp"
-            android:layout_toEndOf="@+id/iv_ic"
-            android:layout_toRightOf="@+id/iv_ic"
+            android:layout_marginTop="4dp"
             android:background="@null"
-            android:orientation="vertical">
+            android:padding="12dp">
 
-            <TextView
+            <ImageView
+                android:id="@+id/iv_shop"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="京东精选"
-                android:textColor="@color/black_text_color"
-                android:textSize="16sp" />
+                android:background="@drawable/icon_default"
+                tools:ignore="ContentDescription" />
 
             <LinearLayout
+                android:id="@+id/ll_shop"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="2dp"
-                android:background="@null">
+                android:layout_marginStart="12dp"
+                android:layout_marginLeft="12dp"
+                android:layout_toEndOf="@+id/iv_shop"
+                android:layout_toRightOf="@+id/iv_shop"
+                android:background="@null"
+                android:orientation="vertical">
 
                 <TextView
+                    android:id="@+id/tv_title"
                     android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:layout_marginEnd="8dp"
-                    android:layout_marginRight="8dp"
-                    android:background="@drawable/shape_benefit_text_red"
-                    android:text="单均送18元"
-                    android:textColor="@color/color_fd4600"
-                    android:textSize="12sp" />
+                    android:layout_height="wrap_content"
+                    android:text="京东精选"
+                    android:textColor="@color/black_text_color"
+                    android:textSize="16sp" />
 
-                <TextView
+                <LinearLayout
+                    android:id="@+id/ll_activity"
                     android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:layout_marginEnd="8dp"
-                    android:layout_marginRight="8dp"
-                    android:background="@drawable/shape_benefit_text_blue"
-                    android:text="3243人用过"
-                    android:textColor="@color/color_329dfa"
-                    android:textSize="12sp" />
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:background="@null"
+                    android:orientation="horizontal" />
+
             </LinearLayout>
 
-        </LinearLayout>
+            <TextView
+                android:id="@+id/tv_content"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/ll_shop"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="4dp"
+                android:layout_marginRight="4dp"
+                android:layout_toStartOf="@+id/tv_more"
+                android:layout_toLeftOf="@+id/tv_more"
+                android:text="平直保障，比官网更优惠"
+                android:textColor="@color/grayred_text_color"
+                android:textSize="12sp" />
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/iv_ic"
-            android:layout_marginTop="8dp"
-            android:text="平直保障，比官网更优惠，而且还送物业费"
-            android:textColor="@color/grayred_text_color"
-            android:textSize="12sp" />
+            <TextView
+                android:id="@+id/tv_more"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:drawableEnd="@drawable/home_more_right"
+                android:drawableRight="@drawable/home_more_right"
+                android:padding="4dp"
+                android:text="更多"
+                android:textColor="@color/grayred_text_color"
+                android:textSize="14sp" />
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentEnd="true"
-            android:layout_alignParentRight="true"
-            android:layout_centerVertical="true"
-            android:drawableEnd="@drawable/home_more_right"
-            android:drawableRight="@drawable/home_more_right"
-            android:padding="4dp"
-            android:text="更多"
-            android:textColor="@color/grayred_text_color"
-            android:textSize="14sp" />
+        </RelativeLayout>
 
-    </RelativeLayout>
-
-</android.support.v7.widget.CardView>
+    </android.support.v7.widget.CardView>
+</LinearLayout>

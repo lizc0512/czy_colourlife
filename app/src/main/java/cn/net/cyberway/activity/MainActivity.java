@@ -70,8 +70,8 @@ import java.util.Set;
 
 import cn.jpush.android.api.JPushInterface;
 import cn.net.cyberway.R;
-import cn.net.cyberway.fagment.BenefitFragment;
 import cn.net.cyberway.fagment.InstantMessageFragment;
+import cn.net.cyberway.fagment.LifeHomeFragment;
 import cn.net.cyberway.fagment.ProfileFragment;
 import cn.net.cyberway.home.entity.PopMessageEntity;
 import cn.net.cyberway.home.entity.PushNotificationEntity;
@@ -112,8 +112,8 @@ public class MainActivity extends BaseFragmentActivity implements View.OnClickLi
     private MainHomeFragmentNew mHomeFragment;
     private NologinHomeFragment nologinHomeFragment;
     private InstantMessageFragment instantMessageFragment;//消息
-    //    private LifeHomeFragment lifeHomeFragment;//生活页面
-    private BenefitFragment benefitFragment;
+    private LifeHomeFragment lifeHomeFragment;//生活页面
+    //    private BenefitFragment benefitFragment;
     private ProfileFragment profileFragment;
     private LinearLayout mHome;
     private LinearLayout mCommunity;
@@ -616,11 +616,17 @@ public class MainActivity extends BaseFragmentActivity implements View.OnClickLi
                 choiceType = 1;
                 transaction = fragmentManager.beginTransaction();
                 hideFragments(transaction);
-                if (null == benefitFragment) {
+                /*if (null == benefitFragment) {
                     benefitFragment = new BenefitFragment();
                     transaction.add(R.id.main_fragment_container, benefitFragment);
                 } else {
                     transaction.show(benefitFragment);
+                }*/
+                if (null == lifeHomeFragment) {
+                    lifeHomeFragment = new LifeHomeFragment();
+                    transaction.add(R.id.main_fragment_container, lifeHomeFragment);
+                } else {
+                    transaction.show(lifeHomeFragment);
                 }
                 transaction.commitAllowingStateLoss();
                 mHome.setSelected(false);
@@ -685,8 +691,11 @@ public class MainActivity extends BaseFragmentActivity implements View.OnClickLi
         if (instantMessageFragment != null) {
             transaction.hide(instantMessageFragment);
         }
-        if (benefitFragment != null) {
+        /*if (benefitFragment != null) {
             transaction.hide(benefitFragment);
+        }*/
+        if (lifeHomeFragment != null) {
+            transaction.hide(lifeHomeFragment);
         }
         if (profileFragment != null) {
             transaction.hide(profileFragment);

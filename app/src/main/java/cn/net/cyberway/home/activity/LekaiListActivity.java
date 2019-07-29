@@ -6,11 +6,14 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.support.v7.widget.LinearLayoutManager;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.BeeFramework.Utils.ToastUtil;
 import com.BeeFramework.activity.BaseActivity;
 import com.intelspace.library.module.LocalKey;
 import com.yanzhenjie.recyclerview.swipe.SwipeMenuRecyclerView;
@@ -20,13 +23,14 @@ import java.util.Objects;
 
 import cn.net.cyberway.R;
 import cn.net.cyberway.home.adapter.LekaiAdapter;
+import cn.net.cyberway.home.service.LekaiParkLockController;
 import cn.net.cyberway.utils.LekaiHelper;
 
 /**
  * 蓝牙门禁列表
  * hxg 2019.06.14
  */
-public class LekaiListActivity extends BaseActivity implements View.OnClickListener {
+public class LekaiListActivity extends BaseActivity implements View.OnClickListener, LekaiParkLockController.OnScanParkLockChangeListener {
 
     private ImageView user_top_view_back;
     private TextView user_top_view_title;
@@ -36,12 +40,15 @@ public class LekaiListActivity extends BaseActivity implements View.OnClickListe
     private LekaiAdapter mAdapter;
 
     private ArrayList<LocalKey> keysList = new ArrayList<>();
+    private Handler handler;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_lekai_list);
         getWindow().setBackgroundDrawable(null);
+
+        LekaiHelper.setScanParkLockChangeListener(this);
 
         initView();
         initData();
@@ -53,6 +60,9 @@ public class LekaiListActivity extends BaseActivity implements View.OnClickListe
         try {
             if (null != bluetoothListener) {
                 bluetoothListener = null;
+            }
+            if (null != handler) {
+                handler.removeCallbacksAndMessages(null);
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -88,6 +98,9 @@ public class LekaiListActivity extends BaseActivity implements View.OnClickListe
                 if (0 != keysList.size()) {
                     try {
                         mAdapter = new LekaiAdapter(this, keysList);
+                        if (null != LekaiHelper.getParkMap()) {
+                            mAdapter.setParkMap(LekaiHelper.getParkMap());
+                        }
                         smrv_lekai.setAdapter(mAdapter);
                         smrv_lekai.loadMoreFinish(false, false);
                     } catch (Exception e) {
@@ -103,10 +116,50 @@ public class LekaiListActivity extends BaseActivity implements View.OnClickListe
 
     @Override
     public void onClick(View v) {
-        switch (v.getId()) {
-            case R.id.user_top_view_back:
-                finish();
-                break;
+        if (v.getId() == R.id.user_top_view_back) {
+            finish();
+        }
+    }
+
+    /**
+     * 停车 倒下
+     */
+    public void parkDown(int position) {
+        ToastUtil.toastShow(this, "正在开车位锁");
+
+        LekaiHelper.parkUnlock(keysList.get(position).getMac(), (status, message, battery) -> {
+            handler = new Handler(Looper.getMainLooper());
+            handler.post(() -> ToastUtil.toastShow(getApplicationContext(), 0 == status ? ("操作成功,电量：" + battery) : message));
+        });
+    }
+
+    /**
+     * 停车 抬起
+     */
+    public void parkUp(int position) {
+        ToastUtil.toastShow(this, "正在锁上车位");
+
+        LekaiHelper.parkLock(keysList.get(position).getMac(), (status, message, battery) -> {
+            handler = new Handler(Looper.getMainLooper());
+            handler.post(() -> ToastUtil.toastShow(getApplicationContext(), 0 == status ? ("操作成功,电量：" + battery) : message));
+        });
+    }
+
+    /**
+     * 停车
+     */
+    public void parkAgain() {
+        ToastUtil.toastShow(this, "操作失败，请重试");
+    }
+
+    /**
+     * 监听扫描到的地锁设备变化
+     */
+    @Override
+    public void onScanParkLockChanged(String mac) {
+        if (null != LekaiHelper.getParkMap() && null != mAdapter) {
+            mAdapter.setParkMap(LekaiHelper.getParkMap());
+            mAdapter.notifyDataSetChanged();
         }
     }
 

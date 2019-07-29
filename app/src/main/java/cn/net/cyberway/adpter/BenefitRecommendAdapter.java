@@ -1,87 +1,141 @@
 package cn.net.cyberway.adpter;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
-import android.content.SharedPreferences;
-import android.support.v7.widget.RecyclerView;
-import android.view.LayoutInflater;
+import android.graphics.Color;
+import android.text.SpannableString;
+import android.text.Spanned;
+import android.text.style.ForegroundColorSpan;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.RelativeLayout;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.BeeFramework.Utils.Utils;
+import com.BeeFramework.adapter.BeeBaseAdapter;
+import com.customerInfo.protocol.DutyListEntity;
 import com.nohttp.utils.GlideImageLoader;
-import com.user.UserAppConst;
 
-import java.util.ArrayList;
+import java.util.List;
 
 import cn.net.cyberway.R;
-import cn.net.cyberway.protocol.HomeLifeEntity;
-import cn.net.cyberway.utils.LinkParseUtil;
 
 /**
  * 彩惠人生-推荐
  * Created by hxg on 2019/07/15.
  */
-public class BenefitRecommendAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
-    private LayoutInflater mInflater;
-    private Context mContext;
-    public ArrayList<HomeLifeEntity.ContentBean.ListBean> content = new ArrayList<HomeLifeEntity.ContentBean.ListBean>();
+public class BenefitRecommendAdapter extends BeeBaseAdapter {
 
-    public BenefitRecommendAdapter(Context context, ArrayList<HomeLifeEntity.ContentBean.ListBean> contentBanner) {
-        mInflater = LayoutInflater.from(context);
-        content = contentBanner;
-        this.mContext = context;
+    private int imgSize;
+
+    public BenefitRecommendAdapter(Context context, List<String> list, int imgSize) {
+        super(context, list);
+        this.imgSize = imgSize;
     }
 
-    public void setData(ArrayList<HomeLifeEntity.ContentBean.ListBean> content) {
-        this.content = content;
-        notifyDataSetChanged();
-    }
-
-    @Override
-    public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.adapter_benefit_recommend, parent, false);
-        MyTicketBottomViewHolder myTicketBottomViewHolder = new MyTicketBottomViewHolder(view);
-        return myTicketBottomViewHolder;
+    public class ViewHolder extends BeeBaseAdapter.BeeCellHolder {
+        private ImageView iv_shop;
+        private TextView tv_title;
+        private LinearLayout ll_activity;
+        private TextView tv_more;
+        private LinearLayout ll_content;
     }
 
     @Override
-    public void onBindViewHolder(RecyclerView.ViewHolder holder, final int position) {
-        ((MyTicketBottomViewHolder) holder).name.setText(content.get(position).getName());
-        GlideImageLoader.loadImageDefaultDisplay(mContext, content.get(position).getImg(), ((MyTicketBottomViewHolder) holder).img, R.drawable.default_image, R.drawable.default_image);
-        ((MyTicketBottomViewHolder) holder).rl_findpro_bottom.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                SharedPreferences mShared = mInflater.getContext().getSharedPreferences(UserAppConst.USERINFO, 0);
-                if (mShared.getBoolean(UserAppConst.IS_LOGIN, false)) {
-                    if (content.size() > 0) {
-                        LinkParseUtil.parse(mInflater.getContext(), content.get(position).getUrl(), content.get(position).getName());
-                    }
-                } else {
-                    LinkParseUtil.parse(mInflater.getContext(), "", content.get(position).getName());
-                }
-            }
-        });
+    protected BenefitRecommendAdapter.BeeCellHolder createCellHolder(View cellView) {
+        BenefitRecommendAdapter.ViewHolder holder = new BenefitRecommendAdapter.ViewHolder();
+        holder.iv_shop = cellView.findViewById(R.id.iv_shop);
+        holder.tv_title = cellView.findViewById(R.id.tv_title);
+        holder.ll_activity = cellView.findViewById(R.id.ll_activity);
+        holder.tv_more = cellView.findViewById(R.id.tv_more);
+        holder.ll_content = cellView.findViewById(R.id.ll_content);
+        return holder;
     }
 
+    @SuppressLint("SetTextI18n")
     @Override
-    public int getItemCount() {
-        return content == null ? 0 : content.size();
-    }
+    protected View bindData(int position, View cellView, ViewGroup parent, BeeBaseAdapter.BeeCellHolder h) {
+        ViewHolder holder = (ViewHolder) h;
 
-    private static class MyTicketBottomViewHolder extends RecyclerView.ViewHolder {
+        holder.ll_activity.removeAllViews();
+        holder.ll_content.removeAllViews();
 
-        private ImageView img;
-        private TextView name;
-        private RelativeLayout rl_findpro_bottom;
+        final DutyListEntity.ContentBean.OnceBean item = (DutyListEntity.ContentBean.OnceBean) dataList.get(position);
 
-        public MyTicketBottomViewHolder(View itemView) {
-            super(itemView);
-            rl_findpro_bottom = (RelativeLayout) itemView.findViewById(R.id.rl_findpro_bottom);
-            img = (ImageView) itemView.findViewById(R.id.iv_findpro_bottom);
-            name = (TextView) itemView.findViewById(R.id.tv_findpro_bottom);
+        GlideImageLoader.loadImageDefaultDisplay(mContext, "", holder.iv_shop, R.drawable.icon_default, R.drawable.icon_default);
+        holder.tv_title.setText("京东精选");
+        holder.tv_title.setCompoundDrawables(null, null, mContext.getResources().getDrawable(R.drawable.ic_benefit_ticket), null);
+
+        LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+        layoutParams.setMargins(0, 0, Utils.dip2px(mContext, 8), 0);
+
+        LinearLayout.LayoutParams titleLayoutParams = new LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+        titleLayoutParams.setMargins(0, Utils.dip2px(mContext, 8), 0, Utils.dip2px(mContext, 4));
+
+        LinearLayout.LayoutParams priceLayoutParams = new LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+        priceLayoutParams.setMargins(0, 0, 0, Utils.dip2px(mContext, 8));
+
+        TextView leftText = new TextView(mContext);
+        leftText.setText("单均送18元");
+        leftText.setTextSize(12);
+        leftText.setTextColor(mContext.getResources().getColor(R.color.color_fd4600));
+        leftText.setBackgroundResource(R.drawable.shape_benefit_text_red);
+        holder.ll_activity.addView(leftText, layoutParams);
+
+        TextView rightText = new TextView(mContext);
+        rightText.setText("3243人用过");
+        rightText.setTextSize(12);
+        rightText.setTextColor(mContext.getResources().getColor(R.color.color_329dfa));
+        rightText.setBackgroundResource(R.drawable.shape_benefit_text_blue);
+        holder.ll_activity.addView(rightText, layoutParams);
+
+        for (int i = 0; i < 3; i++) {
+            LinearLayout ll_shop = new LinearLayout(mContext);
+            ll_shop.setOrientation(LinearLayout.VERTICAL);
+
+            LinearLayout.LayoutParams layoutParamsImg = new LinearLayout.LayoutParams(imgSize, imgSize);
+            layoutParamsImg.setMargins(0, 0, Utils.dip2px(mContext, 8), 0);
+            ImageView imageView = new ImageView(mContext);
+            GlideImageLoader.loadImageDefaultDisplay(mContext, "", imageView, R.drawable.default_image, R.drawable.default_image);
+            ll_shop.addView(imageView, layoutParamsImg);
+
+            TextView titleText = new TextView(mContext);
+            titleText.setText("电饭锅");
+            titleText.setTextSize(14);
+            titleText.setTextColor(mContext.getResources().getColor(R.color.black_text_color));
+            ll_shop.addView(titleText, titleLayoutParams);
+
+            TextView priceText = new TextView(mContext);
+            priceText.setTextSize(14);
+            priceText.setTextColor(mContext.getResources().getColor(R.color.color_fd4600));
+
+            int a = position + 97;
+            String b = "￥" + a + " 送20元";
+
+            SpannableString spannableString = new SpannableString(b);
+            ForegroundColorSpan colorSpan = new ForegroundColorSpan(Color.parseColor("#FEBA42"));
+            spannableString.setSpan(colorSpan, b.indexOf("送"), spannableString.length(), Spanned.SPAN_INCLUSIVE_EXCLUSIVE);
+            priceText.setText(spannableString);
+
+            ll_shop.addView(priceText, priceLayoutParams);
+
+            holder.ll_content.addView(ll_shop);
         }
+
+        holder.tv_more.setOnClickListener(v -> {
+
+        });
+
+        return cellView;
+    }
+
+    @Override
+    public View createCellView() {
+        return mInflater.inflate(R.layout.adapter_benefit_recommend, null);
     }
 
 }

@@ -13,14 +13,18 @@ import android.util.Log;
 import com.BeeFramework.AppConst;
 import com.BeeFramework.Utils.ToastUtil;
 import com.intelspace.library.EdenApi;
+import com.intelspace.library.api.OnConnectCallback;
 import com.intelspace.library.api.OnFoundDeviceListener;
 import com.intelspace.library.api.OnSyncUserKeysCallback;
+import com.intelspace.library.api.OnUserOptParkLockCallback;
 import com.intelspace.library.module.Device;
 import com.intelspace.library.module.LocalKey;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import cn.net.cyberway.utils.ActivityLifecycleListener;
+import cn.net.cyberway.utils.LekaiHelper;
 
 /**
  * 乐开
@@ -34,9 +38,11 @@ public class LekaiService extends Service {
     private EdenApi mEdenApi;
     private LocalBinder mBinder = new LocalBinder();
     private BluetoothStateCallback mBluetoothStateCallback;
+    private HashMap<String, Device> mParkMap = new HashMap<>(); // 所有的车位锁
+    private LekaiParkLockController mParkLockController;
 
-    private static String acc = "";
-    private static String tok = "";
+    private static String ACC = "";
+    private static String TOK = "";
 
     @Nullable
     @Override
@@ -57,6 +63,8 @@ public class LekaiService extends Service {
     @Override
     public void onCreate() {
         super.onCreate();
+        mParkLockController = new LekaiParkLockController(mParkMap);
+
         initEdenApi();
     }
 
@@ -102,12 +110,13 @@ public class LekaiService extends Service {
             Log.d(TAG, device.getLockMac());
             unlockDevice(device);
         });
+        foundDevice();
     }
 
     public void syncUserKeys(OnSyncUserKeysCallback callback, String accid, String token) {
         if (null != mEdenApi) {
-            acc = accid;
-            tok = token;
+            ACC = accid;
+            TOK = token;
             mEdenApi.syncUserKeys(accid, token, callback);
         }
     }
@@ -116,14 +125,19 @@ public class LekaiService extends Service {
         if (mEdenApi != null) {
             mEdenApi.setOnFoundDeviceListener(device -> {
                 Log.d(TAG, device.getLockMac());
-                unlockDevice(device);
+                // 判断是否为车位锁
+                if (Device.LOCK_VERSION_PARK_LOCK.equals(device.getLockVersion())) {
+                    mParkLockController.putParkDevice(device);
+                } else {
+                    unlockDevice(device);
+                }
             });
         }
     }
 
     public void unlockDevice(Device device) {
         if (null != mEdenApi) {
-            mEdenApi.unlock(device, acc, tok, AppConst.CONNECT_TIME_OUT, (i, s, i1) -> {
+            mEdenApi.unlock(device, ACC, TOK, AppConst.CONNECT_TIME_OUT, (i, s, i1) -> {
                 //开锁成功的回调
                 Handler handler = new Handler(Looper.getMainLooper());
                 handler.post(() -> ToastUtil.toastShow(getApplicationContext(), "开锁成功"));
@@ -171,6 +185,68 @@ public class LekaiService extends Service {
         void onBluetoothStateOn();
 
         void onBluetoothStateOff();
+    }
+
+    /**
+     * 地锁放下（开锁）
+     *
+     * @param mac      地锁设备Mac地址
+     * @param callback 操作回调
+     */
+    public void parkUnlock(String mac, final OnUserOptParkLockCallback callback) {
+        if (mEdenApi != null) {
+            String deviceMac = LekaiHelper.formatMacAddress(mac);
+            Device parkDevice = mParkLockController.getParkDeviceByMac(deviceMac);
+            if (parkDevice != null) {
+                mEdenApi.connectDevice(parkDevice, 5000, new OnConnectCallback() {
+                    @Override
+                    public void connectSuccess(Device device) {
+                        mEdenApi.parkUnlock(device, ACC, TOK, callback);
+                    }
+
+                    @Override
+                    public void connectError(int error, String message) {
+
+                    }
+                });
+            }
+        }
+    }
+
+    /**
+     * 地锁抬起（关锁）
+     *
+     * @param mac      地锁设备Mac地址
+     * @param callback 操作回调
+     */
+    public void parkLock(String mac, final OnUserOptParkLockCallback callback) {
+        if (mEdenApi != null) {
+            String deviceMac = LekaiHelper.formatMacAddress(mac);
+            Device parkDevice = mParkLockController.getParkDeviceByMac(deviceMac);
+            if (parkDevice != null) {
+                mEdenApi.connectDevice(parkDevice, 5000, new OnConnectCallback() {
+                    @Override
+                    public void connectSuccess(Device device) {
+                        mEdenApi.parkLock(device, ACC, TOK, callback);
+                    }
+
+                    @Override
+                    public void connectError(int error, String message) {
+
+                    }
+                });
+            }
+        }
+    }
+
+    public void setScanParkLockChangeListener(LekaiParkLockController.OnScanParkLockChangeListener listener) {
+        if (mParkLockController != null) {
+            mParkLockController.setScanParkLockChangeListener(listener);
+        }
+    }
+
+    public HashMap<String, Device> getParkMap() {
+        return mParkMap;
     }
 
 }

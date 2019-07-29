@@ -15,14 +15,18 @@ import android.support.v4.content.ContextCompat;
 import android.text.TextUtils;
 
 import com.intelspace.library.api.OnSyncUserKeysCallback;
+import com.intelspace.library.api.OnUserOptParkLockCallback;
+import com.intelspace.library.module.Device;
 import com.intelspace.library.module.LocalKey;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import cn.net.cyberway.activity.MainActivity;
+import cn.net.cyberway.home.service.LekaiParkLockController;
 import cn.net.cyberway.home.service.LekaiService;
 
 /**
@@ -34,6 +38,7 @@ public class LekaiHelper {
 
     private static LekaiService mLekaiService;
     private static ServiceConnection mConn = new ServiceConnection() {
+
         @Override
         public void onServiceConnected(ComponentName name, IBinder service) {
             LekaiService.LocalBinder binder = (LekaiService.LocalBinder) service;
@@ -112,8 +117,8 @@ public class LekaiHelper {
                     JSONObject data = new JSONObject(content);
                     String accid = data.getString("accid");
                     String token = data.getString("token");
-//                    start(activity, "huangxiaoguang", "huangxiaoguang");//测试
                     start(activity, accid, token);
+//                    start(activity, "huangxiaoguang", "huangxiaoguang");//测试
                 }
             } catch (JSONException e) {
                 e.printStackTrace();
@@ -122,13 +127,11 @@ public class LekaiHelper {
     }
 
     private static void start(Activity activity, String accid, String token) {
-        final int[] a = {0};
         if (null != mLekaiService) {
             mLekaiService.syncUserKeys(new OnSyncUserKeysCallback() {
                 @Override
                 public void syncResponse(int code, String msg) {
-                    if (403 == code && 2 != a[0]) {
-                        a[0]++;
+                    if (403 == code) {
                         ((MainActivity) activity).regetLekaiToken();
                     }
                 }
@@ -187,5 +190,54 @@ public class LekaiHelper {
         if (null != mLekaiService) {
             mLekaiService.clearLocalKey();
         }
+    }
+
+    /**
+     * 停车监听
+     */
+    public static void setScanParkLockChangeListener(LekaiParkLockController.OnScanParkLockChangeListener listener) {
+        if (null != mLekaiService) {
+            mLekaiService.setScanParkLockChangeListener(listener);
+        }
+    }
+
+    /**
+     * 获取停车列表
+     */
+    public static HashMap<String, Device> getParkMap() {
+        if (null != mLekaiService) {
+            return mLekaiService.getParkMap();
+        } else {
+            return null;
+        }
+    }
+
+    /**
+     * 倒下
+     */
+    public static void parkUnlock(String mac, final OnUserOptParkLockCallback callback) {
+        if (null != mLekaiService) {
+            mLekaiService.parkUnlock(mac, callback);
+        }
+    }
+
+    /**
+     * 抬起
+     */
+    public static void parkLock(String mac, final OnUserOptParkLockCallback callback) {
+        if (null != mLekaiService) {
+            mLekaiService.parkLock(mac, callback);
+        }
+    }
+
+    public static String formatMacAddress(String mac) {
+        if (TextUtils.isEmpty(mac) || mac.length() < 12) {
+            return "";
+        }
+        StringBuilder builder = new StringBuilder(mac);
+        for (int i = mac.length() - 2; i > 0; i -= 2) {
+            builder.insert(i, ":");
+        }
+        return builder.toString();
     }
 }

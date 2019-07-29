@@ -1,7 +1,6 @@
 package cn.net.cyberway.home.adapter;
 
 import android.content.Context;
-import android.content.SharedPreferences;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -12,7 +11,6 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.nohttp.utils.GlideImageLoader;
-import com.user.UserAppConst;
 
 import java.util.List;
 
@@ -28,9 +26,6 @@ public class MyPageItemListAdapter extends RecyclerView.Adapter<MyPageItemListAd
     private Context context;
     private List<OPTIONSDATA> data;
     private OnItemClickListener onClickListener;
-    private SharedPreferences mShared;
-    private int customer_id;
-    private boolean beanPoint;
 
     public void setData(List<OPTIONSDATA> lists) {
         this.data = lists;
@@ -40,9 +35,6 @@ public class MyPageItemListAdapter extends RecyclerView.Adapter<MyPageItemListAd
     public MyPageItemListAdapter(Context context, List<OPTIONSDATA> list) {
         this.context = context;
         this.data = list;
-        if (null != context) {
-            mShared = context.getSharedPreferences(UserAppConst.USERINFO, 0);
-        }
     }
 
     public void setOnItemClickListener(OnItemClickListener onClickListener) {
@@ -72,19 +64,6 @@ public class MyPageItemListAdapter extends RecyclerView.Adapter<MyPageItemListAd
             holder.tv_mypageline.setVisibility(View.GONE);//是，隐藏起来
             holder.view.setVisibility(View.VISIBLE);
         }
-
-        if (View.VISIBLE == holder.iv_point.getVisibility()) {
-            holder.iv_point.setVisibility(View.GONE);
-        }
-        if ("我的任务".equals(list.name)) {
-            customer_id = mShared.getInt(UserAppConst.Colour_User_id, 0);
-            beanPoint = mShared.getBoolean(UserAppConst.COLOUR_BEAN_SIGN_POINT + customer_id, false);
-            if (beanPoint) {
-                holder.iv_point.setVisibility(View.VISIBLE);
-            } else {
-                holder.iv_point.setVisibility(View.GONE);
-            }
-        }
     }
 
     @Override
@@ -98,11 +77,8 @@ public class MyPageItemListAdapter extends RecyclerView.Adapter<MyPageItemListAd
         TextView id;//
         TextView name;//
         ImageView image;//
-        TextView url;//
         TextView view;
-        ImageView iv_point;//小红点
         OnItemClickListener onClickListener;
-
 
         public DefaultViewHolder(View itemView) {
             super(itemView);
@@ -111,7 +87,6 @@ public class MyPageItemListAdapter extends RecyclerView.Adapter<MyPageItemListAd
             name = itemView.findViewById(R.id.tv_mypage_nickname);
             rl_mypage_item = itemView.findViewById(R.id.rl_mypage_item);
             view = itemView.findViewById(R.id.mypage_line);
-            iv_point = itemView.findViewById(R.id.iv_point);
             itemView.setOnClickListener(this);
         }
 
