@@ -59,7 +59,7 @@ public class LekaiListActivity extends BaseActivity implements View.OnClickListe
         super.onDestroy();
         try {
             if (null != bluetoothListener) {
-                bluetoothListener = null;
+                unregisterReceiver(bluetoothListener);
             }
             if (null != handler) {
                 handler.removeCallbacksAndMessages(null);
