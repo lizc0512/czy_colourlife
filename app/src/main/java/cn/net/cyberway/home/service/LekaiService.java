@@ -206,7 +206,8 @@ public class LekaiService extends Service {
 
                     @Override
                     public void connectError(int error, String message) {
-
+                        Handler handler = new Handler(Looper.getMainLooper());
+                        handler.post(() -> ToastUtil.toastShow(getApplicationContext(), message));
                     }
                 });
             }
@@ -232,7 +233,8 @@ public class LekaiService extends Service {
 
                     @Override
                     public void connectError(int error, String message) {
-
+                        Handler handler = new Handler(Looper.getMainLooper());
+                        handler.post(() -> ToastUtil.toastShow(getApplicationContext(), message));
                     }
                 });
             }

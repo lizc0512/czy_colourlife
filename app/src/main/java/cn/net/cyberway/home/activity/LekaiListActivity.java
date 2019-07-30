@@ -41,6 +41,7 @@ public class LekaiListActivity extends BaseActivity implements View.OnClickListe
 
     private ArrayList<LocalKey> keysList = new ArrayList<>();
     private Handler handler;
+    private boolean openBluetooth = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -82,7 +83,8 @@ public class LekaiListActivity extends BaseActivity implements View.OnClickListe
         BluetoothAdapter blueAdapter = BluetoothAdapter.getDefaultAdapter();
         //支持蓝牙模块
         if (null != blueAdapter) {
-            tv_bluetooth.setVisibility(blueAdapter.isEnabled() ? View.GONE : View.VISIBLE);
+            openBluetooth = blueAdapter.isEnabled();
+            tv_bluetooth.setVisibility(openBluetooth ? View.GONE : View.VISIBLE);
         }
     }
 
@@ -113,7 +115,6 @@ public class LekaiListActivity extends BaseActivity implements View.OnClickListe
         }
     }
 
-
     @Override
     public void onClick(View v) {
         if (v.getId() == R.id.user_top_view_back) {
@@ -125,31 +126,45 @@ public class LekaiListActivity extends BaseActivity implements View.OnClickListe
      * 停车 倒下
      */
     public void parkDown(int position) {
-        ToastUtil.toastShow(this, "正在开车位锁");
+        if (LekaiHelper.isFastClick()) {
+            if (openBluetooth) {
+                ToastUtil.toastShow(getApplicationContext(), "正在倒下车位锁");
 
-        LekaiHelper.parkUnlock(keysList.get(position).getMac(), (status, message, battery) -> {
-            handler = new Handler(Looper.getMainLooper());
-            handler.post(() -> ToastUtil.toastShow(getApplicationContext(), 0 == status ? ("操作成功,电量：" + battery) : message));
-        });
+                LekaiHelper.parkUnlock(keysList.get(position).getMac(), (status, message, battery) -> {
+                    handler = new Handler(Looper.getMainLooper());
+                    handler.post(() -> ToastUtil.toastShow(getApplicationContext(), 0 == status ? ("操作成功,电量：" + battery) : message));
+                });
+            } else {
+                ToastUtil.toastShow(getApplicationContext(), "请打开蓝牙");
+            }
+        }
     }
 
     /**
      * 停车 抬起
      */
     public void parkUp(int position) {
-        ToastUtil.toastShow(this, "正在锁上车位");
+        if (LekaiHelper.isFastClick()) {
+            if (openBluetooth) {
+                ToastUtil.toastShow(getApplicationContext(), "正在抬起车位锁");
 
-        LekaiHelper.parkLock(keysList.get(position).getMac(), (status, message, battery) -> {
-            handler = new Handler(Looper.getMainLooper());
-            handler.post(() -> ToastUtil.toastShow(getApplicationContext(), 0 == status ? ("操作成功,电量：" + battery) : message));
-        });
+                LekaiHelper.parkLock(keysList.get(position).getMac(), (status, message, battery) -> {
+                    handler = new Handler(Looper.getMainLooper());
+                    handler.post(() -> ToastUtil.toastShow(getApplicationContext(), 0 == status ? ("操作成功,电量：" + battery) : message));
+                });
+            } else {
+                ToastUtil.toastShow(getApplicationContext(), "请打开蓝牙");
+            }
+        }
     }
 
     /**
      * 停车
      */
-    public void parkAgain() {
-        ToastUtil.toastShow(this, "操作失败，请重试");
+    public void parkNoMap() {
+        if (LekaiHelper.isFastClick()) {
+            ToastUtil.toastShow(getApplicationContext(), openBluetooth ? "操作失败，请重试" : "请打开蓝牙");
+        }
     }
 
     /**
@@ -171,9 +186,11 @@ public class LekaiListActivity extends BaseActivity implements View.OnClickListe
                 int blueState = intent.getIntExtra(BluetoothAdapter.EXTRA_STATE, 0);
                 switch (blueState) {
                     case BluetoothAdapter.STATE_ON:
+                        openBluetooth = true;
                         tv_bluetooth.setVisibility(View.GONE);
                         break;
                     case BluetoothAdapter.STATE_OFF:
+                        openBluetooth = false;
                         tv_bluetooth.setVisibility(View.VISIBLE);
                         break;
                 }

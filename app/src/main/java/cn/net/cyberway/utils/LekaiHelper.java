@@ -230,6 +230,9 @@ public class LekaiHelper {
         }
     }
 
+    /**
+     * 校验mac地址
+     */
     public static String formatMacAddress(String mac) {
         if (TextUtils.isEmpty(mac) || mac.length() < 12) {
             return "";
@@ -240,4 +243,21 @@ public class LekaiHelper {
         }
         return builder.toString();
     }
+
+    /**
+     * 防止快速点击 true 超过1秒点击
+     */
+    private static final int MIN_CLICK_DELAY_TIME = 1000;// 两次点击按钮之间的点击间隔不能少于500毫秒
+    private static long lastClickTime = 0;
+
+    public static boolean isFastClick() {
+        boolean flag = false;
+        long curClickTime = System.currentTimeMillis();
+        if ((curClickTime - lastClickTime) >= MIN_CLICK_DELAY_TIME) {
+            flag = true;
+        }
+        lastClickTime = curClickTime;
+        return flag;
+    }
+
 }

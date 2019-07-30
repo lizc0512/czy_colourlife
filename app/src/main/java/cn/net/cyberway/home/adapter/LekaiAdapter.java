@@ -107,8 +107,8 @@ public class LekaiAdapter extends RecyclerView.Adapter<LekaiAdapter.DefaultViewH
                     holder.ll_down.setOnClickListener(v -> ((LekaiListActivity) mContext).parkDown(position));
                     holder.ll_up.setOnClickListener(v -> ((LekaiListActivity) mContext).parkUp(position));
                 } else {
-                    holder.ll_down.setOnClickListener(v -> ((LekaiListActivity) mContext).parkAgain());
-                    holder.ll_up.setOnClickListener(v -> ((LekaiListActivity) mContext).parkAgain());
+                    holder.ll_down.setOnClickListener(v -> ((LekaiListActivity) mContext).parkNoMap());
+                    holder.ll_up.setOnClickListener(v -> ((LekaiListActivity) mContext).parkNoMap());
                 }
             } else {
                 holder.tv_title.setText(key.getName());
