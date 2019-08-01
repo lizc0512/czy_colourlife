@@ -22,7 +22,6 @@ import android.text.TextUtils;
 import android.view.Display;
 import android.view.WindowManager;
 
-import com.BeeFramework.model.Constants;
 import com.chuanglan.shanyan_sdk.OneKeyLoginManager;
 import com.chuanglan.shanyan_sdk.listener.InitListener;
 import com.external.eventbus.EventBus;
@@ -39,7 +38,6 @@ import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 import com.nostra13.universalimageloader.core.assist.QueueProcessingType;
 import com.shell.SdkManager;
-import com.sobot.chat.SobotApi;
 import com.user.UserAppConst;
 import com.user.UserMessageConstant;
 import com.youmai.hxsdk.HuxinSdkManager;

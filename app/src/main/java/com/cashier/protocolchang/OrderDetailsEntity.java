@@ -59,7 +59,26 @@ public class OrderDetailsEntity extends BaseContentEntity {
 
         private String trade_state_name;
         private int trade_state;
+        private int stages_support;
         private String total_fee;
+
+        public int getStages_support() {
+            return stages_support;
+        }
+
+        public void setStages_support(int stages_support) {
+            this.stages_support = stages_support;
+        }
+
+        public String getStages_url() {
+            return stages_url;
+        }
+
+        public void setStages_url(String stages_url) {
+            this.stages_url = stages_url;
+        }
+
+        private String stages_url ;
 
 
         public String getActual_fee() {

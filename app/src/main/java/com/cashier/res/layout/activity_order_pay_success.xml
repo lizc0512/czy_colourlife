@@ -48,8 +48,8 @@
                     android:id="@+id/iv_payment"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginRight="5dp"
                     android:layout_marginTop="12dp"
+                    android:layout_marginRight="5dp"
                     android:src="@drawable/icon_list_cashier"
                     android:visibility="gone" />
 
@@ -82,8 +82,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="10dp"
-                android:layout_marginRight="10dp"
                 android:layout_marginTop="15dp"
+                android:layout_marginRight="10dp"
                 android:background="@color/white"
                 android:orientation="vertical"
                 android:visibility="gone">
@@ -245,12 +245,25 @@
 
             <com.tmall.ultraviewpager.UltraViewPager
                 android:id="@+id/advisement_banner"
-                android:layout_marginLeft="10dp"
-                android:layout_marginRight="10dp"
                 android:layout_width="match_parent"
                 android:layout_height="90dp"
+                android:layout_marginLeft="10dp"
                 android:layout_marginTop="20dp"
+                android:layout_marginRight="10dp"
                 android:background="@color/textcolor_ffffff" />
+
+            <Button
+                android:id="@+id/btn_apply_stages"
+                android:layout_width="match_parent"
+                android:layout_height="44dp"
+                android:layout_marginLeft="15dp"
+                android:layout_marginTop="20dp"
+                android:layout_marginRight="15dp"
+                android:background="@drawable/rect_round_blue"
+                android:text="申请分期"
+                android:textColor="@color/white"
+                android:textSize="16sp"
+                android:visibility="gone" />
 
         </LinearLayout>
 

@@ -66,6 +66,8 @@ public final class ActionActivity extends Activity {
             }
         } else if (mAction.action == Action.ACTION_CAMERA) {
             realOpenCamera();
+        } else if (mAction.action == Action.ACTION_VIDEO) {
+            realVideoCamera();
         } else {
             fetchFile(mAction);
         }
@@ -175,6 +177,30 @@ public final class ActionActivity extends Activity {
     }
 
 
+    private void realVideoCamera() {
+        try {
+            if (mFileDataListener == null)
+                finish();
+            File mFile = AgentWebUtils.createVideoFile(this);
+            if (mFile == null) {
+                mFileDataListener.onFileDataResult(REQUEST_CODE, Activity.RESULT_CANCELED, null);
+                mFileDataListener = null;
+                finish();
+            }
+            Intent intent = AgentWebUtils.getIntentVideoCompat(this, mFile);
+            LogUtils.i(TAG, "listener:" + mFileDataListener + "  file:" + mFile.getAbsolutePath());
+            mUri = intent.getParcelableExtra(EXTRA_OUTPUT);
+            this.startActivityForResult(intent, REQUEST_CODE);
+        } catch (Throwable ignore) {
+            LogUtils.i(TAG, "找不到系统相机");
+            mFileDataListener.onFileDataResult(REQUEST_CODE, Activity.RESULT_CANCELED, null);
+            mFileDataListener = null;
+            if (LogUtils.isDebug())
+                ignore.printStackTrace();
+        }
+    }
+
+
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         if (mPermissionListener != null) {
@@ -203,6 +229,7 @@ public final class ActionActivity extends Activity {
         public transient static final int ACTION_PERMISSION = 1;
         public transient static final int ACTION_FILE = 2;
         public transient static final int ACTION_CAMERA = 3;
+        public transient static final int ACTION_VIDEO = 4;
         private String[] permissions;
         private int action;
         private int fromIntention;

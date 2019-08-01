@@ -100,6 +100,7 @@ public class UserRegisterAndLoginActivity extends BaseActivity implements OnClic
     private int loginType = 0;
     private ImageView user_top_view_back;
     private TextView user_top_view_title;
+    private TextView user_top_view_right;
     private ClearEditText user_login_phone;
     private ImageView img_gesture_pwd;
     private BCSIJMInputEditText user_login_password;
@@ -173,7 +174,7 @@ public class UserRegisterAndLoginActivity extends BaseActivity implements OnClic
         FrameLayout czy_title_layout = (FrameLayout) findViewById(R.id.czy_title_layout);
         user_top_view_back = (ImageView) findViewById(R.id.user_top_view_back);
         user_top_view_title = (TextView) findViewById(R.id.user_top_view_title);
-        TextView user_top_view_right = (TextView) findViewById(R.id.user_top_view_right);
+        user_top_view_right = (TextView) findViewById(R.id.user_top_view_right);
         user_login_phone = (ClearEditText) findViewById(R.id.user_login_phone);
         img_gesture_pwd = (ImageView) findViewById(R.id.img_gesture_pwd);
         user_login_password = (BCSIJMInputEditText) findViewById(R.id.user_login_password);
@@ -337,6 +338,7 @@ public class UserRegisterAndLoginActivity extends BaseActivity implements OnClic
             thridLoginlayout.setVisibility(View.GONE);
             thridLoginlayout.setVisibility(View.GONE);
             user_login_find_password.setVisibility(View.GONE);
+            user_top_view_right.setVisibility(View.GONE);
         } else {
             if (isRegister == 0) { //注册
                 user_login_btn.setText(getResources().getString(R.string.user_next));

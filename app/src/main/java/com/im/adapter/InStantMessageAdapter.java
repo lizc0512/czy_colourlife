@@ -88,6 +88,11 @@ public class InStantMessageAdapter extends RecyclerView.Adapter<RecyclerView.Vie
         notifyDataSetChanged();
     }
 
+    public void clearAllMessage(){
+        messageList.clear();
+        notifyDataSetChanged();
+    }
+
     public void cancelTop(ExCacheMsgBean msgBean) {
         String uuid = msgBean.getTargetUuid();
         msgBean.setTop(false);

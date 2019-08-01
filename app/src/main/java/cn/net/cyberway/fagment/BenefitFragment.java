@@ -1,3 +1,4 @@
+/*
 package cn.net.cyberway.fagment;
 
 import android.annotation.SuppressLint;
@@ -47,10 +48,12 @@ import cn.net.cyberway.utils.LinkParseUtil;
 
 import static com.youmai.hxsdk.utils.DisplayUtil.getStatusBarHeight;
 
+*/
 /**
  * 生活-彩惠人生
  * hxg 2019.06.11
- */
+ *//*
+
 public class BenefitFragment extends Fragment implements View.OnClickListener, HttpApiResponse, IXListViewListener, MyListener {
     private View mView;
     private View v_content;
@@ -221,9 +224,11 @@ public class BenefitFragment extends Fragment implements View.OnClickListener, H
         findAdapter.notifyDataSetChanged();
     }
 
-    /**
+    */
+/**
      * 更多
-     */
+     *//*
+
     public void clickMore() {
         ToastUtil.toastShow(mActivity, "");
     }
@@ -263,9 +268,11 @@ public class BenefitFragment extends Fragment implements View.OnClickListener, H
 
     }
 
-    /**
+    */
+/**
      * 选择推荐或全部
-     */
+     *//*
+
     private void selectTitle() {
         if (0 == type) {
             tv_all.setTextColor(mActivity.getResources().getColor(R.color.gray_text_color));
@@ -336,9 +343,11 @@ public class BenefitFragment extends Fragment implements View.OnClickListener, H
         EventBus.getDefault().unregister(this);
     }
 
-    /**
+    */
+/**
      * banner
-     */
+     *//*
+
     private void showBanner(String result) {
         HomeFuncEntity homeFuncEntity = GsonUtils.gsonToBean(result, HomeFuncEntity.class);
         bannerDataBeanList.clear();
@@ -369,3 +378,4 @@ public class BenefitFragment extends Fragment implements View.OnClickListener, H
     }
 
 }
+*/

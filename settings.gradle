@@ -1,1 +1,2 @@
-include ':app', ':huxin_sdk','sobotsdk'
+include ':app', ':huxin_sdk', ':sobotsdk'
+

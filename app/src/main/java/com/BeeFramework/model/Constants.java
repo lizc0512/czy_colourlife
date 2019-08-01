@@ -61,7 +61,6 @@ public class Constants {
     public static final boolean CAIWALLET_ENVIRONMENT = false;  //false为彩钱包的测试环境
     public static int SAVENOHTTPRECORD = 1;  // 测试为1，正式打包为0
 
-
     // ---------------------------预发版-----------------------------
 //    public static final String SERVER_ADDRESS = "https://cmobile-czybeta.colourlife.com";
 //    public static final String TOKEN_ADDRESS = "https://oauth2czy-czybeta.colourlife.com";

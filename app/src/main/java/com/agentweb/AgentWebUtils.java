@@ -412,7 +412,7 @@ public class AgentWebUtils {
 
         try {
 
-             AgentWebConfig.removeAllCookies(null);
+            AgentWebConfig.removeAllCookies(null);
             webView.getSettings().setCacheMode(WebSettings.LOAD_NO_CACHE);
             context.deleteDatabase("webviewCache.db");
             context.deleteDatabase("webview.db");
@@ -575,6 +575,20 @@ public class AgentWebUtils {
             String timeStamp =
                     new SimpleDateFormat("yyyyMMddHHmmss", Locale.getDefault()).format(new Date());
             String imageName = String.format("aw_%s.jpg", timeStamp);
+            mFile = createFileByName(context, imageName, true);
+        } catch (Throwable e) {
+
+        }
+        return mFile;
+    }
+
+    static File createVideoFile(Context context) {
+        File mFile = null;
+        try {
+
+            String timeStamp =
+                    new SimpleDateFormat("yyyyMMddHHmmss", Locale.getDefault()).format(new Date());
+            String imageName = String.format("aw_%s.mp4", timeStamp);
             mFile = createFileByName(context, imageName, true);
         } catch (Throwable e) {
 
@@ -758,6 +772,15 @@ public class AgentWebUtils {
         mIntent.addCategory(Intent.CATEGORY_DEFAULT);
         mIntent.putExtra(MediaStore.EXTRA_OUTPUT, mUri);
         return mIntent;
+    }
+
+    static Intent getIntentVideoCompat(Context context, File file) {
+        Intent openVideoIntent = new Intent(MediaStore.ACTION_VIDEO_CAPTURE);
+        openVideoIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+        openVideoIntent.putExtra("android.intent.extras.CAMERA_FACING", 1); // 调用前置摄像头
+        Uri mUri = getUriFromFile(context, file);
+        openVideoIntent.putExtra(MediaStore.EXTRA_OUTPUT, mUri);
+        return openVideoIntent;
     }
 
 

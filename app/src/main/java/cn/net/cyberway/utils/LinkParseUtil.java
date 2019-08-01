@@ -323,24 +323,27 @@ public class LinkParseUtil {
                 ConsultingContent consultingContent = new ConsultingContent();
 
                 //咨询内容标题，必填
+                //CardMessageHolder
 
                 consultingContent.setSobotGoodsTitle(goodsJson.optString("goodsTitle"));
 
                 //咨询内容图片，选填 但必须是图片地址
 
-                consultingContent.setSobotGoodsImgUrl(goodsJson.optString("goodsImgUrl"));
 
                 //咨询来源页，必填
                 consultingContent.setSobotGoodsFromUrl(goodsJson.optString("goodsFromUrl"));
 
+                if (!goodsJson.isNull("goodsImgUrl")) {
+                    consultingContent.setSobotGoodsImgUrl(goodsJson.optString("goodsImgUrl"));
+                }
                 //描述，选填
-
-                consultingContent.setSobotGoodsDescribe(goodsJson.optString("goodsDescribe"));
-
+                if (!goodsJson.isNull("goodsDescribe")) {
+                    consultingContent.setSobotGoodsDescribe(goodsJson.optString("goodsDescribe"));
+                }
                 //标签，选填
-
-                consultingContent.setSobotGoodsLable(goodsJson.optString("goodsPrice"));
-
+                if (!goodsJson.isNull("goodsPrice")) {
+                    consultingContent.setSobotGoodsLable(goodsJson.optString("goodsPrice"));
+                }
                 info.setConsultingContent(consultingContent);
                 //发送商品卡片消息接口
                 SobotApi.startSobotChat(context, info);

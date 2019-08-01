@@ -32,7 +32,6 @@ import com.youmai.hxsdk.utils.GsonUtil;
 import com.youmai.hxsdk.utils.ListUtils;
 import com.youmai.hxsdk.utils.ToastUtil;
 
-
 import org.json.JSONException;
 import org.json.JSONObject;
 
