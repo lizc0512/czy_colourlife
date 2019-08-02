@@ -776,6 +776,10 @@ public class WebViewActivity extends BaseActivity implements View.OnLongClickLis
         public void colourlifeWebLogout() {
             boolean isLogin = shared.getBoolean(UserAppConst.IS_LOGIN, false);
             if (isLogin) {
+                SharedPreferences.Editor editor = shared.edit();
+                editor.putString(UserAppConst.Colour_login_mobile, "");
+                editor.putBoolean(UserAppConst.IS_LOGIN, false);
+                editor.apply();
                 Message msg = new Message();
                 msg.what = UserMessageConstant.WEB_OUT;//更换手机号,证件审核完成，跳转到登录页面
                 EventBus.getDefault().post(msg);
@@ -784,7 +788,6 @@ public class WebViewActivity extends BaseActivity implements View.OnLongClickLis
                 finish();
             }
         }
-
 
         //门禁开门
         public void openDoorActivity(String qrCode) {
