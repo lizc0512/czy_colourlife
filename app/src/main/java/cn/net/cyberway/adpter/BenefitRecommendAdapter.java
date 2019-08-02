@@ -1,3 +1,4 @@
+/*
 package cn.net.cyberway.adpter;
 
 import android.annotation.SuppressLint;
@@ -22,10 +23,12 @@ import cn.net.cyberway.R;
 import cn.net.cyberway.protocol.BenefitChannlEntity;
 import cn.net.cyberway.utils.LinkParseUtil;
 
+*/
 /**
  * 彩惠人生-推荐
  * Created by hxg on 2019/07/15.
- */
+ *//*
+
 public class BenefitRecommendAdapter extends BeeBaseAdapter {
 
     private int imgSize;
@@ -141,3 +144,4 @@ public class BenefitRecommendAdapter extends BeeBaseAdapter {
     }
 
 }
+*/

@@ -9,6 +9,7 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.annotation.RequiresApi;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.text.TextUtils;
@@ -30,7 +31,6 @@ import static com.agentweb.ActionActivity.start;
  */
 
 public class FileUpLoadChooserImpl implements IFileUploadChooser {
-    private static final int AVATAR_ALBUM = 2;
     private Activity mActivity;
     private ValueCallback<Uri> mUriValueCallback;
     private ValueCallback<Uri[]> mUriValueCallbacks;
@@ -42,7 +42,6 @@ public class FileUpLoadChooserImpl implements IFileUploadChooser {
     private AlertDialog mAlertDialog;
     private static final String TAG = FileUpLoadChooserImpl.class.getSimpleName();
     private DefaultMsgConfig.ChromeClientMsgCfg.FileUploadMsgConfig mFileUploadMsgConfig;
-    private Uri mUri;
     private WebView mWebView;
     private boolean cameraState = false;
     private PermissionInterceptor mPermissionInterceptor;
@@ -64,6 +63,7 @@ public class FileUpLoadChooserImpl implements IFileUploadChooser {
     }
 
 
+    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override
     public void openFileChooser() {
         if (!AgentWebUtils.isUIThread()) {
@@ -75,9 +75,17 @@ public class FileUpLoadChooserImpl implements IFileUploadChooser {
             });
             return;
         }
-
-        openFileChooserInternal();
-
+        String[] acceptypesArr = mFileChooserParams.getAcceptTypes();
+        if (acceptypesArr.length > 0) {
+            if (acceptypesArr[0].contains("video")) {
+                cameraState = true;
+                onVideoAction();
+            } else {
+                openFileChooserInternal();
+            }
+        } else {
+            openFileChooserInternal();
+        }
     }
 
 
@@ -170,6 +178,32 @@ public class FileUpLoadChooserImpl implements IFileUploadChooser {
 
     }
 
+    private void onVideoAction() {
+
+        if (mActivity == null)
+            return;
+
+        if (mPermissionInterceptor != null) {
+            if (mPermissionInterceptor.intercept(FileUpLoadChooserImpl.this.mWebView.getUrl(), AgentWebPermissions.CAMERA, "camera")) {
+                cancel();
+                return;
+            }
+
+        }
+        ActionActivity.Action mAction = new ActionActivity.Action();
+        List<String> deniedPermissions = null;
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && !(deniedPermissions = checkNeedPermission()).isEmpty()) {
+            mAction.setAction(ActionActivity.Action.ACTION_PERMISSION);
+            mAction.setPermissions(deniedPermissions.toArray(new String[]{}));
+            mAction.setFromIntention(FROM_INTENTION_CODE >> 3);
+            ActionActivity.setPermissionListener(this.mPermissionListener);
+            start(mActivity, mAction);
+        } else {
+            openVideoAction();
+        }
+
+    }
+
     private List<String> checkNeedPermission() {
 
         List<String> deniedPermissions = new ArrayList<>();
@@ -189,6 +223,13 @@ public class FileUpLoadChooserImpl implements IFileUploadChooser {
     private void openCameraAction() {
         ActionActivity.Action mAction = new ActionActivity.Action();
         mAction.setAction(ActionActivity.Action.ACTION_CAMERA);
+        ActionActivity.setFileDataListener(this.getFileDataListener());
+        start(mActivity, mAction);
+    }
+
+    private void openVideoAction() {
+        ActionActivity.Action mAction = new ActionActivity.Action();
+        mAction.setAction(ActionActivity.Action.ACTION_VIDEO);
         ActionActivity.setFileDataListener(this.getFileDataListener());
         start(mActivity, mAction);
     }

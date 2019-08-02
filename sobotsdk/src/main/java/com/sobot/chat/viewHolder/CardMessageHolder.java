@@ -23,6 +23,7 @@ import com.sobot.chat.viewHolder.base.MessageHolderBase;
 public class CardMessageHolder extends MessageHolderBase implements View.OnClickListener {
     private ImageView mPic;
     private TextView mTitle;
+    private TextView mTime;
     private TextView mLabel;
     private View mContainer;
     private int defaultPicResId;
@@ -32,6 +33,7 @@ public class CardMessageHolder extends MessageHolderBase implements View.OnClick
         super(context, convertView);
         mContainer = convertView.findViewById(ResourceUtils.getResId(context, "sobot_ll_content"));
         mPic = (ImageView) convertView.findViewById(ResourceUtils.getResId(context, "sobot_goods_pic"));
+        mTime = (TextView) convertView.findViewById(ResourceUtils.getResId(context, "sobot_goods_time"));
         mTitle = (TextView) convertView.findViewById(ResourceUtils.getResId(context, "sobot_goods_title"));
         mLabel = (TextView) convertView.findViewById(ResourceUtils.getResId(context, "sobot_goods_label"));
         defaultPicResId = ResourceUtils.getDrawableId(context, "sobot_icon_consulting_default_pic");
@@ -44,6 +46,7 @@ public class CardMessageHolder extends MessageHolderBase implements View.OnClick
             SobotBitmapUtil.display(context, CommonUtils.encode(message.getConsultingContent().getSobotGoodsImgUrl())
                     , mPic, defaultPicResId, defaultPicResId);
             mTitle.setText(message.getConsultingContent().getSobotGoodsTitle());
+            mTime.setText(message.getConsultingContent().getSobotGoodsDescribe());
             mLabel.setText(message.getConsultingContent().getSobotGoodsLable());
             if (isRight) {
                 try {

@@ -2,6 +2,8 @@ package com.youmai.hxsdk.utils;
 
 import android.Manifest;
 import android.app.ActivityManager;
+import android.app.usage.UsageStats;
+import android.app.usage.UsageStatsManager;
 import android.content.ContentUris;
 import android.content.Context;
 import android.content.Intent;
@@ -24,6 +26,7 @@ import android.os.Environment;
 import android.provider.DocumentsContract;
 import android.provider.MediaStore;
 import android.provider.Settings;
+import android.support.annotation.RequiresApi;
 import android.support.v4.content.ContextCompat;
 import android.telephony.TelephonyManager;
 import android.text.Spannable;
@@ -47,6 +50,8 @@ import java.io.UnsupportedEncodingException;
 import java.math.BigDecimal;
 import java.security.MessageDigest;
 import java.text.DecimalFormat;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -1079,7 +1084,6 @@ public class AppUtils {
     }
 
 
-
     /**
      * 检查是否重复按键
      *
@@ -1136,23 +1140,55 @@ public class AppUtils {
     }
 
     public static boolean isTopActiviy(Context context, String cmdName) {
-        ActivityManager manager = (ActivityManager) context.getSystemService(Context.ACTIVITY_SERVICE);
-        List<ActivityManager.RunningTaskInfo> runningTaskInfos = manager.getRunningTasks(5);
-        String cmpNameTemp = null;
-        if (null != runningTaskInfos) {
-            cmpNameTemp = (runningTaskInfos.get(0).topActivity).getClassName();
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            long ts = System.currentTimeMillis();
+            UsageStatsManager mUsageStatsManager = (UsageStatsManager) context.getSystemService(Context.USAGE_STATS_SERVICE);
+            List<UsageStats> usageStats = mUsageStatsManager.queryUsageStats(UsageStatsManager.INTERVAL_BEST, ts - 1000, ts);
+            if (usageStats == null || usageStats.size() == 0) {
+                return false;
+            }
+            Collections.sort(usageStats, new RecentUseComparator());
+            return usageStats.get(0).getPackageName().equals(cmdName);
+        } else {
+            ActivityManager manager = (ActivityManager) context.getSystemService(Context.ACTIVITY_SERVICE);
+            List<ActivityManager.RunningTaskInfo> runningTaskInfos = manager.getRunningTasks(5);
+            String cmpNameTemp = null;
+            if (null != runningTaskInfos) {
+                cmpNameTemp = (runningTaskInfos.get(0).topActivity).getClassName();
+            }
+            if (null == cmpNameTemp) return false;
+            return cmpNameTemp.equals(cmdName);
         }
-        if (null == cmpNameTemp) return false;
-        return cmpNameTemp.equals(cmdName);
     }
 
+    static class RecentUseComparator implements Comparator<UsageStats> {
+
+        @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
+        @Override
+        public int compare(UsageStats lhs, UsageStats rhs) {
+            return (lhs.getLastTimeUsed() > rhs.getLastTimeUsed()) ? -1 : (lhs.getLastTimeUsed() == rhs.getLastTimeUsed()) ? 0 : 1;
+        }
+    }
 
     public static String getTopActiviy(Context context) {
-        ActivityManager manager = (ActivityManager) context.getSystemService(Context.ACTIVITY_SERVICE);
-        List<ActivityManager.RunningTaskInfo> runningTaskInfos = manager.getRunningTasks(5);
         String cmpNameTemp = null;
-        if (null != runningTaskInfos) {
-            cmpNameTemp = (runningTaskInfos.get(0).topActivity).getClassName();
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            long ts = System.currentTimeMillis();
+            UsageStatsManager mUsageStatsManager = (UsageStatsManager) context.getSystemService(Context.USAGE_STATS_SERVICE);
+            List<UsageStats> usageStats = mUsageStatsManager.queryUsageStats(UsageStatsManager.INTERVAL_BEST, ts - 1000, ts);
+            if (usageStats == null || usageStats.size() == 0) {
+                cmpNameTemp = "";
+            } else {
+                Collections.sort(usageStats, new RecentUseComparator());
+                cmpNameTemp = usageStats.get(0).getPackageName();
+            }
+        } else {
+            ActivityManager manager = (ActivityManager) context.getSystemService(Context.ACTIVITY_SERVICE);
+            List<ActivityManager.RunningTaskInfo> runningTaskInfos = manager.getRunningTasks(5);
+
+            if (null != runningTaskInfos) {
+                cmpNameTemp = (runningTaskInfos.get(0).topActivity).getClassName();
+            }
         }
         return cmpNameTemp;
     }

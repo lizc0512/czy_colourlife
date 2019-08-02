@@ -403,6 +403,7 @@ public class DefaultChromeClient extends WebChromeClientProgressWrapper implemen
                 .setFileUploadMsgConfig(mChromeClientMsgCfg.getFileUploadMsgConfig())
                 .setPermissionInterceptor(this.mPermissionInterceptor)
                 .build();
+
         mIFileUploadChooser.openFileChooser();
 
     }

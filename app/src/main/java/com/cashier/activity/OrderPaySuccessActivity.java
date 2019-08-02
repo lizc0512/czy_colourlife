@@ -26,6 +26,7 @@ import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationSet;
 import android.view.animation.TranslateAnimation;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
@@ -46,6 +47,7 @@ import com.external.eventbus.EventBus;
 import com.nohttp.entity.BaseContentEntity;
 import com.nohttp.utils.GlideImageLoader;
 import com.nohttp.utils.GsonUtils;
+import com.setting.activity.EditDialog;
 import com.setting.activity.PayActivityDialog;
 import com.tmall.ultraviewpager.UltraViewPager;
 import com.user.UserAppConst;
@@ -97,6 +99,9 @@ public class OrderPaySuccessActivity extends BaseActivity implements View.OnClic
     private ImageView iv_payment;
     private TextView tv_pay_amount;
     private TextView tv_original_amount;
+    private Button btn_apply_stages;
+
+
     private UltraViewPager advisement_banner;
     private NewOrderPayModel newOrderPayModel;
     private String colorSn;
@@ -111,6 +116,7 @@ public class OrderPaySuccessActivity extends BaseActivity implements View.OnClic
     private boolean isShake = false;
     private String shareAwardUrl;
     private int swingShow;
+    private String stages_url;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -137,6 +143,7 @@ public class OrderPaySuccessActivity extends BaseActivity implements View.OnClic
         shake_layout = findViewById(R.id.shake_layout);
         iv_shake_enter = findViewById(R.id.iv_shake_enter);
         iv_shake_gif = findViewById(R.id.iv_shake_gif);
+        btn_apply_stages = findViewById(R.id.btn_apply_stages);
         user_top_view_title.setText(getResources().getString(R.string.order_payresult));
         user_top_view_right.setText(getResources().getString(R.string.cashier_finish));
         user_top_view_right.setTextColor(getResources().getColor(R.color.textcolor_27a2f0));
@@ -151,6 +158,7 @@ public class OrderPaySuccessActivity extends BaseActivity implements View.OnClic
         user_top_view_back.setOnClickListener(this);
         user_top_view_right.setOnClickListener(this);
         iv_shake_enter.setOnClickListener(this);
+        btn_apply_stages.setOnClickListener(this);
         //初始化SoundPool
         mSoundPool = new SoundPool(1, AudioManager.STREAM_SYSTEM, 5);
         mAudio = mSoundPool.load(this, R.raw.shake_audio, 1);
@@ -232,7 +240,41 @@ public class OrderPaySuccessActivity extends BaseActivity implements View.OnClic
             case R.id.iv_shake_enter:
                 startShakeAnimation();
                 break;
+            case R.id.btn_apply_stages:
+
+                showApplyDialog();
+                break;
         }
+    }
+
+    private EditDialog applyDialog = null;
+
+    private void showApplyDialog() {
+        if (applyDialog == null) {
+            applyDialog = new EditDialog(OrderPaySuccessActivity.this);
+        }
+        applyDialog.setContent("你已支付完定金,立即申请分期或前往“我的分期购”申请分期");
+        applyDialog.show();
+        applyDialog.left_button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (applyDialog != null) {
+                    applyDialog.dismiss();
+                }
+            }
+        });
+
+        applyDialog.right_button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (applyDialog != null) {
+                    applyDialog.dismiss();
+                }
+                sendBroadCast();
+                LinkParseUtil.parse(OrderPaySuccessActivity.this, stages_url, "");
+                finish();
+            }
+        });
     }
 
     @Override
@@ -248,6 +290,8 @@ public class OrderPaySuccessActivity extends BaseActivity implements View.OnClic
                             if (null != contentBean) {
                                 String totalFee = contentBean.getTotal_fee();
                                 String actual_fee = contentBean.getActual_fee();
+                                stages_url = contentBean.getStages_url();
+                                int stages_support = contentBean.getStages_support();
                                 tv_pay_amount.setText(contentBean.getActual_fee());
                                 tv_pay_type.setText(contentBean.getPayment_name());
                                 int tradeState = contentBean.getTrade_state();
@@ -255,6 +299,11 @@ public class OrderPaySuccessActivity extends BaseActivity implements View.OnClic
                                 iv_pay_status.setVisibility(View.VISIBLE);
                                 iv_payment.setVisibility(View.VISIBLE);
                                 pay_infor_layout.setVisibility(View.VISIBLE);
+                                if (stages_support == 1) {
+                                    btn_apply_stages.setVisibility(View.VISIBLE);
+                                } else {
+                                    btn_apply_stages.setVisibility(View.GONE);
+                                }
                                 if (tradeState != 2) {
                                     tv_pay_result.setText(contentBean.getTrade_state_name());
                                     iv_pay_status.setImageResource(R.drawable.icon_pay_fail);

@@ -19,6 +19,7 @@ import com.cashier.modelnew.NewOrderPayModel;
 import com.cashier.protocolchang.OrderDetailsEntity;
 import com.nohttp.entity.BaseContentEntity;
 import com.nohttp.utils.GsonUtils;
+import com.setting.activity.EditDialog;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -99,6 +100,10 @@ public class OrderResultAndDetailActivity extends BaseActivity implements View.O
         } else if (orderStatus == 2) {
 //            iv_order_staus.setImageResource(R.drawable.icon_pay_success);
             iv_order_staus.setImageResource(R.drawable.img_trade_success);
+            if (stages_support == 1) {
+                btn_goPay.setVisibility(View.VISIBLE);
+                btn_goPay.setText("申请分期");
+            }
         } else if (orderStatus == 3) {
 //            iv_order_staus.setImageResource(R.drawable.icon_pay_fail);
             iv_order_staus.setImageResource(R.drawable.img_trade_close);
@@ -119,6 +124,34 @@ public class OrderResultAndDetailActivity extends BaseActivity implements View.O
         }
     }
 
+    private EditDialog applyDialog = null;
+
+    private void showApplyDialog() {
+        if (applyDialog == null) {
+            applyDialog = new EditDialog(OrderResultAndDetailActivity.this);
+        }
+        applyDialog.setContent("你已支付完定金,立即申请分期或前往“我的分期购”申请分期");
+        applyDialog.show();
+        applyDialog.left_button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (applyDialog != null) {
+                    applyDialog.dismiss();
+                }
+            }
+        });
+
+        applyDialog.right_button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (applyDialog != null) {
+                    applyDialog.dismiss();
+                }
+                LinkParseUtil.parse(OrderResultAndDetailActivity.this, stages_url, "");
+            }
+        });
+    }
+
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
@@ -129,9 +162,14 @@ public class OrderResultAndDetailActivity extends BaseActivity implements View.O
                 if (isResult) {
                     finish();
                 } else {
-                    Intent intent = new Intent(OrderResultAndDetailActivity.this, NewOrderPayActivity.class);
-                    intent.putExtra(ORDER_SN, color_sn);
-                    startActivity(intent);
+                    if (stages_support == 1) {
+                        showApplyDialog();
+                    } else {
+                        Intent intent = new Intent(OrderResultAndDetailActivity.this, NewOrderPayActivity.class);
+                        intent.putExtra(ORDER_SN, color_sn);
+                        startActivity(intent);
+                    }
+
                 }
                 break;
             case R.id.btn_return: //返回首页
@@ -145,6 +183,8 @@ public class OrderResultAndDetailActivity extends BaseActivity implements View.O
     }
 
     private String shopUrl;
+    private String stages_url;
+    private int stages_support;
 
     @Override
     public void OnHttpResponse(int what, String result) {
@@ -158,6 +198,8 @@ public class OrderResultAndDetailActivity extends BaseActivity implements View.O
                         if (null != contentBean) {
                             int tradeState = contentBean.getTrade_state();
                             shopUrl = contentBean.getShop_url();
+                            stages_support = contentBean.getStages_support();
+                            stages_url = contentBean.getStages_url();
                             showOrderResult(tradeState, contentBean.getTrade_state_name());
                             if (!TextUtils.isEmpty(contentBean.getTotal_fee())) {
                                 String format = getResources().getString(R.string.cashier_order_amounts);

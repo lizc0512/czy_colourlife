@@ -27,8 +27,7 @@
             android:layout_marginTop="10dp"
             android:layout_marginBottom="10dp"
             android:scaleType="centerCrop"
-            android:src="@drawable/sobot_icon_consulting_default_pic"
-            android:visibility="visible" />
+            android:src="@drawable/sobot_icon_consulting_default_pic" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -44,7 +43,14 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:ellipsize="end"
-                android:maxLines="2"
+                android:textColor="#000000"
+                android:textSize="14sp" />
+
+            <TextView
+                android:id="@+id/sobot_goods_time"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:ellipsize="end"
                 android:textColor="#000000"
                 android:textSize="14sp" />
 
@@ -52,8 +58,8 @@
                 android:id="@+id/sobot_goods_label"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textColor="@color/sobot_goods_label_text_color"
-                android:textSize="12sp" />
+                android:textColor="#000000"
+                android:textSize="14sp" />
 
             <Button
                 android:id="@+id/sobot_goods_sendBtn"

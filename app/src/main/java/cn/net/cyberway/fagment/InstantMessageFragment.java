@@ -90,6 +90,7 @@ public class InstantMessageFragment extends Fragment implements View.OnClickList
     private SwipeMenuRecyclerView message_rv;
     private QBadgeView badgeView;
     private InStantMessageAdapter mMessageAdapter;
+    private boolean isFrist = false;
 
 
     @Override
@@ -97,6 +98,7 @@ public class InstantMessageFragment extends Fragment implements View.OnClickList
         super.onCreate(savedInstanceState);
         mShared = getActivity().getSharedPreferences(UserAppConst.USERINFO, 0);
         if (mShared.getBoolean(UserAppConst.IS_LOGIN, false)) {
+            isFrist = true;
             initData();
         }
     }
@@ -475,6 +477,12 @@ public class InstantMessageFragment extends Fragment implements View.OnClickList
                         setNetWorkStatusLayout(0);
                     }
                 }
+            case UserMessageConstant.SIGN_IN_SUCCESS:
+                if (isFrist) {
+                    mMessageAdapter.clearAllMessage();
+                    initData();
+                }
+                break;
         }
     }
 

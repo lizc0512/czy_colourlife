@@ -23,6 +23,7 @@ import com.sobot.chat.viewHolder.base.MessageHolderBase;
  */
 public class ConsultMessageHolder extends MessageHolderBase implements View.OnClickListener {
     private TextView tv_title;//   商品标题页title    商品描述  商品图片   发送按钮  商品标签
+    private TextView tv_time;//   商品标题页title    商品描述  商品图片   发送按钮  商品标签
     private ImageView iv_pic;
     private Button btn_sendBtn;
     private View sobot_container;
@@ -37,6 +38,7 @@ public class ConsultMessageHolder extends MessageHolderBase implements View.OnCl
 
         iv_pic = (ImageView) convertView.findViewById(ResourceUtils.getResId(context, "sobot_goods_pic"));
         tv_title = (TextView) convertView.findViewById(ResourceUtils.getResId(context, "sobot_goods_title"));
+        tv_time = (TextView) convertView.findViewById(ResourceUtils.getResId(context, "sobot_goods_time"));
         tv_lable = (TextView) convertView.findViewById(ResourceUtils.getResId(context, "sobot_goods_label"));
         defaultPicResId = ResourceUtils.getDrawableId(context, "sobot_icon_consulting_default_pic");
         sobot_container.setOnClickListener(this);
@@ -50,6 +52,7 @@ public class ConsultMessageHolder extends MessageHolderBase implements View.OnCl
         final String url = message.getUrl();
         String lable = message.getAname();
         String describe = message.getReceiverFace();
+        tv_time.setText(describe);
         if (!TextUtils.isEmpty(picurl)) {
             iv_pic.setVisibility(View.VISIBLE);
             SobotBitmapUtil.display(context, CommonUtils.encode(picurl), iv_pic, defaultPicResId, defaultPicResId);
@@ -57,7 +60,6 @@ public class ConsultMessageHolder extends MessageHolderBase implements View.OnCl
             iv_pic.setVisibility(View.GONE);
             iv_pic.setImageResource(defaultPicResId);
         }
-
         tv_title.setText(title);
         if (!TextUtils.isEmpty(lable)) {
             tv_lable.setVisibility(View.VISIBLE);
