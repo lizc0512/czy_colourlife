@@ -36,7 +36,6 @@
                     android:id="@+id/tv_title"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="充话费"
                     android:textColor="@color/black_text_color"
                     android:textSize="16sp" />
 
@@ -45,7 +44,6 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
-                    android:text="充值送物业费"
                     android:textColor="@color/grayred_text_color"
                     android:textSize="14sp" />
             </LinearLayout>
