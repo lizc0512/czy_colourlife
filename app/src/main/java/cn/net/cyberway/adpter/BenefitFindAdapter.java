@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.nohttp.utils.GlideImageLoader;
@@ -16,6 +17,7 @@ import java.util.List;
 
 import cn.csh.colourful.life.listener.OnItemClickListener;
 import cn.net.cyberway.R;
+import cn.net.cyberway.protocol.BenefitFindEntity;
 
 /**
  * 彩惠人生-发现
@@ -23,15 +25,14 @@ import cn.net.cyberway.R;
  */
 public class BenefitFindAdapter extends RecyclerView.Adapter<BenefitFindAdapter.ViewHolder> {
 
-    private List<String> mList;
+    private List<BenefitFindEntity.ContentBean.ListBean> mList;
     private Context mContext;
     private OnItemClickListener onClickListener;
-    private int total;
+    public int total;
 
-    public BenefitFindAdapter(Context mContext, List<String> mList, int total) {
+    public BenefitFindAdapter(Context mContext, List<BenefitFindEntity.ContentBean.ListBean> mList) {
         this.mList = mList;
         this.mContext = mContext;
-        this.total = total;
     }
 
     @Override
@@ -47,12 +48,11 @@ public class BenefitFindAdapter extends RecyclerView.Adapter<BenefitFindAdapter.
     @SuppressLint("SetTextI18n")
     @Override
     public void onBindViewHolder(BenefitFindAdapter.ViewHolder holder, int position) {
-//        String item = mList.get(position);
+        final BenefitFindEntity.ContentBean.ListBean item = mList.get(position);
+        holder.tv_title.setText(item.getTitle());
+        holder.tv_time.setText(item.getDate());
 
-        holder.tv_title.setText("上门服务新上线啦，上门上门搞搞搞");
-        holder.tv_time.setText("2019-05-22");
-
-        GlideImageLoader.loadImageDefaultDisplay(mContext, "", holder.iv_img, R.drawable.default_image, R.drawable.default_image);
+        GlideImageLoader.loadImageDefaultDisplay(mContext, item.getImage(), holder.iv_img, R.drawable.default_image, R.drawable.default_image);
 
         if (position == total - 1) {
             holder.ll_end.setVisibility(View.VISIBLE);
@@ -61,6 +61,8 @@ public class BenefitFindAdapter extends RecyclerView.Adapter<BenefitFindAdapter.
             holder.v_line.setVisibility(View.VISIBLE);
             holder.ll_end.setVisibility(View.GONE);
         }
+
+
     }
 
     @Override
@@ -74,6 +76,7 @@ public class BenefitFindAdapter extends RecyclerView.Adapter<BenefitFindAdapter.
         private ImageView iv_img;
         private View v_line;
         private LinearLayout ll_end;
+        private RelativeLayout rl_item;
 
         ViewHolder(View itemView) {
             super(itemView);
@@ -83,6 +86,7 @@ public class BenefitFindAdapter extends RecyclerView.Adapter<BenefitFindAdapter.
             iv_img = itemView.findViewById(R.id.iv_img);
             v_line = itemView.findViewById(R.id.v_line);
             ll_end = itemView.findViewById(R.id.ll_end);
+            rl_item = itemView.findViewById(R.id.rl_item);
         }
 
         @Override
