@@ -4,9 +4,11 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="@null"
+    android:descendantFocusability="blocksDescendants"
     android:orientation="vertical">
 
     <RelativeLayout
+        android:id="@+id/rl_item"
         android:layout_width="match_parent"
         android:layout_height="124dp"
         android:background="@null"
@@ -21,7 +23,6 @@
             android:layout_marginTop="12dp"
             android:layout_marginEnd="182dp"
             android:layout_marginRight="182dp"
-            android:text="上门服务新上线啦，上门服务新上线啦"
             android:textColor="@color/black_text_color"
             android:textSize="16sp" />
 
@@ -33,7 +34,6 @@
             android:layout_marginLeft="16dp"
             android:layout_marginRight="16dp"
             android:layout_marginBottom="12dp"
-            android:text="2019-05-23"
             android:textColor="@color/grayred_text_color"
             android:textSize="12sp" />
 

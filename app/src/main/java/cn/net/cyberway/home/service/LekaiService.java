@@ -94,7 +94,7 @@ public class LekaiService extends Service {
                         mBluetoothStateCallback.onBluetoothStateOn();
                     }
                     if (!ActivityLifecycleListener.isAppBackground()) {
-                        ToastUtil.toastShow(this, "蓝牙已开启");
+                        ToastUtil.toastShow(getApplicationContext(), "蓝牙已开启");
                         mEdenApi.startScanDevice();  // 重启扫描
                     }
                 } else if (i == BluetoothAdapter.STATE_OFF) {

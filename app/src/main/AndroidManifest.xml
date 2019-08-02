@@ -1062,7 +1062,9 @@
             android:theme="@android:style/Theme.Translucent" />
 
         <!--乐开-->
-        <service android:name="com.intelspace.library.service.BleService" />
+        <service
+            android:name="com.intelspace.library.service.BleService"
+            android:exported="false" />
         <service android:name="cn.net.cyberway.home.service.LekaiService" />
 
         <!--数位场景识别 保留-->
