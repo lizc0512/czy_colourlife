@@ -1256,12 +1256,6 @@ public class MainHomeFragmentNew extends Fragment implements NewHttpResponse, My
             case UserMessageConstant.AUDIT_PASS_OUT:
             case UserMessageConstant.WEB_OUT:
                 ScreenManager.getScreenManager().popAllActivityExceptOne(MainActivity.class);
-                jumpLoginPage(getActivity(), mShared, 1000);
-                String notice = message.obj.toString();
-                if (TextUtils.isEmpty(notice)) {
-                    notice = "审核已通过，请使用新手机号登录";
-                }
-                ToastUtil.toastTime(getActivity().getApplicationContext(), notice, 5000);
                 smoothScrollTop(home_rv);
                 ((MainActivity) getActivity()).clearUserData("");
                 break;
