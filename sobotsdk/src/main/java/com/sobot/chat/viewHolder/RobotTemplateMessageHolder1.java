@@ -14,6 +14,7 @@ import com.sobot.chat.activity.WebViewActivity;
 import com.sobot.chat.adapter.SobotMsgAdapter;
 import com.sobot.chat.api.model.SobotMultiDiaRespInfo;
 import com.sobot.chat.api.model.ZhiChiMessageBase;
+import com.sobot.chat.utils.HtmlTools;
 import com.sobot.chat.utils.SobotBitmapUtil;
 import com.sobot.chat.utils.ChatUtils;
 import com.sobot.chat.utils.ResourceUtils;
@@ -43,7 +44,7 @@ public class RobotTemplateMessageHolder1 extends MessageHolderBase {
             final SobotMultiDiaRespInfo multiDiaRespInfo = message.getAnswer().getMultiDiaRespInfo();
             String msgStr = ChatUtils.getMultiMsgTitle(multiDiaRespInfo);
             if (!TextUtils.isEmpty(msgStr)){
-                tv_title.setText(msgStr);
+                HtmlTools.getInstance(context).setRichText(tv_title, msgStr.replaceAll("\n", "<br/>"), getLinkTextColor());
                 sobot_ll_content.setVisibility(View.VISIBLE);
             } else {
                 sobot_ll_content.setVisibility(View.INVISIBLE);

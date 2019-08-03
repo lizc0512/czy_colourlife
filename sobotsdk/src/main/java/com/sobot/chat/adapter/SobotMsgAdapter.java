@@ -36,6 +36,7 @@ import com.sobot.chat.viewHolder.RobotTemplateMessageHolder2;
 import com.sobot.chat.viewHolder.RobotTemplateMessageHolder3;
 import com.sobot.chat.viewHolder.RobotTemplateMessageHolder4;
 import com.sobot.chat.viewHolder.RobotTemplateMessageHolder5;
+import com.sobot.chat.viewHolder.RobotTemplateMessageHolder6;
 import com.sobot.chat.viewHolder.SobotChatMsgItemSDKHistoryR;
 import com.sobot.chat.viewHolder.TextMessageHolder;
 import com.sobot.chat.viewHolder.VideoMessageHolder;
@@ -76,6 +77,7 @@ public class SobotMsgAdapter extends SobotBaseAdapter<ZhiChiMessageBase> {
             "sobot_chat_msg_item_location_r",//位置信息的布局文件
             "sobot_chat_msg_item_notice",//通告消息的布局文件
             "sobot_chat_msg_item_card_r",//商品卡片信息的布局文件
+            "sobot_chat_msg_item_template6_l",//机器人  多轮会话模板 6
     };
 
     /**
@@ -182,6 +184,10 @@ public class SobotMsgAdapter extends SobotBaseAdapter<ZhiChiMessageBase> {
      * 商品卡片
      */
     public static final int MSG_TYPE_CARD_R = 24;
+    /**
+     * 机器人  多轮会话模板 6
+     */
+    public static final int MSG_TYPE_ROBOT_TEMPLATE6 = 25;
 
     private String senderface;
     private String sendername;
@@ -469,6 +475,9 @@ public class SobotMsgAdapter extends SobotBaseAdapter<ZhiChiMessageBase> {
                 case MSG_TYPE_ROBOT_TEMPLATE5:
                     holder = new RobotTemplateMessageHolder5(context, convertView);
                     break;
+                case MSG_TYPE_ROBOT_TEMPLATE6:
+                    holder = new RobotTemplateMessageHolder6(context, convertView);
+                    break;
                 case MSG_TYPE_ROBOT_KEYWORD_ITEMS:
                     holder = new RobotKeyWordMessageHolder(context, convertView);
                     break;
@@ -650,6 +659,8 @@ public class SobotMsgAdapter extends SobotBaseAdapter<ZhiChiMessageBase> {
                                     return MSG_TYPE_ROBOT_TEMPLATE4;
                                 } else if ("4".equals(multiDiaRespInfo.getTemplate())) {
                                     return MSG_TYPE_ROBOT_TEMPLATE5;
+                                }else if ("99".equals(multiDiaRespInfo.getTemplate())) {
+                                    return MSG_TYPE_ROBOT_TEMPLATE6;
                                 }
                             } else {
                                 if ((multiDiaRespInfo.getInterfaceRetList() == null || multiDiaRespInfo.getInterfaceRetList().size() <= 0) && (multiDiaRespInfo.getInputContentList() == null || multiDiaRespInfo.getInputContentList().length <= 0)) {
@@ -840,12 +851,12 @@ public class SobotMsgAdapter extends SobotBaseAdapter<ZhiChiMessageBase> {
 
     public interface SobotMsgCallBack{
         void sendConsultingContent();
-        void doEvaluate(final boolean evaluateFlag,final ZhiChiMessageBase message);
-        void sendMessageToRobot(ZhiChiMessageBase base,int type, int questionFlag, String docId);
-        void sendMessageToRobot(ZhiChiMessageBase base,int type, int questionFlag, String docId, String multiRoundMsg);
+        void doEvaluate(final boolean evaluateFlag, final ZhiChiMessageBase message);
+        void sendMessageToRobot(ZhiChiMessageBase base, int type, int questionFlag, String docId);
+        void sendMessageToRobot(ZhiChiMessageBase base, int type, int questionFlag, String docId, String multiRoundMsg);
         void doClickTransferBtn();
         void hidePanelAndKeyboard();
-        void doRevaluate(final boolean revaluateFlag,final ZhiChiMessageBase message);
+        void doRevaluate(final boolean revaluateFlag, final ZhiChiMessageBase message);
         void clickAudioItem(ZhiChiMessageBase message);
     }
 }

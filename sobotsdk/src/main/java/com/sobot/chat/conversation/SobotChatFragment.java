@@ -206,7 +206,9 @@ public class SobotChatFragment extends SobotChatBaseFragment implements View.OnC
     private List<ZhiChiGroupBase> list_group;
 
     protected int type = -1;//当前模式的类型
-    private boolean isSessionOver = true;//表示此会话是否结束
+    private static String preCurrentCid = null ;//保存上一次会话cid；
+    private static  int statusFlag = 0; // 保存当前转人工成功的状态
+    private boolean isSessionOver = true;//表示此会话是否结束null
 
     private boolean isComment = false;/* 判断用户是否评价过 */
     private boolean isShowQueueTip = true;//是否显示 排队提醒 用以过滤关键字转人工时出现的提醒
@@ -1065,7 +1067,7 @@ public class SobotChatFragment extends SobotChatBaseFragment implements View.OnC
             resetUser();
         } else {
             //检查配置项是否发生变化
-            if(ChatUtils.checkConfigChange(mAppContext,info.getAppkey(),info)){
+            if (ChatUtils.checkConfigChange(mAppContext, info.getAppkey(), info)) {
                 resetUser();
             } else {
                 doKeepsessionInit();
@@ -1090,7 +1092,6 @@ public class SobotChatFragment extends SobotChatBaseFragment implements View.OnC
      * 调用初始化接口
      */
     private void customerInit() {
-
         if (info.getInitModeType() == ZhiChiConstant.type_robot_only){
             ChatUtils.userLogout(mAppContext);
         }
@@ -1328,7 +1329,23 @@ public class SobotChatFragment extends SobotChatBaseFragment implements View.OnC
         messageAdapter.notifyDataSetChanged();
         current_client_model = config.current_client_model;
         type = Integer.parseInt(initModel.getType());
-        SharedPreferencesUtil.saveIntData(mAppContext,
+
+        String currentCid = initModel.getCid();
+        if ( preCurrentCid == null ) {
+            statusFlag = 0;
+        } else if(!currentCid.equals(preCurrentCid)) {
+            statusFlag = 0;
+        }
+        if (type == ZhiChiConstant.type_custom_only && statusFlag == 0 ) {
+            //仅人工客服
+            preCurrentCid = currentCid;
+            if (isUserBlack()) {
+                showLeaveMsg();
+            } else {
+                transfer2Custom(null, null, null, true);
+            }
+        }
+            SharedPreferencesUtil.saveIntData(mAppContext,
                 info.getAppkey()+"_"+ZhiChiConstant.initType, type);
         LogUtils.i("sobot----type---->" + type);
         showLogicTitle(config.activityTitle,false);
@@ -1646,6 +1663,8 @@ public class SobotChatFragment extends SobotChatBaseFragment implements View.OnC
                         }
 
                         int status = Integer.parseInt(zhichiMessageBase.getStatus());
+                        statusFlag = status;
+                        preCurrentCid = initModel.getCid();
                         setAdminFace(zhichiMessageBase.getAface());
                         LogUtils.i("status---:" + status);
                         if (status != 0) {
@@ -3287,6 +3306,9 @@ public class SobotChatFragment extends SobotChatBaseFragment implements View.OnC
                     if (transferParam != null) {
                         if (transferParam.getConsultingContent() != null) {
                             info.setConsultingContent(transferParam.getConsultingContent());
+                        }
+                        if (transferParam.getSummaryParams() != null) {
+                            info.setSummaryParams(transferParam.getSummaryParams());
                         }
                         connectCustomerService(transferParam.getGroupId(),transferParam.getGroupName()
                                 , transferParam.getKeyword(), transferParam.getKeywordId(), transferParam.isShowTips());

@@ -83,12 +83,15 @@ public class SobotSessionServer extends Service {
 
         @Override
         public void onReceive(Context context, Intent intent) {
+            LogUtils.i("GL123 Action="+intent.getAction());
             if (ZhiChiConstants.receiveMessageBrocast.equals(intent.getAction())) {
                 // 接受下推的消息
                 try {
                     Bundle extras = intent.getExtras();
                     if (extras != null) {
                         ZhiChiPushMessage pushMessage = (ZhiChiPushMessage) extras.getSerializable(ZhiChiConstants.ZHICHI_PUSH_MESSAGE);
+                        LogUtils.i("GL123 Action pushMessage="+pushMessage);
+                        LogUtils.i("GL123 Action pushMessage="+isNeedShowMessage(pushMessage.getAppId()));
                         if (pushMessage != null && isNeedShowMessage(pushMessage.getAppId())) {
                             receiveMessage(pushMessage);
                         }
@@ -146,7 +149,7 @@ public class SobotSessionServer extends Service {
                     }
                 }
             }
-
+            LogUtils.i("GL123 pushMessage  "+pushMessage.getAppId());
             if(isNeedShowMessage(pushMessage.getAppId())){
 
                 String content;
@@ -176,6 +179,7 @@ public class SobotSessionServer extends Service {
                     intent.putExtra("content", content);
                     intent.putExtra("sobot_appId", pushMessage.getAppId());
                     CommonUtils.sendLocalBroadcast(getApplicationContext(), intent);
+                    LogUtils.i("GL123   ");
                     showNotification(notificationContent,pushMessage);
                 }
             }
@@ -296,7 +300,7 @@ public class SobotSessionServer extends Service {
 
         // 把机器人回答中的转人工按钮都隐藏掉
         config.hideItemTransferBtn();
-
+        LogUtils.i("showNotification isNeedShowMessage=  "+isNeedShowMessage(appId));
         if(isNeedShowMessage(appId)){
             showNotification(String.format(getResString("sobot_service_accept"), config.currentUserName),pushMessage);
         }

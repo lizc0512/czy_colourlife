@@ -100,6 +100,7 @@ public abstract class MessageHolderBase {
             case SobotMsgAdapter.MSG_TYPE_ROBOT_TEMPLATE3:
             case SobotMsgAdapter.MSG_TYPE_ROBOT_TEMPLATE4:
             case SobotMsgAdapter.MSG_TYPE_ROBOT_TEMPLATE5:
+            case SobotMsgAdapter.MSG_TYPE_ROBOT_TEMPLATE6:
             case SobotMsgAdapter.MSG_TYPE_ROBOT_ANSWER_ITEMS:
             case SobotMsgAdapter.MSG_TYPE_ROBOT_QUESTION_RECOMMEND:
             case SobotMsgAdapter.MSG_TYPE_ROBOT_KEYWORD_ITEMS:

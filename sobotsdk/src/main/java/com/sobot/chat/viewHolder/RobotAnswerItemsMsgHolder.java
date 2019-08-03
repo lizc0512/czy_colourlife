@@ -37,7 +37,8 @@ public class RobotAnswerItemsMsgHolder extends MessageHolderBase implements View
         zhiChiMessageBase = message;
         if (message.getAnswer() != null && message.getAnswer().getMultiDiaRespInfo() != null) {
             final SobotMultiDiaRespInfo multiDiaRespInfo = message.getAnswer().getMultiDiaRespInfo();
-            HtmlTools.getInstance(context).setRichText(tv_msg, ChatUtils.getMultiMsgTitle(multiDiaRespInfo), getLinkTextColor());
+            String msgStr = ChatUtils.getMultiMsgTitle(multiDiaRespInfo);
+            HtmlTools.getInstance(context).setRichText(tv_msg, msgStr.replaceAll("\n", "<br/>"), getLinkTextColor());
             if ("000000".equals(multiDiaRespInfo.getRetCode())) {
                 List<Map<String, String>> icLists = multiDiaRespInfo.getIcLists();
                 if (icLists != null && icLists.size() > 0) {

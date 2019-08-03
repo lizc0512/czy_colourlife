@@ -34,6 +34,7 @@ import com.sobot.chat.api.model.ZhiChiMessageBase;
 import com.sobot.chat.api.model.ZhiChiReplyAnswer;
 import com.sobot.chat.core.channel.Const;
 import com.sobot.chat.core.channel.SobotMsgManager;
+import com.sobot.chat.core.channel.SobotTCPServer;
 import com.sobot.chat.core.http.callback.StringResultCallBack;
 import com.sobot.chat.fragment.SobotBaseFragment;
 import com.sobot.chat.utils.ChatUtils;
@@ -507,6 +508,12 @@ public abstract class SobotChatBaseFragment extends SobotBaseFragment implements
             public void onSuccess(CommonModelBase commonModelBase) {
                 if (!isActive()) {
                     return;
+                }
+                Boolean switchFlag = Boolean.valueOf(commonModelBase.getSwitchFlag()).booleanValue();
+                //如果switchFlag 为true，就会断开通道走，轮训
+                if (switchFlag) {
+                    // 说明用户端有两条或者两条以上消息未接受到，要去切换轮询
+                    CommonUtils.sendLocalBroadcast(mAppContext, new Intent(Const.SOBOT_CHAT_CHECK_SWITCHFLAG));
                 }
                 if (ZhiChiConstant.client_sendmsg_to_custom_fali.equals(commonModelBase.getStatus())) {
                     sendTextMessageToHandler(mid, null, handler, 0, UPDATE_TEXT);
