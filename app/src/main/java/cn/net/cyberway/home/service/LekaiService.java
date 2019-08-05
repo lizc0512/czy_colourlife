@@ -138,9 +138,14 @@ public class LekaiService extends Service {
     public void unlockDevice(Device device) {
         if (null != mEdenApi) {
             mEdenApi.unlock(device, ACC, TOK, AppConst.CONNECT_TIME_OUT, (i, s, i1) -> {
-                //开锁成功的回调
-                Handler handler = new Handler(Looper.getMainLooper());
-                handler.post(() -> ToastUtil.toastShow(getApplicationContext(), "开锁成功"));
+                if (0 == i) {
+                    //开锁成功的回调
+                    Handler handler = new Handler(Looper.getMainLooper());
+                    handler.post(() -> ToastUtil.toastShow(getApplicationContext(), "开锁成功"));
+                } else {
+                    Handler handler = new Handler(Looper.getMainLooper());
+                    handler.post(() -> ToastUtil.toastShow(getApplicationContext(), s));
+                }
             });
         }
     }
