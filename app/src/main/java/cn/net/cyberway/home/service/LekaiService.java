@@ -142,11 +142,11 @@ public class LekaiService extends Service {
                 Handler handler = new Handler(Looper.getMainLooper());
                 handler.post(() -> {
                     if (0 == i) {
-                        ToastUtil.toastShow(getApplicationContext(), "开锁成功");
+                        ToastUtil.toastShow(getApplicationContext(), "开门成功");
                     } else if (ErrorConstants.IS_OPERATION_ERROR_TYPE_WRONG_TIME == i) {
                         ToastUtil.toastShow(getApplicationContext(), "钥匙过期，请联系管理员");
                     } else {
-                        ToastUtil.toastShow(getApplicationContext(), "开锁失败");
+                        ToastUtil.toastShow(getApplicationContext(), "开门失败");
                     }
                 });
             });
