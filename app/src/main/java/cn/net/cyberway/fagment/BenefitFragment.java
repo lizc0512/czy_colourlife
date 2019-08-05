@@ -25,7 +25,6 @@ import android.widget.TextView;
 import com.BeeFramework.Utils.Utils;
 import com.BeeFramework.model.NewHttpResponse;
 import com.BeeFramework.view.NoScrollGridView;
-import com.BeeFramework.view.Util;
 import com.external.eventbus.EventBus;
 import com.nohttp.utils.GlideImageLoader;
 import com.nohttp.utils.GsonUtils;
@@ -52,7 +51,6 @@ import cn.net.cyberway.protocol.BenefitHotEntity;
 import cn.net.cyberway.protocol.BenefitProfileEntity;
 import cn.net.cyberway.utils.LinkParseUtil;
 
-import static cn.net.cyberway.home.view.HomeViewUtils.getScollYDistance;
 import static com.youmai.hxsdk.utils.DisplayUtil.getStatusBarHeight;
 
 /**
@@ -141,7 +139,7 @@ public class BenefitFragment extends Fragment implements View.OnClickListener, N
             EventBus.getDefault().register(this);
         }
         initView();
-        initAlphaTitle();
+        initListener();
         initCatchData();
         initData();
         return mView;
@@ -546,7 +544,7 @@ public class BenefitFragment extends Fragment implements View.OnClickListener, N
     /**
      * 标题
      */
-    private void initAlphaTitle() {
+    private void initListener() {
         rv_find.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
             public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
@@ -556,31 +554,7 @@ public class BenefitFragment extends Fragment implements View.OnClickListener, N
             @Override
             public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
                 super.onScrolled(recyclerView, dx, dy);
-                refresh_layout.setEnabled(rv_find.getScrollY() == 0);//解决列表滑动冲突
-
-                RecyclerView.LayoutManager layoutManager = recyclerView.getLayoutManager();
-                if (layoutManager instanceof LinearLayoutManager) {
-                    LinearLayoutManager linearLayoutManager = (LinearLayoutManager) layoutManager;
-                    int position = linearLayoutManager.findFirstVisibleItemPosition();
-                    if (position == 0) {
-                        int moveDistance = getScollYDistance(linearLayoutManager);
-                        int pixHeight = Util.DensityUtil.dip2px(mActivity, 200);
-                        if (moveDistance <= 0) {
-                            ll_alpha.setVisibility(View.GONE);
-                            ll_alpha.setAlpha(0);
-                            tv_alpha_title.setAlpha(0);
-                        } else if (moveDistance > 0 && moveDistance <= pixHeight) { //滑动距离小于banner图的高度时，设置背景和字体颜色颜色透明度渐变
-                            float scale = (float) moveDistance / pixHeight;
-                            ll_alpha.setVisibility(View.VISIBLE);
-                            ll_alpha.setAlpha(scale);
-                            tv_alpha_title.setAlpha(scale);
-                        } else {
-                            ll_alpha.setAlpha(1.0f);
-                            ll_alpha.setVisibility(View.VISIBLE);
-                            tv_alpha_title.setAlpha(1.0f);
-                        }
-                    }
-                }
+                refresh_layout.setEnabled(rv_find.getScrollY() == 0);
             }
         });
     }

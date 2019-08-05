@@ -13,6 +13,7 @@ import android.util.Log;
 import com.BeeFramework.AppConst;
 import com.BeeFramework.Utils.ToastUtil;
 import com.intelspace.library.EdenApi;
+import com.intelspace.library.ErrorConstants;
 import com.intelspace.library.api.OnConnectCallback;
 import com.intelspace.library.api.OnFoundDeviceListener;
 import com.intelspace.library.api.OnSyncUserKeysCallback;
@@ -138,14 +139,16 @@ public class LekaiService extends Service {
     public void unlockDevice(Device device) {
         if (null != mEdenApi) {
             mEdenApi.unlock(device, ACC, TOK, AppConst.CONNECT_TIME_OUT, (i, s, i1) -> {
-                if (0 == i) {
-                    //开锁成功的回调
-                    Handler handler = new Handler(Looper.getMainLooper());
-                    handler.post(() -> ToastUtil.toastShow(getApplicationContext(), "开锁成功"));
-                } else {
-                    Handler handler = new Handler(Looper.getMainLooper());
-                    handler.post(() -> ToastUtil.toastShow(getApplicationContext(), s));
-                }
+                Handler handler = new Handler(Looper.getMainLooper());
+                handler.post(() -> {
+                    if (0 == i) {
+                        ToastUtil.toastShow(getApplicationContext(), "开锁成功");
+                    } else if (ErrorConstants.IS_OPERATION_ERROR_TYPE_WRONG_TIME == i) {
+                        ToastUtil.toastShow(getApplicationContext(), "钥匙过期，请联系管理员");
+                    } else {
+                        ToastUtil.toastShow(getApplicationContext(), "开锁失败");
+                    }
+                });
             });
         }
     }
