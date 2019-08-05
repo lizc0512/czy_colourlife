@@ -112,7 +112,6 @@ public class MainActivity extends BaseFragmentActivity implements View.OnClickLi
     private MainHomeFragmentNew mHomeFragment;
     private NologinHomeFragment nologinHomeFragment;
     private InstantMessageFragment instantMessageFragment;//消息
-    //    private LifeHomeFragment lifeHomeFragment;//生活页面
     private BenefitFragment benefitFragment;
     private ProfileFragment profileFragment;
     private LinearLayout mHome;
@@ -622,12 +621,6 @@ public class MainActivity extends BaseFragmentActivity implements View.OnClickLi
                 } else {
                     transaction.show(benefitFragment);
                 }
-                /*if (null == lifeHomeFragment) {
-                    lifeHomeFragment = new LifeHomeFragment();
-                    transaction.add(R.id.main_fragment_container, lifeHomeFragment);
-                } else {
-                    transaction.show(lifeHomeFragment);
-                }*/
                 transaction.commitAllowingStateLoss();
                 mHome.setSelected(false);
                 mCommunity.setSelected(true);
@@ -694,9 +687,6 @@ public class MainActivity extends BaseFragmentActivity implements View.OnClickLi
         if (benefitFragment != null) {
             transaction.hide(benefitFragment);
         }
-        /*if (lifeHomeFragment != null) {
-            transaction.hide(lifeHomeFragment);
-        }*/
         if (profileFragment != null) {
             transaction.hide(profileFragment);
         }

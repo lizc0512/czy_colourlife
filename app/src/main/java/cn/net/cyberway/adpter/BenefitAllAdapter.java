@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.BeeFramework.Utils.Utils;
@@ -35,6 +36,7 @@ public class BenefitAllAdapter extends BeeBaseAdapter {
         private LinearLayout ll_activity;
         private TextView tv_more;
         public TextView tv_content;
+        public RelativeLayout rl_item;
     }
 
     @Override
@@ -45,6 +47,7 @@ public class BenefitAllAdapter extends BeeBaseAdapter {
         holder.ll_activity = cellView.findViewById(R.id.ll_activity);
         holder.tv_more = cellView.findViewById(R.id.tv_more);
         holder.tv_content = cellView.findViewById(R.id.tv_content);
+        holder.rl_item = cellView.findViewById(R.id.rl_item);
         return holder;
     }
 
@@ -83,7 +86,7 @@ public class BenefitAllAdapter extends BeeBaseAdapter {
             holder.ll_activity.addView(rightText, layoutParams);
 
             holder.tv_content.setText(item.getDesc());
-            holder.tv_more.setOnClickListener(v -> LinkParseUtil.parse(mContext, item.getUrl(), ""));
+            holder.rl_item.setOnClickListener(v -> LinkParseUtil.parse(mContext, item.getUrl(), ""));
         } catch (Resources.NotFoundException e) {
             e.printStackTrace();
         }

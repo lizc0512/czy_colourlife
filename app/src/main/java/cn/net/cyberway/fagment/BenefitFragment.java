@@ -10,6 +10,7 @@ import android.os.Message;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.text.TextPaint;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
@@ -24,9 +25,8 @@ import android.widget.TextView;
 import com.BeeFramework.Utils.Utils;
 import com.BeeFramework.model.NewHttpResponse;
 import com.BeeFramework.view.NoScrollGridView;
-import com.dashuview.library.keep.MyListener;
+import com.BeeFramework.view.Util;
 import com.external.eventbus.EventBus;
-import com.external.maxwin.view.IXListViewListener;
 import com.nohttp.utils.GlideImageLoader;
 import com.nohttp.utils.GsonUtils;
 import com.user.UserAppConst;
@@ -52,13 +52,14 @@ import cn.net.cyberway.protocol.BenefitHotEntity;
 import cn.net.cyberway.protocol.BenefitProfileEntity;
 import cn.net.cyberway.utils.LinkParseUtil;
 
+import static cn.net.cyberway.home.view.HomeViewUtils.getScollYDistance;
 import static com.youmai.hxsdk.utils.DisplayUtil.getStatusBarHeight;
 
 /**
  * 生活-彩惠人生
  * hxg 2019.06.11
  */
-public class BenefitFragment extends Fragment implements View.OnClickListener, IXListViewListener, MyListener, NewHttpResponse {
+public class BenefitFragment extends Fragment implements View.OnClickListener, NewHttpResponse {
     private View mView;
     private View v_content;
 
@@ -98,6 +99,11 @@ public class BenefitFragment extends Fragment implements View.OnClickListener, I
     private SharedPreferences mShared;
     private SharedPreferences.Editor mEditor;
     private SwipeRefreshLayout refresh_layout;
+    private LinearLayout ll_alpha;
+    private TextView tv_alpha_title;
+    private View v_alpha_benefit_status_bar;
+    private ImageView iv_alpha_order;
+    private ImageView iv_alpha_mine;
 
     private BGABanner bga_banner;
     private ArrayList<BenefitBannerEntity.ContentBean> bannerDataBeanList = new ArrayList<>();
@@ -131,7 +137,11 @@ public class BenefitFragment extends Fragment implements View.OnClickListener, I
         mShared = mActivity.getSharedPreferences(UserAppConst.USERINFO, 0);
         mEditor = mShared.edit();
         benefitModel = new BenefitModel(mActivity);
+        if (!EventBus.getDefault().isregister(this)) {
+            EventBus.getDefault().register(this);
+        }
         initView();
+        initAlphaTitle();
         initCatchData();
         initData();
         return mView;
@@ -176,13 +186,14 @@ public class BenefitFragment extends Fragment implements View.OnClickListener, I
         }
     }
 
-    private void setStatusBarHeight(View tabBarView) {
-        LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, getStatusBarHeight(mActivity));
-        tabBarView.setLayoutParams(layoutParams);
-    }
-
     private void initView() {
         refresh_layout = mView.findViewById(R.id.refresh_layout);
+        ll_alpha = mView.findViewById(R.id.ll_alpha);
+        tv_alpha_title = mView.findViewById(R.id.tv_alpha_title);
+        v_alpha_benefit_status_bar = mView.findViewById(R.id.v_alpha_benefit_status_bar);
+        iv_alpha_order = mView.findViewById(R.id.iv_alpha_order);
+        iv_alpha_mine = mView.findViewById(R.id.iv_alpha_mine);
+
         refresh_layout.setColorSchemeColors(Color.parseColor("#3290FF"), Color.parseColor("#6ABDF9"));
         refresh_layout.setOnRefreshListener(() -> {
             page = 1;
@@ -253,10 +264,14 @@ public class BenefitFragment extends Fragment implements View.OnClickListener, I
             }
         });
         rv_find.loadMoreFinish(false, true);
-        findAdapter.setOnItemClickListener(position -> LinkParseUtil.parse(mActivity, findList.get(position).getUrl(), ""));
+        findAdapter.setOnItemClickListener(position -> {
+            LinkParseUtil.parse(mActivity, findList.get(position - 1).getUrl(), "");
+        });
 
         iv_order.setOnClickListener(this);
+        iv_alpha_order.setOnClickListener(this);
         iv_mine.setOnClickListener(this);
+        iv_alpha_mine.setOnClickListener(this);
         iv_sign.setOnClickListener(this);
         ll_owe_address.setOnClickListener(this);
         ll_owe_money.setOnClickListener(this);
@@ -266,8 +281,13 @@ public class BenefitFragment extends Fragment implements View.OnClickListener, I
         iv_pay.setOnClickListener(this);
 
         View v_benefit_status_bar = v_content.findViewById(R.id.v_benefit_status_bar);
-        v_benefit_status_bar.setBackgroundColor(Color.parseColor("#FF898B"));
         setStatusBarHeight(v_benefit_status_bar);
+        setStatusBarHeight(v_alpha_benefit_status_bar);
+    }
+
+    private void setStatusBarHeight(View tabBarView) {
+        LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, getStatusBarHeight(mActivity));
+        tabBarView.setLayoutParams(layoutParams);
     }
 
     private void initData() {
@@ -318,10 +338,12 @@ public class BenefitFragment extends Fragment implements View.OnClickListener, I
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.iv_order:
+            case R.id.iv_alpha_order:
                 LinkParseUtil.parse(mActivity, orderUrl, "");
                 break;
 
             case R.id.iv_mine:
+            case R.id.iv_alpha_mine:
                 LinkParseUtil.parse(mActivity, mineUrl, "");
                 break;
 
@@ -358,7 +380,6 @@ public class BenefitFragment extends Fragment implements View.OnClickListener, I
 
     }
 
-    @SuppressLint("SetTextI18n")
     @Override
     public void OnHttpResponse(int what, String result) {
         result(what, result);
@@ -398,7 +419,7 @@ public class BenefitFragment extends Fragment implements View.OnClickListener, I
                         BenefitProfileEntity.ContentBean.PropertyDeductionBean propertyDeductionBean = entity.getContent().getProperty_deduction();
                         propertyDeductionUrl = propertyDeductionBean.getUrl();
                         tv_deduct_money_name.setText(propertyDeductionBean.getTitle());
-                        tv_owe_money.setText(propertyDeductionBean.getBalance() + "元");
+                        tv_deduct_money.setText(propertyDeductionBean.getBalance() + "元");
 
                         BenefitProfileEntity.ContentBean.PropertyButtonBean propertyButtonBean = entity.getContent().getProperty_button();
                         if (1 == propertyButtonBean.getIs_show()) {
@@ -480,28 +501,12 @@ public class BenefitFragment extends Fragment implements View.OnClickListener, I
     @Override
     public void onDestroy() {
         super.onDestroy();
-        EventBus.getDefault().unregister(this);
-        mHandler.removeCallbacksAndMessages(null);
-    }
-
-    @Override
-    public void authenticationFeedback(String s, int i) {
-
-    }
-
-    @Override
-    public void toCFRS(String s) {
-
-    }
-
-    @Override
-    public void onRefresh(int id) {
-
-    }
-
-    @Override
-    public void onLoadMore(int id) {
-
+        if (null != mHandler) {
+            mHandler.removeCallbacksAndMessages(null);
+        }
+        if (EventBus.getDefault().isregister(getActivity())) {
+            EventBus.getDefault().unregister(this);
+        }
     }
 
     @Override
@@ -539,8 +544,47 @@ public class BenefitFragment extends Fragment implements View.OnClickListener, I
     }
 
     /**
-     * 弱引用 防止handler内存泄露
+     * 标题
      */
+    private void initAlphaTitle() {
+        rv_find.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
+                super.onScrollStateChanged(recyclerView, newState);
+            }
+
+            @Override
+            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+                refresh_layout.setEnabled(rv_find.getScrollY() == 0);//解决列表滑动冲突
+
+                RecyclerView.LayoutManager layoutManager = recyclerView.getLayoutManager();
+                if (layoutManager instanceof LinearLayoutManager) {
+                    LinearLayoutManager linearLayoutManager = (LinearLayoutManager) layoutManager;
+                    int position = linearLayoutManager.findFirstVisibleItemPosition();
+                    if (position == 0) {
+                        int moveDistance = getScollYDistance(linearLayoutManager);
+                        int pixHeight = Util.DensityUtil.dip2px(mActivity, 200);
+                        if (moveDistance <= 0) {
+                            ll_alpha.setVisibility(View.GONE);
+                            ll_alpha.setAlpha(0);
+                            tv_alpha_title.setAlpha(0);
+                        } else if (moveDistance > 0 && moveDistance <= pixHeight) { //滑动距离小于banner图的高度时，设置背景和字体颜色颜色透明度渐变
+                            float scale = (float) moveDistance / pixHeight;
+                            ll_alpha.setVisibility(View.VISIBLE);
+                            ll_alpha.setAlpha(scale);
+                            tv_alpha_title.setAlpha(scale);
+                        } else {
+                            ll_alpha.setAlpha(1.0f);
+                            ll_alpha.setVisibility(View.VISIBLE);
+                            tv_alpha_title.setAlpha(1.0f);
+                        }
+                    }
+                }
+            }
+        });
+    }
+
     private static class InterHandler extends Handler {
         private WeakReference<BenefitFragment> handlerActivity;
 
