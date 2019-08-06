@@ -31,6 +31,7 @@ import cn.net.cyberway.utils.LekaiHelper;
  * hxg 2019.06.14
  */
 public class LekaiListActivity extends BaseActivity implements View.OnClickListener, LekaiParkLockController.OnScanParkLockChangeListener {
+    private static String err = "操作失败，请重试";
 
     private ImageView user_top_view_back;
     private TextView user_top_view_title;
@@ -132,7 +133,7 @@ public class LekaiListActivity extends BaseActivity implements View.OnClickListe
 
                 LekaiHelper.parkUnlock(keysList.get(position).getMac(), (status, message, battery) -> {
                     handler = new Handler(Looper.getMainLooper());
-                    handler.post(() -> ToastUtil.toastShow(getApplicationContext(), 0 == status ? ("操作成功,电量：" + battery) : message));
+                    handler.post(() -> ToastUtil.toastShow(getApplicationContext(), 0 == status ? ("操作成功,电量：" + battery) : err));
                 });
             } else {
                 ToastUtil.toastShow(getApplicationContext(), "请打开蓝牙");
@@ -150,7 +151,7 @@ public class LekaiListActivity extends BaseActivity implements View.OnClickListe
 
                 LekaiHelper.parkLock(keysList.get(position).getMac(), (status, message, battery) -> {
                     handler = new Handler(Looper.getMainLooper());
-                    handler.post(() -> ToastUtil.toastShow(getApplicationContext(), 0 == status ? ("操作成功,电量：" + battery) : message));
+                    handler.post(() -> ToastUtil.toastShow(getApplicationContext(), 0 == status ? ("操作成功,电量：" + battery) : err));
                 });
             } else {
                 ToastUtil.toastShow(getApplicationContext(), "请打开蓝牙");
@@ -163,7 +164,7 @@ public class LekaiListActivity extends BaseActivity implements View.OnClickListe
      */
     public void parkNoMap() {
         if (LekaiHelper.isFastClick()) {
-            ToastUtil.toastShow(getApplicationContext(), openBluetooth ? "操作失败，请重试" : "请打开蓝牙");
+            ToastUtil.toastShow(getApplicationContext(), openBluetooth ? err : "请打开蓝牙");
         }
     }
 

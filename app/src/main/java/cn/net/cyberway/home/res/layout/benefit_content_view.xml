@@ -83,6 +83,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
+                android:layout_marginEnd="8dp"
+                android:layout_marginRight="8dp"
                 tools:ignore="ContentDescription" />
 
         </LinearLayout>
@@ -185,6 +187,8 @@
                 android:id="@+id/iv_pay"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginEnd="8dp"
+                android:layout_marginRight="8dp"
                 android:background="@drawable/ic_benefit_pay" />
         </LinearLayout>
 

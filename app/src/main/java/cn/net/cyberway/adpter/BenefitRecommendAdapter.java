@@ -106,12 +106,17 @@ public class BenefitRecommendAdapter extends BeeBaseAdapter {
             LinearLayout.LayoutParams layoutParamsImg = new LinearLayout.LayoutParams(imgSize, imgSize);
             layoutParamsImg.setMargins(0, 0, Utils.dip2px(mContext, 8), 0);
             ImageView imageView = new ImageView(mContext);
-            GlideImageLoader.loadImageDefaultDisplay(mContext, goodsBean.getImage(), imageView, R.drawable.default_image, R.drawable.default_image);
+
+            GlideImageLoader.loadImageDefaultDisplay(mContext, goodsBean.getImage(), imageView, Utils.dip2px(mContext, 4), R.drawable.default_image, R.drawable.default_image);
             ll_shop.addView(imageView, layoutParamsImg);
 
             TextView titleText = new TextView(mContext);
-            titleText.setText(goodsBean.getName());
-            titleText.setTextSize(14);
+            String title = goodsBean.getName();
+            if (title.length() > 7) {
+                title = title.substring(0, 7);
+            }
+            titleText.setText(title);
+            titleText.setTextSize(12);
             titleText.setTextColor(mContext.getResources().getColor(R.color.black_text_color));
             ll_shop.addView(titleText, titleLayoutParams);
 

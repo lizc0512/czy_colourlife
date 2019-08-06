@@ -11,6 +11,7 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.BeeFramework.Utils.Utils;
 import com.nohttp.utils.GlideImageLoader;
 
 import java.util.List;
@@ -52,7 +53,7 @@ public class BenefitFindAdapter extends RecyclerView.Adapter<BenefitFindAdapter.
         holder.tv_title.setText(item.getTitle());
         holder.tv_time.setText(item.getDate());
 
-        GlideImageLoader.loadImageDefaultDisplay(mContext, item.getImage(), holder.iv_img, R.drawable.default_image, R.drawable.default_image);
+        GlideImageLoader.loadImageDefaultDisplay(mContext, item.getImage(), holder.iv_img, Utils.dip2px(mContext,4), R.drawable.default_image, R.drawable.default_image);
 
         if (position == total - 1) {
             holder.ll_end.setVisibility(View.VISIBLE);
@@ -61,7 +62,6 @@ public class BenefitFindAdapter extends RecyclerView.Adapter<BenefitFindAdapter.
             holder.v_line.setVisibility(View.VISIBLE);
             holder.ll_end.setVisibility(View.GONE);
         }
-
 
     }
 
