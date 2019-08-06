@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.graphics.Color;
 import android.icu.math.BigDecimal;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.Message;
 import android.text.TextUtils;
@@ -24,9 +23,12 @@ import com.BeeFramework.activity.BaseActivity;
 import com.BeeFramework.model.Constants;
 import com.BeeFramework.model.NewHttpResponse;
 import com.cashier.modelnew.NewOrderPayModel;
+import com.cashier.protocolchang.OrderChekEntity;
 import com.cashier.protocolchang.PayEntity;
 import com.cashier.protocolchang.PayResultEntity;
 import com.cashier.protocolchang.PayStatusEntity;
+import com.dashuview.library.keep.Cqb_PayUtil;
+import com.dashuview.library.keep.ListenerUtils;
 import com.external.eventbus.EventBus;
 import com.lhqpay.ewallet.keepIntact.Listener;
 import com.lhqpay.ewallet.keepIntact.MyListener;
@@ -36,8 +38,13 @@ import com.lhqpay.ewallet.keepIntact.WXPayEntryActivity;
 import com.nohttp.entity.BaseContentEntity;
 import com.nohttp.utils.GlideImageLoader;
 import com.nohttp.utils.GsonUtils;
+import com.setting.activity.CertificateResultDialog;
+import com.setting.activity.EditDialog;
 import com.setting.activity.HtmlPayDialog;
 import com.user.UserMessageConstant;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -48,6 +55,8 @@ import java.util.Map;
 import cn.net.cyberway.R;
 import cn.net.cyberway.activity.BroadcastReceiverActivity;
 import cn.net.cyberway.utils.LinkParseUtil;
+
+import static com.BeeFramework.Utils.Utils.getAuthPublicParams;
 
 
 /**
@@ -61,7 +70,7 @@ import cn.net.cyberway.utils.LinkParseUtil;
  * @class describe   新的订单支付页面
  */
 
-public class NewOrderPayActivity extends BaseActivity implements View.OnClickListener, NewHttpResponse, Listener, MyListener {
+public class NewOrderPayActivity extends BaseActivity implements View.OnClickListener, NewHttpResponse, Listener, MyListener, com.dashuview.library.keep.MyListener {
 
     public static final String ORDER_SN = "ORDER_SN";
     public static final String PAY_CHANNEL = "pay_channel";
@@ -96,6 +105,7 @@ public class NewOrderPayActivity extends BaseActivity implements View.OnClickLis
         initView();
         initData();
         PayListenerUtils.setCallBack(this);
+        ListenerUtils.setCallBack(this);
     }
 
     private void initData() {
@@ -535,16 +545,21 @@ public class NewOrderPayActivity extends BaseActivity implements View.OnClickLis
                 finish();
                 break;
             case R.id.btn_sure_pay:  //确认支付订单
-                if (is_native == 1) {
-                    if (TextUtils.isEmpty(payChannelId)) {
-                        ToastUtil.toastShow(NewOrderPayActivity.this, "请选择一种支付方式");
-                    } else {
-                        newOrderPayModel.goOrderPay(1, sn, payChannelId, this);
-                    }
-                } else {
-                    LinkParseUtil.parse(NewOrderPayActivity.this, pay_url, "");
-                }
+                newOrderPayModel.getUserRealCertificate(3, sn, this);
                 break;
+        }
+    }
+
+
+    private void createCzyOrder() {
+        if (is_native == 1) {
+            if (TextUtils.isEmpty(payChannelId)) {
+                ToastUtil.toastShow(NewOrderPayActivity.this, "请选择一种支付方式");
+            } else {
+                newOrderPayModel.goOrderPay(1, sn, payChannelId, this);
+            }
+        } else {
+            LinkParseUtil.parse(NewOrderPayActivity.this, pay_url, "");
         }
     }
 
@@ -754,6 +769,19 @@ public class NewOrderPayActivity extends BaseActivity implements View.OnClickLis
                     payResultQuery();
                 }
                 break;
+            case 3:
+                try {
+                    OrderChekEntity orderChekEntity = GsonUtils.gsonToBean(result, OrderChekEntity.class);
+                    OrderChekEntity.ContentBean contentBean = orderChekEntity.getContent();
+                    if ("1".equals(contentBean.getIs_identity())) {
+                        createCzyOrder();
+                    } else {
+                        shownoticeDialog(contentBean.getNote());
+                    }
+                } catch (Exception e) {
+
+                }
+                break;
         }
     }
 
@@ -771,5 +799,64 @@ public class NewOrderPayActivity extends BaseActivity implements View.OnClickLis
                 }
                 break;
         }
+    }
+
+
+    private EditDialog noticeDialog = null;
+
+    private void shownoticeDialog(String notice) {
+        if (noticeDialog == null) {
+            noticeDialog = new EditDialog(NewOrderPayActivity.this);
+        }
+        noticeDialog.setContent(notice);
+        noticeDialog.show();
+        noticeDialog.left_button.setText("取消");
+        noticeDialog.left_button.setTextColor(Color.parseColor("#131719"));
+        noticeDialog.left_button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (noticeDialog != null) {
+                    noticeDialog.dismiss();
+                }
+            }
+        });
+        noticeDialog.right_button.setText("前往认证");
+        noticeDialog.right_button.setTextColor(Color.parseColor("#629ef0"));
+        noticeDialog.right_button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (noticeDialog != null) {
+                    noticeDialog.dismiss();
+                }
+                JSONObject jsonObject = new JSONObject();
+                try {
+                    jsonObject.put("name", "");
+                    jsonObject.put("mobile", "");
+                    jsonObject.put("IDNum", "");
+                    Cqb_PayUtil.getInstance(NewOrderPayActivity.this).openCertification(getAuthPublicParams(NewOrderPayActivity.this, jsonObject.toString()), Constants.CAIWALLET_ENVIRONMENT, "CertificationFlag");
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+    }
+
+    @Override
+    public void authenticationFeedback(String s, int i) {
+        switch (i) {
+            case 16:
+            case 18:
+                createCzyOrder();
+                break;
+            case 17:
+                CertificateResultDialog certificateResultDialog = new CertificateResultDialog(NewOrderPayActivity.this, R.style.dialog);
+                certificateResultDialog.dismiss();
+                break;
+        }
+    }
+
+    @Override
+    public void toCFRS(String s) {
+
     }
 }

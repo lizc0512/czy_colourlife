@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="300dp"
+        android:layout_height="wrap_content"
+        android:background="@drawable/about_corners4"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="44dp"
+            android:gravity="center"
+            android:text="实名认证未通过"
+            android:textColor="@color/color_131719"
+            android:textSize="16sp" />
+
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="10dp"
+            android:text="我们将为您保留订单30分钟～"
+            android:textColor="@color/textcolor_bfc7cc"
+            android:textSize="14sp" />
+
+
+        <TextView
+            android:id="@+id/tv_again_pay"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="10dp"
+            android:text="您可以进行以下操作："
+            android:textColor="@color/color_25282e"
+            android:textSize="14sp" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="10dp"
+            android:text="1，前往“我的-个人信息”完成实名认证"
+            android:textColor="@color/color_25282e"
+            android:textSize="14sp" />
+
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="10dp"
+            android:text="2，前往“我的订单”继续支付"
+            android:textColor="@color/color_25282e"
+            android:textSize="14sp" />
+
+        <Button
+            android:id="@+id/btn_know"
+            android:layout_width="match_parent"
+            android:layout_height="44dp"
+            android:layout_marginTop="20dp"
+            android:background="@color/white"
+            android:gravity="center"
+            android:text="确定"
+            android:textColor="@color/blue_text_color"
+            android:textSize="16sp" />
+    </LinearLayout>
+
+
+</LinearLayout>
