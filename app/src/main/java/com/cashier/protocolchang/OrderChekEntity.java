@@ -51,6 +51,16 @@ public class OrderChekEntity extends BaseContentEntity {
         private String is_identity;
         private String note;
 
+        public String getLimit() {
+            return limit;
+        }
+
+        public void setLimit(String limit) {
+            this.limit = limit;
+        }
+
+        private String limit;
+
 
     }
 

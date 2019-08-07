@@ -773,13 +773,17 @@ public class NewOrderPayActivity extends BaseActivity implements View.OnClickLis
                 try {
                     OrderChekEntity orderChekEntity = GsonUtils.gsonToBean(result, OrderChekEntity.class);
                     OrderChekEntity.ContentBean contentBean = orderChekEntity.getContent();
-                    if ("1".equals(contentBean.getIs_identity())) {
-                        createCzyOrder();
+                    if ("1".equals(contentBean.getLimit())) {
+                        if ("1".equals(contentBean.getIs_identity())) {
+                            createCzyOrder();
+                        } else {
+                            shownoticeDialog(contentBean.getNote());
+                        }
                     } else {
-                        shownoticeDialog(contentBean.getNote());
+                        createCzyOrder();
                     }
                 } catch (Exception e) {
-
+                    createCzyOrder();
                 }
                 break;
         }
