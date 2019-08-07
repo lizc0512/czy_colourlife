@@ -31,6 +31,7 @@ public class NewOrderPayModel extends BaseModel {
     private final String payOrderList = "pay/orderlist";//订单列表
     private final String payOrderSingleInfo = "pay/orderquery";//订单详情
     private final String orderCancel = "pay/ordercancel";//取消订单
+    private final String orderCheck = "pay/ordercheck";//取消订单
     private final String orderStatus = "pay/checkorder";//查询订单是否支付成功
     private final String payBannerUrl = "app/home/utility/getPayBanner";//获取支付完成的banner(4.0的接口)
 
@@ -229,7 +230,7 @@ public class NewOrderPayModel extends BaseModel {
 
 
     /****获取支付完成banner**/
-    public void getAdvertiseBanner(int what,String payment_uuid, final NewHttpResponse newHttpResponse) {
+    public void getAdvertiseBanner(int what, String payment_uuid, final NewHttpResponse newHttpResponse) {
         Map<String, Object> paramsMap = new HashMap<String, Object>();
         paramsMap.put("payment_uuid", payment_uuid);
         final Request<String> request = NoHttp.createStringRequest(RequestEncryptionUtils.getCombileMD5(mContext, 1, payBannerUrl, paramsMap), RequestMethod.GET);
@@ -253,5 +254,34 @@ public class NewOrderPayModel extends BaseModel {
 
             }
         }, true, true);
+    }
+
+
+    public void getUserRealCertificate(int what, String colour_sn, final NewHttpResponse newHttpResponse) {
+        Map<String, Object> paramsMap = new HashMap<String, Object>();
+        paramsMap.put("colour_sn", colour_sn);
+        final Request<String> request = NoHttp.createStringRequest(RequestEncryptionUtils.getCombileMD5(mContext, 2, orderCheck, paramsMap), RequestMethod.GET);
+        request(what, request, paramsMap, new HttpListener<String>() {
+            @Override
+            public void onSucceed(int what, Response<String> response) {
+                int responseCode = response.getHeaders().getResponseCode();
+                String result = response.get();
+                if (responseCode == RequestEncryptionUtils.responseSuccess) {
+                    int resultCode = showSuccesResultMessageTheme(result);
+                    if (resultCode == 0) {
+                        newHttpResponse.OnHttpResponse(what, result);
+                    }
+                } else if (responseCode == RequestEncryptionUtils.responseRequest) {
+
+                } else {
+                    showErrorCodeMessage(responseCode, response);
+                }
+            }
+
+            @Override
+            public void onFailed(int what, Response<String> response) {
+                showExceptionMessage(what, response);
+            }
+        }, true, false);
     }
 }

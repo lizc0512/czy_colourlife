@@ -680,7 +680,7 @@ public class MainHomeFragmentNew extends Fragment implements NewHttpResponse, My
 
     private void uploadAppClickLister(String appId) {
         AllAppModel allAppModel = new AllAppModel(getActivity());
-        allAppModel.uploadAppClick(10, appId, this);
+        allAppModel.uploadAppClick(9, appId, this);
     }
 
 
