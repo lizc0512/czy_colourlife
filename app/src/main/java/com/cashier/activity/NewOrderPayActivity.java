@@ -770,16 +770,24 @@ public class NewOrderPayActivity extends BaseActivity implements View.OnClickLis
                 }
                 break;
             case 3:
-                try {
-                    OrderChekEntity orderChekEntity = GsonUtils.gsonToBean(result, OrderChekEntity.class);
-                    OrderChekEntity.ContentBean contentBean = orderChekEntity.getContent();
-                    if ("1".equals(contentBean.getIs_identity())) {
+                if (TextUtils.isEmpty(result)) {
+                    createCzyOrder();
+                } else {
+                    try {
+                        OrderChekEntity orderChekEntity = GsonUtils.gsonToBean(result, OrderChekEntity.class);
+                        OrderChekEntity.ContentBean contentBean = orderChekEntity.getContent();
+                        if ("1".equals(contentBean.getLimit())) {
+                            if ("1".equals(contentBean.getIs_identity())) {
+                                createCzyOrder();
+                            } else {
+                                shownoticeDialog(contentBean.getNote());
+                            }
+                        } else {
+                            createCzyOrder();
+                        }
+                    } catch (Exception e) {
                         createCzyOrder();
-                    } else {
-                        shownoticeDialog(contentBean.getNote());
                     }
-                } catch (Exception e) {
-
                 }
                 break;
         }
