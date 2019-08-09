@@ -18,7 +18,7 @@ import com.customerInfo.activity.CustomerColourBeanActivity;
 import com.customerInfo.activity.CustomerInfoActivity;
 import com.customerInfo.activity.DeliveryAddressListActivity;
 import com.dashuview.library.keep.Cqb_PayUtil;
-import com.door.activity.NewDoorActivity;
+import com.door.activity.IntelligenceDoorActivity;
 import com.eparking.activity.AppointmentParkingActivity;
 import com.eparking.activity.EParkingCardHolderActivity;
 import com.eparking.activity.EParkingHistoryRecordActivity;
@@ -53,6 +53,7 @@ import java.util.HashSet;
 
 import cn.net.cyberway.R;
 import cn.net.cyberway.activity.FindPropertyActivity;
+import cn.net.cyberway.activity.MainActivity;
 import cn.net.cyberway.home.activity.LekaiListActivity;
 
 /**
@@ -105,7 +106,8 @@ public class LinkParseUtil {
                             break;
                         case "EntranceGuard":  //门禁colourlife://proto?type=orderList
                         case "Guard":
-                            intent = new Intent(context, NewDoorActivity.class);
+//                            intent = new Intent(context, NewDoorActivity.class);
+                            intent = new Intent(context, IntelligenceDoorActivity.class);
                             ((Activity) context).startActivityForResult(intent, 2000);
                             ((Activity) context).overridePendingTransition(R.anim.push_up_in, R.anim.push_up_out);
                             break;
@@ -270,6 +272,11 @@ public class LinkParseUtil {
                             break;
                         case "BloothKeyList"://蓝牙钥匙  colourlife://proto?type=BloothKeyList
                             intent = new Intent(context, LekaiListActivity.class);
+                            context.startActivity(intent);
+                            break;
+                        case "colourlifeCaiHui"://彩惠  colourlife://proto?type=colourlifeCaiHui
+                            intent = new Intent(context, MainActivity.class);
+                            intent.putExtra(MainActivity.JUMPOTHERURL, link);
                             context.startActivity(intent);
                             break;
                     }

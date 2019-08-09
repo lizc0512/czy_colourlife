@@ -6,6 +6,7 @@ import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.bluetooth.BluetoothAdapter;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -25,6 +26,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
+import android.os.Looper;
 import android.os.Message;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
@@ -139,6 +141,7 @@ import cn.csh.colourful.life.view.imagepicker.ImagePicker;
 import cn.csh.colourful.life.view.imagepicker.bean.ImageItem;
 import cn.net.cyberway.R;
 import cn.net.cyberway.activity.MainActivity;
+import cn.net.cyberway.home.service.LekaiParkLockController;
 import cn.net.cyberway.sharesdk.onekeyshare.OnekeyShare;
 import cn.net.cyberway.sharesdk.onekeyshare.js.ShareSDKUtils;
 import cn.net.cyberway.utils.BuryingPointUtils;
@@ -146,6 +149,7 @@ import cn.net.cyberway.utils.ChangeLanguageHelper;
 import cn.net.cyberway.utils.CityCustomConst;
 import cn.net.cyberway.utils.CityManager;
 import cn.net.cyberway.utils.FileUtils;
+import cn.net.cyberway.utils.LekaiHelper;
 import cn.net.cyberway.utils.LinkParseUtil;
 import cn.sharesdk.framework.Platform;
 import cn.sharesdk.framework.PlatformActionListener;
@@ -159,7 +163,7 @@ import static cn.net.cyberway.utils.BuryingPointUtils.UPLOAD_DETAILS;
 import static com.BeeFramework.Utils.Utils.getAuthPublicParams;
 
 @SuppressLint("SetJavaScriptEnabled")
-public class WebViewActivity extends BaseActivity implements View.OnLongClickListener, OnClickListener, HttpApiResponse, NewHttpResponse, MyListener {
+public class WebViewActivity extends BaseActivity implements View.OnLongClickListener, OnClickListener, HttpApiResponse, NewHttpResponse, MyListener, LekaiParkLockController.OnScanParkLockChangeListener {
     public static final String WEBURL = "weburl";
     public static final String JUSHURL = "jushurl"; //极光推送过来的url
     public static final String JUSHRESOURCEID = "jushjushresourceidurl"; //极光推送的resourceId
@@ -810,6 +814,20 @@ public class WebViewActivity extends BaseActivity implements View.OnLongClickLis
         @JavascriptInterface
         public void jumpPrototype(String proto) {
             LinkParseUtil.parse(WebViewActivity.this, proto, "");
+        }
+
+        /**
+         * 车位锁
+         */
+        @JavascriptInterface
+        public void CLColourlifeBloothLockOperation(String actionType, String mac) {
+            LekaiHelper.setScanParkLockChangeListener(WebViewActivity.this);
+            mac.replaceAll(":", "");
+            if ("1".equals(actionType)) {//1 抬起 2 倒下
+                parkDown(mac);
+            } else {
+                parkUp(mac);
+            }
         }
 
         /**
@@ -1941,4 +1959,56 @@ public class WebViewActivity extends BaseActivity implements View.OnLongClickLis
             }
         }
     };
+
+    /**
+     * 停车 下降
+     */
+    public void parkDown(String mac) {
+        if (LekaiHelper.isFastClick()) {
+            boolean openBluetooth = false;
+            BluetoothAdapter blueAdapter = BluetoothAdapter.getDefaultAdapter();
+            if (null != blueAdapter) {
+                openBluetooth = blueAdapter.isEnabled();
+            }
+            //支持蓝牙模块
+            if (openBluetooth) {
+                ToastUtil.toastShow(getApplicationContext(), "正在下降车位锁");
+
+                LekaiHelper.parkUnlock(mac, (status, message, battery) -> {
+                    Handler handler = new Handler(Looper.getMainLooper());
+                    handler.post(() -> ToastUtil.toastShow(getApplicationContext(), 0 == status ? ("操作成功,电量：" + battery) : "操作失败，请重试"));
+                });
+            } else {
+                ToastUtil.toastShow(getApplicationContext(), "请打开蓝牙");
+            }
+        }
+    }
+
+    /**
+     * 停车 抬起
+     */
+    public void parkUp(String mac) {
+        if (LekaiHelper.isFastClick()) {
+            boolean openBluetooth = false;
+            BluetoothAdapter blueAdapter = BluetoothAdapter.getDefaultAdapter();
+            if (null != blueAdapter) {
+                openBluetooth = blueAdapter.isEnabled();
+            }
+            //支持蓝牙模块
+            if (openBluetooth) {
+                ToastUtil.toastShow(getApplicationContext(), "正在抬升起位锁");
+
+                LekaiHelper.parkLock(mac, (status, message, battery) -> {
+                    Handler handler = new Handler(Looper.getMainLooper());
+                    handler.post(() -> ToastUtil.toastShow(getApplicationContext(), 0 == status ? ("操作成功,电量：" + battery) : "操作失败，请重试"));
+                });
+            } else {
+                ToastUtil.toastShow(getApplicationContext(), "请打开蓝牙");
+            }
+        }
+    }
+
+    @Override
+    public void onScanParkLockChanged(String mac) {
+    }
 }

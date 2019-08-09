@@ -1,6 +1,5 @@
 package com.door.activity;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
@@ -52,7 +51,6 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -455,8 +453,8 @@ public class NewDoorEditActivity extends BaseActivity implements NewHttpResponse
                                 @Override
                                 public void run() {
                                     Intent intent = new Intent();
-                                    intent.putExtra("itemlist", (Serializable) list);
-                                    setResult(Activity.RESULT_OK, intent);
+//                                    intent.putExtra("itemlist", (Serializable) list);
+                                    setResult(RESULT_OK, intent);
                                     NewDoorEditActivity.this.finish();
                                 }
                             }, 1000);

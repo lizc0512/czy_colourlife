@@ -198,7 +198,7 @@ public class LekaiService extends Service {
     /**
      * 地锁放下（开锁）
      *
-     * @param mac      地锁设备Mac地址
+     * @param mac      地锁设备Mac地址  E07DEA3DD86A
      * @param callback 操作回调
      */
     public void parkUnlock(String mac, final OnUserOptParkLockCallback callback) {

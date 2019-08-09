@@ -150,6 +150,7 @@ public class UserAppConst {
     public static final String COLOUR_COMMUNITYLIST = "colour_communityList";//门禁小区的选择
 
     public static final String COLOUR_AUTH_REAL_NAME = "colour_auth_real_name";//腾讯实名认证
+    public static final String COLOUR_INTELLIGENCE_DOOR = "colour_intelligence_door";//智能门禁
 
     /**
      * 彩惠人生
@@ -158,7 +159,6 @@ public class UserAppConst {
     public static final String COLOUR_BENEFIT_BANNER = "color_benefit_banner";//彩惠的banner
     public static final String COLOUR_BENEFIT_HOT = "color_benefit_hot";//彩惠的热点
     public static final String COLOUR_BENEFIT_CHANNEL = "color_benefit_channel";//彩惠的推荐全部
-    public static final String COLOUR_BENEFIT_ARTICLE = "color_benefit_article";//彩惠的发现
 
     /**
      * 手势密码是否开启

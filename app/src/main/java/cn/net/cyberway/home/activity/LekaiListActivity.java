@@ -124,12 +124,12 @@ public class LekaiListActivity extends BaseActivity implements View.OnClickListe
     }
 
     /**
-     * 停车 倒下
+     * 停车 下降
      */
     public void parkDown(int position) {
         if (LekaiHelper.isFastClick()) {
             if (openBluetooth) {
-                ToastUtil.toastShow(getApplicationContext(), "正在倒下车位锁");
+                ToastUtil.toastShow(getApplicationContext(), "正在下降车位锁");
 
                 LekaiHelper.parkUnlock(keysList.get(position).getMac(), (status, message, battery) -> {
                     handler = new Handler(Looper.getMainLooper());
@@ -147,7 +147,7 @@ public class LekaiListActivity extends BaseActivity implements View.OnClickListe
     public void parkUp(int position) {
         if (LekaiHelper.isFastClick()) {
             if (openBluetooth) {
-                ToastUtil.toastShow(getApplicationContext(), "正在抬起车位锁");
+                ToastUtil.toastShow(getApplicationContext(), "正在抬升起位锁");
 
                 LekaiHelper.parkLock(keysList.get(position).getMac(), (status, message, battery) -> {
                     handler = new Handler(Looper.getMainLooper());

@@ -9,7 +9,7 @@
     <LinearLayout
         android:id="@+id/ll_bg"
         android:layout_width="match_parent"
-        android:layout_height="216dp"
+        android:layout_height="198dp"
         android:background="@drawable/bg_lekai_home"
         android:orientation="vertical"
         android:paddingLeft="22dp"
@@ -108,43 +108,10 @@
         android:paddingRight="22dp"
         android:visibility="gone">
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="48dp"
-            android:background="@null"
-            android:gravity="center|end"
-            android:orientation="horizontal">
-
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:background="@drawable/icon_lekai_user"
-                android:visibility="invisible"
-                tools:ignore="ContentDescription" />
-
-            <TextView
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:layout_marginLeft="8dp"
-                android:layout_weight="1"
-                android:text="用户"
-                android:textColor="@color/color_80ffffff"
-                android:textSize="12sp"
-                android:visibility="invisible" />
-
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:background="@drawable/icon_lekai_electric"
-                android:visibility="invisible"
-                tools:ignore="ContentDescription" />
-
-        </LinearLayout>
-
         <View
             android:layout_width="match_parent"
             android:layout_height="1dp"
+            android:layout_marginTop="48dp"
             android:background="@color/color_1affffff" />
 
         <LinearLayout
@@ -206,7 +173,7 @@
                     android:layout_height="wrap_content"
                     android:drawableTop="@drawable/ic_lekai_car_down"
                     android:drawablePadding="1dp"
-                    android:text="倒下"
+                    android:text="下降"
                     android:textColor="@color/white"
                     android:textSize="14sp" />
             </LinearLayout>
@@ -224,7 +191,7 @@
                     android:layout_height="wrap_content"
                     android:drawableTop="@drawable/ic_lekai_car_up"
                     android:drawablePadding="1dp"
-                    android:text="抬起"
+                    android:text="升起"
                     android:textColor="@color/white"
                     android:textSize="14sp" />
             </LinearLayout>
@@ -232,6 +199,134 @@
         </LinearLayout>
 
     </LinearLayout>
+
+    <!--<LinearLayout-->
+    <!--android:id="@+id/ll_bg_door"-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="232dp"-->
+    <!--android:background="@drawable/bg_lekai_door"-->
+    <!--android:orientation="vertical"-->
+    <!--android:paddingLeft="22dp"-->
+    <!--android:paddingRight="22dp">-->
+
+    <!--<View-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="1dp"-->
+    <!--android:layout_marginTop="48dp"-->
+    <!--android:background="@color/color_1affffff" />-->
+
+    <!--<LinearLayout-->
+    <!--android:layout_width="wrap_content"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:layout_marginTop="20dp"-->
+    <!--android:background="@null"-->
+    <!--android:gravity="center"-->
+    <!--android:orientation="horizontal">-->
+
+    <!--<ImageView-->
+    <!--android:layout_width="wrap_content"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:background="@drawable/icon_lekai_title"-->
+    <!--tools:ignore="ContentDescription" />-->
+
+    <!--<TextView-->
+    <!--android:id="@+id/tv_title_door"-->
+    <!--android:layout_width="0dp"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:layout_marginStart="4dp"-->
+    <!--android:layout_marginLeft="4dp"-->
+    <!--android:layout_weight="1"-->
+    <!--android:text="门禁锁"-->
+    <!--android:textColor="@color/white"-->
+    <!--android:textSize="20sp" />-->
+
+    <!--</LinearLayout>-->
+
+    <!--<TextView-->
+    <!--android:id="@+id/tv_time_door"-->
+    <!--android:layout_width="wrap_content"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:layout_marginTop="12dp"-->
+    <!--android:background="@drawable/shape_lekai_time"-->
+    <!--android:paddingLeft="4dp"-->
+    <!--android:paddingTop="2dp"-->
+    <!--android:paddingRight="4dp"-->
+    <!--android:paddingBottom="2dp"-->
+    <!--android:textColor="@color/color_80ffffff" />-->
+
+    <!--<LinearLayout-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="64dp"-->
+    <!--android:layout_marginLeft="-6dp"-->
+    <!--android:layout_marginTop="20dp"-->
+    <!--android:layout_marginRight="-6dp"-->
+    <!--android:orientation="horizontal">-->
+
+    <!--<LinearLayout-->
+    <!--android:id="@+id/ll_get_pwd"-->
+    <!--android:layout_width="0dp"-->
+    <!--android:layout_height="64dp"-->
+    <!--android:layout_weight="1"-->
+    <!--android:background="@drawable/shape_lekai_text_white"-->
+    <!--android:gravity="center">-->
+
+    <!--<TextView-->
+    <!--android:layout_width="wrap_content"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:drawableTop="@drawable/ic_lekai_car_down"-->
+    <!--android:drawablePadding="1dp"-->
+    <!--android:text="获取密码"-->
+    <!--android:textColor="@color/white"-->
+    <!--android:textSize="14sp" />-->
+    <!--</LinearLayout>-->
+
+    <!--<View-->
+    <!--android:layout_width="12dp"-->
+    <!--android:layout_height="1px" />-->
+
+    <!--<LinearLayout-->
+    <!--android:id="@+id/ll_u"-->
+    <!--android:layout_width="0dp"-->
+    <!--android:layout_height="64dp"-->
+    <!--android:layout_weight="1"-->
+    <!--android:background="@drawable/shape_lekai_text_white"-->
+    <!--android:gravity="center">-->
+
+    <!--<TextView-->
+    <!--android:layout_width="wrap_content"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:drawableTop="@drawable/ic_lekai_car_up"-->
+    <!--android:drawablePadding="1dp"-->
+    <!--android:text="抬起"-->
+    <!--android:textColor="@color/white"-->
+    <!--android:textSize="14sp" />-->
+    <!--</LinearLayout>-->
+
+    <!--<View-->
+    <!--android:layout_width="12dp"-->
+    <!--android:layout_height="1px" />-->
+
+    <!--<LinearLayout-->
+    <!--android:id="@+id/ll_"-->
+    <!--android:layout_width="0dp"-->
+    <!--android:layout_height="64dp"-->
+    <!--android:layout_weight="1"-->
+    <!--android:background="@drawable/shape_lekai_text_white"-->
+    <!--android:gravity="center">-->
+
+    <!--<TextView-->
+    <!--android:layout_width="wrap_content"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:drawableTop="@drawable/ic_lekai_car_up"-->
+    <!--android:drawablePadding="1dp"-->
+    <!--android:text="抬起"-->
+    <!--android:textColor="@color/white"-->
+    <!--android:textSize="14sp" />-->
+    <!--</LinearLayout>-->
+
+    <!--</LinearLayout>-->
+
+    <!--</LinearLayout>-->
 
     <View
         android:id="@+id/v_line"

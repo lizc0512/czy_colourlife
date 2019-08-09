@@ -150,7 +150,6 @@ public class BenefitModel extends BaseModel {
                     int code = showSuccesResultMessageTheme(result);
                     if (code == 0) {
                         newHttpResponse.OnHttpResponse(what, result);
-                        editor.putString(UserAppConst.COLOUR_BENEFIT_ARTICLE, result).apply();
                     } else {
                         newHttpResponse.OnHttpResponse(what, "");
                     }
