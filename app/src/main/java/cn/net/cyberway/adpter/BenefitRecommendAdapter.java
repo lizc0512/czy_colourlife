@@ -60,7 +60,6 @@ public class BenefitRecommendAdapter extends BeeBaseAdapter {
         ViewHolder holder = (ViewHolder) h;
         try {
             holder.ll_activity.removeAllViews();
-            item.getUrl();
 
             GlideImageLoader.loadImageDefaultDisplay(mContext, item.getImage(), holder.iv_shop, R.drawable.icon_default, R.drawable.icon_default);
             holder.tv_title.setText(item.getTitle());

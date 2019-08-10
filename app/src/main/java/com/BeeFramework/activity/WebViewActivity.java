@@ -822,7 +822,7 @@ public class WebViewActivity extends BaseActivity implements View.OnLongClickLis
         @JavascriptInterface
         public void CLColourlifeBloothLockOperation(String actionType, String mac) {
             LekaiHelper.setScanParkLockChangeListener(WebViewActivity.this);
-            mac.replaceAll(":", "");
+            mac = mac.replaceAll(":", "");
             if ("1".equals(actionType)) {//1 抬起 2 倒下
                 parkDown(mac);
             } else {
