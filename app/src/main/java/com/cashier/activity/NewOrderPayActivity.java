@@ -27,8 +27,7 @@ import com.cashier.protocolchang.OrderChekEntity;
 import com.cashier.protocolchang.PayEntity;
 import com.cashier.protocolchang.PayResultEntity;
 import com.cashier.protocolchang.PayStatusEntity;
-import com.dashuview.library.keep.Cqb_PayUtil;
-import com.dashuview.library.keep.ListenerUtils;
+import com.customerInfo.protocol.RealNameTokenEntity;
 import com.external.eventbus.EventBus;
 import com.lhqpay.ewallet.keepIntact.Listener;
 import com.lhqpay.ewallet.keepIntact.MyListener;
@@ -41,9 +40,14 @@ import com.nohttp.utils.GsonUtils;
 import com.setting.activity.CertificateResultDialog;
 import com.setting.activity.EditDialog;
 import com.setting.activity.HtmlPayDialog;
+import com.tencent.authsdk.AuthConfig;
+import com.tencent.authsdk.AuthSDKApi;
+import com.tencent.authsdk.IDCardInfo;
+import com.tencent.authsdk.callback.IdentityCallback;
+import com.user.UserAppConst;
 import com.user.UserMessageConstant;
+import com.user.model.NewUserModel;
 
-import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
@@ -55,8 +59,6 @@ import java.util.Map;
 import cn.net.cyberway.R;
 import cn.net.cyberway.activity.BroadcastReceiverActivity;
 import cn.net.cyberway.utils.LinkParseUtil;
-
-import static com.BeeFramework.Utils.Utils.getAuthPublicParams;
 
 
 /**
@@ -70,7 +72,7 @@ import static com.BeeFramework.Utils.Utils.getAuthPublicParams;
  * @class describe   新的订单支付页面
  */
 
-public class NewOrderPayActivity extends BaseActivity implements View.OnClickListener, NewHttpResponse, Listener, MyListener, com.dashuview.library.keep.MyListener {
+public class NewOrderPayActivity extends BaseActivity implements View.OnClickListener, NewHttpResponse, Listener, MyListener {
 
     public static final String ORDER_SN = "ORDER_SN";
     public static final String PAY_CHANNEL = "pay_channel";
@@ -105,7 +107,6 @@ public class NewOrderPayActivity extends BaseActivity implements View.OnClickLis
         initView();
         initData();
         PayListenerUtils.setCallBack(this);
-        ListenerUtils.setCallBack(this);
     }
 
     private void initData() {
@@ -545,7 +546,8 @@ public class NewOrderPayActivity extends BaseActivity implements View.OnClickLis
                 finish();
                 break;
             case R.id.btn_sure_pay:  //确认支付订单
-                newOrderPayModel.getUserRealCertificate(3, sn, this);
+//                newOrderPayModel.getUserRealCertificate(3, sn, this);
+                createCzyOrder();
                 break;
         }
     }
@@ -790,8 +792,54 @@ public class NewOrderPayActivity extends BaseActivity implements View.OnClickLis
                     }
                 }
                 break;
+            case 4:
+                if (!TextUtils.isEmpty(result)) {
+                    try {
+                        RealNameTokenEntity entity = GsonUtils.gsonToBean(result, RealNameTokenEntity.class);
+                        RealNameTokenEntity.ContentBean bean = entity.getContent();
+                        AuthConfig.Builder configBuilder = new AuthConfig.Builder(bean.getBizToken(), R.class.getPackage().getName());
+                        AuthSDKApi.startMainPage(this, configBuilder.build(), mListener);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                        showCertificateFail();
+                    }
+                } else {
+                    showCertificateFail();
+                }
+                break;
+            case 5:
+                if (!TextUtils.isEmpty(result)) {
+                    try {
+                        JSONObject jsonObject = new JSONObject(result);
+                        String code = jsonObject.getString("code");
+                        if ("0".equals(code)) {
+                            String content = jsonObject.getString("content");
+                            if ("1".equals(content)) {
+                                ToastUtil.toastShow(this, "认证成功");
+                                editor.putString(UserAppConst.COLOUR_AUTH_REAL_NAME + shared.getInt(UserAppConst.Colour_User_id, 0), realName).commit();
+                                createCzyOrder();
+                            } else {
+                                showCertificateFail();
+                            }
+                        } else {
+                            showCertificateFail();
+                        }
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                        showCertificateFail();
+                    }
+                } else {
+                    showCertificateFail();
+                }
+                break;
         }
     }
+
+    private void showCertificateFail() {
+        CertificateResultDialog certificateResultDialog = new CertificateResultDialog(NewOrderPayActivity.this, R.style.dialog);
+        certificateResultDialog.show();
+    }
+
 
     @Override
     public void returnToCZY(String s, int i) {
@@ -811,6 +859,8 @@ public class NewOrderPayActivity extends BaseActivity implements View.OnClickLis
 
 
     private EditDialog noticeDialog = null;
+    private NewUserModel newUserModel;
+    private String realName;
 
     private void shownoticeDialog(String notice) {
         if (noticeDialog == null) {
@@ -836,35 +886,28 @@ public class NewOrderPayActivity extends BaseActivity implements View.OnClickLis
                 if (noticeDialog != null) {
                     noticeDialog.dismiss();
                 }
-                JSONObject jsonObject = new JSONObject();
-                try {
-                    jsonObject.put("name", "");
-                    jsonObject.put("mobile", "");
-                    jsonObject.put("IDNum", "");
-                    Cqb_PayUtil.getInstance(NewOrderPayActivity.this).openCertification(getAuthPublicParams(NewOrderPayActivity.this, jsonObject.toString()), Constants.CAIWALLET_ENVIRONMENT, "CertificationFlag");
-                } catch (JSONException e) {
-                    e.printStackTrace();
+                if (null == newUserModel) {
+                    newUserModel = new NewUserModel(NewOrderPayActivity.this);
                 }
+                newUserModel.getRealNameToken(4, NewOrderPayActivity.this, false);
             }
         });
     }
 
-    @Override
-    public void authenticationFeedback(String s, int i) {
-        switch (i) {
-            case 16:
-            case 18:
-                createCzyOrder();
-                break;
-            case 17:
-                CertificateResultDialog certificateResultDialog = new CertificateResultDialog(NewOrderPayActivity.this, R.style.dialog);
-                certificateResultDialog.dismiss();
-                break;
+    /**
+     * 监听实名认证返回
+     */
+    private IdentityCallback mListener = data -> {
+        boolean identityStatus = data.getBooleanExtra(AuthSDKApi.EXTRA_IDENTITY_STATUS, false);
+        if (identityStatus) {//identityStatus true 已实名
+            IDCardInfo idCardInfo = data.getExtras().getParcelable(AuthSDKApi.EXTRA_IDCARD_INFO);
+            if (idCardInfo != null) {//身份证信息   idCardInfo.getIDcard();//身份证号码
+                realName = idCardInfo.getName();//姓名
+                if (null == newUserModel) {
+                    newUserModel = new NewUserModel(NewOrderPayActivity.this);
+                }
+                newUserModel.submitRealName(5, idCardInfo.getIDcard(), realName, this);//提交实名认证
+            }
         }
-    }
-
-    @Override
-    public void toCFRS(String s) {
-
-    }
+    };
 }
