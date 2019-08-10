@@ -31,6 +31,7 @@ import com.door.view.ShowOpenDoorDialog;
 import com.invite.activity.InviteActivity;
 import com.scanCode.activity.CaptureActivity;
 import com.user.UserAppConst;
+import com.youmai.hxsdk.view.chat.utils.DisplayUtils;
 
 import java.lang.reflect.Field;
 import java.text.DecimalFormat;
@@ -143,6 +144,30 @@ public class TableLayoutUtils {
                 e.printStackTrace();
             }
         });
+    }
+
+    /**
+     * tab可滑动
+     */
+    public static void dynamicSetTabLayoutMode(Context context, TabLayout tabLayout) {
+        int tabWidth = calculateTabWidth(tabLayout);
+        int screenWidth = DisplayUtils.getScreenWidth(context);
+
+        if (tabWidth <= screenWidth) {
+            tabLayout.setTabMode(TabLayout.MODE_FIXED);
+        } else {
+            tabLayout.setTabMode(TabLayout.MODE_SCROLLABLE);
+        }
+    }
+
+    private static int calculateTabWidth(TabLayout tabLayout) {
+        int tabWidth = 0;
+        for (int i = 0; i < tabLayout.getChildCount(); i++) {
+            final View view = tabLayout.getChildAt(i);
+            view.measure(0, 0); // 通知父view测量，以便于能够保证获取到宽高
+            tabWidth += view.getMeasuredWidth();
+        }
+        return tabWidth;
     }
 
     /**

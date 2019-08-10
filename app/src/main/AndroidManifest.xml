@@ -720,6 +720,13 @@
             android:exported="true"
             android:screenOrientation="portrait" />
         <activity
+            android:name="com.door.activity.IntelligenceDoorActivity"
+            android:exported="true"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name="com.door.activity.IntelligenceDoorRecordActivity"
+            android:screenOrientation="portrait" />
+        <activity
             android:name="com.door.activity.NewDoorEditActivity"
             android:screenOrientation="portrait" />
         <activity

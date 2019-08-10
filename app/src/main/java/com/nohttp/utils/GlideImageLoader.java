@@ -3,7 +3,6 @@ package com.nohttp.utils;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
-import android.graphics.drawable.Drawable;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.view.View;
@@ -14,6 +13,7 @@ import android.widget.LinearLayout;
 import com.BeeFramework.Utils.Utils;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
 import com.bumptech.glide.request.RequestOptions;
 import com.bumptech.glide.request.target.ViewTarget;
 import com.bumptech.glide.request.transition.Transition;
@@ -113,6 +113,16 @@ public class GlideImageLoader {
     public static void loadImageDefaultDisplay(Context mContext, String path, ImageView mImageView, int lodingImage, int errorImageView) {
         try {
             Glide.with(mContext).load(path).apply(new RequestOptions().placeholder(lodingImage).error(errorImageView).diskCacheStrategy(DiskCacheStrategy.ALL)).into(mImageView);
+        } catch (Exception e) {
+
+        }
+    }
+
+    //圆角图片 设置加载中以及加载失败图片
+    public static void loadImageDefaultDisplay(Context mContext, String path, ImageView mImageView, int radiusNum, int lodingImage, int errorImageView) {
+        try {
+            RoundedCorners roundedCorners = new RoundedCorners(radiusNum);
+            Glide.with(mContext).load(path).apply(new RequestOptions().bitmapTransform(roundedCorners).placeholder(lodingImage).error(errorImageView).diskCacheStrategy(DiskCacheStrategy.ALL)).into(mImageView);
         } catch (Exception e) {
 
         }

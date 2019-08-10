@@ -10,7 +10,7 @@
     <RelativeLayout
         android:id="@+id/rl_item"
         android:layout_width="match_parent"
-        android:layout_height="124dp"
+        android:layout_height="115dp"
         android:background="@null"
         android:orientation="horizontal">
 
@@ -39,14 +39,13 @@
 
         <ImageView
             android:id="@+id/iv_img"
-            android:layout_width="152dp"
-            android:layout_height="match_parent"
+            android:layout_width="138dp"
+            android:layout_height="91dp"
             android:layout_alignParentEnd="true"
             android:layout_alignParentRight="true"
-            android:layout_marginTop="12dp"
             android:layout_marginEnd="16dp"
+            android:layout_centerVertical="true"
             android:layout_marginRight="16dp"
-            android:layout_marginBottom="12dp"
             tools:ignore="ContentDescription" />
 
     </RelativeLayout>

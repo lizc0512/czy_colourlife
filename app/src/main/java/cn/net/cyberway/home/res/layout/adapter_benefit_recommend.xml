@@ -22,6 +22,7 @@
         app:cardElevation="1dp">
 
         <LinearLayout
+            android:id="@+id/ll_item"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@null"
@@ -36,8 +37,8 @@
 
                 <ImageView
                     android:id="@+id/iv_shop"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_width="36dp"
+                    android:layout_height="36dp"
                     tools:ignore="ContentDescription" />
 
                 <LinearLayout
@@ -61,7 +62,7 @@
                         android:id="@+id/ll_activity"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="8dp"
+                        android:layout_marginTop="2dp"
                         android:background="@null"
                         android:orientation="horizontal" />
 
@@ -83,13 +84,14 @@
 
             </RelativeLayout>
 
-            <LinearLayout
-                android:id="@+id/ll_content"
-                android:layout_width="wrap_content"
+            <com.BeeFramework.view.NoScrollGridView
+                android:id="@+id/gv_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
-                android:background="@null"
-                android:orientation="horizontal" />
+                android:cacheColorHint="@android:color/transparent"
+                android:listSelector="@android:color/transparent"
+                android:numColumns="3" />
 
         </LinearLayout>
 

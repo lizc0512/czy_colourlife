@@ -13,9 +13,6 @@ import com.yanzhenjie.nohttp.RequestMethod;
 import com.yanzhenjie.nohttp.rest.Request;
 import com.yanzhenjie.nohttp.rest.Response;
 
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import java.util.HashMap;
 import java.util.Map;
 
@@ -29,6 +26,10 @@ public class NewDoorModel extends BaseModel {
     private final String haveDoorRightUrl = "/user/authorization/granted";
     private final String changedoorPositionUrl = "user/doorFixed/position";
     public final String openDoorUrl = "user/door/open";
+    public final String getDevicePwdUrl = "app/door/devicePassword";
+    public final String deviceRemoteUnlockUrl = "app/door/deviceRemoteUnlock";
+    public final String getCommunityKeyUrl = "app/door/getCommunityKey";
+    public final String devicePasswordLogUrl = "app/door/devicePasswordLog";
 
     public NewDoorModel(Context context) {
         super(context);
@@ -289,4 +290,116 @@ public class NewDoorModel extends BaseModel {
             }
         }, true, true);
     }
+
+    /**
+     * 请求获取设备密码
+     */
+    public void getDevicePwd(int what, String device_id, final NewHttpResponse newHttpResponse) {
+        Map<String, Object> params = new HashMap<>();
+        params.put("device_id", device_id);
+        final Request<String> request = NoHttp.createStringRequest(RequestEncryptionUtils.getCombileMD5(mContext, 11, getDevicePwdUrl, params), RequestMethod.GET);
+        request(what, request, params, new HttpListener<String>() {
+            @Override
+            public void onSucceed(int what, Response<String> response) {
+                int responseCode = response.getHeaders().getResponseCode();
+                String result = response.get();
+                if (responseCode == RequestEncryptionUtils.responseSuccess) {
+                    int resultCode = showSuccesResultMessageTheme(result);
+                    if (resultCode == 0) {
+                        newHttpResponse.OnHttpResponse(what, result);
+                    } else {
+                        showErrorCodeMessage(responseCode, response);
+                    }
+                }
+            }
+
+            @Override
+            public void onFailed(int what, Response<String> response) {
+                newHttpResponse.OnHttpResponse(what, "");
+            }
+        }, true, true);
+    }
+
+    /**
+     * 网络门禁远程开门
+     */
+    public void deviceRemoteUnlock(int what, String device_id, final NewHttpResponse newHttpResponse) {
+        Map<String, Object> params = new HashMap<>();
+        params.put("device_id", device_id);
+        final Request<String> request = NoHttp.createStringRequest(RequestEncryptionUtils.getCombileMD5(mContext, 11, deviceRemoteUnlockUrl, params), RequestMethod.GET);
+        request(what, request, params, new HttpListener<String>() {
+            @Override
+            public void onSucceed(int what, Response<String> response) {
+                int responseCode = response.getHeaders().getResponseCode();
+                String result = response.get();
+                if (responseCode == RequestEncryptionUtils.responseSuccess) {
+                    int resultCode = showSuccesResultMessageTheme(result);
+                    if (resultCode == 0) {
+                        newHttpResponse.OnHttpResponse(what, result);
+                    } else {
+                        showErrorCodeMessage(responseCode, response);
+                    }
+                }
+            }
+
+            @Override
+            public void onFailed(int what, Response<String> response) {
+                newHttpResponse.OnHttpResponse(what, "");
+            }
+        }, true, true);
+    }
+
+    /**
+     * 获取用户门禁信息
+     */
+    public void getCommunityKey(int what, final NewHttpResponse newHttpResponse) {
+        final Request<String> request = NoHttp.createStringRequest(RequestEncryptionUtils.getCombileMD5(mContext, 11, getCommunityKeyUrl, null), RequestMethod.GET);
+        request(what, request, null, new HttpListener<String>() {
+            @Override
+            public void onSucceed(int what, Response<String> response) {
+                int responseCode = response.getHeaders().getResponseCode();
+                String result = response.get();
+                if (responseCode == RequestEncryptionUtils.responseSuccess) {
+                    int resultCode = showSuccesResultMessageTheme(result);
+                    if (resultCode == 0) {
+                        newHttpResponse.OnHttpResponse(what, result);
+                    }
+                }
+            }
+
+            @Override
+            public void onFailed(int what, Response<String> response) {
+                newHttpResponse.OnHttpResponse(what, "");
+            }
+        }, true, false);
+    }
+
+    /**
+     * 获取设备获取密码记录
+     */
+    public void devicePasswordLog(int what, String device_id, int page, final NewHttpResponse newHttpResponse) {
+        Map<String, Object> params = new HashMap<>();
+        params.put("device_id", device_id);
+        params.put("page", page);
+        final Request<String> request = NoHttp.createStringRequest(RequestEncryptionUtils.getCombileMD5(mContext, 11, devicePasswordLogUrl, params), RequestMethod.GET);
+        request(what, request, params, new HttpListener<String>() {
+            @Override
+            public void onSucceed(int what, Response<String> response) {
+                int responseCode = response.getHeaders().getResponseCode();
+                String result = response.get();
+                if (responseCode == RequestEncryptionUtils.responseSuccess) {
+                    int resultCode = showSuccesResultMessageTheme(result);
+                    if (resultCode == 0) {
+                        newHttpResponse.OnHttpResponse(what, result);
+                    }
+                }
+            }
+
+            @Override
+            public void onFailed(int what, Response<String> response) {
+                newHttpResponse.OnHttpResponse(what, "");
+            }
+        }, true, true);
+    }
+
 }

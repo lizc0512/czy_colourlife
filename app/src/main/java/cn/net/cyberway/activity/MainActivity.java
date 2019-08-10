@@ -324,7 +324,11 @@ public class MainActivity extends BaseFragmentActivity implements View.OnClickLi
         }
         String linkURl = intent.getStringExtra(JUMPOTHERURL);
         if (!TextUtils.isEmpty(linkURl)) {
-            LinkParseUtil.parse(MainActivity.this, linkURl, "");
+            if ("colourlife://proto?type=colourlifeCaiHui".equals(linkURl)) {
+                onTabSelected(FLAG_TAB_TWO);
+            } else {
+                LinkParseUtil.parse(MainActivity.this, linkURl, "");
+            }
         }
     }
 
@@ -575,10 +579,6 @@ public class MainActivity extends BaseFragmentActivity implements View.OnClickLi
             mIsExit = false;
         }
     };
-
-    public void guide() {
-        onTabSelected(FLAG_TAB_FOUR);
-    }
 
     /**
      * 选择tab

@@ -125,6 +125,7 @@ public class BenefitFragment extends Fragment implements View.OnClickListener, N
     private String payUrl = "";
     private String signUrl = "";
     private boolean isFinish = false;
+    private boolean isRefresh = false;
     private InterHandler mHandler = new InterHandler(this);
 
     @Override
@@ -196,7 +197,9 @@ public class BenefitFragment extends Fragment implements View.OnClickListener, N
         refresh_layout.setOnRefreshListener(() -> {
             page = 1;
             isFinish = false;
-            initData();
+            if (!isRefresh) {
+                initData();
+            }
         });
 
         rv_find = mView.findViewById(R.id.rv_find);
@@ -289,12 +292,19 @@ public class BenefitFragment extends Fragment implements View.OnClickListener, N
     }
 
     private void initData() {
+        isRefresh = true;
         selectTitle();
         mHandler.sendEmptyMessageDelayed(1, 50);
-        mHandler.sendEmptyMessageDelayed(2, 200);
-        mHandler.sendEmptyMessageDelayed(3, 300);
-        mHandler.sendEmptyMessageDelayed(4, 400);
-        mHandler.sendEmptyMessageDelayed(5, 500);
+        mHandler.sendEmptyMessageDelayed(2, 1000);
+        mHandler.sendEmptyMessageDelayed(3, 2000);
+        mHandler.sendEmptyMessageDelayed(4, 4000);
+        mHandler.sendEmptyMessageDelayed(5, 5000);
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        mHandler.sendEmptyMessageDelayed(1, 50);
     }
 
     /**
@@ -406,18 +416,18 @@ public class BenefitFragment extends Fragment implements View.OnClickListener, N
                         }
                         BenefitProfileEntity.ContentBean.PropertyAddressBean propertyAddressBean = entity.getContent().getProperty_address();
                         tv_owe_address_name.setText(propertyAddressBean.getTitle());
-                        tv_owe_address.setText(propertyAddressBean.getNum() + "个");
+                        tv_owe_address.setText(propertyAddressBean.getNum() + "");
                         propertyAddressUrl = propertyAddressBean.getUrl();
 
                         BenefitProfileEntity.ContentBean.ArrearsBean arrearsBean = entity.getContent().getArrears();
                         arrearsUrl = arrearsBean.getUrl();
                         tv_owe_money_name.setText(arrearsBean.getTitle());
-                        tv_owe_money.setText(arrearsBean.getAmount() + "元");
+                        tv_owe_money.setText(arrearsBean.getAmount() + "");
 
                         BenefitProfileEntity.ContentBean.PropertyDeductionBean propertyDeductionBean = entity.getContent().getProperty_deduction();
                         propertyDeductionUrl = propertyDeductionBean.getUrl();
                         tv_deduct_money_name.setText(propertyDeductionBean.getTitle());
-                        tv_deduct_money.setText(propertyDeductionBean.getBalance() + "元");
+                        tv_deduct_money.setText(propertyDeductionBean.getBalance() + "");
 
                         BenefitProfileEntity.ContentBean.PropertyButtonBean propertyButtonBean = entity.getContent().getProperty_button();
                         if (1 == propertyButtonBean.getIs_show()) {
@@ -584,6 +594,7 @@ public class BenefitFragment extends Fragment implements View.OnClickListener, N
                         fragment.benefitModel.getChannel(4, fragment);
                         break;
                     case 5:
+                        fragment.isRefresh = false;
                         fragment.benefitModel.getArticle(5, fragment.page, fragment);
                         break;
                 }
