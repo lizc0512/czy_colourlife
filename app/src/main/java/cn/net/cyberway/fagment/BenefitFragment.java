@@ -162,7 +162,7 @@ public class BenefitFragment extends Fragment implements View.OnClickListener, N
             result(1, profileCache);
         }
         bannerCache = mShared.getString(UserAppConst.COLOUR_BENEFIT_BANNER, "");
-        if (!TextUtils.isEmpty(profileCache)) {
+        if (!TextUtils.isEmpty(bannerCache)) {
             showBanner(bannerCache);
         }
 
@@ -190,33 +190,34 @@ public class BenefitFragment extends Fragment implements View.OnClickListener, N
         try {
             final Message message = (Message) event;
             if (message.what == UserMessageConstant.CHANGE_COMMUNITY) {//首页切换小区，及时更新
-                type = 0;
-                page = 1;
-                isFinish = false;
-                selectAll = false;
-                selectRecoment = true;
-                selectTitle();
-                initData();
+                updateData();
             } else if (message.what == UserMessageConstant.CHANGE_DIFF_LANG) {//切换语言
-                type = 0;
-                page = 1;
-                isFinish = false;
-                selectAll = false;
-                selectRecoment = true;
-                selectTitle();
-                initData();
+                updateData();
             } else if (message.what == UserMessageConstant.SIGN_IN_SUCCESS) {//登录成功刷新数据
-                type = 0;
-                page = 1;
-                isFinish = false;
-                selectAll = false;
-                selectRecoment = true;
-                selectTitle();
-                initData();
+                updateData();
             }
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    private void updateData() {
+        type = 0;
+        page = 1;
+        isFinish = false;
+        selectAll = false;
+        selectRecoment = true;
+        profileCache = "";
+        bannerCache = "";
+        hotCache = "";
+        channelCache = "";
+        findCache = "";
+        tv_user_name.setText("您好~");
+        tv_owe_address.setText("0");
+        tv_owe_money.setText("0");
+        tv_deduct_money.setText("0");
+        selectTitle();
+        initData();
     }
 
     private void initView() {
@@ -341,7 +342,7 @@ public class BenefitFragment extends Fragment implements View.OnClickListener, N
     @Override
     public void onResume() {
         super.onResume();
-        mHandler.sendEmptyMessageDelayed(1, 1000);
+//        mHandler.sendEmptyMessageDelayed(1, 1000);
     }
 
     /**

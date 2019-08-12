@@ -141,6 +141,8 @@ public class LekaiService extends Service {
     public void unlockDevice(Device device) {
         if (null != mEdenApi) {
             mEdenApi.unlock(device, ACC, TOK, AppConst.CONNECT_TIME_OUT, (i, s, i1) -> {
+                LogUtil.e("LekaiService", " =====================================");
+                LogUtil.e("LekaiService 蓝牙门禁", " code：" + (i == 0 ? "开门成功" : i) + "    message:" + s + "   电量：" + i1);
                 Handler handler = new Handler(Looper.getMainLooper());
                 handler.post(() -> {
                     if (0 == i) {

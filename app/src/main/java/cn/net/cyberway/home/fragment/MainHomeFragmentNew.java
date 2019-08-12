@@ -1248,13 +1248,14 @@ public class MainHomeFragmentNew extends Fragment implements NewHttpResponse, My
                 ((MainActivity) getActivity()).getChangeCommunityTheme();
                 break;
             case UserMessageConstant.LOGOUT:
+                LekaiHelper.clearLocalKey();
                 ((MainActivity) getActivity()).clearUserData("");
                 smoothScrollTop(home_rv);
                 break;
             case UserMessageConstant.SQUEEZE_OUT:
             case UserMessageConstant.AUDIT_PASS_OUT:
             case UserMessageConstant.WEB_OUT:
-                editor.putBoolean(UserAppConst.IS_LOGIN, false);
+                editor.putBoolean(UserAppConst.IS_LOGIN, false).apply();
                 ScreenManager.getScreenManager().popAllActivityExceptOne(MainActivity.class);
                 smoothScrollTop(home_rv);
                 ((MainActivity) getActivity()).clearUserData("");

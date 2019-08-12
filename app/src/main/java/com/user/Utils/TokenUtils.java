@@ -97,6 +97,7 @@ public class TokenUtils {
         mEditor.putString(UserAppConst.LIFECATEGORY + communityid + userId, "");
         mEditor.putString(UserAppConst.Colour_HOME_CACHE_NEW + userId + communityid, "");
         mEditor.putString(UserAppConst.COMMUNITYFRAGMENTLIST + userId + communityid, "");
+        mEditor.putString(UserAppConst.COLOUR_BENEFIT_PROFILE, "");
         mEditor.commit();
     }
 
