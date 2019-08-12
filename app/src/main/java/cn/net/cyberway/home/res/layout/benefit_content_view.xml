@@ -234,6 +234,7 @@
                 android:layout_gravity="center"
                 android:textColor="@color/black_text_color"
                 android:textSize="18sp"
+                android:text="热门"
                 android:textStyle="bold" />
 
             <TextView
@@ -244,6 +245,7 @@
                 android:layout_marginStart="8dp"
                 android:layout_marginLeft="8dp"
                 android:textColor="@color/grayred_text_color"
+                android:text="好产品好服务，下单即送物业费"
                 android:textSize="14sp" />
 
         </LinearLayout>
@@ -251,7 +253,7 @@
         <com.BeeFramework.view.NoScrollGridView
             android:id="@+id/gv_hot"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:layout_marginLeft="12dp"
             android:layout_marginRight="12dp"
             android:layout_marginBottom="12dp"
@@ -265,8 +267,7 @@
         android:layout_width="match_parent"
         android:layout_height="12dp"
         android:background="@color/bg_color" />
-    <!--在根布局添加这句 viewgroup会覆盖子类控件而直接获得焦点-->
-    <!--android:descendantFocusability="blocksDescendants"-->
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -299,6 +300,7 @@
                     android:layout_height="wrap_content"
                     android:layout_centerHorizontal="true"
                     android:textColor="@color/black_text_color"
+                    android:text="推荐"
                     android:textSize="18sp" />
 
                 <View
@@ -307,7 +309,7 @@
                     android:layout_height="4dp"
                     android:layout_below="@+id/tv_recommend"
                     android:layout_centerHorizontal="true"
-                    android:layout_marginTop="6dp"
+                    android:layout_marginTop="4dp"
                     android:background="@drawable/shape_benefit_text_orange" />
 
             </RelativeLayout>
@@ -327,6 +329,7 @@
                     android:layout_height="wrap_content"
                     android:layout_centerHorizontal="true"
                     android:textColor="@color/grayred_text_color"
+                    android:text="全部"
                     android:textSize="18sp" />
 
                 <View
@@ -343,24 +346,18 @@
 
         </LinearLayout>
 
-        <com.feed.view.NoScrollListView
+        <android.support.v7.widget.RecyclerView
             android:id="@+id/lv_recommend"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
             android:nestedScrollingEnabled="false"
-            android:cacheColorHint="@android:color/transparent"
-            android:divider="@null"
-            android:listSelector="@android:color/transparent"
+            android:layout_height="wrap_content"
             android:scrollbars="none" />
 
-        <com.feed.view.NoScrollListView
+        <android.support.v7.widget.RecyclerView
             android:id="@+id/lv_all"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
             android:nestedScrollingEnabled="false"
-            android:cacheColorHint="@android:color/transparent"
-            android:divider="@null"
-            android:listSelector="@android:color/transparent"
+            android:layout_height="wrap_content"
             android:scrollbars="none" />
 
     </LinearLayout>
@@ -386,6 +383,7 @@
             android:layout_marginBottom="12dp"
             android:textColor="@color/black_text_color"
             android:textSize="18sp"
+            android:text="发现"
             android:textStyle="bold" />
 
         <View

@@ -111,7 +111,16 @@ public class IntelligenceDoorAdapter extends RecyclerView.Adapter<IntelligenceDo
                     holder.rl_key.setVisibility(View.GONE);
                     holder.ll_car.setVisibility(View.VISIBLE);
                     holder.tv_car_title.setText(item.getName());
-                    holder.tv_avail_time.setText("有效期：" + item.getValid_date());
+                    String time = item.getValid_date();
+                    try {
+                        if (time.contains("-")) {
+                            String[] times = time.split("-");
+                            time = times[0] + "-\n" + times[1];
+                        }
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                    holder.tv_avail_time.setText(time);
                     holder.ll_down.setOnClickListener(v -> {
                         ((IntelligenceDoorActivity) mContext).parkDown(item.getMac().replace(":", ""));// 倒下
                     });

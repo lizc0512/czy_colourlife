@@ -82,7 +82,8 @@
         <RelativeLayout
             android:id="@+id/ll_homedoorpop_compile"
             android:layout_width="match_parent"
-            android:layout_height="40dp">
+            android:layout_height="40dp"
+            android:visibility="gone">
 
             <ImageView
                 android:id="@+id/iv_door_pop3"

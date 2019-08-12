@@ -111,7 +111,6 @@ import static cn.net.cyberway.home.view.HomeViewUtils.addCommmonDoorList;
 import static cn.net.cyberway.home.view.HomeViewUtils.getScollYDistance;
 import static cn.net.cyberway.home.view.HomeViewUtils.setBadgeCommonPro;
 import static cn.net.cyberway.home.view.HomeViewUtils.smoothScrollTop;
-import static cn.net.cyberway.utils.TableLayoutUtils.jumpLoginPage;
 import static com.user.UserAppConst.COLOR_HOME_USEDOOR;
 import static com.youmai.hxsdk.utils.DisplayUtil.getStatusBarHeight;
 
@@ -1255,6 +1254,7 @@ public class MainHomeFragmentNew extends Fragment implements NewHttpResponse, My
             case UserMessageConstant.SQUEEZE_OUT:
             case UserMessageConstant.AUDIT_PASS_OUT:
             case UserMessageConstant.WEB_OUT:
+                editor.putBoolean(UserAppConst.IS_LOGIN, false);
                 ScreenManager.getScreenManager().popAllActivityExceptOne(MainActivity.class);
                 smoothScrollTop(home_rv);
                 ((MainActivity) getActivity()).clearUserData("");

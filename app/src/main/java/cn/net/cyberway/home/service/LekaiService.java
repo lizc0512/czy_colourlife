@@ -20,6 +20,7 @@ import com.intelspace.library.api.OnSyncUserKeysCallback;
 import com.intelspace.library.api.OnUserOptParkLockCallback;
 import com.intelspace.library.module.Device;
 import com.intelspace.library.module.LocalKey;
+import com.youmai.hxsdk.view.camera.util.LogUtil;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -84,6 +85,7 @@ public class LekaiService extends Service {
         mEdenApi.setOnDisconnectCallback((device, state, newState) -> {
             // 开锁时SDK会停止扫描，开锁完成后需在断开连接的回调中重启扫描
             if (!ActivityLifecycleListener.isAppBackground()) {
+                LogUtil.e("LekaiService ", "断开连接");
                 mEdenApi.startScanDevice();
             }
         });
@@ -169,6 +171,7 @@ public class LekaiService extends Service {
 
     public void startScanDevice() {
         if (null != mEdenApi) {
+            LogUtil.e("LekaiService ", "重新扫描");
             mEdenApi.startScanDevice();
         }
     }
@@ -205,15 +208,20 @@ public class LekaiService extends Service {
         if (mEdenApi != null) {
             String deviceMac = LekaiHelper.formatMacAddress(mac);
             Device parkDevice = mParkLockController.getParkDeviceByMac(deviceMac);
+            LogUtil.e("LekaiService", " =====================================");
+            LogUtil.e("LekaiService 倒下", "mac地址：" + deviceMac);
             if (parkDevice != null) {
                 mEdenApi.connectDevice(parkDevice, 5000, new OnConnectCallback() {
                     @Override
                     public void connectSuccess(Device device) {
+                        LogUtil.e("LekaiService 倒下", "请求 ACC:" + ACC + "  TOK:" + TOK);
+
                         mEdenApi.parkUnlock(device, ACC, TOK, callback);
                     }
 
                     @Override
                     public void connectError(int error, String message) {
+                        LogUtil.e("LekaiService 倒下", "失败：error：" + error + "  message：" + message);
                         Handler handler = new Handler(Looper.getMainLooper());
                         handler.post(() -> ToastUtil.toastShow(getApplicationContext(), message));
                     }
@@ -232,15 +240,20 @@ public class LekaiService extends Service {
         if (mEdenApi != null) {
             String deviceMac = LekaiHelper.formatMacAddress(mac);
             Device parkDevice = mParkLockController.getParkDeviceByMac(deviceMac);
+            LogUtil.e("LekaiService", " =====================================");
+            LogUtil.e("LekaiService 抬起", "mac地址：" + deviceMac);
             if (parkDevice != null) {
                 mEdenApi.connectDevice(parkDevice, 5000, new OnConnectCallback() {
                     @Override
                     public void connectSuccess(Device device) {
+                        LogUtil.e("LekaiService 抬起", "请求 ACC:" + ACC + "  TOK:" + TOK);
+
                         mEdenApi.parkLock(device, ACC, TOK, callback);
                     }
 
                     @Override
                     public void connectError(int error, String message) {
+                        LogUtil.e("LekaiService 抬起", "失败：error：" + error + "  message：" + message);
                         Handler handler = new Handler(Looper.getMainLooper());
                         handler.post(() -> ToastUtil.toastShow(getApplicationContext(), message));
                     }

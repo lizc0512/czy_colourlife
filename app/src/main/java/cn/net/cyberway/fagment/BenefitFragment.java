@@ -18,11 +18,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.BeeFramework.Utils.Utils;
 import com.BeeFramework.model.NewHttpResponse;
 import com.BeeFramework.view.NoScrollGridView;
 import com.external.eventbus.EventBus;
@@ -49,6 +47,7 @@ import cn.net.cyberway.protocol.BenefitChannlEntity;
 import cn.net.cyberway.protocol.BenefitFindEntity;
 import cn.net.cyberway.protocol.BenefitHotEntity;
 import cn.net.cyberway.protocol.BenefitProfileEntity;
+import cn.net.cyberway.utils.BenefitDefaultDataConst;
 import cn.net.cyberway.utils.LinkParseUtil;
 
 import static com.youmai.hxsdk.utils.DisplayUtil.getStatusBarHeight;
@@ -86,8 +85,8 @@ public class BenefitFragment extends Fragment implements View.OnClickListener, N
     private TextView tv_owe_money_name;
     private TextView tv_deduct_money_name;
 
-    private ListView lv_recommend;
-    private ListView lv_all;
+    private RecyclerView lv_recommend;
+    private RecyclerView lv_all;
     private SwipeMenuRecyclerView rv_find;
     private BenefitHotAdapter hotAdapter;
     private BenefitRecommendAdapter recommendAdapter;
@@ -111,7 +110,6 @@ public class BenefitFragment extends Fragment implements View.OnClickListener, N
     private List<BenefitChannlEntity.ContentBean.AllBean.DataBeanX> allList = new ArrayList<>();
     private List<BenefitFindEntity.ContentBean.ListBean> findList = new ArrayList<>();
 
-    private int imgSize;//图片宽高
     private Activity mActivity;
     private int type = 0;
     private int page = 1;
@@ -126,7 +124,15 @@ public class BenefitFragment extends Fragment implements View.OnClickListener, N
     private String signUrl = "";
     private boolean isFinish = false;
     private boolean isRefresh = false;
+    private boolean selectAll = false;
+    private boolean selectRecoment = true;
     private InterHandler mHandler = new InterHandler(this);
+
+    private String profileCache = "";
+    private String bannerCache = "";
+    private String hotCache = "";
+    private String channelCache = "";
+    private String findCache = "";
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -141,47 +147,75 @@ public class BenefitFragment extends Fragment implements View.OnClickListener, N
         }
         initView();
         initListener();
-        initCatchData();
+        initCacheData();
+        selectTitle();
         initData();
         return mView;
     }
 
-    private void initCatchData() {
-        String profileCache = mShared.getString(UserAppConst.COLOUR_BENEFIT_PROFILE, "");
+    private void initCacheData() {
+        profileCache = mShared.getString(UserAppConst.COLOUR_BENEFIT_PROFILE, "");
+        if (TextUtils.isEmpty(profileCache)) {
+            refresh_layout.setRefreshing(true);
+        }
         if (!TextUtils.isEmpty(profileCache)) {
             result(1, profileCache);
         }
-        String bannerCache = mShared.getString(UserAppConst.COLOUR_BENEFIT_BANNER, "");
-        if (!TextUtils.isEmpty(bannerCache)) {
+        bannerCache = mShared.getString(UserAppConst.COLOUR_BENEFIT_BANNER, "");
+        if (!TextUtils.isEmpty(profileCache)) {
             showBanner(bannerCache);
         }
-        String hotCache = mShared.getString(UserAppConst.COLOUR_BENEFIT_HOT, "");
+
+        hotCache = mShared.getString(UserAppConst.COLOUR_BENEFIT_HOT, "");
         if (!TextUtils.isEmpty(hotCache)) {
             result(3, hotCache);
+        } else {
+            result(3, BenefitDefaultDataConst.DEFAULT_HOT);
         }
-        String channelCache = mShared.getString(UserAppConst.COLOUR_BENEFIT_CHANNEL, "");
+
+        channelCache = mShared.getString(UserAppConst.COLOUR_BENEFIT_CHANNEL, "");
         if (!TextUtils.isEmpty(channelCache)) {
             result(4, channelCache);
+        } else {
+            result(4, BenefitDefaultDataConst.DEFAULT_RECOMMEND);
+        }
+
+        findCache = mShared.getString(UserAppConst.COLOUR_BENEFIT_FIND, "");
+        if (!TextUtils.isEmpty(findCache)) {
+            mHandler.sendEmptyMessageDelayed(6, 600);
         }
     }
 
     public void onEvent(Object event) {
-        final Message message = (Message) event;
-        if (message.what == UserMessageConstant.CHANGE_COMMUNITY) {//首页切换小区，及时更新
-            type = 0;
-            page = 1;
-            isFinish = false;
-            initData();
-        } else if (message.what == UserMessageConstant.CHANGE_DIFF_LANG) {//切换语言
-            type = 0;
-            page = 1;
-            isFinish = false;
-            initData();
-        } else if (message.what == UserMessageConstant.SIGN_IN_SUCCESS) {//登录成功刷新数据
-            type = 0;
-            page = 1;
-            isFinish = false;
-            initData();
+        try {
+            final Message message = (Message) event;
+            if (message.what == UserMessageConstant.CHANGE_COMMUNITY) {//首页切换小区，及时更新
+                type = 0;
+                page = 1;
+                isFinish = false;
+                selectAll = false;
+                selectRecoment = true;
+                selectTitle();
+                initData();
+            } else if (message.what == UserMessageConstant.CHANGE_DIFF_LANG) {//切换语言
+                type = 0;
+                page = 1;
+                isFinish = false;
+                selectAll = false;
+                selectRecoment = true;
+                selectTitle();
+                initData();
+            } else if (message.what == UserMessageConstant.SIGN_IN_SUCCESS) {//登录成功刷新数据
+                type = 0;
+                page = 1;
+                isFinish = false;
+                selectAll = false;
+                selectRecoment = true;
+                selectTitle();
+                initData();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 
@@ -196,10 +230,13 @@ public class BenefitFragment extends Fragment implements View.OnClickListener, N
         refresh_layout.setColorSchemeColors(Color.parseColor("#3290FF"), Color.parseColor("#6ABDF9"));
         refresh_layout.setOnRefreshListener(() -> {
             page = 1;
+            isRefresh = true;
             isFinish = false;
-            if (!isRefresh) {
-                initData();
-            }
+            selectAll = false;
+            selectRecoment = false;
+            findList.clear();
+            findAdapter.notifyDataSetChanged();
+            initData();
         });
 
         rv_find = mView.findViewById(R.id.rv_find);
@@ -238,18 +275,19 @@ public class BenefitFragment extends Fragment implements View.OnClickListener, N
         TextPaint paintRecommend = tv_recommend.getPaint();
         paintRecommend.setFakeBoldText(true);
 
-        //推荐item图片宽高
-        imgSize = (Utils.getDeviceWith(mActivity) - Utils.dip2px(mActivity, (16 + 12 + 8) * 2)) / 3;
-
         hotAdapter = new BenefitHotAdapter(mActivity, hotList);
         gv_hot.setAdapter(hotAdapter);
         gv_hot.setOnItemClickListener((parent, view, position, id) -> {
             LinkParseUtil.parse(mActivity, hotList.get(position).getUrl(), "");
         });
 
-        recommendAdapter = new BenefitRecommendAdapter(mActivity, recommendList, imgSize);
+        lv_recommend.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false));
+        lv_recommend.setNestedScrollingEnabled(false);
+        recommendAdapter = new BenefitRecommendAdapter(mActivity, recommendList/*, imgSize*/);
         lv_recommend.setAdapter(recommendAdapter);
 
+        lv_all.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false));
+        lv_all.setNestedScrollingEnabled(false);
         allAdapter = new BenefitAllAdapter(mActivity, allList);
         lv_all.setAdapter(allAdapter);
 
@@ -259,7 +297,7 @@ public class BenefitFragment extends Fragment implements View.OnClickListener, N
         DefaultLoadMoreView defaultLoadMoreView = new DefaultLoadMoreView(getContext());
         rv_find.setLoadMoreView(defaultLoadMoreView);
         rv_find.setLoadMoreListener(() -> {
-            if (!isFinish) {
+            if (!isFinish && !isRefresh) {
                 page++;
                 benefitModel.getArticle(5, page, this);
             }
@@ -293,18 +331,17 @@ public class BenefitFragment extends Fragment implements View.OnClickListener, N
 
     private void initData() {
         isRefresh = true;
-        selectTitle();
         mHandler.sendEmptyMessageDelayed(1, 50);
-        mHandler.sendEmptyMessageDelayed(2, 1000);
-        mHandler.sendEmptyMessageDelayed(3, 2000);
-        mHandler.sendEmptyMessageDelayed(4, 4000);
-        mHandler.sendEmptyMessageDelayed(5, 5000);
+        mHandler.sendEmptyMessageDelayed(2, 300);
+        mHandler.sendEmptyMessageDelayed(3, 600);
+        mHandler.sendEmptyMessageDelayed(4, 1000);
+        mHandler.sendEmptyMessageDelayed(5, 1200);
     }
 
     @Override
     public void onResume() {
         super.onResume();
-        mHandler.sendEmptyMessageDelayed(1, 50);
+        mHandler.sendEmptyMessageDelayed(1, 1000);
     }
 
     /**
@@ -323,8 +360,6 @@ public class BenefitFragment extends Fragment implements View.OnClickListener, N
             paintRecommend.setFakeBoldText(true);
             v_recommend.setVisibility(View.VISIBLE);
             lv_recommend.setVisibility(View.VISIBLE);
-
-            recommendAdapter.notifyDataSetChanged();
         } else {
             tv_recommend.setTextColor(mActivity.getResources().getColor(R.color.gray_text_color));
             TextPaint recommend = tv_recommend.getPaint();
@@ -337,8 +372,6 @@ public class BenefitFragment extends Fragment implements View.OnClickListener, N
             all.setFakeBoldText(true);
             v_all.setVisibility(View.VISIBLE);
             lv_all.setVisibility(View.VISIBLE);
-
-            allAdapter.notifyDataSetChanged();
         }
     }
 
@@ -378,24 +411,61 @@ public class BenefitFragment extends Fragment implements View.OnClickListener, N
             case R.id.rl_recommend:
                 type = 0;
                 selectTitle();
+                if (!selectRecoment) {
+                    selectRecoment = true;
+                    recommendAdapter.setData(recommendList);
+                }
                 break;
 
             case R.id.rl_all:
                 type = 1;
                 selectTitle();
+                if (!selectAll) {
+                    selectAll = true;
+                    allAdapter.setData(allList);
+                }
                 break;
         }
-
     }
 
     @Override
     public void OnHttpResponse(int what, String result) {
-        result(what, result);
+        refresh_layout.setRefreshing(false);
+        switch (what) {
+            case 1:
+                if (!profileCache.equals(result)) {
+                    mEditor.putString(UserAppConst.COLOUR_BENEFIT_PROFILE, result).apply();
+                    result(what, result);
+                } else {
+                    refresh_layout.setRefreshing(false);
+                }
+                break;
+            case 2:
+                if (!bannerCache.equals(result)) {
+                    mEditor.putString(UserAppConst.COLOUR_BENEFIT_BANNER, result).apply();
+                    result(what, result);
+                }
+                break;
+            case 3:
+                if (!hotCache.equals(result)) {
+                    mEditor.putString(UserAppConst.COLOUR_BENEFIT_HOT, result).apply();
+                    result(what, result);
+                }
+                break;
+            case 4:
+                if (!channelCache.equals(result)) {
+                    mEditor.putString(UserAppConst.COLOUR_BENEFIT_CHANNEL, result).apply();
+                    result(what, result);
+                }
+                break;
+            case 5:
+                result(what, result);
+                break;
+        }
     }
 
     @SuppressLint("SetTextI18n")
     private void result(int what, String result) {
-        refresh_layout.setRefreshing(false);
         switch (what) {
             case 1:
                 if (!TextUtils.isEmpty(result)) {
@@ -474,9 +544,13 @@ public class BenefitFragment extends Fragment implements View.OnClickListener, N
                         recommendList.addAll(bean.getRecommend().getData());
                         allList.addAll(bean.getAll().getData());
                         if (0 == type) {
-                            recommendAdapter.notifyDataSetChanged();
+                            selectRecoment = true;
+                            selectAll = false;
+                            recommendAdapter.setData(recommendList);
                         } else {
-                            allAdapter.notifyDataSetChanged();
+                            selectRecoment = false;
+                            selectAll = true;
+                            allAdapter.setData(allList);
                         }
                     } catch (Exception e) {
                         e.printStackTrace();
@@ -489,8 +563,10 @@ public class BenefitFragment extends Fragment implements View.OnClickListener, N
                         BenefitFindEntity entity = GsonUtils.gsonToBean(result, BenefitFindEntity.class);
                         BenefitFindEntity.ContentBean bean = entity.getContent();
                         tv_find.setText(bean.getTitle());
-
                         if (1 == page) {
+                            mEditor.putString(UserAppConst.COLOUR_BENEFIT_FIND, result).apply();
+                        }
+                        if (1 == page || (isRefresh && findList.size() != 0)) {
                             findList.clear();
                         }
                         findList.addAll(bean.getList());
@@ -502,6 +578,7 @@ public class BenefitFragment extends Fragment implements View.OnClickListener, N
                         e.printStackTrace();
                     }
                 }
+                isRefresh = false;
                 break;
         }
     }
@@ -594,8 +671,10 @@ public class BenefitFragment extends Fragment implements View.OnClickListener, N
                         fragment.benefitModel.getChannel(4, fragment);
                         break;
                     case 5:
-                        fragment.isRefresh = false;
                         fragment.benefitModel.getArticle(5, fragment.page, fragment);
+                        break;
+                    case 6:
+                        fragment.result(5, fragment.findCache);
                         break;
                 }
             } else {
