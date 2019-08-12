@@ -31,13 +31,15 @@ import cn.net.cyberway.utils.LinkParseUtil;
 public class BenefitRecommendAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>/*extends BeeBaseAdapter */ {
 
     private LayoutInflater mInflater;
+    private int imgSize;
 
     private List<BenefitChannlEntity.ContentBean.RecommendBean.DataBean> mList;
     private BenefitRecommendItemAdapter adapter;
 
-    public BenefitRecommendAdapter(Context mContext, List<BenefitChannlEntity.ContentBean.RecommendBean.DataBean> mList) {
+    public BenefitRecommendAdapter(Context mContext, List<BenefitChannlEntity.ContentBean.RecommendBean.DataBean> mList, int imgSize) {
         this.mInflater = LayoutInflater.from(mContext);
         this.mList = mList;
+        this.imgSize = imgSize;
     }
 
     public void setData(List<BenefitChannlEntity.ContentBean.RecommendBean.DataBean> mList) {
@@ -72,7 +74,7 @@ public class BenefitRecommendAdapter extends RecyclerView.Adapter<RecyclerView.V
             GridLayoutManager gridBotLayoutManager = new GridLayoutManager(mInflater.getContext(), 3);
             holder.gv_content.setLayoutManager(gridBotLayoutManager);
             holder.gv_content.setNestedScrollingEnabled(false);
-            adapter = new BenefitRecommendItemAdapter(mInflater.getContext(), item.getRecommend_goods()/*, imgSize*/);
+            adapter = new BenefitRecommendItemAdapter(mInflater.getContext(), item.getRecommend_goods(), imgSize);
             holder.gv_content.setAdapter(adapter);
 
             holder.ll_item.setOnClickListener(v -> LinkParseUtil.parse(mInflater.getContext(), item.getUrl(), ""));

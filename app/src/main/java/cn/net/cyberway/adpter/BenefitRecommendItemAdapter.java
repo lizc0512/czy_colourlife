@@ -30,11 +30,14 @@ import cn.net.cyberway.utils.LinkParseUtil;
 public class BenefitRecommendItemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>/* extends BeeBaseAdapter */ {
 
     private Context mContext;
+    private int imgSize;
     private List<BenefitChannlEntity.ContentBean.RecommendBean.DataBean.RecommendGoodsBean> mList;
+    private LinearLayout.LayoutParams layoutParamsImg;
 
-    public BenefitRecommendItemAdapter(Context mContext, List<BenefitChannlEntity.ContentBean.RecommendBean.DataBean.RecommendGoodsBean> mList) {
+    public BenefitRecommendItemAdapter(Context mContext, List<BenefitChannlEntity.ContentBean.RecommendBean.DataBean.RecommendGoodsBean> mList, int imgSize) {
         this.mContext = mContext;
         this.mList = mList;
+        this.imgSize = imgSize;
     }
 
     @NonNull
@@ -50,6 +53,8 @@ public class BenefitRecommendItemAdapter extends RecyclerView.Adapter<RecyclerVi
         final BenefitChannlEntity.ContentBean.RecommendBean.DataBean.RecommendGoodsBean item = mList.get(position);
         ViewHolder holder = (ViewHolder) viewHolder;
         try {
+            layoutParamsImg = new LinearLayout.LayoutParams(imgSize, imgSize);
+            holder.iv_shop.setLayoutParams(layoutParamsImg);
             GlideImageLoader.loadImageDefaultDisplay(mContext, item.getImage(), holder.iv_shop, Utils.dip2px(mContext, 4), R.drawable.default_image, R.drawable.default_image);
             holder.tv_title.setText(item.getName());
             String price = item.getPrice();
