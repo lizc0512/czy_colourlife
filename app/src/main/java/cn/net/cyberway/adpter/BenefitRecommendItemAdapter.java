@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.res.Resources;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -51,8 +52,18 @@ public class BenefitRecommendItemAdapter extends RecyclerView.Adapter<RecyclerVi
         try {
             GlideImageLoader.loadImageDefaultDisplay(mContext, item.getImage(), holder.iv_shop, Utils.dip2px(mContext, 4), R.drawable.default_image, R.drawable.default_image);
             holder.tv_title.setText(item.getName());
-            holder.tv_price_left.setText("￥" + item.getPrice());
-            holder.tv_price_right.setText("送" + item.getService_amount());
+            String price = item.getPrice();
+            if (!TextUtils.isEmpty(price)) {
+                holder.tv_price_left.setText("￥" + price);
+            } else {
+                holder.tv_price_left.setText("");
+            }
+            String song = item.getService_amount();
+            if (!TextUtils.isEmpty(song)) {
+                holder.tv_price_right.setText("送" + song);
+            } else {
+                holder.tv_price_right.setText("");
+            }
             holder.ll_item.setOnClickListener(v -> LinkParseUtil.parse(mContext, item.getUrl(), ""));
         } catch (Resources.NotFoundException e) {
             e.printStackTrace();
