@@ -401,10 +401,10 @@ public class MainActivity extends BaseFragmentActivity implements View.OnClickLi
      * 清除用户数据
      */
     public void clearUserData(String notice) {
+        SobotApi.exitSobotChat(MainActivity.this);//退出智齿客服
         showUnReadMsg(0);
         onTabSelected(FLAG_TAB_ONE);
         clearUserCache(MainActivity.this);
-        SobotApi.exitSobotChat(MainActivity.this);//退出智齿客服
         myManager.cancel(NOTIFICATION_ID_1);
         Constants.NOTIFICATION_BTN = false;
         JPushInterface.stopPush(getApplicationContext());
