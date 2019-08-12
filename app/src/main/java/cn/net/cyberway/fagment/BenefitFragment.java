@@ -289,7 +289,8 @@ public class BenefitFragment extends Fragment implements View.OnClickListener, N
 
         lv_recommend.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false));
         lv_recommend.setNestedScrollingEnabled(false);
-        recommendAdapter = new BenefitRecommendAdapter(mActivity, recommendList, imgSize);
+        LinearLayout.LayoutParams layoutParamsImg = new LinearLayout.LayoutParams(imgSize, imgSize);
+        recommendAdapter = new BenefitRecommendAdapter(mActivity, recommendList, layoutParamsImg);
         lv_recommend.setAdapter(recommendAdapter);
 
         lv_all.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false));
@@ -347,7 +348,7 @@ public class BenefitFragment extends Fragment implements View.OnClickListener, N
     @Override
     public void onResume() {
         super.onResume();
-//        mHandler.sendEmptyMessageDelayed(1, 1000);
+        mHandler.sendEmptyMessageDelayed(1, 1000);
     }
 
     /**
