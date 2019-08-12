@@ -21,6 +21,7 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.BeeFramework.Utils.Utils;
 import com.BeeFramework.model.NewHttpResponse;
 import com.BeeFramework.view.NoScrollGridView;
 import com.external.eventbus.EventBus;
@@ -110,6 +111,7 @@ public class BenefitFragment extends Fragment implements View.OnClickListener, N
     private List<BenefitChannlEntity.ContentBean.AllBean.DataBeanX> allList = new ArrayList<>();
     private List<BenefitFindEntity.ContentBean.ListBean> findList = new ArrayList<>();
 
+    private int imgSize;//图片宽高
     private Activity mActivity;
     private int type = 0;
     private int page = 1;
@@ -276,6 +278,9 @@ public class BenefitFragment extends Fragment implements View.OnClickListener, N
         TextPaint paintRecommend = tv_recommend.getPaint();
         paintRecommend.setFakeBoldText(true);
 
+        //推荐item图片宽高
+        imgSize = (Utils.getDeviceWith(mActivity) - Utils.dip2px(mActivity, (16 + 12 + 8) * 2)) / 3;
+
         hotAdapter = new BenefitHotAdapter(mActivity, hotList);
         gv_hot.setAdapter(hotAdapter);
         gv_hot.setOnItemClickListener((parent, view, position, id) -> {
@@ -284,7 +289,7 @@ public class BenefitFragment extends Fragment implements View.OnClickListener, N
 
         lv_recommend.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false));
         lv_recommend.setNestedScrollingEnabled(false);
-        recommendAdapter = new BenefitRecommendAdapter(mActivity, recommendList/*, imgSize*/);
+        recommendAdapter = new BenefitRecommendAdapter(mActivity, recommendList, imgSize);
         lv_recommend.setAdapter(recommendAdapter);
 
         lv_all.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false));
