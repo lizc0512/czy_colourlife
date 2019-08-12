@@ -238,6 +238,15 @@ public class BenefitChannlEntity extends BaseContentEntity {
                     private String name;
                     private String price;
                     private String service_amount;
+                    private String url;
+
+                    public String getUrl() {
+                        return url;
+                    }
+
+                    public void setUrl(String url) {
+                        this.url = url;
+                    }
 
                     public String getImage() {
                         return image;

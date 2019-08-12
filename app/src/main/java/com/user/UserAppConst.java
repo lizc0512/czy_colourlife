@@ -159,6 +159,7 @@ public class UserAppConst {
     public static final String COLOUR_BENEFIT_BANNER = "color_benefit_banner";//彩惠的banner
     public static final String COLOUR_BENEFIT_HOT = "color_benefit_hot";//彩惠的热点
     public static final String COLOUR_BENEFIT_CHANNEL = "color_benefit_channel";//彩惠的推荐全部
+    public static final String COLOUR_BENEFIT_FIND = "color_benefit_find";//彩惠的发现
 
     /**
      * 手势密码是否开启

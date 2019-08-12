@@ -820,13 +820,21 @@ public class WebViewActivity extends BaseActivity implements View.OnLongClickLis
          * 车位锁
          */
         @JavascriptInterface
-        public void CLColourlifeBloothLockOperation(String actionType, String mac) {
+        public void CLColourlifeBloothLockOperation(String result) {
             LekaiHelper.setScanParkLockChangeListener(WebViewActivity.this);
-            mac = mac.replaceAll(":", "");
-            if ("1".equals(actionType)) {//1 抬起 2 倒下
-                parkDown(mac);
-            } else {
-                parkUp(mac);
+            try {
+                JSONObject jsonObject = new JSONObject(result);
+                String actionType = jsonObject.optString("actionType");
+                String mac = jsonObject.optString("mac");
+
+                mac = mac.replaceAll(":", "");
+                if ("1".equals(actionType)) {//1 抬起 2 倒下
+                    parkUp(mac);
+                } else {
+                    parkDown(mac);
+                }
+            } catch (JSONException e) {
+                e.printStackTrace();
             }
         }
 
@@ -2011,4 +2019,6 @@ public class WebViewActivity extends BaseActivity implements View.OnLongClickLis
     @Override
     public void onScanParkLockChanged(String mac) {
     }
+
+    boolean test = true;
 }

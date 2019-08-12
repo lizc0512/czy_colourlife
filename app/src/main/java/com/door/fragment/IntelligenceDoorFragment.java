@@ -67,6 +67,12 @@ public class IntelligenceDoorFragment extends BaseFragment {
     protected void onFragmentVisibleChange(boolean isVisible) {
     }
 
+    public void refresh(int status, String result) {
+        this.result = result;
+        this.status = status;
+        initData();
+    }
+
     private void initData() {
         isFirst = true;
         try {
@@ -75,7 +81,6 @@ public class IntelligenceDoorFragment extends BaseFragment {
 
             IntelligenceDoorAdapter mAdapter = new IntelligenceDoorAdapter(getActivity(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>());
             xrv_invite_list.setAdapter(mAdapter);
-            mAdapter.clearData();
 
             if (0 < list.size()) {
                 ll_empty.setVisibility(View.GONE);
@@ -105,6 +110,7 @@ public class IntelligenceDoorFragment extends BaseFragment {
                     }
                     List<DoorAllEntity.ContentBean.DataBean.ListBean.KeyListBean> mList = new ArrayList<>(list.get(i).getKeyList());
                     mAdapter.setData(titleList, typeList, mList);
+                    mAdapter.notifyDataSetChanged();
                 }
             } else {
                 ll_empty.setVisibility(View.VISIBLE);
