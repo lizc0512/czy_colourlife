@@ -8,7 +8,6 @@ import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
-import android.graphics.drawable.Icon;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
@@ -23,7 +22,6 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
-import android.widget.TextView;
 
 import com.BeeFramework.Utils.ToastUtil;
 import com.BeeFramework.activity.BaseFragmentActivity;
@@ -37,8 +35,6 @@ import com.door.entity.DoorRecordEntity;
 import com.door.entity.DoorRightEntity;
 import com.door.fragment.IntelligenceDoorFragment;
 import com.door.model.NewDoorModel;
-import com.door.view.ShortCutTipsDialog;
-import com.door.view.ShowShortCutDialog;
 import com.nohttp.utils.GsonUtils;
 import com.user.UserAppConst;
 import com.youmai.hxsdk.view.camera.util.LogUtil;
@@ -60,7 +56,6 @@ import cn.net.cyberway.utils.TableLayoutUtils;
 public class IntelligenceDoorActivity extends BaseFragmentActivity implements NewHttpResponse, View.OnClickListener, LekaiParkLockController.OnScanParkLockChangeListener {
     private static String err = "操作失败，请重试";
 
-    public static final String ACTION_ADD_SHORTCUT = "com.android.launcher.action.INSTALL_SHORTCUT";
     private static int INTENT_UPDATEFIXEDDOOR = 2;//编辑常用门禁
     public SharedPreferences.Editor editor;
     private SharedPreferences shared;
@@ -70,15 +65,7 @@ public class IntelligenceDoorActivity extends BaseFragmentActivity implements Ne
     private RelativeLayout ll_homedoorpop_authorization;
     private RelativeLayout ll_homedoorpop_compile;
     private String isgranted = "0";
-    private ShowShortCutDialog showShortCutDialog;
-    private ShortCutTipsDialog shortCutTipsDialog;
-    private Intent.ShortcutIconResource shortcutIconResource;
-    private int ispotion;
-    private Icon icon;
-    private String door_code;
-    private List<View> viewList = new ArrayList<>();
-    private LinearLayout linearLayout;
-    private TextView tv_homedoor_communityname;
+    private String door_code = "";
     private int position;
 
     private ImageView iv_editor;
@@ -540,7 +527,7 @@ public class IntelligenceDoorActivity extends BaseFragmentActivity implements Ne
                 openBluetooth = blueAdapter.isEnabled();
             }
             if (openBluetooth) {
-                ToastUtil.toastShow(getApplicationContext(), "正在抬升起位锁");
+                ToastUtil.toastShow(getApplicationContext(), "正在升起位锁");
 
                 LekaiHelper.parkLock(mac, (status, message, battery) -> {
                     LogUtil.e("LekaiService 抬起", "status:" + status + "  message:" + message + "  battery:" + battery);

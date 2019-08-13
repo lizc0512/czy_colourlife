@@ -2004,7 +2004,7 @@ public class WebViewActivity extends BaseActivity implements View.OnLongClickLis
             }
             //支持蓝牙模块
             if (openBluetooth) {
-                ToastUtil.toastShow(getApplicationContext(), "正在抬升起位锁");
+                ToastUtil.toastShow(getApplicationContext(), "正在升起位锁");
 
                 LekaiHelper.parkLock(mac, (status, message, battery) -> {
                     Handler handler = new Handler(Looper.getMainLooper());
@@ -2020,5 +2020,4 @@ public class WebViewActivity extends BaseActivity implements View.OnLongClickLis
     public void onScanParkLockChanged(String mac) {
     }
 
-    boolean test = true;
 }

@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.res.Resources;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
+import android.text.Html;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -57,7 +58,7 @@ public class BenefitRecommendItemAdapter extends RecyclerView.Adapter<RecyclerVi
             holder.tv_title.setText(item.getName());
             String price = item.getPrice();
             if (!TextUtils.isEmpty(price)) {
-                holder.tv_price_left.setText("￥" + price);
+                holder.tv_price_left.setText(Html.fromHtml("&yen") + price);
             } else {
                 holder.tv_price_left.setText("");
             }

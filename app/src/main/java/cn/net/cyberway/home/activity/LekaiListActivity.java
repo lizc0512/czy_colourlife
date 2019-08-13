@@ -150,7 +150,7 @@ public class LekaiListActivity extends BaseActivity implements View.OnClickListe
     public void parkUp(int position) {
         if (LekaiHelper.isFastClick()) {
             if (openBluetooth) {
-                ToastUtil.toastShow(getApplicationContext(), "正在抬升起位锁");
+                ToastUtil.toastShow(getApplicationContext(), "正在升起位锁");
 
                 LekaiHelper.parkLock(keysList.get(position).getMac(), (status, message, battery) -> {
                     LogUtil.e("LekaiService 抬起", "status:" + status + "  message:" + message + "  battery:" + battery);
