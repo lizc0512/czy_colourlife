@@ -8,8 +8,8 @@ android {
         applicationId "cn.net.cyberway"
         minSdkVersion MIN_SDK_VERSION as int
         targetSdkVersion TARGET_SDK_VERSION as int
-        versionCode 86
-        versionName "6.6.13"
+        versionCode 88
+        versionName "6.6.14"
         multiDexEnabled true
         javaCompileOptions {
             annotationProcessorOptions {

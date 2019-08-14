@@ -83,6 +83,7 @@ public class IntelligenceDoorActivity extends BaseFragmentActivity implements Ne
     private ViewPagerAdapter adapter;
     private int userId;
     private String intelligenceDoorCache;
+    private String resultData = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -180,6 +181,7 @@ public class IntelligenceDoorActivity extends BaseFragmentActivity implements Ne
                     tab.select();
                 }
             }
+            resultData = result;
         } catch (Resources.NotFoundException e) {
             e.printStackTrace();
         }
@@ -284,11 +286,34 @@ public class IntelligenceDoorActivity extends BaseFragmentActivity implements Ne
                 ll_homedoorpop_compile.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        if (communityUuidList.size() > 0) {
-                            Intent intent = new Intent(IntelligenceDoorActivity.this, NewDoorEditActivity.class);
-                            position = vp_door.getCurrentItem();
-                            intent.putExtra(UserAppConst.EDITDOORCOMMUNITYUUID, communityUuidList.get(position));
-                            startActivityForResult(intent, INTENT_UPDATEFIXEDDOOR);
+                        if (!TextUtils.isEmpty(resultData)) {
+                            try {
+                                position = vp_door.getCurrentItem();
+                                boolean canEdit = false;
+
+                                DoorAllEntity doorAllEntity = GsonUtils.gsonToBean(resultData, DoorAllEntity.class);
+                                List<DoorAllEntity.ContentBean.DataBean.ListBean> list = doorAllEntity.getContent().getData().get(position).getList();
+                                if (0 < list.size()) {
+                                    for (int i = 0; i < list.size(); i++) {
+                                        //远程开门
+                                        if ("caihuijuDoor".equals(list.get(i).getType())) {
+                                            if (0 < list.get(i).getKeyList().size()) {
+                                                canEdit = true;
+                                            }
+                                        }
+                                    }
+                                }
+
+                                if (communityUuidList.size() > 0 && canEdit) {
+                                    Intent intent = new Intent(IntelligenceDoorActivity.this, NewDoorEditActivity.class);
+                                    intent.putExtra(UserAppConst.EDITDOORCOMMUNITYUUID, communityUuidList.get(position));
+                                    startActivityForResult(intent, INTENT_UPDATEFIXEDDOOR);
+                                } else {
+                                    ToastUtil.toastShow(getApplicationContext(), "您当前小区没有可编辑门禁");
+                                }
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                            }
                         }
                         popupWindow.dismiss();
                     }
@@ -470,6 +495,7 @@ public class IntelligenceDoorActivity extends BaseFragmentActivity implements Ne
                 DoorAllEntity doorAllEntity = GsonUtils.gsonToBean(result, DoorAllEntity.class);
                 List<DoorAllEntity.ContentBean.CommunityBean> titleList = doorAllEntity.getContent().getCommunity();
                 String titleString = "";
+                communityUuidList.clear();
                 if (1 == titleList.size()) {
                     communityUuidList.add(titleList.get(0).getCommunity_uuid());
                     titleString = titleList.get(0).getCommunity_name();
