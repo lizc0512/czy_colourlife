@@ -119,7 +119,7 @@ public class CustomerAddPropertyActivity extends BaseActivity implements View.On
     private String city_name = "";
     private int page = 1;
     private int type = 1;
-    private int pageSize = 15;
+    private int pageSize = 100;
     private String keyword = "";
 
     @Override
@@ -703,6 +703,7 @@ public class CustomerAddPropertyActivity extends BaseActivity implements View.On
                         fl_city.setVisibility(View.GONE);
                     }
                     choiceType = 2;
+                    type = 2;
                     AddListEntity addListEntity = GsonUtils.gsonToBean(result, AddListEntity.class);
                     AddListEntity.ContentBean contentBean = addListEntity.getContent();
                     AddListEntity.ContentBean.PagingBean pagingBean;
