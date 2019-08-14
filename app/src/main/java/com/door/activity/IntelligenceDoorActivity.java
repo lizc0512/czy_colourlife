@@ -272,12 +272,16 @@ public class IntelligenceDoorActivity extends BaseFragmentActivity implements Ne
                 ll_homedoorpop_authorization.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        if (!"1".equals(isgranted)) {
-                            ToastUtil.toastShow(IntelligenceDoorActivity.this, getResources().getString(R.string.door_no_grantauthor));
-                            return;
+                        try {
+                            if (!"1".equals(isgranted)) {
+                                ToastUtil.toastShow(IntelligenceDoorActivity.this, getResources().getString(R.string.door_no_grantauthor));
+                                return;
+                            }
+                            Intent authorIntent = new Intent(IntelligenceDoorActivity.this, DoorAuthorizationActivity.class);
+                            startActivity(authorIntent);
+                        } catch (Resources.NotFoundException e) {
+                            e.printStackTrace();
                         }
-                        Intent authorIntent = new Intent(IntelligenceDoorActivity.this, DoorAuthorizationActivity.class);
-                        startActivity(authorIntent);
                         popupWindow.dismiss();
                     }
                 });
@@ -335,32 +339,40 @@ public class IntelligenceDoorActivity extends BaseFragmentActivity implements Ne
      * 点击获取密码
      */
     private void clickPwdDialog(String num, String time, String result) {
-        if (null == clickPwdDialog) {
-            clickPwdDialog = new ClickPwdDialog(this);
+        try {
+            if (null == clickPwdDialog) {
+                clickPwdDialog = new ClickPwdDialog(this);
+            }
+            clickPwdDialog.show();
+            clickPwdDialog.tv_pwd_num.setText(num);
+            clickPwdDialog.tv_pwd_time.setText(time);
+            clickPwdDialog.iv_close.setOnClickListener(v -> {
+                if (null != clickPwdDialog) {
+                    clickPwdDialog.dismiss();
+                }
+            });
+            clickPwdDialog.tv_pwd_record.setOnClickListener(v -> {
+                if (null != clickPwdDialog) {
+                    clickPwdDialog.dismiss();
+                }
+                try {
+                    Intent intent = new Intent(this, IntelligenceDoorRecordActivity.class);
+                    intent.putExtra(IntelligenceDoorRecordActivity.DEVICE, device);
+                    intent.putExtra(IntelligenceDoorRecordActivity.RESULT, result);
+                    startActivity(intent);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            });
+            clickPwdDialog.tv_pwd_get.setOnClickListener(v -> {
+                if (null != clickPwdDialog) {
+                    clickPwdDialog.dismiss();
+                }
+                newDoorModel.getDevicePwd(4, device, this);
+            });
+        } catch (Exception e) {
+            e.printStackTrace();
         }
-        clickPwdDialog.show();
-        clickPwdDialog.tv_pwd_num.setText(num);
-        clickPwdDialog.tv_pwd_time.setText(time);
-        clickPwdDialog.iv_close.setOnClickListener(v -> {
-            if (null != clickPwdDialog) {
-                clickPwdDialog.dismiss();
-            }
-        });
-        clickPwdDialog.tv_pwd_record.setOnClickListener(v -> {
-            if (null != clickPwdDialog) {
-                clickPwdDialog.dismiss();
-            }
-            Intent intent = new Intent(this, IntelligenceDoorRecordActivity.class);
-            intent.putExtra(IntelligenceDoorRecordActivity.DEVICE, device);
-            intent.putExtra(IntelligenceDoorRecordActivity.RESULT, result);
-            startActivity(intent);
-        });
-        clickPwdDialog.tv_pwd_get.setOnClickListener(v -> {
-            if (null != clickPwdDialog) {
-                clickPwdDialog.dismiss();
-            }
-            newDoorModel.getDevicePwd(4, device, this);
-        });
     }
 
     /**
