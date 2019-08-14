@@ -44,19 +44,6 @@ public class IntelligenceDoorAdapter extends RecyclerView.Adapter<IntelligenceDo
         notifyDataSetChanged();
     }
 
-    public void clearData() {
-        if (null != titleList) {
-            titleList.clear();
-        }
-        if (null != typeList) {
-            typeList.clear();
-        }
-        if (null != mList) {
-            mList.clear();
-        }
-        notifyDataSetChanged();
-    }
-
     @Override
     public IntelligenceDoorAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(mContext).inflate(R.layout.item_intelligence_door, parent, false);
@@ -84,7 +71,7 @@ public class IntelligenceDoorAdapter extends RecyclerView.Adapter<IntelligenceDo
                     holder.iv_icon.setBackgroundResource(R.drawable.ic_door_key);
                     holder.tv_pwd.setVisibility(View.GONE);
                     //远程开门
-                    holder.rl_key.setOnClickListener(v -> ((IntelligenceDoorActivity) mContext).remoteDoor(item.getDoor_id()));
+                    holder.rl_key.setOnClickListener(v -> ((IntelligenceDoorActivity) mContext).remoteDoor(item.getQr_code()));
                     break;
                 case "2":
                     holder.rl_key.setVisibility(View.VISIBLE);

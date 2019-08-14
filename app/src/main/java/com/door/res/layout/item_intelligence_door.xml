@@ -137,7 +137,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="有效期："
-                    android:textColor="@color/color_329dfa" />
+                    android:textColor="@color/color_329dfa"
+                    android:textSize="12sp" />
 
                 <TextView
                     android:id="@+id/tv_avail_time"

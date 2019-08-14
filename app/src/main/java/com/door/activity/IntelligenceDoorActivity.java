@@ -47,7 +47,8 @@ import java.util.List;
 import cn.net.cyberway.R;
 import cn.net.cyberway.home.service.LekaiParkLockController;
 import cn.net.cyberway.utils.LekaiHelper;
-import cn.net.cyberway.utils.TableLayoutUtils;
+
+import static com.BeeFramework.Utils.Utils.dip2px;
 
 /**
  * 智能门禁
@@ -66,7 +67,7 @@ public class IntelligenceDoorActivity extends BaseFragmentActivity implements Ne
     private RelativeLayout ll_homedoorpop_compile;
     private String isgranted = "0";
     private String door_code = "";
-    private int position;
+    private int position = 0;
 
     private ImageView iv_editor;
     private View v_status_bar;
@@ -136,18 +137,18 @@ public class IntelligenceDoorActivity extends BaseFragmentActivity implements Ne
 
                 tl_door.setTabTextColors(getResources().getColor(R.color.color_b3ffffff), getResources().getColor(R.color.white));
                 tl_door.setSelectedTabIndicatorColor(getResources().getColor(R.color.white));
-                tl_door.setSelectedTabIndicatorHeight(3);
+                tl_door.setSelectedTabIndicatorHeight(dip2px(this, 3));
                 tl_door.setTabGravity(TabLayout.GRAVITY_FILL);
 
                 adapter = new ViewPagerAdapter(getSupportFragmentManager(), this, fragmentList, tabTitleArray);
                 vp_door.setAdapter(adapter);
                 vp_door.setOffscreenPageLimit(fragmentList.size());
                 tl_door.setupWithViewPager(vp_door);
-                TableLayoutUtils.dynamicSetTabLayoutMode(this, tl_door);//tab可滑动
+                tl_door.setTabMode(TabLayout.MODE_SCROLLABLE);
             } else {
                 tl_door.removeAllTabs();
-                for (int i = 0; i < tabTitleArray.length; i++) {
-                    tl_door.addTab(tl_door.newTab().setText(tabTitleArray[i]));
+                for (String s : tabTitleArray) {
+                    tl_door.addTab(tl_door.newTab().setText(s));
                 }
 
                 if (tabTitleArray.length == fragmentList.size()) {
@@ -173,7 +174,11 @@ public class IntelligenceDoorActivity extends BaseFragmentActivity implements Ne
                 vp_door.setAdapter(adapter);
                 vp_door.setOffscreenPageLimit(fragmentList.size());
                 tl_door.setupWithViewPager(vp_door);
-                TableLayoutUtils.dynamicSetTabLayoutMode(this, tl_door);//tab可滑动
+                tl_door.setTabMode(TabLayout.MODE_SCROLLABLE);
+                TabLayout.Tab tab = tl_door.getTabAt(position);
+                if (null != tab) {
+                    tab.select();
+                }
             }
         } catch (Resources.NotFoundException e) {
             e.printStackTrace();
@@ -213,8 +218,8 @@ public class IntelligenceDoorActivity extends BaseFragmentActivity implements Ne
     /**
      * 远程开门
      */
-    public void remoteDoor(String doorId) {
-        newDoorModel.openDoor(2, doorId, true, IntelligenceDoorActivity.this);
+    public void remoteDoor(String qrcode) {
+        newDoorModel.openDoor(2, qrcode, true, IntelligenceDoorActivity.this);
     }
 
     @Override

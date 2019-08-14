@@ -413,6 +413,9 @@ public class NewDoorEditActivity extends BaseActivity implements NewHttpResponse
                                 olddoor_list.add(doorBaseEntity);
                             }
                             list_not.addAll(singleCommunityEntity.getContent().getNot_common_use());
+                            if (0 == olddoor_list.size() && 0 == list_not.size()) {
+                                ToastUtil.toastShow(this, "您当前小区没有可编辑门禁");
+                            }
                         }
                         if (null == newEditDoorRVAdapter) {
                             newEditDoorRVAdapter = new NewEditDoorRVAdapter(NewDoorEditActivity.this, list);

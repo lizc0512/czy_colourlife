@@ -7,6 +7,7 @@ import android.content.SharedPreferences;
 import android.content.pm.ShortcutInfo;
 import android.content.pm.ShortcutManager;
 import android.content.res.ColorStateList;
+import android.content.res.Resources;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.Icon;
@@ -16,6 +17,7 @@ import android.os.Build;
 import android.support.annotation.RequiresApi;
 import android.support.design.widget.TabLayout;
 import android.text.TextUtils;
+import android.util.TypedValue;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -31,7 +33,6 @@ import com.door.view.ShowOpenDoorDialog;
 import com.invite.activity.InviteActivity;
 import com.scanCode.activity.CaptureActivity;
 import com.user.UserAppConst;
-import com.youmai.hxsdk.view.chat.utils.DisplayUtils;
 
 import java.lang.reflect.Field;
 import java.text.DecimalFormat;
@@ -144,30 +145,6 @@ public class TableLayoutUtils {
                 e.printStackTrace();
             }
         });
-    }
-
-    /**
-     * tab可滑动
-     */
-    public static void dynamicSetTabLayoutMode(Context context, TabLayout tabLayout) {
-        int tabWidth = calculateTabWidth(tabLayout);
-        int screenWidth = DisplayUtils.getScreenWidth(context);
-
-        if (tabWidth <= screenWidth) {
-            tabLayout.setTabMode(TabLayout.MODE_FIXED);
-        } else {
-            tabLayout.setTabMode(TabLayout.MODE_SCROLLABLE);
-        }
-    }
-
-    private static int calculateTabWidth(TabLayout tabLayout) {
-        int tabWidth = 0;
-        for (int i = 0; i < tabLayout.getChildCount(); i++) {
-            final View view = tabLayout.getChildAt(i);
-            view.measure(0, 0); // 通知父view测量，以便于能够保证获取到宽高
-            tabWidth += view.getMeasuredWidth();
-        }
-        return tabWidth;
     }
 
     /**

@@ -80,6 +80,7 @@ import com.bumptech.glide.request.target.ImageViewTarget;
 import com.cashier.activity.NewOrderPayActivity;
 import com.customerInfo.activity.CustomerInfoActivity;
 import com.customerInfo.activity.DeliveryAddressListActivity;
+import com.customerInfo.protocol.RealNameTokenEntity;
 import com.dashuview.library.keep.Cqb_PayUtil;
 import com.dashuview.library.keep.ListenerUtils;
 import com.dashuview.library.keep.MyListener;
@@ -107,6 +108,10 @@ import com.permission.PermissionListener;
 import com.scanCode.activity.CaptureActivity;
 import com.setting.activity.DeliveryOauthDialog;
 import com.setting.activity.UserAccountSaftyActivity;
+import com.tencent.authsdk.AuthConfig;
+import com.tencent.authsdk.AuthSDKApi;
+import com.tencent.authsdk.IDCardInfo;
+import com.tencent.authsdk.callback.IdentityCallback;
 import com.tencent.mm.opensdk.modelbiz.WXLaunchMiniProgram;
 import com.tencent.mm.opensdk.openapi.IWXAPI;
 import com.tencent.mm.opensdk.openapi.WXAPIFactory;
@@ -117,6 +122,7 @@ import com.user.UserAppConst;
 import com.user.UserMessageConstant;
 import com.user.Utils.TokenUtils;
 import com.user.entity.ThridBindStatusEntity;
+import com.user.model.NewUserModel;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -592,6 +598,45 @@ public class WebViewActivity extends BaseActivity implements View.OnLongClickLis
 
                 }
                 break;
+            case 2://获取实名认证token
+                try {
+                    RealNameTokenEntity entity = com.nohttp.utils.GsonUtils.gsonToBean(result, RealNameTokenEntity.class);
+                    RealNameTokenEntity.ContentBean bean = entity.getContent();
+                    AuthConfig.Builder configBuilder = new AuthConfig.Builder(bean.getBizToken(), R.class.getPackage().getName());
+                    AuthSDKApi.startMainPage(this, configBuilder.build(), mListener);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+                break;
+            case 3://实名认证成功
+                String state = "0";//1 成功；0失败
+                try {
+                    JSONObject jsonObject = new JSONObject(result);
+                    String code = jsonObject.getString("code");
+                    if ("0".equals(code)) {
+                        String content = jsonObject.getString("content");
+                        if ("1".equals(content)) {
+                            state = "1";
+                            ToastUtil.toastShow(this, "认证成功");
+                            editor.putString(UserAppConst.COLOUR_AUTH_REAL_NAME + shared.getInt(UserAppConst.Colour_User_id, 0), realName).commit();
+                        } else {
+                            ToastUtil.toastShow(this, "认证失败");
+                        }
+                    } else {
+                        String message = jsonObject.getString("message");
+                        ToastUtil.toastShow(this, message);
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+                JSONObject jsonObject = new JSONObject();
+                try {
+                    jsonObject.put("state", state);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+                webView.loadUrl("javascript:window.CLColourlifeIdentifyAuthHandler('" + jsonObject.toString() + "')");
+                break;
         }
     }
 
@@ -836,6 +881,14 @@ public class WebViewActivity extends BaseActivity implements View.OnLongClickLis
             } catch (JSONException e) {
                 e.printStackTrace();
             }
+        }
+
+        /**
+         * 前往实名认证
+         */
+        @JavascriptInterface
+        public void CLColourlifeIdentifyAuth() {
+//            toRealName();
         }
 
         /**
@@ -2019,5 +2072,32 @@ public class WebViewActivity extends BaseActivity implements View.OnLongClickLis
     @Override
     public void onScanParkLockChanged(String mac) {
     }
+
+    private NewUserModel newUserModel;
+    private String realName;
+
+    private void toRealName() {
+        if (null == newUserModel) {
+            newUserModel = new NewUserModel(WebViewActivity.this);
+        }
+        newUserModel.getRealNameToken(2, WebViewActivity.this, true);
+    }
+
+    /**
+     * 监听实名认证返回
+     */
+    private IdentityCallback mListener = data -> {
+        boolean identityStatus = data.getBooleanExtra(AuthSDKApi.EXTRA_IDENTITY_STATUS, false);
+        if (identityStatus) {//true 已实名
+            IDCardInfo idCardInfo = data.getExtras().getParcelable(AuthSDKApi.EXTRA_IDCARD_INFO);
+            if (idCardInfo != null) {
+                realName = idCardInfo.getName();
+                if (null == newUserModel) {
+                    newUserModel = new NewUserModel(WebViewActivity.this);
+                }
+                newUserModel.submitRealName(3, idCardInfo.getIDcard(), realName, this);
+            }
+        }
+    };
 
 }
