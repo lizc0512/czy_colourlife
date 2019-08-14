@@ -85,7 +85,7 @@ public class LekaiService extends Service {
         mEdenApi.setOnDisconnectCallback((device, state, newState) -> {
             // 开锁时SDK会停止扫描，开锁完成后需在断开连接的回调中重启扫描
             if (!ActivityLifecycleListener.isAppBackground()) {
-                LogUtil.e("LekaiService ", "断开连接");
+//                LogUtil.e("LekaiService ", "断开连接");
                 mEdenApi.startScanDevice();
             }
         });
@@ -141,8 +141,8 @@ public class LekaiService extends Service {
     public void unlockDevice(Device device) {
         if (null != mEdenApi) {
             mEdenApi.unlock(device, ACC, TOK, AppConst.CONNECT_TIME_OUT, (i, s, i1) -> {
-                LogUtil.e("LekaiService", " =====================================");
-                LogUtil.e("LekaiService 蓝牙门禁", " code：" + (i == 0 ? "开门成功" : i) + "    message:" + s + "   电量：" + i1);
+//                LogUtil.e("LekaiService", " =====================================");
+//                LogUtil.e("LekaiService 蓝牙门禁", " code：" + (i == 0 ? "开门成功" : i) + "    message:" + s + "   电量：" + i1);
                 Handler handler = new Handler(Looper.getMainLooper());
                 handler.post(() -> {
                     if (0 == i) {
@@ -173,7 +173,7 @@ public class LekaiService extends Service {
 
     public void startScanDevice() {
         if (null != mEdenApi) {
-            LogUtil.e("LekaiService ", "重新扫描");
+//            LogUtil.e("LekaiService ", "重新扫描");
             mEdenApi.startScanDevice();
         }
     }
@@ -210,20 +210,20 @@ public class LekaiService extends Service {
         if (mEdenApi != null) {
             String deviceMac = LekaiHelper.formatMacAddress(mac);
             Device parkDevice = mParkLockController.getParkDeviceByMac(deviceMac);
-            LogUtil.e("LekaiService", " =====================================");
-            LogUtil.e("LekaiService 下降", "mac地址：" + deviceMac);
+//            LogUtil.e("LekaiService", " =====================================");
+//            LogUtil.e("LekaiService 下降", "mac地址：" + deviceMac);
             if (parkDevice != null) {
                 mEdenApi.connectDevice(parkDevice, 5000, new OnConnectCallback() {
                     @Override
                     public void connectSuccess(Device device) {
-                        LogUtil.e("LekaiService 下降", "请求 ACC:" + ACC + "  TOK:" + TOK);
+//                        LogUtil.e("LekaiService 下降", "请求 ACC:" + ACC + "  TOK:" + TOK);
 
                         mEdenApi.parkUnlock(device, ACC, TOK, callback);
                     }
 
                     @Override
                     public void connectError(int error, String message) {
-                        LogUtil.e("LekaiService 下降", "失败：error：" + error + "  message：" + message);
+//                        LogUtil.e("LekaiService 下降", "失败：error：" + error + "  message：" + message);
                         Handler handler = new Handler(Looper.getMainLooper());
                         handler.post(() -> ToastUtil.toastShow(getApplicationContext(), message));
                     }
@@ -242,20 +242,20 @@ public class LekaiService extends Service {
         if (mEdenApi != null) {
             String deviceMac = LekaiHelper.formatMacAddress(mac);
             Device parkDevice = mParkLockController.getParkDeviceByMac(deviceMac);
-            LogUtil.e("LekaiService", " =====================================");
-            LogUtil.e("LekaiService 升起", "mac地址：" + deviceMac);
+//            LogUtil.e("LekaiService", " =====================================");
+//            LogUtil.e("LekaiService 升起", "mac地址：" + deviceMac);
             if (parkDevice != null) {
                 mEdenApi.connectDevice(parkDevice, 5000, new OnConnectCallback() {
                     @Override
                     public void connectSuccess(Device device) {
-                        LogUtil.e("LekaiService 升起", "请求 ACC:" + ACC + "  TOK:" + TOK);
+//                        LogUtil.e("LekaiService 升起", "请求 ACC:" + ACC + "  TOK:" + TOK);
 
                         mEdenApi.parkLock(device, ACC, TOK, callback);
                     }
 
                     @Override
                     public void connectError(int error, String message) {
-                        LogUtil.e("LekaiService 升起", "失败：error：" + error + "  message：" + message);
+//                        LogUtil.e("LekaiService 升起", "失败：error：" + error + "  message：" + message);
                         Handler handler = new Handler(Looper.getMainLooper());
                         handler.post(() -> ToastUtil.toastShow(getApplicationContext(), message));
                     }

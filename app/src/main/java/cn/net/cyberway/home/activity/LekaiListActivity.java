@@ -133,7 +133,7 @@ public class LekaiListActivity extends BaseActivity implements View.OnClickListe
                 ToastUtil.toastShow(getApplicationContext(), "正在下降车位锁");
 
                 LekaiHelper.parkUnlock(keysList.get(position).getMac(), (status, message, battery) -> {
-                    LogUtil.e("LekaiService 倒下", "status:" + status + "  message:" + message + "  battery:" + battery);
+//                    LogUtil.e("LekaiService 倒下", "status:" + status + "  message:" + message + "  battery:" + battery);
 
                     handler = new Handler(Looper.getMainLooper());
                     handler.post(() -> ToastUtil.toastShow(getApplicationContext(), 0 == status ? ("操作成功,电量：" + battery) : err));
@@ -153,7 +153,7 @@ public class LekaiListActivity extends BaseActivity implements View.OnClickListe
                 ToastUtil.toastShow(getApplicationContext(), "正在升起位锁");
 
                 LekaiHelper.parkLock(keysList.get(position).getMac(), (status, message, battery) -> {
-                    LogUtil.e("LekaiService 抬起", "status:" + status + "  message:" + message + "  battery:" + battery);
+//                    LogUtil.e("LekaiService 抬起", "status:" + status + "  message:" + message + "  battery:" + battery);
 
                     handler = new Handler(Looper.getMainLooper());
                     handler.post(() -> ToastUtil.toastShow(getApplicationContext(), 0 == status ? ("操作成功,电量：" + battery) : err));
