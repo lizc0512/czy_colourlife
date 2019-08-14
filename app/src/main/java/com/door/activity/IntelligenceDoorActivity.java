@@ -219,6 +219,7 @@ public class IntelligenceDoorActivity extends BaseFragmentActivity implements Ne
      * 远程开门
      */
     public void remoteDoor(String qrcode) {
+        door_code = qrcode;
         newDoorModel.openDoor(2, qrcode, true, IntelligenceDoorActivity.this);
     }
 
