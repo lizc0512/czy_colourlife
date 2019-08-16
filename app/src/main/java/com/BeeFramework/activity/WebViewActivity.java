@@ -888,7 +888,7 @@ public class WebViewActivity extends BaseActivity implements View.OnLongClickLis
          */
         @JavascriptInterface
         public void CLColourlifeIdentifyAuth() {
-//            toRealName();
+            toRealName();
         }
 
         /**
