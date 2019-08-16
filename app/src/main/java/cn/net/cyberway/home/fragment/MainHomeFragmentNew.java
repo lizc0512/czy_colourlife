@@ -329,6 +329,7 @@ public class MainHomeFragmentNew extends Fragment implements NewHttpResponse, My
     private TextView title_account_amount;
     private TextView tv_account_amount;
     private View colour_wallet_view;
+    private View colour_distance_view;
     private RecyclerView rv_fuction;
     private String colourWalletUrl = "";
     private String colourHomeUrl = "";
@@ -375,6 +376,7 @@ public class MainHomeFragmentNew extends Fragment implements NewHttpResponse, My
         tv_meal_amount = top_view.findViewById(R.id.tv_meal_amount);
         tv_account_amount = top_view.findViewById(R.id.tv_account_amount);
         colour_wallet_view = top_view.findViewById(R.id.colour_wallet_view);
+        colour_distance_view = top_view.findViewById(R.id.colour_distance_view);
         rv_fuction = top_view.findViewById(R.id.rv_fuction);
         home_wallet_layout.setOnClickListener(this);
         home_period_layout.setOnClickListener(this);
@@ -383,6 +385,7 @@ public class MainHomeFragmentNew extends Fragment implements NewHttpResponse, My
 
     private int themeSuccess = 0;
     private int identity;
+    private int protect;
     private String return_total_icon;
     private String return_stage_icon;
     private String fp_balance_icon;
@@ -412,6 +415,7 @@ public class MainHomeFragmentNew extends Fragment implements NewHttpResponse, My
             tabColor = contentBean.getTab_color();
             fp_icon = contentBean.getFp_icon();
             msg_img = contentBean.getMsg_img();
+            protect = contentBean.getProtect();
             position_img = contentBean.getPosition_img();
             showHomeHeaderResource();
             themeSuccess = 1;
@@ -449,24 +453,37 @@ public class MainHomeFragmentNew extends Fragment implements NewHttpResponse, My
         setTextColor(textColor, tv_account_amount);
         setTextColor(textColor, tv_show_community);
         setTextColor(textColor, alpha_community);
+        float distance = 0;
         if (identity == 3) {
-            height = 40;
-            LinearLayout.LayoutParams viewLayoutParams = (LinearLayout.LayoutParams) colour_wallet_view.getLayoutParams();
-            viewLayoutParams.height = Util.DensityUtil.dip2px(getActivity(), 115.0f) + getStatusBarHeight(getActivity());
-            colour_wallet_view.setLayoutParams(viewLayoutParams);
             home_parking_layout.setVisibility(View.GONE);
-            head_banner.setVisibility(View.VISIBLE);
-            if (null != rl_banner) {
-                rl_banner.setVisibility(View.GONE);
+            if (protect == 1) {
+                height = 40;
+                distance = 115.0f;
+                head_banner.setVisibility(View.VISIBLE);
+                colour_distance_view.setVisibility(View.VISIBLE);
+                if (null != rl_banner) {
+                    rl_banner.setVisibility(View.GONE);
+                }
+            } else {
+                distance = 60.0f;
+                height = 20;
+                head_banner.setVisibility(View.GONE);
+                colour_distance_view.setVisibility(View.GONE);
+                if (null != rl_banner) {
+                    rl_banner.setVisibility(View.VISIBLE);
+                }
             }
         } else {
             height = 110;
-            LinearLayout.LayoutParams viewLayoutParams = (LinearLayout.LayoutParams) colour_wallet_view.getLayoutParams();
-            viewLayoutParams.height = Util.DensityUtil.dip2px(getActivity(), 55.0f) + getStatusBarHeight(getActivity());
-            colour_wallet_view.setLayoutParams(viewLayoutParams);
+            distance = 55.0f;
             home_parking_layout.setVisibility(View.VISIBLE);
+            colour_distance_view.setVisibility(View.VISIBLE);
             head_banner.setVisibility(View.GONE);
         }
+
+        LinearLayout.LayoutParams viewLayoutParams = (LinearLayout.LayoutParams) colour_wallet_view.getLayoutParams();
+        viewLayoutParams.height = Util.DensityUtil.dip2px(getActivity(), distance) + getStatusBarHeight(getActivity());
+        colour_wallet_view.setLayoutParams(viewLayoutParams);
         if (!TextUtils.isEmpty(title_bg)) {  //c12832
             alpha_title_layout.setAlpha(0);
 //            ((MainActivity) getActivity()).setHomeStyle(tabColor);
@@ -852,7 +869,7 @@ public class MainHomeFragmentNew extends Fragment implements NewHttpResponse, My
             for (HomeFuncEntity.ContentBean dataBean : bannerDataBeanList) {
                 bannerUrlList.add(dataBean.getImg());
             }
-            if (identity == 3) {
+            if (identity == 3 && protect == 1) {
                 rl_banner.setVisibility(View.GONE);
                 head_banner.setVisibility(View.VISIBLE);
                 adversizeBannerShow();
@@ -1091,7 +1108,7 @@ public class MainHomeFragmentNew extends Fragment implements NewHttpResponse, My
         String homeBalanceCache = mShared.getString(UserAppConst.COLOR_HOME_HEADER, "");
         if (!TextUtils.isEmpty(homeResourceCache)) {
             homeHeaderResourceShow(homeResourceCache);
-            if (identity == 3) {
+            if (identity == 3 && protect == 1) {
                 String homeBannerCache = mShared.getString(UserAppConst.COLOR_HOME_BANNER, "");
                 homeBannerShow(homeBannerCache);
             }

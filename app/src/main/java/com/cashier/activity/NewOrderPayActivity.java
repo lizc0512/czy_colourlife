@@ -23,7 +23,6 @@ import com.BeeFramework.activity.BaseActivity;
 import com.BeeFramework.model.Constants;
 import com.BeeFramework.model.NewHttpResponse;
 import com.cashier.modelnew.NewOrderPayModel;
-import com.cashier.protocolchang.OrderChekEntity;
 import com.cashier.protocolchang.PayEntity;
 import com.cashier.protocolchang.PayResultEntity;
 import com.cashier.protocolchang.PayStatusEntity;
@@ -733,13 +732,16 @@ public class NewOrderPayActivity extends BaseActivity implements View.OnClickLis
                 break;
             case 1:
                 BaseContentEntity baseContentEntity = GsonUtils.gsonToBean(result, BaseContentEntity.class);
+                int code = baseContentEntity.getCode();
                 try {
-                    if (baseContentEntity.getCode() == 0) {
+                    if (code == 0) {
                         PayResultEntity payResultEntity = GsonUtils.gsonToBean(result, PayResultEntity.class);
                         LinkedHashMap<String, String> publicParams = new LinkedHashMap<String, String>();
                         Map<String, String> resultMap = GsonUtils.gsonObjectToMaps(payResultEntity.getContent());
                         publicParams.putAll(resultMap);
                         PayUtil.getInstance(NewOrderPayActivity.this).createPay(publicParams, Constants.CAIWALLET_ENVIRONMENT);
+                    } else if (code == 305) {
+                        showNoticeDialog(baseContentEntity.getMessage());
                     } else {
                         ToastUtil.toastShow(NewOrderPayActivity.this, baseContentEntity.getMessage());
                     }
@@ -771,27 +773,6 @@ public class NewOrderPayActivity extends BaseActivity implements View.OnClickLis
                     payResultQuery();
                 }
                 break;
-            case 3:
-                if (TextUtils.isEmpty(result)) {
-                    createCzyOrder();
-                } else {
-                    try {
-                        OrderChekEntity orderChekEntity = GsonUtils.gsonToBean(result, OrderChekEntity.class);
-                        OrderChekEntity.ContentBean contentBean = orderChekEntity.getContent();
-                        if ("1".equals(contentBean.getLimit())) {
-                            if ("1".equals(contentBean.getIs_identity())) {
-                                createCzyOrder();
-                            } else {
-                                shownoticeDialog(contentBean.getNote());
-                            }
-                        } else {
-                            createCzyOrder();
-                        }
-                    } catch (Exception e) {
-                        createCzyOrder();
-                    }
-                }
-                break;
             case 4:
                 if (!TextUtils.isEmpty(result)) {
                     try {
@@ -811,8 +792,8 @@ public class NewOrderPayActivity extends BaseActivity implements View.OnClickLis
                 if (!TextUtils.isEmpty(result)) {
                     try {
                         JSONObject jsonObject = new JSONObject(result);
-                        String code = jsonObject.getString("code");
-                        if ("0".equals(code)) {
+                        String resultCode = jsonObject.getString("code");
+                        if ("0".equals(resultCode)) {
                             String content = jsonObject.getString("content");
                             if ("1".equals(content)) {
                                 ToastUtil.toastShow(this, "认证成功");
@@ -862,7 +843,7 @@ public class NewOrderPayActivity extends BaseActivity implements View.OnClickLis
     private NewUserModel newUserModel;
     private String realName;
 
-    private void shownoticeDialog(String notice) {
+    private void showNoticeDialog(String notice) {
         if (noticeDialog == null) {
             noticeDialog = new EditDialog(NewOrderPayActivity.this);
         }

@@ -108,6 +108,7 @@ public class NewOrderPayModel extends BaseModel {
         Map<String, Object> paramsMap = new HashMap<String, Object>();
         paramsMap.put("colour_sn", sn);
         paramsMap.put("payment_uuid", payment_uuid);
+        paramsMap.put("limit", 1);
         final Request<String> request = NoHttp.createStringRequest(RequestEncryptionUtils.postCombileMD5(mContext, 5, payOrderUrl), RequestMethod.POST);
         request(what, request, paramsMap, new HttpListener<String>() {
             @Override
@@ -115,10 +116,7 @@ public class NewOrderPayModel extends BaseModel {
                 int responseCode = response.getHeaders().getResponseCode();
                 String result = response.get();
                 if (responseCode == RequestEncryptionUtils.responseSuccess) {
-                    int resultCode = showSuccesResultMessage(result);
-                    if (resultCode == 0) {
-                        newHttpResponse.OnHttpResponse(what, result);
-                    }
+                    newHttpResponse.OnHttpResponse(what, result);
                 } else if (responseCode == RequestEncryptionUtils.responseRequest) {
 
                 } else {
