@@ -27,6 +27,7 @@ import com.BeeFramework.view.NoScrollGridView;
 import com.external.eventbus.EventBus;
 import com.nohttp.utils.GlideImageLoader;
 import com.nohttp.utils.GsonUtils;
+import com.sobot.chat.utils.ScreenUtils;
 import com.user.UserAppConst;
 import com.user.UserMessageConstant;
 import com.yanzhenjie.recyclerview.swipe.SwipeMenuRecyclerView;
@@ -43,6 +44,7 @@ import cn.net.cyberway.adpter.BenefitFindAdapter;
 import cn.net.cyberway.adpter.BenefitHotAdapter;
 import cn.net.cyberway.adpter.BenefitRecommendAdapter;
 import cn.net.cyberway.model.BenefitModel;
+import cn.net.cyberway.protocol.BenefitActivityEntity;
 import cn.net.cyberway.protocol.BenefitBannerEntity;
 import cn.net.cyberway.protocol.BenefitChannlEntity;
 import cn.net.cyberway.protocol.BenefitFindEntity;
@@ -50,6 +52,7 @@ import cn.net.cyberway.protocol.BenefitHotEntity;
 import cn.net.cyberway.protocol.BenefitProfileEntity;
 import cn.net.cyberway.utils.BenefitDefaultDataConst;
 import cn.net.cyberway.utils.LinkParseUtil;
+import cn.net.cyberway.view.BenefitActivityDialog;
 
 import static com.youmai.hxsdk.utils.DisplayUtil.getStatusBarHeight;
 
@@ -102,6 +105,7 @@ public class BenefitFragment extends Fragment implements View.OnClickListener, N
     private View v_alpha_benefit_status_bar;
     private ImageView iv_alpha_order;
     private ImageView iv_alpha_mine;
+    private ImageView iv_red;
 
     private BGABanner bga_banner;
     private ArrayList<BenefitBannerEntity.ContentBean> bannerDataBeanList = new ArrayList<>();
@@ -128,6 +132,7 @@ public class BenefitFragment extends Fragment implements View.OnClickListener, N
     private boolean isRefresh = false;
     private boolean selectAll = false;
     private boolean selectRecoment = true;
+    private boolean mHidden = false;
     private InterHandler mHandler = new InterHandler(this);
 
     private String profileCache = "";
@@ -152,6 +157,7 @@ public class BenefitFragment extends Fragment implements View.OnClickListener, N
         initCacheData();
         selectTitle();
         initData();
+        mHandler.sendEmptyMessageDelayed(7, 100);
         return mView;
     }
 
@@ -184,7 +190,7 @@ public class BenefitFragment extends Fragment implements View.OnClickListener, N
 
         findCache = mShared.getString(UserAppConst.COLOUR_BENEFIT_FIND, "");
         if (!TextUtils.isEmpty(findCache)) {
-            mHandler.sendEmptyMessageDelayed(6, 600);
+            mHandler.sendEmptyMessageDelayed(6, 800);
         }
     }
 
@@ -229,6 +235,7 @@ public class BenefitFragment extends Fragment implements View.OnClickListener, N
         v_alpha_benefit_status_bar = mView.findViewById(R.id.v_alpha_benefit_status_bar);
         iv_alpha_order = mView.findViewById(R.id.iv_alpha_order);
         iv_alpha_mine = mView.findViewById(R.id.iv_alpha_mine);
+        iv_red = mView.findViewById(R.id.iv_red);
 
         refresh_layout.setColorSchemeColors(Color.parseColor("#3290FF"), Color.parseColor("#6ABDF9"));
         refresh_layout.setOnRefreshListener(() -> {
@@ -348,7 +355,7 @@ public class BenefitFragment extends Fragment implements View.OnClickListener, N
     @Override
     public void onResume() {
         super.onResume();
-        mHandler.sendEmptyMessageDelayed(1, 1000);
+        mHandler.sendEmptyMessageDelayed(1, 1500);
     }
 
     /**
@@ -443,8 +450,6 @@ public class BenefitFragment extends Fragment implements View.OnClickListener, N
                 if (!profileCache.equals(result)) {
                     mEditor.putString(UserAppConst.COLOUR_BENEFIT_PROFILE, result).apply();
                     result(what, result);
-                } else {
-                    refresh_layout.setRefreshing(false);
                 }
                 break;
             case 2:
@@ -466,6 +471,9 @@ public class BenefitFragment extends Fragment implements View.OnClickListener, N
                 }
                 break;
             case 5:
+                result(what, result);
+                break;
+            case 7:
                 result(what, result);
                 break;
         }
@@ -513,6 +521,22 @@ public class BenefitFragment extends Fragment implements View.OnClickListener, N
                             payUrl = propertyButtonBean.getUrl();
                         } else {
                             iv_pay.setVisibility(View.GONE);
+                        }
+
+                        try {
+                            BenefitProfileEntity.ContentBean.FloatAdBean floatAdBean = entity.getContent().getFloat_ad();
+                            if (null != floatAdBean) {//悬浮层广告，没有时为空对象 {}
+                                if (null != floatAdBean.getImage()) {
+                                    iv_red.setVisibility(View.VISIBLE);
+                                    GlideImageLoader.loadImageDefaultDisplay(getActivity(), floatAdBean.getImage(), iv_red, R.drawable.icon_default, R.drawable.icon_default);
+                                    iv_red.setOnClickListener(v -> LinkParseUtil.parse(mActivity, floatAdBean.getUrl(), floatAdBean.getTitle()));
+                                } else {
+                                    iv_red.setVisibility(View.GONE);
+                                }
+                            }
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                            iv_red.setVisibility(View.GONE);
                         }
                     } catch (Exception e) {
                         e.printStackTrace();
@@ -587,6 +611,28 @@ public class BenefitFragment extends Fragment implements View.OnClickListener, N
                 }
                 isRefresh = false;
                 break;
+            case 7:
+                if (!TextUtils.isEmpty(result)) {
+                    try {
+                        BenefitActivityEntity entity = GsonUtils.gsonToBean(result, BenefitActivityEntity.class);
+                        BenefitActivityEntity.ContentBean bean = entity.getContent();
+                        if (!mHidden && null != bean) {
+                            if (null != bean.getImage()) {
+                                BenefitActivityDialog activityDialog = new BenefitActivityDialog(mActivity, ScreenUtils.getScreenWidth(mActivity));
+                                activityDialog.show();
+                                GlideImageLoader.loadImageDefaultDisplay(mActivity, bean.getImage(), activityDialog.iv_activity, R.drawable.default_image, R.drawable.default_image);
+                                activityDialog.iv_close.setOnClickListener(v -> activityDialog.dismiss());
+                                activityDialog.iv_activity.setOnClickListener(v -> {
+                                    activityDialog.dismiss();
+                                    LinkParseUtil.parse(mActivity, bean.getUrl(), bean.getTitle());
+                                });
+                            }
+                        }
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
+                break;
         }
     }
 
@@ -604,6 +650,7 @@ public class BenefitFragment extends Fragment implements View.OnClickListener, N
     @Override
     public void onHiddenChanged(boolean hidden) {
         super.onHiddenChanged(hidden);
+        mHidden = hidden;
     }
 
     /**
@@ -682,6 +729,9 @@ public class BenefitFragment extends Fragment implements View.OnClickListener, N
                         break;
                     case 6:
                         fragment.result(5, fragment.findCache);
+                        break;
+                    case 7:
+                        fragment.benefitModel.getActivity(7, fragment);
                         break;
                 }
             } else {

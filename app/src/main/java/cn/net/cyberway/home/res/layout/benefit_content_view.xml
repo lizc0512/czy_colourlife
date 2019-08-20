@@ -37,7 +37,8 @@
             android:layout_toStartOf="@+id/iv_mine"
             android:layout_toLeftOf="@+id/iv_mine"
             android:padding="4dp"
-            android:src="@drawable/ic_benefit_order" />
+            android:src="@drawable/ic_benefit_order"
+            android:visibility="gone" />
 
         <ImageView
             android:id="@+id/iv_mine"
