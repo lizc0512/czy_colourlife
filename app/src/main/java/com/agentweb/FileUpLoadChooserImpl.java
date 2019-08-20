@@ -179,16 +179,13 @@ public class FileUpLoadChooserImpl implements IFileUploadChooser {
     }
 
     private void onVideoAction() {
-
         if (mActivity == null)
             return;
-
         if (mPermissionInterceptor != null) {
             if (mPermissionInterceptor.intercept(FileUpLoadChooserImpl.this.mWebView.getUrl(), AgentWebPermissions.CAMERA, "camera")) {
                 cancel();
                 return;
             }
-
         }
         ActionActivity.Action mAction = new ActionActivity.Action();
         List<String> deniedPermissions = null;

@@ -8,8 +8,10 @@ android {
         applicationId "cn.net.cyberway"
         minSdkVersion MIN_SDK_VERSION as int
         targetSdkVersion TARGET_SDK_VERSION as int
+//        versionCode 90
+//        versionName "6.6.16"
         versionCode 89
-        versionName "6.6.14.1"
+        versionName "6.6.15.1"
         multiDexEnabled true
         javaCompileOptions {
             annotationProcessorOptions {
@@ -160,7 +162,7 @@ dependencies {
     implementation('com.alibaba.android:ultraviewpager:1.0.7.7@aar') {
         transitive = true
     }
-    compile ('com.alibaba.android:vlayout:1.2.8@aar') {
+    compile('com.alibaba.android:vlayout:1.2.8@aar') {
         transitive = true
     }
     implementation 'com.yanzhenjie:recyclerview-swipe:1.1.4'
@@ -192,7 +194,7 @@ dependencies {
     implementation 'com.tencent.bugly:nativecrashreport:3.3.1'
     //腾讯人脸识别
     implementation(name: 'AuthSdk', ext: 'aar')
-    implementation  'com.tencent.mm.opensdk:wechat-sdk-android-without-mta:5.3.1'
+    implementation 'com.tencent.mm.opensdk:wechat-sdk-android-without-mta:5.3.1'
     //乐开
     implementation(name: 'lekai-open-sdk-v3.0.8', ext: 'aar')
     //数位场景识别 保留
