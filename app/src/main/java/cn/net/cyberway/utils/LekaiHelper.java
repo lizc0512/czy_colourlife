@@ -213,7 +213,16 @@ public class LekaiHelper {
     }
 
     /**
-     * 倒下
+     * 下降
+     */
+    public static void parkUnlock(String mac) {
+        if (null != mLekaiService) {
+            mLekaiService.parkUnlock(mac);
+        }
+    }
+
+    /**
+     * 下降
      */
     public static void parkUnlock(String mac, final OnUserOptParkLockCallback callback) {
         if (null != mLekaiService) {
@@ -222,7 +231,16 @@ public class LekaiHelper {
     }
 
     /**
-     * 抬起
+     * 升起
+     */
+    public static void parkLock(String mac) {
+        if (null != mLekaiService) {
+            mLekaiService.parkLock(mac);
+        }
+    }
+
+    /**
+     * 升起
      */
     public static void parkLock(String mac, final OnUserOptParkLockCallback callback) {
         if (null != mLekaiService) {

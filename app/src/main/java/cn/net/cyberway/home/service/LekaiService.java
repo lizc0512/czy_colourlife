@@ -8,6 +8,7 @@ import android.os.Handler;
 import android.os.IBinder;
 import android.os.Looper;
 import android.support.annotation.Nullable;
+import android.text.TextUtils;
 import android.util.Log;
 
 import com.BeeFramework.AppConst;
@@ -20,7 +21,7 @@ import com.intelspace.library.api.OnSyncUserKeysCallback;
 import com.intelspace.library.api.OnUserOptParkLockCallback;
 import com.intelspace.library.module.Device;
 import com.intelspace.library.module.LocalKey;
-import com.youmai.hxsdk.view.camera.util.LogUtil;
+import com.user.model.NewUserModel;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -34,14 +35,16 @@ import cn.net.cyberway.utils.LekaiHelper;
  * Created by hxg on 2019/4/7 17:15
  */
 public class LekaiService extends Service {
-
     private final String TAG = this.getClass().getSimpleName();
+    private static String err = "操作失败，请重试";
 
     private EdenApi mEdenApi;
     private LocalBinder mBinder = new LocalBinder();
     private BluetoothStateCallback mBluetoothStateCallback;
     private HashMap<String, Device> mParkMap = new HashMap<>(); // 所有的车位锁
     private LekaiParkLockController mParkLockController;
+    private NewUserModel newUserModel;
+    private Handler mHandler;
 
     private static String ACC = "";
     private static String TOK = "";
@@ -73,6 +76,9 @@ public class LekaiService extends Service {
     @Override
     public void onDestroy() {
         super.onDestroy();
+        if (null != mHandler) {
+            mHandler.removeCallbacksAndMessages(null);
+        }
         mEdenApi.unBindBleService();
     }
 
@@ -138,19 +144,30 @@ public class LekaiService extends Service {
         }
     }
 
+    /**
+     * 开门禁锁
+     */
     public void unlockDevice(Device device) {
         if (null != mEdenApi) {
-            mEdenApi.unlock(device, ACC, TOK, AppConst.CONNECT_TIME_OUT, (i, s, i1) -> {
+            mEdenApi.unlock(device, ACC, TOK, AppConst.CONNECT_TIME_OUT, (code, message, battery) -> {
 //                LogUtil.e("LekaiService", " =====================================");
 //                LogUtil.e("LekaiService 蓝牙门禁", " code：" + (i == 0 ? "开门成功" : i) + "    message:" + s + "   电量：" + i1);
-                Handler handler = new Handler(Looper.getMainLooper());
-                handler.post(() -> {
-                    if (0 == i) {
+                if (null == mHandler) {
+                    mHandler = new Handler(Looper.getMainLooper());
+                }
+                mHandler.post(() -> {
+                    if (0 == code) {
                         ToastUtil.toastShow(getApplicationContext(), "开门成功");
-                    } else if (ErrorConstants.IS_OPERATION_ERROR_TYPE_WRONG_TIME == i) {
+                    } else if (ErrorConstants.IS_OPERATION_ERROR_TYPE_WRONG_TIME == code) {
                         ToastUtil.toastShow(getApplicationContext(), "钥匙过期，请联系管理员");
                     } else {
                         ToastUtil.toastShow(getApplicationContext(), "开门失败");
+                    }
+                    if (null == newUserModel) {
+                        newUserModel = new NewUserModel(this);
+                    }
+                    if (!TextUtils.isEmpty(device.getCipherId())) {
+                        newUserModel.uploadOpenDoor(0, device.getCipherId(), "door", 0 == code ? 1 : 2);
                     }
                 });
             });
@@ -203,6 +220,68 @@ public class LekaiService extends Service {
     /**
      * 地锁 下降
      *
+     * @param mac 地锁设备Mac地址  E07DEA3DD86A
+     */
+    public void parkUnlock(String mac) {
+        if (mEdenApi != null) {
+            String deviceMac = LekaiHelper.formatMacAddress(mac);
+            Device parkDevice = mParkLockController.getParkDeviceByMac(deviceMac);
+//            LogUtil.e("LekaiService", " =====================================");
+//            LogUtil.e("LekaiService 下降", "mac地址：" + deviceMac);
+            if (parkDevice != null) {
+                mEdenApi.connectDevice(parkDevice, 5000, new OnConnectCallback() {
+                    @Override
+                    public void connectSuccess(Device device) {
+//                        LogUtil.e("LekaiService 下降", "请求 ACC:" + ACC + "  TOK:" + TOK);
+                        mEdenApi.parkUnlock(device, ACC, TOK, (status, message, battery) -> {
+//                            LogUtil.e("LekaiService 下降", "status:" + status + "  message:" + message + "  battery:" + battery);
+                            if (null == mHandler) {
+                                mHandler = new Handler(Looper.getMainLooper());
+                            }
+                            mHandler.post(() -> {
+                                try {
+                                    ToastUtil.toastShow(getApplicationContext(), 0 == status ? ("操作成功,电量：" + battery) : err);
+                                    if (null == newUserModel) {
+                                        newUserModel = new NewUserModel(LekaiService.this);
+                                    }
+                                    if (!TextUtils.isEmpty(device.getCipherId())) {
+                                        newUserModel.uploadOpenDoor(0, device.getCipherId(), "car", 0 == status ? 1 : 2);
+                                    }
+                                } catch (Exception e) {
+                                    e.printStackTrace();
+                                }
+                            });
+                        });
+                    }
+
+                    @Override
+                    public void connectError(int error, String message) {
+//                        LogUtil.e("LekaiService 下降", "m失败：mac: " + parkDevice.getCipherId() + "error：" + error + "  message：" + message);
+                        if (null == mHandler) {
+                            mHandler = new Handler(Looper.getMainLooper());
+                        }
+                        mHandler.post(() -> {
+                            try {
+                                ToastUtil.toastShow(getApplicationContext(), message);
+                                if (null == newUserModel) {
+                                    newUserModel = new NewUserModel(LekaiService.this);
+                                }
+                                if (!TextUtils.isEmpty(parkDevice.getCipherId())) {
+                                    newUserModel.uploadOpenDoor(0, parkDevice.getCipherId(), "car", 2);
+                                }
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                            }
+                        });
+                    }
+                });
+            }
+        }
+    }
+
+    /**
+     * 地锁 下降
+     *
      * @param mac      地锁设备Mac地址  E07DEA3DD86A
      * @param callback 操作回调
      */
@@ -224,8 +303,75 @@ public class LekaiService extends Service {
                     @Override
                     public void connectError(int error, String message) {
 //                        LogUtil.e("LekaiService 下降", "失败：error：" + error + "  message：" + message);
-                        Handler handler = new Handler(Looper.getMainLooper());
-                        handler.post(() -> ToastUtil.toastShow(getApplicationContext(), message));
+                        if (null == mHandler) {
+                            mHandler = new Handler(Looper.getMainLooper());
+                        }
+                        mHandler.post(() -> ToastUtil.toastShow(getApplicationContext(), message));
+                    }
+                });
+            }
+        }
+    }
+
+    /**
+     * 地锁 升起
+     *
+     * @param mac 地锁设备Mac地址
+     */
+    public void parkLock(String mac) {
+        if (mEdenApi != null) {
+            String deviceMac = LekaiHelper.formatMacAddress(mac);
+            Device parkDevice = mParkLockController.getParkDeviceByMac(deviceMac);
+//            LogUtil.e("LekaiService", " =====================================");
+//            LogUtil.e("LekaiService 升起", "mac地址：" + deviceMac);
+            if (parkDevice != null) {
+                mEdenApi.connectDevice(parkDevice, 5000, new OnConnectCallback() {
+                    @Override
+                    public void connectSuccess(Device device) {
+//                        LogUtil.e("LekaiService 升起", "请求 ACC:" + ACC + "  TOK:" + TOK);
+                        mEdenApi.parkLock(device, ACC, TOK, new OnUserOptParkLockCallback() {
+                            @Override
+                            public void userOptParkLockCallback(int status, String message, int battery) {
+                                try {
+//                                    LogUtil.e("LekaiService 升起", "status:" + status + "  message:" + message + "  battery:" + battery);
+                                    if (null == mHandler) {
+                                        mHandler = new Handler(Looper.getMainLooper());
+                                    }
+                                    mHandler.post(() -> {
+                                        ToastUtil.toastShow(getApplicationContext(), 0 == status ? ("操作成功,电量：" + battery) : err);
+                                        if (null == newUserModel) {
+                                            newUserModel = new NewUserModel(LekaiService.this);
+                                        }
+                                        if (!TextUtils.isEmpty(device.getCipherId())) {
+                                            newUserModel.uploadOpenDoor(0, device.getCipherId(), "car", 0 == status ? 1 : 2);
+                                        }
+                                    });
+                                } catch (Exception e) {
+                                    e.printStackTrace();
+                                }
+                            }
+                        });
+                    }
+
+                    @Override
+                    public void connectError(int error, String message) {
+//                        LogUtil.e("LekaiService 升起", "失败：error：" + error + "  message：" + message);
+                        if (null == mHandler) {
+                            mHandler = new Handler(Looper.getMainLooper());
+                        }
+                        mHandler.post(() -> {
+                            try {
+                                ToastUtil.toastShow(getApplicationContext(), message);
+                                if (null == newUserModel) {
+                                    newUserModel = new NewUserModel(LekaiService.this);
+                                }
+                                if (!TextUtils.isEmpty(parkDevice.getCipherId())) {
+                                    newUserModel.uploadOpenDoor(0, parkDevice.getCipherId(), "car", 2);
+                                }
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                            }
+                        });
                     }
                 });
             }
@@ -256,8 +402,10 @@ public class LekaiService extends Service {
                     @Override
                     public void connectError(int error, String message) {
 //                        LogUtil.e("LekaiService 升起", "失败：error：" + error + "  message：" + message);
-                        Handler handler = new Handler(Looper.getMainLooper());
-                        handler.post(() -> ToastUtil.toastShow(getApplicationContext(), message));
+                        if (null == mHandler) {
+                            mHandler = new Handler(Looper.getMainLooper());
+                        }
+                        mHandler.post(() -> ToastUtil.toastShow(getApplicationContext(), message));
                     }
                 });
             }
