@@ -75,17 +75,22 @@ public class FileUpLoadChooserImpl implements IFileUploadChooser {
             });
             return;
         }
-        String[] acceptypesArr = mFileChooserParams.getAcceptTypes();
-        if (acceptypesArr.length > 0) {
-            if (acceptypesArr[0].contains("video")) {
-                cameraState = true;
-                onVideoAction();
+        if (null != mFileChooserParams) {
+            String[] acceptypesArr = mFileChooserParams.getAcceptTypes();
+            if (null != acceptypesArr && acceptypesArr.length > 0) {
+                if (acceptypesArr[0].contains("video")) {
+                    cameraState = true;
+                    onVideoAction();
+                } else {
+                    openFileChooserInternal();
+                }
             } else {
                 openFileChooserInternal();
             }
         } else {
             openFileChooserInternal();
         }
+
     }
 
 
