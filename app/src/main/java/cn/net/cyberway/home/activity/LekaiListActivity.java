@@ -6,8 +6,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Looper;
 import android.support.v7.widget.LinearLayoutManager;
 import android.view.View;
 import android.widget.ImageView;
@@ -17,7 +15,6 @@ import com.BeeFramework.Utils.ToastUtil;
 import com.BeeFramework.activity.BaseActivity;
 import com.intelspace.library.module.LocalKey;
 import com.yanzhenjie.recyclerview.swipe.SwipeMenuRecyclerView;
-import com.youmai.hxsdk.view.camera.util.LogUtil;
 
 import java.util.ArrayList;
 import java.util.Objects;
@@ -42,7 +39,6 @@ public class LekaiListActivity extends BaseActivity implements View.OnClickListe
     private LekaiAdapter mAdapter;
 
     private ArrayList<LocalKey> keysList = new ArrayList<>();
-    private Handler handler;
     private boolean openBluetooth = false;
 
     @Override
@@ -63,9 +59,6 @@ public class LekaiListActivity extends BaseActivity implements View.OnClickListe
         try {
             if (null != bluetoothListener) {
                 unregisterReceiver(bluetoothListener);
-            }
-            if (null != handler) {
-                handler.removeCallbacksAndMessages(null);
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -132,12 +125,7 @@ public class LekaiListActivity extends BaseActivity implements View.OnClickListe
             if (openBluetooth) {
                 ToastUtil.toastShow(getApplicationContext(), "正在下降车位锁");
 
-                LekaiHelper.parkUnlock(keysList.get(position).getMac(), (status, message, battery) -> {
-//                    LogUtil.e("LekaiService 倒下", "status:" + status + "  message:" + message + "  battery:" + battery);
-
-                    handler = new Handler(Looper.getMainLooper());
-                    handler.post(() -> ToastUtil.toastShow(getApplicationContext(), 0 == status ? ("操作成功,电量：" + battery) : err));
-                });
+                LekaiHelper.parkUnlock(keysList.get(position).getMac());
             } else {
                 ToastUtil.toastShow(getApplicationContext(), "请打开蓝牙");
             }
@@ -152,12 +140,7 @@ public class LekaiListActivity extends BaseActivity implements View.OnClickListe
             if (openBluetooth) {
                 ToastUtil.toastShow(getApplicationContext(), "正在升起位锁");
 
-                LekaiHelper.parkLock(keysList.get(position).getMac(), (status, message, battery) -> {
-//                    LogUtil.e("LekaiService 抬起", "status:" + status + "  message:" + message + "  battery:" + battery);
-
-                    handler = new Handler(Looper.getMainLooper());
-                    handler.post(() -> ToastUtil.toastShow(getApplicationContext(), 0 == status ? ("操作成功,电量：" + battery) : err));
-                });
+                LekaiHelper.parkLock(keysList.get(position).getMac());
             } else {
                 ToastUtil.toastShow(getApplicationContext(), "请打开蓝牙");
             }

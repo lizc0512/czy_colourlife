@@ -95,6 +95,7 @@ public class NewUserModel extends BaseModel {
     private String getAuthDetail = "app/auth/application/detail";
     private String unbindAuth = "app/auth/application/removal";
     private String oneKeyLoginUrl = "user/onekey/login";
+    private String openRecordUrl = "app/door/openRocord";
 
 
     public NewUserModel(Context context) {
@@ -1720,6 +1721,36 @@ public class NewUserModel extends BaseModel {
             @Override
             public void onFailed(int what, Response<String> response) {
                 showExceptionMessage(what, response);
+            }
+        }, true, false);
+    }
+
+    /**
+     * 开门记录
+     */
+    public void uploadOpenDoor(int what, String cipher_id, String open_type, int status) {
+        Map<String, Object> params = new HashMap<>();
+        params.put("cipher_id", cipher_id);
+        params.put("open_type", open_type);
+        params.put("community_uuid", ""); //小区id 暂无用处
+        params.put("status", status);
+        final Request<String> request = NoHttp.createStringRequest(RequestEncryptionUtils.getCombileMD5(mContext, 11, openRecordUrl, params), RequestMethod.POST);
+        request(what, request, params, new HttpListener<String>() {
+            @Override
+            public void onSucceed(int what, Response<String> response) {
+//                int responseCode = response.getHeaders().getResponseCode();
+//                String result = response.get();
+//                LogUtil.e("LekaiService 上传开门记录:", result);
+//                if (responseCode == RequestEncryptionUtils.responseSuccess) {
+//                    int resultCode = showSuccesResultMessageTheme(result);
+//                    if (resultCode == 0) {
+//                        LogUtil.e("LekaiService 蓝牙门禁", "上传成功");
+//                    }
+//                }
+            }
+
+            @Override
+            public void onFailed(int what, Response<String> response) {
             }
         }, true, false);
     }

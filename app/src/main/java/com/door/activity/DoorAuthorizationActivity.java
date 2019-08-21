@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.res.Resources;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.support.v4.content.LocalBroadcastManager;
@@ -105,129 +106,133 @@ public class DoorAuthorizationActivity extends BaseActivity implements View.OnCl
 
     private void prepareView() {
 
-        authorModel = new DoorAuthorModel(this);
-        communityModel = new CommunityModel(this);
-        czyTitleLayout = (FrameLayout) findViewById(R.id.czy_title_layout);
-        user_top_view_back = (ImageView) findViewById(R.id.user_top_view_back);
-        user_top_view_back.setOnClickListener(this);
+        try {
+            authorModel = new DoorAuthorModel(this);
+            communityModel = new CommunityModel(this);
+            czyTitleLayout = (FrameLayout) findViewById(R.id.czy_title_layout);
+            user_top_view_back = (ImageView) findViewById(R.id.user_top_view_back);
+            user_top_view_back.setOnClickListener(this);
 
-        user_top_view_title = (TextView) findViewById(R.id.user_top_view_title);
-        user_top_view_title.setText(getResources().getString(R.string.title_door_authorize));
+            user_top_view_title = (TextView) findViewById(R.id.user_top_view_title);
+            user_top_view_title.setText(getResources().getString(R.string.title_door_authorize));
 
-        mInflater = LayoutInflater.from(DoorAuthorizationActivity.this);
-        View view = mInflater.inflate(R.layout.activity_door_authorization_header, null);
+            mInflater = LayoutInflater.from(DoorAuthorizationActivity.this);
+            View view = mInflater.inflate(R.layout.activity_door_authorization_header, null);
 
-        btn_hour = (Button) view.findViewById(R.id.btn_hour);
-        btn_hour.setOnClickListener(this);
-        btn_hour.setSelected(true);
-        btn_one_day = (Button) view.findViewById(R.id.btn_one_day);
-        btn_one_day.setOnClickListener(this);
-        btn_seven_days = (Button) view.findViewById(R.id.btn_seven_days);
-        btn_seven_days.setOnClickListener(this);
-        btn_years = (Button) view.findViewById(R.id.btn_years);
-        btn_years.setOnClickListener(this);
-        btn_permanent = (Button) view.findViewById(R.id.btn_permanent);
-        btn_permanent.setOnClickListener(this);
+            btn_hour = (Button) view.findViewById(R.id.btn_hour);
+            btn_hour.setOnClickListener(this);
+            btn_hour.setSelected(true);
+            btn_one_day = (Button) view.findViewById(R.id.btn_one_day);
+            btn_one_day.setOnClickListener(this);
+            btn_seven_days = (Button) view.findViewById(R.id.btn_seven_days);
+            btn_seven_days.setOnClickListener(this);
+            btn_years = (Button) view.findViewById(R.id.btn_years);
+            btn_years.setOnClickListener(this);
+            btn_permanent = (Button) view.findViewById(R.id.btn_permanent);
+            btn_permanent.setOnClickListener(this);
 
-        edit_mobile = (EditText) view.findViewById(R.id.edit_mobile);
-        edit_community = (TextView) view.findViewById(R.id.edit_community);
-        edit_community.setOnClickListener(this);
-        edit_memo = (EditText) view.findViewById(R.id.edit_memo);
+            edit_mobile = (EditText) view.findViewById(R.id.edit_mobile);
+            edit_community = (TextView) view.findViewById(R.id.edit_community);
+            edit_community.setOnClickListener(this);
+            edit_memo = (EditText) view.findViewById(R.id.edit_memo);
 
-        btn_commit = (Button) view.findViewById(R.id.btn_autor);
-        btn_commit.setOnClickListener(this);
-        adapter = new DoorAutorAdapter(DoorAuthorizationActivity.this, authorList);
-        listview = (ListView) findViewById(R.id.listview);
-        listview.addHeaderView(view);
-        listview.setAdapter(adapter);
-        listview.setVerticalScrollBarEnabled(false);
-        listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                DoorAuthorListEntity.ContentBean.ListBean authorizationListResp = authorList.get(position - 1);
-                if (authorizationListResp == null) {
-                    return;
+            btn_commit = (Button) view.findViewById(R.id.btn_autor);
+            btn_commit.setOnClickListener(this);
+            adapter = new DoorAutorAdapter(DoorAuthorizationActivity.this, authorList);
+            listview = (ListView) findViewById(R.id.listview);
+            listview.addHeaderView(view);
+            listview.setAdapter(adapter);
+            listview.setVerticalScrollBarEnabled(false);
+            listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                @Override
+                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                    DoorAuthorListEntity.ContentBean.ListBean authorizationListResp = authorList.get(position - 1);
+                    if (authorizationListResp == null) {
+                        return;
+                    }
+                    if ("1".equals(authorizationListResp.getType())) {
+                        //批复界面
+                        Intent intent = new Intent(DoorAuthorizationActivity.this, DoorAuthorizationApproveActivity.class);
+                        intent.putExtra("authorListResp", authorizationListResp);
+                        intent.putExtra("refuse", true);
+                        startActivityForResult(intent,
+                                INTENT_ACTION_OPEN_AUTHORIZATION_DETAIL);
+                    } else {
+                        //通过 已失效
+                        Intent authorizerIntent = new Intent(
+                                DoorAuthorizationActivity.this,
+                                DoorControlAuthorizationDetailActivity.class);
+                        authorizerIntent.putExtra("authorizationListResp",
+                                authorizationListResp);
+                        startActivityForResult(authorizerIntent,
+                                INTENT_ACTION_OPEN_AUTHORIZATION_DETAIL);
+                    }
                 }
-                if ("1".equals(authorizationListResp.getType())) {
-                    //批复界面
-                    Intent intent = new Intent(DoorAuthorizationActivity.this, DoorAuthorizationApproveActivity.class);
-                    intent.putExtra("authorListResp", authorizationListResp);
-                    intent.putExtra("refuse", true);
-                    startActivityForResult(intent,
-                            INTENT_ACTION_OPEN_AUTHORIZATION_DETAIL);
-                } else {
-                    //通过 已失效
-                    Intent authorizerIntent = new Intent(
-                            DoorAuthorizationActivity.this,
-                            DoorControlAuthorizationDetailActivity.class);
-                    authorizerIntent.putExtra("authorizationListResp",
-                            authorizationListResp);
-                    startActivityForResult(authorizerIntent,
-                            INTENT_ACTION_OPEN_AUTHORIZATION_DETAIL);
+            });
+            listview.setOnScrollListener(new AbsListView.OnScrollListener() {
+                @Override
+                public void onScrollStateChanged(AbsListView view, int scrollState) {
+
+                    //滑动隐藏键盘
+                    if (AbsListView.OnScrollListener.SCROLL_STATE_TOUCH_SCROLL == scrollState) {
+                        dismissSoftKeyboard(DoorAuthorizationActivity.this);
+                    }
                 }
-            }
-        });
-        listview.setOnScrollListener(new AbsListView.OnScrollListener() {
-            @Override
-            public void onScrollStateChanged(AbsListView view, int scrollState) {
 
-                //滑动隐藏键盘
-                if (AbsListView.OnScrollListener.SCROLL_STATE_TOUCH_SCROLL == scrollState) {
-                    dismissSoftKeyboard(DoorAuthorizationActivity.this);
+                @Override
+                public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
+
                 }
-            }
-
-            @Override
-            public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
-
-            }
-        });
+            });
 
 
-        countDownTimer = new CountDownTimer(6000, 1000) {
+            countDownTimer = new CountDownTimer(6000, 1000) {
 
-            @Override
-            public void onTick(long millisUntilFinished) {
+                @Override
+                public void onTick(long millisUntilFinished) {
 
-                time = millisUntilFinished / 1000;
+                    time = millisUntilFinished / 1000;
 
-                if (txt_time != null) {
-                    String date = "(提示：此页面将在" + time + "秒内直接关闭，并返回到门禁首页)";
-                    SpannableStringBuilder builder = new SpannableStringBuilder(date);
-                    ForegroundColorSpan redSpan = new ForegroundColorSpan(getResources().getColor(R.color.lightgred_color));
-                    builder.setSpan(redSpan, 9, 10, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-                    txt_time.setText(builder);
+                    if (txt_time != null) {
+                        String date = "(提示：此页面将在" + time + "秒内直接关闭，并返回到门禁首页)";
+                        SpannableStringBuilder builder = new SpannableStringBuilder(date);
+                        ForegroundColorSpan redSpan = new ForegroundColorSpan(getResources().getColor(R.color.lightgred_color));
+                        builder.setSpan(redSpan, 9, 10, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+                        txt_time.setText(builder);
+                    }
                 }
-            }
 
-            @Override
-            public void onFinish() {
-                finish();
-            }
-        };
-
-        edit_mobile.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-
-                if (s.toString().length() >= 11) {
-                    btn_commit.setBackgroundResource(R.drawable.btn_shape_pass);
-                } else {
-                    btn_commit.setBackgroundResource(R.drawable.btn_shape_gray);
+                @Override
+                public void onFinish() {
+                    finish();
                 }
-            }
+            };
 
-            @Override
-            public void afterTextChanged(Editable s) {
+            edit_mobile.addTextChangedListener(new TextWatcher() {
+                @Override
+                public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
-            }
-        });
-        ThemeStyleHelper.onlyFrameTitileBar(getApplicationContext(), czyTitleLayout, user_top_view_back, user_top_view_title);
+                }
+
+                @Override
+                public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+                    if (s.toString().length() >= 11) {
+                        btn_commit.setBackgroundResource(R.drawable.btn_shape_pass);
+                    } else {
+                        btn_commit.setBackgroundResource(R.drawable.btn_shape_gray);
+                    }
+                }
+
+                @Override
+                public void afterTextChanged(Editable s) {
+
+                }
+            });
+            ThemeStyleHelper.onlyFrameTitileBar(getApplicationContext(), czyTitleLayout, user_top_view_back, user_top_view_title);
+        } catch (Resources.NotFoundException e) {
+            e.printStackTrace();
+        }
     }
 
     /**
@@ -242,20 +247,23 @@ public class DoorAuthorizationActivity extends BaseActivity implements View.OnCl
      * 注册通知
      */
     private void registerNotice() {
-        mLocalBroadcastManager = LocalBroadcastManager
-                .getInstance(DoorAuthorizationActivity.this);
-        IntentFilter filter = new IntentFilter();
-        filter.addAction(Constant.ACTION_W90);// 授权的推送指令
-        mReceiver = new BroadcastReceiver() {
-            @Override
-            public void onReceive(Context context, Intent intent) {
-                if (intent.getAction().equals(Constant.ACTION_W90)) {
-                    authorModel.getAuthorList(0, false, DoorAuthorizationActivity.this);
+        try {
+            mLocalBroadcastManager = LocalBroadcastManager
+                    .getInstance(DoorAuthorizationActivity.this);
+            IntentFilter filter = new IntentFilter();
+            filter.addAction(Constant.ACTION_W90);// 授权的推送指令
+            mReceiver = new BroadcastReceiver() {
+                @Override
+                public void onReceive(Context context, Intent intent) {
+                    if (intent.getAction().equals(Constant.ACTION_W90)) {
+                        authorModel.getAuthorList(0, false, DoorAuthorizationActivity.this);
+                    }
                 }
-            }
-
-        };
-        mLocalBroadcastManager.registerReceiver(mReceiver, filter);
+            };
+            mLocalBroadcastManager.registerReceiver(mReceiver, filter);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
 
@@ -299,49 +307,51 @@ public class DoorAuthorizationActivity extends BaseActivity implements View.OnCl
      * 授权返回成功结束页面
      */
     private void successAuthorBack(String reason) {
-        dialog = new CustomDialog(DoorAuthorizationActivity.this,
-                R.style.qr_dialog);
-        dialog.show();
-        dialog.setOnKeyListener(new DialogInterface.OnKeyListener() {
+        try {
+            dialog = new CustomDialog(DoorAuthorizationActivity.this,
+                    R.style.qr_dialog);
+            dialog.show();
+            dialog.setOnKeyListener(new DialogInterface.OnKeyListener() {
 
-            @Override
-            public boolean onKey(DialogInterface dialog, int keyCode,
-                                 KeyEvent event) {
-                if (keyCode == KeyEvent.KEYCODE_BACK
-                        && event.getRepeatCount() == 0) {
+                @Override
+                public boolean onKey(DialogInterface dialog, int keyCode,
+                                     KeyEvent event) {
+                    if (keyCode == KeyEvent.KEYCODE_BACK
+                            && event.getRepeatCount() == 0) {
 
+                        countDownTimer.cancel();
+                        finish();
+
+                    }
+                    return false;
+                }
+            });
+            dialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
+                @Override
+                public void onDismiss(DialogInterface dialog) {
+                    dialog.dismiss();
                     countDownTimer.cancel();
                     finish();
-
                 }
-                return false;
-            }
-        });
-        dialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
-            @Override
-            public void onDismiss(DialogInterface dialog) {
-                dialog.dismiss();
-                countDownTimer.cancel();
-                finish();
-            }
-        });
-        countDownTimer.start();
-        txt_time = (TextView) dialog.findViewById(R.id.dialog_content);
+            });
+            countDownTimer.start();
+            txt_time = (TextView) dialog.findViewById(R.id.dialog_content);
 
 
-        TextView dialog_title = (TextView) dialog.findViewById(R.id.dialog_title);
-        dialog_title.setText(reason);
-        LinearLayout rl_dialog = (LinearLayout) dialog.findViewById(R.id.rl_dialog);
-        rl_dialog.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                dialog.dismiss();
-                countDownTimer.cancel();
-                finish();
-            }
-        });
-
-
+            TextView dialog_title = (TextView) dialog.findViewById(R.id.dialog_title);
+            dialog_title.setText(reason);
+            LinearLayout rl_dialog = (LinearLayout) dialog.findViewById(R.id.rl_dialog);
+            rl_dialog.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    dialog.dismiss();
+                    countDownTimer.cancel();
+                    finish();
+                }
+            });
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     /**
@@ -527,8 +537,7 @@ public class DoorAuthorizationActivity extends BaseActivity implements View.OnCl
     protected void onDestroy() {
         // TODO Auto-generated method stub
         super.onDestroy();
-        if (mLocalBroadcastManager != null && mReceiver != null) {
-
+        if (null != mLocalBroadcastManager && null != mReceiver) {
             mLocalBroadcastManager.unregisterReceiver(mReceiver);
         }
     }

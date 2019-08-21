@@ -9,8 +9,6 @@ import android.content.res.Resources;
 import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Looper;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
@@ -37,7 +35,7 @@ import com.door.fragment.IntelligenceDoorFragment;
 import com.door.model.NewDoorModel;
 import com.nohttp.utils.GsonUtils;
 import com.user.UserAppConst;
-import com.youmai.hxsdk.view.camera.util.LogUtil;
+import com.user.model.NewUserModel;
 
 import org.json.JSONObject;
 
@@ -55,7 +53,6 @@ import static com.BeeFramework.Utils.Utils.dip2px;
  * hxg 2019.8.6
  */
 public class IntelligenceDoorActivity extends BaseFragmentActivity implements NewHttpResponse, View.OnClickListener, LekaiParkLockController.OnScanParkLockChangeListener {
-    private static String err = "操作失败，请重试";
 
     private static int INTENT_UPDATEFIXEDDOOR = 2;//编辑常用门禁
     public SharedPreferences.Editor editor;
@@ -547,13 +544,7 @@ public class IntelligenceDoorActivity extends BaseFragmentActivity implements Ne
             }
             if (openBluetooth) {
                 ToastUtil.toastShow(getApplicationContext(), "正在下降车位锁");
-
-                LekaiHelper.parkUnlock(mac, (status, message, battery) -> {
-//                    LogUtil.e("LekaiService 倒下", "status:" + status + "  message:" + message + "  battery:" + battery);
-
-                    Handler handler = new Handler(Looper.getMainLooper());
-                    handler.post(() -> ToastUtil.toastShow(getApplicationContext(), 0 == status ? ("操作成功,电量：" + battery) : err));
-                });
+                LekaiHelper.parkUnlock(mac);
             } else {
                 ToastUtil.toastShow(getApplicationContext(), "请打开蓝牙");
             }
@@ -572,13 +563,7 @@ public class IntelligenceDoorActivity extends BaseFragmentActivity implements Ne
             }
             if (openBluetooth) {
                 ToastUtil.toastShow(getApplicationContext(), "正在升起位锁");
-
-                LekaiHelper.parkLock(mac, (status, message, battery) -> {
-//                    LogUtil.e("LekaiService 抬起", "status:" + status + "  message:" + message + "  battery:" + battery);
-
-                    Handler handler = new Handler(Looper.getMainLooper());
-                    handler.post(() -> ToastUtil.toastShow(getApplicationContext(), 0 == status ? ("操作成功,电量：" + battery) : err));
-                });
+                LekaiHelper.parkLock(mac);
             } else {
                 ToastUtil.toastShow(getApplicationContext(), "请打开蓝牙");
             }

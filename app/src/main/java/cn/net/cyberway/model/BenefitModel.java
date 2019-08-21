@@ -26,6 +26,7 @@ public class BenefitModel extends BaseModel {
     private String getHotUrl = "app/chrs/column/hot";
     private String getChannelUrl = "app/chrs/column/channel";
     private String getArticleUrl = "app/chrs/column/article";
+    private String getActivityUrl = "/app/chrs/popup/notice";
 
     public BenefitModel(Context context) {
         super(context);
@@ -137,6 +138,33 @@ public class BenefitModel extends BaseModel {
         paramsMap.put("page", page);
         final Request<String> request = NoHttp.createStringRequest(RequestEncryptionUtils.getCombileMD5(mContext, 13, getArticleUrl, paramsMap), RequestMethod.GET);
         request(what, request, paramsMap, new HttpListener<String>() {
+            @Override
+            public void onSucceed(int what, Response<String> response) {
+                int responseCode = response.getHeaders().getResponseCode();
+                String result = response.get();
+                if (responseCode == RequestEncryptionUtils.responseSuccess) {
+                    int code = showSuccesResultMessageTheme(result);
+                    if (code == 0) {
+                        newHttpResponse.OnHttpResponse(what, result);
+                    } else {
+                        newHttpResponse.OnHttpResponse(what, "");
+                    }
+                }
+            }
+
+            @Override
+            public void onFailed(int what, Response<String> response) {
+                newHttpResponse.OnHttpResponse(what, "");
+            }
+        }, true, false);
+    }
+
+    /**
+     * 活动
+     */
+    public void getActivity(int what, final NewHttpResponse newHttpResponse) {
+        final Request<String> request = NoHttp.createStringRequest(RequestEncryptionUtils.getCombileMD5(mContext, 13, getActivityUrl, null), RequestMethod.GET);
+        request(what, request, null, new HttpListener<String>() {
             @Override
             public void onSucceed(int what, Response<String> response) {
                 int responseCode = response.getHeaders().getResponseCode();

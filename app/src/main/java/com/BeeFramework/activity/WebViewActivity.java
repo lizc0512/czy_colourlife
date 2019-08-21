@@ -26,7 +26,6 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
-import android.os.Looper;
 import android.os.Message;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
@@ -2034,11 +2033,7 @@ public class WebViewActivity extends BaseActivity implements View.OnLongClickLis
             //支持蓝牙模块
             if (openBluetooth) {
                 ToastUtil.toastShow(getApplicationContext(), "正在下降车位锁");
-
-                LekaiHelper.parkUnlock(mac, (status, message, battery) -> {
-                    Handler handler = new Handler(Looper.getMainLooper());
-                    handler.post(() -> ToastUtil.toastShow(getApplicationContext(), 0 == status ? ("操作成功,电量：" + battery) : "操作失败，请重试"));
-                });
+                LekaiHelper.parkUnlock(mac);
             } else {
                 ToastUtil.toastShow(getApplicationContext(), "请打开蓝牙");
             }
@@ -2058,11 +2053,7 @@ public class WebViewActivity extends BaseActivity implements View.OnLongClickLis
             //支持蓝牙模块
             if (openBluetooth) {
                 ToastUtil.toastShow(getApplicationContext(), "正在升起位锁");
-
-                LekaiHelper.parkLock(mac, (status, message, battery) -> {
-                    Handler handler = new Handler(Looper.getMainLooper());
-                    handler.post(() -> ToastUtil.toastShow(getApplicationContext(), 0 == status ? ("操作成功,电量：" + battery) : "操作失败，请重试"));
-                });
+                LekaiHelper.parkLock(mac);
             } else {
                 ToastUtil.toastShow(getApplicationContext(), "请打开蓝牙");
             }
