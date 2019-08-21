@@ -620,7 +620,7 @@ public class BenefitFragment extends Fragment implements View.OnClickListener, N
                             if (null != bean.getImage()) {
                                 BenefitActivityDialog activityDialog = new BenefitActivityDialog(mActivity, ScreenUtils.getScreenWidth(mActivity));
                                 activityDialog.show();
-                                GlideImageLoader.loadImageDefaultDisplay(mActivity, bean.getImage(), activityDialog.iv_activity, R.drawable.default_image, R.drawable.default_image);
+                                GlideImageLoader.loadImageDefaultDisplay(mActivity, bean.getImage(), activityDialog.iv_activity, R.drawable.bg_benefit_act_default, R.drawable.bg_benefit_act_default);
                                 activityDialog.iv_close.setOnClickListener(v -> activityDialog.dismiss());
                                 activityDialog.iv_activity.setOnClickListener(v -> {
                                     activityDialog.dismiss();
