@@ -216,66 +216,9 @@ public class DoorAllEntity extends BaseContentEntity {
                      * model : ISP001
                      * valid_date : 永久有效
                      */
-                    //车位锁
-//                    private String deviceId;
-//                    private String community_uuid;
-//                    private String keyId;
-//                    private String protocolVersion;
-//                    private String cipherId;
-//                    private String name;
                     private int valid_begin;
                     private int valid_end;
-                    //                    private String mac;
-//                    private String model;
                     private String valid_date;
-
-//                    public String getDeviceId() {
-//                        return deviceId;
-//                    }
-//
-//                    public void setDeviceId(String deviceId) {
-//                        this.deviceId = deviceId;
-//                    }
-//
-//                    public String getCommunity_uuid() {
-//                        return community_uuid;
-//                    }
-//
-//                    public void setCommunity_uuid(String community_uuid) {
-//                        this.community_uuid = community_uuid;
-//                    }
-//
-//                    public String getKeyId() {
-//                        return keyId;
-//                    }
-//
-//                    public void setKeyId(String keyId) {
-//                        this.keyId = keyId;
-//                    }
-//
-//                    public String getProtocolVersion() {
-//                        return protocolVersion;
-//                    }
-//
-//                    public void setProtocolVersion(String protocolVersion) {
-//                        this.protocolVersion = protocolVersion;
-//                    }
-//
-//                    public String getCipherId() {
-//                        return cipherId;
-//                    }
-//
-//                    public void setCipherId(String cipherId) {
-//                        this.cipherId = cipherId;
-//                    }
-//
-//                    public String getName() {
-//                        return name;
-//                    }
-//
-//                    public void setName(String name) {
-//                        this.name = name;
-//                    }
 
                     public int getValid_begin() {
                         return valid_begin;
@@ -292,22 +235,6 @@ public class DoorAllEntity extends BaseContentEntity {
                     public void setValid_end(int valid_end) {
                         this.valid_end = valid_end;
                     }
-
-//                    public String getMac() {
-//                        return mac;
-//                    }
-//
-//                    public void setMac(String mac) {
-//                        this.mac = mac;
-//                    }
-//
-//                    public String getModel() {
-//                        return model;
-//                    }
-//
-//                    public void setModel(String model) {
-//                        this.model = model;
-//                    }
 
                     public String getValid_date() {
                         return valid_date;

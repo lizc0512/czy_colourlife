@@ -33,9 +33,9 @@ import com.door.entity.DoorRecordEntity;
 import com.door.entity.DoorRightEntity;
 import com.door.fragment.IntelligenceDoorFragment;
 import com.door.model.NewDoorModel;
+import com.google.gson.Gson;
 import com.nohttp.utils.GsonUtils;
 import com.user.UserAppConst;
-import com.user.model.NewUserModel;
 
 import org.json.JSONObject;
 
@@ -120,14 +120,21 @@ public class IntelligenceDoorActivity extends BaseFragmentActivity implements Ne
         iv_close.setOnClickListener(this);
     }
 
+    private Gson gson;
+
     private void initTab(String[] tabTitleArray, String result) {
         try {
             if (!init) {
                 init = true;
                 try {
+                    DoorAllEntity doorAllEntity = GsonUtils.gsonToBean(result, DoorAllEntity.class);
                     for (int i = 0; i < tabTitleArray.length; i++) {
+                        List<DoorAllEntity.ContentBean.DataBean.ListBean> list = doorAllEntity.getContent().getData().get(i).getList();
                         tl_door.addTab(tl_door.newTab().setText(tabTitleArray[i]));
-                        fragmentList.add(IntelligenceDoorFragment.newInstance(i, result));
+                        if (null == gson) {
+                            gson = new Gson();
+                        }
+                        fragmentList.add(IntelligenceDoorFragment.newInstance(gson.toJson(list)));
                     }
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -149,23 +156,31 @@ public class IntelligenceDoorActivity extends BaseFragmentActivity implements Ne
                     tl_door.addTab(tl_door.newTab().setText(s));
                 }
 
+                if (null == gson) {
+                    gson = new Gson();
+                }
+                DoorAllEntity doorAllEntity = GsonUtils.gsonToBean(result, DoorAllEntity.class);
                 if (tabTitleArray.length == fragmentList.size()) {
                     for (int j = 0; j < fragmentList.size(); j++) {
-                        ((IntelligenceDoorFragment) fragmentList.get(j)).refresh(j, result);
+                        List<DoorAllEntity.ContentBean.DataBean.ListBean> list = doorAllEntity.getContent().getData().get(j).getList();
+
+                        ((IntelligenceDoorFragment) fragmentList.get(j)).refresh(gson.toJson(list));
                     }
                 } else if (tabTitleArray.length > fragmentList.size()) {
                     for (int i = fragmentList.size(); i < tabTitleArray.length; i++) {
-                        fragmentList.add(IntelligenceDoorFragment.newInstance(i, result));
+                        fragmentList.add(IntelligenceDoorFragment.newInstance(""));
                     }
                     for (int j = 0; j < fragmentList.size(); j++) {
-                        ((IntelligenceDoorFragment) fragmentList.get(j)).refresh(j, result);
+                        List<DoorAllEntity.ContentBean.DataBean.ListBean> list = doorAllEntity.getContent().getData().get(j).getList();
+                        ((IntelligenceDoorFragment) fragmentList.get(j)).refresh(gson.toJson(list));
                     }
                 } else {
                     for (int i = fragmentList.size() - 1; i > tabTitleArray.length - 1; i--) {
                         fragmentList.remove(i);
                     }
                     for (int j = 0; j < fragmentList.size(); j++) {
-                        ((IntelligenceDoorFragment) fragmentList.get(j)).refresh(j, result);
+                        List<DoorAllEntity.ContentBean.DataBean.ListBean> list = doorAllEntity.getContent().getData().get(j).getList();
+                        ((IntelligenceDoorFragment) fragmentList.get(j)).refresh(gson.toJson(list));
                     }
                 }
                 adapter = new ViewPagerAdapter(getSupportFragmentManager(), this, fragmentList, tabTitleArray);
