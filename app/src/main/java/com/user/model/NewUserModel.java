@@ -1728,12 +1728,13 @@ public class NewUserModel extends BaseModel {
     /**
      * 开门记录
      */
-    public void uploadOpenDoor(int what, String cipher_id, String open_type, int status) {
+    public void uploadOpenDoor(int what, String cipher_id, String open_type, int status, String error_code) {
         Map<String, Object> params = new HashMap<>();
         params.put("cipher_id", cipher_id);
         params.put("open_type", open_type);
         params.put("community_uuid", ""); //小区id 暂无用处
         params.put("status", status);
+        params.put("error_code", error_code);
         final Request<String> request = NoHttp.createStringRequest(RequestEncryptionUtils.getCombileMD5(mContext, 11, openRecordUrl, params), RequestMethod.POST);
         request(what, request, params, new HttpListener<String>() {
             @Override

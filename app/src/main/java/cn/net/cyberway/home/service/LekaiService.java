@@ -167,7 +167,7 @@ public class LekaiService extends Service {
                         newUserModel = new NewUserModel(this);
                     }
                     if (!TextUtils.isEmpty(device.getCipherId())) {
-                        newUserModel.uploadOpenDoor(0, device.getCipherId(), "door", 0 == code ? 1 : 2);
+                        newUserModel.uploadOpenDoor(0, device.getCipherId(), "door", 0 == code ? 1 : 2, code + "," + message);
                     }
                 });
             });
@@ -245,7 +245,7 @@ public class LekaiService extends Service {
                                         newUserModel = new NewUserModel(LekaiService.this);
                                     }
                                     if (!TextUtils.isEmpty(device.getCipherId())) {
-                                        newUserModel.uploadOpenDoor(0, device.getCipherId(), "car", 0 == status ? 1 : 2);
+                                        newUserModel.uploadOpenDoor(0, device.getCipherId(), "car", 0 == status ? 1 : 2, status + "," + message);
                                     }
                                 } catch (Exception e) {
                                     e.printStackTrace();
@@ -267,7 +267,7 @@ public class LekaiService extends Service {
                                     newUserModel = new NewUserModel(LekaiService.this);
                                 }
                                 if (!TextUtils.isEmpty(parkDevice.getCipherId())) {
-                                    newUserModel.uploadOpenDoor(0, parkDevice.getCipherId(), "car", 2);
+                                    newUserModel.uploadOpenDoor(0, parkDevice.getCipherId(), "car", 2, error + "," + message);
                                 }
                             } catch (Exception e) {
                                 e.printStackTrace();
@@ -343,7 +343,7 @@ public class LekaiService extends Service {
                                             newUserModel = new NewUserModel(LekaiService.this);
                                         }
                                         if (!TextUtils.isEmpty(device.getCipherId())) {
-                                            newUserModel.uploadOpenDoor(0, device.getCipherId(), "car", 0 == status ? 1 : 2);
+                                            newUserModel.uploadOpenDoor(0, device.getCipherId(), "car", 0 == status ? 1 : 2, status + "," + message);
                                         }
                                     });
                                 } catch (Exception e) {
@@ -366,7 +366,7 @@ public class LekaiService extends Service {
                                     newUserModel = new NewUserModel(LekaiService.this);
                                 }
                                 if (!TextUtils.isEmpty(parkDevice.getCipherId())) {
-                                    newUserModel.uploadOpenDoor(0, parkDevice.getCipherId(), "car", 2);
+                                    newUserModel.uploadOpenDoor(0, parkDevice.getCipherId(), "car", 2, error + "," + message);
                                 }
                             } catch (Exception e) {
                                 e.printStackTrace();
