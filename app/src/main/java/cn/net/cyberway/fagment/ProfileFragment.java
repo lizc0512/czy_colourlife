@@ -283,7 +283,7 @@ public class ProfileFragment extends Fragment implements View.OnClickListener, M
                 startActivityForResult(intent, 6);
                 break;
             case R.id.iv_qr_code:
-                intent = new Intent(getActivity(), CustomerMakeZXingActivity.class);
+                intent = new Intent(getActivity(), CustomerInfoActivity.class);
                 startActivity(intent);
                 break;
         }

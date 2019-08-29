@@ -64,10 +64,10 @@ public class FeedBackActivity extends BaseFragmentActivity implements View.OnCli
         linearLayout.setShowDividers(LinearLayout.SHOW_DIVIDER_MIDDLE);
         linearLayout.setDividerDrawable(ContextCompat.getDrawable(this, R.drawable.tablayout_line));
 //        linearLayout.setDividerPadding(30);
-        couponsFragment = new CouponsFragment();
-        fragmentList.add(couponsFragment);
         FeedBackFragment feedBackFragment = new FeedBackFragment();
         fragmentList.add(feedBackFragment);
+        couponsFragment = new CouponsFragment();
+        fragmentList.add(couponsFragment);
         feedback_tablayout.setTabMode(TabLayout.MODE_FIXED);
         feedback_tablayout.setSelectedTabIndicatorHeight(4);
         feedback_tablayout.setSelectedTabIndicatorColor(Color.parseColor("#27a2f0"));

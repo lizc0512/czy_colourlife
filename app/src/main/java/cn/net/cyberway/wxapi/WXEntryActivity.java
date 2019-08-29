@@ -56,10 +56,26 @@ public class WXEntryActivity extends WechatHandlerActivity {
     }
 
     public void onResp(BaseResp resp) {
-        WXLaunchMiniProgram.Resp launchMiniProResp = (WXLaunchMiniProgram.Resp) resp;
-        String extraData = launchMiniProResp.extMsg; //对应小程序组件 <button open-type="launchApp"> 中的 app-parameter 属性
-        int errCode = launchMiniProResp.errCode; //对应小程序组件 <button open-type="launchApp"> 中的 app-parameter 属性
-        ToastUtil.toastShow(WXEntryActivity.this, errCode + extraData);
+//        if (resp.getType() == ConstantsAPI.COMMAND_LAUNCH_WX_MINIPROGRAM) {
+            WXLaunchMiniProgram.Resp launchMiniProResp = (WXLaunchMiniProgram.Resp) resp;
+            String extraData = launchMiniProResp.extMsg; //对应小程序组件 <button open-type="launchApp"> 中的 app-parameter 属性
+            int errCode = launchMiniProResp.errCode; //对应小程序组件 <button open-type="launchApp"> 中的 app-parameter 属性
+            ToastUtil.toastShow(WXEntryActivity.this, errCode + extraData);
+
+            /**
+             * 返回支付结果信息 ，json字串:
+             * {
+             * errCode:200, errMsg:"成功"
+             * }
+             * errCode对应状态 :
+             * 200: 支付成功 500:支付出错
+             *
+             * 401 参数data为空
+             * 402 参数data非法
+             * 403 openid获取失败
+             */
+//        }
+
     }
 
 }

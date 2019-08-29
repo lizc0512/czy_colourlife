@@ -276,7 +276,12 @@ public class LinkParseUtil {
                             break;
                         case "colourlifeCaiHui"://彩惠  colourlife://proto?type=colourlifeCaiHui
                             intent = new Intent(context, MainActivity.class);
-                            intent.putExtra(MainActivity.JUMPOTHERURL, link);
+                            intent.putExtra(MainActivity.JUMPOTHERURL, "colourlifeCaiHui");
+                            context.startActivity(intent);
+                            break;
+                        case "ColourlifeBackHome":
+                            intent = new Intent(context, MainActivity.class);
+                            intent.putExtra(MainActivity.JUMPOTHERURL, "ColourlifeBackHome");
                             context.startActivity(intent);
                             break;
                     }

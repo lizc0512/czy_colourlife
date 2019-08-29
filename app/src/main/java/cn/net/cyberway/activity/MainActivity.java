@@ -324,8 +324,13 @@ public class MainActivity extends BaseFragmentActivity implements View.OnClickLi
         }
         String linkURl = intent.getStringExtra(JUMPOTHERURL);
         if (!TextUtils.isEmpty(linkURl)) {
-            if ("colourlife://proto?type=colourlifeCaiHui".equals(linkURl)) {
+            if ("colourlifeCaiHui".equals(linkURl)) {
                 onTabSelected(FLAG_TAB_TWO);
+            } else if ("ColourlifeBackHome".equals(linkURl)) {
+                onTabSelected(FLAG_TAB_ONE);
+                Message message = Message.obtain();
+                message.what = UserMessageConstant.CHANGE_COMMUNITY;
+                EventBus.getDefault().post(message);
             } else {
                 LinkParseUtil.parse(MainActivity.this, linkURl, "");
             }

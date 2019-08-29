@@ -71,7 +71,6 @@ public class BeeFrameworkApp extends MultiDexApplication {
         super.onCreate();
         instance = this;
         ColourLifeSDK.init(getApplicationContext());
-        DPAPI.getInstance(this, null);
         try {
             CrashHandler crashHandler = CrashHandler.getInstance();
             crashHandler.init(getApplicationContext());
@@ -80,12 +79,11 @@ public class BeeFrameworkApp extends MultiDexApplication {
         } catch (Exception e) {
 
         }
-        HuxinSdkManager.instance().init(this);
-        HuxinSdkManager.instance().setHomeAct(MainActivity.class);
-        Stetho.initializeWithDefaults(this);
-        IMGreenDaoManager.instance(this);
         initImageLoader(getApplicationContext());
         initLoaderOptions();
+        HuxinSdkManager.instance().init(getApplicationContext());
+        HuxinSdkManager.instance().setHomeAct(MainActivity.class);
+        IMGreenDaoManager.instance(getApplicationContext());
         HuxinSdkManager.instance().regeditCommonPushMsg(new ProtoCallback.BuddyNotify() {
             @Override
             public void result(YouMaiBuddy.IMOptBuddyNotify notify) {

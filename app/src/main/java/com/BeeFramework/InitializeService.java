@@ -5,14 +5,19 @@ import android.content.Intent;
 import android.support.annotation.Nullable;
 
 import com.BeeFramework.model.Constants;
+import com.facebook.stetho.Stetho;
+import com.geetest.deepknow.DPAPI;
+import com.im.greendao.IMGreenDaoManager;
 import com.mob.MobSDK;
 import com.qiniu.droid.rtc.QNRTCEnv;
 import com.sobot.chat.SobotApi;
 import com.tencent.bugly.Bugly;
 import com.tendcloud.tenddata.TCAgent;
 import com.umeng.commonsdk.UMConfigure;
+import com.youmai.hxsdk.HuxinSdkManager;
 
 import cn.jpush.android.api.JPushInterface;
+import cn.net.cyberway.activity.MainActivity;
 import cn.net.cyberway.utils.CityManager;
 
 /**
@@ -31,6 +36,8 @@ public class InitializeService extends IntentService {
     @Override
     protected void onHandleIntent(@Nullable Intent intent) {
         try {
+            DPAPI.getInstance(getApplicationContext(), null);
+            Stetho.initializeWithDefaults(getApplicationContext());
             MobSDK.init(getApplicationContext());
             SobotApi.initSobotSDK(getApplicationContext(), Constants.SMART_SERVICE_KEY, "");
             JPushInterface.setDebugMode(false); // 设置开启日志,发布时请关闭日志
