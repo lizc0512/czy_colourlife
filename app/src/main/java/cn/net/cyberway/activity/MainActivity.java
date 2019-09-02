@@ -44,11 +44,13 @@ import com.feed.FeedConstant;
 import com.im.model.IMUploadPhoneModel;
 import com.jpush.Constant;
 import com.nohttp.entity.BaseRetCodeEntity;
+import com.nohttp.utils.GlideImageLoader;
 import com.nohttp.utils.GsonUtils;
 import com.popupScreen.PopupScUtils;
 import com.popupScreen.model.PopupModel;
 import com.scanCode.activity.CaptureActivity;
 import com.sobot.chat.SobotApi;
+import com.sobot.chat.utils.ScreenUtils;
 import com.umeng.analytics.MobclickAgent;
 import com.update.activity.UpdateVerSion;
 import com.update.service.UpdateService;
@@ -63,6 +65,7 @@ import com.youmai.hxsdk.HuxinSdkManager;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -82,6 +85,7 @@ import cn.net.cyberway.protocol.ThemeEntity;
 import cn.net.cyberway.utils.BuryingPointUtils;
 import cn.net.cyberway.utils.LekaiHelper;
 import cn.net.cyberway.utils.LinkParseUtil;
+import cn.net.cyberway.view.BenefitActivityDialog;
 import q.rorbin.badgeview.QBadgeView;
 
 import static cn.net.cyberway.utils.BuryingPointUtils.UPLOAD_DETAILS;
@@ -237,6 +241,9 @@ public class MainActivity extends BaseFragmentActivity implements View.OnClickLi
         }
         if (mReceiver != null) {
             mLocalBroadcastManager.unregisterReceiver(mReceiver);
+        }
+        if (null != mHandler) {
+            mHandler.removeCallbacksAndMessages(null);
         }
         HuxinSdkManager.instance().getStackAct().finishActivity(this);
         super.onDestroy();
@@ -615,6 +622,7 @@ public class MainActivity extends BaseFragmentActivity implements View.OnClickLi
             mDiscovery.setSelected(false);
             mProfile.setSelected(false);
             showPopupScreen();
+            dismissBenefitDialog();
         } else if (flagTab == FLAG_TAB_TWO) { //彩惠人生
             if (mShared.getBoolean(UserAppConst.IS_LOGIN, false)) {
                 choiceType = 1;
@@ -653,6 +661,7 @@ public class MainActivity extends BaseFragmentActivity implements View.OnClickLi
             } else {
                 LinkParseUtil.parse(MainActivity.this, "", "");
             }
+            dismissBenefitDialog();
         } else if (flagTab == FLAG_TAB_FOUR) {
             if (mShared.getBoolean(UserAppConst.IS_LOGIN, false)) {
                 choiceType = 2;
@@ -672,7 +681,7 @@ public class MainActivity extends BaseFragmentActivity implements View.OnClickLi
             } else {
                 LinkParseUtil.parse(MainActivity.this, "", "");
             }
-
+            dismissBenefitDialog();
         }
     }
 
@@ -1041,6 +1050,57 @@ public class MainActivity extends BaseFragmentActivity implements View.OnClickLi
      */
     public void regetLekaiToken() {
         newUserModel.regetLekaiDoor(50, this);
+    }
+
+    private BenefitActivityDialog activityDialog;
+
+    /**
+     * 彩惠活动弹窗
+     */
+    public void showBenefitDialog(String imgPath, String url, String title) {
+        if (null == activityDialog) {
+            activityDialog = new BenefitActivityDialog(this, ScreenUtils.getScreenWidth(this));
+        }
+        activityDialog.show();
+        GlideImageLoader.loadImageDefaultDisplay(this, imgPath, activityDialog.iv_activity, R.drawable.bg_benefit_act_default, R.drawable.bg_benefit_act_default);
+        activityDialog.iv_close.setOnClickListener(v -> activityDialog.dismiss());
+        activityDialog.iv_activity.setOnClickListener(v -> {
+            activityDialog.dismiss();
+            LinkParseUtil.parse(this, url, title);
+        });
+    }
+
+    /**
+     * 隐藏活动弹窗
+     */
+    public void dismissBenefitDialog() {
+        if (null != activityDialog) {
+            mHandler.sendEmptyMessageDelayed(1, 1000);
+        }
+    }
+
+    private InterHandler mHandler = new InterHandler(this);
+
+    private static class InterHandler extends Handler {
+        private WeakReference<MainActivity> mActivity;
+
+        InterHandler(MainActivity activity) {
+            mActivity = new WeakReference<>(activity);
+        }
+
+        @Override
+        public void handleMessage(Message msg) {
+            MainActivity activity = mActivity.get();
+            if (activity != null) {
+                if (msg.what == 1) {
+                    if (null != activity.activityDialog) {
+                        activity.activityDialog.dismiss();
+                    }
+                }
+            } else {
+                super.handleMessage(msg);
+            }
+        }
     }
 
 }

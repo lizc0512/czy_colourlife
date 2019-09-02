@@ -27,7 +27,6 @@ import com.BeeFramework.view.NoScrollGridView;
 import com.external.eventbus.EventBus;
 import com.nohttp.utils.GlideImageLoader;
 import com.nohttp.utils.GsonUtils;
-import com.sobot.chat.utils.ScreenUtils;
 import com.user.UserAppConst;
 import com.user.UserMessageConstant;
 import com.yanzhenjie.recyclerview.swipe.SwipeMenuRecyclerView;
@@ -39,6 +38,7 @@ import java.util.List;
 
 import cn.bingoogolapple.bgabanner.BGABanner;
 import cn.net.cyberway.R;
+import cn.net.cyberway.activity.MainActivity;
 import cn.net.cyberway.adpter.BenefitAllAdapter;
 import cn.net.cyberway.adpter.BenefitFindAdapter;
 import cn.net.cyberway.adpter.BenefitHotAdapter;
@@ -52,7 +52,6 @@ import cn.net.cyberway.protocol.BenefitHotEntity;
 import cn.net.cyberway.protocol.BenefitProfileEntity;
 import cn.net.cyberway.utils.BenefitDefaultDataConst;
 import cn.net.cyberway.utils.LinkParseUtil;
-import cn.net.cyberway.view.BenefitActivityDialog;
 
 import static com.youmai.hxsdk.utils.DisplayUtil.getStatusBarHeight;
 
@@ -618,14 +617,7 @@ public class BenefitFragment extends Fragment implements View.OnClickListener, N
                         BenefitActivityEntity.ContentBean bean = entity.getContent();
                         if (!mHidden && null != bean) {
                             if (null != bean.getImage()) {
-                                BenefitActivityDialog activityDialog = new BenefitActivityDialog(mActivity, ScreenUtils.getScreenWidth(mActivity));
-                                activityDialog.show();
-                                GlideImageLoader.loadImageDefaultDisplay(mActivity, bean.getImage(), activityDialog.iv_activity, R.drawable.bg_benefit_act_default, R.drawable.bg_benefit_act_default);
-                                activityDialog.iv_close.setOnClickListener(v -> activityDialog.dismiss());
-                                activityDialog.iv_activity.setOnClickListener(v -> {
-                                    activityDialog.dismiss();
-                                    LinkParseUtil.parse(mActivity, bean.getUrl(), bean.getTitle());
-                                });
+                                ((MainActivity) getActivity()).showBenefitDialog(bean.getImage(), bean.getUrl(), bean.getTitle());
                             }
                         }
                     } catch (Exception e) {
