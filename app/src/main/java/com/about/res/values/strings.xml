@@ -12,5 +12,6 @@
     <string-array name="feedback_menu">
         <item>意见</item>
         <item>满意度</item>
+
     </string-array>
 </resources>

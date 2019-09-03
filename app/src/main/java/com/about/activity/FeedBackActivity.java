@@ -68,6 +68,8 @@ public class FeedBackActivity extends BaseFragmentActivity implements View.OnCli
         fragmentList.add(feedBackFragment);
         couponsFragment = new CouponsFragment();
         fragmentList.add(couponsFragment);
+
+
         feedback_tablayout.setTabMode(TabLayout.MODE_FIXED);
         feedback_tablayout.setSelectedTabIndicatorHeight(4);
         feedback_tablayout.setSelectedTabIndicatorColor(Color.parseColor("#27a2f0"));
