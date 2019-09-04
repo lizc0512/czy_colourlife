@@ -63,6 +63,7 @@ public class UserAppConst {
     public static final String Colour_NAME = "Colour_NAME";
     public static final String Colour_NIACKNAME = "Colour_NIACKNAME";
     public static final String Colour_GENDER = "Colour_GENDER";
+    public static final String COLOUR_EMAIL = "colour_email";
     public static final String Colour_CHOOSE_CITY_NAME = "colour_city_name";
     public static final String Colour_HOME_CACHE_NEW = "colour_home_cache_new";
     public static final String Colour_SPLASH_CACHE = "colour_splash_cache";

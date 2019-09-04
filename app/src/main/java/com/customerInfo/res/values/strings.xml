@@ -27,6 +27,7 @@
     <string name="customer_man">男</string>
     <string name="customer_femal">女</string>
     <string name="customer_mobile">手机</string>
+    <string name="customer_email">邮箱</string>
     <string name="customer_increase_community">新增小区</string>
     <string name="customer_increase_address">新增地址</string>
     <string name="customer_choice_region">选择省市区</string>

@@ -545,6 +545,7 @@ public class NewUserModel extends BaseModel {
                             editor.putString(UserAppConst.Colour_login_mobile, String.valueOf(contentBean.getMobile()));
                             editor.putString(UserAppConst.Colour_GENDER, String.valueOf(contentBean.getGender()));
                             editor.putString(UserAppConst.Colour_NAME, contentBean.getName());
+                            editor.putString(UserAppConst.COLOUR_EMAIL, contentBean.getEmail());
                             editor.putString(UserAppConst.Colour_NIACKNAME, contentBean.getNick_name());
                             editor.putString(UserAppConst.Colour_head_img, contentBean.getPortrait_url());
                             editor.putString(UserAppConst.Colour_User_uuid, contentBean.getUuid());
@@ -685,9 +686,10 @@ public class NewUserModel extends BaseModel {
     }
 
     /****修改用户的个人信息**/
-    public void changeUserInfomation(int what, String name, String nick_name, int gender, final NewHttpResponse newHttpResponse) {
+    public void changeUserInfomation(int what, String name, String nick_name, String email,int gender, final NewHttpResponse newHttpResponse) {
         Map<String, Object> params = new HashMap<String, Object>();
         params.put("name", name);
+        params.put("email", email);
         params.put("nick_name", nick_name);
         params.put("gender", gender);
         final Request<String> request = NoHttp.createStringRequest(RequestEncryptionUtils.postCombileMD5(mContext, 6, changeInfomationUrl), RequestMethod.POST);

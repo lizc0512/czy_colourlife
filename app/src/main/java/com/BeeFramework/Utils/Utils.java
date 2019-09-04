@@ -268,6 +268,18 @@ public class Utils {
         return isPlate;
     }
 
+    public static boolean checkEmail(String emailString) {
+
+        String checkemail = "^([a-z0-9A-Z]+[-|\\.]?)+[a-z0-9A-Z]@([a-z0-9A-Z]+(-[a-z0-9A-Z]+)?\\.)+[a-zA-Z]{2,}$";
+
+        Pattern pattern = Pattern.compile(checkemail);
+
+        Matcher matcher = pattern.matcher(emailString);
+
+        return matcher.matches();
+
+    }
+
     public static SpannableString getSpannable(String content) {
         SpannableString spannableString = new SpannableString(content);
         try {

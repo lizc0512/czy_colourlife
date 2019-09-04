@@ -67,6 +67,10 @@ public class UserInformationEntity extends BaseContentEntity {
         private String community_uuid;
         private String community_name;
         private String portrait_url;
+
+
+
+        private String email;
         private int gender;
         private String mobile;
         private String uuid;
@@ -121,7 +125,13 @@ public class UserInformationEntity extends BaseContentEntity {
         public void setCommunity_name(String community_name) {
             this.community_name = community_name;
         }
+        public String getEmail() {
+            return email;
+        }
 
+        public void setEmail(String email) {
+            this.email = email;
+        }
         public String getPortrait_url() {
             return portrait_url;
         }

@@ -43,6 +43,7 @@ import java.util.Locale;
 import cn.jpush.android.api.JPushInterface;
 import cn.net.cyberway.R;
 import cn.net.cyberway.activity.BroadcastReceiverActivity;
+import cn.net.cyberway.utils.LinkParseUtil;
 import cn.sharesdk.framework.Platform;
 import cn.sharesdk.framework.ShareSDK;
 import cn.sharesdk.tencent.qq.QQ;
@@ -62,6 +63,7 @@ public class SettingActivity extends BaseActivity implements HttpApiResponse, Vi
     private RelativeLayout user_conceal;
     private LinearLayout rl_clear_cache;
     private RelativeLayout rl_about;
+    private RelativeLayout feedback_layout;
     private Button exit_btn;
 
     private SwitchButton voice_sb;
@@ -106,8 +108,10 @@ public class SettingActivity extends BaseActivity implements HttpApiResponse, Vi
         mTitle = (TextView) findViewById(R.id.user_top_view_title);
         tv_current_language = findViewById(R.id.tv_current_language);
         rl_choice_language = findViewById(R.id.rl_choice_language);
+        feedback_layout = findViewById(R.id.feedback_layout);
         mBack.setOnClickListener(this);
         rl_choice_language.setOnClickListener(this);
+        feedback_layout.setOnClickListener(this);
         mTitle.setText(getResources().getString(R.string.title_setting));
         ThemeStyleHelper.onlyFrameTitileBar(getApplicationContext(), czy_title_layout, mBack, mTitle);
         String[] languageArr = getResources().getStringArray(R.array.language_list);
@@ -203,6 +207,9 @@ public class SettingActivity extends BaseActivity implements HttpApiResponse, Vi
             case R.id.rl_about:
                 intent = new Intent(this, AboutActivity.class);
                 startActivity(intent);
+                break;
+            case R.id.feedback_layout:
+                LinkParseUtil.parse(SettingActivity.this,"colourlife://proto?type=FeedBack","");
                 break;
             case R.id.exit_btn:
                 // 退出登录

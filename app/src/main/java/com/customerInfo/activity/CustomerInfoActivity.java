@@ -69,6 +69,8 @@ public class CustomerInfoActivity extends BaseActivity implements View.OnClickLi
     private TextView nickname_tv;
     private LinearLayout name_ll;        //姓名
     private TextView name_tv;
+    private LinearLayout email_ll; //邮箱
+    private TextView email_tv;
     private LinearLayout address_ll;     //地址
     private TextView address_tv;
     private TextView mobile_tv;      //手机号
@@ -88,6 +90,7 @@ public class CustomerInfoActivity extends BaseActivity implements View.OnClickLi
     private String gender;
     private String name;
     private String nickName;
+    private String email;
     private ImagePicker imagePicker;
 
     private boolean isShowNotice = false;
@@ -108,6 +111,7 @@ public class CustomerInfoActivity extends BaseActivity implements View.OnClickLi
         String mobile = shared.getString(UserAppConst.Colour_login_mobile, "");
         nickname_tv.setText(shared.getString(UserAppConst.Colour_NIACKNAME, ""));
         name_tv.setText(shared.getString(UserAppConst.Colour_NAME, ""));
+        email_tv.setText(shared.getString(UserAppConst.COLOUR_EMAIL, ""));
         address_tv.setText(shared.getString(UserAppConst.Colour_login_community_name, ""));
         mobile_tv.setText(mobile);
         gender = shared.getString(UserAppConst.Colour_GENDER, "0");
@@ -160,6 +164,8 @@ public class CustomerInfoActivity extends BaseActivity implements View.OnClickLi
         address_tv = (TextView) findViewById(R.id.address_tv);
         mobile_tv = (TextView) findViewById(R.id.mobile_tv);
         ll_gender = (LinearLayout) findViewById(R.id.ll_gender);
+        email_ll = (LinearLayout) findViewById(R.id.email_ll);
+        email_tv = findViewById(R.id.email_tv);
         ll_real_name = findViewById(R.id.ll_real_name);
         tv_real_name = findViewById(R.id.tv_real_name);
         tv_is_real = findViewById(R.id.tv_is_real);
@@ -169,6 +175,7 @@ public class CustomerInfoActivity extends BaseActivity implements View.OnClickLi
         twoD_code_ll.setOnClickListener(this);
         nickname_ll.setOnClickListener(this);
         name_ll.setOnClickListener(this);
+        email_ll.setOnClickListener(this);
         address_ll.setOnClickListener(this);
         ll_gender.setOnClickListener(this);
         ll_real_name.setOnClickListener(this);
@@ -216,8 +223,9 @@ public class CustomerInfoActivity extends BaseActivity implements View.OnClickLi
                 }
                 name = name_tv.getText().toString().trim();
                 nickName = nickname_tv.getText().toString().trim();
+                email = email_tv.getText().toString().trim();
                 if (isChangeUserInfo) {
-                    newUserModel.changeUserInfomation(0, name, nickName, Integer.valueOf(gender), this);
+                    newUserModel.changeUserInfomation(0, name, nickName, email, Integer.valueOf(gender), this);
                 } else {
                     if (isChangeHead) {
                         newUserModel.uploadPortrait(1, mImagePath, isShowNotice, this);
@@ -242,6 +250,9 @@ public class CustomerInfoActivity extends BaseActivity implements View.OnClickLi
             case R.id.name_ll:
                 TCAgent.onEvent(getApplicationContext(), "203008");
                 CustomerNameActivity.startCustomerNameActivityForResult(this, name_tv.getText().toString(), "name");
+                break;
+            case R.id.email_ll:
+                CustomerNameActivity.startCustomerNameActivityForResult(this, email_tv.getText().toString(), "email");
                 break;
             case R.id.address_ll:
                 TCAgent.onEvent(getApplicationContext(), "203016");
@@ -344,6 +355,10 @@ public class CustomerInfoActivity extends BaseActivity implements View.OnClickLi
                 case 4://修改性别
                     isChangeUserInfo = true;
                     tv_gender.setText(data.getStringExtra("name"));
+                case 5:
+                    isChangeUserInfo = true;
+                    email_tv.setText(data.getStringExtra("name"));
+                    break;
             }
         } else if (resultCode == ImagePicker.RESULT_CODE_ITEMS) {
             if (requestCode == AVATAR_ALBUM) {
@@ -371,6 +386,7 @@ public class CustomerInfoActivity extends BaseActivity implements View.OnClickLi
                 mEditor.putString(UserAppConst.Colour_NIACKNAME, nickName);
                 mEditor.putString(UserAppConst.Colour_NAME, name);
                 mEditor.putString(UserAppConst.Colour_GENDER, gender);
+                mEditor.putString(UserAppConst.COLOUR_EMAIL, email);
                 mEditor.commit();
                 HuxinSdkManager.instance().setNickName(nickName);
                 HuxinSdkManager.instance().setSex(gender);
