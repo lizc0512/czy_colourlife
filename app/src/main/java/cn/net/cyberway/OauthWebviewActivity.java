@@ -176,6 +176,8 @@ public class OauthWebviewActivity extends BaseActivity implements View.OnClickLi
                     intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                     Bundle bundle = new Bundle();
                     bundle.putString("code", code);
+                    bundle.putString("username", shared.getString(UserAppConst.Colour_NAME, ""));
+                    bundle.putString("portrait", shared.getString(UserAppConst.Colour_head_img, ""));
                     intent.putExtras(bundle);
                     intent.setComponent(componentName);
                     startActivity(intent);

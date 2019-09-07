@@ -257,6 +257,7 @@ public class LinkParseUtil {
                             info.setRealname(mShared.getString(UserAppConst.Colour_Real_name, ""));
                             info.setTel(mShared.getString(UserAppConst.Colour_login_mobile, ""));
                             info.setFace(mShared.getString(UserAppConst.Colour_head_img, ""));
+                            info.setEmail(mShared.getString(UserAppConst.COLOUR_EMAIL, ""));
                             info.setArtificialIntelligence(false);////默认false：显示转人工按钮。true：智能转人工
                             info.setArtificialIntelligenceNum(2);//为true时生效
                             info.setInitModeType(-1);

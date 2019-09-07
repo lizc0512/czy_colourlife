@@ -122,6 +122,7 @@ public class LekaiService extends Service {
         foundDevice();
     }
 
+
     public void syncUserKeys(OnSyncUserKeysCallback callback, String accid, String token) {
         if (null != mEdenApi) {
             ACC = accid;
@@ -144,6 +145,8 @@ public class LekaiService extends Service {
         }
     }
 
+    private String deviceCipherId;
+
     /**
      * 开门禁锁
      */
@@ -156,8 +159,25 @@ public class LekaiService extends Service {
                     mHandler = new Handler(Looper.getMainLooper());
                 }
                 mHandler.post(() -> {
+                    String openCipherId = device.getCipherId();
                     if (0 == code) {
                         ToastUtil.toastShow(getApplicationContext(), "开门成功");
+//                        if (!openCipherId.equals(deviceCipherId)) {
+//                            deviceCipherId = openCipherId;
+//
+//                        } else {//开门成功一次后 10s再弹出
+//                            long currentTimeMillis = System.currentTimeMillis();
+//                            SharedPreferences mShared = getApplicationContext().getSharedPreferences(UserAppConst.USERINFO, 0);
+//                            long saveTime = mShared.getLong("saveTime", currentTimeMillis);
+//                            long distanceTime = currentTimeMillis - saveTime;
+//                            if (distanceTime > 30000) {
+//                                ToastUtil.toastShow(getApplicationContext(), "开门成功");
+//                                mShared.edit().putLong("saveTime", currentTimeMillis).apply();
+//                            } else if (distanceTime > 10000) {
+//                                ToastUtil.toastShow(getApplicationContext(), "开门成功!!!");
+//                                mShared.edit().putLong("saveTime", currentTimeMillis).apply();
+//                            }
+//                        }
                     } else if (ErrorConstants.IS_OPERATION_ERROR_TYPE_WRONG_TIME == code) {
                         ToastUtil.toastShow(getApplicationContext(), "钥匙过期，请联系管理员");
                     } else {
@@ -166,8 +186,8 @@ public class LekaiService extends Service {
                     if (null == newUserModel) {
                         newUserModel = new NewUserModel(this);
                     }
-                    if (!TextUtils.isEmpty(device.getCipherId())) {
-                        newUserModel.uploadOpenDoor(0, device.getCipherId(), "door", 0 == code ? 1 : 2, 0 == code ? code + "" : code + "," + message);
+                    if (!TextUtils.isEmpty(openCipherId)) {
+                        newUserModel.uploadOpenDoor(0, openCipherId, "door", 0 == code ? 1 : 2, 0 == code ? code + "" : code + "," + message);
                     }
                 });
             });
