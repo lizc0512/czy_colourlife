@@ -217,10 +217,8 @@ public class ProfileFragment extends Fragment implements View.OnClickListener, M
         mHeadImg = myView.findViewById(R.id.profile_head_img);
         mUsername = myView.findViewById(R.id.profile_username);
         mCommunity = myView.findViewById(R.id.profile_community);
-        ImageView iv_qr_code = myView.findViewById(R.id.iv_qr_code);
         rl_profile_info = myView.findViewById(R.id.rl_profile_info);
         rl_profile_info.setOnClickListener(this);
-        iv_qr_code.setOnClickListener(this);
         TCAgent.onEvent(getActivity(), "203001");
         ListenerUtils.setCallBack(this);
         refresh_layout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
@@ -281,10 +279,6 @@ public class ProfileFragment extends Fragment implements View.OnClickListener, M
                 TCAgent.onEvent(getActivity(), "203002");
                 intent = new Intent(getActivity(), CustomerInfoActivity.class);
                 startActivityForResult(intent, 6);
-                break;
-            case R.id.iv_qr_code:
-                intent = new Intent(getActivity(), CustomerInfoActivity.class);
-                startActivity(intent);
                 break;
         }
     }
