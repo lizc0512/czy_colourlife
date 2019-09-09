@@ -7,6 +7,7 @@ import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.util.TypedValue;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.CompoundButton;
@@ -174,6 +175,7 @@ public class WholeApplicationActivity extends BaseActivity implements NewHttpRes
         rb.setPadding(20, 0, 20, 0);
         rb.setButtonDrawable(null);
         rb.setText(desc.trim());
+        rb.setGravity(Gravity.CENTER);
         rb.setTag(tagPosition);
         rb.setTextSize(TypedValue.COMPLEX_UNIT_SP, 16);
         try {

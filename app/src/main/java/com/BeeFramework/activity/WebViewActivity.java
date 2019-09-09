@@ -1647,8 +1647,7 @@ public class WebViewActivity extends BaseActivity implements View.OnLongClickLis
                 return false;
             } else if (parseScheme(urls)) {
                 try {
-                    Intent intent;
-                    intent = Intent.parseUri(urls, Intent.URI_INTENT_SCHEME);
+                    Intent intent = Intent.parseUri(urls, Intent.URI_INTENT_SCHEME);
                     intent.addCategory("android.intent.category.BROWSABLE");
                     intent.setComponent(null);
                     startActivityForResult(intent, GUANGCAIPAY);

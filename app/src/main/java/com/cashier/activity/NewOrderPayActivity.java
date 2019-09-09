@@ -5,6 +5,7 @@ import android.content.IntentFilter;
 import android.graphics.Color;
 import android.icu.math.BigDecimal;
 import android.os.Bundle;
+import android.os.Handler;
 import android.os.Message;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
@@ -703,31 +704,36 @@ public class NewOrderPayActivity extends BaseActivity implements View.OnClickLis
 
     /***光彩支付的结果**/
     private void showH5PayResultDialog() {
-        final HtmlPayDialog htmlPayDialog = new HtmlPayDialog(NewOrderPayActivity.this);
-        htmlPayDialog.show();
-        if (!TextUtils.isEmpty(dialogTitle)) {
-            htmlPayDialog.tv_content.setText("请确认" + dialogTitle + "支付是否完成");
-        }
-        htmlPayDialog.tv_again_pay.setOnClickListener(new View.OnClickListener() {
+        new Handler().postDelayed(new Runnable() {
             @Override
-            public void onClick(View v) {
-                htmlPayDialog.dismiss();
-                newOrderPayModel.goOrderPay(1, sn, payChannelId, NewOrderPayActivity.this);
+            public void run() {
+                final HtmlPayDialog htmlPayDialog = new HtmlPayDialog(NewOrderPayActivity.this);
+                htmlPayDialog.show();
+                if (!TextUtils.isEmpty(dialogTitle)) {
+                    htmlPayDialog.setContent("请确认" + dialogTitle + "支付是否完成");
+                }
+                htmlPayDialog.tv_again_pay.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        htmlPayDialog.dismiss();
+                        newOrderPayModel.goOrderPay(1, sn, payChannelId, NewOrderPayActivity.this);
+                    }
+                });
+                htmlPayDialog.tv_finish_pay.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        htmlPayDialog.dismiss();
+                        payResultQuery();
+                    }
+                });
+                htmlPayDialog.tv_cancel_pay.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        htmlPayDialog.dismiss();
+                    }
+                });
             }
-        });
-        htmlPayDialog.tv_finish_pay.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                htmlPayDialog.dismiss();
-                payResultQuery();
-            }
-        });
-        htmlPayDialog.tv_cancel_pay.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                htmlPayDialog.dismiss();
-            }
-        });
+        }, 500);
     }
 
     @Override
