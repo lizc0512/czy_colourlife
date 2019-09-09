@@ -15,6 +15,8 @@
             android:id="@+id/tv_content"
             android:layout_width="match_parent"
             android:layout_height="88dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
             android:gravity="center"
             android:text="请确认微信支付是否完成"
             android:textColor="@color/color_333b46"
@@ -23,7 +25,7 @@
         <View
             android:layout_width="match_parent"
             android:layout_height="1px"
-            android:background="@color/color_bfc7cc"/>
+            android:background="@color/color_bfc7cc" />
 
         <TextView
             android:id="@+id/tv_finish_pay"
@@ -37,7 +39,7 @@
         <View
             android:layout_width="match_parent"
             android:layout_height="1px"
-            android:background="@color/color_bfc7cc"/>
+            android:background="@color/color_bfc7cc" />
 
 
         <TextView
@@ -48,10 +50,11 @@
             android:text="支付遇到问题,重新支付"
             android:textColor="@color/color_a3aaae"
             android:textSize="16sp" />
+
         <View
             android:layout_width="match_parent"
             android:layout_height="1px"
-            android:background="@color/color_bfc7cc"/>
+            android:background="@color/color_bfc7cc" />
 
 
         <TextView

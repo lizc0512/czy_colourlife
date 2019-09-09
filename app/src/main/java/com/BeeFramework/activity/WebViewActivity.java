@@ -1651,7 +1651,7 @@ public class WebViewActivity extends BaseActivity implements View.OnLongClickLis
                     intent = Intent.parseUri(urls, Intent.URI_INTENT_SCHEME);
                     intent.addCategory("android.intent.category.BROWSABLE");
                     intent.setComponent(null);
-                    startActivity(intent);
+                    startActivityForResult(intent, GUANGCAIPAY);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }

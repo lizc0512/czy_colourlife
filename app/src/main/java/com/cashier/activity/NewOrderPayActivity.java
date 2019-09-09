@@ -85,6 +85,7 @@ public class NewOrderPayActivity extends BaseActivity implements View.OnClickLis
     private TextView tv_ticket_amount;//饭票价格
 
     private RelativeLayout bottom_pay_layout;
+    private String dialogTitle = "";
 
 
     private LinearLayout ticket_payment_layout;  //动态布局添加各种支付方式
@@ -162,10 +163,11 @@ public class NewOrderPayActivity extends BaseActivity implements View.OnClickLis
             final int normalPayment = payListBean.getPayment_type();
             final int normalIsNative = payListBean.getIs_native();
             final String normalPayUrl = payListBean.getPay_url();
+            String payment_name = payListBean.getPayment_name();
             if (normalDiscount > 0 && normalDiscount != 100) {
-                tv_paystyle_title.setText(payListBean.getPayment_name() + " (" + normalDiscount + "折)");
+                tv_paystyle_title.setText(payment_name + " (" + normalDiscount + "折)");
             } else {
-                tv_paystyle_title.setText(payListBean.getPayment_name());
+                tv_paystyle_title.setText(payment_name);
             }
             tv_pay_balance.setText("可用: " + mealBalance);
             final String mealTypeId = String.valueOf(payListBean.getMeal_type());
@@ -182,6 +184,7 @@ public class NewOrderPayActivity extends BaseActivity implements View.OnClickLis
                             discount = normalDiscount;
                             is_native = normalIsNative;
                             pay_url = normalPayUrl;
+                            dialogTitle = payment_name;
                             payChannelId = select_pay_type.getTag().toString().trim();
                             changePayChannelStatus();
                         }
@@ -229,6 +232,7 @@ public class NewOrderPayActivity extends BaseActivity implements View.OnClickLis
                             if (otherMealAmount >= meal_total * mealDiscount / 100.0f) {
                                 payment = mealpaymentType;
                                 discount = mealDiscount;
+                                dialogTitle = payment_name;
                                 is_native = mealNative;
                                 pay_url = mealPayUrl;
                                 payChannelId = select_ticket_pay.getTag().toString().trim();
@@ -277,10 +281,11 @@ public class NewOrderPayActivity extends BaseActivity implements View.OnClickLis
             final int balancePaymentType = payListBean.getPayment_type();
             final int balanceIsNative = payListBean.getIs_native();
             final String balancePaymentUrl = payListBean.getPay_url();
+            String payment_name = payListBean.getPayment_name();
             if (balanceDiscount > 0 && balanceDiscount != 100) {
-                tv_paystyle_title.setText(payListBean.getPayment_name() + " (" + balanceDiscount + "折)");
+                tv_paystyle_title.setText(payment_name + " (" + balanceDiscount + "折)");
             } else {
-                tv_paystyle_title.setText(payListBean.getPayment_name());
+                tv_paystyle_title.setText(payment_name);
             }
             tv_pay_balance.setVisibility(View.GONE);
             pay_type_layout.setOnClickListener(new View.OnClickListener() {
@@ -292,6 +297,7 @@ public class NewOrderPayActivity extends BaseActivity implements View.OnClickLis
                             payment = balancePaymentType;
                             is_native = balanceIsNative;
                             pay_url = balancePaymentUrl;
+                            dialogTitle = payment_name;
                             payChannelId = select_pay_type.getTag().toString().trim();
                             changePayChannelStatus();
                         }
@@ -300,6 +306,7 @@ public class NewOrderPayActivity extends BaseActivity implements View.OnClickLis
                         payment = balancePaymentType;
                         is_native = balanceIsNative;
                         pay_url = balancePaymentUrl;
+                        dialogTitle = payment_name;
                         payChannelId = select_pay_type.getTag().toString().trim();
                         changePayChannelStatus();
                     }
@@ -339,10 +346,11 @@ public class NewOrderPayActivity extends BaseActivity implements View.OnClickLis
             final int otherPayment = payListBean.getPayment_type();
             final int otherNative = payListBean.getIs_native();
             final String otherPayUrl = payListBean.getPay_url();
+            String payment_name = payListBean.getPayment_name();
             if (otherDiscount > 0 && otherDiscount != 100) {
-                tv_paystyle_title.setText(payListBean.getPayment_name() + " (" + otherDiscount + "折)");
+                tv_paystyle_title.setText(payment_name + " (" + otherDiscount + "折)");
             } else {
-                tv_paystyle_title.setText(payListBean.getPayment_name());
+                tv_paystyle_title.setText(payment_name);
             }
             tv_pay_balance.setVisibility(View.GONE);
             pay_type_layout.setOnClickListener(new View.OnClickListener() {
@@ -352,6 +360,7 @@ public class NewOrderPayActivity extends BaseActivity implements View.OnClickLis
                     discount = otherDiscount;
                     is_native = otherNative;
                     pay_url = otherPayUrl;
+                    dialogTitle = payment_name;
                     payChannelId = select_pay_type.getTag().toString().trim();
                     changePayChannelStatus();
                 }
@@ -622,6 +631,9 @@ public class NewOrderPayActivity extends BaseActivity implements View.OnClickLis
             //支付成功
 //            payResult();
             payResultQuery();
+        } else if (error_code == 201) {
+            //小程序支付成功
+            showH5PayResultDialog();
         } else if (error_code == 1000) {
             //交易取消
 
@@ -693,6 +705,9 @@ public class NewOrderPayActivity extends BaseActivity implements View.OnClickLis
     private void showH5PayResultDialog() {
         final HtmlPayDialog htmlPayDialog = new HtmlPayDialog(NewOrderPayActivity.this);
         htmlPayDialog.show();
+        if (!TextUtils.isEmpty(dialogTitle)) {
+            htmlPayDialog.tv_content.setText("请确认" + dialogTitle + "支付是否完成");
+        }
         htmlPayDialog.tv_again_pay.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
