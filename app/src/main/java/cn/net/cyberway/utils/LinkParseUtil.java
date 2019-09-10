@@ -19,6 +19,7 @@ import com.customerInfo.activity.CustomerInfoActivity;
 import com.customerInfo.activity.DeliveryAddressListActivity;
 import com.dashuview.library.keep.Cqb_PayUtil;
 import com.door.activity.IntelligenceDoorActivity;
+import com.door.activity.NewDoorAuthorizeActivity;
 import com.eparking.activity.AppointmentParkingActivity;
 import com.eparking.activity.EParkingCardHolderActivity;
 import com.eparking.activity.EParkingHistoryRecordActivity;
@@ -94,12 +95,14 @@ public class LinkParseUtil {
                     Intent intent = null;
                     switch (value) {
                         case "testWeb":
-                            intent = new Intent(context, WebViewActivity.class);
-                            link = "file:///android_asset/demo.html";
-                            intent.putExtra(WebViewActivity.WEBURL, link);
-                            intent.putExtra(WebViewActivity.WEBTITLE, title);
-                            intent.putExtra(WebViewActivity.THRIDSOURCE, false);
+                            intent = new Intent(context, NewDoorAuthorizeActivity.class);
                             context.startActivity(intent);
+//                            intent = new Intent(context, WebViewActivity.class);
+//                            link = "file:///android_asset/demo.html";
+//                            intent.putExtra(WebViewActivity.WEBURL, link);
+//                            intent.putExtra(WebViewActivity.WEBTITLE, title);
+//                            intent.putExtra(WebViewActivity.THRIDSOURCE, false);
+//                            context.startActivity(intent);
                             if (context instanceof Activity) {
                                 ((Activity) context).overridePendingTransition(R.anim.push_right_in, R.anim.push_right_out);
                             }

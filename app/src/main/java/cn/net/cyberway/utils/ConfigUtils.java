@@ -7,7 +7,6 @@ import android.content.SharedPreferences;
 import android.os.Message;
 import android.support.v4.content.LocalBroadcastManager;
 import android.text.TextUtils;
-import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.LinearLayout;
@@ -15,6 +14,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.BeeFramework.Utils.ToastUtil;
+import com.BeeFramework.model.Constants;
 import com.BeeFramework.model.NewHttpResponse;
 import com.BeeFramework.view.Util;
 import com.chuanglan.shanyan_sdk.OneKeyLoginManager;
@@ -22,12 +22,17 @@ import com.chuanglan.shanyan_sdk.listener.OneKeyLoginListener;
 import com.chuanglan.shanyan_sdk.listener.OpenLoginAuthListener;
 import com.chuanglan.shanyan_sdk.listener.ShanYanCustomInterface;
 import com.chuanglan.shanyan_sdk.tool.ShanYanUIConfig;
+import com.door.activity.NewDoorAuthorizeActivity;
 import com.external.eventbus.EventBus;
 import com.jpush.Constant;
+import com.sobot.chat.SobotApi;
+import com.sobot.chat.api.model.Information;
 import com.user.UserAppConst;
 import com.user.UserMessageConstant;
 import com.user.model.NewUserModel;
 import com.user.model.TokenModel;
+
+import java.util.HashSet;
 
 import cn.net.cyberway.R;
 
@@ -65,23 +70,24 @@ public class ConfigUtils implements NewHttpResponse {
         rightTextParams.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
         rightText.setLayoutParams(rightTextParams);
         LayoutInflater inflater = LayoutInflater.from(mContext);
-        RelativeLayout relativeLayout = (RelativeLayout) inflater.inflate(R.layout.relative_item_view, null);
-        RelativeLayout.LayoutParams layoutParamsOther = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
-        layoutParamsOther.setMargins(0, Util.DensityUtil.dip2px(mContext, 380), 0, 0);
-        layoutParamsOther.addRule(RelativeLayout.CENTER_HORIZONTAL);
-        relativeLayout.setLayoutParams(layoutParamsOther);
-        LinearLayout wechat_layout = relativeLayout.findViewById(R.id.wechat_layout);
-        LinearLayout qq_layout = relativeLayout.findViewById(R.id.qq_layout);
-        wechat_layout.setOnClickListener(new View.OnClickListener() {
+        LinearLayout linearLayout = (LinearLayout) inflater.inflate(R.layout.relative_item_view, null);
+        LinearLayout.LayoutParams layoutParamsOther = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+        layoutParamsOther.setMargins(0, Util.DensityUtil.dip2px(mContext, 320), 0, 0);
+        linearLayout.setLayoutParams(layoutParamsOther);
+        TextView tv_contact_service = linearLayout.findViewById(R.id.tv_contact_service);
+        tv_contact_service.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-            }
-        });
-        qq_layout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
+                Information info = new Information();
+                info.setAppkey(Constants.SMART_SERVICE_KEY);  //分配给App的的密钥
+                info.setArtificialIntelligence(false);////默认false：显示转人工按钮。true：智能转人工
+                info.setArtificialIntelligenceNum(2);//为true时生效
+                info.setInitModeType(-1);
+                HashSet<String> tmpSet = new HashSet<>();
+                tmpSet.add("转人工");
+                tmpSet.add("人工");
+                info.setTransferKeyWord(tmpSet);
+                SobotApi.startSobotChat(mContext, info);
             }
         });
         /****************************************************设置授权页*********************************************************/
@@ -134,7 +140,7 @@ public class ConfigUtils implements NewHttpResponse {
                         OneKeyLoginManager.getInstance().finishAuthActivity();
                     }
                 })
-//                .addCustomView(relativeLayout, false, false, null)
+                .addCustomView(linearLayout, false, false, null)
                 //标题栏下划线，可以不写
                 .build();
         return uiConfig;

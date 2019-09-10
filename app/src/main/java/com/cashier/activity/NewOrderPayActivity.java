@@ -634,7 +634,8 @@ public class NewOrderPayActivity extends BaseActivity implements View.OnClickLis
             payResultQuery();
         } else if (error_code == 201) {
             //小程序支付成功
-            showH5PayResultDialog();
+//            showH5PayResultDialog();
+            payResultQuery();
         } else if (error_code == 1000) {
             //交易取消
 
