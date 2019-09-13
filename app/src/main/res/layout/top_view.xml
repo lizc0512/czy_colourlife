@@ -28,18 +28,6 @@
             android:src="@drawable/icon_mouse"
             android:visibility="gone" />
 
-        <TextView
-            android:id="@+id/user_top_view_tvback"
-            android:layout_width="wrap_content"
-            android:layout_height="fill_parent"
-            android:layout_marginLeft="5dp"
-            android:gravity="center"
-            android:padding="10dp"
-            android:text="取消"
-            android:textColor="@drawable/top_text_select"
-            android:textSize="15dp"
-            android:visibility="gone" />
-
         <ImageView
             android:id="@+id/img_close"
             android:layout_width="45dp"
@@ -51,16 +39,13 @@
             android:src="@drawable/ivclose"
             android:visibility="gone" />
 
-        <TextView
-            android:id="@+id/user_top_view_back_text"
-            android:layout_width="wrap_content"
-            android:layout_height="fill_parent"
-            android:layout_marginLeft="45dp"
-            android:gravity="center"
-            android:padding="10dp"
-            android:text="取消"
-            android:textColor="@drawable/top_text_select"
-            android:textSize="16dp"
+        <ImageView
+            android:id="@+id/img_right"
+            android:layout_width="45dp"
+            android:layout_height="40dp"
+            android:layout_gravity="right"
+            android:padding="13dp"
+            android:src="@drawable/img_home_more"
             android:visibility="gone" />
 
         <LinearLayout
@@ -71,6 +56,14 @@
             android:gravity="center"
             android:orientation="horizontal"
             android:visibility="visible">
+
+            <ImageView
+                android:id="@+id/img_arrow"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:src="@drawable/icon_home_arrow"
+                android:visibility="gone" />
 
             <TextView
                 android:id="@+id/user_top_view_title"
@@ -84,15 +77,19 @@
                 android:text=""
                 android:textColor="@color/black_text_color"
                 android:textSize="18dp" />
-
-            <ImageView
-                android:id="@+id/img_arrow"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:src="@drawable/icon_home_arrow"
-                android:visibility="gone" />
         </LinearLayout>
+
+        <TextView
+            android:id="@+id/user_top_view_tvback"
+            android:layout_width="wrap_content"
+            android:layout_height="fill_parent"
+            android:layout_marginLeft="5dp"
+            android:gravity="center"
+            android:padding="10dp"
+            android:text="取消"
+            android:textColor="@drawable/top_text_select"
+            android:textSize="15dp"
+            android:visibility="gone" />
 
         <TextView
             android:id="@+id/user_top_view_right"
@@ -104,13 +101,16 @@
             android:textColor="@drawable/top_text_select"
             android:textSize="15dp" />
 
-        <ImageView
-            android:id="@+id/img_right"
-            android:layout_width="45dp"
-            android:layout_height="40dp"
-            android:layout_gravity="right"
-            android:padding="13dp"
-            android:src="@drawable/img_home_more"
+        <TextView
+            android:id="@+id/user_top_view_back_text"
+            android:layout_width="wrap_content"
+            android:layout_height="fill_parent"
+            android:layout_marginLeft="45dp"
+            android:gravity="center"
+            android:padding="10dp"
+            android:text="取消"
+            android:textColor="@drawable/top_text_select"
+            android:textSize="16dp"
             android:visibility="gone" />
 
         <View

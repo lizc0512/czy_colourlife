@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="75dp">
+
+
+    <TextView
+        android:id="@+id/tv_door_status"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="16dp"
+        android:layout_marginTop="13dp"
+        android:text="开门成功"
+        android:textColor="@color/color_81868f"
+        android:textSize="15sp" />
+
+    <TextView
+        android:id="@+id/tv_door_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_marginLeft="16dp"
+        android:layout_marginBottom="13dp"
+        android:text="开启6栋大门"
+        android:textColor="@color/color_25282e"
+        android:textSize="15sp" />
+
+
+    <TextView
+        android:id="@+id/tv_door_time"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginRight="16dp"
+        android:layout_marginBottom="13dp"
+        android:text="21:25"
+        android:textColor="@color/color_25282e"
+        android:textSize="14sp" />
+
+</RelativeLayout>

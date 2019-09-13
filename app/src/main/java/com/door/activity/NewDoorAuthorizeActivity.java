@@ -20,6 +20,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 import cn.net.cyberway.R;
+/*
+* 新的授权和授权记录
+*
+* */
 
 public class NewDoorAuthorizeActivity extends BaseFragmentActivity implements View.OnClickListener {
 
@@ -42,7 +46,7 @@ public class NewDoorAuthorizeActivity extends BaseFragmentActivity implements Vi
         record_viewpager = findViewById(R.id.record_viewpager);
         user_top_view_back.setOnClickListener(this);
         user_top_view_title.setText("授权");
-        tabTitleArray = getResources().getStringArray(R.array.feedback_menu);
+        tabTitleArray = getResources().getStringArray(R.array.door_authorize_menu);
         for (int i = 0; i < tabTitleArray.length; i++) {
             record_tabs.addTab(record_tabs.newTab().setText(tabTitleArray[i]));
         }

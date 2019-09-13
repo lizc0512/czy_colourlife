@@ -68,6 +68,12 @@
     <string name="door_author_day">天</string>
     <string name="door_author_hour">小时</string>
     <string name="door_no_grantauthor">您没有授权权限</string>
-
+    <string name="door_notice_one">注：为保证业主信息安全，开启门禁权限前必须验证该房号业主的手机号码，如该房号未绑定手机号码或号码有误，请咨询小区物业管理处或致电集团客服热线</string>
+    <string name="door_notice_hotline">10101778</string>
+    <string name="door_notice_two">，授权人账号也可咨询小区物业管理处</string>
+    <string-array name="door_authorize_menu">
+        <item>授权申请</item>
+        <item>授权记录</item>
+    </string-array>
 
 </resources>

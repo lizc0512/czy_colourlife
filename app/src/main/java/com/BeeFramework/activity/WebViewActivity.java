@@ -213,7 +213,7 @@ public class WebViewActivity extends BaseActivity implements View.OnLongClickLis
     private RelativeLayout rl_wx;
     private RelativeLayout rl_pyq;
     private boolean isJumpThrid = false;
-    private String hotLine = "4008893893";
+    private String hotLine = "1010-1778 ";
     private String testOauthUrl = "http://oauth2-czytest.colourlife.com";
     private String betaOauthUrl = "https://oauth2czy-czybeta.colourlife.com";
     private String officialOauthUrl = "https://oauth2czy.colourlife.com";
@@ -1009,7 +1009,7 @@ public class WebViewActivity extends BaseActivity implements View.OnLongClickLis
                 hotLine = jsonObject.optString("hotLine");
             } catch (JSONException e) {
                 e.printStackTrace();
-                hotLine = "4008893893";
+                hotLine = "1010-1778";
             }
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                 if (AndPermission.hasPermission(WebViewActivity.this, Manifest.permission.CALL_PHONE)) {
@@ -1706,51 +1706,51 @@ public class WebViewActivity extends BaseActivity implements View.OnLongClickLis
 
 
     private void goAlipayPay(String urls) {
-        boolean isIntercepted = false;
-        //https://www.jianshu.com/p/ebaedd551365
-        if (urls.startsWith("http")) {
-            final PayTask task = new PayTask(WebViewActivity.this); //支持原生APP调用
-            //webView处理必须在同一个线程上
-            isIntercepted = task.payInterceptorWithUrl(urls, true, new H5PayCallback() {
-
-                @Override
-                public void onPayResult(final H5PayResultModel result) {
-                    /*
-                    resultCode
-	                String返回码，标识支付状态，含义如下：
-	                9000——订单支付成功
-	                8000——正在处理中
-	                4000——订单支付失败
-	                5000——重复请求
-	                6001——用户中途取消
-	                6002——网络连接出错
-                    returnUrl  String支付结束后应当跳转的 url 地址
-                     */
-                    // 支付结果返回
-                    final String url = result.getReturnUrl();
-                    if (!TextUtils.isEmpty(url)) {
-                        WebViewActivity.this.runOnUiThread(new Runnable() {
-                            @Override
-                            public void run() {
-                                webView.loadUrl(url);
-                            }
-                        });
-                    }
-                    // 5000支付失败 6001重复请求 6002中途取消
-                    if ("9000".equals(result.getResultCode())) {
-                        Message message = Message.obtain();
-                        message.what = UserMessageConstant.GUANGCAI_PAY_MSG;
-                        EventBus.getDefault().post(message);
-                        finish();
-                    }
-                }
-            });
-            if (!isIntercepted) {
-                jumpByUrls(urls);
-            }
-        } else {
+//        boolean isIntercepted = false;
+//        //https://www.jianshu.com/p/ebaedd551365
+//        if (urls.startsWith("http")) {
+//            final PayTask task = new PayTask(WebViewActivity.this); //支持原生APP调用
+//            //webView处理必须在同一个线程上
+//            isIntercepted = task.payInterceptorWithUrl(urls, true, new H5PayCallback() {
+//
+//                @Override
+//                public void onPayResult(final H5PayResultModel result) {
+//                    /*
+//                    resultCode
+//	                String返回码，标识支付状态，含义如下：
+//	                9000——订单支付成功
+//	                8000——正在处理中
+//	                4000——订单支付失败
+//	                5000——重复请求
+//	                6001——用户中途取消
+//	                6002——网络连接出错
+//                    returnUrl  String支付结束后应当跳转的 url 地址
+//                     */
+//                    // 支付结果返回
+//                    final String url = result.getReturnUrl();
+//                    if (!TextUtils.isEmpty(url)) {
+//                        WebViewActivity.this.runOnUiThread(new Runnable() {
+//                            @Override
+//                            public void run() {
+//                                webView.loadUrl(url);
+//                            }
+//                        });
+//                    }
+//                    // 5000支付失败 6001重复请求 6002中途取消
+//                    if ("9000".equals(result.getResultCode())) {
+//                        Message message = Message.obtain();
+//                        message.what = UserMessageConstant.GUANGCAI_PAY_MSG;
+//                        EventBus.getDefault().post(message);
+//                        finish();
+//                    }
+//                }
+//            });
+//            if (!isIntercepted) {
+//                jumpByUrls(urls);
+//            }
+//        } else {
             jumpByUrls(urls);
-        }
+//        }
     }
 
     private void jumpByUrls(String urls) {

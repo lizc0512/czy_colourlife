@@ -80,6 +80,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.regex.Pattern;
 
+import cn.csh.colourful.life.utils.GlideImageLoader;
 import cn.csh.colourful.life.view.imagepicker.ImagePicker;
 import cn.csh.colourful.life.view.imagepicker.bean.ImageItem;
 import cn.csh.colourful.life.view.imagepicker.ui.ImageGridActivity;
@@ -122,6 +123,7 @@ public final class CaptureActivity extends BaseActivity implements
     private ImageView back;
     private SurfaceHolder surfaceHolder;
     private ImageView mFlashLight;
+    private ImageView open_picture;
 
     private int currentFlashState = LIGHT_ON;
 
@@ -158,33 +160,17 @@ public final class CaptureActivity extends BaseActivity implements
         title.setText(getResources().getString(R.string.title_scanner));
         back = (ImageView) findViewById(R.id.user_top_view_back);
         ImageView img_right = (ImageView) findViewById(R.id.img_right);
-        img_right.setVisibility(View.VISIBLE);
+        img_right.setVisibility(View.GONE);
         img_right.setImageResource(R.drawable.img_home_more);
         mFlashLight = (ImageView) findViewById(R.id.flashlight);
+        open_picture = (ImageView) findViewById(R.id.open_picture);
         back.setOnClickListener(this);
         img_right.setOnClickListener(this);
         hasSurface = false;
         beepManager = new BeepManager(this);
-
-        mFlashLight.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (currentFlashState == LIGHT_ON) {
-                    if (cameraManager != null) {
-                        cameraManager.openLight();
-                        currentFlashState = LIGHT_OFF;
-                        mFlashLight.setImageResource(R.drawable.b0_torch_on);
-                    }
-                } else {
-                    if (cameraManager != null) {
-                        cameraManager.offLight();
-                        currentFlashState = LIGHT_ON;
-                        mFlashLight.setImageResource(R.drawable.b0_torch_off);
-                    }
-                }
-
-            }
-        });
+        mFlashLight.setOnClickListener(this);
+        open_picture.setOnClickListener(this);
+        initImagePicker();
         ThemeStyleHelper.onlyFrameTitileBar(getApplicationContext(), czy_title_layout, back, title);
     }
 
@@ -212,6 +198,17 @@ public final class CaptureActivity extends BaseActivity implements
         } else {
             initCamera();
         }
+    }
+
+    private void initImagePicker() {
+        ImagePicker imagePicker = ImagePicker.getInstance();
+        imagePicker.setImageLoader(new GlideImageLoader());   //设置图片加载器
+        imagePicker.setShowCamera(false);  //显示拍照按钮
+        imagePicker.setCrop(false);
+        imagePicker.setMultiMode(false);
+        imagePicker.setSelectLimit(1);    //选中数量限制
+        imagePicker.setOutPutX(1000);//保存文件的宽度。单位像素
+        imagePicker.setOutPutY(1000);//保存文件的高度。单位像素
     }
 
     private void initCamera() {
@@ -545,25 +542,47 @@ public final class CaptureActivity extends BaseActivity implements
     @Override
     public void onClick(View v) {
         // TODO Auto-generated method stub
-        if (v.getId() == R.id.user_top_view_back) {
-            finish();
-        } else if (v.getId() == R.id.img_right) {
-            final BottomShareDialogFragment bottomShareDialogFragment = new BottomShareDialogFragment(CaptureActivity.this);
-            if (null != bottomShareDialogFragment.adapter) {
-                bottomShareDialogFragment.adapter.setOnItemClickListener(new BaseRecyclerAdapter.OnItemClickListener() {
-                    @Override
-                    public void onItemClick(RecyclerView parent, View view, int position) {
-                        if (position == 0) {
-                            Intent intent = new Intent(CaptureActivity.this, ImageGridActivity.class);
-                            startActivityForResult(intent, 5000);
+        switch (v.getId()) {
+            case R.id.user_top_view_back:
+                finish();
+                break;
+            case R.id.img_right:
+                final BottomShareDialogFragment bottomShareDialogFragment = new BottomShareDialogFragment(CaptureActivity.this);
+                if (null != bottomShareDialogFragment.adapter) {
+                    bottomShareDialogFragment.adapter.setOnItemClickListener(new BaseRecyclerAdapter.OnItemClickListener() {
+                        @Override
+                        public void onItemClick(RecyclerView parent, View view, int position) {
+                            if (position == 0) {
+                                Intent intent = new Intent(CaptureActivity.this, ImageGridActivity.class);
+                                startActivityForResult(intent, 5000);
+                            }
+                            bottomShareDialogFragment.dismissDialog();
                         }
-                        bottomShareDialogFragment.dismissDialog();
+                    });
+                }
+                bottomShareDialogFragment.setWidth(Utils.getDeviceWith(getApplicationContext()));
+                bottomShareDialogFragment.setHeight(Util.DensityUtil.dip2px(getApplicationContext(), 50));
+                bottomShareDialogFragment.showAtLocation(findViewById(R.id.viewfinder_view), Gravity.BOTTOM, 0, 0);
+                break;
+            case R.id.open_picture:
+                Intent intent = new Intent(CaptureActivity.this, ImageGridActivity.class);
+                startActivityForResult(intent, 5000);
+                break;
+            case R.id.flashlight:
+                if (currentFlashState == LIGHT_ON) {
+                    if (cameraManager != null) {
+                        cameraManager.openLight();
+                        currentFlashState = LIGHT_OFF;
+                        mFlashLight.setImageResource(R.drawable.b0_torch_on);
                     }
-                });
-            }
-            bottomShareDialogFragment.setWidth(Utils.getDeviceWith(getApplicationContext()));
-            bottomShareDialogFragment.setHeight(Util.DensityUtil.dip2px(getApplicationContext(), 50));
-            bottomShareDialogFragment.showAtLocation(findViewById(R.id.viewfinder_view), Gravity.BOTTOM, 0, 0);
+                } else {
+                    if (cameraManager != null) {
+                        cameraManager.offLight();
+                        currentFlashState = LIGHT_ON;
+                        mFlashLight.setImageResource(R.drawable.b0_torch_off);
+                    }
+                }
+                break;
         }
     }
 

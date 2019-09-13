@@ -22,7 +22,6 @@ import com.chuanglan.shanyan_sdk.listener.OneKeyLoginListener;
 import com.chuanglan.shanyan_sdk.listener.OpenLoginAuthListener;
 import com.chuanglan.shanyan_sdk.listener.ShanYanCustomInterface;
 import com.chuanglan.shanyan_sdk.tool.ShanYanUIConfig;
-import com.door.activity.NewDoorAuthorizeActivity;
 import com.external.eventbus.EventBus;
 import com.jpush.Constant;
 import com.sobot.chat.SobotApi;
@@ -140,7 +139,7 @@ public class ConfigUtils implements NewHttpResponse {
                         OneKeyLoginManager.getInstance().finishAuthActivity();
                     }
                 })
-                .addCustomView(linearLayout, false, false, null)
+//                .addCustomView(linearLayout, false, false, null)
                 //标题栏下划线，可以不写
                 .build();
         return uiConfig;

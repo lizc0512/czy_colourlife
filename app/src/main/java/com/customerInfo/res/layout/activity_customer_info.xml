@@ -285,6 +285,7 @@
                     android:id="@+id/email_ll"
                     android:layout_width="match_parent"
                     android:layout_height="44dp"
+                    android:visibility="gone"
                     android:background="@drawable/bg_default"
                     android:gravity="center_vertical"
                     android:orientation="horizontal">
@@ -322,6 +323,7 @@
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="1px"
+                    android:visibility="gone"
                     android:layout_marginLeft="15dp"
                     android:background="@color/divider_color" />
 

@@ -118,7 +118,7 @@ public class UserRegisterAndLoginActivity extends BaseActivity implements OnClic
     private String setGesturePawd;
     private String portraitUrl = "";
     private PlatformDb loginPlatformDb;
-    private String hotLine = "4008893893";
+    private String hotLine = "1010-1778";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -373,6 +373,7 @@ public class UserRegisterAndLoginActivity extends BaseActivity implements OnClic
             }
             editor.putString(UserAppConst.Colour_login_mobile, mobile);
             editor.commit();
+            OneKeyLoginManager.getInstance().finishAuthActivity();
             Intent intent = new Intent(UserRegisterAndLoginActivity.this, UnlockGesturePasswordActivity.class);
             startActivity(intent);
             overridePendingTransition(R.anim.push_right_in, R.anim.push_right_out);
@@ -535,7 +536,7 @@ public class UserRegisterAndLoginActivity extends BaseActivity implements OnClic
                         forbidNotice = contentBean.getNotice();
                         hotLine = contentBean.getHotLine();
                         if (TextUtils.isEmpty(hotLine)) {
-                            hotLine = "4008893893";
+                            hotLine = "1010-1778";
                         }
                     } catch (Exception e) {
 
@@ -639,6 +640,7 @@ public class UserRegisterAndLoginActivity extends BaseActivity implements OnClic
             case 13:
                 if (!TextUtils.isEmpty(result)) {
                     userInitImData(UserRegisterAndLoginActivity.this, shared);
+                    OneKeyLoginManager.getInstance().finishAuthActivity();
                     mTokenModel.getToken(6, loginType, true, this);
                 }
                 break;

@@ -322,10 +322,10 @@ public class NewOrderPayActivity extends BaseActivity implements View.OnClickLis
             }
             if (TextUtils.isEmpty(balancePayAmount)) {
                 tv_pay_balance.setVisibility(View.GONE);
-                showStatus(select_pay_type, balanceDiscount, balancePaymentType, balanceIsNative, balancePaymentUrl);
+                showStatus(select_pay_type, balanceDiscount, balancePaymentType, balanceIsNative, balancePaymentUrl, payment_name);
             } else {
                 tv_pay_balance.setVisibility(View.VISIBLE);
-                setBalanceColor(getFormatMoney(balancePayAmount), tv_pay_balance, select_pay_type, balanceDiscount, balancePaymentType, balanceIsNative, balancePaymentUrl);
+                setBalanceColor(getFormatMoney(balancePayAmount), tv_pay_balance, select_pay_type, balanceDiscount, balancePaymentType, balanceIsNative, balancePaymentUrl, payment_name);
             }
         }
     }
@@ -373,7 +373,7 @@ public class NewOrderPayActivity extends BaseActivity implements View.OnClickLis
             } else {
                 tv_paystyle_view.setVisibility(View.VISIBLE);
             }
-            showStatus(select_pay_type, otherDiscount, otherPayment, otherNative, otherPayUrl);
+            showStatus(select_pay_type, otherDiscount, otherPayment, otherNative, otherPayUrl, payment_name);
         }
     }
 
@@ -468,7 +468,7 @@ public class NewOrderPayActivity extends BaseActivity implements View.OnClickLis
         if (mealAmount >= meal_total * discount / 100.0f) {  //饭票可以选中
             tv_pay_balance.setTextColor(Color.parseColor("#a3aaae"));
             selectImage.setVisibility(View.VISIBLE);
-            showStatus(selectImage, discount, payment, is_native, pay_url);
+            showStatus(selectImage, discount, payment, is_native, pay_url, "");
         } else {
             tv_pay_balance.setTextColor(Color.parseColor("#fe6262"));
             selectImage.setVisibility(View.GONE);
@@ -476,11 +476,11 @@ public class NewOrderPayActivity extends BaseActivity implements View.OnClickLis
     }
 
     /***花样年余额够不够支付订单现金支付的判断***/
-    private void setBalanceColor(double balanceAmout, TextView tv_pay_balance, ImageView selectImage, int discount, int payment, int is_native, String pay_url) {
+    private void setBalanceColor(double balanceAmout, TextView tv_pay_balance, ImageView selectImage, int discount, int payment, int is_native, String pay_url, String payment_name) {
         if (balanceAmout >= total_fee * discount / 100.0f) {  //余额可以选中
             tv_pay_balance.setTextColor(Color.parseColor("#a3aaae"));
             selectImage.setVisibility(View.VISIBLE);
-            showStatus(selectImage, discount, payment, is_native, pay_url);
+            showStatus(selectImage, discount, payment, is_native, pay_url, payment_name);
         } else {
             tv_pay_balance.setTextColor(Color.parseColor("#fe6262"));
             selectImage.setVisibility(View.GONE);
@@ -488,13 +488,14 @@ public class NewOrderPayActivity extends BaseActivity implements View.OnClickLis
     }
 
     /***显示默认的支付方式***/
-    private void showStatus(ImageView selectImage, int discount, int payment, int is_native, String pay_url) {
+    private void showStatus(ImageView selectImage, int discount, int payment, int is_native, String pay_url, String payment_name) {
         if (TextUtils.isEmpty(payChannelId)) {
             payChannelId = selectImage.getTag().toString();
             this.discount = discount;
             this.payment = payment;
             this.is_native = is_native;
             this.pay_url = pay_url;
+            dialogTitle = payment_name;
             selectImage.setImageResource(R.drawable.f3_sel);
             showPayType();
         } else {

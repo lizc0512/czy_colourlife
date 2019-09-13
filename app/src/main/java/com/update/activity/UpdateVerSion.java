@@ -109,9 +109,9 @@ public class UpdateVerSion implements NewHttpResponse {
                 if (length >= 3) {
                     stringBuffer.append(Integer.valueOf(versionArr[0]) - 1);
                     stringBuffer.append(".");
-                    stringBuffer.append(Integer.valueOf(versionArr[1]) - 6);
+                    stringBuffer.append(Integer.valueOf(versionArr[1]) - 5);
                     stringBuffer.append(".");
-                    stringBuffer.append(Integer.valueOf(versionArr[2]) - 7);
+                    stringBuffer.append(Integer.valueOf(versionArr[2]) - 17);
                     if (length == 4) {
                         stringBuffer.append(".");
                         stringBuffer.append(versionArr[3]);

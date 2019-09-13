@@ -262,7 +262,7 @@ public class UnlockGesturePasswordActivity extends BaseActivity implements NewHt
     }
 
     private int isWhite = 0;
-    private String hotLine = "4008893893";
+    private String hotLine = "1010-1778";
 
     @Override
     public void OnHttpResponse(int what, String result) {
@@ -280,10 +280,10 @@ public class UnlockGesturePasswordActivity extends BaseActivity implements NewHt
                             forbidNotice = getResources().getString(R.string.change_pswd_verify);
                         }
                         if (TextUtils.isEmpty(hotLine)) {
-                            hotLine = "4008893893";
+                            hotLine = "1010-1778";
                         }
                     } catch (Exception e) {
-                        hotLine = "4008893893";
+                        hotLine = "1010-1778";
                     }
                 }
                 if (isWhite == 1) {
@@ -343,7 +343,6 @@ public class UnlockGesturePasswordActivity extends BaseActivity implements NewHt
                 }
                 break;
             case 5:
-                OneKeyLoginManager.getInstance().finishAuthActivity();
                 ToastUtil.toastShow(this, getResources().getString(R.string.user_login_success));
                 editor.putBoolean(UserAppConst.Colour_user_login, true);
                 editor.commit();

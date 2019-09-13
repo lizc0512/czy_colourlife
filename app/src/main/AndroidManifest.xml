@@ -336,25 +336,6 @@
                 <data android:scheme="tencent1101958589" />
             </intent-filter>
         </activity>
-        <!-- 微信分享回调 -->
-
-        <activity
-            android:name=".wxapi.WXPayEntryActivity"
-            android:configChanges="keyboardHidden|orientation|screenSize"
-            android:exported="true"
-            android:label="@string/app_name"
-            android:launchMode="singleTop"
-            android:screenOrientation="portrait"
-            android:theme="@style/shareDialog" />
-        <activity
-            android:name=".wxapi.WXEntryActivity"
-            android:configChanges="keyboardHidden|orientation|screenSize"
-            android:exported="true"
-            android:label="@string/app_name"
-            android:launchMode="singleTop"
-            android:screenOrientation="portrait"
-            android:theme="@android:style/Theme.Translucent.NoTitleBar">
-        </activity>
 
         <!-- 友盟统计测试key -->
         <!-- <meta-data -->
@@ -623,7 +604,8 @@
         <activity
             android:name="com.lhqpay.ewallet.keepIntact.WXPayEntryActivity"
             android:exported="true"
-            android:launchMode="singleTop"
+            android:launchMode="singleTask"
+            android:taskAffinity="cn.net.cyberway"
             android:theme="@android:style/Theme.Translucent" />
 
         <activity-alias
@@ -631,7 +613,38 @@
             android:exported="true"
             android:targetActivity="com.lhqpay.ewallet.keepIntact.WXPayEntryActivity" />
 
+        <activity-alias
+            android:name=".wxapi.WXEntryActivity"
+            android:exported="true"
+            android:targetActivity="com.lhqpay.ewallet.keepIntact.WXPayEntryActivity" />
         <!-- 4.1.0用户 -->
+
+        <!-- 微信分享回调 -->
+
+        <activity
+            android:name=".wxapi.WXPayEntryActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            android:exported="true"
+            android:label="@string/app_name"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait"
+            android:theme="@style/shareDialog" />
+        <activity
+            android:name=".wxapi.WXEntryActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            android:exported="true"
+            android:label="@string/app_name"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+
+                <data android:scheme="sdksample" />
+            </intent-filter>
+        </activity>
 
         <activity
             android:name="com.user.activity.UserRegisterAndLoginActivity"
@@ -1096,6 +1109,12 @@
         <activity
             android:name="com.chuanglan.shanyan_sdk.view.CTCCPrivacyProtocolActivity"
             android:launchMode="singleTop"
+            android:screenOrientation="portrait" />
+
+
+        <!--门禁的改造-->
+        <activity
+            android:name="com.door.activity.NewDoorAuthorizeActivity"
             android:screenOrientation="portrait" />
     </application>
 
