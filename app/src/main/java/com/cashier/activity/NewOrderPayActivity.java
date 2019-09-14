@@ -99,6 +99,7 @@ public class NewOrderPayActivity extends BaseActivity implements View.OnClickLis
     private double meal_total = 0; //饭票的
     private double total_fee = 0; //现金的
     private String sn = "";
+    private int payStyle = 0;
 
 
     @Override
@@ -186,6 +187,7 @@ public class NewOrderPayActivity extends BaseActivity implements View.OnClickLis
                             is_native = normalIsNative;
                             pay_url = normalPayUrl;
                             dialogTitle = payment_name;
+                            payStyle = 0;
                             payChannelId = select_pay_type.getTag().toString().trim();
                             changePayChannelStatus();
                         }
@@ -236,6 +238,7 @@ public class NewOrderPayActivity extends BaseActivity implements View.OnClickLis
                                 dialogTitle = payment_name;
                                 is_native = mealNative;
                                 pay_url = mealPayUrl;
+                                payStyle = 0;
                                 payChannelId = select_ticket_pay.getTag().toString().trim();
                                 changePayChannelStatus();
                             }
@@ -299,6 +302,7 @@ public class NewOrderPayActivity extends BaseActivity implements View.OnClickLis
                             is_native = balanceIsNative;
                             pay_url = balancePaymentUrl;
                             dialogTitle = payment_name;
+                            payStyle = 0;
                             payChannelId = select_pay_type.getTag().toString().trim();
                             changePayChannelStatus();
                         }
@@ -308,6 +312,7 @@ public class NewOrderPayActivity extends BaseActivity implements View.OnClickLis
                         is_native = balanceIsNative;
                         pay_url = balancePaymentUrl;
                         dialogTitle = payment_name;
+                        payStyle = 0;
                         payChannelId = select_pay_type.getTag().toString().trim();
                         changePayChannelStatus();
                     }
@@ -362,6 +367,7 @@ public class NewOrderPayActivity extends BaseActivity implements View.OnClickLis
                     is_native = otherNative;
                     pay_url = otherPayUrl;
                     dialogTitle = payment_name;
+                    payStyle = 1;
                     payChannelId = select_pay_type.getTag().toString().trim();
                     changePayChannelStatus();
                 }
@@ -372,6 +378,9 @@ public class NewOrderPayActivity extends BaseActivity implements View.OnClickLis
                 tv_paystyle_view.setVisibility(View.GONE);
             } else {
                 tv_paystyle_view.setVisibility(View.VISIBLE);
+            }
+            if (TextUtils.isEmpty(payChannelId)) {
+                payStyle = 1;
             }
             showStatus(select_pay_type, otherDiscount, otherPayment, otherNative, otherPayUrl, payment_name);
         }
@@ -628,7 +637,7 @@ public class NewOrderPayActivity extends BaseActivity implements View.OnClickLis
 
     @Override
     public void onPayResult(int error_code, String message) {  //微信回调的接口
-//        ToastUtil.toastShow(this, message);
+        payStyle = 0;
         if (error_code == 200) {
             //支付成功
 //            payResult();
@@ -672,6 +681,9 @@ public class NewOrderPayActivity extends BaseActivity implements View.OnClickLis
         if (!EventBus.getDefault().isregister(NewOrderPayActivity.this)) {
             EventBus.getDefault().register(NewOrderPayActivity.this);
         }
+        if (payStyle == 1) {
+            showH5PayResultDialog();
+        }
     }
 
     @Override
@@ -690,6 +702,7 @@ public class NewOrderPayActivity extends BaseActivity implements View.OnClickLis
     public void onEvent(Object event) {
         final Message message = (Message) event;
         if (message.what == UserMessageConstant.GUANGCAI_PAY_MSG) {//登录成功刷新数据
+            payStyle = 0;
             showH5PayResultDialog();
         } else if (message.what == UserMessageConstant.NET_CONN_CHANGE) {
             if (NetworkUtil.isConnect(getApplicationContext())) {
@@ -697,6 +710,7 @@ public class NewOrderPayActivity extends BaseActivity implements View.OnClickLis
             }
         }
     }
+
 
     private void againGetPayList() {
         if (TextUtils.isEmpty(payChannelId)) {

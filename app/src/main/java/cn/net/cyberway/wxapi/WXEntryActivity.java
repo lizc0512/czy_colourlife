@@ -12,9 +12,10 @@ import android.content.Intent;
 import android.widget.Toast;
 
 import com.BeeFramework.Utils.ToastUtil;
-import com.tencent.mm.opensdk.constants.ConstantsAPI;
+import com.tencent.mm.opensdk.modelbase.BaseReq;
 import com.tencent.mm.opensdk.modelbase.BaseResp;
 import com.tencent.mm.opensdk.modelbiz.WXLaunchMiniProgram;
+import com.tencent.mm.opensdk.openapi.IWXAPIEventHandler;
 
 import cn.sharesdk.wechat.utils.WXAppExtendObject;
 import cn.sharesdk.wechat.utils.WXMediaMessage;
@@ -23,7 +24,7 @@ import cn.sharesdk.wechat.utils.WechatHandlerActivity;
 /**
  * 微信客户端回调activity示例
  */
-public class WXEntryActivity extends WechatHandlerActivity {
+public class WXEntryActivity extends WechatHandlerActivity implements IWXAPIEventHandler {
 
     /**
      * 处理微信发出的向第三方应用请求app message
@@ -48,6 +49,7 @@ public class WXEntryActivity extends WechatHandlerActivity {
      * 本Demo只是将信息展示出来，但你可做点其他的事情，而不仅仅只是Toast
      */
     public void onShowMessageFromWXReq(WXMediaMessage msg) {
+
         if (msg != null && msg.mediaObject != null
                 && (msg.mediaObject instanceof WXAppExtendObject)) {
             WXAppExtendObject obj = (WXAppExtendObject) msg.mediaObject;
@@ -55,27 +57,32 @@ public class WXEntryActivity extends WechatHandlerActivity {
         }
     }
 
+    @Override
+    public void onReq(BaseReq baseReq) {
+        ToastUtil.toastShow(WXEntryActivity.this, baseReq.openId);
+    }
+
+    @Override
     public void onResp(BaseResp resp) {
 //        if (resp.getType() == ConstantsAPI.COMMAND_LAUNCH_WX_MINIPROGRAM) {
-            WXLaunchMiniProgram.Resp launchMiniProResp = (WXLaunchMiniProgram.Resp) resp;
-            String extraData = launchMiniProResp.extMsg; //对应小程序组件 <button open-type="launchApp"> 中的 app-parameter 属性
-            int errCode = launchMiniProResp.errCode; //对应小程序组件 <button open-type="launchApp"> 中的 app-parameter 属性
-            ToastUtil.toastShow(WXEntryActivity.this, errCode + extraData);
+        WXLaunchMiniProgram.Resp launchMiniProResp = (WXLaunchMiniProgram.Resp) resp;
+        String extraData = launchMiniProResp.extMsg; //对应小程序组件 <button open-type="launchApp"> 中的 app-parameter 属性
+        int errCode = launchMiniProResp.errCode; //对应小程序组件 <button open-type="launchApp"> 中的 app-parameter 属性
+        ToastUtil.toastShow(WXEntryActivity.this, errCode + extraData);
 
-            /**
-             * 返回支付结果信息 ，json字串:
-             * {
-             * errCode:200, errMsg:"成功"
-             * }
-             * errCode对应状态 :
-             * 200: 支付成功 500:支付出错
-             *
-             * 401 参数data为空
-             * 402 参数data非法
-             * 403 openid获取失败
-             */
+        /**
+         * 返回支付结果信息 ，json字串:
+         * {
+         * errCode:200, errMsg:"成功"
+         * }
+         * errCode对应状态 :
+         * 200: 支付成功 500:支付出错
+         *
+         * 401 参数data为空
+         * 402 参数data非法
+         * 403 openid获取失败
+         */
 //        }
-
     }
 
 }

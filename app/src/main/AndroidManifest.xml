@@ -617,24 +617,22 @@
             android:name=".wxapi.WXEntryActivity"
             android:exported="true"
             android:targetActivity="com.lhqpay.ewallet.keepIntact.WXPayEntryActivity" />
-        <!-- 4.1.0用户 -->
-
-        <!-- 微信分享回调 -->
 
         <activity
             android:name=".wxapi.WXPayEntryActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:exported="true"
             android:label="@string/app_name"
-            android:launchMode="singleTop"
+            android:launchMode="singleTask"
             android:screenOrientation="portrait"
             android:theme="@style/shareDialog" />
         <activity
             android:name=".wxapi.WXEntryActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:exported="true"
+            android:enabled="true"
             android:label="@string/app_name"
-            android:launchMode="singleTop"
+            android:launchMode="singleTask"
             android:screenOrientation="portrait"
             android:theme="@android:style/Theme.Translucent.NoTitleBar">
             <intent-filter>
