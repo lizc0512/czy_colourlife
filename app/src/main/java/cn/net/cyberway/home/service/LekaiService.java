@@ -3,16 +3,19 @@ package cn.net.cyberway.home.service;
 import android.app.Service;
 import android.bluetooth.BluetoothAdapter;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Binder;
 import android.os.Handler;
 import android.os.IBinder;
 import android.os.Looper;
+import android.os.Message;
 import android.support.annotation.Nullable;
 import android.text.TextUtils;
 import android.util.Log;
 
 import com.BeeFramework.AppConst;
 import com.BeeFramework.Utils.ToastUtil;
+import com.external.eventbus.EventBus;
 import com.intelspace.library.EdenApi;
 import com.intelspace.library.ErrorConstants;
 import com.intelspace.library.api.OnConnectCallback;
@@ -21,6 +24,8 @@ import com.intelspace.library.api.OnSyncUserKeysCallback;
 import com.intelspace.library.api.OnUserOptParkLockCallback;
 import com.intelspace.library.module.Device;
 import com.intelspace.library.module.LocalKey;
+import com.user.UserAppConst;
+import com.user.UserMessageConstant;
 import com.user.model.NewUserModel;
 
 import java.util.ArrayList;
@@ -161,23 +166,23 @@ public class LekaiService extends Service {
                 mHandler.post(() -> {
                     String openCipherId = device.getCipherId();
                     if (0 == code) {
-                        ToastUtil.toastShow(getApplicationContext(), "开门成功");
-//                        if (!openCipherId.equals(deviceCipherId)) {
-//                            deviceCipherId = openCipherId;
-//
-//                        } else {//开门成功一次后 10s再弹出
-//                            long currentTimeMillis = System.currentTimeMillis();
-//                            SharedPreferences mShared = getApplicationContext().getSharedPreferences(UserAppConst.USERINFO, 0);
-//                            long saveTime = mShared.getLong("saveTime", currentTimeMillis);
-//                            long distanceTime = currentTimeMillis - saveTime;
-//                            if (distanceTime > 30000) {
-//                                ToastUtil.toastShow(getApplicationContext(), "开门成功");
-//                                mShared.edit().putLong("saveTime", currentTimeMillis).apply();
-//                            } else if (distanceTime > 10000) {
-//                                ToastUtil.toastShow(getApplicationContext(), "开门成功!!!");
-//                                mShared.edit().putLong("saveTime", currentTimeMillis).apply();
-//                            }
-//                        }
+                        if (!openCipherId.equals(deviceCipherId)) {
+                            deviceCipherId = openCipherId;
+                            Message msg = Message.obtain();
+                            msg.what = UserMessageConstant.BLUETOOTH_OPEN_DOOR;
+                            EventBus.getDefault().post(msg);
+                        } else {//开门成功一次后 10s再弹出
+                            long currentTimeMillis = System.currentTimeMillis();
+                            SharedPreferences mShared = getApplicationContext().getSharedPreferences(UserAppConst.USERINFO, 0);
+                            long saveTime = mShared.getLong("saveTime", currentTimeMillis);
+                            long distanceTime = currentTimeMillis - saveTime;
+                            if (distanceTime > 30000) {
+                                mShared.edit().putLong("saveTime", currentTimeMillis).apply();
+                                Message msg = Message.obtain();
+                                msg.what = UserMessageConstant.BLUETOOTH_OPEN_DOOR;
+                                EventBus.getDefault().post(msg);
+                            }
+                        }
                     } else if (ErrorConstants.IS_OPERATION_ERROR_TYPE_WRONG_TIME == code) {
                         ToastUtil.toastShow(getApplicationContext(), "钥匙过期，请联系管理员");
                     } else {

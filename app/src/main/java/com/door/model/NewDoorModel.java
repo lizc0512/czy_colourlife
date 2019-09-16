@@ -16,6 +16,8 @@ import com.yanzhenjie.nohttp.rest.Response;
 import java.util.HashMap;
 import java.util.Map;
 
+import static com.user.UserAppConst.COLOUR_BLUETOOTH_ADVISE;
+
 /**
  * Created by chengyun on 2016/6/23.
  */
@@ -27,9 +29,9 @@ public class NewDoorModel extends BaseModel {
     private final String changedoorPositionUrl = "user/doorFixed/position";
     public final String openDoorUrl = "user/door/open";
     public final String getDevicePwdUrl = "app/door/devicePassword";
-    public final String deviceRemoteUnlockUrl = "app/door/deviceRemoteUnlock";
     public final String getCommunityKeyUrl = "app/door/getCommunityKey";
     public final String devicePasswordLogUrl = "app/door/devicePasswordLog";
+    public final String deviceOpenAdvertUrl = "app/door/openAdvert";
 
     public NewDoorModel(Context context) {
         super(context);
@@ -292,8 +294,30 @@ public class NewDoorModel extends BaseModel {
     }
 
     /**
-     * 请求获取设备密码
+     * 获取蓝牙开门的广告图
      */
+    public void getDeviceAdvertData() {
+        final Request<String> request = NoHttp.createStringRequest(RequestEncryptionUtils.getCombileMD5(mContext, 11, deviceOpenAdvertUrl, null), RequestMethod.GET);
+        request(1111, request, null, new HttpListener<String>() {
+            @Override
+            public void onSucceed(int what, Response<String> response) {
+                int responseCode = response.getHeaders().getResponseCode();
+                String result = response.get();
+                if (responseCode == RequestEncryptionUtils.responseSuccess) {
+                    int resultCode = showSuccesResultMessageTheme(result);
+                    if (resultCode == 0) {
+                        editor.putString(COLOUR_BLUETOOTH_ADVISE, result).apply();
+                    }
+                }
+            }
+
+            @Override
+            public void onFailed(int what, Response<String> response) {
+
+            }
+        }, true, true);
+    }
+
     public void getDevicePwd(int what, String device_id, final NewHttpResponse newHttpResponse) {
         Map<String, Object> params = new HashMap<>();
         params.put("device_id", device_id);
@@ -320,34 +344,6 @@ public class NewDoorModel extends BaseModel {
         }, true, true);
     }
 
-    /**
-     * 乐开 网络门禁远程开门
-     */
-//    public void deviceRemoteUnlock(int what, String device_id, final NewHttpResponse newHttpResponse) {
-//        Map<String, Object> params = new HashMap<>();
-//        params.put("device_id", device_id);
-//        final Request<String> request = NoHttp.createStringRequest(RequestEncryptionUtils.getCombileMD5(mContext, 11, deviceRemoteUnlockUrl, params), RequestMethod.GET);
-//        request(what, request, params, new HttpListener<String>() {
-//            @Override
-//            public void onSucceed(int what, Response<String> response) {
-//                int responseCode = response.getHeaders().getResponseCode();
-//                String result = response.get();
-//                if (responseCode == RequestEncryptionUtils.responseSuccess) {
-//                    int resultCode = showSuccesResultMessageTheme(result);
-//                    if (resultCode == 0) {
-//                        newHttpResponse.OnHttpResponse(what, result);
-//                    } else {
-//                        showErrorCodeMessage(responseCode, response);
-//                    }
-//                }
-//            }
-//
-//            @Override
-//            public void onFailed(int what, Response<String> response) {
-//                newHttpResponse.OnHttpResponse(what, "");
-//            }
-//        }, true, true);
-//    }
 
     /**
      * 获取用户门禁信息

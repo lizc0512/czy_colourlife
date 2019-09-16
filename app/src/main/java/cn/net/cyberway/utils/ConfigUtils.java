@@ -77,16 +77,7 @@ public class ConfigUtils implements NewHttpResponse {
         tv_contact_service.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Information info = new Information();
-                info.setAppkey(Constants.SMART_SERVICE_KEY);  //分配给App的的密钥
-                info.setArtificialIntelligence(false);////默认false：显示转人工按钮。true：智能转人工
-                info.setArtificialIntelligenceNum(2);//为true时生效
-                info.setInitModeType(-1);
-                HashSet<String> tmpSet = new HashSet<>();
-                tmpSet.add("转人工");
-                tmpSet.add("人工");
-                info.setTransferKeyWord(tmpSet);
-                SobotApi.startSobotChat(mContext, info);
+                jumpContactService(mContext);
             }
         });
         /****************************************************设置授权页*********************************************************/
@@ -139,11 +130,24 @@ public class ConfigUtils implements NewHttpResponse {
                         OneKeyLoginManager.getInstance().finishAuthActivity();
                     }
                 })
-//                .addCustomView(linearLayout, false, false, null)
+                .addCustomView(linearLayout, false, false, null)
                 //标题栏下划线，可以不写
                 .build();
         return uiConfig;
+    }
 
+
+    public static void jumpContactService(Activity mContext) {
+        Information info = new Information();
+        info.setAppkey(Constants.SMART_SERVICE_KEY);  //分配给App的的密钥
+        info.setArtificialIntelligence(false);////默认false：显示转人工按钮。true：智能转人工
+        info.setArtificialIntelligenceNum(2);//为true时生效
+        info.setInitModeType(-1);
+        HashSet<String> tmpSet = new HashSet<>();
+        tmpSet.add("转人工");
+        tmpSet.add("人工");
+        info.setTransferKeyWord(tmpSet);
+        SobotApi.startSobotChat(mContext, info);
     }
 
     public void jumpOneKeyLogin() {

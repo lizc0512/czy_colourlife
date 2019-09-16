@@ -20,7 +20,7 @@ public class UserAppConst {
     public static final String USER = "user";
     public static final String ADDRESSLISTCACHE = "addresslistcache";//改版地址的缓存
     public static final String MYPAGELIST = "mypagelist";
-    public static final String MYPAGESUBMENU ="mypagesubmenu";
+    public static final String MYPAGESUBMENU = "mypagesubmenu";
     public static final String NEWHOMEMANAGER = "newhomwmanager";
     public static final String SYSTEMMESSAGE = "systemmessage";
     public static final String SHOPMESSAGE = "shopmessage";
@@ -40,7 +40,7 @@ public class UserAppConst {
     public static final String Colour_token_type = "colorLifeTokenType";
     public static final String Colour_expires_in = "colorLifeExpiresIn";
     public static final String Colour_get_time = "lastTime";
-    public static final String COLOUR_ONEKEY_SHOW= "colour_onekey_show";
+    public static final String COLOUR_ONEKEY_SHOW = "colour_onekey_show";
 
     /****auth2.0的参数*****/
     public static final String Colour_mDeviceID = "Colour_mDeviceID";   //极光推送唯一码
@@ -85,6 +85,7 @@ public class UserAppConst {
     public static final String Colour_authentication = "Colour_authentication";//是否认证房产 1：是，2：否
     //Baidu地图 ProdName
     public static final String BAIDU_MAP_PRODNAME = "gaibianjia";
+
 
     /**
      * 4.0新版首页常量名
@@ -152,6 +153,7 @@ public class UserAppConst {
 
     public static final String COLOUR_AUTH_REAL_NAME = "colour_auth_real_name";//腾讯实名认证
     public static final String COLOUR_INTELLIGENCE_DOOR = "colour_intelligence_door";//智能门禁
+    public static final String COLOUR_BLUETOOTH_ADVISE = "COLOUR_BLUETOOTH_ADVISE";//蓝牙开门的广告banner
 
     /**
      * 彩惠人生

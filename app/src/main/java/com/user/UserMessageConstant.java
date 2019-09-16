@@ -27,7 +27,7 @@ public class UserMessageConstant {
     public static final int AUDIT_PASS_OUT = USER_MESSAGE_BASE + 78;
     public static final int UPLOAD_PAGE_TIME = USER_MESSAGE_BASE + 79;//上传页面的停留时间
     public static final int UPDATE_APP_CLICK = USER_MESSAGE_BASE + 80;//更新应用的点击事件
-    public static final int QUICK_OPEN_DOOR= USER_MESSAGE_BASE + 81;//门禁快速开门
+    public static final int BLUETOOTH_OPEN_DOOR = USER_MESSAGE_BASE + 81;//蓝牙开门成功的提示
 
 
 }

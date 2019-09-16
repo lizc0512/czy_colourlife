@@ -1,21 +1,8 @@
-/*
- * 官网地站:http://www.mob.com
- * 技术支持QQ: 4006852216
- * 官方微信:ShareSDK   （如果发布新版本的话，我们将会第一时间通过微信将版本更新内容推送给您。如果使用过程中有任何问题，也可以通过微信与我们取得联系，我们将会在24小时内给予回复）
- *
- * Copyright (c) 2013年 mob.com. All rights reserved.
- */
 
 package cn.net.cyberway.wxapi;
 
 import android.content.Intent;
 import android.widget.Toast;
-
-import com.BeeFramework.Utils.ToastUtil;
-import com.tencent.mm.opensdk.modelbase.BaseReq;
-import com.tencent.mm.opensdk.modelbase.BaseResp;
-import com.tencent.mm.opensdk.modelbiz.WXLaunchMiniProgram;
-import com.tencent.mm.opensdk.openapi.IWXAPIEventHandler;
 
 import cn.sharesdk.wechat.utils.WXAppExtendObject;
 import cn.sharesdk.wechat.utils.WXMediaMessage;
@@ -24,7 +11,7 @@ import cn.sharesdk.wechat.utils.WechatHandlerActivity;
 /**
  * 微信客户端回调activity示例
  */
-public class WXEntryActivity extends WechatHandlerActivity implements IWXAPIEventHandler {
+public class WXEntryActivity extends WechatHandlerActivity {
 
     /**
      * 处理微信发出的向第三方应用请求app message
@@ -49,40 +36,11 @@ public class WXEntryActivity extends WechatHandlerActivity implements IWXAPIEven
      * 本Demo只是将信息展示出来，但你可做点其他的事情，而不仅仅只是Toast
      */
     public void onShowMessageFromWXReq(WXMediaMessage msg) {
-
         if (msg != null && msg.mediaObject != null
                 && (msg.mediaObject instanceof WXAppExtendObject)) {
             WXAppExtendObject obj = (WXAppExtendObject) msg.mediaObject;
             Toast.makeText(this, obj.extInfo, Toast.LENGTH_SHORT).show();
         }
-    }
-
-    @Override
-    public void onReq(BaseReq baseReq) {
-        ToastUtil.toastShow(WXEntryActivity.this, baseReq.openId);
-    }
-
-    @Override
-    public void onResp(BaseResp resp) {
-//        if (resp.getType() == ConstantsAPI.COMMAND_LAUNCH_WX_MINIPROGRAM) {
-        WXLaunchMiniProgram.Resp launchMiniProResp = (WXLaunchMiniProgram.Resp) resp;
-        String extraData = launchMiniProResp.extMsg; //对应小程序组件 <button open-type="launchApp"> 中的 app-parameter 属性
-        int errCode = launchMiniProResp.errCode; //对应小程序组件 <button open-type="launchApp"> 中的 app-parameter 属性
-        ToastUtil.toastShow(WXEntryActivity.this, errCode + extraData);
-
-        /**
-         * 返回支付结果信息 ，json字串:
-         * {
-         * errCode:200, errMsg:"成功"
-         * }
-         * errCode对应状态 :
-         * 200: 支付成功 500:支付出错
-         *
-         * 401 参数data为空
-         * 402 参数data非法
-         * 403 openid获取失败
-         */
-//        }
     }
 
 }

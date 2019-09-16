@@ -36,6 +36,7 @@ import com.user.model.TokenModel;
 import java.util.HashMap;
 
 import cn.net.cyberway.R;
+import cn.net.cyberway.utils.ConfigUtils;
 import cn.sharesdk.framework.Platform;
 import cn.sharesdk.framework.PlatformActionListener;
 import cn.sharesdk.framework.PlatformDb;
@@ -48,7 +49,6 @@ import static com.user.activity.UserRegisterAndLoginActivity.MOBILE;
 import static com.user.activity.UserRegisterAndLoginActivity.SUCCEED;
 
 /**
- *
  * @name ${yuansk}
  * @class name：${PACKAGE_NAME}
  * @class describe
@@ -70,6 +70,7 @@ public class UserIdentityLoginActivity extends AppCompatActivity implements OnCl
     private Button user_login_btn;
     private LinearLayout wechat_layout;
     private LinearLayout qq_layout;
+    private TextView tv_contact_service;
     private NewUserModel newUserModel;
     private String loginSource = "";
     private PlatformDb loginPlatformDb;
@@ -107,6 +108,7 @@ public class UserIdentityLoginActivity extends AppCompatActivity implements OnCl
         user_login_btn = findViewById(R.id.user_login_btn);
         wechat_layout = findViewById(R.id.wechat_layout);
         qq_layout = findViewById(R.id.qq_layout);
+        tv_contact_service = findViewById(R.id.tv_contact_service);
         findViewById(R.id.line).setVisibility(View.GONE);
         user_top_view_back.setOnClickListener(this);
         user_login_btn.setOnClickListener(this);
@@ -114,6 +116,7 @@ public class UserIdentityLoginActivity extends AppCompatActivity implements OnCl
         tv_voice_code.setOnClickListener(this);
         wechat_layout.setOnClickListener(this);
         qq_layout.setOnClickListener(this);
+        tv_contact_service.setOnClickListener(this);
         mobile = getIntent().getStringExtra(MOBILE);
         if (!TextUtils.isEmpty(mobile)) {
             user_login_phone.setText(mobile);
@@ -213,8 +216,8 @@ public class UserIdentityLoginActivity extends AppCompatActivity implements OnCl
                     authorize(wechat);
                 }
                 break;
-            case R.id.user_top_view_right:
-                finish();
+            case R.id.tv_contact_service:
+                ConfigUtils.jumpContactService(UserIdentityLoginActivity.this);
                 break;
         }
     }

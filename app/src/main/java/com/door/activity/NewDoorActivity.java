@@ -536,6 +536,7 @@ public class NewDoorActivity extends BaseActivity implements NewHttpResponse, Vi
 
         @Override
         public void onPageScrollStateChanged(int state) {
+
         }
     }
 }

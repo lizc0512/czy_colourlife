@@ -11,6 +11,7 @@ import com.BeeFramework.Utils.ToastUtil;
 import com.BeeFramework.Utils.Utils;
 import com.BeeFramework.model.BaseModel;
 import com.BeeFramework.model.NewHttpResponse;
+import com.door.model.NewDoorModel;
 import com.external.eventbus.EventBus;
 import com.nohttp.utils.CallServer;
 import com.nohttp.utils.GsonUtils;
@@ -586,6 +587,8 @@ public class NewUserModel extends BaseModel {
                 newHttpResponse.OnHttpResponse(what, "");
             }
         }, true, isLoading);
+        NewDoorModel newDoorModel = new NewDoorModel(mContext);
+        newDoorModel.getDeviceAdvertData();
     }
 
     /****重置用户的密码**/
@@ -686,7 +689,7 @@ public class NewUserModel extends BaseModel {
     }
 
     /****修改用户的个人信息**/
-    public void changeUserInfomation(int what, String name, String nick_name, String email,int gender, final NewHttpResponse newHttpResponse) {
+    public void changeUserInfomation(int what, String name, String nick_name, String email, int gender, final NewHttpResponse newHttpResponse) {
         Map<String, Object> params = new HashMap<String, Object>();
         params.put("name", name);
         params.put("email", email);

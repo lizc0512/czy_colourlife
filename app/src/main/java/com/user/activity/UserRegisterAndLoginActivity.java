@@ -66,6 +66,7 @@ import cn.sharesdk.framework.ShareSDK;
 import cn.sharesdk.tencent.qq.QQ;
 import cn.sharesdk.wechat.friends.Wechat;
 
+import static cn.net.cyberway.utils.ConfigUtils.jumpContactService;
 import static cn.net.cyberway.utils.IMFriendDataUtils.userInitImData;
 import static com.BeeFramework.model.Constants.GESTURE_PWD_SET_FIVE_ERROR;
 
@@ -109,6 +110,7 @@ public class UserRegisterAndLoginActivity extends BaseActivity implements OnClic
     private LinearLayout thridLoginlayout;
     private LinearLayout wechat_layout;
     private LinearLayout qq_layout;
+    private TextView tv_contact_service;
     private int isRegister = 1;
     private int isWhite = 0;
     /**
@@ -183,6 +185,7 @@ public class UserRegisterAndLoginActivity extends BaseActivity implements OnClic
         thridLoginlayout = (LinearLayout) findViewById(R.id.thridLoginlayout);
         wechat_layout = findViewById(R.id.wechat_layout);
         qq_layout = findViewById(R.id.qq_layout);
+        tv_contact_service = findViewById(R.id.tv_contact_service);
         findViewById(R.id.line).setVisibility(View.GONE);
         user_top_view_right.setText(getResources().getString(R.string.title_login_verify));
         user_top_view_right.setTextColor(Color.parseColor("#329dfa"));
@@ -193,6 +196,7 @@ public class UserRegisterAndLoginActivity extends BaseActivity implements OnClic
         user_login_btn.setOnClickListener(this);
         wechat_layout.setOnClickListener(this);
         qq_layout.setOnClickListener(this);
+        tv_contact_service.setOnClickListener(this);
         user_login_password.setNlicenseKey(UserAppConst.IJIAMINLICENSEKEY);
         user_login_password.setKeyboardNoRandom(true);
         user_login_password.setNKeyboardKeyBg(true);
@@ -324,6 +328,9 @@ public class UserRegisterAndLoginActivity extends BaseActivity implements OnClic
                     }
                     startActivity(verifyIntent);
                 }
+                break;
+            case R.id.tv_contact_service:
+                jumpContactService(UserRegisterAndLoginActivity.this);
                 break;
         }
     }

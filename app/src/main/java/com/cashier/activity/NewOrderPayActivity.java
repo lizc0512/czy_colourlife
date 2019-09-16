@@ -100,6 +100,7 @@ public class NewOrderPayActivity extends BaseActivity implements View.OnClickLis
     private double total_fee = 0; //现金的
     private String sn = "";
     private int payStyle = 0;
+    private int isPay = 0;
 
 
     @Override
@@ -681,7 +682,7 @@ public class NewOrderPayActivity extends BaseActivity implements View.OnClickLis
         if (!EventBus.getDefault().isregister(NewOrderPayActivity.this)) {
             EventBus.getDefault().register(NewOrderPayActivity.this);
         }
-        if (payStyle == 1) {
+        if (payStyle == 1 && isPay == 1) {
             showH5PayResultDialog();
         }
     }
@@ -748,9 +749,11 @@ public class NewOrderPayActivity extends BaseActivity implements View.OnClickLis
                         htmlPayDialog.dismiss();
                     }
                 });
+                isPay = 0;
             }
         }, 500);
     }
+
 
     @Override
     public void OnHttpResponse(int what, String result) {
@@ -772,6 +775,7 @@ public class NewOrderPayActivity extends BaseActivity implements View.OnClickLis
                 int code = baseContentEntity.getCode();
                 try {
                     if (code == 0) {
+                        isPay = 1;
                         PayResultEntity payResultEntity = GsonUtils.gsonToBean(result, PayResultEntity.class);
                         LinkedHashMap<String, String> publicParams = new LinkedHashMap<String, String>();
                         Map<String, String> resultMap = GsonUtils.gsonObjectToMaps(payResultEntity.getContent());

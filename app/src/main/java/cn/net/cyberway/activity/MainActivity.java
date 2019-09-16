@@ -98,6 +98,7 @@ import static cn.net.cyberway.utils.TableLayoutUtils.addTVSeletor;
 import static cn.net.cyberway.utils.TableLayoutUtils.jumpLoginPage;
 import static cn.net.cyberway.utils.TableLayoutUtils.shortEnter;
 import static cn.net.cyberway.utils.TableLayoutUtils.showOpenDoorResultDialog;
+import static com.user.UserAppConst.COLOUR_BLUETOOTH_ADVISE;
 import static com.user.Utils.TokenUtils.clearUserCache;
 
 
@@ -709,16 +710,6 @@ public class MainActivity extends BaseFragmentActivity implements View.OnClickLi
 
     /***获取key和secert***/
     private void updateAccessToken() {
-//        long lastSaveTime = shared.getLong(UserAppConst.Colour_get_time, System.currentTimeMillis());
-//        long nowTime = System.currentTimeMillis();
-//        long distance = (nowTime - lastSaveTime) / 1000;
-//        long expires_in = shared.getLong(UserAppConst.Colour_expires_in, 10800);
-//        if (distance >= expires_in - refreshDistance) {
-//            newUserModel.refreshAuthToken(40, this);
-//        } else {
-//
-//        }
-
         newUserModel.getUserInformation(5, false, this);
     }
 
@@ -825,6 +816,14 @@ public class MainActivity extends BaseFragmentActivity implements View.OnClickLi
                 long leaveTime = bundle.getLong(BuryingPointUtils.LEAVE_TIME, 0) / 1000;
                 String functionSectionId = bundle.getString(UPLOAD_DETAILS, "");
                 uploadPageStayTime(startTime, leaveTime, functionSectionId);
+                break;
+            case UserMessageConstant.BLUETOOTH_OPEN_DOOR:
+                String result = shared.getString(COLOUR_BLUETOOTH_ADVISE, "");
+                if (TextUtils.isEmpty(result)) {
+                    ToastUtil.toastShow(getApplicationContext(), "开门成功!");
+                } else {
+                    initDealDoorReault(result);
+                }
                 break;
             case 10000:
                 final String token = "";
