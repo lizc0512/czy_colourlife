@@ -3,7 +3,6 @@ package cn.net.cyberway.fagment;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.Message;
 import android.support.v4.app.Fragment;
@@ -68,6 +67,7 @@ public class ProfileFragment extends Fragment implements View.OnClickListener, M
     private CircleImageView mHeadImg;
     private TextView mUsername;
     private TextView mCommunity;
+    private ImageView iv_qr_code;
     private RecyclerView lv_myprofile_info;
     private RecyclerView rv_property_menu;
     private MyPageItemListAdapter myItemListAdapter;
@@ -217,8 +217,10 @@ public class ProfileFragment extends Fragment implements View.OnClickListener, M
         mHeadImg = myView.findViewById(R.id.profile_head_img);
         mUsername = myView.findViewById(R.id.profile_username);
         mCommunity = myView.findViewById(R.id.profile_community);
+        iv_qr_code = myView.findViewById(R.id.iv_qr_code);
         rl_profile_info = myView.findViewById(R.id.rl_profile_info);
         rl_profile_info.setOnClickListener(this);
+        iv_qr_code.setOnClickListener(this);
         TCAgent.onEvent(getActivity(), "203001");
         ListenerUtils.setCallBack(this);
         refresh_layout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
@@ -279,6 +281,10 @@ public class ProfileFragment extends Fragment implements View.OnClickListener, M
                 TCAgent.onEvent(getActivity(), "203002");
                 intent = new Intent(getActivity(), CustomerInfoActivity.class);
                 startActivityForResult(intent, 6);
+                break;
+            case R.id.iv_qr_code:
+                intent = new Intent(getActivity(), CustomerMakeZXingActivity.class);
+                startActivity(intent);
                 break;
         }
     }
