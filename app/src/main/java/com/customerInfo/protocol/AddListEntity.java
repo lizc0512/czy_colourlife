@@ -116,10 +116,12 @@ public class AddListEntity extends BaseContentEntity {
             /**
              * uuid : 0f18e998-4ce4-43b3-a7c7-e32b63e670ef
              * name : RMS测试添加楼栋1
+             * floor：楼层号
              */
 
             private String uuid;
             private String name;
+            private String floor;
 
             public String getUuid() {
                 return uuid;
@@ -135,6 +137,14 @@ public class AddListEntity extends BaseContentEntity {
 
             public void setName(String name) {
                 this.name = name;
+            }
+
+            public String getFloor() {
+                return floor;
+            }
+
+            public void setFloor(String floor) {
+                this.floor = floor;
             }
         }
     }
