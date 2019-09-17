@@ -679,6 +679,15 @@ public class CustomerAddPropertyActivity extends BaseActivity implements View.On
                     }
                     List<AddListEntity.ContentBean.DataBean> addDataList;
                     addDataList = contentBean.getData();
+                    int size = addDataList.size();
+                    for (int i = 0; i < size; i++) {
+                        if (!TextUtils.isEmpty(addDataList.get(i).getFloor())) {
+                            AddListEntity.ContentBean.DataBean item = new AddListEntity.ContentBean.DataBean();
+                            item.setFloor("");
+                            item.setName(addDataList.get(i).getFloor() + "楼" + addDataList.get(i).getName());
+                            addDataList.set(i, item);
+                        }
+                    }
                     addBeanList.addAll(addDataList);
                     pagingBean = contentBean.getPaging();
                     totalRecord = pagingBean.getTotal_record();
@@ -712,6 +721,15 @@ public class CustomerAddPropertyActivity extends BaseActivity implements View.On
                     }
                     List<AddListEntity.ContentBean.DataBean> addDataList;
                     addDataList = contentBean.getData();
+                    int size = addDataList.size();
+                    for (int i = 0; i < size; i++) {
+                        if (!TextUtils.isEmpty(addDataList.get(i).getFloor())) {
+                            AddListEntity.ContentBean.DataBean item = new AddListEntity.ContentBean.DataBean();
+                            item.setFloor("");
+                            item.setName(addDataList.get(i).getFloor() + "楼" + addDataList.get(i).getName());
+                            addDataList.set(i, item);
+                        }
+                    }
                     addBeanList.addAll(addDataList);
                     pagingBean = contentBean.getPaging();
                     totalRecord = pagingBean.getTotal_record();
@@ -741,6 +759,15 @@ public class CustomerAddPropertyActivity extends BaseActivity implements View.On
                     if (page == 1) {
                         addBeanList.clear();
                         setBackground(2);
+                    }
+                    int size = addDataList.size();
+                    for (int i = 0; i < size; i++) {
+                        if (!TextUtils.isEmpty(addDataList.get(i).getFloor())) {
+                            AddListEntity.ContentBean.DataBean item = new AddListEntity.ContentBean.DataBean();
+                            item.setFloor("");
+                            item.setName(addDataList.get(i).getFloor() + "楼" + addDataList.get(i).getName());
+                            addDataList.set(i, item);
+                        }
                     }
                     addBeanList.addAll(addDataList);
                     pagingBean = contentBean.getPaging();
@@ -772,6 +799,15 @@ public class CustomerAddPropertyActivity extends BaseActivity implements View.On
                     }
                     List<AddListEntity.ContentBean.DataBean> addDataList;
                     addDataList = contentBean.getData();
+                    int size = addDataList.size();
+                    for (int i = 0; i < size; i++) {
+                        if (!TextUtils.isEmpty(addDataList.get(i).getFloor())) {
+                            AddListEntity.ContentBean.DataBean item = new AddListEntity.ContentBean.DataBean();
+                            item.setFloor("");
+                            item.setName(addDataList.get(i).getFloor() + "楼" + addDataList.get(i).getName());
+                            addDataList.set(i, item);
+                        }
+                    }
                     addBeanList.addAll(addDataList);
                     pagingBean = contentBean.getPaging();
                     totalRecord = pagingBean.getTotal_record();
