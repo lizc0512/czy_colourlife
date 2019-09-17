@@ -150,7 +150,7 @@ dependencies {
     implementation project(':huxin_sdk')
     implementation project(':sobotsdk')
     implementation(name: 'iJMSafeKeyboard', ext: 'aar')
-    implementation(name: 'shanyan_sdk_v2.2.0.2', ext: 'aar')
+    implementation(name: 'shanyan_sdk_v2.2.0.5', ext: 'aar')
     implementation(name: 'mylibrary-release', ext: 'aar')
     compileOnly files('sdknec/classes123.jar')
     implementation(name: 'PayChannel-release', ext: 'aar')

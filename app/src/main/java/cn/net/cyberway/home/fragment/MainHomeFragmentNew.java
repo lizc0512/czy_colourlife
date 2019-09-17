@@ -112,6 +112,7 @@ import static cn.net.cyberway.home.view.HomeViewUtils.getScollYDistance;
 import static cn.net.cyberway.home.view.HomeViewUtils.setBadgeCommonPro;
 import static cn.net.cyberway.home.view.HomeViewUtils.smoothScrollTop;
 import static com.user.UserAppConst.COLOR_HOME_USEDOOR;
+import static com.user.UserAppConst.COLOUR_BLUETOOTH_ADVISE;
 import static com.youmai.hxsdk.utils.DisplayUtil.getStatusBarHeight;
 
 /**
@@ -1287,6 +1288,14 @@ public class MainHomeFragmentNew extends Fragment implements NewHttpResponse, My
                 break;
             case UserMessageConstant.UPDATE_APP_CLICK:
                 updateRecentApp();
+                break;
+            case UserMessageConstant.BLUETOOTH_OPEN_DOOR:
+                String result = mShared.getString(COLOUR_BLUETOOTH_ADVISE, "");
+                if (TextUtils.isEmpty(result)) {
+                    ToastUtil.toastShow(getActivity(), "开门成功!");
+                } else {
+                    ((MainActivity) getActivity()).showOpenDoorDialog(result);
+                }
                 break;
         }
     }

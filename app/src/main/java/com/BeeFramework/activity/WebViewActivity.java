@@ -92,6 +92,7 @@ import com.feed.activity.FeedOrActivityActivity;
 import com.feed.activity.LinLiActivity;
 import com.feed.activity.ShareFeedActivity;
 import com.feed.utils.CompressHelper;
+import com.google.gson.JsonObject;
 import com.google.zxing.Result;
 import com.im.activity.IMCustomerInforActivity;
 import com.im.activity.IMFriendInforActivity;
@@ -218,6 +219,7 @@ public class WebViewActivity extends BaseActivity implements View.OnLongClickLis
     private String betaOauthUrl = "https://oauth2czy-czybeta.colourlife.com";
     private String officialOauthUrl = "https://oauth2czy.colourlife.com";
     private String awardState = "";
+    private String finishStatus = "1";
 
     @SuppressLint("AddJavascriptInterface")
     protected void onCreate(Bundle savedInstanceState) {
@@ -1352,7 +1354,20 @@ public class WebViewActivity extends BaseActivity implements View.OnLongClickLis
         public void ColourlifeSmartService(String goodsJson) {
             LinkParseUtil.sendGoodsInfor(WebViewActivity.this, goodsJson);
         }
+
+        @JavascriptInterface
+        public void colourlifePayFinishStatus(String payStatus) {
+            if (!TextUtils.isEmpty(payStatus)) {
+                try {
+                    JSONObject jsonObject = new JSONObject(payStatus);
+                    finishStatus = jsonObject.optString("finishStatus");//1表示关闭 2表示不关闭
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
     }
+
 
     private void showOauthDialog(String appName, String appLogo, final String oauthUnquiue, final String deliveryOauthCache) {
         final DeliveryOauthDialog deliveryOauthDialog = new DeliveryOauthDialog(WebViewActivity.this, R.style.dialog);
@@ -1395,7 +1410,6 @@ public class WebViewActivity extends BaseActivity implements View.OnLongClickLis
                 webView.loadUrl("javascript:colourlifeAlertHandler('" + message + "')");
             }
         });
-
     }
 
     @TargetApi(Build.VERSION_CODES.KITKAT)
@@ -1489,10 +1503,14 @@ public class WebViewActivity extends BaseActivity implements View.OnLongClickLis
                 }
                 break;
             case GUANGCAIPAY:
-                Message message = Message.obtain();
-                message.what = UserMessageConstant.GUANGCAI_PAY_MSG;
-                EventBus.getDefault().post(message);
-                finish();
+                if ("2".equals(finishStatus)) {
+                    webView.reload();
+                } else {
+                    Message message = Message.obtain();
+                    message.what = UserMessageConstant.GUANGCAI_PAY_MSG;
+                    EventBus.getDefault().post(message);
+                    finish();
+                }
                 break;
             case DELIVERYADDRESS:
                 if (resultCode == 200) {
@@ -1749,7 +1767,7 @@ public class WebViewActivity extends BaseActivity implements View.OnLongClickLis
 //                jumpByUrls(urls);
 //            }
 //        } else {
-            jumpByUrls(urls);
+        jumpByUrls(urls);
 //        }
     }
 

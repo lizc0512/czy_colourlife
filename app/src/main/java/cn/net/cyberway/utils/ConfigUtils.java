@@ -7,6 +7,7 @@ import android.content.SharedPreferences;
 import android.os.Message;
 import android.support.v4.content.LocalBroadcastManager;
 import android.text.TextUtils;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.LinearLayout;
@@ -61,6 +62,7 @@ public class ConfigUtils implements NewHttpResponse {
         TextView rightText = new TextView(mContext);
         rightText.setText("密码登录");
         rightText.setTextColor(0xff329dfa);
+        rightText.setGravity(Gravity.CENTER);
         rightText.setTextSize(13);
         RelativeLayout.LayoutParams rightTextParams = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
         rightTextParams.setMargins(0, Util.DensityUtil.dip2px(mContext, 15), Util.DensityUtil.dip2px(mContext, 15), 0);
@@ -71,7 +73,7 @@ public class ConfigUtils implements NewHttpResponse {
         LayoutInflater inflater = LayoutInflater.from(mContext);
         LinearLayout linearLayout = (LinearLayout) inflater.inflate(R.layout.relative_item_view, null);
         LinearLayout.LayoutParams layoutParamsOther = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-        layoutParamsOther.setMargins(0, Util.DensityUtil.dip2px(mContext, 350), 0, 0);
+        layoutParamsOther.setMargins(0, Util.DensityUtil.dip2px(mContext, 360), 0, 0);
         linearLayout.setLayoutParams(layoutParamsOther);
         TextView tv_contact_service = linearLayout.findViewById(R.id.tv_contact_service);
         tv_contact_service.setOnClickListener(new View.OnClickListener() {

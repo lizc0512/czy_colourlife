@@ -50,6 +50,7 @@ public class ActivityLifecycleListener implements Application.ActivityLifecycleC
         if (activityCount == 0) {
             LekaiHelper.stopScanDevice();
         }
+
     }
 
     @Override

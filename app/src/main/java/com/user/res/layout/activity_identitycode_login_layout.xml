@@ -200,14 +200,15 @@
 
             </LinearLayout>
 
+
             <TextView
                 android:id="@+id/tv_contact_service"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
                 android:gravity="center"
-                android:layout_marginTop="20dp"
-                android:layout_marginBottom="20dp"
+                android:layout_marginTop="30dp"
+                android:layout_marginBottom="40dp"
                 android:padding="5dp"
                 android:text="联系客服"
                 android:textColor="@color/color_329dfa"

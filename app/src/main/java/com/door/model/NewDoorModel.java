@@ -315,7 +315,7 @@ public class NewDoorModel extends BaseModel {
             public void onFailed(int what, Response<String> response) {
 
             }
-        }, true, true);
+        }, true, false);
     }
 
     public void getDevicePwd(int what, String device_id, final NewHttpResponse newHttpResponse) {

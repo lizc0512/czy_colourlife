@@ -66,6 +66,13 @@
 
         }
 
+           function finshStatus() {
+               var status ={
+             'finishStatus': '2',  //1表示关闭当前网页h5  2表示不关闭当前网页h5
+            };
+            window.jsObject.colourlifePayFinishStatus(JSON.stringify(status));
+        }
+
 
         function scanCode() {
 
@@ -173,6 +180,10 @@ function  colourlifeDeliveryAddressHandler(obj){
                 responseCallback(responseData);
             });
         })
+
+
+
+
 
 
 

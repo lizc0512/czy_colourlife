@@ -3,12 +3,14 @@ package com.door.activity;
 import android.annotation.SuppressLint;
 import android.bluetooth.BluetoothAdapter;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
+import android.os.Message;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
@@ -31,11 +33,15 @@ import com.door.entity.DoorAllEntity;
 import com.door.entity.DoorGrantedEntity;
 import com.door.entity.DoorRecordEntity;
 import com.door.entity.DoorRightEntity;
+import com.door.entity.OpenDoorResultEntity;
 import com.door.fragment.IntelligenceDoorFragment;
 import com.door.model.NewDoorModel;
+import com.door.view.ShowOpenDoorDialog;
+import com.external.eventbus.EventBus;
 import com.google.gson.Gson;
 import com.nohttp.utils.GsonUtils;
 import com.user.UserAppConst;
+import com.user.UserMessageConstant;
 
 import org.json.JSONObject;
 
@@ -46,7 +52,9 @@ import cn.net.cyberway.R;
 import cn.net.cyberway.home.service.LekaiParkLockController;
 import cn.net.cyberway.utils.LekaiHelper;
 
+import static cn.net.cyberway.utils.TableLayoutUtils.showOpenDoorResultDialog;
 import static com.BeeFramework.Utils.Utils.dip2px;
+import static com.user.UserAppConst.COLOUR_BLUETOOTH_ADVISE;
 
 /**
  * 智能门禁
@@ -105,6 +113,9 @@ public class IntelligenceDoorActivity extends BaseFragmentActivity implements Ne
         init = false;
         initView();
         initData();
+        if (!EventBus.getDefault().isregister(IntelligenceDoorActivity.this)) {
+            EventBus.getDefault().register(IntelligenceDoorActivity.this);
+        }
     }
 
     private void initView() {
@@ -587,5 +598,54 @@ public class IntelligenceDoorActivity extends BaseFragmentActivity implements Ne
 
     @Override
     public void onScanParkLockChanged(String mac) {
+    }
+
+    public void onEvent(Object event) {
+        final Message message = (Message) event;
+        switch (message.what) {
+            case UserMessageConstant.BLUETOOTH_OPEN_DOOR:
+                String result = shared.getString(COLOUR_BLUETOOTH_ADVISE, "");
+                if (TextUtils.isEmpty(result)) {
+                    ToastUtil.toastShow(IntelligenceDoorActivity.this, "开门成功!");
+                } else {
+                    showOpenDoorDialog(result);
+                }
+                break;
+        }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if (EventBus.getDefault().isregister(IntelligenceDoorActivity.this)) {
+            EventBus.getDefault().unregister(IntelligenceDoorActivity.this);
+        }
+    }
+
+    private ShowOpenDoorDialog showOpenDoorDialog;
+
+    public void showOpenDoorDialog(String json) {
+        try {
+            if (null == showOpenDoorDialog) {
+                showOpenDoorDialog = new ShowOpenDoorDialog(IntelligenceDoorActivity.this, R.style.opendoor_dialog_theme);
+            }
+            if (null != showOpenDoorDialog && showOpenDoorDialog.isShowing()) {
+                showOpenDoorDialog.dismiss();
+            }
+            showOpenDoorDialog.show();
+            final OpenDoorResultEntity openDoorResultEntity = GsonUtils.gsonToBean(json, OpenDoorResultEntity.class);
+            OpenDoorResultEntity.ContentBean contentBean = openDoorResultEntity.getContent();
+            showOpenDoorResultDialog(IntelligenceDoorActivity.this, showOpenDoorDialog, contentBean);
+            showOpenDoorDialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
+                @Override
+                public void onDismiss(DialogInterface dialog) {
+                    Message msg = Message.obtain();
+                    msg.what = UserMessageConstant.BLUETOOTH_CLOSE_DIALOG;
+                    EventBus.getDefault().post(msg);
+                }
+            });
+        } catch (Exception e) {
+
+        }
     }
 }

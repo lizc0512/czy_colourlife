@@ -1114,6 +1114,7 @@
         <activity
             android:name="com.door.activity.NewDoorAuthorizeActivity"
             android:screenOrientation="portrait" />
+
     </application>
 
 </manifest>

@@ -98,7 +98,6 @@ import static cn.net.cyberway.utils.TableLayoutUtils.addTVSeletor;
 import static cn.net.cyberway.utils.TableLayoutUtils.jumpLoginPage;
 import static cn.net.cyberway.utils.TableLayoutUtils.shortEnter;
 import static cn.net.cyberway.utils.TableLayoutUtils.showOpenDoorResultDialog;
-import static com.user.UserAppConst.COLOUR_BLUETOOTH_ADVISE;
 import static com.user.Utils.TokenUtils.clearUserCache;
 
 
@@ -483,7 +482,7 @@ public class MainActivity extends BaseFragmentActivity implements View.OnClickLi
     /**
      * 展示开门结果
      */
-    private void showOpenDoorDialog(String json) {
+    public void showOpenDoorDialog(String json) {
         try {
             if (null == showOpenDoorDialog) {
                 showOpenDoorDialog = new ShowOpenDoorDialog(MainActivity.this, R.style.opendoor_dialog_theme);
@@ -817,12 +816,9 @@ public class MainActivity extends BaseFragmentActivity implements View.OnClickLi
                 String functionSectionId = bundle.getString(UPLOAD_DETAILS, "");
                 uploadPageStayTime(startTime, leaveTime, functionSectionId);
                 break;
-            case UserMessageConstant.BLUETOOTH_OPEN_DOOR:
-                String result = shared.getString(COLOUR_BLUETOOTH_ADVISE, "");
-                if (TextUtils.isEmpty(result)) {
-                    ToastUtil.toastShow(getApplicationContext(), "开门成功!");
-                } else {
-                    initDealDoorReault(result);
+            case UserMessageConstant.BLUETOOTH_CLOSE_DIALOG:
+                if (null != showOpenDoorDialog && showOpenDoorDialog.isShowing()) {
+                    showOpenDoorDialog.dismiss();
                 }
                 break;
             case 10000:

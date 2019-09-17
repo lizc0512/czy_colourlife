@@ -176,6 +176,7 @@ public class UserIdentityLoginActivity extends AppCompatActivity implements OnCl
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.user_top_view_back:
+            case R.id.user_top_view_right:
                 finish();
                 break;
             case R.id.tv_get_sms:

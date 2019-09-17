@@ -166,17 +166,18 @@ public class LekaiService extends Service {
                 mHandler.post(() -> {
                     String openCipherId = device.getCipherId();
                     if (0 == code) {
+                        SharedPreferences mShared = getApplicationContext().getSharedPreferences(UserAppConst.USERINFO, 0);
+                        long currentTimeMillis = System.currentTimeMillis();
                         if (!openCipherId.equals(deviceCipherId)) {
                             deviceCipherId = openCipherId;
                             Message msg = Message.obtain();
                             msg.what = UserMessageConstant.BLUETOOTH_OPEN_DOOR;
+                            mShared.edit().putLong("saveTime", currentTimeMillis).apply();
                             EventBus.getDefault().post(msg);
-                        } else {//开门成功一次后 10s再弹出
-                            long currentTimeMillis = System.currentTimeMillis();
-                            SharedPreferences mShared = getApplicationContext().getSharedPreferences(UserAppConst.USERINFO, 0);
-                            long saveTime = mShared.getLong("saveTime", currentTimeMillis);
+                        } else {//开门成功一次后 20s再弹出
+                            long saveTime = mShared.getLong("saveTime", currentTimeMillis - 20000);
                             long distanceTime = currentTimeMillis - saveTime;
-                            if (distanceTime > 30000) {
+                            if (distanceTime >= 20000) {
                                 mShared.edit().putLong("saveTime", currentTimeMillis).apply();
                                 Message msg = Message.obtain();
                                 msg.what = UserMessageConstant.BLUETOOTH_OPEN_DOOR;
