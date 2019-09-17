@@ -206,11 +206,11 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
                 android:gravity="center"
-                android:layout_marginTop="10dp"
+                android:layout_marginTop="20dp"
                 android:layout_marginBottom="20dp"
                 android:padding="5dp"
-                android:text="联系客服?"
-                android:textColor="@color/color_b5b5b5"
+                android:text="联系客服"
+                android:textColor="@color/color_329dfa"
                 android:textSize="12sp"  />
 
 

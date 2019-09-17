@@ -12,8 +12,8 @@
         android:layout_gravity="center_horizontal"
         android:gravity="center"
         android:padding="5dp"
-        android:text="联系客服?"
-        android:textColor="@color/color_b5b5b5"
+        android:text="联系客服"
+        android:textColor="@color/color_329dfa"
         android:textSize="12sp" />
 
 </LinearLayout>

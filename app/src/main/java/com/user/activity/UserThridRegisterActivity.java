@@ -34,6 +34,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import cn.net.cyberway.R;
+import cn.net.cyberway.utils.ConfigUtils;
 
 import static cn.net.cyberway.utils.IMFriendDataUtils.userInitImData;
 
@@ -62,6 +63,7 @@ public class UserThridRegisterActivity extends BaseActivity implements View.OnCl
     private TextView tv_voice_code;
     private TextView user_get_login;
     private Button btn_next_step;
+    private TextView tv_contact_service;
     private NewUserModel newUserModel;
     private String code = "";
     private String mobile;
@@ -109,12 +111,14 @@ public class UserThridRegisterActivity extends BaseActivity implements View.OnCl
         tv_voice_code = (TextView) findViewById(R.id.tv_voice_code);
         user_get_login = (TextView) findViewById(R.id.user_get_login);
         btn_next_step = (Button) findViewById(R.id.btn_next_step);
+        tv_contact_service = findViewById(R.id.tv_contact_service);
         findViewById(R.id.line).setVisibility(View.GONE);
         user_top_view_back.setOnClickListener(this);
         tv_get_sms.setOnClickListener(this);
         tv_voice_code.setOnClickListener(this);
         user_get_login.setOnClickListener(this);
         btn_next_step.setOnClickListener(this);
+        tv_contact_service.setOnClickListener(this);
         ThemeStyleHelper.onlyFrameTitileBar(getApplicationContext(), czy_title_layout, user_top_view_back, user_top_view_title);
         user_register_phone.addTextChangedListener(new TextWatcher() {
             @Override
@@ -210,6 +214,9 @@ public class UserThridRegisterActivity extends BaseActivity implements View.OnCl
                 if (fastClick()) {
                     newUserModel.getAuthToken(4, mobile, openCode, loginType, true, this);
                 }
+                break;
+            case R.id.tv_contact_service:
+                ConfigUtils.jumpContactService(UserThridRegisterActivity.this);
                 break;
         }
     }

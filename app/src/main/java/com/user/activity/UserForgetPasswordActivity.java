@@ -24,6 +24,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import cn.net.cyberway.R;
+import cn.net.cyberway.utils.ConfigUtils;
 
 /**
  * @name ${yuansk}
@@ -40,6 +41,7 @@ public class UserForgetPasswordActivity extends BaseActivity implements View.OnC
     private ImageView user_top_view_back;
     private TextView user_top_view_title;
     private TextView tv_forget_number;
+    private TextView tv_contact_service;
     private BCSIJMInputEditText ed_new_pawd;
     private Button btn_finish;
     private NewUserModel newUserModel;
@@ -68,11 +70,13 @@ public class UserForgetPasswordActivity extends BaseActivity implements View.OnC
         user_top_view_title = (TextView) findViewById(R.id.user_top_view_title);
         tv_forget_number = (TextView) findViewById(R.id.tv_forget_number);
         ed_new_pawd = (BCSIJMInputEditText) findViewById(R.id.ed_new_pawd);
+        tv_contact_service = findViewById(R.id.tv_contact_service);
         btn_finish = (Button) findViewById(R.id.btn_finish);
         findViewById(R.id.line).setVisibility(View.GONE);
         btn_finish.setEnabled(false);
         user_top_view_back.setOnClickListener(this);
         btn_finish.setOnClickListener(this);
+        tv_contact_service.setOnClickListener(this);
         ed_new_pawd.setKeyboardNoRandom(true);
         ed_new_pawd.setNlicenseKey(UserAppConst.IJIAMINLICENSEKEY);
         ed_new_pawd.setNKeyboardKeyBg(true);
@@ -121,7 +125,9 @@ public class UserForgetPasswordActivity extends BaseActivity implements View.OnC
                     newUserModel.resetUserPassword(0, mobile, code, password, this);
                     ed_new_pawd.hideNKeyboard();
                 }
-
+                break;
+            case R.id.tv_contact_service:
+                ConfigUtils.jumpContactService(UserForgetPasswordActivity.this);
                 break;
         }
     }

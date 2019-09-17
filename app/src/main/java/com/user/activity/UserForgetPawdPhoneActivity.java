@@ -30,6 +30,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import cn.net.cyberway.R;
+import cn.net.cyberway.utils.ConfigUtils;
 
 /**
  * @name ${yuansk}
@@ -54,6 +55,7 @@ public class UserForgetPawdPhoneActivity extends BaseActivity implements View.On
     private TextView tv_get_sms;
     private TextView tv_voice_code;
     private TextView tv_change_mobile;
+    private TextView tv_contact_service;
     private NewUserModel newUserModel;
     private String enterMobile;
     private boolean isShowLoading = false;
@@ -84,12 +86,14 @@ public class UserForgetPawdPhoneActivity extends BaseActivity implements View.On
         tv_get_sms = (TextView) findViewById(R.id.tv_get_sms);
         btn_next = (Button) findViewById(R.id.btn_next);
         tv_change_mobile = (TextView) findViewById(R.id.tv_change_mobile);
+        tv_contact_service = findViewById(R.id.tv_contact_service);
         findViewById(R.id.line).setVisibility(View.GONE);
         user_top_view_back.setOnClickListener(this);
         btn_next.setOnClickListener(this);
         tv_get_sms.setOnClickListener(this);
         tv_voice_code.setOnClickListener(this);
         tv_change_mobile.setOnClickListener(this);
+        tv_contact_service.setOnClickListener(this);
         mobile = getIntent().getStringExtra(UserRegisterAndLoginActivity.MOBILE);
         enterMobile = mobile;
         user_forget_phone.setText(mobile);
@@ -130,7 +134,7 @@ public class UserForgetPawdPhoneActivity extends BaseActivity implements View.On
                 changeBtnStatus();
             }
         });
-        newUserModel.getChangeMobileEnter(3, mobile,1, isShowLoading, UserForgetPawdPhoneActivity.this);
+        newUserModel.getChangeMobileEnter(3, mobile, 1, isShowLoading, UserForgetPawdPhoneActivity.this);
     }
 
     private void changeBtnStatus() {
@@ -191,8 +195,11 @@ public class UserForgetPawdPhoneActivity extends BaseActivity implements View.On
                     finish();
                 } else {
                     isShowLoading = true;
-                    newUserModel.getChangeMobileEnter(3, mobile,1, isShowLoading, UserForgetPawdPhoneActivity.this);
+                    newUserModel.getChangeMobileEnter(3, mobile, 1, isShowLoading, UserForgetPawdPhoneActivity.this);
                 }
+                break;
+            case R.id.tv_contact_service:
+                ConfigUtils.jumpContactService(UserForgetPawdPhoneActivity.this);
                 break;
         }
     }
@@ -315,7 +322,7 @@ public class UserForgetPawdPhoneActivity extends BaseActivity implements View.On
         @Override
         public void onTick(long millisUntilFinished) {// 计时过程显示
             long currentSecond = millisUntilFinished / UserAppConst.INTERVAL;
-            tv_get_sms.setText(getResources().getString(R.string.user_already_send)+"(" + currentSecond + "S)");
+            tv_get_sms.setText(getResources().getString(R.string.user_already_send) + "(" + currentSecond + "S)");
             if (currentSecond <= 20) {
                 tv_voice_code.setVisibility(View.VISIBLE);
             } else {

@@ -14,7 +14,6 @@ import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -67,7 +66,7 @@ public class ProfileFragment extends Fragment implements View.OnClickListener, M
     private CircleImageView mHeadImg;
     private TextView mUsername;
     private TextView mCommunity;
-    private ImageView iv_qr_code;
+    private RelativeLayout qr_code_layout;
     private RecyclerView lv_myprofile_info;
     private RecyclerView rv_property_menu;
     private MyPageItemListAdapter myItemListAdapter;
@@ -217,10 +216,10 @@ public class ProfileFragment extends Fragment implements View.OnClickListener, M
         mHeadImg = myView.findViewById(R.id.profile_head_img);
         mUsername = myView.findViewById(R.id.profile_username);
         mCommunity = myView.findViewById(R.id.profile_community);
-        iv_qr_code = myView.findViewById(R.id.iv_qr_code);
+        qr_code_layout = myView.findViewById(R.id.qr_code_layout);
         rl_profile_info = myView.findViewById(R.id.rl_profile_info);
         rl_profile_info.setOnClickListener(this);
-        iv_qr_code.setOnClickListener(this);
+        qr_code_layout.setOnClickListener(this);
         TCAgent.onEvent(getActivity(), "203001");
         ListenerUtils.setCallBack(this);
         refresh_layout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
@@ -282,7 +281,7 @@ public class ProfileFragment extends Fragment implements View.OnClickListener, M
                 intent = new Intent(getActivity(), CustomerInfoActivity.class);
                 startActivityForResult(intent, 6);
                 break;
-            case R.id.iv_qr_code:
+            case R.id.qr_code_layout:
                 intent = new Intent(getActivity(), CustomerMakeZXingActivity.class);
                 startActivity(intent);
                 break;
@@ -367,8 +366,8 @@ public class ProfileFragment extends Fragment implements View.OnClickListener, M
                     showProfileData(result);
                     isLoading = false;
                 } else {
-                    String mySubMenu = mShared.getString(MYPAGESUBMENU, Constants.myPageMainList);
-                    showProfileData(mySubMenu);
+                    String myProfileData = mShared.getString(UserAppConst.MYPAGELIST, Constants.myPageMainList);
+                    showProfileData(myProfileData);
                     isLoading = true;
                 }
                 break;
@@ -380,7 +379,7 @@ public class ProfileFragment extends Fragment implements View.OnClickListener, M
                     isLoading = false;
                 } else {
                     String mySubMenu = mShared.getString(MYPAGESUBMENU, Constants.mySubMenuList);
-                    showProfileData(mySubMenu);
+                    showSubMenuData(mySubMenu);
                     isLoading = true;
                 }
                 break;

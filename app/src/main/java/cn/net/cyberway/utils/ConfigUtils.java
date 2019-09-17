@@ -71,7 +71,7 @@ public class ConfigUtils implements NewHttpResponse {
         LayoutInflater inflater = LayoutInflater.from(mContext);
         LinearLayout linearLayout = (LinearLayout) inflater.inflate(R.layout.relative_item_view, null);
         LinearLayout.LayoutParams layoutParamsOther = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-        layoutParamsOther.setMargins(0, Util.DensityUtil.dip2px(mContext, 320), 0, 0);
+        layoutParamsOther.setMargins(0, Util.DensityUtil.dip2px(mContext, 350), 0, 0);
         linearLayout.setLayoutParams(layoutParamsOther);
         TextView tv_contact_service = linearLayout.findViewById(R.id.tv_contact_service);
         tv_contact_service.setOnClickListener(new View.OnClickListener() {

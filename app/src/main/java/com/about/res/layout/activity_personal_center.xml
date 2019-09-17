@@ -29,22 +29,31 @@
             android:layout_height="70dp">
 
             <ImageView
-                android:id="@+id/iv_qr_code"
-                android:layout_width="22dp"
-                android:layout_height="22dp"
-                android:layout_alignParentRight="true"
-                android:layout_centerVertical="true"
-                android:layout_marginRight="40dp"
-                android:background="@drawable/my_qrcode"
-                android:scaleType="centerInside" />
-
-            <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
                 android:layout_centerVertical="true"
                 android:layout_marginRight="16dp"
                 android:background="@drawable/arrow_right" />
+
+
+            <RelativeLayout
+                android:id="@+id/qr_code_layout"
+                android:layout_width="44dp"
+                android:layout_height="44dp"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="40dp">
+
+                <ImageView
+                    android:id="@+id/iv_qr_code"
+                    android:layout_width="22dp"
+                    android:layout_height="22dp"
+                    android:layout_centerInParent="true"
+                    android:background="@drawable/my_qrcode"
+                    android:scaleType="centerInside" />
+
+            </RelativeLayout>
 
 
             <TextView
