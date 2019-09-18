@@ -106,7 +106,6 @@ import static com.user.Utils.TokenUtils.clearUserCache;
  */
 
 public class MainActivity extends BaseFragmentActivity implements View.OnClickListener, HttpApiResponse, NewHttpResponse {
-    public static Context context = null;
     public static final int FLAG_TAB_ONE = 1;
     public static final int FLAG_TAB_TWO = 2;
     public static final int FLAG_TAB_THREE = 3;
@@ -163,7 +162,6 @@ public class MainActivity extends BaseFragmentActivity implements View.OnClickLi
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        context = getApplicationContext();
         myManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
         ScreenManager.getScreenManager().pushActivity(this);
         registerNotice();
@@ -195,7 +193,7 @@ public class MainActivity extends BaseFragmentActivity implements View.OnClickLi
         }
         mEditor.putInt(UpdateVerSion.SAVEVERSIONCODE, UpdateVerSion.getVersionCode(MainActivity.this));//保存版本号
         mEditor.putBoolean(UserAppConst.IS_CHECK_UPDATE, true);
-        mEditor.commit();
+        mEditor.apply();
         shortEnter(MainActivity.this, getIntent(), mShared);
         int totalUnRead = HuxinSdkManager.instance().unreadBuddyAndCommMessage();
         showUnReadMsg(totalUnRead);
@@ -483,31 +481,34 @@ public class MainActivity extends BaseFragmentActivity implements View.OnClickLi
      * 展示开门结果
      */
     public void showOpenDoorDialog(String json) {
-        try {
-            if (null == showOpenDoorDialog) {
-                showOpenDoorDialog = new ShowOpenDoorDialog(MainActivity.this, R.style.opendoor_dialog_theme);
-            }
-            if (null != showOpenDoorDialog && showOpenDoorDialog.isShowing()) {
-                showOpenDoorDialog.dismiss();
-            }
-            showOpenDoorDialog.show();
-            final OpenDoorResultEntity openDoorResultEntity = GsonUtils.gsonToBean(json, OpenDoorResultEntity.class);
-            OpenDoorResultEntity.ContentBean contentBean = openDoorResultEntity.getContent();
-            final int result = contentBean.getOpen_result();
-            showOpenDoorResultDialog(MainActivity.this, showOpenDoorDialog, contentBean);
-            showOpenDoorDialog.tv_opendoor_cqb_ok.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    showOpenDoorDialog.dismiss();
-                    if (result == 0) {//重新开门
-                        NewDoorModel openModel = new NewDoorModel(MainActivity.this);
-                        openModel.openDoor(2, door_code, true, MainActivity.this);
-                    } else {//跳转到彩钱包
-                        LinkParseUtil.parse(MainActivity.this, "colourlife://proto?type=NewTicket", "");
-                    }
+        if (choiceType == 0) {
+            try {
+                if (null == showOpenDoorDialog) {
+                    showOpenDoorDialog = new ShowOpenDoorDialog(MainActivity.this, R.style.opendoor_dialog_theme);
                 }
-            });
-        } catch (Exception e) {
+                if (null != showOpenDoorDialog && showOpenDoorDialog.isShowing()) {
+                    showOpenDoorDialog.dismiss();
+                }
+                showOpenDoorDialog.show();
+                final OpenDoorResultEntity openDoorResultEntity = GsonUtils.gsonToBean(json, OpenDoorResultEntity.class);
+                OpenDoorResultEntity.ContentBean contentBean = openDoorResultEntity.getContent();
+                final int result = contentBean.getOpen_result();
+                showOpenDoorResultDialog(MainActivity.this, showOpenDoorDialog, contentBean);
+                showOpenDoorDialog.tv_opendoor_cqb_ok.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        showOpenDoorDialog.dismiss();
+                        if (result == 0) {//重新开门
+                            NewDoorModel openModel = new NewDoorModel(MainActivity.this);
+                            openModel.openDoor(2, door_code, true, MainActivity.this);
+                        } else {//跳转到彩钱包
+                            LinkParseUtil.parse(MainActivity.this, "colourlife://proto?type=NewTicket", "");
+                        }
+                    }
+                });
+            } catch (Exception e) {
+
+            }
         }
     }
 
@@ -568,7 +569,7 @@ public class MainActivity extends BaseFragmentActivity implements View.OnClickLi
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         if (keyCode == KeyEvent.KEYCODE_BACK) {
-            if (mIsExit == false) {
+            if (!mIsExit) {
                 mIsExit = true;
                 ToastUtil.toastShow(getApplicationContext(), getResources().getString(R.string.app_exit_notice));
                 handler.sendEmptyMessageDelayed(0, 3000);
@@ -817,10 +818,8 @@ public class MainActivity extends BaseFragmentActivity implements View.OnClickLi
                 uploadPageStayTime(startTime, leaveTime, functionSectionId);
                 break;
             case UserMessageConstant.BLUETOOTH_CLOSE_DIALOG:
-                if (choiceType == 0) {
-                    if (null != showOpenDoorDialog && showOpenDoorDialog.isShowing()) {
-                        showOpenDoorDialog.dismiss();
-                    }
+                if (null != showOpenDoorDialog && showOpenDoorDialog.isShowing()) {
+                    showOpenDoorDialog.dismiss();
                 }
                 break;
             case 10000:
@@ -890,7 +889,7 @@ public class MainActivity extends BaseFragmentActivity implements View.OnClickLi
                     try {
                         themeEntity = GsonUtils.gsonToBean(result, ThemeEntity.class);
                         long oldUpdateTime = Long.valueOf(mShared.getString(UserAppConst.THEMEUPDATETIME, "0"));
-                        long nowUpdateTime = Long.valueOf(themeEntity.getContent().getDefault_theme().getTabbar().getUpdated_at());
+                        long nowUpdateTime = themeEntity.getContent().getDefault_theme().getTabbar().getUpdated_at();
                         if (nowUpdateTime >= oldUpdateTime) {//当前接口为最新主题，使用该接口数据
                             themeAdapter(result);
                         }
@@ -1024,10 +1023,10 @@ public class MainActivity extends BaseFragmentActivity implements View.OnClickLi
     }
 
     private void defaultTheme() {
-        addSelectorFromDrawable(context, R.drawable.icon_bar_home_n, R.drawable.icon_bar_home_s, home_btn);
-        addSelectorFromDrawable(context, R.drawable.icon_bar_life_n, R.drawable.icon_bar_life_s, life_btn);
-        addSelectorFromDrawable(context, R.drawable.icon_bar_lil_n, R.drawable.icon_bar_lil_s, linli_btn);
-        addSelectorFromDrawable(context, R.drawable.icon_bar_my_n, R.drawable.icon_bar_my_s, myinfo_btn);
+        addSelectorFromDrawable(MainActivity.this, R.drawable.icon_bar_home_n, R.drawable.icon_bar_home_s, home_btn);
+        addSelectorFromDrawable(MainActivity.this, R.drawable.icon_bar_life_n, R.drawable.icon_bar_life_s, life_btn);
+        addSelectorFromDrawable(MainActivity.this, R.drawable.icon_bar_lil_n, R.drawable.icon_bar_lil_s, linli_btn);
+        addSelectorFromDrawable(MainActivity.this, R.drawable.icon_bar_my_n, R.drawable.icon_bar_my_s, myinfo_btn);
         circle_scanner_image.setImageResource(R.drawable.icon_home_bar_sic);
         addTVSeletor(MainActivity.class, "#97a0ab", "#2E7BEF", tv_home);
         addTVSeletor(MainActivity.class, "#97a0ab", "#2E7BEF", tv_life);
