@@ -1,16 +1,15 @@
 package com.door.adapter;
 
 import android.content.Context;
-import android.widget.ImageView;
+import android.graphics.Color;
 
-import com.allapp.entity.HomeAllLifeEntity;
-import com.allapp.entity.WholeAppSectionEntity;
 import com.chad.library.adapter.base.BaseSectionQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
+import com.door.entity.DoorOpenRecordEntity;
+import com.door.entity.DoorOpenRecordSectionEntity;
 
 import java.util.List;
 
-import cn.csh.colourful.life.utils.GlideUtils;
 import cn.net.cyberway.R;
 
 /**
@@ -23,7 +22,7 @@ import cn.net.cyberway.R;
  * @chang time
  * @class describe
  */
-public class DoorNewOpenRecordAdapter extends BaseSectionQuickAdapter<WholeAppSectionEntity, BaseViewHolder> {
+public class DoorNewOpenRecordAdapter extends BaseSectionQuickAdapter<DoorOpenRecordSectionEntity, BaseViewHolder> {
 
     /**
      * Same as QuickAdapter#QuickAdapter(Context,int) but with
@@ -36,23 +35,28 @@ public class DoorNewOpenRecordAdapter extends BaseSectionQuickAdapter<WholeAppSe
     private Context context;
 
 
-    public DoorNewOpenRecordAdapter(Context context, int layoutResId, int sectionHeadResId, List<WholeAppSectionEntity> data) {
+    public DoorNewOpenRecordAdapter(Context context, int layoutResId, int sectionHeadResId, List<DoorOpenRecordSectionEntity> data) {
         super(layoutResId, sectionHeadResId, data);
         this.context = context;
     }
 
 
     @Override
-    protected void convertHead(BaseViewHolder helper, WholeAppSectionEntity item) {
+    protected void convertHead(BaseViewHolder helper, DoorOpenRecordSectionEntity item) {
         helper.setText(R.id.head_name, item.header);
+        helper.setBackgroundColor(R.id.head_name, Color.parseColor("#f5f5f5"));
     }
 
     @Override
-    protected void convert(BaseViewHolder helper, WholeAppSectionEntity item) {
-        HomeAllLifeEntity.ContentBean.DataBean.ListBean listBean = item.t;
-        helper.setText(R.id.tv_app_name, listBean.getName());
-        GlideUtils.loadImageView(context, listBean.getImg(), (ImageView) helper.getView(R.id.iv_app_logo));
-        helper.itemView.setBackgroundResource(R.color.white);
-        helper.setVisible(R.id.iv_app_operate, false);
+    protected void convert(BaseViewHolder helper, DoorOpenRecordSectionEntity item) {
+        DoorOpenRecordEntity.ContentBean.DataBean listBean = item.t;
+        String status = listBean.getStatus();
+        if ("1".equals(status)) {
+            helper.setText(R.id.tv_door_status, "开门成功");
+        } else {
+            helper.setText(R.id.tv_door_status, "开门失败");
+        }
+        helper.setText(R.id.tv_door_name, listBean.getDoor_name());
+        helper.setText(R.id.tv_door_time, listBean.getDate());
     }
 }

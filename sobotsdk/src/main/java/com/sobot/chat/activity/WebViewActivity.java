@@ -59,7 +59,7 @@ public class WebViewActivity extends SobotBaseActivity implements View.OnClickLi
         ARouter.getInstance().build("/colourlife/currency/jump")
                 .withString("thridlinkurl", mUrl)
                 .withString("thridtitle", "")
-                .withInt("thridfromsource", 1)
+                .withInt("thridfromsource", 100)
                 .withString("thriddomain", "").navigation(this);
         finish();
     }

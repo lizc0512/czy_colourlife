@@ -817,8 +817,10 @@ public class MainActivity extends BaseFragmentActivity implements View.OnClickLi
                 uploadPageStayTime(startTime, leaveTime, functionSectionId);
                 break;
             case UserMessageConstant.BLUETOOTH_CLOSE_DIALOG:
-                if (null != showOpenDoorDialog && showOpenDoorDialog.isShowing()) {
-                    showOpenDoorDialog.dismiss();
+                if (choiceType == 0) {
+                    if (null != showOpenDoorDialog && showOpenDoorDialog.isShowing()) {
+                        showOpenDoorDialog.dismiss();
+                    }
                 }
                 break;
             case 10000:

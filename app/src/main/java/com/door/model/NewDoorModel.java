@@ -32,6 +32,7 @@ public class NewDoorModel extends BaseModel {
     public final String getCommunityKeyUrl = "app/door/getCommunityKey";
     public final String devicePasswordLogUrl = "app/door/devicePasswordLog";
     public final String deviceOpenAdvertUrl = "app/door/openAdvert";
+    public final String doorOpenRocordUrl = "app/door/getOpenRocord";
 
     public NewDoorModel(Context context) {
         super(context);
@@ -317,6 +318,36 @@ public class NewDoorModel extends BaseModel {
             }
         }, true, false);
     }
+
+    public void getDoorOpenRecord(int what, int page, NewHttpResponse newHttpResponse) {
+        Map<String, Object> map = new HashMap<>();
+        map.put("page", page);
+        map.put("page_size", 20);
+        final Request<String> request = NoHttp.createStringRequest(RequestEncryptionUtils.getCombileMD5(mContext, 11, doorOpenRocordUrl, map), RequestMethod.GET);
+        request(what, request, null, new HttpListener<String>() {
+            @Override
+            public void onSucceed(int what, Response<String> response) {
+                int responseCode = response.getHeaders().getResponseCode();
+                String result = response.get();
+                if (responseCode == RequestEncryptionUtils.responseSuccess) {
+                    int resultCode = showSuccesResultMessageTheme(result);
+                    if (resultCode == 0) {
+                        newHttpResponse.OnHttpResponse(what, result);
+                    } else {
+                        newHttpResponse.OnHttpResponse(what, "");
+                    }
+                } else {
+                    newHttpResponse.OnHttpResponse(what, "");
+                }
+            }
+
+            @Override
+            public void onFailed(int what, Response<String> response) {
+                newHttpResponse.OnHttpResponse(what, "");
+            }
+        }, true, false);
+    }
+
 
     public void getDevicePwd(int what, String device_id, final NewHttpResponse newHttpResponse) {
         Map<String, Object> params = new HashMap<>();

@@ -70,6 +70,7 @@ public class IntelligenceDoorActivity extends BaseFragmentActivity implements Ne
     private RelativeLayout ll_homedoorpop_apply;
     private RelativeLayout ll_homedoorpop_authorization;
     private RelativeLayout ll_homedoorpop_compile;
+    private RelativeLayout ll_homedoorpop_record;
     private String isgranted = "0";
     private String door_code = "";
     private int position = 0;
@@ -269,22 +270,13 @@ public class IntelligenceDoorActivity extends BaseFragmentActivity implements Ne
     private void showPopWindow(View parent) {
         try {
             if (popupWindow == null) {
-                LayoutInflater layoutInflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-                final View popWindowView = LayoutInflater.from(this).inflate(R.layout.homedoor_pop, null);
+                View popWindowView = LayoutInflater.from(this).inflate(R.layout.homedoor_pop, null);
                 popupWindow = new PopupWindow(popWindowView,
                         ViewGroup.LayoutParams.WRAP_CONTENT,
                         ViewGroup.LayoutParams.WRAP_CONTENT,
                         true);
                 //申请
                 ll_homedoorpop_apply = popWindowView.findViewById(R.id.ll_homedoorpop_apply);
-                ll_homedoorpop_apply.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        Intent applyIntent = new Intent(IntelligenceDoorActivity.this, DoorApplyActivity.class);
-                        startActivity(applyIntent);
-                        popupWindow.dismiss();
-                    }
-                });
                 //门禁授权
                 ll_homedoorpop_authorization = popWindowView.findViewById(R.id.ll_homedoorpop_authorization);
                 if ("1".equals(isgranted)) {
@@ -292,60 +284,78 @@ public class IntelligenceDoorActivity extends BaseFragmentActivity implements Ne
                 } else {
                     ll_homedoorpop_authorization.setVisibility(View.GONE);
                 }
-                ll_homedoorpop_authorization.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
+                //编辑门禁
+                ll_homedoorpop_compile = popWindowView.findViewById(R.id.ll_homedoorpop_compile);
+                //门禁记录
+                ll_homedoorpop_record = popWindowView.findViewById(R.id.ll_homedoorpop_record);
+            }
+
+            ll_homedoorpop_apply.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Intent applyIntent = new Intent(IntelligenceDoorActivity.this, DoorApplyActivity.class);
+                    startActivity(applyIntent);
+                    popupWindow.dismiss();
+                }
+            });
+            ll_homedoorpop_authorization.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    try {
+                        if (!"1".equals(isgranted)) {
+                            ToastUtil.toastShow(IntelligenceDoorActivity.this, getResources().getString(R.string.door_no_grantauthor));
+                            return;
+                        }
+                        Intent authorIntent = new Intent(IntelligenceDoorActivity.this, DoorAuthorizationActivity.class);
+                        startActivity(authorIntent);
+                    } catch (Resources.NotFoundException e) {
+                        e.printStackTrace();
+                    }
+                    popupWindow.dismiss();
+                }
+            });
+            ll_homedoorpop_compile.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (!TextUtils.isEmpty(resultData)) {
                         try {
-                            if (!"1".equals(isgranted)) {
-                                ToastUtil.toastShow(IntelligenceDoorActivity.this, getResources().getString(R.string.door_no_grantauthor));
-                                return;
+                            position = vp_door.getCurrentItem();
+                            boolean canEdit = false;
+
+                            DoorAllEntity doorAllEntity = GsonUtils.gsonToBean(resultData, DoorAllEntity.class);
+                            List<DoorAllEntity.ContentBean.DataBean.ListBean> list = doorAllEntity.getContent().getData().get(position).getList();
+                            if (0 < list.size()) {
+                                for (int i = 0; i < list.size(); i++) {
+                                    //远程开门
+                                    if ("caihuijuDoor".equals(list.get(i).getType())) {
+                                        if (0 < list.get(i).getKeyList().size()) {
+                                            canEdit = true;
+                                        }
+                                    }
+                                }
                             }
-                            Intent authorIntent = new Intent(IntelligenceDoorActivity.this, DoorAuthorizationActivity.class);
-                            startActivity(authorIntent);
-                        } catch (Resources.NotFoundException e) {
+                            if (communityUuidList.size() > 0 && canEdit) {
+                                Intent intent = new Intent(IntelligenceDoorActivity.this, NewDoorEditActivity.class);
+                                intent.putExtra(UserAppConst.EDITDOORCOMMUNITYUUID, communityUuidList.get(position));
+                                startActivityForResult(intent, INTENT_UPDATEFIXEDDOOR);
+                            } else {
+                                ToastUtil.toastShow(getApplicationContext(), "您当前小区没有可编辑门禁");
+                            }
+                        } catch (Exception e) {
                             e.printStackTrace();
                         }
                         popupWindow.dismiss();
                     }
-                });
-                //编辑门禁
-                ll_homedoorpop_compile = popWindowView.findViewById(R.id.ll_homedoorpop_compile);
-                ll_homedoorpop_compile.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        if (!TextUtils.isEmpty(resultData)) {
-                            try {
-                                position = vp_door.getCurrentItem();
-                                boolean canEdit = false;
-
-                                DoorAllEntity doorAllEntity = GsonUtils.gsonToBean(resultData, DoorAllEntity.class);
-                                List<DoorAllEntity.ContentBean.DataBean.ListBean> list = doorAllEntity.getContent().getData().get(position).getList();
-                                if (0 < list.size()) {
-                                    for (int i = 0; i < list.size(); i++) {
-                                        //远程开门
-                                        if ("caihuijuDoor".equals(list.get(i).getType())) {
-                                            if (0 < list.get(i).getKeyList().size()) {
-                                                canEdit = true;
-                                            }
-                                        }
-                                    }
-                                }
-
-                                if (communityUuidList.size() > 0 && canEdit) {
-                                    Intent intent = new Intent(IntelligenceDoorActivity.this, NewDoorEditActivity.class);
-                                    intent.putExtra(UserAppConst.EDITDOORCOMMUNITYUUID, communityUuidList.get(position));
-                                    startActivityForResult(intent, INTENT_UPDATEFIXEDDOOR);
-                                } else {
-                                    ToastUtil.toastShow(getApplicationContext(), "您当前小区没有可编辑门禁");
-                                }
-                            } catch (Exception e) {
-                                e.printStackTrace();
-                            }
-                        }
-                        popupWindow.dismiss();
-                    }
-                });
-            }
+                }
+            });
+            ll_homedoorpop_record.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(IntelligenceDoorActivity.this, NewDoorOpenRecordActivity.class);
+                    startActivity(intent);
+                    popupWindow.dismiss();
+                }
+            });
             // 使其聚集
             popupWindow.setFocusable(true);
             // 设置允许在外点击消失

@@ -64,6 +64,7 @@ import com.youmai.hxsdk.utils.GsonUtil;
 import com.youmai.hxsdk.utils.ListUtils;
 import com.youmai.hxsdk.utils.LogFile;
 import com.youmai.hxsdk.utils.StringUtils;
+import com.youmai.hxsdk.utils.ToastUtil;
 import com.youmai.hxsdk.view.chat.utils.EmotionInit;
 
 import java.net.InetSocketAddress;
@@ -833,7 +834,6 @@ public class HuxinSdkManager {
      */
     private void socketLogin(final String uuid) {
         String url = AppConfig.getTcpHost(uuid);
-
         HttpConnector.httpGet(url, new IGetListener() {
             @Override
             public void httpReqResult(String response) {
@@ -1601,7 +1601,7 @@ public class HuxinSdkManager {
         intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
         intent.putExtra(IMOwnerActivity.DST_UUID, mServiceInfo.getUuid());
         intent.putExtra(IMOwnerActivity.DST_NAME, mServiceInfo.getNickName());
-        intent.putExtra(IMOwnerActivity.DST_REALNAME,mServiceInfo.getRealName());
+        intent.putExtra(IMOwnerActivity.DST_REALNAME, mServiceInfo.getRealName());
         intent.putExtra(IMOwnerActivity.DST_AVATAR, mServiceInfo.getAvatar());
         intent.putExtra(IMOwnerActivity.DST_USERNAME, mServiceInfo.getUserName());
         intent.putExtra(IMOwnerActivity.DST_PHONE, mServiceInfo.getPhoneNum());

@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="75dp">
+    android:layout_height="75dp"
+    android:background="@color/white">
 
 
     <TextView
@@ -37,5 +38,10 @@
         android:text="21:25"
         android:textColor="@color/color_25282e"
         android:textSize="14sp" />
+
+    <View
+        android:layout_width="match_parent"
+        android:background="@color/line_color"
+        android:layout_height="1px"/>
 
 </RelativeLayout>

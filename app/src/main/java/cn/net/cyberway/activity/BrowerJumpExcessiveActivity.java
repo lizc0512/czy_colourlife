@@ -7,6 +7,7 @@ import android.os.Message;
 import android.text.TextUtils;
 
 import com.BeeFramework.activity.BaseActivity;
+import com.BeeFramework.activity.WebViewActivity;
 import com.BeeFramework.model.NewHttpResponse;
 import com.alibaba.android.arouter.facade.annotation.Route;
 import com.external.eventbus.EventBus;
@@ -78,14 +79,23 @@ public class BrowerJumpExcessiveActivity extends BaseActivity implements NewHttp
                 String linkUrl = intent.getStringExtra(THRIDLINKURL);
                 String title = intent.getStringExtra(THRIDTITLE);
                 String domain = intent.getStringExtra(THRIDDOMAIN);
-                boolean thridSource = intent.getBooleanExtra(THRIDSOURCE, false);
-                if (thridSource) {
-                    LinkParseUtil.jumpFromThrid(BrowerJumpExcessiveActivity.this, linkUrl, title);
+                if (source == 100) {
+                    Intent webIntent = new Intent(BrowerJumpExcessiveActivity.this, WebViewActivity.class);
+                    webIntent.putExtra(WebViewActivity.WEBURL, linkUrl);
+                    webIntent.putExtra(WebViewActivity.WEBTITLE, title);
+                    webIntent.putExtra(WebViewActivity.THRIDSOURCE, false);
+                    startActivity(webIntent);
+                    overridePendingTransition(R.anim.push_right_in, R.anim.push_right_out);
                 } else {
-                    if (!TextUtils.isEmpty(domain)) {
-                        LinkParseUtil.jumpHtmlPay(BrowerJumpExcessiveActivity.this, linkUrl, domain);
+                    boolean thridSource = intent.getBooleanExtra(THRIDSOURCE, false);
+                    if (thridSource) {
+                        LinkParseUtil.jumpFromThrid(BrowerJumpExcessiveActivity.this, linkUrl, title);
                     } else {
-                        LinkParseUtil.parse(BrowerJumpExcessiveActivity.this, linkUrl, title);
+                        if (!TextUtils.isEmpty(domain)) {
+                            LinkParseUtil.jumpHtmlPay(BrowerJumpExcessiveActivity.this, linkUrl, domain);
+                        } else {
+                            LinkParseUtil.parse(BrowerJumpExcessiveActivity.this, linkUrl, title);
+                        }
                     }
                 }
             }

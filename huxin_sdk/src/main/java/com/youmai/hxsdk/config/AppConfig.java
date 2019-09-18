@@ -26,7 +26,7 @@ public class AppConfig {
     /**
      * HuXin 服务器连接配置
      */
-    public final static int LAUNCH_MODE = 0; //0彩生活测试服务器        1彩生活预发布服务器           2彩生活正式服务器
+    public final static int LAUNCH_MODE = 2 ; //0彩生活测试服务器        1彩生活预发布服务器           2彩生活正式服务器
 
     private final static String SOCKET_URL[] = new String[]{"http://core.im.test.colourlife.com/", "http://core.im.beta.colourlife.com/", "http://imcore.czy.colourlife.com/"};
 

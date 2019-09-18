@@ -3,87 +3,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="cn.net.cyberway">
 
-    <permission
-        android:name="cn.net.cyberway.permission.JPUSH_MESSAGE"
-        android:protectionLevel="signature" />
-
-
-    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
-    <uses-permission android:name="cn.net.cyberway.permission.JPUSH_MESSAGE" />
-    <uses-permission android:name="android.permission.RECEIVE_USER_PRESENT" />
-    <uses-permission android:name="android.permission.WAKE_LOCK" />
-    <uses-permission android:name="android.permission.BLUETOOTH" />
-    <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
-    <uses-permission android:name="android.permission.CALL_PHONE" />
-    <uses-permission android:name="android.permission.CHANGE_NETWORK_STATE" />
-    <uses-permission android:name="android.permission.BROADCAST_STICKY" />
-    <uses-permission android:name="android.permission.VIBRATE" />
-    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
-    <uses-permission android:name="android.permission.CAMERA" />
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.READ_CONTACTS" />
-    <uses-permission android:name="android.permission.ACCESS_COARSE_UPDATES" />
-    <!-- 这个权限用于进行网络定位 -->
-    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
-    <!-- 这个权限用于访问GPS定位 -->
-    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
-    <!-- 获取运营商信息，用于支持提供运营商信息相关的接口 -->
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-
-    <!-- 写入扩展存储，向扩展卡写入数据，用于写入离线定位数据 -->
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-    <!-- 访问网络，网络定位需要上网 -->
-    <uses-permission android:name="android.permission.INTERNET" />
-    <!-- SD卡读取权限，用户写入离线定位数据 -->
-    <uses-permission android:name="android.permission.FLASHLIGHT" />
-    <uses-permission android:name="android.permission.MANAGE_ACCOUNTS" />
-    <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
-    <!-- 需要获取网络状态 -->
-    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
-    <!-- 获取设备唯一标识 -->
-    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
-    <!-- 获取访问用户账户名的权限用以精准匹配标签(可选) -->
-    <uses-permission android:name="android.permission.GET_ACCOUNTS" />
-    <uses-permission android:name="android.permission.MODIFY_AUDIO_SETTINGS" />
-
-    <!-- 读取短信和接收短信 -->
-    <uses-permission android:name="android.permission.RECEIVE_SMS" />
-    <uses-permission android:name="android.permission.READ_SMS" />
-    <!-- 桌面快捷方式权限 -->
-    <uses-permission android:name="com.android.launcher.permission.INSTALL_SHORTCUT" />
-    <uses-permission android:name="com.android.launcher.permission.UNINSTALL_SHORTCUT" />
-    <uses-permission android:name="com.android.launcher.permission.READ_SETTINGS" />
-    <uses-permission android:name="com.android.launcher2.permission.READ_SETTINGS" />
-    <uses-permission android:name="com.android.launcher3.permission.READ_SETTINGS" />
-    <uses-permission android:name="android.permission.REQUEST_INSTALL_PACKAGE" />
-    <!--乐开-->
-    <uses-sdk tools:overrideLibrary="com.intelspace.library" />
-    <!--bugly 阅读日志权限-->
-    <uses-permission
-        android:name="android.permission.READ_LOGS"
-        tools:ignore="ProtectedPermissions" />
-
-    <uses-permission
-        android:name="android.permission.CHANGE_CONFIGURATION"
-        tools:ignore="ProtectedPermissions" />
-    <uses-permission
-        android:name="android.permission.PACKAGE_USAGE_STATS"
-        tools:ignore="ProtectedPermissions" />
-
-    <uses-feature
-        android:name="android.hardware.camera"
-        android:required="true" />
-    <uses-feature
-        android:name="android.hardware.camera.autofocus"
-        android:required="true" />
-
-    <permission
-        android:name="cn.net.cyberway.permission.MIPUSH_RECEIVE"
-        android:protectionLevel="signature" />
-
-    <uses-permission android:name="cn.net.cyberway.permission.MIPUSH_RECEIVE" />
-
-
     <application
         android:name="com.BeeFramework.BeeFrameworkApp"
         android:allowBackup="false"
@@ -98,15 +17,6 @@
         android:usesCleartextTraffic="true"
         tools:replace="android:icon,android:theme,android:label,android:allowBackup">
 
-        <service
-            android:name="com.baidu.location.f"
-            android:enabled="true"
-            android:process=":remote" />
-
-        <meta-data
-            android:name="com.baidu.lbsapi.API_KEY"
-            android:value="B0433f7d882de0c20433e36fabe2269c" />
-
         <activity
             android:name=".activity.MainActivity"
             android:exported="true"
@@ -114,6 +24,7 @@
             android:screenOrientation="portrait"
             android:theme="@style/Theme.AppCompat"
             android:windowSoftInputMode="adjustPan|stateHidden" />
+
         <activity
             android:name=".activity.BrowerJumpExcessiveActivity"
             android:theme="@style/activityTheme">
@@ -128,6 +39,7 @@
                     android:scheme="colourlifeauth" />
             </intent-filter>
         </activity>
+
         <activity
             android:name="com.popupScreen.activity.PopupActivity"
             android:theme="@style/popupTransparent" />
@@ -136,7 +48,6 @@
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:exported="true"
             android:theme="@style/activityTheme" />
-
         <activity
             android:name=".activity.SplashActivity"
             android:screenOrientation="portrait"
@@ -151,7 +62,6 @@
             android:name=".activity.LeadActivity"
             android:screenOrientation="portrait" />
 
-
         <activity
             android:name="com.BeeFramework.activity.WebViewActivity"
             android:configChanges="keyboardHidden|screenSize"
@@ -159,18 +69,19 @@
             android:hardwareAccelerated="true"
             android:screenOrientation="portrait"
             android:theme="@style/Theme.AppCompat" />
-
-        <service android:name="com.BeeFramework.InitializeService" />
-
         <activity
             android:name=".activity.JoinCommunityActivity"
             android:screenOrientation="portrait" />
+
+
         <activity
             android:name="com.scanCode.activity.CaptureActivity"
             android:screenOrientation="portrait" />
+
         <activity
             android:name="com.scanCode.activity.ScanResultActivity"
             android:screenOrientation="portrait" />
+
         <activity
             android:name="com.imagepicker.activity.ReviewImageActivity"
             android:screenOrientation="portrait" />
@@ -192,9 +103,6 @@
             android:name="com.tencent.connect.common.AssistActivity"
             android:configChanges="orientation|keyboardHidden"
             android:theme="@android:style/Theme.Translucent.NoTitleBar" />
-
-        <service android:name="com.update.service.UpdateService" />
-
         <activity
             android:name="com.feed.activity.LinLiActivity"
             android:screenOrientation="portrait" />
@@ -206,10 +114,12 @@
             android:name="com.feed.activity.CreateNormalFeedActivity"
             android:launchMode="singleTask"
             android:screenOrientation="portrait" />
+
         <activity
             android:name="com.feed.activity.FeedOrActivityActivity"
             android:screenOrientation="portrait"
             android:theme="@style/translucent" />
+
         <activity
             android:name="com.feed.activity.ReleaseActivity"
             android:screenOrientation="portrait" />
@@ -220,13 +130,10 @@
             android:name="com.feed.activity.PersonalFeedActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden|adjustResize" />
-
-        <!-- E通知 -->
         <activity
             android:name="com.notification.activity.ENotificationActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustResize" />
-
         <activity
             android:name="com.door.activity.DoorAuthorizationActivity"
             android:screenOrientation="portrait" />
@@ -236,59 +143,50 @@
         <activity
             android:name="com.door.activity.DoorApplyActivity"
             android:screenOrientation="portrait" />
+
+        <!-- E通知 -->
         <activity
             android:name="com.door.activity.DoorAuthorizationApproveActivity"
             android:screenOrientation="portrait" />
+
         <activity
             android:name="com.door.activity.DoorControlAuthorizationDetailActivity"
             android:screenOrientation="portrait" />
-
-        <!-- 卡券 -->
         <activity
             android:name="com.cardcoupons.activity.CardCouponsActivity"
             android:screenOrientation="portrait" />
-        <!-- 设置 -->
         <activity
             android:name="com.setting.activity.SettingActivity"
             android:screenOrientation="portrait" />
         <activity
             android:name="com.setting.activity.ChoiceLanguageActivity"
             android:screenOrientation="portrait" />
-        <!-- 关于界面 -->
         <activity
             android:name="com.about.activity.AboutActivity"
             android:screenOrientation="portrait" />
-        <!-- 意见反馈 -->
+
+        <!-- 卡券 -->
         <activity
             android:name="com.about.activity.FeedBackActivity"
             android:screenOrientation="portrait"
             android:theme="@style/Theme.AppCompat" />
-
-        <!-- 邀请好友 -->
+        <!-- 设置 -->
         <activity
             android:name="com.invite.activity.InviteActivity"
             android:screenOrientation="portrait" />
         <activity
             android:name="com.invite.activity.InviteRecordActivity"
             android:screenOrientation="portrait" />
+        <!-- 关于界面 -->
         <activity
             android:name="com.invite.activity.ContactsActivity"
             android:screenOrientation="portrait" />
-        <!-- alipay sdk end -->
-
-        <receiver
-            android:name="com.pay.Activity.AppRegister"
-            android:permission="com.tencent.mm.plugin.permission.SEND">
-            <intent-filter>
-                <action android:name="com.tencent.mm.plugin.openapi.Intent.ACTION_REFRESH_WXAPP" />
-            </intent-filter>
-        </receiver>
-
+        <!-- 意见反馈 -->
         <activity
             android:name="com.pay.Activity.WxPayActivity"
             android:theme="@style/shareDialog" />
 
-        <!-- 个人信息 -->
+        <!-- 邀请好友 -->
         <activity
             android:name="com.customerInfo.activity.CustomerInfoActivity"
             android:screenOrientation="portrait" />
@@ -299,21 +197,20 @@
             android:name="com.customerInfo.activity.CustomerPwdActivity"
             android:screenOrientation="portrait"
             android:theme="@style/Theme.AppCompat" />
+        <!-- alipay sdk end -->
+
         <activity
             android:name="com.customerInfo.activity.CustomerCheckCodeActivity"
             android:screenOrientation="portrait" />
+
         <activity
             android:name="com.customerInfo.activity.CustomerMakeZXingActivity"
             android:screenOrientation="portrait" />
 
-        <!-- 商家消息 -->
+        <!-- 个人信息 -->
         <activity
             android:name="com.message.activity.MessageCenterActivity"
             android:screenOrientation="portrait" />
-        <!-- 新版商家消息 -->
-
-
-        <!-- 系统通知详情 -->
         <activity
             android:name="com.message.activity.SystemMsgDetailActivity"
             android:screenOrientation="portrait" />
@@ -336,89 +233,12 @@
                 <data android:scheme="tencent1101958589" />
             </intent-filter>
         </activity>
-
-        <!-- 友盟统计测试key -->
-        <!-- <meta-data -->
-        <!-- android:name="UMENG_APPKEY" -->
-        <!-- android:value="569c7da1e0f55acd6a00325b"></meta-data> -->
-
-
-        <!-- 友盟统计正式key -->
-        <meta-data
-            android:name="UMENG_APPKEY"
-            android:value="569c7de167e58e572100176c" />
-        <meta-data
-            android:name="UMENG_CHANNEL"
-            android:value="Colourlife" />
-
-        <service android:name="com.amap.api.location.APSService" />
-
-        <!-- Required -->
-        <service
-            android:name="cn.jpush.android.service.PushService"
-            android:enabled="true"
-            android:exported="false">
-            <intent-filter>
-                <action android:name="cn.jpush.android.intent.REGISTER" />
-                <action android:name="cn.jpush.android.intent.REPORT" />
-                <action android:name="cn.jpush.android.intent.PushService" />
-                <action android:name="cn.jpush.android.intent.PUSH_TIME" />
-            </intent-filter>
-        </service>
-
-        <!-- Rich push 核心功能 since 2.0.6 -->
         <activity
             android:name="cn.jpush.android.ui.PopWinActivity"
             android:exported="false"
             android:theme="@style/MyDialogStyle" />
 
-        <!-- since 3.0.9 Required SDK 核心功能 -->
-        <provider
-            android:name="cn.jpush.android.service.DataProvider"
-            android:authorities="cn.net.cyberway.DataProvider"
-            android:exported="false" />
-
-        <!-- since 3.1.0 Required SDK 核心功能 -->
-        <provider
-            android:name="cn.jpush.android.service.DownloadProvider"
-            android:authorities="cn.net.cyberway.DownloadProvider"
-            android:exported="true" />
-
-        <!-- Required SDK 核心功能 -->
-        <!-- since 1.8.0 -->
-        <service
-            android:name="cn.jpush.android.service.DaemonService"
-            android:enabled="true"
-            android:exported="true">
-            <intent-filter>
-                <action android:name="cn.jpush.android.intent.DaemonService" />
-
-                <category android:name="cn.net.cyberway" />
-            </intent-filter>
-        </service>
-
-        <!-- Required -->
-        <receiver
-            android:name="cn.jpush.android.service.PushReceiver"
-            android:enabled="true">
-            <intent-filter android:priority="1000">
-                <action android:name="cn.jpush.android.intent.NOTIFICATION_RECEIVED_PROXY" />
-
-                <category android:name="cn.net.cyberway" />
-            </intent-filter>
-            <intent-filter>
-                <action android:name="android.intent.action.USER_PRESENT" />
-                <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />
-            </intent-filter>
-            <!-- Optional -->
-            <intent-filter>
-                <action android:name="android.intent.action.PACKAGE_ADDED" />
-                <action android:name="android.intent.action.PACKAGE_REMOVED" />
-
-                <data android:scheme="package" />
-            </intent-filter>
-        </receiver>
-        <!-- Required SDK核心功能 -->
+        <!-- 商家消息 -->
         <activity
             android:name="cn.jpush.android.ui.PushActivity"
             android:configChanges="orientation|keyboardHidden"
@@ -430,90 +250,32 @@
                 <category android:name="cn.net.cyberway" />
             </intent-filter>
         </activity>
-        <!-- Required SDK核心功能 -->
-        <service
-            android:name="cn.jpush.android.service.DownloadService"
-            android:enabled="true"
-            android:exported="false" />
-        <!-- Required SDK核心功能 -->
-        <receiver android:name="cn.jpush.android.service.AlarmReceiver" />
-
-        <!-- User defined. 用户自定义的广播接收器 -->
-        <receiver
-            android:name="com.jpush.reciever.JPushReciever"
-            android:enabled="true">
-            <intent-filter>
-
-                <!-- Required 用户注册SDK的intent -->
-                <action android:name="cn.jpush.android.intent.REGISTRATION" />
-                <action android:name="cn.jpush.android.intent.UNREGISTRATION" />
-                <!-- Required 用户接收SDK消息的intent -->
-                <action android:name="cn.jpush.android.intent.MESSAGE_RECEIVED" />
-                <!-- Required 用户接收SDK通知栏信息的intent -->
-                <action android:name="cn.jpush.android.intent.NOTIFICATION_RECEIVED" />
-                <!-- Required 用户打开自定义通知栏的intent -->
-                <action android:name="cn.jpush.android.intent.NOTIFICATION_OPENED" />
-                <!-- Optional 用户接受Rich Push Javascript 回调函数的intent -->
-                <action android:name="cn.jpush.android.intent.ACTION_RICHPUSH_CALLBACK" />
-                <!-- 接收网络变化 连接/断开 since 1.6.3 -->
-                <action android:name="cn.jpush.android.intent.CONNECTION" />
-
-                <category android:name="cn.net.cyberway" />
-            </intent-filter>
-        </receiver>
-
-        <!-- User defined.  For test only  用户自定义接收消息器,3.0.7开始支持,目前新tag/alias接口设置结果会在该广播接收器对应的方法中回调-->
-        <receiver android:name="com.jpush.reciever.MyJPushMessageReceiver">
-            <intent-filter>
-                <action android:name="cn.jpush.android.intent.RECEIVE_MESSAGE" />
-                <category android:name="cn.net.cyberway"></category>
-            </intent-filter>
-        </receiver>
+        <!-- 新版商家消息 -->
 
 
-        <!-- </>值来自开发者平台取得的AppKey -->
-        <meta-data
-            android:name="JPUSH_CHANNEL"
-            android:value="developer-default" />
-        <!-- 正式发布版推送appkey -->
-        <meta-data
-            android:name="JPUSH_APPKEY"
-            android:value="85850e81bcaba45af4f4b6a6" />
-
-        <!-- 高德地图KEY -->
-        <meta-data
-            android:name="com.amap.api.v2.apikey"
-            android:value="bdb104e98dfa7e816b40c4148ea7b938"
-            tools:replace="android:value" />
-
-        <!--数位场景识别 保留-->
-        <meta-data
-            android:name="com.shuwei.location.APP_KEY"
-            android:value="0a23a964-a973-40e1-b14d-249e72875e70" />
-        <meta-data
-            android:name="com.shuwei.location.APP_ID"
-            android:value="34826ee148f9" />
-
-        <!-- 首页广告webview -->
+        <!-- 系统通知详情 -->
         <activity
             android:name="com.BeeFramework.activity.AdsWebViewActivity"
             android:screenOrientation="portrait"
             android:theme="@android:style/Theme.Translucent" />
-
-        <!-- 手势密码主界面 -->
         <activity
             android:name="com.setting.activity.GesturePwdMainActivity"
             android:screenOrientation="portrait" />
-        <!-- 忘记手势密码验证登录密码页面 -->
         <activity
             android:name="com.setting.activity.VerifyLoginPwdActivity"
             android:screenOrientation="portrait" />
-        <!-- 手势密码登录页面 -->
+
+        <!-- 友盟统计测试key -->
+        <!-- <meta-data -->
+        <!-- android:name="UMENG_APPKEY" -->
+        <!-- android:value="569c7da1e0f55acd6a00325b"></meta-data> -->
+
+
+        <!-- 友盟统计正式key -->
         <activity
             android:name="com.gesturepwd.activity.UnlockGesturePasswordActivity"
             android:launchMode="singleTask"
             android:screenOrientation="portrait" />
-        <!-- 手势密码设置页面 -->
         <activity
             android:name="com.gesturepwd.activity.CreateGesturePasswordActivity"
             android:screenOrientation="portrait" />
@@ -521,68 +283,77 @@
         <activity
             android:name="com.jsbridge.activity.BridgeWebViewActivity"
             android:screenOrientation="portrait" />
+
+        <!-- Required -->
         <activity
             android:name="com.Neighborhood.Activity.ActiveListActivity"
             android:screenOrientation="portrait" />
+
+        <!-- Rich push 核心功能 since 2.0.6 -->
         <activity
             android:name="com.Neighborhood.Activity.ActiveDirectoryActivity"
             android:screenOrientation="portrait" />
+
+        <!-- since 3.0.9 Required SDK 核心功能 -->
         <activity
             android:name="com.feed.activity.ShareFeedActivity"
             android:screenOrientation="portrait" />
+
+        <!-- since 3.1.0 Required SDK 核心功能 -->
         <activity
             android:name="com.about.activity.FeedBackDetailsActivity"
             android:screenOrientation="portrait" />
+
+        <!-- Required SDK 核心功能 -->
+        <!-- since 1.8.0 -->
         <activity
             android:name="com.about.activity.FeedBackListActivity"
             android:screenOrientation="portrait" />
+
+        <!-- Required -->
         <activity
             android:name="com.mycarinfo.activity.MyCarInfoActivity"
             android:screenOrientation="portrait" />
+        <!-- Required SDK核心功能 -->
         <activity
             android:name="com.myproperty.activity.MyPropertyActivity"
             android:screenOrientation="portrait" />
+        <!-- Required SDK核心功能 -->
         <activity
             android:name="com.myproperty.activity.NameAuthActivity"
             android:screenOrientation="portrait" />
-        <!-- 解决android 7.0对文件的权限控制问题 -->
-        <provider
-            android:name="android.support.v4.content.FileProvider"
-            android:authorities="cn.net.cyberway.fileprovider"
-            android:exported="false"
-            android:grantUriPermissions="true"
-            tools:replace="authorities">
-            <meta-data
-                android:name="android.support.FILE_PROVIDER_PATHS"
-                android:resource="@xml/file_provider_paths"
-                tools:replace="resource" />
-        </provider>
-
+        <!-- Required SDK核心功能 -->
         <activity
             android:name="com.mycarinfo.activity.AddCarActivity"
             android:screenOrientation="portrait" />
+
+        <!-- User defined. 用户自定义的广播接收器 -->
         <activity
             android:name="com.mycarinfo.activity.CarModelActivity"
             android:screenOrientation="portrait" />
 
-        <!--
-            <meta-data
-            android:name="com.google.android.gms.version"
-            android:value="@integer/google_play_services_version" />
-        -->
+        <!-- User defined.  For test only  用户自定义接收消息器,3.0.7开始支持,目前新tag/alias接口设置结果会在该广播接收器对应的方法中回调-->
         <activity
             android:name="com.mycarinfo.activity.BindFPActivity"
             android:screenOrientation="portrait" />
+
+
+        <!-- </>值来自开发者平台取得的AppKey -->
         <activity
             android:name="com.cashier.activity.NewOrderPayActivity"
             android:screenOrientation="portrait" />
+        <!-- 正式发布版推送appkey -->
         <activity
             android:name="com.cashier.activity.OrderWaitResultActivity"
             android:screenOrientation="portrait" />
+
+        <!-- 高德地图KEY -->
         <activity
             android:name="com.cashier.activity.OrderPaySuccessActivity"
             android:launchMode="singleTop"
             android:screenOrientation="portrait" />
+
+        <!--数位场景识别 保留-->
         <activity
             android:name="com.cashier.activity.OrderListActivity"
             android:screenOrientation="portrait"
@@ -590,34 +361,26 @@
         <activity
             android:name="com.cashier.activity.OrderResultAndDetailActivity"
             android:screenOrientation="portrait" />
+
+        <!-- 首页广告webview -->
         <activity
             android:name="com.permission.PermissionActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:theme="@android:style/Theme.Translucent.NoTitleBar"
             android:windowSoftInputMode="stateHidden|stateAlwaysHidden" />
 
+        <!-- 手势密码主界面 -->
         <activity
             android:name=".activity.FindPropertyActivity"
             android:screenOrientation="portrait" />
-
-        <!-- 微信支付反馈界面 -->
+        <!-- 忘记手势密码验证登录密码页面 -->
         <activity
             android:name="com.lhqpay.ewallet.keepIntact.WXPayEntryActivity"
             android:exported="true"
             android:launchMode="singleTask"
             android:taskAffinity="cn.net.cyberway"
             android:theme="@android:style/Theme.Translucent" />
-
-        <activity-alias
-            android:name=".wxapi.WXPayEntryActivity"
-            android:exported="true"
-            android:targetActivity="com.lhqpay.ewallet.keepIntact.WXPayEntryActivity" />
-
-        <activity-alias
-            android:name=".wxapi.WXEntryActivity"
-            android:exported="true"
-            android:targetActivity="com.lhqpay.ewallet.keepIntact.WXPayEntryActivity" />
-
+        <!-- 手势密码登录页面 -->
         <activity
             android:name=".wxapi.WXPayEntryActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
@@ -626,11 +389,12 @@
             android:launchMode="singleTask"
             android:screenOrientation="portrait"
             android:theme="@style/shareDialog" />
+        <!-- 手势密码设置页面 -->
         <activity
             android:name=".wxapi.WXEntryActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
-            android:exported="true"
             android:enabled="true"
+            android:exported="true"
             android:label="@string/app_name"
             android:launchMode="singleTask"
             android:screenOrientation="portrait"
@@ -649,14 +413,12 @@
             android:launchMode="singleTask"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan" />
-
         <activity
             android:name="com.user.activity.UserIdentityLoginActivity"
             android:launchMode="singleTop"
             android:screenOrientation="portrait"
             android:theme="@style/AppResultTheme"
             android:windowSoftInputMode="adjustPan" />
-
         <activity
             android:name="com.user.activity.UserRegisterActivity"
             android:screenOrientation="portrait"
@@ -684,17 +446,23 @@
             android:name="com.notification.activity.NotificationActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan" />
+        <!-- 解决android 7.0对文件的权限控制问题 -->
         <activity
             android:name="com.notification.activity.NotificationDetailsActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan" />
+
         <activity android:name="com.notification.activity.NotificationAllInfoActivity"></activity>
-
-
         <activity
             android:name="com.customerInfo.activity.CustomerAddCommunityActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan" />
+
+        <!--
+            <meta-data
+            android:name="com.google.android.gms.version"
+            android:value="@integer/google_play_services_version" />
+        -->
         <activity
             android:name="com.customerInfo.activity.CustomerAddPropertyActivity"
             android:screenOrientation="portrait"
@@ -723,16 +491,25 @@
             android:name="com.door.activity.NewDoorActivity"
             android:exported="true"
             android:screenOrientation="portrait" />
+
         <activity
             android:name="com.door.activity.IntelligenceDoorActivity"
             android:exported="true"
             android:screenOrientation="portrait" />
+
+        <!-- 微信支付反馈界面 -->
         <activity
             android:name="com.door.activity.IntelligenceDoorRecordActivity"
             android:screenOrientation="portrait" />
+
         <activity
             android:name="com.door.activity.NewDoorEditActivity"
             android:screenOrientation="portrait" />
+
+        <activity
+            android:name="com.door.activity.NewDoorOpenRecordActivity"
+            android:screenOrientation="portrait" />
+
         <activity
             android:name="com.door.activity.NoRightDoorActivity"
             android:screenOrientation="portrait" />
@@ -740,15 +517,16 @@
             android:name="com.door.activity.DoorLeadActivity"
             android:screenOrientation="portrait" />
 
-        <!--5.0版本新增的页面-->
         <activity
             android:name="com.setting.activity.UserAccountSaftyActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan" />
+
         <activity
             android:name="com.setting.activity.UserConcealActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan" />
+
         <activity
             android:name="com.setting.activity.UserClearCacheActivity"
             android:screenOrientation="portrait"
@@ -769,7 +547,6 @@
             android:name="com.im.activity.IMCustomerInforActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan" />
-
         <activity
             android:name="com.im.activity.IMFriendAndGroupActivity"
             android:screenOrientation="portrait"
@@ -786,6 +563,8 @@
             android:name="com.im.activity.IMInviteRegisterActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan" />
+
+
         <activity
             android:name="com.im.activity.IMMobileBookActivity"
             android:screenOrientation="portrait"
@@ -835,18 +614,16 @@
             android:name="com.im.activity.IMApplyProgressActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan" />
-
-
-        <!--e停首页页面-->
         <activity
             android:name="com.eparking.activity.EParkingHomeActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan" />
-
         <activity
             android:name="com.eparking.activity.EParkingCardHolderActivity"
             android:screenOrientation="portrait"
             android:theme="@style/Theme.AppCompat" />
+
+        <!--5.0版本新增的页面-->
         <activity
             android:name="com.eparking.activity.EParkingHistoryRecordActivity"
             android:screenOrientation="portrait"
@@ -866,7 +643,6 @@
         <activity
             android:name="com.eparking.activity.EparkingMonthCardDetailsActivity"
             android:screenOrientation="portrait" />
-
         <activity
             android:name="com.eparking.activity.ApplyOpenTicketActivity"
             android:screenOrientation="portrait"
@@ -876,42 +652,33 @@
             android:name="com.eparking.activity.ParkingOpenTicketDetailsActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan" />
-
         <activity
             android:name="com.eparking.activity.PaymentTempDetailsActivity"
             android:screenOrientation="portrait" />
-
         <activity
             android:name="com.eparking.activity.ParkingTempDetailsActivity"
             android:screenOrientation="portrait" />
         <activity
             android:name="com.eparking.activity.SurrenderParkingFeeActivity"
             android:screenOrientation="portrait" />
-
         <activity
             android:name="com.eparking.activity.AppointmentParkingActivity"
             android:screenOrientation="portrait" />
-
         <activity
             android:name="com.eparking.activity.AppointmentRecordActivity"
             android:screenOrientation="portrait" />
-
         <activity
             android:name="com.eparking.activity.CarsBindActivity"
             android:screenOrientation="portrait" />
-
-
         <activity
             android:name="com.eparking.activity.CarsAuthorizationActivity"
             android:screenOrientation="portrait" />
-
         <activity
             android:name="com.eparking.activity.CarsAuthorizeRecordActivity"
             android:screenOrientation="portrait" />
         <activity
             android:name="com.eparking.activity.MonthCardApplyActivity"
             android:screenOrientation="portrait" />
-
         <activity
             android:name="com.eparking.activity.MonthCardApplyRecordActivity"
             android:screenOrientation="portrait" />
@@ -927,55 +694,55 @@
         <activity
             android:name="com.eparking.activity.ShareParkingSpaceRecoActivity"
             android:screenOrientation="portrait" />
-
         <activity
             android:name="com.eparking.activity.EmergencyRealNameActivity"
             android:screenOrientation="portrait" />
+
+
+        <!--e停首页页面-->
         <activity
             android:name="com.eparking.activity.SubmitIDCardInforActivity"
             android:screenOrientation="portrait" />
+
         <activity
             android:name="com.eparking.activity.InputOpenCodeActivity"
             android:screenOrientation="portrait" />
-
         <activity
             android:name="com.eparking.activity.ChoiceParkingCommunityActivity"
             android:screenOrientation="portrait" />
-
         <activity
             android:name="com.eparking.activity.ChoiceParkingBuildActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan" />
-
         <activity
             android:name="com.eparking.activity.ChoiceParkingRoomActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan" />
-
         <activity
             android:name="com.eparking.activity.ChoiceParkingUserRoleActivity"
             android:screenOrientation="portrait" />
-
         <activity
             android:name="com.eparking.activity.ChoiceParkingUserInforActivity"
             android:screenOrientation="portrait" />
-
         <activity
             android:name="com.eparking.activity.CarsLicenseUploadActivity"
             android:screenOrientation="portrait" />
+
         <activity
             android:name="com.eparking.activity.EparkingBusinessSectionActivity"
             android:screenOrientation="portrait" />
+
         <activity
             android:name="com.eparking.activity.FindParkingSpaceActivity"
             android:screenOrientation="portrait" />
+
         <activity
             android:name="com.eparking.activity.SearchParkingActivity"
             android:screenOrientation="portrait" />
+
         <activity
             android:name="com.eparking.activity.EparkingLockStatusActivity"
             android:screenOrientation="portrait" />
-
         <activity
             android:name=".home.activity.BannerVideoActivity"
             android:configChanges="orientation|screenSize|keyboardHidden"
@@ -988,7 +755,6 @@
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:theme="@android:style/Theme.Light.NoTitleBar.Fullscreen" />
 
-        <!--全部应用-->
         <activity
             android:name="com.allapp.activity.WholeApplicationActivity"
             android:screenOrientation="portrait" />
@@ -1000,86 +766,59 @@
             android:screenOrientation="portrait"
             android:theme="@style/Theme.AppCompat.NoActionBar" />
 
-        <!--彩豆-->
+
         <activity
             android:name="com.customerInfo.activity.CustomerColourBeanActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan" />
 
-        <!--彩豆的签到规则,兑换饭票，明细页面-->
         <activity
             android:name="com.customerInfo.activity.CustomerBeanMoreActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan" />
-
-        <!--房产说明-->
         <activity
             android:name="com.myproperty.activity.PropertyQuestionActivity"
             android:screenOrientation="portrait" />
 
-        <!-- 新邀请好友 -->
         <activity
             android:name="com.invite.activity.InviteFriendActivity"
             android:screenOrientation="portrait" />
-
-        <!-- 明细，保存草稿页 -->
         <activity
             android:name="com.invite.activity.InviteDetailPoster"
             android:screenOrientation="portrait" />
-
-        <!-- 我的邀请，累计收益 -->
         <activity
             android:name="com.invite.activity.InviteListActivity"
             android:screenOrientation="portrait"
             android:theme="@style/Theme.AppCompat" />
-
-        <!-- 房产详情 -->
         <activity
             android:name="com.myproperty.activity.PropertyDetailActivity"
             android:screenOrientation="portrait" />
-
-        <!-- 身份修改 -->
         <activity
             android:name="com.myproperty.activity.PropertyChangeActivity"
             android:screenOrientation="portrait" />
 
-        <!-- 实名认证 -->
         <activity
             android:name="com.myproperty.activity.PropertyRealNameActivity"
             android:screenOrientation="portrait" />
-
-        <!-- 授权列表 -->
         <activity
             android:name="com.setting.activity.AuthManegeListActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan" />
-
-        <!-- 授权详情 -->
         <activity
             android:name="com.setting.activity.AuthManegeDetailActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan" />
 
-        <!-- 授权详情 -->
         <activity
             android:name="cn.net.cyberway.home.activity.LekaiListActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan" />
 
-        <!--bugly-->
         <activity
             android:name="com.tencent.bugly.beta.ui.BetaActivity"
             android:configChanges="keyboardHidden|orientation|screenSize|locale"
             android:theme="@android:style/Theme.Translucent" />
 
-        <!--乐开-->
-        <service
-            android:name="com.intelspace.library.service.BleService"
-            android:exported="false" />
-        <service android:name="cn.net.cyberway.home.service.LekaiService" />
-
-        <!--数位场景识别 保留-->
-        <!--<service android:name="com.szshuwei.x.location.service.SWLocationService" />-->
         <activity
             android:name="com.agentweb.ActionActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
@@ -1087,34 +826,298 @@
             android:theme="@style/actionActivity"
             android:windowSoftInputMode="stateHidden|stateAlwaysHidden" />
 
-
-        <!-- **********************联通授权页activity**************************-->
         <activity
             android:name="com.sdk.mobile.manager.login.cucc.OauthActivity"
             android:launchMode="singleTop"
             android:screenOrientation="portrait" />
-        <!-- **********************移动授权页activity**************************-->
+
         <activity
             android:name="com.cmic.sso.sdk.activity.LoginAuthActivity"
             android:launchMode="singleTop"
             android:screenOrientation="portrait" />
-        <!-- **********************电信授权页activity**************************-->
+
         <activity
             android:name="com.chuanglan.shanyan_sdk.view.ShanYanOneKeyActivity"
             android:launchMode="singleTop"
             android:screenOrientation="portrait" />
-        <!-- **********************协议页activity**************************-->
         <activity
             android:name="com.chuanglan.shanyan_sdk.view.CTCCPrivacyProtocolActivity"
             android:launchMode="singleTop"
             android:screenOrientation="portrait" />
-
-
-        <!--门禁的改造-->
         <activity
             android:name="com.door.activity.NewDoorAuthorizeActivity"
             android:screenOrientation="portrait" />
+        <activity-alias
+            android:name=".wxapi.WXPayEntryActivity"
+            android:exported="true"
+            android:targetActivity="com.lhqpay.ewallet.keepIntact.WXPayEntryActivity" />
+        <activity-alias
+            android:name=".wxapi.WXEntryActivity"
+            android:exported="true"
+            android:targetActivity="com.lhqpay.ewallet.keepIntact.WXPayEntryActivity" />
+
+        <meta-data
+            android:name="com.baidu.lbsapi.API_KEY"
+            android:value="B0433f7d882de0c20433e36fabe2269c" />
+
+        <meta-data
+            android:name="UMENG_APPKEY"
+            android:value="569c7de167e58e572100176c" />
+
+        <!--全部应用-->
+        <meta-data
+            android:name="UMENG_CHANNEL"
+            android:value="Colourlife" />
+
+        <meta-data
+            android:name="JPUSH_CHANNEL"
+            android:value="developer-default" />
+
+        <!--彩豆-->
+        <meta-data
+            android:name="JPUSH_APPKEY"
+            android:value="85850e81bcaba45af4f4b6a6" />
+
+        <!--彩豆的签到规则,兑换饭票，明细页面-->
+        <meta-data
+            android:name="com.amap.api.v2.apikey"
+            android:value="bdb104e98dfa7e816b40c4148ea7b938"
+            tools:replace="android:value" />
+
+        <!--房产说明-->
+        <meta-data
+            android:name="com.shuwei.location.APP_KEY"
+            android:value="0a23a964-a973-40e1-b14d-249e72875e70" />
+
+        <!-- 新邀请好友 -->
+        <meta-data
+            android:name="com.shuwei.location.APP_ID"
+            android:value="34826ee148f9" />
+
+        <!-- 明细，保存草稿页 -->
+        <provider
+            android:name="cn.jpush.android.service.DataProvider"
+            android:authorities="cn.net.cyberway.DataProvider"
+            android:exported="false" />
+
+        <!-- 我的邀请，累计收益 -->
+        <provider
+            android:name="cn.jpush.android.service.DownloadProvider"
+            android:authorities="cn.net.cyberway.DownloadProvider"
+            android:exported="true" />
+
+        <!-- 房产详情 -->
+        <provider
+            android:name="android.support.v4.content.FileProvider"
+            android:authorities="cn.net.cyberway.fileprovider"
+            android:exported="false"
+            android:grantUriPermissions="true"
+            tools:replace="authorities">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/file_provider_paths"
+                tools:replace="resource" />
+        </provider>
+
+        <!-- 身份修改 -->
+        <receiver
+            android:name="com.pay.Activity.AppRegister"
+            android:permission="com.tencent.mm.plugin.permission.SEND">
+            <intent-filter>
+                <action android:name="com.tencent.mm.plugin.openapi.Intent.ACTION_REFRESH_WXAPP" />
+            </intent-filter>
+        </receiver>
+
+        <!-- 实名认证 -->
+        <receiver
+            android:name="cn.jpush.android.service.PushReceiver"
+            android:enabled="true">
+            <intent-filter android:priority="1000">
+                <action android:name="cn.jpush.android.intent.NOTIFICATION_RECEIVED_PROXY" />
+
+                <category android:name="cn.net.cyberway" />
+            </intent-filter>
+            <intent-filter>
+                <action android:name="android.intent.action.USER_PRESENT" />
+                <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />
+            </intent-filter>
+            <!-- Optional -->
+            <intent-filter>
+                <action android:name="android.intent.action.PACKAGE_ADDED" />
+                <action android:name="android.intent.action.PACKAGE_REMOVED" />
+
+                <data android:scheme="package" />
+            </intent-filter>
+        </receiver>
+
+        <!-- 授权列表 -->
+        <receiver android:name="cn.jpush.android.service.AlarmReceiver" />
+
+        <!-- 授权详情 -->
+        <receiver
+            android:name="com.jpush.reciever.JPushReciever"
+            android:enabled="true">
+            <intent-filter>
+
+                <!-- Required 用户注册SDK的intent -->
+                <action android:name="cn.jpush.android.intent.REGISTRATION" />
+                <action android:name="cn.jpush.android.intent.UNREGISTRATION" />
+                <!-- Required 用户接收SDK消息的intent -->
+                <action android:name="cn.jpush.android.intent.MESSAGE_RECEIVED" />
+                <!-- Required 用户接收SDK通知栏信息的intent -->
+                <action android:name="cn.jpush.android.intent.NOTIFICATION_RECEIVED" />
+                <!-- Required 用户打开自定义通知栏的intent -->
+                <action android:name="cn.jpush.android.intent.NOTIFICATION_OPENED" />
+                <!-- Optional 用户接受Rich Push Javascript 回调函数的intent -->
+                <action android:name="cn.jpush.android.intent.ACTION_RICHPUSH_CALLBACK" />
+                <!-- 接收网络变化 连接/断开 since 1.6.3 -->
+                <action android:name="cn.jpush.android.intent.CONNECTION" />
+
+                <category android:name="cn.net.cyberway" />
+            </intent-filter>
+        </receiver>
+
+        <!-- 授权详情 -->
+        <receiver android:name="com.jpush.reciever.MyJPushMessageReceiver">
+            <intent-filter>
+                <action android:name="cn.jpush.android.intent.RECEIVE_MESSAGE" />
+                <category android:name="cn.net.cyberway"></category>
+            </intent-filter>
+        </receiver>
+
+        <!--bugly-->
+        <service
+            android:name="com.baidu.location.f"
+            android:enabled="true"
+            android:process=":remote" />
+
+        <!--乐开-->
+        <service android:name="com.BeeFramework.InitializeService" />
+        <service android:name="com.update.service.UpdateService" />
+
+        <!--数位场景识别 保留-->
+        <!--<service android:name="com.szshuwei.x.location.service.SWLocationService" />-->
+        <service android:name="com.amap.api.location.APSService" />
+
+
+        <!-- **********************联通授权页activity**************************-->
+        <service
+            android:name="cn.jpush.android.service.PushService"
+            android:enabled="true"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="cn.jpush.android.intent.REGISTER" />
+                <action android:name="cn.jpush.android.intent.REPORT" />
+                <action android:name="cn.jpush.android.intent.PushService" />
+                <action android:name="cn.jpush.android.intent.PUSH_TIME" />
+            </intent-filter>
+        </service>
+        <!-- **********************移动授权页activity**************************-->
+        <service
+            android:name="cn.jpush.android.service.DaemonService"
+            android:enabled="true"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="cn.jpush.android.intent.DaemonService" />
+
+                <category android:name="cn.net.cyberway" />
+            </intent-filter>
+        </service>
+        <!-- **********************电信授权页activity**************************-->
+        <service
+            android:name="cn.jpush.android.service.DownloadService"
+            android:enabled="true"
+            android:exported="false" />
+        <!-- **********************协议页activity**************************-->
+        <service
+            android:name="com.intelspace.library.service.BleService"
+            android:exported="false" />
+
+
+        <!--门禁的改造-->
+        <service android:name="cn.net.cyberway.home.service.LekaiService" />
 
     </application>
+
+
+    <permission
+        android:name="cn.net.cyberway.permission.JPUSH_MESSAGE"
+        android:protectionLevel="signature" />
+    <permission
+        android:name="cn.net.cyberway.permission.MIPUSH_RECEIVE"
+        android:protectionLevel="signature" />
+    <uses-feature
+        android:name="android.hardware.camera"
+        android:required="true" />
+    <uses-feature
+        android:name="android.hardware.camera.autofocus"
+        android:required="true" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
+    <uses-permission android:name="cn.net.cyberway.permission.JPUSH_MESSAGE" />
+    <uses-permission android:name="android.permission.RECEIVE_USER_PRESENT" />
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
+    <uses-permission android:name="android.permission.BLUETOOTH" />
+    <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
+    <uses-permission android:name="android.permission.CALL_PHONE" />
+    <uses-permission android:name="android.permission.CHANGE_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.BROADCAST_STICKY" />
+    <uses-permission android:name="android.permission.VIBRATE" />
+    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
+    <!-- 这个权限用于进行网络定位 -->
+    <uses-permission android:name="android.permission.CAMERA" />
+    <!-- 这个权限用于访问GPS定位 -->
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <!-- 获取运营商信息，用于支持提供运营商信息相关的接口 -->
+    <uses-permission android:name="android.permission.READ_CONTACTS" />
+
+    <!-- 写入扩展存储，向扩展卡写入数据，用于写入离线定位数据 -->
+    <uses-permission android:name="android.permission.ACCESS_COARSE_UPDATES" />
+    <!-- 访问网络，网络定位需要上网 -->
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <!-- SD卡读取权限，用户写入离线定位数据 -->
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <!-- 需要获取网络状态 -->
+    <uses-permission android:name="android.permission.INTERNET" />
+    <!-- 获取设备唯一标识 -->
+    <uses-permission android:name="android.permission.FLASHLIGHT" />
+    <!-- 获取访问用户账户名的权限用以精准匹配标签(可选) -->
+    <uses-permission android:name="android.permission.MANAGE_ACCOUNTS" />
+    <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
+
+    <!-- 读取短信和接收短信 -->
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+    <!-- 桌面快捷方式权限 -->
+    <uses-permission android:name="android.permission.GET_ACCOUNTS" />
+    <uses-permission android:name="android.permission.MODIFY_AUDIO_SETTINGS" />
+    <uses-permission android:name="android.permission.RECEIVE_SMS" />
+    <uses-permission android:name="android.permission.READ_SMS" />
+    <uses-permission android:name="com.android.launcher.permission.INSTALL_SHORTCUT" />
+    <uses-permission android:name="com.android.launcher.permission.UNINSTALL_SHORTCUT" />
+    <!--乐开-->
+    <uses-permission android:name="com.android.launcher.permission.READ_SETTINGS" />
+    <!--bugly 阅读日志权限-->
+    <uses-permission android:name="com.android.launcher2.permission.READ_SETTINGS" />
+
+    <uses-permission android:name="com.android.launcher3.permission.READ_SETTINGS" />
+    <uses-permission android:name="android.permission.REQUEST_INSTALL_PACKAGE" />
+
+    <uses-permission
+        android:name="android.permission.READ_LOGS"
+        tools:ignore="ProtectedPermissions" />
+    <uses-permission
+        android:name="android.permission.CHANGE_CONFIGURATION"
+        tools:ignore="ProtectedPermissions" />
+
+    <uses-permission
+        android:name="android.permission.PACKAGE_USAGE_STATS"
+        tools:ignore="ProtectedPermissions" />
+
+    <uses-permission android:name="cn.net.cyberway.permission.MIPUSH_RECEIVE" />
+
+
+    <uses-sdk tools:overrideLibrary="com.intelspace.library" />
 
 </manifest>
