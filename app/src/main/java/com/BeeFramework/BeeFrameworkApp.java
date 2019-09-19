@@ -97,7 +97,7 @@ public class BeeFrameworkApp extends MultiDexApplication {
                 addFriendNotify(srcUuid, dstUuid, optRemark, nickName, userName, avatar, type);
             }
         });
-
+        OneKeyLoginManager.getInstance().setDebug(true);
         OneKeyLoginManager.getInstance().init(getApplicationContext(), "DbBj26Nj", "DOMYqkZR", new InitListener() {
             @Override
             public void getInitStatus(int code, String result) {
@@ -105,7 +105,6 @@ public class BeeFrameworkApp extends MultiDexApplication {
 
             }
         });
-        OneKeyLoginManager.getInstance().setDebug(true);
         registerActivityLifecycleCallbacks(new ActivityLifecycleListener());
         closeAndroidPDialog();
     }

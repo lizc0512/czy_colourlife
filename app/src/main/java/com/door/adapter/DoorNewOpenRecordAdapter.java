@@ -57,6 +57,6 @@ public class DoorNewOpenRecordAdapter extends BaseSectionQuickAdapter<DoorOpenRe
             helper.setText(R.id.tv_door_status, "开门失败");
         }
         helper.setText(R.id.tv_door_name, listBean.getDoor_name());
-        helper.setText(R.id.tv_door_time, listBean.getDate());
+        helper.setText(R.id.tv_door_time, listBean.getTime());
     }
 }
