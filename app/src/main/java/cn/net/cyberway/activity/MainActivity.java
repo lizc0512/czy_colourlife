@@ -269,23 +269,23 @@ public class MainActivity extends BaseFragmentActivity implements View.OnClickLi
     }
 
     private void initView() {
-        mHome = (LinearLayout) findViewById(R.id.main_tool_home);
-        mCommunity = (LinearLayout) findViewById(R.id.main_tool_community);
-        mDiscovery = (LinearLayout) findViewById(R.id.main_tool_discover);
-        mProfile = (LinearLayout) findViewById(R.id.main_tool_profile);
-        mToolBar = (RelativeLayout) findViewById(R.id.toolbar);
-        main_tool_scan = (LinearLayout) findViewById(R.id.main_tool_scan);//扫一扫
-        circle_scanner_image = (ImageView) findViewById(R.id.circle_scanner_image);//扫一扫
+        mHome = findViewById(R.id.main_tool_home);
+        mCommunity = findViewById(R.id.main_tool_community);
+        mDiscovery = findViewById(R.id.main_tool_discover);
+        mProfile = findViewById(R.id.main_tool_profile);
+        mToolBar = findViewById(R.id.toolbar);
+        main_tool_scan = findViewById(R.id.main_tool_scan);//扫一扫
+        circle_scanner_image = findViewById(R.id.circle_scanner_image);//扫一扫
         //底部4个图标适配
-        home_btn = (ImageView) findViewById(R.id.img_home_1);
-        life_btn = (ImageView) findViewById(R.id.img_home_2);
-        linli_btn = (ImageView) findViewById(R.id.img_home_3);
-        myinfo_btn = (ImageView) findViewById(R.id.img_home_4);
-        Scande_btn = (ImageView) findViewById(R.id.img_home_5);
-        tv_home = (TextView) findViewById(R.id.tex_1);
-        tv_life = (TextView) findViewById(R.id.tex_2);
-        tv_linli = (TextView) findViewById(R.id.tex_3);
-        tv_myinfo = (TextView) findViewById(R.id.tex_4);
+        home_btn = findViewById(R.id.img_home_1);
+        life_btn = findViewById(R.id.img_home_2);
+        linli_btn = findViewById(R.id.img_home_3);
+        myinfo_btn = findViewById(R.id.img_home_4);
+        Scande_btn = findViewById(R.id.img_home_5);
+        tv_home = findViewById(R.id.tex_1);
+        tv_life = findViewById(R.id.tex_2);
+        tv_linli = findViewById(R.id.tex_3);
+        tv_myinfo = findViewById(R.id.tex_4);
         setLayoutPramas(home_btn, 11);
         setLayoutPramas(myinfo_btn, 11);
         setLayoutPramas(linli_btn, 11);
@@ -321,11 +321,9 @@ public class MainActivity extends BaseFragmentActivity implements View.OnClickLi
     protected void onNewIntent(Intent intent) {
         super.onNewIntent(intent);
         shortEnter(MainActivity.this, intent, mShared);
-        if (intent != null) {
-            String doorid = intent.getStringExtra("shortcut");
-            if (!TextUtils.isEmpty(doorid)) {
-                openDoor(doorid);
-            }
+        String doorid = intent.getStringExtra("shortcut");
+        if (!TextUtils.isEmpty(doorid)) {
+            openDoor(doorid);
         }
         String linkURl = intent.getStringExtra(JUMPOTHERURL);
         if (!TextUtils.isEmpty(linkURl)) {
@@ -374,35 +372,38 @@ public class MainActivity extends BaseFragmentActivity implements View.OnClickLi
         mReceiver = new BroadcastReceiver() {
             @Override
             public void onReceive(Context context, Intent intent) {
-                if (intent.getAction().equals(Constant.ACTION_C6)) {
-                    // 重复登录
-                    if (ScreenManager.getScreenManager().currentActivity() != null) {
-                        if (ScreenManager.getScreenManager().currentActivity()
-                                .equals(MainActivity.this) == false) {
-                            ScreenManager.getScreenManager()
-                                    .popAllActivityExceptOne(MainActivity.class);
+                String getAction = intent.getAction();
+                switch (getAction) {
+                    case Constant.ACTION_C6:
+                        if (ScreenManager.getScreenManager().currentActivity() != null) {
+                            if (!ScreenManager.getScreenManager().currentActivity()
+                                    .equals(MainActivity.this)) {
+                                ScreenManager.getScreenManager()
+                                        .popAllActivityExceptOne(MainActivity.class);
+                            }
+                            Message message = new Message();
+                            message.what = UserMessageConstant.SQUEEZE_OUT;
+                            message.obj = getResources().getString(R.string.account_extrude_login);
+                            EventBus.getDefault().post(message);
                         }
-                        Message message = new Message();
-                        message.what = UserMessageConstant.SQUEEZE_OUT;
-                        message.obj = getResources().getString(R.string.account_extrude_login);
-                        EventBus.getDefault().post(message);
-                    }
-                } else if (intent.getAction().equals(Constant.ACTION_PUSHMESSAGE_REG)) {
-                    // 注册设备注册码
-                    configPushMessage();
-                } else if (intent.getAction().equals(Constant.ACTION_LOGIN_FINISH_COMPLETED)) {//登录成功后的操作
-                    slienceLogin = false;
-                    configPushMessage();
-                    if (null == mTokenModel) {
-                        mTokenModel = new TokenModel(MainActivity.this);
-                    }
-                    mTokenModel.checkDeviceLogin(MainActivity.this);
-                    getChangeCommunityTheme();
-                } else if (intent.getAction().equals(Constant.ACTION_OUT)) {
-                    onTabSelected(FLAG_TAB_ONE);
+                        break;
+                    case Constant.ACTION_PUSHMESSAGE_REG:
+                        configPushMessage();
+                        break;
+                    case Constant.ACTION_LOGIN_FINISH_COMPLETED:
+                        slienceLogin = false;
+                        configPushMessage();
+                        if (null == mTokenModel) {
+                            mTokenModel = new TokenModel(MainActivity.this);
+                        }
+                        mTokenModel.checkDeviceLogin(MainActivity.this);
+                        getChangeCommunityTheme();
+                        break;
+                    case Constant.ACTION_OUT:
+                        onTabSelected(FLAG_TAB_ONE);
+                        break;
                 }
             }
-
         };
         mLocalBroadcastManager.registerReceiver(mReceiver, filter);
     }
@@ -436,7 +437,9 @@ public class MainActivity extends BaseFragmentActivity implements View.OnClickLi
         mPhoneStr = mShared.getString(UserAppConst.Colour_login_mobile, "");
         String community_uuid = mShared.getString(UserAppConst.Colour_login_community_uuid, "03b98def-b5bd-400b-995f-a9af82be01da");
         Set<String> tags = new HashSet<>();
-        tags.add(community_uuid.replace("-", "_"));
+        if (community_uuid.contains("-")) {
+            tags.add(community_uuid.replace("-", "_"));
+        }
         tags.add(mShared.getString(UserAppConst.Colour_User_uuid, "03b98def-b5bd-400b-995f-a9af82be01da"));
         userId = mShared.getInt(UserAppConst.Colour_User_id, 0);
         JPushInterface.setAlias(getApplicationContext(), userId, mPhoneStr);
@@ -462,7 +465,7 @@ public class MainActivity extends BaseFragmentActivity implements View.OnClickLi
                 initDealDoorReault(json);
             }
         } else if (requestCode == 3000) {
-            boolean hasInstallPermission = false;
+            boolean hasInstallPermission;
             if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
                 hasInstallPermission = getPackageManager().canRequestPackageInstalls();
                 if (hasInstallPermission) {
@@ -486,7 +489,7 @@ public class MainActivity extends BaseFragmentActivity implements View.OnClickLi
                 if (null == showOpenDoorDialog) {
                     showOpenDoorDialog = new ShowOpenDoorDialog(MainActivity.this, R.style.opendoor_dialog_theme);
                 }
-                if (null != showOpenDoorDialog && showOpenDoorDialog.isShowing()) {
+                if (showOpenDoorDialog.isShowing()) {
                     showOpenDoorDialog.dismiss();
                 }
                 showOpenDoorDialog.show();
@@ -912,7 +915,7 @@ public class MainActivity extends BaseFragmentActivity implements View.OnClickLi
                 if (!TextUtils.isEmpty(result)) {
                     BaseRetCodeEntity baseContentEntity = GsonUtils.gsonToBean(result, BaseRetCodeEntity.class);
                     if (baseContentEntity.getRetCode() == 1) {
-                        PopMessageEntity popMessageEntity = null;
+                        PopMessageEntity popMessageEntity;
                         try {
                             popMessageEntity = GsonUtils.gsonToBean(result, PopMessageEntity.class);
                             if (null != popMessageEntity) {
@@ -942,7 +945,7 @@ public class MainActivity extends BaseFragmentActivity implements View.OnClickLi
                 }
                 break;
             case 20:
-                int isRegister = 1;
+                int isRegister ;
                 if (!TextUtils.isEmpty(result)) {
                     try {
                         CheckRegisterEntity checkRegisterEntity = GsonUtils.gsonToBean(result, CheckRegisterEntity.class);
@@ -1054,16 +1057,18 @@ public class MainActivity extends BaseFragmentActivity implements View.OnClickLi
      * 彩惠活动弹窗
      */
     public void showBenefitDialog(String imgPath, String url, String title) {
-        if (null == activityDialog) {
-            activityDialog = new BenefitActivityDialog(this, ScreenUtils.getScreenWidth(this));
+        if (choiceType == 1) {
+            if (null == activityDialog) {
+                activityDialog = new BenefitActivityDialog(this, ScreenUtils.getScreenWidth(this));
+            }
+            activityDialog.show();
+            GlideImageLoader.loadImageDefaultDisplay(this, imgPath, activityDialog.iv_activity, R.drawable.bg_benefit_act_default, R.drawable.bg_benefit_act_default);
+            activityDialog.iv_close.setOnClickListener(v -> activityDialog.dismiss());
+            activityDialog.iv_activity.setOnClickListener(v -> {
+                activityDialog.dismiss();
+                LinkParseUtil.parse(this, url, title);
+            });
         }
-        activityDialog.show();
-        GlideImageLoader.loadImageDefaultDisplay(this, imgPath, activityDialog.iv_activity, R.drawable.bg_benefit_act_default, R.drawable.bg_benefit_act_default);
-        activityDialog.iv_close.setOnClickListener(v -> activityDialog.dismiss());
-        activityDialog.iv_activity.setOnClickListener(v -> {
-            activityDialog.dismiss();
-            LinkParseUtil.parse(this, url, title);
-        });
     }
 
     /**
