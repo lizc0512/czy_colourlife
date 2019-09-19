@@ -50,15 +50,15 @@ public class IntelligenceDoorAdapter extends RecyclerView.Adapter<IntelligenceDo
         notifyDataSetChanged();
     }
 
-    /**
-     * 重命名
-     */
-    public void rename(int position, String rename) {
-        DoorAllEntity.ContentBean.DataBean.ListBean.KeyListBean bean = mList.get(position);
-        bean.setDoor_name(rename);
-        mList.set(position, bean);
-        notifyDataSetChanged();
-    }
+//    /**
+//     * 重命名
+//     */
+//    public void rename(int position, String rename) {
+//        DoorAllEntity.ContentBean.DataBean.ListBean.KeyListBean bean = mList.get(position);
+//        bean.setDoor_name(rename);
+//        mList.set(position, bean);
+//        notifyDataSetChanged();
+//    }
 
     @Override
     public IntelligenceDoorAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {

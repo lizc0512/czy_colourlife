@@ -620,6 +620,7 @@ public class IntelligenceDoorActivity extends BaseFragmentActivity implements Ne
      * 重命名操作
      */
     public void renameHandle(int position, String qr_code, String doorName) {
+        this.position = vp_door.getCurrentItem();
         showRenameDialog(position, qr_code, doorName);
     }
 
@@ -669,7 +670,7 @@ public class IntelligenceDoorActivity extends BaseFragmentActivity implements Ne
                         ToastUtil.toastShow(IntelligenceDoorActivity.this, getResources().getString(R.string.door_rename_success));
 
                         intelligenceDoorCache = shared.getString(UserAppConst.COLOUR_INTELLIGENCE_DOOR + userId, "");
-                        setData(false, intelligenceDoorCache);
+                        setData(true, intelligenceDoorCache);//刷新所有数据
 
 //                        ((IntelligenceDoorFragment) fragmentList.get(this.position)).refreshRename(position, name);
                     } catch (Resources.NotFoundException e) {
@@ -690,6 +691,7 @@ public class IntelligenceDoorActivity extends BaseFragmentActivity implements Ne
      * @param remove   true 移除，false 添加
      */
     public void removeHandle(int position, boolean remove) {
+        this.position = vp_door.getCurrentItem();
         ToastUtil.toastShow(this, "adsf" + position);
 
     }
