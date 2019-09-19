@@ -58,6 +58,7 @@ public class NewDoorOpenRecordActivity extends BaseActivity implements View.OnCl
 
     private void loadingMoreData() {
         if (null != doorNewOpenRecordAdapter) {
+            doorNewOpenRecordAdapter.disableLoadMoreIfNotFullPage();
             doorNewOpenRecordAdapter.setOnLoadMoreListener(new BaseQuickAdapter.RequestLoadMoreListener() {
                 @Override
                 public void onLoadMoreRequested() {
@@ -67,10 +68,10 @@ public class NewDoorOpenRecordActivity extends BaseActivity implements View.OnCl
                     }
                 }
             }, rv_open_record);
-        }
-        doorNewOpenRecordAdapter.loadMoreComplete();
-        if (requsetSize == 0) {
-            doorNewOpenRecordAdapter.loadMoreEnd(true);
+            doorNewOpenRecordAdapter.loadMoreComplete();
+            if (requsetSize == 0) {
+                doorNewOpenRecordAdapter.loadMoreEnd(true);
+            }
         }
     }
 

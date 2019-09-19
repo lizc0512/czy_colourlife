@@ -105,6 +105,7 @@ public class BeeFrameworkApp extends MultiDexApplication {
 
             }
         });
+        OneKeyLoginManager.getInstance().setDebug(true);
         registerActivityLifecycleCallbacks(new ActivityLifecycleListener());
         closeAndroidPDialog();
     }
