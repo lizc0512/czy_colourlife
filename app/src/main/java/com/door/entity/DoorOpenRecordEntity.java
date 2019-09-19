@@ -36,14 +36,14 @@ public class DoorOpenRecordEntity extends BaseContentEntity {
          * data : [{"date":"2019-09-17","data":[{"date":"2019-09-17","cipher_id":"B6F14E0CEAD7","status":1,"time":"04:05","door_name":"星商业广场-办公楼B座-4号电梯1"}]},{"date":"2019-09-15","data":[{"date":"2019-09-15","cipher_id":"B6F14E0CEAD7","status":2,"time":"21:32","door_name":"星商业广场-办公楼B座-4号电梯1"}]}]
          */
 
-        private String page;
+        private int page;
         private List<DataBeanX> data;
 
-        public String getPage() {
+        public int getPage() {
             return page;
         }
 
-        public void setPage(String page) {
+        public void setPage(int page) {
             this.page = page;
         }
 

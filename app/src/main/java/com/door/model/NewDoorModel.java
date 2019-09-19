@@ -322,9 +322,8 @@ public class NewDoorModel extends BaseModel {
     public void getDoorOpenRecord(int what, int page, NewHttpResponse newHttpResponse) {
         Map<String, Object> map = new HashMap<>();
         map.put("page", page);
-        map.put("page_size", 20);
         final Request<String> request = NoHttp.createStringRequest(RequestEncryptionUtils.getCombileMD5(mContext, 11, doorOpenRocordUrl, map), RequestMethod.GET);
-        request(what, request, null, new HttpListener<String>() {
+        request(what, request, map, new HttpListener<String>() {
             @Override
             public void onSucceed(int what, Response<String> response) {
                 int responseCode = response.getHeaders().getResponseCode();

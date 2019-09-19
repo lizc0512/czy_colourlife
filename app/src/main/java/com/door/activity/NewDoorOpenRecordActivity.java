@@ -1,10 +1,14 @@
 package com.door.activity;
 
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.BeeFramework.activity.BaseActivity;
@@ -43,8 +47,22 @@ public class NewDoorOpenRecordActivity extends BaseActivity implements View.OnCl
         rv_open_record = findViewById(R.id.rv_open_record);
         user_top_view_back.setOnClickListener(this::onClick);
         user_top_view_title.setText("开门记录");
+        doorNewOpenRecordAdapter = new DoorNewOpenRecordAdapter(NewDoorOpenRecordActivity.this, R.layout.adapter_door_openrecord, R.layout.adapter_header_itemapp, doorRecordList);
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(NewDoorOpenRecordActivity.this, LinearLayoutManager.VERTICAL, false);
+        rv_open_record.setLayoutManager(linearLayoutManager);
+        doorNewOpenRecordAdapter.isFirstOnly(true);
+        doorNewOpenRecordAdapter.openLoadAnimation(BaseQuickAdapter.ALPHAIN);
+        rv_open_record.setAdapter(doorNewOpenRecordAdapter);
+        doorNewOpenRecordAdapter.setEnableLoadMore(false);
         newDoorModel = new NewDoorModel(NewDoorOpenRecordActivity.this);
         newDoorModel.getDoorOpenRecord(0, page, NewDoorOpenRecordActivity.this);
+        doorNewOpenRecordAdapter.setOnLoadMoreListener(new BaseQuickAdapter.RequestLoadMoreListener() {
+            @Override
+            public void onLoadMoreRequested() {
+                page++;
+                newDoorModel.getDoorOpenRecord(0, page, NewDoorOpenRecordActivity.this);
+            }
+        }, rv_open_record);
     }
 
     @Override
@@ -57,26 +75,25 @@ public class NewDoorOpenRecordActivity extends BaseActivity implements View.OnCl
     }
 
     private void loadingMoreData() {
-        if (null != doorNewOpenRecordAdapter) {
-            doorNewOpenRecordAdapter.disableLoadMoreIfNotFullPage();
-            doorNewOpenRecordAdapter.setOnLoadMoreListener(new BaseQuickAdapter.RequestLoadMoreListener() {
-                @Override
-                public void onLoadMoreRequested() {
-                    if (requsetSize > 0) {
-                        page++;
-                        newDoorModel.getDoorOpenRecord(0, page, NewDoorOpenRecordActivity.this);
-                    }
-                }
-            }, rv_open_record);
-            doorNewOpenRecordAdapter.loadMoreComplete();
-            if (requsetSize == 0) {
-                doorNewOpenRecordAdapter.loadMoreEnd(true);
-            }
+        doorNewOpenRecordAdapter.disableLoadMoreIfNotFullPage();
+        doorNewOpenRecordAdapter.loadMoreComplete();
+        if (requestSize == 0 || !doorNewOpenRecordAdapter.isLoadMoreEnable()) {
+            doorNewOpenRecordAdapter.setEnableLoadMore(false);
+            doorNewOpenRecordAdapter.loadMoreEnd(true);
+            View footerView = LayoutInflater.from(NewDoorOpenRecordActivity.this).inflate(R.layout.adapter_header_itemapp, null);
+            footerView.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
+            TextView head_name = footerView.findViewById(R.id.head_name);
+            head_name.setText("暂无更多开门记录");
+            head_name.setGravity(Gravity.CENTER);
+            head_name.setBackgroundColor(Color.parseColor("#f5f5f5"));
+            doorNewOpenRecordAdapter.addFooterView(footerView);
+        } else {
+            doorNewOpenRecordAdapter.setEnableLoadMore(true);
         }
     }
 
     private List<DoorOpenRecordSectionEntity> doorRecordList = new ArrayList<>();
-    private int requsetSize = 0;
+    private int requestSize = 0;
 
     @Override
     public void OnHttpResponse(int what, String result) {
@@ -85,9 +102,10 @@ public class NewDoorOpenRecordActivity extends BaseActivity implements View.OnCl
                 try {
                     DoorOpenRecordEntity doorOpenRecordEntity = GsonUtils.gsonToBean(result, DoorOpenRecordEntity.class);
                     DoorOpenRecordEntity.ContentBean contentBean = doorOpenRecordEntity.getContent();
+                    int page = contentBean.getPage();
                     List<DoorOpenRecordEntity.ContentBean.DataBeanX> dataBeanXList = contentBean.getData();
-                    requsetSize = dataBeanXList.size();
-                    if (requsetSize > 0) {
+                    requestSize = dataBeanXList.size();
+                    if (requestSize > 0) {
                         for (DoorOpenRecordEntity.ContentBean.DataBeanX dataBeanX : dataBeanXList) {
                             String headerContent = dataBeanX.getDate();
                             DoorOpenRecordSectionEntity headerSectionEntity = new DoorOpenRecordSectionEntity(true, headerContent);
@@ -99,16 +117,7 @@ public class NewDoorOpenRecordActivity extends BaseActivity implements View.OnCl
                             }
                         }
                     }
-                    if (null == doorNewOpenRecordAdapter) {
-                        doorNewOpenRecordAdapter = new DoorNewOpenRecordAdapter(NewDoorOpenRecordActivity.this, R.layout.adapter_door_openrecord, R.layout.adapter_header_itemapp, doorRecordList);
-                        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(NewDoorOpenRecordActivity.this, LinearLayoutManager.VERTICAL, false);
-                        rv_open_record.setLayoutManager(linearLayoutManager);
-                        doorNewOpenRecordAdapter.isFirstOnly(true);
-                        doorNewOpenRecordAdapter.openLoadAnimation(BaseQuickAdapter.ALPHAIN);
-                        rv_open_record.setAdapter(doorNewOpenRecordAdapter);
-                    } else {
-                        doorNewOpenRecordAdapter.notifyDataSetChanged();
-                    }
+                    doorNewOpenRecordAdapter.notifyDataSetChanged();
                     loadingMoreData();
                 } catch (Exception e) {
 
