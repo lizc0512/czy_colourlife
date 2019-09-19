@@ -14,7 +14,9 @@ import android.os.Message;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
+import android.text.Editable;
 import android.text.TextUtils;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -35,13 +37,17 @@ import com.door.entity.DoorRecordEntity;
 import com.door.entity.DoorRightEntity;
 import com.door.entity.OpenDoorResultEntity;
 import com.door.fragment.IntelligenceDoorFragment;
+import com.door.helper.CacheDoorRenameHelper;
 import com.door.model.NewDoorModel;
+import com.door.view.DoorRenameDialog;
 import com.door.view.ShowOpenDoorDialog;
 import com.external.eventbus.EventBus;
 import com.google.gson.Gson;
+import com.im.entity.IntelligenceDoorEntity;
 import com.nohttp.utils.GsonUtils;
 import com.user.UserAppConst;
 import com.user.UserMessageConstant;
+import com.youmai.hxsdk.utils.DisplayUtil;
 
 import org.json.JSONObject;
 
@@ -146,7 +152,7 @@ public class IntelligenceDoorActivity extends BaseFragmentActivity implements Ne
                         if (null == gson) {
                             gson = new Gson();
                         }
-                        fragmentList.add(IntelligenceDoorFragment.newInstance(gson.toJson(list)));
+                        fragmentList.add(IntelligenceDoorFragment.newInstance(userId, gson.toJson(list)));
                     }
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -180,7 +186,7 @@ public class IntelligenceDoorActivity extends BaseFragmentActivity implements Ne
                     }
                 } else if (tabTitleArray.length > fragmentList.size()) {
                     for (int i = fragmentList.size(); i < tabTitleArray.length; i++) {
-                        fragmentList.add(IntelligenceDoorFragment.newInstance(""));
+                        fragmentList.add(IntelligenceDoorFragment.newInstance(userId, ""));
                     }
                     for (int j = 0; j < fragmentList.size(); j++) {
                         List<DoorAllEntity.ContentBean.DataBean.ListBean> list = doorAllEntity.getContent().getData().get(j).getList();
@@ -335,7 +341,7 @@ public class IntelligenceDoorActivity extends BaseFragmentActivity implements Ne
                                 }
                             }
                             if (communityUuidList.size() > 0 && canEdit) {
-                                Intent intent = new Intent(IntelligenceDoorActivity.this, NewDoorEditActivity.class);
+                                Intent intent = new Intent(IntelligenceDoorActivity.this, IntelligenceDoorActivity.class);
                                 intent.putExtra(UserAppConst.EDITDOORCOMMUNITYUUID, communityUuidList.get(position));
                                 startActivityForResult(intent, INTENT_UPDATEFIXEDDOOR);
                             } else {
@@ -608,6 +614,84 @@ public class IntelligenceDoorActivity extends BaseFragmentActivity implements Ne
 
     @Override
     public void onScanParkLockChanged(String mac) {
+    }
+
+    /**
+     * 重命名操作
+     */
+    public void renameHandle(int position, String qr_code, String doorName) {
+        showRenameDialog(position, qr_code, doorName);
+    }
+
+    private DoorRenameDialog doorRenameDialog;
+
+    /**
+     * 门禁重命名
+     */
+    private void showRenameDialog(int position, String qr_code, String doorName) {
+        doorRenameDialog = new DoorRenameDialog(this, R.style.custom_dialog_theme);
+        doorRenameDialog.show();
+        doorRenameDialog.setCanceledOnTouchOutside(true);
+        doorRenameDialog.dialog_content.setText(doorName);
+        doorRenameDialog.dialog_content.setSelection(doorRenameDialog.dialog_content.getText().length());
+        doorRenameDialog.dialog_content.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                if (s.toString().length() > start || s.toString().length() <= start) {
+                    doorRenameDialog.dialog_content.setTextColor(getResources().getColor(R.color.black_text_color));
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+            }
+        });
+        doorRenameDialog.btn_open.setOnClickListener(v -> {
+            String name = doorRenameDialog.dialog_content.getText().toString().trim();
+            if (!TextUtils.isEmpty(name)) {
+                if (name.length() > 20) {
+                    ToastUtil.toastShow(IntelligenceDoorActivity.this, getResources().getString(R.string.door_most_length));
+                } else {
+                    doorRenameDialog.dismiss();
+                    try {
+                        DisplayUtil.showInput(false, this);
+
+                        IntelligenceDoorEntity entity = new IntelligenceDoorEntity();
+                        entity.setUser_id(userId);
+                        entity.setQr_code(qr_code);
+                        entity.setRename(name);
+                        CacheDoorRenameHelper.instance().insertOrUpdate(this, entity);
+
+                        ToastUtil.toastShow(IntelligenceDoorActivity.this, getResources().getString(R.string.door_rename_success));
+
+                        intelligenceDoorCache = shared.getString(UserAppConst.COLOUR_INTELLIGENCE_DOOR + userId, "");
+                        setData(false, intelligenceDoorCache);
+
+//                        ((IntelligenceDoorFragment) fragmentList.get(this.position)).refreshRename(position, name);
+                    } catch (Resources.NotFoundException e) {
+                        e.printStackTrace();
+                    }
+                }
+            } else {
+                ToastUtil.toastShow(IntelligenceDoorActivity.this, getResources().getString(R.string.input_door_name));
+            }
+        });
+        doorRenameDialog.btn_cancel.setOnClickListener(v -> doorRenameDialog.dismiss());
+    }
+
+    /**
+     * 移除名操作
+     *
+     * @param position 位置
+     * @param remove   true 移除，false 添加
+     */
+    public void removeHandle(int position, boolean remove) {
+        ToastUtil.toastShow(this, "adsf" + position);
+
     }
 
     public void onEvent(Object event) {

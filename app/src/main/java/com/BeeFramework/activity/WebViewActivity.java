@@ -74,9 +74,6 @@ import com.agentweb.ChromeClientCallbackManager;
 import com.agentweb.ILoader;
 import com.agentweb.PermissionInterceptor;
 import com.agentweb.WebDefaultSettingsManager;
-import com.alipay.sdk.app.H5PayCallback;
-import com.alipay.sdk.app.PayTask;
-import com.alipay.sdk.util.H5PayResultModel;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.target.ImageViewTarget;
 import com.cashier.activity.NewOrderPayActivity;
@@ -92,7 +89,6 @@ import com.feed.activity.FeedOrActivityActivity;
 import com.feed.activity.LinLiActivity;
 import com.feed.activity.ShareFeedActivity;
 import com.feed.utils.CompressHelper;
-import com.google.gson.JsonObject;
 import com.google.zxing.Result;
 import com.im.activity.IMCustomerInforActivity;
 import com.im.activity.IMFriendInforActivity;
@@ -195,6 +191,7 @@ public class WebViewActivity extends BaseActivity implements View.OnLongClickLis
     public static final int GUANGCAIPAY = 3000;
     public static final int DELIVERYADDRESS = 4000;
     public static final int BINDWECHAT = 5000;
+    public static final int REFRESH = 6000;
     private String webTitle = ""; // 传入的标题字符串
     private String appSectionCode = ""; // 传入的标题字符串
     private String url = "";
@@ -623,6 +620,7 @@ public class WebViewActivity extends BaseActivity implements View.OnLongClickLis
                             state = "1";
                             ToastUtil.toastShow(this, "认证成功");
                             editor.putString(UserAppConst.COLOUR_AUTH_REAL_NAME + shared.getInt(UserAppConst.Colour_User_id, 0), realName).commit();
+                            newUserModel.finishTask(4, "2", this);
                         } else {
                             ToastUtil.toastShow(this, "认证失败");
                         }
@@ -640,6 +638,9 @@ public class WebViewActivity extends BaseActivity implements View.OnLongClickLis
                     e.printStackTrace();
                 }
                 webView.loadUrl("javascript:window.CLColourlifeIdentifyAuthHandler('" + jsonObject.toString() + "')");
+                break;
+            case 4://实名认成功刷新
+                webView.reload();
                 break;
         }
     }
@@ -1527,7 +1528,11 @@ public class WebViewActivity extends BaseActivity implements View.OnLongClickLis
                 break;
             case BINDWECHAT: //wechat绑定成功后的回调  直接跳转到对应的小程序
 
-
+                break;
+            case REFRESH: //回调刷新h5
+                if (resultCode == 200) {
+                    webView.reload();
+                }
                 break;
             default:
                 mAgentWeb.uploadFileResult(requestCode, resultCode, data);

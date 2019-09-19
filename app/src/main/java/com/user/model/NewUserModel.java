@@ -97,6 +97,7 @@ public class NewUserModel extends BaseModel {
     private String unbindAuth = "app/auth/application/removal";
     private String oneKeyLoginUrl = "user/onekey/login";
     private String openRecordUrl = "app/door/openRocord";
+    private String finishTask = "app/user/finishTask";
 
 
     public NewUserModel(Context context) {
@@ -1744,15 +1745,6 @@ public class NewUserModel extends BaseModel {
         request(what, request, params, new HttpListener<String>() {
             @Override
             public void onSucceed(int what, Response<String> response) {
-//                int responseCode = response.getHeaders().getResponseCode();
-//                String result = response.get();
-//                LogUtil.e("LekaiService 上传开门记录:", result);
-//                if (responseCode == RequestEncryptionUtils.responseSuccess) {
-//                    int resultCode = showSuccesResultMessageTheme(result);
-//                    if (resultCode == 0) {
-//                        LogUtil.e("LekaiService 蓝牙门禁", "上传成功");
-//                    }
-//                }
             }
 
             @Override
@@ -1760,5 +1752,33 @@ public class NewUserModel extends BaseModel {
             }
         }, true, false);
     }
+
+    /**
+     * 获取授权管理详情
+     */
+    public void finishTask(int what, String type, final NewHttpResponse newHttpResponse) {
+        Map<String, Object> params = new HashMap<>();
+        params.put("type", type);//2实名认证、3意见反馈
+        final Request<String> request = NoHttp.createStringRequest(RequestEncryptionUtils.getCombileMD5(mContext, 3, finishTask, params), RequestMethod.GET);
+        request(what, request, params, new HttpListener<String>() {
+            @Override
+            public void onSucceed(int what, Response<String> response) {
+                int responseCode = response.getHeaders().getResponseCode();
+                String result = response.get();
+                if (responseCode == RequestEncryptionUtils.responseSuccess) {
+                    int resultCode = showSuccesResultMessageTheme(result);
+                    if (resultCode == 0) {
+                        newHttpResponse.OnHttpResponse(what, result);
+                    }
+                }
+            }
+
+            @Override
+            public void onFailed(int what, Response<String> response) {
+                showExceptionMessage(what, response);
+            }
+        }, true, true);
+    }
+
 
 }

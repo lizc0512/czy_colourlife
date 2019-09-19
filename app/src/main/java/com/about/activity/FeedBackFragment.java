@@ -4,6 +4,8 @@ import android.Manifest;
 import android.app.Dialog;
 import android.content.Intent;
 import android.os.Build;
+import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.AdapterView;
@@ -24,6 +26,7 @@ import com.about.view.FeedBackImageView;
 import com.feed.utils.CompressHelper;
 import com.nohttp.utils.GsonUtils;
 import com.permission.AndPermission;
+import com.user.model.NewUserModel;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -31,6 +34,7 @@ import org.json.JSONException;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import cn.csh.colourful.life.utils.GlideImageLoader;
 import cn.csh.colourful.life.view.imagepicker.ImagePicker;
@@ -51,6 +55,8 @@ import cn.net.cyberway.R;
  */
 public class FeedBackFragment extends BaseFragment implements View.OnClickListener, NewHttpResponse {
 
+    public static String FROM_WEB = "from_web";
+
     public static final int REQUEST_ALBUM = 5;
     public static final int REQUEST_REVIEW = 6;
     private TextView tv_commit;
@@ -66,6 +72,24 @@ public class FeedBackFragment extends BaseFragment implements View.OnClickListen
     private String imgid = "";
     private ArrayList<ImageItem> allImages = new ArrayList<>();
     private List<String> uploadPathList = new ArrayList<>();
+    private boolean fromWeb = false;
+
+    public static FeedBackFragment newInstance(boolean fromWeb) {
+        Bundle arguments = new Bundle();
+        arguments.putBoolean(FROM_WEB, fromWeb);
+        FeedBackFragment fragment = new FeedBackFragment();
+        fragment.setArguments(arguments);
+        return fragment;
+    }
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        Bundle bundle = getArguments();
+        if (bundle != null) {
+            fromWeb = bundle.getBoolean(FROM_WEB);
+        }
+    }
 
     @Override
     protected int getLayoutResource() {
@@ -340,6 +364,20 @@ public class FeedBackFragment extends BaseFragment implements View.OnClickListen
                 break;
             case 1:
                 ToastUtil.toastShow(getActivity(), "提交成功～\n感谢您的反馈!");
+
+                if (fromWeb) {
+                    try {
+                        Objects.requireNonNull(getActivity()).setResult(200, new Intent());
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                    NewUserModel newUserModel = new NewUserModel(getActivity());
+                    newUserModel.finishTask(2, "2", this);
+                } else {
+                    getActivity().finish();
+                }
+                break;
+            case 2:
                 getActivity().finish();
                 break;
         }

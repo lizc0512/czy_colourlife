@@ -2,6 +2,7 @@ package com.door.adapter;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.graphics.drawable.BitmapDrawable;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
@@ -9,11 +10,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.door.activity.IntelligenceDoorActivity;
 import com.door.entity.DoorAllEntity;
+import com.door.helper.CacheDoorRenameHelper;
 
 import java.util.List;
 
@@ -26,12 +29,15 @@ import cn.net.cyberway.R;
 public class IntelligenceDoorAdapter extends RecyclerView.Adapter<IntelligenceDoorAdapter.ViewHolder> {
 
     private Context mContext;
+    public int userId;
     public List<DoorAllEntity.ContentBean.DataBean.ListBean.KeyListBean> mList;
     public List<String> titleList;
     public List<String> typeList;
+    private PopupWindow popupWindow;
 
-    public IntelligenceDoorAdapter(Context mContext, List<String> titleList, List<String> typeList, List<DoorAllEntity.ContentBean.DataBean.ListBean.KeyListBean> mList) {
+    public IntelligenceDoorAdapter(Context mContext, int userId, List<String> titleList, List<String> typeList, List<DoorAllEntity.ContentBean.DataBean.ListBean.KeyListBean> mList) {
         this.mContext = mContext;
+        this.userId = userId;
         this.titleList = titleList;
         this.typeList = typeList;
         this.mList = mList;
@@ -41,6 +47,16 @@ public class IntelligenceDoorAdapter extends RecyclerView.Adapter<IntelligenceDo
         this.titleList.addAll(titleList);
         this.typeList.addAll(typeList);
         this.mList.addAll(mList);
+        notifyDataSetChanged();
+    }
+
+    /**
+     * 重命名
+     */
+    public void rename(int position, String rename) {
+        DoorAllEntity.ContentBean.DataBean.ListBean.KeyListBean bean = mList.get(position);
+        bean.setDoor_name(rename);
+        mList.set(position, bean);
         notifyDataSetChanged();
     }
 
@@ -67,16 +83,69 @@ public class IntelligenceDoorAdapter extends RecyclerView.Adapter<IntelligenceDo
                     holder.rl_key.setVisibility(View.VISIBLE);
                     holder.rl_key.setBackgroundResource(R.drawable.shape_door_key);
                     holder.ll_car.setVisibility(View.GONE);
-                    holder.tv_title.setText(item.getDoor_name());
+                    holder.iv_handle.setVisibility(View.VISIBLE);
+                    boolean isCommon = "1".equals(item.getIs_common());
+                    if (isCommon) {//1 常用门禁， 2非常用门禁
+                        holder.tv_common.setVisibility(View.VISIBLE);
+                    } else {
+                        holder.tv_common.setVisibility(View.GONE);
+                    }
+
+                    String rename = CacheDoorRenameHelper.instance().toQueryMobileList(mContext, userId, item.getQr_code());
+                    holder.tv_title.setText(!TextUtils.isEmpty(rename) ? rename : item.getDoor_name());
                     holder.iv_icon.setBackgroundResource(R.drawable.ic_door_key);
                     holder.tv_pwd.setVisibility(View.GONE);
                     //远程开门
                     holder.rl_key.setOnClickListener(v -> ((IntelligenceDoorActivity) mContext).remoteDoor(item.getQr_code()));
+
+                    holder.iv_handle.setOnClickListener(v -> {
+                        try {
+                            View popWindowView = LayoutInflater.from(mContext).inflate(R.layout.pop_door_handle, null);
+                            popupWindow = new PopupWindow(popWindowView,
+                                    ViewGroup.LayoutParams.WRAP_CONTENT,
+                                    ViewGroup.LayoutParams.WRAP_CONTENT,
+                                    true);
+                            // 使其聚集
+                            popupWindow.setFocusable(true);
+                            // 设置允许在外点击消失
+                            popupWindow.setOutsideTouchable(true);
+                            // 这个是为了点击“返回Back”也能使其消失，并且并不会影响你的背景
+                            popupWindow.setBackgroundDrawable(new BitmapDrawable());
+                            popupWindow.showAsDropDown(holder.iv_handle, 0, 0);
+
+                            if (null != popWindowView) {
+                                TextView tv_rename = (popWindowView).findViewById(R.id.tv_rename);
+                                TextView tv_remove = (popWindowView).findViewById(R.id.tv_remove);
+                                tv_rename.setOnClickListener(viewRename -> {
+                                    popupWindow.dismiss();
+                                    ((IntelligenceDoorActivity) mContext).renameHandle(position, item.getQr_code(), !TextUtils.isEmpty(rename) ? rename : item.getDoor_name());
+                                });
+
+                                if (isCommon) {
+                                    tv_remove.setText("从常用门禁中移除");
+                                } else {
+                                    tv_remove.setText("从常用门禁中添加");
+                                }
+                                tv_remove.setOnClickListener(viewRemove -> {
+                                    popupWindow.dismiss();
+                                    ((IntelligenceDoorActivity) mContext).removeHandle(position, true);
+
+
+                                });
+
+                            }
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+
+                    });
                     break;
                 case "2":
                     holder.rl_key.setVisibility(View.VISIBLE);
                     holder.rl_key.setBackgroundResource(R.drawable.shape_door_key_no);
                     holder.ll_car.setVisibility(View.GONE);
+                    holder.iv_handle.setVisibility(View.GONE);
+                    holder.tv_common.setVisibility(View.GONE);
                     holder.tv_title.setText(item.getName());
                     holder.iv_icon.setBackgroundResource(R.drawable.ic_door_bluetooth);
                     String model = item.getModel().substring(0, item.getModel().length() - 1);
@@ -97,6 +166,8 @@ public class IntelligenceDoorAdapter extends RecyclerView.Adapter<IntelligenceDo
                 case "3":
                     holder.rl_key.setVisibility(View.GONE);
                     holder.ll_car.setVisibility(View.VISIBLE);
+                    holder.iv_handle.setVisibility(View.GONE);
+                    holder.tv_common.setVisibility(View.GONE);
                     holder.tv_car_title.setText(item.getName());
                     String time = item.getValid_date();
                     try {
@@ -137,6 +208,14 @@ public class IntelligenceDoorAdapter extends RecyclerView.Adapter<IntelligenceDo
         private TextView tv_avail_time;
         private LinearLayout ll_down;
         private LinearLayout ll_up;
+        private ImageView iv_handle;
+        private TextView tv_common;
+//        private ImageView iv_icon1;
+//        private View v_line1;
+//        private ImageView iv_icon2;
+//        private View v_line2;
+//        private ImageView iv_icon3;
+//        private TextView tv_avail_time_to;
 
         public ViewHolder(View itemView) {
             super(itemView);
@@ -150,6 +229,14 @@ public class IntelligenceDoorAdapter extends RecyclerView.Adapter<IntelligenceDo
             tv_avail_time = itemView.findViewById(R.id.tv_avail_time);
             ll_down = itemView.findViewById(R.id.ll_down);
             ll_up = itemView.findViewById(R.id.ll_up);
+            iv_handle = itemView.findViewById(R.id.iv_handle);
+            tv_common = itemView.findViewById(R.id.tv_common);
+//            iv_icon1 = itemView.findViewById(R.id.iv_icon1);
+//            v_line1 = itemView.findViewById(R.id.v_line1);
+//            iv_icon2 = itemView.findViewById(R.id.iv_icon2);
+//            v_line2 = itemView.findViewById(R.id.v_line2);
+//            iv_icon3 = itemView.findViewById(R.id.iv_icon3);
+//            tv_avail_time_to = itemView.findViewById(R.id.tv_avail_time_to);
         }
     }
 

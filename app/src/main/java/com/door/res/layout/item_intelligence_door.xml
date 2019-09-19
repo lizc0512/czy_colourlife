@@ -23,18 +23,17 @@
         android:layout_width="match_parent"
         android:layout_height="80dp"
         android:layout_marginLeft="16dp"
-        android:layout_marginTop="6dp"
         android:layout_marginRight="16dp"
-        android:layout_marginBottom="6dp"
+        android:layout_marginBottom="12dp"
         android:background="@drawable/shape_door_key">
 
         <ImageView
             android:id="@+id/iv_icon"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
             android:layout_centerVertical="true"
-            android:layout_marginStart="28dp"
-            android:layout_marginLeft="28dp"
+            android:layout_marginStart="12dp"
+            android:layout_marginLeft="12dp"
             android:background="@drawable/ic_door_key"
             tools:ignore="ContentDescription" />
 
@@ -50,17 +49,18 @@
             android:textColor="@color/black_text_color" />
 
         <TextView
+            android:id="@+id/tv_common"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentEnd="true"
-            android:layout_alignParentRight="true"
-            android:layout_marginTop="12dp"
-            android:layout_marginEnd="36dp"
-            android:layout_marginRight="36dp"
-            android:background="@drawable/shape_door_type"
-            android:text="小区入口"
-            android:textColor="@color/color_329dfa"
-            android:visibility="gone" />
+            android:layout_marginStart="48dp"
+            android:layout_marginLeft="48dp"
+            android:background="@drawable/shape_door_common"
+            android:paddingLeft="8dp"
+            android:paddingTop="1dp"
+            android:paddingRight="8dp"
+            android:paddingBottom="1dp"
+            android:text="常用"
+            android:textColor="@color/color_7ca0D6" />
 
         <TextView
             android:id="@+id/tv_pwd"
@@ -78,8 +78,86 @@
             android:paddingBottom="4dp"
             android:text="获取密码"
             android:textColor="@color/white"
-            android:textSize="12sp"
-            android:visibility="gone" />
+            android:textSize="12sp" />
+
+        <ImageView
+            android:id="@+id/iv_handle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:padding="12dp"
+            android:src="@drawable/ic_door_handle"
+            tools:ignore="ContentDescription" />
+
+        <!--<LinearLayout-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_below="@+id/tv_title"-->
+        <!--android:layout_marginStart="20dp"-->
+        <!--android:layout_marginLeft="20dp"-->
+        <!--android:layout_marginTop="8dp"-->
+        <!--android:layout_toEndOf="@+id/iv_icon"-->
+        <!--android:layout_toRightOf="@+id/iv_icon"-->
+        <!--android:background="@null"-->
+        <!--android:orientation="horizontal"-->
+        <!--android:visibility="gone">-->
+
+        <!--<ImageView-->
+        <!--android:id="@+id/iv_icon1"-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:background="@drawable/ic_door_func_bluetooth"-->
+        <!--tools:ignore="ContentDescription" />-->
+
+        <!--<View-->
+        <!--android:id="@+id/v_line1"-->
+        <!--android:layout_width="1px"-->
+        <!--android:layout_height="12dp"-->
+        <!--android:layout_marginLeft="6dp"-->
+        <!--android:layout_marginRight="6dp"-->
+        <!--android:background="@color/color_f0f2f5" />-->
+
+        <!--<ImageView-->
+        <!--android:id="@+id/iv_icon2"-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_alignParentEnd="true"-->
+        <!--android:layout_alignParentRight="true"-->
+        <!--android:background="@drawable/ic_door_func_remote"-->
+        <!--tools:ignore="ContentDescription" />-->
+
+        <!--<View-->
+        <!--android:id="@+id/v_line2"-->
+        <!--android:layout_width="1px"-->
+        <!--android:layout_height="12dp"-->
+        <!--android:layout_marginLeft="6dp"-->
+        <!--android:layout_marginRight="6dp"-->
+        <!--android:background="@color/color_f0f2f5" />-->
+
+        <!--<ImageView-->
+        <!--android:id="@+id/iv_icon3"-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_alignParentEnd="true"-->
+        <!--android:layout_alignParentRight="true"-->
+        <!--android:background="@drawable/ic_door_func_face"-->
+        <!--tools:ignore="ContentDescription" />-->
+
+        <!--</LinearLayout>-->
+
+        <!--<TextView-->s
+        <!--android:id="@+id/tv_avail_time_to"-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_alignParentRight="true"-->
+        <!--android:layout_alignParentBottom="true"-->
+        <!--android:layout_marginRight="16dp"-->
+        <!--android:textSize="12sp"-->
+        <!--android:layout_marginBottom="8dp"-->
+        <!--android:text="有效期至 2019.9.22"-->
+        <!--android:textColor="@color/grayred_text_color"-->
+        <!--android:visibility="gone" />-->
     </RelativeLayout>
 
     <LinearLayout
@@ -90,8 +168,7 @@
         android:layout_marginRight="16dp"
         android:layout_marginBottom="12dp"
         android:background="@drawable/shape_door_car_lock"
-        android:orientation="vertical"
-        android:visibility="gone">
+        android:orientation="vertical">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -206,6 +283,5 @@
         </LinearLayout>
 
     </LinearLayout>
-
 
 </LinearLayout>

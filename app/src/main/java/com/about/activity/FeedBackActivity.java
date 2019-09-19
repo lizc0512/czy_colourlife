@@ -33,6 +33,8 @@ import cn.net.cyberway.R;
  */
 public class FeedBackActivity extends BaseFragmentActivity implements View.OnClickListener, NewHttpResponse {
 
+    public static String FROM_WEB = "from_web";
+
     private FrameLayout czy_title_layout;
     private TextView tv_title;   //标题
     private ImageView imageView_back;//返回
@@ -42,6 +44,7 @@ public class FeedBackActivity extends BaseFragmentActivity implements View.OnCli
     private List<Fragment> fragmentList = new ArrayList<>();
     private String[] tabTitleArray = null;
     private CouponsFragment couponsFragment;
+    private boolean fromWeb;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,6 +59,7 @@ public class FeedBackActivity extends BaseFragmentActivity implements View.OnCli
         feedback_tablayout = findViewById(R.id.feedback_tablayout);
         feedback_viewpager = findViewById(R.id.feedback_viewpager);
         imageView_back.setOnClickListener(this);
+        fromWeb = getIntent().getBooleanExtra(FROM_WEB, false);
         tabTitleArray = getResources().getStringArray(R.array.feedback_menu);
         for (int i = 0; i < tabTitleArray.length; i++) {
             feedback_tablayout.addTab(feedback_tablayout.newTab().setText(tabTitleArray[i]));
@@ -63,12 +67,11 @@ public class FeedBackActivity extends BaseFragmentActivity implements View.OnCli
         LinearLayout linearLayout = (LinearLayout) feedback_tablayout.getChildAt(0);
         linearLayout.setShowDividers(LinearLayout.SHOW_DIVIDER_MIDDLE);
         linearLayout.setDividerDrawable(ContextCompat.getDrawable(this, R.drawable.tablayout_line));
-//        linearLayout.setDividerPadding(30);
-        FeedBackFragment feedBackFragment = new FeedBackFragment();
-        fragmentList.add(feedBackFragment);
-        couponsFragment = new CouponsFragment();
+        couponsFragment = new CouponsFragment();//满意度
         fragmentList.add(couponsFragment);
-
+        FeedBackFragment.newInstance(fromWeb);
+        FeedBackFragment feedBackFragment = new FeedBackFragment();//意见
+        fragmentList.add(feedBackFragment);
 
         feedback_tablayout.setTabMode(TabLayout.MODE_FIXED);
         feedback_tablayout.setSelectedTabIndicatorHeight(4);
@@ -91,6 +94,9 @@ public class FeedBackActivity extends BaseFragmentActivity implements View.OnCli
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.user_top_view_back:
+                if (fromWeb) {
+                    setResult(200, new Intent());
+                }
                 finish();
                 break;
             case R.id.user_top_view_right:
@@ -111,6 +117,16 @@ public class FeedBackActivity extends BaseFragmentActivity implements View.OnCli
     protected void onPause() {
         super.onPause();
         TCAgent.onPageEnd(getApplicationContext(), "意见反馈");
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (fromWeb) {
+            setResult(200, new Intent());
+            super.onBackPressed();
+        } else {
+            super.onBackPressed();
+        }
     }
 
     @Override

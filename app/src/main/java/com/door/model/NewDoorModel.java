@@ -29,7 +29,8 @@ public class NewDoorModel extends BaseModel {
     private final String changedoorPositionUrl = "user/doorFixed/position";
     public final String openDoorUrl = "user/door/open";
     public final String getDevicePwdUrl = "app/door/devicePassword";
-    public final String getCommunityKeyUrl = "app/door/getCommunityKey";
+    //    public final String getCommunityKeyUrl = "app/door/getCommunityKey";//无常用门禁
+    public final String getCommunityKeyUrl = "app/door/getAllCommunityKey";//有常用门禁
     public final String devicePasswordLogUrl = "app/door/devicePasswordLog";
     public final String deviceOpenAdvertUrl = "app/door/openAdvert";
     public final String doorOpenRocordUrl = "app/door/getOpenRocord";
@@ -373,7 +374,6 @@ public class NewDoorModel extends BaseModel {
             }
         }, true, true);
     }
-
 
     /**
      * 获取用户门禁信息
