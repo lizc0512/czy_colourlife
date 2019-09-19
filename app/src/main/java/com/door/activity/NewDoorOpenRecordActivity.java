@@ -83,14 +83,15 @@ public class NewDoorOpenRecordActivity extends BaseActivity implements View.OnCl
             case 0:
                 try {
                     DoorOpenRecordEntity doorOpenRecordEntity = GsonUtils.gsonToBean(result, DoorOpenRecordEntity.class);
-                    List<DoorOpenRecordEntity.ContentBean> contentBeanList = doorOpenRecordEntity.getContent();
-                    requsetSize = contentBeanList.size();
+                    DoorOpenRecordEntity.ContentBean contentBean = doorOpenRecordEntity.getContent();
+                    List<DoorOpenRecordEntity.ContentBean.DataBeanX> dataBeanXList = contentBean.getData();
+                    requsetSize = dataBeanXList.size();
                     if (requsetSize > 0) {
-                        for (DoorOpenRecordEntity.ContentBean contentBean : contentBeanList) {
-                            String headerContent = contentBean.getDate();
+                        for (DoorOpenRecordEntity.ContentBean.DataBeanX dataBeanX : dataBeanXList) {
+                            String headerContent = dataBeanX.getDate();
                             DoorOpenRecordSectionEntity headerSectionEntity = new DoorOpenRecordSectionEntity(true, headerContent);
                             doorRecordList.add(headerSectionEntity);
-                            List<DoorOpenRecordEntity.ContentBean.DataBean> dataBeanList = contentBean.getData();
+                            List<DoorOpenRecordEntity.ContentBean.DataBeanX.DataBean> dataBeanList = dataBeanX.getData();
                             for (int j = 0; j < dataBeanList.size(); j++) {
                                 DoorOpenRecordSectionEntity childSectionEntity = new DoorOpenRecordSectionEntity(dataBeanList.get(j));
                                 doorRecordList.add(childSectionEntity);

@@ -49,7 +49,7 @@ public class DoorNewOpenRecordAdapter extends BaseSectionQuickAdapter<DoorOpenRe
 
     @Override
     protected void convert(BaseViewHolder helper, DoorOpenRecordSectionEntity item) {
-        DoorOpenRecordEntity.ContentBean.DataBean listBean = item.t;
+        DoorOpenRecordEntity.ContentBean.DataBeanX.DataBean listBean = item.t;
         String status = listBean.getStatus();
         if ("1".equals(status)) {
             helper.setText(R.id.tv_door_status, "开门成功");
