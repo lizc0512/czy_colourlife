@@ -1578,6 +1578,7 @@ public class MainHomeFragmentNew extends Fragment implements NewHttpResponse, My
                                 ToastUtil.toastShow(getActivity(), "认证成功");
                                 editor.putString(UserAppConst.COLOUR_AUTH_REAL_NAME + customer_id, realName).commit();
                                 authItemClick(fromFunc, fromFunc ? homeFuncBean : appBean); //跳转
+                                newUserModel.finishTask(15, "2", this);//实名认证任务
                             } else {
                                 editor.putString(UserAppConst.COLOUR_AUTH_REAL_NAME + customer_id, "").commit();
                             }
@@ -1613,6 +1614,8 @@ public class MainHomeFragmentNew extends Fragment implements NewHttpResponse, My
                 break;
             case 14:
                 LekaiHelper.startService(getActivity(), result);
+                break;
+            case 15://实名认证任务
                 break;
         }
         questReturnNumber++;

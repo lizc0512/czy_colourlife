@@ -24,14 +24,17 @@ import cn.net.cyberway.R;
  */
 public class IntelligenceDoorFragment extends BaseFragment {
 
+    private static final String USERID = "userid";
     private static final String RESUlT = "result";
 
     private SwipeMenuRecyclerView xrv_invite_list;
     private LinearLayout ll_empty;
+    private int userId;
     private String result;
 
-    public static IntelligenceDoorFragment newInstance(String result) {
+    public static IntelligenceDoorFragment newInstance(int userId, String result) {
         Bundle args = new Bundle();
+        args.putInt(USERID, userId);
         args.putString(RESUlT, result);
         IntelligenceDoorFragment fragment = new IntelligenceDoorFragment();
         fragment.setArguments(args);
@@ -43,6 +46,7 @@ public class IntelligenceDoorFragment extends BaseFragment {
         super.onCreate(savedInstanceState);
         Bundle bundle = getArguments();
         assert bundle != null;
+        userId = bundle.getInt(USERID);
         result = bundle.getString(RESUlT);
     }
 
@@ -69,13 +73,21 @@ public class IntelligenceDoorFragment extends BaseFragment {
         initData();
     }
 
+//    public void refreshRename(int posoton, String name) {
+//        if (null != mAdapter) {
+//            mAdapter.rename(posoton, name);
+//        }
+//    }
+
+    IntelligenceDoorAdapter mAdapter;
+
     private void initData() {
         isFirst = true;
         try {
             if (!TextUtils.isEmpty(result)) {
                 List<DoorAllEntity.ContentBean.DataBean.ListBean> mList = GsonUtils.jsonToList(result, DoorAllEntity.ContentBean.DataBean.ListBean.class);
 
-                IntelligenceDoorAdapter mAdapter = new IntelligenceDoorAdapter(getActivity(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>());
+                mAdapter = new IntelligenceDoorAdapter(getActivity(), userId, new ArrayList<>(), new ArrayList<>(), new ArrayList<>());
                 xrv_invite_list.setAdapter(mAdapter);
 
                 if (0 < mList.size()) {
@@ -116,4 +128,6 @@ public class IntelligenceDoorFragment extends BaseFragment {
             e.printStackTrace();
         }
     }
+
+
 }

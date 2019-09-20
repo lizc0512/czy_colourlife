@@ -38,6 +38,7 @@ import org.json.JSONObject;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 
 import cn.net.cyberway.R;
 import cn.net.cyberway.utils.LinkParseUtil;
@@ -102,6 +103,11 @@ public class CouponsFragment extends Fragment {
             if (webView.canGoBack()) {
                 webView.goBack();
             } else {
+                try {
+                    Objects.requireNonNull(getActivity()).setResult(200, new Intent());
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
                 getActivity().finish();
             }
         }

@@ -23,6 +23,7 @@ import com.BeeFramework.activity.BaseActivity;
 import com.BeeFramework.model.NewHttpResponse;
 import com.BeeFramework.view.CircleImageView;
 import com.customerInfo.protocol.RealNameTokenEntity;
+import com.customerInfo.view.CustomerInfoDialog;
 import com.gem.GemConstant;
 import com.gem.util.GemDialogUtil;
 import com.myproperty.activity.MyPropertyActivity;
@@ -57,6 +58,8 @@ import cn.net.cyberway.R;
  */
 public class CustomerInfoActivity extends BaseActivity implements View.OnClickListener, NewHttpResponse {
 
+    public static String FROM_WEB = "from_web";
+
     private FrameLayout czyTitleLayout;
     private ImageView ivGem;
     private ImageView mBack;
@@ -85,7 +88,7 @@ public class CustomerInfoActivity extends BaseActivity implements View.OnClickLi
     private SharedPreferences mShared;
     public SharedPreferences.Editor mEditor;
     private boolean isChangeHead;
-    private boolean isChangeUserInfo;
+    private boolean isChangeUserInfo = false;
     private NewUserModel newUserModel;
     private String gender;
     private String name;
@@ -97,6 +100,7 @@ public class CustomerInfoActivity extends BaseActivity implements View.OnClickLi
     private String realToken;
     private String realName = "";
     private int customer_id;
+    private boolean fromWeb;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -189,6 +193,8 @@ public class CustomerInfoActivity extends BaseActivity implements View.OnClickLi
     }
 
     private void initData() {
+        fromWeb = getIntent().getBooleanExtra(FROM_WEB, false);
+        isChangeUserInfo = false;
         isChangeHead = false;
         mShared = this.getSharedPreferences(UserAppConst.USERINFO, 0);
         mEditor = mShared.edit();
@@ -202,38 +208,77 @@ public class CustomerInfoActivity extends BaseActivity implements View.OnClickLi
         newUserModel.getIsRealName(2, this);//是否实名认证
     }
 
+    private CustomerInfoDialog dialog;
+
+    /**
+     * 检测是否完善信息
+     */
+    private boolean checkMsg() {
+        boolean canReturn = true;
+        if (dialog == null) {
+            dialog = new CustomerInfoDialog(this);
+        }
+        //有修改
+//        if (isChangeHead || isChangeUserInfo) {
+//            dialog.tv_title.setText("信息未保存");
+//            dialog.tv_msg.setText("您的编辑的内容尚未保存，是否离开");
+//            dialog.tv_continue.setText("返回保存");
+//            canReturn = false;
+//        }
+
+        //没完善
+        boolean isDefaultCommunity = "03b98def-b5bd-400b-995f-a9af82be01da".equals(mShared.getString(UserAppConst.Colour_login_community_uuid, "03b98def-b5bd-400b-995f-a9af82be01da"));
+        if (isDefaultCommunity || TextUtils.isEmpty(nickname_tv.getText().toString())
+                || TextUtils.isEmpty(name_tv.getText().toString())
+                || name_tv.getText().toString().contains("访客")
+                || TextUtils.isEmpty(tv_gender.getText().toString())
+                || "--".equals(tv_gender.getText().toString().trim())
+                || TextUtils.isEmpty(email_tv.getText().toString().trim())
+                || "0".equals(email_tv.getText().toString().trim())) {
+            dialog.tv_title.setText("个人信息录入未完成");
+            dialog.tv_msg.setText("您需要完善姓名/性别/地址/邮箱信息，离开将不能获得现金券奖励");
+            dialog.tv_continue.setText("继续完善");
+            canReturn = false;
+        }
+
+        if (!canReturn) {
+            dialog.show();
+            dialog.tv_leave.setOnClickListener(v1 -> {
+                if (dialog != null) {
+                    dialog.dismiss();
+                }
+                setResult(200, new Intent());
+                save();
+            });
+            dialog.tv_continue.setOnClickListener(v2 -> {
+                if (dialog != null) {
+                    dialog.dismiss();
+                }
+            });
+        }
+
+        return canReturn;
+    }
+
     @Override
     public void onClick(View v) {
         Intent intent;
         switch (v.getId()) {
             case R.id.user_top_view_back:
-                intent = new Intent();
-                setResult(1, intent);
-                finish();
+                if (fromWeb) {
+                    setResult(200, new Intent());
+                    finish();
+                } else {
+                    intent = new Intent();
+                    setResult(1, intent);
+                    finish();
+                }
                 break;
             case R.id.user_top_view_right:
-                //保存修改信息
-                gender = tv_gender.getText().toString();
-                if (getResources().getString(R.string.customer_man).equals(gender)) {
-                    gender = "1";
-                } else if (getResources().getString(R.string.customer_femal).equals(gender)) {
-                    gender = "2";
-                } else {
-                    gender = "0";
+                if (fromWeb && !checkMsg()) {
+                    break;
                 }
-                name = name_tv.getText().toString().trim();
-                nickName = nickname_tv.getText().toString().trim();
-                email = email_tv.getText().toString().trim();
-                if (isChangeUserInfo) {
-                    newUserModel.changeUserInfomation(0, name, nickName, email, Integer.valueOf(gender), this);
-                } else {
-                    if (isChangeHead) {
-                        newUserModel.uploadPortrait(1, mImagePath, isShowNotice, this);
-                    } else {
-                        finish();
-                    }
-                }
-                TCAgent.onEvent(getApplicationContext(), "203022");
+                save();
                 break;
             case R.id.photo_ll:
                 TCAgent.onEvent(getApplicationContext(), "203002");
@@ -270,6 +315,34 @@ public class CustomerInfoActivity extends BaseActivity implements View.OnClickLi
                 }
                 break;
         }
+    }
+
+    /**
+     * 保存
+     */
+    private void save() {
+        //保存修改信息
+        gender = tv_gender.getText().toString();
+        if (getResources().getString(R.string.customer_man).equals(gender)) {
+            gender = "1";
+        } else if (getResources().getString(R.string.customer_femal).equals(gender)) {
+            gender = "2";
+        } else {
+            gender = "0";
+        }
+        name = name_tv.getText().toString().trim();
+        nickName = nickname_tv.getText().toString().trim();
+        email = email_tv.getText().toString().trim();
+        if (isChangeUserInfo) {
+            newUserModel.changeUserInfomation(0, name, nickName, email, Integer.valueOf(gender), fromWeb ? "task" : "", this);
+        } else {
+            if (isChangeHead) {
+                newUserModel.uploadPortrait(1, mImagePath, isShowNotice, this);
+            } else {
+                finish();
+            }
+        }
+        TCAgent.onEvent(getApplicationContext(), "203022");
     }
 
     private void choosePicture() {
@@ -355,6 +428,7 @@ public class CustomerInfoActivity extends BaseActivity implements View.OnClickLi
                 case 4://修改性别
                     isChangeUserInfo = true;
                     tv_gender.setText(data.getStringExtra("name"));
+                    break;
                 case 5:
                     isChangeUserInfo = true;
                     email_tv.setText(data.getStringExtra("name"));
@@ -393,9 +467,14 @@ public class CustomerInfoActivity extends BaseActivity implements View.OnClickLi
                 if (isChangeHead) {
                     newUserModel.uploadPortrait(1, mImagePath, isShowNotice, this);
                 } else {
-                    Intent intent = new Intent();
-                    setResult(1, intent);
-                    finish();
+                    if (fromWeb) {
+                        setResult(200, new Intent());
+                        finish();
+                    } else {
+                        Intent intent = new Intent();
+                        setResult(1, intent);
+                        finish();
+                    }
                 }
                 break;
             case 1:
@@ -409,9 +488,14 @@ public class CustomerInfoActivity extends BaseActivity implements View.OnClickLi
                         PortraitEntity portraitEntity = GsonUtils.gsonToBean(result, PortraitEntity.class);
                         if (portraitEntity.getCode() == 0) {
                             mEditor.putString(UserAppConst.Colour_head_img, portraitEntity.getContent().getUrl()).commit();
-                            Intent intent = new Intent();
-                            setResult(1, intent);
-                            finish();
+                            if (fromWeb) {
+                                setResult(200, new Intent());
+                                finish();
+                            } else {
+                                Intent intent = new Intent();
+                                setResult(1, intent);
+                                finish();
+                            }
                         } else {
                             if (!isShowNotice) {//服务器可能提示上传失败，重新上传一次
                                 isShowNotice = true;
@@ -477,6 +561,7 @@ public class CustomerInfoActivity extends BaseActivity implements View.OnClickLi
                                 ToastUtil.toastShow(this, "认证成功");
                                 mEditor.putString(UserAppConst.COLOUR_AUTH_REAL_NAME + customer_id, realName).commit();
                                 realNameFormat(realName);
+                                newUserModel.finishTask(5, "2", this);
                             }
                         } else {
                             String message = jsonObject.getString("message");
@@ -485,6 +570,11 @@ public class CustomerInfoActivity extends BaseActivity implements View.OnClickLi
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
+                }
+                break;
+            case 5://实名认证成功
+                if (!TextUtils.isEmpty(result)) {
+                    setResult(200, new Intent());
                 }
                 break;
         }

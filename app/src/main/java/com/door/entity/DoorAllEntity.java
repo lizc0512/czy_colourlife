@@ -216,9 +216,11 @@ public class DoorAllEntity extends BaseContentEntity {
                      * model : ISP001
                      * valid_date : 永久有效
                      */
+                    //车位锁
                     private int valid_begin;
                     private int valid_end;
                     private String valid_date;
+                    private String is_common;
 
                     public int getValid_begin() {
                         return valid_begin;
@@ -428,6 +430,15 @@ public class DoorAllEntity extends BaseContentEntity {
                     public void setColor_id(int color_id) {
                         this.color_id = color_id;
                     }
+
+                    public String getIs_common() {
+                        return is_common;
+                    }
+
+                    public void setIs_common(String is_common) {
+                        this.is_common = is_common;
+                    }
+
                 }
             }
         }

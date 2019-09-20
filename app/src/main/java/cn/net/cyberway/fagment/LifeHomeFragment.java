@@ -527,6 +527,7 @@ public class LifeHomeFragment extends Fragment implements NewHttpResponse {
                             String content = jsonObject.getString("content");
                             if ("1".equals(content)) {
                                 ToastUtil.toastShow(getActivity(), "认证成功");
+                                newUserModel.finishTask(4, "2", this);
                                 editor.putString(UserAppConst.COLOUR_AUTH_REAL_NAME + customer_id, realName).commit();
                                 authItemClick();//跳转
                             }
@@ -538,6 +539,8 @@ public class LifeHomeFragment extends Fragment implements NewHttpResponse {
                         e.printStackTrace();
                     }
                 }
+                break;
+            case 4://实名认证任务
                 break;
         }
     }

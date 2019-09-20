@@ -162,11 +162,23 @@ public class LinkParseUtil {
                             break;
                         case "Information"://个人信息
                             intent = new Intent(context, CustomerInfoActivity.class);
-                            context.startActivity(intent);
+                            boolean fromWeb = context instanceof WebViewActivity;
+                            intent.putExtra(CustomerInfoActivity.FROM_WEB, fromWeb);
+                            if (fromWeb) {
+                                ((Activity) context).startActivityForResult(intent, WebViewActivity.REFRESH);
+                            } else {
+                                context.startActivity(intent);
+                            }
                             break;
                         case "FeedBack"://意见反馈
                             intent = new Intent(context, FeedBackActivity.class);
-                            context.startActivity(intent);
+                            boolean isWeb = context instanceof WebViewActivity;
+                            intent.putExtra(FeedBackActivity.FROM_WEB, isWeb);
+                            if (isWeb) {
+                                ((Activity) context).startActivityForResult(intent, WebViewActivity.REFRESH);
+                            } else {
+                                context.startActivity(intent);
+                            }
                             break;
                         case "myCar"://我的车辆
                             intent = new Intent(context, MyCarInfoActivity.class);
