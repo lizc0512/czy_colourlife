@@ -124,13 +124,11 @@ public class IntelligenceDoorAdapter extends RecyclerView.Adapter<IntelligenceDo
                                 if (isCommon) {
                                     tv_remove.setText("从常用门禁中移除");
                                 } else {
-                                    tv_remove.setText("从常用门禁中添加");
+                                    tv_remove.setText("添加到常用门禁");
                                 }
                                 tv_remove.setOnClickListener(viewRemove -> {
                                     popupWindow.dismiss();
-                                    ((IntelligenceDoorActivity) mContext).removeHandle(position, true);
-
-
+                                    ((IntelligenceDoorActivity) mContext).addOrRemoveHandle(position, item.getQr_code(), !isCommon);
                                 });
 
                             }

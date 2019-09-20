@@ -67,9 +67,9 @@ public class FeedBackActivity extends BaseFragmentActivity implements View.OnCli
         LinearLayout linearLayout = (LinearLayout) feedback_tablayout.getChildAt(0);
         linearLayout.setShowDividers(LinearLayout.SHOW_DIVIDER_MIDDLE);
         linearLayout.setDividerDrawable(ContextCompat.getDrawable(this, R.drawable.tablayout_line));
+        fragmentList.add(FeedBackFragment.newInstance(fromWeb));//意见
         couponsFragment = new CouponsFragment();//满意度
         fragmentList.add(couponsFragment);
-        fragmentList.add(FeedBackFragment.newInstance(fromWeb));//意见
 
         feedback_tablayout.setTabMode(TabLayout.MODE_FIXED);
         feedback_tablayout.setSelectedTabIndicatorHeight(4);

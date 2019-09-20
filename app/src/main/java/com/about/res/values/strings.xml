@@ -10,8 +10,8 @@
     <string name="feedback_submit">提交</string>
 
     <string-array name="feedback_menu">
-        <item>满意度</item>
         <item>意见</item>
+        <item>满意度</item>
 
     </string-array>
 </resources>

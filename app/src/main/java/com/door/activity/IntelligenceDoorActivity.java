@@ -235,7 +235,7 @@ public class IntelligenceDoorActivity extends BaseFragmentActivity implements Ne
             isgranted = "1";
         }
 
-        newDoorModel.getCommunityKey(5, isLoading, this);//获取小区门禁
+        newDoorModel.getCommunityKey(5, isLoading, this);//获取门禁列表
         newDoorModel.getHaveDoorRight(1, false, this);//授权管理
     }
 
@@ -341,7 +341,7 @@ public class IntelligenceDoorActivity extends BaseFragmentActivity implements Ne
                                 }
                             }
                             if (communityUuidList.size() > 0 && canEdit) {
-                                Intent intent = new Intent(IntelligenceDoorActivity.this, IntelligenceDoorActivity.class);
+                                Intent intent = new Intent(IntelligenceDoorActivity.this, NewDoorEditActivity.class);
                                 intent.putExtra(UserAppConst.EDITDOORCOMMUNITYUUID, communityUuidList.get(position));
                                 startActivityForResult(intent, INTENT_UPDATEFIXEDDOOR);
                             } else {
@@ -537,6 +537,11 @@ public class IntelligenceDoorActivity extends BaseFragmentActivity implements Ne
                     }
                 }
                 break;
+            case 8://添加、移除常用门禁
+                if (!TextUtils.isEmpty(result)) {
+                    newDoorModel.getCommunityKey(5, true, this);//获取门禁列表
+                }
+                break;
         }
     }
 
@@ -685,15 +690,14 @@ public class IntelligenceDoorActivity extends BaseFragmentActivity implements Ne
     }
 
     /**
-     * 移除名操作
+     * 添加，移除名操作
      *
      * @param position 位置
-     * @param remove   true 移除，false 添加
+     * @param add   true 添加，false 移除
      */
-    public void removeHandle(int position, boolean remove) {
+    public void addOrRemoveHandle(int position, String qr_code, boolean add) {
         this.position = vp_door.getCurrentItem();
-        ToastUtil.toastShow(this, "adsf" + position);
-
+        newDoorModel.removeDoor(8, qr_code, add ? "1" : "2", this);//添加、移除常用门禁
     }
 
     public void onEvent(Object event) {
