@@ -32,7 +32,7 @@ public class Constants {
             + "cNWRg0XWVtm90XpbTqfKiXzGDHI9W8aULYZ3of/JJ9lyCyjqjigyCdLBPtQ27gOu"
             + "boDzQuieR2ywPHawzQIDAQAB";
     public static final boolean CAIWALLET_ENVIRONMENT = true;  //true为彩钱包的正式环境
-    public static int SAVENOHTTPRECORD = 0;  // 正式打包为0
+    public static int SAVENOHTTPRECORD = 1;  // 正式打包为0
 
     // ---------------------------测试版-----------------------------
 //    public static final String SERVER_ADDRESS = "https://cmobile-czytest.colourlife.com";

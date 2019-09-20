@@ -37,6 +37,7 @@ import com.lhqpay.ewallet.keepIntact.WXPayEntryActivity;
 import com.nohttp.entity.BaseContentEntity;
 import com.nohttp.utils.GlideImageLoader;
 import com.nohttp.utils.GsonUtils;
+import com.popupScreen.PopupScUtils;
 import com.setting.activity.CertificateResultDialog;
 import com.setting.activity.EditDialog;
 import com.setting.activity.HtmlPayDialog;
@@ -733,7 +734,7 @@ public class NewOrderPayActivity extends BaseActivity implements View.OnClickLis
                     @Override
                     public void onClick(View v) {
                         htmlPayDialog.dismiss();
-                        newOrderPayModel.goOrderPay(1, sn, payChannelId, NewOrderPayActivity.this);
+                        newOrderPayModel.getPayOrderStatus(3, sn, NewOrderPayActivity.this);
                     }
                 });
                 htmlPayDialog.tv_finish_pay.setOnClickListener(new View.OnClickListener() {
@@ -783,6 +784,11 @@ public class NewOrderPayActivity extends BaseActivity implements View.OnClickLis
                         PayUtil.getInstance(NewOrderPayActivity.this).createPay(publicParams, Constants.CAIWALLET_ENVIRONMENT);
                     } else if (code == 305) {
                         showNoticeDialog(baseContentEntity.getMessage());
+                    } else if (code == 10000) {
+                        ArrayList<String> urlList = new ArrayList<>();
+                        ArrayList<String> imageList = new ArrayList<>();
+                        ArrayList<String> descList = new ArrayList<>();
+                        PopupScUtils.getInstance().jump(this, urlList, imageList, descList);
                     } else {
                         ToastUtil.toastShow(NewOrderPayActivity.this, baseContentEntity.getMessage());
                     }
@@ -812,6 +818,22 @@ public class NewOrderPayActivity extends BaseActivity implements View.OnClickLis
                     }
                 } else {
                     payResultQuery();
+                }
+                break;
+            case 3:
+                try {
+                    BaseContentEntity queryContentEntity = GsonUtils.gsonToBean(result, BaseContentEntity.class);
+                    if (queryContentEntity.getCode() == 0) {
+                        PayStatusEntity payStatusEntity = GsonUtils.gsonToBean(result, PayStatusEntity.class);
+                        int orderStaus = payStatusEntity.getContent().getPay_success();
+                        if (orderStaus == 2) {
+                            newOrderPayModel.goOrderPay(1, sn, payChannelId, NewOrderPayActivity.this);
+                        } else {
+                            payResultQuery();
+                        }
+                    }
+                } catch (Exception e) {
+                    newOrderPayModel.goOrderPay(1, sn, payChannelId, NewOrderPayActivity.this);
                 }
                 break;
             case 4:

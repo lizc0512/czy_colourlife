@@ -8,8 +8,6 @@ import android.text.TextUtils;
 import com.BeeFramework.Utils.NetworkUtil;
 import com.BeeFramework.Utils.ToastUtil;
 import com.nohttp.entity.BaseContentEntity;
-import com.nohttp.entity.BaseErrorEntity;
-import com.nohttp.entity.BaseRetCodeEntity;
 import com.nohttp.utils.CallServer;
 import com.nohttp.utils.GsonUtils;
 import com.nohttp.utils.HttpListener;
@@ -204,7 +202,7 @@ public class BaseModel {
             callback(stringBuffer.toString());
         } else {
             try {
-                BaseErrorEntity baseErrorEntity = GsonUtils.gsonToBean(result, BaseErrorEntity.class);
+                BaseContentEntity baseErrorEntity = GsonUtils.gsonToBean(result, BaseContentEntity.class);
                 String message = baseErrorEntity.getMessage();
                 callback(message);
             } catch (Exception e) {
@@ -239,7 +237,7 @@ public class BaseModel {
         } else {
             if (!jsonObject.isNull("code")) {
                 try {
-                    BaseErrorEntity baseErrorEntity = GsonUtils.gsonToBean(result, BaseErrorEntity.class);
+                    BaseContentEntity baseErrorEntity = GsonUtils.gsonToBean(result, BaseContentEntity.class);
                     if (baseErrorEntity.getCode() != 0) {
                         final String message = baseErrorEntity.getMessage();
                         callback(message);
@@ -330,31 +328,6 @@ public class BaseModel {
             }
         }
         return code;
-    }
-
-    /***
-     * 显示cmobile请求成功的结果
-     * **/
-    protected int showCombileSuccesResult(String result, boolean isShow) {
-        int retCode = -1;
-        String retMessage;
-        JSONObject jsonObject = null;
-        if (!TextUtils.isEmpty(result)) {
-            try {
-                jsonObject = new JSONObject(result);
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
-        }
-        if (jsonObject != null) {
-            BaseRetCodeEntity baseRetCodeEntity = GsonUtils.gsonToBean(result, BaseRetCodeEntity.class);
-            retCode = baseRetCodeEntity.getRetCode();
-            retMessage = baseRetCodeEntity.getRetMsg();
-            if (retCode != 1 && isShow) {
-                ToastUtil.toastShow(mContext, retMessage);
-            }
-        }
-        return retCode;
     }
 
     /***请求失败,出现异常的处理***/
