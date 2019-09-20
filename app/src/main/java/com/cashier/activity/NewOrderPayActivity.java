@@ -839,6 +839,7 @@ public class NewOrderPayActivity extends BaseActivity implements View.OnClickLis
                             if ("1".equals(content)) {
                                 ToastUtil.toastShow(this, "认证成功");
                                 editor.putString(UserAppConst.COLOUR_AUTH_REAL_NAME + shared.getInt(UserAppConst.Colour_User_id, 0), realName).commit();
+                                newUserModel.finishTask(6, "2", this);//实名认证任务
                                 createCzyOrder();
                             } else {
                                 showCertificateFail();
@@ -853,6 +854,8 @@ public class NewOrderPayActivity extends BaseActivity implements View.OnClickLis
                 } else {
                     showCertificateFail();
                 }
+                break;
+            case 6:
                 break;
         }
     }

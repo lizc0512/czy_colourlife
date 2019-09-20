@@ -97,7 +97,7 @@ public class NewUserModel extends BaseModel {
     private String unbindAuth = "app/auth/application/removal";
     private String oneKeyLoginUrl = "user/onekey/login";
     private String openRecordUrl = "app/door/openRocord";
-    private String finishTask = "app/user/finishTask";
+    private String finishTask = "user/finishTask";
 
 
     public NewUserModel(Context context) {
@@ -690,12 +690,13 @@ public class NewUserModel extends BaseModel {
     }
 
     /****修改用户的个人信息**/
-    public void changeUserInfomation(int what, String name, String nick_name, String email, int gender, final NewHttpResponse newHttpResponse) {
+    public void changeUserInfomation(int what, String name, String nick_name, String email, int gender, String come_from, final NewHttpResponse newHttpResponse) {
         Map<String, Object> params = new HashMap<String, Object>();
         params.put("name", name);
         params.put("email", email);
         params.put("nick_name", nick_name);
         params.put("gender", gender);
+        params.put("come_from", come_from);
         final Request<String> request = NoHttp.createStringRequest(RequestEncryptionUtils.postCombileMD5(mContext, 6, changeInfomationUrl), RequestMethod.POST);
         request(what, request, params, new HttpListener<String>() {
             @Override

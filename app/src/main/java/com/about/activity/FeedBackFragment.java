@@ -363,8 +363,6 @@ public class FeedBackFragment extends BaseFragment implements View.OnClickListen
                 }
                 break;
             case 1:
-                ToastUtil.toastShow(getActivity(), "提交成功～\n感谢您的反馈!");
-
                 if (fromWeb) {
                     try {
                         Objects.requireNonNull(getActivity()).setResult(200, new Intent());
@@ -372,12 +370,14 @@ public class FeedBackFragment extends BaseFragment implements View.OnClickListen
                         e.printStackTrace();
                     }
                     NewUserModel newUserModel = new NewUserModel(getActivity());
-                    newUserModel.finishTask(2, "2", this);
+                    newUserModel.finishTask(2, "3", this);
                 } else {
+                    ToastUtil.toastShow(getActivity(), "提交成功～\n感谢您的反馈!");
                     getActivity().finish();
                 }
                 break;
             case 2:
+                ToastUtil.toastShow(getActivity(), "提交成功～\n感谢您的反馈!");
                 getActivity().finish();
                 break;
         }

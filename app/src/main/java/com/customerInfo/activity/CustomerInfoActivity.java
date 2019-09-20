@@ -275,7 +275,7 @@ public class CustomerInfoActivity extends BaseActivity implements View.OnClickLi
                 }
                 break;
             case R.id.user_top_view_right:
-                if (!checkMsg()) {
+                if (fromWeb && !checkMsg()) {
                     break;
                 }
                 save();
@@ -334,7 +334,7 @@ public class CustomerInfoActivity extends BaseActivity implements View.OnClickLi
         nickName = nickname_tv.getText().toString().trim();
         email = email_tv.getText().toString().trim();
         if (isChangeUserInfo) {
-            newUserModel.changeUserInfomation(0, name, nickName, email, Integer.valueOf(gender), this);
+            newUserModel.changeUserInfomation(0, name, nickName, email, Integer.valueOf(gender), fromWeb ? "task" : "", this);
         } else {
             if (isChangeHead) {
                 newUserModel.uploadPortrait(1, mImagePath, isShowNotice, this);
@@ -561,9 +561,7 @@ public class CustomerInfoActivity extends BaseActivity implements View.OnClickLi
                                 ToastUtil.toastShow(this, "认证成功");
                                 mEditor.putString(UserAppConst.COLOUR_AUTH_REAL_NAME + customer_id, realName).commit();
                                 realNameFormat(realName);
-                                if (fromWeb) {
-                                    newUserModel.finishTask(5, "2", this);
-                                }
+                                newUserModel.finishTask(5, "2", this);
                             }
                         } else {
                             String message = jsonObject.getString("message");
