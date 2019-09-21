@@ -702,7 +702,7 @@ public class IntelligenceDoorActivity extends BaseFragmentActivity implements Ne
      */
     public void addOrRemoveHandle(int position, String community_uuid, String door_name, String door_id, boolean add) {
         this.position = vp_door.getCurrentItem();
-        newDoorModel.removeDoor(8, community_uuid, door_id, door_name, add ? "1" : "2", this);//添加、移除常用门禁
+        newDoorModel.removeDoor(8, community_uuid, door_name, door_id, add ? "1" : "2", this);//添加、移除常用门禁
     }
 
     public void onEvent(Object event) {
