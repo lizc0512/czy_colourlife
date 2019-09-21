@@ -1,7 +1,5 @@
 package cn.net.cyberway.protocol;
 
-import com.nohttp.entity.BaseRetCodeEntity;
-
 /**
  * 创建时间 : 2017/8/14.
  * 编写人 :  ${yuansk}
@@ -9,8 +7,7 @@ import com.nohttp.entity.BaseRetCodeEntity;
  * 版本:
  */
 
-public class ShareEntity extends BaseRetCodeEntity
-{
+public class ShareEntity {
     public String getShareText() {
         return shareText;
     }
@@ -27,6 +24,6 @@ public class ShareEntity extends BaseRetCodeEntity
         this.shareDrawableId = shareDrawableId;
     }
 
-    private  String  shareText;
-    private  int  shareDrawableId;
+    private String shareText;
+    private int shareDrawableId;
 }

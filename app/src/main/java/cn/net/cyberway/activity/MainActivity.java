@@ -43,7 +43,6 @@ import com.external.eventbus.EventBus;
 import com.feed.FeedConstant;
 import com.im.model.IMUploadPhoneModel;
 import com.jpush.Constant;
-import com.nohttp.entity.BaseRetCodeEntity;
 import com.nohttp.utils.GlideImageLoader;
 import com.nohttp.utils.GsonUtils;
 import com.popupScreen.PopupScUtils;
@@ -76,7 +75,6 @@ import cn.net.cyberway.R;
 import cn.net.cyberway.fagment.BenefitFragment;
 import cn.net.cyberway.fagment.InstantMessageFragment;
 import cn.net.cyberway.fagment.ProfileFragment;
-import cn.net.cyberway.home.entity.PopMessageEntity;
 import cn.net.cyberway.home.entity.PushNotificationEntity;
 import cn.net.cyberway.home.fragment.MainHomeFragmentNew;
 import cn.net.cyberway.home.fragment.NologinHomeFragment;
@@ -755,13 +753,6 @@ public class MainActivity extends BaseFragmentActivity implements View.OnClickLi
         imageList.clear();
         urlList.clear();
         descList.clear();
-        int size = popList.size();
-        for (int i = 0; i < size; i++) {
-            PopMessageEntity.DataBeanX.DataBean dataBean = popList.get(i);
-            imageList.add(dataBean.getImg());
-            urlList.add(dataBean.getUrl());
-            descList.add(dataBean.getName());
-        }
         int newSize = newPopList.size();
         for (int i = 0; i < newSize; i++) {
             PushNotificationEntity.ContentBean contentBean = newPopList.get(i);
@@ -911,27 +902,6 @@ public class MainActivity extends BaseFragmentActivity implements View.OnClickLi
                     mTokenModel.getToken(1, false, this);
                 }
                 break;
-            case 10:
-                if (!TextUtils.isEmpty(result)) {
-                    BaseRetCodeEntity baseContentEntity = GsonUtils.gsonToBean(result, BaseRetCodeEntity.class);
-                    if (baseContentEntity.getRetCode() == 1) {
-                        PopMessageEntity popMessageEntity;
-                        try {
-                            popMessageEntity = GsonUtils.gsonToBean(result, PopMessageEntity.class);
-                            if (null != popMessageEntity) {
-                                popList.clear();
-                                PopMessageEntity.DataBeanX dataBeanX = popMessageEntity.getData();
-                                if (null != dataBeanX) {
-                                    popList.addAll(dataBeanX.getData());
-                                    setPopData();
-                                }
-                            }
-                        } catch (Exception e) {
-                            e.printStackTrace();
-                        }
-                    }
-                }
-                break;
             case 11:
                 if (!TextUtils.isEmpty(result)) {
                     try {
@@ -945,7 +915,7 @@ public class MainActivity extends BaseFragmentActivity implements View.OnClickLi
                 }
                 break;
             case 20:
-                int isRegister ;
+                int isRegister;
                 if (!TextUtils.isEmpty(result)) {
                     try {
                         CheckRegisterEntity checkRegisterEntity = GsonUtils.gsonToBean(result, CheckRegisterEntity.class);
@@ -981,7 +951,6 @@ public class MainActivity extends BaseFragmentActivity implements View.OnClickLi
         }
     }
 
-    private List<PopMessageEntity.DataBeanX.DataBean> popList = new ArrayList<>();
     private List<PushNotificationEntity.ContentBean> newPopList = new ArrayList<>();
 
     /**

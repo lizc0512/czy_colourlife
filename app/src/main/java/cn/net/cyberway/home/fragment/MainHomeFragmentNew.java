@@ -487,13 +487,11 @@ public class MainHomeFragmentNew extends Fragment implements NewHttpResponse, My
         colour_wallet_view.setLayoutParams(viewLayoutParams);
         if (!TextUtils.isEmpty(title_bg)) {  //c12832
             alpha_title_layout.setAlpha(0);
-//            ((MainActivity) getActivity()).setHomeStyle(tabColor);
             alpha_title_layout.setBackgroundColor(Color.parseColor("#00000000"));
             GlideImageLoader.loadStableHeightLayouBg(getActivity(), title_bg, alpha_title_layout);
         } else {
             alpha_title_layout.setBackground(new TransparentDrawable());
             alpha_title_layout.setBackgroundColor(Color.parseColor("#ffffff"));
-//            ((MainActivity) getActivity()).setHomeStyle("#ffffff");
         }
         if (!TextUtils.isEmpty(head_bg)) {
             GlideImageLoader.loadWrapHeightLayouBg(getActivity(), head_bg, head_layout);

@@ -94,4 +94,8 @@ public class IMGreenDaoManager {
     public MobileInforEntityDao getMobileInforEntityDao() {
         return mDaoSession.getMobileInforEntityDao();
     }
+
+    public IntelligenceDoorEntityDao getIntelligenceDoorEntityDao() {
+        return mDaoSession.getIntelligenceDoorEntityDao();
+    }
 }

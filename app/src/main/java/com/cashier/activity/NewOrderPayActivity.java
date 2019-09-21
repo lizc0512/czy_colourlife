@@ -37,6 +37,7 @@ import com.lhqpay.ewallet.keepIntact.WXPayEntryActivity;
 import com.nohttp.entity.BaseContentEntity;
 import com.nohttp.utils.GlideImageLoader;
 import com.nohttp.utils.GsonUtils;
+import com.popupScreen.PopupScUtils;
 import com.setting.activity.CertificateResultDialog;
 import com.setting.activity.EditDialog;
 import com.setting.activity.HtmlPayDialog;
@@ -58,6 +59,7 @@ import java.util.Map;
 
 import cn.net.cyberway.R;
 import cn.net.cyberway.activity.BroadcastReceiverActivity;
+import cn.net.cyberway.home.entity.PushNotificationEntity;
 import cn.net.cyberway.utils.LinkParseUtil;
 
 
@@ -116,6 +118,7 @@ public class NewOrderPayActivity extends BaseActivity implements View.OnClickLis
         sn = getIntent().getStringExtra(ORDER_SN);
         newOrderPayModel = new NewOrderPayModel(NewOrderPayActivity.this);
         newOrderPayModel.getPayOrderDetails(0, sn, false, this);
+        newOrderPayModel.getPayPopupDate(6, this);
     }
 
     private void initView() {
@@ -733,7 +736,7 @@ public class NewOrderPayActivity extends BaseActivity implements View.OnClickLis
                     @Override
                     public void onClick(View v) {
                         htmlPayDialog.dismiss();
-                        newOrderPayModel.goOrderPay(1, sn, payChannelId, NewOrderPayActivity.this);
+                        newOrderPayModel.getPayOrderStatus(3, sn, NewOrderPayActivity.this);
                     }
                 });
                 htmlPayDialog.tv_finish_pay.setOnClickListener(new View.OnClickListener() {
@@ -814,6 +817,22 @@ public class NewOrderPayActivity extends BaseActivity implements View.OnClickLis
                     payResultQuery();
                 }
                 break;
+            case 3:
+                try {
+                    BaseContentEntity queryContentEntity = GsonUtils.gsonToBean(result, BaseContentEntity.class);
+                    if (queryContentEntity.getCode() == 0) {
+                        PayStatusEntity payStatusEntity = GsonUtils.gsonToBean(result, PayStatusEntity.class);
+                        int orderStaus = payStatusEntity.getContent().getPay_success();
+                        if (orderStaus == 2) {
+                            newOrderPayModel.goOrderPay(1, sn, payChannelId, NewOrderPayActivity.this);
+                        } else {
+                            payResultQuery();
+                        }
+                    }
+                } catch (Exception e) {
+                    newOrderPayModel.goOrderPay(1, sn, payChannelId, NewOrderPayActivity.this);
+                }
+                break;
             case 4:
                 if (!TextUtils.isEmpty(result)) {
                     try {
@@ -856,6 +875,25 @@ public class NewOrderPayActivity extends BaseActivity implements View.OnClickLis
                 }
                 break;
             case 6:
+                if (!TextUtils.isEmpty(result)) {
+                    try {
+                        PushNotificationEntity pushNotificationEntity = GsonUtils.gsonToBean(result, PushNotificationEntity.class);
+                        List<PushNotificationEntity.ContentBean> newPopList = pushNotificationEntity.getContent();
+                        int newSize = newPopList.size();
+                        ArrayList<String> imageList = new ArrayList<>();
+                        ArrayList<String> urlList = new ArrayList<>();
+                        ArrayList<String> descList = new ArrayList<>();
+                        for (int i = 0; i < newSize; i++) {
+                            PushNotificationEntity.ContentBean contentBean = newPopList.get(i);
+                            imageList.add(contentBean.getImg_url());
+                            urlList.add(contentBean.getLink_url());
+                            descList.add(contentBean.getMsg_title());
+                        }
+                        PopupScUtils.getInstance().jump(this, urlList, imageList, descList);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
                 break;
         }
     }

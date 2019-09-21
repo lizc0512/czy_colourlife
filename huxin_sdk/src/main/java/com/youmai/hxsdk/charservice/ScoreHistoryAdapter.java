@@ -67,7 +67,7 @@ public class ScoreHistoryAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         TextView tv_time = ((TextViewHolder) viewHolder).tv_time;
         TextView tv_content = ((TextViewHolder) viewHolder).tv_content;
         SimpleRatingBar ratingBar = ((TextViewHolder) viewHolder).ratingBar;
-
+        ratingBar.setIndicator(true);
         String url = HuxinSdkManager.instance().getServiceAvatar();
         int size = mContext.getResources().getDimensionPixelOffset(R.dimen.red_head);
         Glide.with(mContext)

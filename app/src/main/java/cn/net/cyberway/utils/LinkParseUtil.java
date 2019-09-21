@@ -10,6 +10,7 @@ import android.text.TextUtils;
 import com.BeeFramework.Utils.Utils;
 import com.BeeFramework.activity.WebViewActivity;
 import com.BeeFramework.model.Constants;
+import com.about.activity.AboutActivity;
 import com.about.activity.FeedBackActivity;
 import com.allapp.activity.WholeApplicationActivity;
 import com.cardcoupons.activity.CardCouponsActivity;
@@ -262,7 +263,9 @@ public class LinkParseUtil {
                             intent = new Intent(context, WholeApplicationActivity.class);
                             context.startActivity(intent);
                             break;
-                        case "huxinCalling":
+                        case "updateVersion":
+                            intent = new Intent(context, AboutActivity.class);
+                            context.startActivity(intent);
                             break;
                         case "smartService":
                             Information info = new Information();
