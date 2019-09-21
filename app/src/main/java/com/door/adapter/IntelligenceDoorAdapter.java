@@ -128,7 +128,7 @@ public class IntelligenceDoorAdapter extends RecyclerView.Adapter<IntelligenceDo
                                 }
                                 tv_remove.setOnClickListener(viewRemove -> {
                                     popupWindow.dismiss();
-                                    ((IntelligenceDoorActivity) mContext).addOrRemoveHandle(position, item.getQr_code(), !isCommon);
+                                    ((IntelligenceDoorActivity) mContext).addOrRemoveHandle(position, item.getCommunity_uuid(), item.getDoor_id(), item.getDoor_name(), !isCommon);
                                 });
 
                             }

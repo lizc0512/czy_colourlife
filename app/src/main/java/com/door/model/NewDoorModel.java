@@ -432,11 +432,13 @@ public class NewDoorModel extends BaseModel {
     /**
      * 添加，移除常用门禁
      */
-    public void removeDoor(int what, String door_id, String work_type, final NewHttpResponse newHttpResponse) {
+    public void removeDoor(int what, String community_uuid, String door_id, String door_name, String work_type, final NewHttpResponse newHttpResponse) {
         Map<String, Object> params = new HashMap<>();
+        params.put("community_uuid", community_uuid);
         params.put("door_id", door_id);
+        params.put("door_name", door_name);
         params.put("work_type", work_type);//1添加，2删除
-        final Request<String> request = NoHttp.createStringRequest(RequestEncryptionUtils.getCombileMD5(mContext, 11, removeDoorUrl, params), RequestMethod.GET);
+        final Request<String> request = NoHttp.createStringRequest(RequestEncryptionUtils.getCombileMD5(mContext, 11, removeDoorUrl, params), RequestMethod.POST);
         request(what, request, params, new HttpListener<String>() {
             @Override
             public void onSucceed(int what, Response<String> response) {

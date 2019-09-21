@@ -147,12 +147,16 @@ public class IntelligenceDoorActivity extends BaseFragmentActivity implements Ne
                 try {
                     DoorAllEntity doorAllEntity = GsonUtils.gsonToBean(result, DoorAllEntity.class);
                     for (int i = 0; i < tabTitleArray.length; i++) {
-                        List<DoorAllEntity.ContentBean.DataBean.ListBean> list = doorAllEntity.getContent().getData().get(i).getList();
-                        tl_door.addTab(tl_door.newTab().setText(tabTitleArray[i]));
-                        if (null == gson) {
-                            gson = new Gson();
+                        try {
+                            List<DoorAllEntity.ContentBean.DataBean.ListBean> list = doorAllEntity.getContent().getData().get(i).getList();
+                            tl_door.addTab(tl_door.newTab().setText(tabTitleArray[i]));
+                            if (null == gson) {
+                                gson = new Gson();
+                            }
+                            fragmentList.add(IntelligenceDoorFragment.newInstance(userId, gson.toJson(list)));
+                        } catch (Exception e) {
+                            e.printStackTrace();
                         }
-                        fragmentList.add(IntelligenceDoorFragment.newInstance(userId, gson.toJson(list)));
                     }
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -539,6 +543,7 @@ public class IntelligenceDoorActivity extends BaseFragmentActivity implements Ne
                 break;
             case 8://添加、移除常用门禁
                 if (!TextUtils.isEmpty(result)) {
+                    intelligenceDoorCache = shared.getString(UserAppConst.COLOUR_INTELLIGENCE_DOOR + userId, "");
                     newDoorModel.getCommunityKey(5, true, this);//获取门禁列表
                 }
                 break;
@@ -695,9 +700,9 @@ public class IntelligenceDoorActivity extends BaseFragmentActivity implements Ne
      * @param position 位置
      * @param add   true 添加，false 移除
      */
-    public void addOrRemoveHandle(int position, String qr_code, boolean add) {
+    public void addOrRemoveHandle(int position, String community_uuid, String door_name, String door_id, boolean add) {
         this.position = vp_door.getCurrentItem();
-        newDoorModel.removeDoor(8, qr_code, add ? "1" : "2", this);//添加、移除常用门禁
+        newDoorModel.removeDoor(8, community_uuid, door_id, door_name, add ? "1" : "2", this);//添加、移除常用门禁
     }
 
     public void onEvent(Object event) {

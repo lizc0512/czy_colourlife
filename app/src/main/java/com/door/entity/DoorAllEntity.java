@@ -166,11 +166,11 @@ public class DoorAllEntity extends BaseContentEntity {
                      */
                     //远程开门
                     private String community_uuid;
-                    private String qr_code;
+                    private String qr_code;//用于远程开门
                     private int connection_type;
                     private int door_type;
                     private int community_type;
-                    private String door_id;
+                    private String door_id;//用于编辑
                     private String door_name;
                     private String door_img;
                     private int open_sp;
