@@ -59,6 +59,7 @@ import java.util.Map;
 
 import cn.net.cyberway.R;
 import cn.net.cyberway.activity.BroadcastReceiverActivity;
+import cn.net.cyberway.home.entity.PushNotificationEntity;
 import cn.net.cyberway.utils.LinkParseUtil;
 
 
@@ -117,6 +118,7 @@ public class NewOrderPayActivity extends BaseActivity implements View.OnClickLis
         sn = getIntent().getStringExtra(ORDER_SN);
         newOrderPayModel = new NewOrderPayModel(NewOrderPayActivity.this);
         newOrderPayModel.getPayOrderDetails(0, sn, false, this);
+        newOrderPayModel.getPayPopupDate(6, this);
     }
 
     private void initView() {
@@ -784,11 +786,6 @@ public class NewOrderPayActivity extends BaseActivity implements View.OnClickLis
                         PayUtil.getInstance(NewOrderPayActivity.this).createPay(publicParams, Constants.CAIWALLET_ENVIRONMENT);
                     } else if (code == 305) {
                         showNoticeDialog(baseContentEntity.getMessage());
-                    } else if (code == 10000) {
-                        ArrayList<String> urlList = new ArrayList<>();
-                        ArrayList<String> imageList = new ArrayList<>();
-                        ArrayList<String> descList = new ArrayList<>();
-                        PopupScUtils.getInstance().jump(this, urlList, imageList, descList);
                     } else {
                         ToastUtil.toastShow(NewOrderPayActivity.this, baseContentEntity.getMessage());
                     }
@@ -878,6 +875,25 @@ public class NewOrderPayActivity extends BaseActivity implements View.OnClickLis
                 }
                 break;
             case 6:
+                if (!TextUtils.isEmpty(result)) {
+                    try {
+                        PushNotificationEntity pushNotificationEntity = GsonUtils.gsonToBean(result, PushNotificationEntity.class);
+                        List<PushNotificationEntity.ContentBean> newPopList = pushNotificationEntity.getContent();
+                        int newSize = newPopList.size();
+                        ArrayList<String> imageList = new ArrayList<>();
+                        ArrayList<String> urlList = new ArrayList<>();
+                        ArrayList<String> descList = new ArrayList<>();
+                        for (int i = 0; i < newSize; i++) {
+                            PushNotificationEntity.ContentBean contentBean = newPopList.get(i);
+                            imageList.add(contentBean.getImg_url());
+                            urlList.add(contentBean.getLink_url());
+                            descList.add(contentBean.getMsg_title());
+                        }
+                        PopupScUtils.getInstance().jump(this, urlList, imageList, descList);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
                 break;
         }
     }

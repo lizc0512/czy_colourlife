@@ -34,6 +34,7 @@ public class NewOrderPayModel extends BaseModel {
     private final String orderCheck = "pay/ordercheck";//取消订单
     private final String orderStatus = "pay/checkorder";//查询订单是否支付成功
     private final String payBannerUrl = "app/home/utility/getPayBanner";//获取支付完成的banner(4.0的接口)
+    private final String payPopupUrl = "app/home/utility/getPayPopup";//获取支付完成的banner(4.0的接口)
 
     public NewOrderPayModel(Context context) {
         super(context);
@@ -72,6 +73,29 @@ public class NewOrderPayModel extends BaseModel {
                 }
             }
         }, true, true);
+    }
+
+
+    public void getPayPopupDate(int what, final NewHttpResponse newHttpResponse) {
+        final Request<String> request = NoHttp.createStringRequest(RequestEncryptionUtils.postCombileMD5(mContext, 3, payPopupUrl), RequestMethod.GET);
+        request(what, request, null, new HttpListener<String>() {
+            @Override
+            public void onSucceed(int what, Response<String> response) {
+                int responseCode = response.getHeaders().getResponseCode();
+                String result = response.get();
+                if (responseCode == RequestEncryptionUtils.responseSuccess) {
+                    int resultCode = showSuccesResultMessageTheme(result);
+                    if (resultCode == 0) {
+                        newHttpResponse.OnHttpResponse(what, result);
+                    }
+                }
+            }
+
+            @Override
+            public void onFailed(int what, Response<String> response) {
+
+            }
+        }, true, false);
     }
 
     /****获取支付订单的状态**/
