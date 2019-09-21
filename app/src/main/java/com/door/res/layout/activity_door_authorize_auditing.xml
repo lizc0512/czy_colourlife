@@ -14,7 +14,6 @@
         android:background="@color/bg_color" />
 
     <LinearLayout
-        android:id="@+id/choice_room_layout"
         android:layout_width="match_parent"
         android:layout_height="44dp"
         android:gravity="center_vertical"
