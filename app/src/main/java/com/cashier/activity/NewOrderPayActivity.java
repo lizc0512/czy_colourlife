@@ -28,6 +28,7 @@ import com.cashier.protocolchang.PayEntity;
 import com.cashier.protocolchang.PayResultEntity;
 import com.cashier.protocolchang.PayStatusEntity;
 import com.customerInfo.protocol.RealNameTokenEntity;
+import com.door.activity.NewDoorApplyActivity;
 import com.external.eventbus.EventBus;
 import com.lhqpay.ewallet.keepIntact.Listener;
 import com.lhqpay.ewallet.keepIntact.MyListener;
@@ -727,32 +728,36 @@ public class NewOrderPayActivity extends BaseActivity implements View.OnClickLis
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
-                final HtmlPayDialog htmlPayDialog = new HtmlPayDialog(NewOrderPayActivity.this);
-                htmlPayDialog.show();
-                if (!TextUtils.isEmpty(dialogTitle)) {
-                    htmlPayDialog.setContent("请确认" + dialogTitle + "支付是否完成");
+                try {
+                    final HtmlPayDialog htmlPayDialog = new HtmlPayDialog(NewOrderPayActivity.this);
+                    htmlPayDialog.show();
+                    if (!TextUtils.isEmpty(dialogTitle)) {
+                        htmlPayDialog.setContent("请确认" + dialogTitle + "支付是否完成");
+                    }
+                    htmlPayDialog.tv_again_pay.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            htmlPayDialog.dismiss();
+                            newOrderPayModel.getPayOrderStatus(3, sn, NewOrderPayActivity.this);
+                        }
+                    });
+                    htmlPayDialog.tv_finish_pay.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            htmlPayDialog.dismiss();
+                            payResultQuery();
+                        }
+                    });
+                    htmlPayDialog.tv_cancel_pay.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            htmlPayDialog.dismiss();
+                        }
+                    });
+                    isPay = 0;
+                } catch (Exception e) {
+
                 }
-                htmlPayDialog.tv_again_pay.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        htmlPayDialog.dismiss();
-                        newOrderPayModel.getPayOrderStatus(3, sn, NewOrderPayActivity.this);
-                    }
-                });
-                htmlPayDialog.tv_finish_pay.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        htmlPayDialog.dismiss();
-                        payResultQuery();
-                    }
-                });
-                htmlPayDialog.tv_cancel_pay.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        htmlPayDialog.dismiss();
-                    }
-                });
-                isPay = 0;
             }
         }, 500);
     }
