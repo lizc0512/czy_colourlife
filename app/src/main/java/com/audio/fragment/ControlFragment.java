@@ -183,7 +183,9 @@ public class ControlFragment extends Fragment implements View.OnClickListener {
                         }
                         mCallEvents.onCallHangUp();
                         mSoundPool.release();
-                        getActivity().finish();
+                        if (null!=getActivity()){
+                            getActivity().finish();
+                        }
                     }
                 });
                 break;

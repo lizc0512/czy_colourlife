@@ -45,17 +45,23 @@ public class HuxinReceiver extends BroadcastReceiver {
         if (action.equals(TelephonyManager.ACTION_PHONE_STATE_CHANGED)) {
             Intent in = new Intent(context, HuxinService.class);
             in.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-            context.startService(in);//启动服务
-
+            if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                context.startForegroundService(in);
+            } else {
+                context.startService(in);//启动服务
+            }
         } else if (action.equals(ACTION_START_SERVICE)
                 || action.equals(Intent.ACTION_BOOT_COMPLETED)
                 || action.equals(ConnectivityManager.CONNECTIVITY_ACTION)) {
             HuxinSdkManager.instance().init(context);
-
             Intent in = new Intent(context, HuxinService.class);
             in.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             in.setAction(HuxinService.BOOT_SERVICE);
-            context.startService(in);//启动服务
+            if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                context.startForegroundService(in);
+            } else {
+                context.startService(in);//启动服务
+            }
         }
     }
 

@@ -436,7 +436,7 @@ public class TcpClient extends PduUtil implements Runnable {
             LogFile.inStance().toFile("socketConnect exception" + e.toString());
         }
 
-        if (socketChannel.isConnected()) {
+        if (null!=socketChannel&&socketChannel.isConnected()) {
             mSender = new TcpSendThread();
             mSender.start();    //开启发送线程
 
