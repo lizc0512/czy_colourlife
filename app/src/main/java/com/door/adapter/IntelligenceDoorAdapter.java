@@ -16,7 +16,6 @@ import android.widget.TextView;
 
 import com.door.activity.IntelligenceDoorActivity;
 import com.door.entity.DoorAllEntity;
-import com.door.helper.CacheDoorRenameHelper;
 
 import java.util.List;
 
@@ -50,16 +49,6 @@ public class IntelligenceDoorAdapter extends RecyclerView.Adapter<IntelligenceDo
         notifyDataSetChanged();
     }
 
-//    /**
-//     * 重命名
-//     */
-//    public void rename(int position, String rename) {
-//        DoorAllEntity.ContentBean.DataBean.ListBean.KeyListBean bean = mList.get(position);
-//        bean.setDoor_name(rename);
-//        mList.set(position, bean);
-//        notifyDataSetChanged();
-//    }
-
     @Override
     public IntelligenceDoorAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(mContext).inflate(R.layout.item_intelligence_door, parent, false);
@@ -91,8 +80,7 @@ public class IntelligenceDoorAdapter extends RecyclerView.Adapter<IntelligenceDo
                         holder.tv_common.setVisibility(View.GONE);
                     }
 
-                    String rename = CacheDoorRenameHelper.instance().toQueryMobileList(mContext, userId, item.getQr_code());
-                    holder.tv_title.setText(!TextUtils.isEmpty(rename) ? rename : item.getDoor_name());
+                    holder.tv_title.setText(item.getDoor_name());
                     holder.iv_icon.setBackgroundResource(R.drawable.ic_door_key);
                     holder.tv_pwd.setVisibility(View.GONE);
                     //远程开门
@@ -114,11 +102,19 @@ public class IntelligenceDoorAdapter extends RecyclerView.Adapter<IntelligenceDo
                             popupWindow.showAsDropDown(holder.iv_handle, 0, 0);
 
                             if (null != popWindowView) {
+                                LinearLayout ll_rename = (popWindowView).findViewById(R.id.ll_rename);
                                 TextView tv_rename = (popWindowView).findViewById(R.id.tv_rename);
                                 TextView tv_remove = (popWindowView).findViewById(R.id.tv_remove);
+
+                                if (isCommon) {
+                                    ll_rename.setVisibility(View.VISIBLE);
+                                } else {
+                                    ll_rename.setVisibility(View.GONE);
+                                }
+
                                 tv_rename.setOnClickListener(viewRename -> {
                                     popupWindow.dismiss();
-                                    ((IntelligenceDoorActivity) mContext).renameHandle(position, item.getQr_code(), !TextUtils.isEmpty(rename) ? rename : item.getDoor_name());
+                                    ((IntelligenceDoorActivity) mContext).renameHandle(position, item.getCommunity_uuid(), item.getDoor_id(), item.getDoor_name());
                                 });
 
                                 if (isCommon) {
@@ -208,12 +204,6 @@ public class IntelligenceDoorAdapter extends RecyclerView.Adapter<IntelligenceDo
         private LinearLayout ll_up;
         private ImageView iv_handle;
         private TextView tv_common;
-//        private ImageView iv_icon1;
-//        private View v_line1;
-//        private ImageView iv_icon2;
-//        private View v_line2;
-//        private ImageView iv_icon3;
-//        private TextView tv_avail_time_to;
 
         public ViewHolder(View itemView) {
             super(itemView);
@@ -229,12 +219,6 @@ public class IntelligenceDoorAdapter extends RecyclerView.Adapter<IntelligenceDo
             ll_up = itemView.findViewById(R.id.ll_up);
             iv_handle = itemView.findViewById(R.id.iv_handle);
             tv_common = itemView.findViewById(R.id.tv_common);
-//            iv_icon1 = itemView.findViewById(R.id.iv_icon1);
-//            v_line1 = itemView.findViewById(R.id.v_line1);
-//            iv_icon2 = itemView.findViewById(R.id.iv_icon2);
-//            v_line2 = itemView.findViewById(R.id.v_line2);
-//            iv_icon3 = itemView.findViewById(R.id.iv_icon3);
-//            tv_avail_time_to = itemView.findViewById(R.id.tv_avail_time_to);
         }
     }
 

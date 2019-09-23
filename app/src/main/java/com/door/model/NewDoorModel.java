@@ -35,6 +35,7 @@ public class NewDoorModel extends BaseModel {
     public final String deviceOpenAdvertUrl = "app/door/openAdvert";
     public final String doorOpenRocordUrl = "app/door/getOpenRocord";
     public final String removeDoorUrl = "app/door/doorFixed/change";
+    public final String doorRenameUrl = "app/door/doorFixed/modify";
 
     public NewDoorModel(Context context) {
         super(context);
@@ -459,4 +460,32 @@ public class NewDoorModel extends BaseModel {
         }, true, true);
     }
 
+    /**
+     * 门禁重命名
+     */
+    public void doorRename(int what, String community_uuid, String door_id, String door_name, final NewHttpResponse newHttpResponse) {
+        Map<String, Object> params = new HashMap<>();
+        params.put("community_uuid", community_uuid);
+        params.put("door_id", door_id);
+        params.put("door_name", door_name);
+        final Request<String> request = NoHttp.createStringRequest(RequestEncryptionUtils.getCombileMD5(mContext, 11, doorRenameUrl, params), RequestMethod.POST);
+        request(what, request, params, new HttpListener<String>() {
+            @Override
+            public void onSucceed(int what, Response<String> response) {
+                int responseCode = response.getHeaders().getResponseCode();
+                String result = response.get();
+                if (responseCode == RequestEncryptionUtils.responseSuccess) {
+                    int resultCode = showSuccesResultMessageTheme(result);
+                    if (resultCode == 0) {
+                        newHttpResponse.OnHttpResponse(what, result);
+                    }
+                }
+            }
+
+            @Override
+            public void onFailed(int what, Response<String> response) {
+                newHttpResponse.OnHttpResponse(what, "");
+            }
+        }, true, true);
+    }
 }

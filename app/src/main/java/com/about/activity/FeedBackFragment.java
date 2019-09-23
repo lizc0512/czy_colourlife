@@ -363,18 +363,13 @@ public class FeedBackFragment extends BaseFragment implements View.OnClickListen
                 }
                 break;
             case 1:
-                if (fromWeb) {
-                    try {
-                        Objects.requireNonNull(getActivity()).setResult(200, new Intent());
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-                    NewUserModel newUserModel = new NewUserModel(getActivity());
-                    newUserModel.finishTask(2, "3", this);
-                } else {
-                    ToastUtil.toastShow(getActivity(), "提交成功～\n感谢您的反馈!");
-                    getActivity().finish();
+                try {
+                    Objects.requireNonNull(getActivity()).setResult(200, new Intent());
+                } catch (Exception e) {
+                    e.printStackTrace();
                 }
+                NewUserModel newUserModel = new NewUserModel(getActivity());
+                newUserModel.finishTask(2, "3", fromWeb ? "task_web" : "task_native", this);
                 break;
             case 2:
                 ToastUtil.toastShow(getActivity(), "提交成功～\n感谢您的反馈!");
