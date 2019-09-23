@@ -577,14 +577,14 @@ public class NewOrderPayActivity extends BaseActivity implements View.OnClickLis
 
 
     private void createCzyOrder() {
-        if (is_native == 1) {
-            if (TextUtils.isEmpty(payChannelId)) {
-                ToastUtil.toastShow(NewOrderPayActivity.this, "请选择一种支付方式");
-            } else {
-                newOrderPayModel.goOrderPay(1, sn, payChannelId, this);
-            }
+        if (TextUtils.isEmpty(payChannelId)) {
+            ToastUtil.toastShow(NewOrderPayActivity.this, "请选择一种支付方式");
         } else {
-            LinkParseUtil.parse(NewOrderPayActivity.this, pay_url, "");
+            if (is_native == 1) {
+                newOrderPayModel.goOrderPay(1, sn, payChannelId, this);
+            } else {
+                LinkParseUtil.parse(NewOrderPayActivity.this, pay_url, "");
+            }
         }
     }
 
