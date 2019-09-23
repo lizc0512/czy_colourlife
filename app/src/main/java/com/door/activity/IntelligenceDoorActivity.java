@@ -140,6 +140,7 @@ public class IntelligenceDoorActivity extends BaseFragmentActivity implements Ne
     }
 
     private Gson gson;
+    private String[] tabTitle;
 
     private void initTab(String[] tabTitleArray, String result) {
         try {
@@ -168,7 +169,8 @@ public class IntelligenceDoorActivity extends BaseFragmentActivity implements Ne
                 tl_door.setSelectedTabIndicatorHeight(dip2px(this, 3));
                 tl_door.setTabGravity(TabLayout.GRAVITY_FILL);
 
-                adapter = new ViewPagerAdapter(getSupportFragmentManager(), this, fragmentList, tabTitleArray);
+                tabTitle = tabTitleArray;
+                adapter = new ViewPagerAdapter(getSupportFragmentManager(), this, fragmentList, tabTitle);
                 vp_door.setAdapter(adapter);
                 vp_door.setOffscreenPageLimit(fragmentList.size());
                 tl_door.setupWithViewPager(vp_door);
@@ -189,12 +191,20 @@ public class IntelligenceDoorActivity extends BaseFragmentActivity implements Ne
 
                         ((IntelligenceDoorFragment) fragmentList.get(j)).refresh(gson.toJson(list));
                     }
-                } else if (tabTitleArray.length > fragmentList.size()) {
-                    fragmentList.clear();
-                    for (int j = 0; j < tabTitleArray.length; j++) {
-                        List<DoorAllEntity.ContentBean.DataBean.ListBean> list = doorAllEntity.getContent().getData().get(j).getList();
-                        fragmentList.add(IntelligenceDoorFragment.newInstance(userId, gson.toJson(list)));
+                    tabTitle = tabTitleArray;
+                    adapter = new ViewPagerAdapter(getSupportFragmentManager(), this, fragmentList, tabTitle);
+                    vp_door.setAdapter(adapter);
+                    vp_door.setOffscreenPageLimit(fragmentList.size());
+                    tl_door.setupWithViewPager(vp_door);
+                    tl_door.setTabMode(TabLayout.MODE_SCROLLABLE);
+                    TabLayout.Tab tab = tl_door.getTabAt(position);
+                    if (null != tab) {
+                        tab.select();
                     }
+                } else if (tabTitleArray.length > fragmentList.size()) {
+                    Intent intent = new Intent(this, IntelligenceDoorActivity.class);
+                    startActivity(intent);
+                    this.finish();
                 } else {
                     for (int i = fragmentList.size() - 1; i > tabTitleArray.length - 1; i--) {
                         fragmentList.remove(i);
@@ -203,16 +213,18 @@ public class IntelligenceDoorActivity extends BaseFragmentActivity implements Ne
                         List<DoorAllEntity.ContentBean.DataBean.ListBean> list = doorAllEntity.getContent().getData().get(j).getList();
                         ((IntelligenceDoorFragment) fragmentList.get(j)).refresh(gson.toJson(list));
                     }
+                    tabTitle = tabTitleArray;
+                    adapter = new ViewPagerAdapter(getSupportFragmentManager(), this, fragmentList, tabTitle);
+                    vp_door.setAdapter(adapter);
+                    vp_door.setOffscreenPageLimit(fragmentList.size());
+                    tl_door.setupWithViewPager(vp_door);
+                    tl_door.setTabMode(TabLayout.MODE_SCROLLABLE);
+                    TabLayout.Tab tab = tl_door.getTabAt(position);
+                    if (null != tab) {
+                        tab.select();
+                    }
                 }
-                adapter = new ViewPagerAdapter(getSupportFragmentManager(), this, fragmentList, tabTitleArray);
-                vp_door.setAdapter(adapter);
-                vp_door.setOffscreenPageLimit(fragmentList.size());
-                tl_door.setupWithViewPager(vp_door);
-                tl_door.setTabMode(TabLayout.MODE_SCROLLABLE);
-                TabLayout.Tab tab = tl_door.getTabAt(position);
-                if (null != tab) {
-                    tab.select();
-                }
+
             }
             resultData = result;
         } catch (Resources.NotFoundException e) {
@@ -692,23 +704,7 @@ public class IntelligenceDoorActivity extends BaseFragmentActivity implements Ne
                     doorRenameDialog.dismiss();
                     try {
                         DisplayUtil.showInput(false, this);
-
-
                         newDoorModel.doorRename(9, community_uuid, door_id, name, this);
-
-
-//                        IntelligenceDoorEntity entity = new IntelligenceDoorEntity();
-//                        entity.setUser_id(userId);
-//                        entity.setQr_code(qr_code);
-//                        entity.setRename(name);
-//                        CacheDoorRenameHelper.instance().insertOrUpdate(this, entity);
-//
-//                        ToastUtil.toastShow(IntelligenceDoorActivity.this, getResources().getString(R.string.door_rename_success));
-//
-//                        intelligenceDoorCache = shared.getString(UserAppConst.COLOUR_INTELLIGENCE_DOOR + userId, "");
-//                        setData(true, intelligenceDoorCache);//刷新所有数据
-
-//                        ((IntelligenceDoorFragment) fragmentList.get(this.position)).refreshRename(position, name);
                     } catch (Resources.NotFoundException e) {
                         e.printStackTrace();
                     }

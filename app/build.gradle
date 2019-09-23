@@ -141,7 +141,7 @@ repositories {
     google()
 }
 greendao {
-    schemaVersion 8
+    schemaVersion 7
     daoPackage 'com.im.greendao'
     targetGenDir 'src/main/java'
 }

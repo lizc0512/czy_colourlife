@@ -73,12 +73,6 @@ public class IntelligenceDoorFragment extends BaseFragment {
         initData();
     }
 
-//    public void refreshRename(int posoton, String name) {
-//        if (null != mAdapter) {
-//            mAdapter.rename(posoton, name);
-//        }
-//    }
-
     IntelligenceDoorAdapter mAdapter;
 
     private void initData() {
