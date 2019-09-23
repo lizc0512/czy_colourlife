@@ -71,7 +71,6 @@ import com.about.activity.FeedBackActivity;
 import com.agentweb.AgentWeb;
 import com.agentweb.AgentWebSettings;
 import com.agentweb.ChromeClientCallbackManager;
-import com.agentweb.FileUpLoadChooserImpl;
 import com.agentweb.ILoader;
 import com.agentweb.PermissionInterceptor;
 import com.agentweb.WebDefaultSettingsManager;
@@ -621,7 +620,7 @@ public class WebViewActivity extends BaseActivity implements View.OnLongClickLis
                             state = "1";
                             ToastUtil.toastShow(this, "认证成功");
                             editor.putString(UserAppConst.COLOUR_AUTH_REAL_NAME + shared.getInt(UserAppConst.Colour_User_id, 0), realName).commit();
-                            newUserModel.finishTask(4, "2", this);
+                            newUserModel.finishTask(4, "2", "task_web", this);
                         } else {
                             ToastUtil.toastShow(this, "认证失败");
                         }

@@ -214,17 +214,10 @@ public class CustomerInfoActivity extends BaseActivity implements View.OnClickLi
      * 检测是否完善信息
      */
     private boolean checkMsg() {
-        boolean canReturn = true;
+        boolean isFinish = true;
         if (dialog == null) {
             dialog = new CustomerInfoDialog(this);
         }
-        //有修改
-//        if (isChangeHead || isChangeUserInfo) {
-//            dialog.tv_title.setText("信息未保存");
-//            dialog.tv_msg.setText("您的编辑的内容尚未保存，是否离开");
-//            dialog.tv_continue.setText("返回保存");
-//            canReturn = false;
-//        }
 
         //没完善
         boolean isDefaultCommunity = "03b98def-b5bd-400b-995f-a9af82be01da".equals(mShared.getString(UserAppConst.Colour_login_community_uuid, "03b98def-b5bd-400b-995f-a9af82be01da"));
@@ -235,20 +228,22 @@ public class CustomerInfoActivity extends BaseActivity implements View.OnClickLi
                 || "--".equals(tv_gender.getText().toString().trim())
                 || TextUtils.isEmpty(email_tv.getText().toString().trim())
                 || "0".equals(email_tv.getText().toString().trim())) {
-            dialog.tv_title.setText("个人信息录入未完成");
-            dialog.tv_msg.setText("您需要完善姓名/性别/地址/邮箱信息，离开将不能获得现金券奖励");
-            dialog.tv_continue.setText("继续完善");
-            canReturn = false;
+            if (fromWeb) {
+                dialog.tv_title.setText("个人信息录入未完成");
+                dialog.tv_msg.setText("您需要完善姓名/性别/地址/邮箱信息，离开将不能获得现金券奖励");
+                dialog.tv_continue.setText("继续完善");
+            }
+            isFinish = false;
         }
 
-        if (!canReturn) {
+        if (fromWeb && !isFinish) {
             dialog.show();
             dialog.tv_leave.setOnClickListener(v1 -> {
                 if (dialog != null) {
                     dialog.dismiss();
                 }
                 setResult(200, new Intent());
-                save();
+                save(false);
             });
             dialog.tv_continue.setOnClickListener(v2 -> {
                 if (dialog != null) {
@@ -257,7 +252,7 @@ public class CustomerInfoActivity extends BaseActivity implements View.OnClickLi
             });
         }
 
-        return canReturn;
+        return isFinish;
     }
 
     @Override
@@ -275,10 +270,10 @@ public class CustomerInfoActivity extends BaseActivity implements View.OnClickLi
                 }
                 break;
             case R.id.user_top_view_right:
-                if (fromWeb && !checkMsg()) {
-                    break;
+                boolean isFinish = checkMsg();
+                if (!fromWeb || isFinish) {
+                    save(isFinish);
                 }
-                save();
                 break;
             case R.id.photo_ll:
                 TCAgent.onEvent(getApplicationContext(), "203002");
@@ -319,8 +314,9 @@ public class CustomerInfoActivity extends BaseActivity implements View.OnClickLi
 
     /**
      * 保存
+     * @param isFinish true 已完成，false 未完成
      */
-    private void save() {
+    private void save(boolean isFinish) {
         //保存修改信息
         gender = tv_gender.getText().toString();
         if (getResources().getString(R.string.customer_man).equals(gender)) {
@@ -334,7 +330,7 @@ public class CustomerInfoActivity extends BaseActivity implements View.OnClickLi
         nickName = nickname_tv.getText().toString().trim();
         email = email_tv.getText().toString().trim();
         if (isChangeUserInfo) {
-            newUserModel.changeUserInfomation(0, name, nickName, email, Integer.valueOf(gender), fromWeb ? "task" : "", this);
+            newUserModel.changeUserInfomation(0, name, nickName, email, Integer.valueOf(gender), isFinish ? (fromWeb ? "task_web" : "task_native") : "", this);
         } else {
             if (isChangeHead) {
                 newUserModel.uploadPortrait(1, mImagePath, isShowNotice, this);
@@ -561,7 +557,7 @@ public class CustomerInfoActivity extends BaseActivity implements View.OnClickLi
                                 ToastUtil.toastShow(this, "认证成功");
                                 mEditor.putString(UserAppConst.COLOUR_AUTH_REAL_NAME + customer_id, realName).commit();
                                 realNameFormat(realName);
-                                newUserModel.finishTask(5, "2", this);
+                                newUserModel.finishTask(5, "2", fromWeb ? "task_web" : "task_native", this);
                             }
                         } else {
                             String message = jsonObject.getString("message");

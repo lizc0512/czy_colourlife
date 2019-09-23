@@ -1295,6 +1295,9 @@ public class MainHomeFragmentNew extends Fragment implements NewHttpResponse, My
                     ((MainActivity) getActivity()).showOpenDoorDialog(result);
                 }
                 break;
+            case UserMessageConstant.UPDATE_DOOR:
+                getCommonDoorData();
+                break;
         }
     }
 
@@ -1578,7 +1581,7 @@ public class MainHomeFragmentNew extends Fragment implements NewHttpResponse, My
                                 ToastUtil.toastShow(getActivity(), "认证成功");
                                 editor.putString(UserAppConst.COLOUR_AUTH_REAL_NAME + customer_id, realName).commit();
                                 authItemClick(fromFunc, fromFunc ? homeFuncBean : appBean); //跳转
-                                newUserModel.finishTask(15, "2", this);//实名认证任务
+                                newUserModel.finishTask(15, "2", "task_native", this);//实名认证任务
                             } else {
                                 editor.putString(UserAppConst.COLOUR_AUTH_REAL_NAME + customer_id, "").commit();
                             }

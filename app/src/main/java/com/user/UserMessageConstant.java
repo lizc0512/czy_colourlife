@@ -29,6 +29,7 @@ public class UserMessageConstant {
     public static final int UPDATE_APP_CLICK = USER_MESSAGE_BASE + 80;//更新应用的点击事件
     public static final int BLUETOOTH_OPEN_DOOR = USER_MESSAGE_BASE + 81;//蓝牙开门成功的提示
     public static final int BLUETOOTH_CLOSE_DIALOG = USER_MESSAGE_BASE + 82;//蓝牙列表页开门成功关闭首页的
+    public static final int UPDATE_DOOR = USER_MESSAGE_BASE + 83;//更新门禁
 
 
 }

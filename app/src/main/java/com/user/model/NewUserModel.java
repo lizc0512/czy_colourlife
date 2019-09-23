@@ -1757,9 +1757,10 @@ public class NewUserModel extends BaseModel {
     /**
      * 获取授权管理详情
      */
-    public void finishTask(int what, String type, final NewHttpResponse newHttpResponse) {
+    public void finishTask(int what, String type, String come_from, final NewHttpResponse newHttpResponse) {
         Map<String, Object> params = new HashMap<>();
         params.put("type", type);//2实名认证、3意见反馈
+        params.put("come_from", come_from);
         final Request<String> request = NoHttp.createStringRequest(RequestEncryptionUtils.getCombileMD5(mContext, 3, finishTask, params), RequestMethod.GET);
         request(what, request, params, new HttpListener<String>() {
             @Override

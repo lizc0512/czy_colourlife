@@ -37,13 +37,11 @@ import com.door.entity.DoorRecordEntity;
 import com.door.entity.DoorRightEntity;
 import com.door.entity.OpenDoorResultEntity;
 import com.door.fragment.IntelligenceDoorFragment;
-import com.door.helper.CacheDoorRenameHelper;
 import com.door.model.NewDoorModel;
 import com.door.view.DoorRenameDialog;
 import com.door.view.ShowOpenDoorDialog;
 import com.external.eventbus.EventBus;
 import com.google.gson.Gson;
-import com.im.entity.IntelligenceDoorEntity;
 import com.nohttp.utils.GsonUtils;
 import com.user.UserAppConst;
 import com.user.UserMessageConstant;
@@ -96,6 +94,8 @@ public class IntelligenceDoorActivity extends BaseFragmentActivity implements Ne
     private int userId;
     private String intelligenceDoorCache;
     private String resultData = "";
+    private String userCommunityUuid = "";
+    private String changeCommunityUuid = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -117,6 +117,7 @@ public class IntelligenceDoorActivity extends BaseFragmentActivity implements Ne
         }
         LekaiHelper.setScanParkLockChangeListener(this);
         userId = shared.getInt(UserAppConst.Colour_User_id, 0);
+        userCommunityUuid = shared.getString(UserAppConst.Colour_login_community_uuid, "03b98def-b5bd-400b-995f-a9af82be01da");
         init = false;
         initView();
         initData();
@@ -189,12 +190,10 @@ public class IntelligenceDoorActivity extends BaseFragmentActivity implements Ne
                         ((IntelligenceDoorFragment) fragmentList.get(j)).refresh(gson.toJson(list));
                     }
                 } else if (tabTitleArray.length > fragmentList.size()) {
-                    for (int i = fragmentList.size(); i < tabTitleArray.length; i++) {
-                        fragmentList.add(IntelligenceDoorFragment.newInstance(userId, ""));
-                    }
-                    for (int j = 0; j < fragmentList.size(); j++) {
+                    fragmentList.clear();
+                    for (int j = 0; j < tabTitleArray.length; j++) {
                         List<DoorAllEntity.ContentBean.DataBean.ListBean> list = doorAllEntity.getContent().getData().get(j).getList();
-                        ((IntelligenceDoorFragment) fragmentList.get(j)).refresh(gson.toJson(list));
+                        fragmentList.add(IntelligenceDoorFragment.newInstance(userId, gson.toJson(list)));
                     }
                 } else {
                     for (int i = fragmentList.size() - 1; i > tabTitleArray.length - 1; i--) {
@@ -545,6 +544,28 @@ public class IntelligenceDoorActivity extends BaseFragmentActivity implements Ne
                 if (!TextUtils.isEmpty(result)) {
                     intelligenceDoorCache = shared.getString(UserAppConst.COLOUR_INTELLIGENCE_DOOR + userId, "");
                     newDoorModel.getCommunityKey(5, true, this);//获取门禁列表
+
+                    if (userCommunityUuid.equals(changeCommunityUuid)) {
+                        Message msg = new Message();
+                        msg.what = UserMessageConstant.UPDATE_DOOR;
+                        EventBus.getDefault().post(msg);
+                    }
+                    changeCommunityUuid = "";
+                }
+                break;
+            case 9://门禁重命名
+                if (!TextUtils.isEmpty(result)) {
+                    ToastUtil.toastShow(IntelligenceDoorActivity.this, getResources().getString(R.string.door_rename_success));
+
+                    intelligenceDoorCache = shared.getString(UserAppConst.COLOUR_INTELLIGENCE_DOOR + userId, "");
+                    newDoorModel.getCommunityKey(5, true, this);//获取门禁列表
+
+                    if (userCommunityUuid.equals(changeCommunityUuid)) {
+                        Message msg = new Message();
+                        msg.what = UserMessageConstant.UPDATE_DOOR;
+                        EventBus.getDefault().post(msg);
+                    }
+                    changeCommunityUuid = "";
                 }
                 break;
         }
@@ -629,9 +650,10 @@ public class IntelligenceDoorActivity extends BaseFragmentActivity implements Ne
     /**
      * 重命名操作
      */
-    public void renameHandle(int position, String qr_code, String doorName) {
+    public void renameHandle(int position, String community_uuid, String door_id, String door_name) {
         this.position = vp_door.getCurrentItem();
-        showRenameDialog(position, qr_code, doorName);
+        changeCommunityUuid = community_uuid;
+        showRenameDialog(position, community_uuid, door_id, door_name);
     }
 
     private DoorRenameDialog doorRenameDialog;
@@ -639,11 +661,11 @@ public class IntelligenceDoorActivity extends BaseFragmentActivity implements Ne
     /**
      * 门禁重命名
      */
-    private void showRenameDialog(int position, String qr_code, String doorName) {
+    private void showRenameDialog(int position, String community_uuid, String door_id, String door_name) {
         doorRenameDialog = new DoorRenameDialog(this, R.style.custom_dialog_theme);
         doorRenameDialog.show();
         doorRenameDialog.setCanceledOnTouchOutside(true);
-        doorRenameDialog.dialog_content.setText(doorName);
+        doorRenameDialog.dialog_content.setText(door_name);
         doorRenameDialog.dialog_content.setSelection(doorRenameDialog.dialog_content.getText().length());
         doorRenameDialog.dialog_content.addTextChangedListener(new TextWatcher() {
             @Override
@@ -671,16 +693,20 @@ public class IntelligenceDoorActivity extends BaseFragmentActivity implements Ne
                     try {
                         DisplayUtil.showInput(false, this);
 
-                        IntelligenceDoorEntity entity = new IntelligenceDoorEntity();
-                        entity.setUser_id(userId);
-                        entity.setQr_code(qr_code);
-                        entity.setRename(name);
-                        CacheDoorRenameHelper.instance().insertOrUpdate(this, entity);
 
-                        ToastUtil.toastShow(IntelligenceDoorActivity.this, getResources().getString(R.string.door_rename_success));
+                        newDoorModel.doorRename(9, community_uuid, door_id, name, this);
 
-                        intelligenceDoorCache = shared.getString(UserAppConst.COLOUR_INTELLIGENCE_DOOR + userId, "");
-                        setData(true, intelligenceDoorCache);//刷新所有数据
+
+//                        IntelligenceDoorEntity entity = new IntelligenceDoorEntity();
+//                        entity.setUser_id(userId);
+//                        entity.setQr_code(qr_code);
+//                        entity.setRename(name);
+//                        CacheDoorRenameHelper.instance().insertOrUpdate(this, entity);
+//
+//                        ToastUtil.toastShow(IntelligenceDoorActivity.this, getResources().getString(R.string.door_rename_success));
+//
+//                        intelligenceDoorCache = shared.getString(UserAppConst.COLOUR_INTELLIGENCE_DOOR + userId, "");
+//                        setData(true, intelligenceDoorCache);//刷新所有数据
 
 //                        ((IntelligenceDoorFragment) fragmentList.get(this.position)).refreshRename(position, name);
                     } catch (Resources.NotFoundException e) {
@@ -702,6 +728,7 @@ public class IntelligenceDoorActivity extends BaseFragmentActivity implements Ne
      */
     public void addOrRemoveHandle(int position, String community_uuid, String door_name, String door_id, boolean add) {
         this.position = vp_door.getCurrentItem();
+        changeCommunityUuid = community_uuid;
         newDoorModel.removeDoor(8, community_uuid, door_name, door_id, add ? "1" : "2", this);//添加、移除常用门禁
     }
 

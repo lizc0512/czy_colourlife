@@ -153,9 +153,7 @@ public class WholeApplicationActivity extends BaseActivity implements NewHttpRes
                             if ("1".equals(content)) {
                                 ToastUtil.toastShow(this, "认证成功");
                                 editor.putString(UserAppConst.COLOUR_AUTH_REAL_NAME + customer_id, realName).commit();
-                                newUserModel.finishTask(4, "2", this);//实名认证任务
-                                //跳转
-                                authItemClick();
+                                newUserModel.finishTask(4, "2", "task_native", this);//实名认证任务
                             }
                         } else {
                             String message = jsonObject.getString("message");
@@ -166,7 +164,9 @@ public class WholeApplicationActivity extends BaseActivity implements NewHttpRes
                     }
                 }
                 break;
-            case 4://实名认证
+            case 4://实名认证任务
+                //跳转
+                authItemClick();
                 break;
         }
     }
