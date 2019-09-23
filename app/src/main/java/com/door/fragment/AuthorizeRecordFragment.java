@@ -12,6 +12,10 @@ import java.util.List;
 
 import cn.net.cyberway.R;
 
+/*
+
+授权记录的
+ */
 public class AuthorizeRecordFragment extends BaseFragment {
 
     private XRecyclerView rv_authorize_record;

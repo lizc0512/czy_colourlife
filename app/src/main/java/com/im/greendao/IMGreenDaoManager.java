@@ -81,7 +81,9 @@ public class IMGreenDaoManager {
         mDaoSession.getApplyRecordEntityDao().deleteAll();
         mDaoSession.getFriendInforEntityDao().deleteAll();
         mDaoSession.getMobileInforEntityDao().deleteAll();
+        mDaoSession.getIntelligenceDoorEntityDao().deleteAll();
     }
+
 
     public ApplyRecordEntityDao getApplyRecordEntityDao() {
         return mDaoSession.getApplyRecordEntityDao();
