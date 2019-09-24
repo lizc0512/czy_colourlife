@@ -6,17 +6,12 @@ import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.os.Build;
 import android.os.Bundle;
-import android.provider.Telephony;
 import android.telephony.SmsMessage;
 import android.telephony.TelephonyManager;
 
 import com.youmai.hxsdk.HuxinSdkManager;
-import com.youmai.hxsdk.http.IPostListener;
 import com.youmai.hxsdk.service.HuxinService;
 import com.youmai.hxsdk.utils.StringUtils;
-
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -40,28 +35,31 @@ public class HuxinReceiver extends BroadcastReceiver {
 
     @Override
     public void onReceive(Context context, Intent intent) {
-        String action = intent.getAction();
+        try {
+            String action = intent.getAction();
+            if (action.equals(TelephonyManager.ACTION_PHONE_STATE_CHANGED)) {
+                Intent in = new Intent(context, HuxinService.class);
+                in.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                    context.startForegroundService(in);
+                } else {
+                    context.startService(in);//启动服务
+                }
+            } else if (action.equals(ACTION_START_SERVICE)
+                    || action.equals(Intent.ACTION_BOOT_COMPLETED)
+                    || action.equals(ConnectivityManager.CONNECTIVITY_ACTION)) {
+                HuxinSdkManager.instance().init(context);
+                Intent in = new Intent(context, HuxinService.class);
+                in.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                in.setAction(HuxinService.BOOT_SERVICE);
+                if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                    context.startForegroundService(in);
+                } else {
+                    context.startService(in);//启动服务
+                }
+            }
+        } catch (Exception e) {
 
-        if (action.equals(TelephonyManager.ACTION_PHONE_STATE_CHANGED)) {
-            Intent in = new Intent(context, HuxinService.class);
-            in.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-            if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                context.startForegroundService(in);
-            } else {
-                context.startService(in);//启动服务
-            }
-        } else if (action.equals(ACTION_START_SERVICE)
-                || action.equals(Intent.ACTION_BOOT_COMPLETED)
-                || action.equals(ConnectivityManager.CONNECTIVITY_ACTION)) {
-            HuxinSdkManager.instance().init(context);
-            Intent in = new Intent(context, HuxinService.class);
-            in.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-            in.setAction(HuxinService.BOOT_SERVICE);
-            if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                context.startForegroundService(in);
-            } else {
-                context.startService(in);//启动服务
-            }
         }
     }
 
