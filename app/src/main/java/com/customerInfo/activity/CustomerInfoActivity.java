@@ -115,7 +115,7 @@ public class CustomerInfoActivity extends BaseActivity implements View.OnClickLi
         String mobile = shared.getString(UserAppConst.Colour_login_mobile, "");
         nickname_tv.setText(shared.getString(UserAppConst.Colour_NIACKNAME, ""));
         name_tv.setText(shared.getString(UserAppConst.Colour_NAME, ""));
-        email_tv.setText(shared.getString(UserAppConst.COLOUR_EMAIL, ""));
+        email_tv.setText(shared.getString(UserAppConst.COLOUR_EMAIL, "").trim());
         address_tv.setText(shared.getString(UserAppConst.Colour_login_community_name, ""));
         mobile_tv.setText(mobile);
         gender = shared.getString(UserAppConst.Colour_GENDER, "0");
@@ -314,6 +314,7 @@ public class CustomerInfoActivity extends BaseActivity implements View.OnClickLi
 
     /**
      * 保存
+     *
      * @param isFinish true 已完成，false 未完成
      */
     private void save(boolean isFinish) {
