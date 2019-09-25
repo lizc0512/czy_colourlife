@@ -160,7 +160,7 @@ public class CustomerNameActivity extends BaseActivity implements View.OnClickLi
                 finish();
                 break;
             case R.id.complete_btn:
-                name = name_et.getText().toString();
+                name = name_et.getText().toString().trim();
                 if ("".equals(name)) {
                     if (type.equals("name")) {
                         ToastUtil.toastShow(this, "名字不能为空");

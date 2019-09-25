@@ -74,8 +74,12 @@ public class CacheApplyRecorderHelper {
 
     public int toQueryApplyRecordSize(Context context, String staus) {
         ApplyRecordEntityDao dao = IMGreenDaoManager.instance(context).getApplyRecordEntityDao();
-        List<ApplyRecordEntity> applyRecordEntityList = dao.queryBuilder().where(ApplyRecordEntityDao.Properties.State.eq(staus)).list();
-        return applyRecordEntityList.size();
+        if (null != dao) {
+            List<ApplyRecordEntity> applyRecordEntityList = dao.queryBuilder().where(ApplyRecordEntityDao.Properties.State.eq(staus)).list();
+            return applyRecordEntityList.size();
+        } else {
+            return 0;
+        }
     }
 
     /**

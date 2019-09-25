@@ -1,6 +1,7 @@
 package com.youmai.hxsdk.service;
 
 import android.app.AlarmManager;
+import android.app.Notification;
 import android.app.PendingIntent;
 import android.app.Service;
 import android.app.job.JobInfo;
@@ -25,6 +26,7 @@ import android.util.Log;
 import com.google.protobuf.GeneratedMessage;
 import com.google.protobuf.InvalidProtocolBufferException;
 import com.youmai.hxsdk.HuxinSdkManager;
+import com.youmai.hxsdk.R;
 import com.youmai.hxsdk.config.AppConfig;
 import com.youmai.hxsdk.config.ColorsConfig;
 import com.youmai.hxsdk.im.IMMsgManager;
@@ -232,9 +234,9 @@ public class HuxinService extends Service {
         registerReceiver(mScreenReceiver, filter);
 
         if (android.os.Build.VERSION.SDK_INT <= android.os.Build.VERSION_CODES.N) {
-            if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.O){
+            if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                 startForegroundService(new Intent(this, ForegroundEnablingService.class));
-            }else{
+            } else {
                 if (startService(new Intent(this, ForegroundEnablingService.class)) == null) {
                     throw new RuntimeException("Couldn't find " + ForegroundEnablingService.class.getSimpleName());
                 }
@@ -247,6 +249,18 @@ public class HuxinService extends Service {
         IMMsgManager.instance().addChatListener();
     }
 
+    private void createErrorNotification() {
+        Notification notification = new Notification.Builder(this).build();
+        startForeground(0, notification);
+    }
+
+    private static final int NOTIFICATION_ID = 100;
+
+    private static void startForeground(Service service) {
+        Notification.Builder builder = new Notification.Builder(service);
+        builder.setSmallIcon(R.drawable.img_msg);
+        service.startForeground(NOTIFICATION_ID, builder.build());
+    }
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
@@ -260,15 +274,21 @@ public class HuxinService extends Service {
         if (!TextUtils.isEmpty(action)) {
             switch (action) {
                 case BOOT_SERVICE:
-                    String uuid = HuxinSdkManager.instance().getUuid();
-
-                    if (mClient.isIdle()) {
-                        Log.v(TAG, "tcp is reconnect");
-                        mClient.reConnect();
-                    } else if (mClient.isConnect()) {
-                        if (!mClient.isLogin()) {  //登录后的重连，不需要二次登录，服务器做支持
-                            tcpLogin(uuid, ColorsConfig.ColorLifeAppId);
+                    try {
+                        startForeground(this);
+                        String uuid = HuxinSdkManager.instance().getUuid();
+                        if (mClient.isIdle()) {
+                            Log.v(TAG, "tcp is reconnect");
+                            mClient.reConnect();
+                        } else if (mClient.isConnect()) {
+                            if (!mClient.isLogin()) {  //登录后的重连，不需要二次登录，服务器做支持
+                                tcpLogin(uuid, ColorsConfig.ColorLifeAppId);
+                            }
                         }
+                        stopForeground(true);
+                        stopSelf(startId);
+                    } catch (Exception e) {
+
                     }
                     break;
                 case IM_LOGIN_OUT:

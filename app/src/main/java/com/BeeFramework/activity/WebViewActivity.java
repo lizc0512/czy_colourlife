@@ -148,6 +148,7 @@ import cn.net.cyberway.R;
 import cn.net.cyberway.activity.MainActivity;
 import cn.net.cyberway.home.service.LekaiParkLockController;
 import cn.net.cyberway.sharesdk.onekeyshare.OnekeyShare;
+import cn.net.cyberway.sharesdk.onekeyshare.ShareContentCustomizeCallback;
 import cn.net.cyberway.sharesdk.onekeyshare.js.ShareSDKUtils;
 import cn.net.cyberway.utils.BuryingPointUtils;
 import cn.net.cyberway.utils.ChangeLanguageHelper;
@@ -1347,6 +1348,91 @@ public class WebViewActivity extends BaseActivity implements View.OnLongClickLis
         }
 
         @JavascriptInterface
+        public void colourlifeWXMiniProgramActivity(String json) {
+            if (!TextUtils.isEmpty(json)) {
+                try {
+                    JSONObject jsonObject = new JSONObject(json);
+                    String appid = jsonObject.getString("userName");
+                    String path = jsonObject.getString("path");
+                    Platform wechat = ShareSDK.getPlatform(Wechat.NAME);
+                    oks = new OnekeyShare();
+                    oks.setSilent(true);
+                    //隐藏自带的分享列表
+                    oks.setPlatform(wechat.getName());
+
+                    oks.setShareContentCustomizeCallback(new ShareContentCustomizeCallback() {
+                        @Override
+                        public void onShare(Platform platform,
+                                            cn.sharesdk.framework.Platform.ShareParams paramsToShare) {
+                            paramsToShare.setShareType(Platform.OPEN_WXMINIPROGRAM);
+                            paramsToShare.setWxUserName(appid);
+                            paramsToShare.setWxPath(path);
+                        }
+                    });
+                    oks.setCallback(new PlatformActionListener() {
+                        @Override
+                        public void onComplete(final Platform platform, int i, HashMap<String, Object> hashMap) {
+                            WebViewActivity.this.runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    JSONObject jsonObject = new JSONObject();
+                                    try {
+                                        jsonObject.put("shareType", platform.getName());
+                                        jsonObject.put("state", "1");
+                                    } catch (JSONException e) {
+                                        e.printStackTrace();
+                                    }
+                                    webView.loadUrl("javascript:ColourlifeShareHandler('" + jsonObject.toString() + "')");
+                                    ToastUtil.toastShow(WebViewActivity.this, "分享成功");
+                                }
+                            });
+                        }
+
+                        @Override
+                        public void onError(final Platform platform, int i, final Throwable throwable) {
+                            WebViewActivity.this.runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    JSONObject jsonObject = new JSONObject();
+                                    try {
+                                        jsonObject.put("shareType", platform.getName());
+                                        jsonObject.put("state", "0");
+                                    } catch (JSONException e) {
+                                        e.printStackTrace();
+                                    }
+                                    webView.loadUrl("javascript:ColourlifeShareHandler('" + jsonObject.toString() + "')");
+                                    ToastUtil.toastShow(WebViewActivity.this, "分享失败" + throwable.getMessage());
+                                }
+                            });
+                        }
+
+                        @Override
+                        public void onCancel(final Platform platform, int i) {
+                            WebViewActivity.this.runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    JSONObject jsonObject = new JSONObject();
+                                    try {
+                                        jsonObject.put("shareType", platform.getName());
+                                        jsonObject.put("state", "3");
+                                    } catch (JSONException e) {
+                                        e.printStackTrace();
+                                    }
+                                    webView.loadUrl("javascript:ColourlifeShareHandler('" + jsonObject.toString() + "')");
+                                    ToastUtil.toastShow(WebViewActivity.this, "关闭分享");
+                                }
+                            });
+                        }
+                    });
+                    // 启动分享
+                    oks.show(WebViewActivity.this);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+
+        @JavascriptInterface
         public void ColourlifeWalletAuth(String authJson) {
             Cqb_PayUtil.getInstance(WebViewActivity.this).openCertification(getAuthPublicParams(WebViewActivity.this, authJson), Constants.CAIWALLET_ENVIRONMENT, "CertificationFlag");
         }
@@ -1729,51 +1815,7 @@ public class WebViewActivity extends BaseActivity implements View.OnLongClickLis
 
 
     private void goAlipayPay(String urls) {
-//        boolean isIntercepted = false;
-//        //https://www.jianshu.com/p/ebaedd551365
-//        if (urls.startsWith("http")) {
-//            final PayTask task = new PayTask(WebViewActivity.this); //支持原生APP调用
-//            //webView处理必须在同一个线程上
-//            isIntercepted = task.payInterceptorWithUrl(urls, true, new H5PayCallback() {
-//
-//                @Override
-//                public void onPayResult(final H5PayResultModel result) {
-//                    /*
-//                    resultCode
-//	                String返回码，标识支付状态，含义如下：
-//	                9000——订单支付成功
-//	                8000——正在处理中
-//	                4000——订单支付失败
-//	                5000——重复请求
-//	                6001——用户中途取消
-//	                6002——网络连接出错
-//                    returnUrl  String支付结束后应当跳转的 url 地址
-//                     */
-//                    // 支付结果返回
-//                    final String url = result.getReturnUrl();
-//                    if (!TextUtils.isEmpty(url)) {
-//                        WebViewActivity.this.runOnUiThread(new Runnable() {
-//                            @Override
-//                            public void run() {
-//                                webView.loadUrl(url);
-//                            }
-//                        });
-//                    }
-//                    // 5000支付失败 6001重复请求 6002中途取消
-//                    if ("9000".equals(result.getResultCode())) {
-//                        Message message = Message.obtain();
-//                        message.what = UserMessageConstant.GUANGCAI_PAY_MSG;
-//                        EventBus.getDefault().post(message);
-//                        finish();
-//                    }
-//                }
-//            });
-//            if (!isIntercepted) {
-//                jumpByUrls(urls);
-//            }
-//        } else {
         jumpByUrls(urls);
-//        }
     }
 
     private void jumpByUrls(String urls) {
