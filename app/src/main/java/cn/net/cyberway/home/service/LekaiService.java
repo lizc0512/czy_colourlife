@@ -174,6 +174,8 @@ public class LekaiService extends Service {
                             msg.what = UserMessageConstant.BLUETOOTH_OPEN_DOOR;
                             mShared.edit().putLong("saveTime", currentTimeMillis).apply();
                             EventBus.getDefault().post(msg);
+
+                            uploadOpenDoor(openCipherId, "door", code, message);
                         } else {//开门成功一次后 20s再弹出
                             long saveTime = mShared.getLong("saveTime", currentTimeMillis - 20000);
                             long distanceTime = currentTimeMillis - saveTime;
@@ -182,21 +184,32 @@ public class LekaiService extends Service {
                                 Message msg = Message.obtain();
                                 msg.what = UserMessageConstant.BLUETOOTH_OPEN_DOOR;
                                 EventBus.getDefault().post(msg);
+
+                                uploadOpenDoor(openCipherId, "door", code, message);
                             }
                         }
                     } else if (ErrorConstants.IS_OPERATION_ERROR_TYPE_WRONG_TIME == code) {
                         ToastUtil.toastShow(getApplicationContext(), "钥匙过期，请联系管理员");
+                        uploadOpenDoor(openCipherId, "door", code, message);
                     } else {
                         ToastUtil.toastShow(getApplicationContext(), "开门失败");
-                    }
-                    if (null == newUserModel) {
-                        newUserModel = new NewUserModel(this);
-                    }
-                    if (!TextUtils.isEmpty(openCipherId)) {
-                        newUserModel.uploadOpenDoor(0, openCipherId, "door", 0 == code ? 1 : 2, 0 == code ? code + "" : code + "," + message);
+                        uploadOpenDoor(openCipherId, "door", code, message);
                     }
                 });
             });
+        }
+    }
+
+    /**
+     * 上传门禁记录
+     */
+    private void uploadOpenDoor(String openCipherId, String type, int code, String message) {
+        boolean success = 0 == code;
+        if (null == newUserModel) {
+            newUserModel = new NewUserModel(this);
+        }
+        if (!TextUtils.isEmpty(openCipherId)) {
+            newUserModel.uploadOpenDoor(0, openCipherId, type, success ? 1 : 2, success ? code + "" : code + "," + message);
         }
     }
 
@@ -267,12 +280,13 @@ public class LekaiService extends Service {
                             mHandler.post(() -> {
                                 try {
                                     ToastUtil.toastShow(getApplicationContext(), 0 == status ? ("操作成功,电量：" + battery) : err);
-                                    if (null == newUserModel) {
-                                        newUserModel = new NewUserModel(LekaiService.this);
-                                    }
-                                    if (!TextUtils.isEmpty(device.getCipherId())) {
-                                        newUserModel.uploadOpenDoor(0, device.getCipherId(), "car", 0 == status ? 1 : 2, 0 == status ? status + "" : status + "," + message);
-                                    }
+                                    uploadOpenDoor(device.getCipherId(), "car", status, message);
+//                                    if (null == newUserModel) {
+//                                        newUserModel = new NewUserModel(LekaiService.this);
+//                                    }
+//                                    if (!TextUtils.isEmpty(device.getCipherId())) {
+//                                        newUserModel.uploadOpenDoor(0, device.getCipherId(), "car", 0 == status ? 1 : 2, 0 == status ? status + "" : status + "," + message);
+//                                    }
                                 } catch (Exception e) {
                                     e.printStackTrace();
                                 }
@@ -365,12 +379,14 @@ public class LekaiService extends Service {
                                     }
                                     mHandler.post(() -> {
                                         ToastUtil.toastShow(getApplicationContext(), 0 == status ? ("操作成功,电量：" + battery) : err);
-                                        if (null == newUserModel) {
-                                            newUserModel = new NewUserModel(LekaiService.this);
-                                        }
-                                        if (!TextUtils.isEmpty(device.getCipherId())) {
-                                            newUserModel.uploadOpenDoor(0, device.getCipherId(), "car", 0 == status ? 1 : 2, 0 == status ? status + "" : status + "," + message);
-                                        }
+                                        uploadOpenDoor(device.getCipherId(), "car", status, message);
+
+//                                        if (null == newUserModel) {
+//                                            newUserModel = new NewUserModel(LekaiService.this);
+//                                        }
+//                                        if (!TextUtils.isEmpty(device.getCipherId())) {
+//                                            newUserModel.uploadOpenDoor(0, device.getCipherId(), "car", 0 == status ? 1 : 2, 0 == status ? status + "" : status + "," + message);
+//                                        }
                                     });
                                 } catch (Exception e) {
                                     e.printStackTrace();

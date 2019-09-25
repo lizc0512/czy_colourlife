@@ -73,6 +73,7 @@ public class FeedBackFragment extends BaseFragment implements View.OnClickListen
     private ArrayList<ImageItem> allImages = new ArrayList<>();
     private List<String> uploadPathList = new ArrayList<>();
     private boolean fromWeb = false;
+    private NewUserModel newUserModel;
 
     public static FeedBackFragment newInstance(boolean fromWeb) {
         Bundle arguments = new Bundle();
@@ -368,7 +369,9 @@ public class FeedBackFragment extends BaseFragment implements View.OnClickListen
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
-                NewUserModel newUserModel = new NewUserModel(getActivity());
+                if (null == newUserModel) {
+                    newUserModel = new NewUserModel(getActivity());
+                }
                 newUserModel.finishTask(2, "3", fromWeb ? "task_web" : "task_native", this);
                 break;
             case 2:
