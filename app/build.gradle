@@ -9,7 +9,7 @@ android {
         minSdkVersion MIN_SDK_VERSION as int
         targetSdkVersion TARGET_SDK_VERSION as int
         versionCode 92
-        versionName "6.6.18"
+        versionName "6.6.17.1"
         multiDexEnabled true
         javaCompileOptions {
             annotationProcessorOptions {

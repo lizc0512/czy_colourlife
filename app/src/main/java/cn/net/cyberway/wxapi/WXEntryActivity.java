@@ -4,6 +4,11 @@ package cn.net.cyberway.wxapi;
 import android.content.Intent;
 import android.widget.Toast;
 
+import com.BeeFramework.Utils.ToastUtil;
+import com.tencent.mm.opensdk.modelbase.BaseReq;
+import com.tencent.mm.opensdk.modelbase.BaseResp;
+import com.tencent.mm.opensdk.openapi.IWXAPIEventHandler;
+
 import cn.sharesdk.wechat.utils.WXAppExtendObject;
 import cn.sharesdk.wechat.utils.WXMediaMessage;
 import cn.sharesdk.wechat.utils.WechatHandlerActivity;
@@ -11,7 +16,7 @@ import cn.sharesdk.wechat.utils.WechatHandlerActivity;
 /**
  * 微信客户端回调activity示例
  */
-public class WXEntryActivity extends WechatHandlerActivity {
+public class WXEntryActivity extends WechatHandlerActivity  {
 
     /**
      * 处理微信发出的向第三方应用请求app message
@@ -35,12 +40,11 @@ public class WXEntryActivity extends WechatHandlerActivity {
      * <p>
      * 本Demo只是将信息展示出来，但你可做点其他的事情，而不仅仅只是Toast
      */
-    public void onShowMessageFromWXReq(WXMediaMessage msg) {
+    public void onShowMessageFromWXReq(WXMediaMessage msg) {//小程序打开app
         if (msg != null && msg.mediaObject != null
                 && (msg.mediaObject instanceof WXAppExtendObject)) {
             WXAppExtendObject obj = (WXAppExtendObject) msg.mediaObject;
             Toast.makeText(this, obj.extInfo, Toast.LENGTH_SHORT).show();
         }
     }
-
 }

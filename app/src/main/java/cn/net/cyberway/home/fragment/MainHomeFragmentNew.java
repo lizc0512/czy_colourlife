@@ -1028,6 +1028,7 @@ public class MainHomeFragmentNew extends Fragment implements NewHttpResponse, My
     }
 
     private void updateDoorView() {
+        choiceIndex = 0;
         useDoorSize = commonUseBeanList.size();
         viewpage_door.setScrollMode(UltraViewPager.ScrollMode.HORIZONTAL);
         if (viewpage_door.getAdapter() != null) {
@@ -1036,6 +1037,22 @@ public class MainHomeFragmentNew extends Fragment implements NewHttpResponse, My
         HomeDoorAdapter homeDoorAdapter = new HomeDoorAdapter(commonUseBeanList, false, true);
         viewpage_door.setAdapter(homeDoorAdapter);
         viewpage_door.refresh();
+        viewpage_door.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int i, float v, int i1) {
+
+            }
+
+            @Override
+            public void onPageSelected(int i) {
+                choiceIndex = i;
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int i) {
+
+            }
+        });
     }
 
     private int choiceIndex = 0;
