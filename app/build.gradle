@@ -197,8 +197,6 @@ dependencies {
     //乐开
     implementation(name: 'lekai-open-sdk-v3.0.8.1', ext: 'aar')
     //数位场景识别 保留
-//    implementation files('libs/location_sdk_batman_x-release-3.2.0.jar')
-
 }
 
 project.afterEvaluate {

@@ -39,7 +39,7 @@ public class SplashActivity extends Activity implements HttpApiResponse, NewHttp
     private boolean autoJump = true;
     private ThemeModel themeModel;
     private String linkUrl = "";
-    private int delayTime = 2000;
+    private int delayTime = 1000;
     private TimeCount timeCount = null;
 
 

@@ -7,17 +7,14 @@ import android.support.annotation.Nullable;
 import com.BeeFramework.model.Constants;
 import com.facebook.stetho.Stetho;
 import com.geetest.deepknow.DPAPI;
-import com.im.greendao.IMGreenDaoManager;
 import com.mob.MobSDK;
 import com.qiniu.droid.rtc.QNRTCEnv;
 import com.sobot.chat.SobotApi;
 import com.tencent.bugly.Bugly;
 import com.tendcloud.tenddata.TCAgent;
 import com.umeng.commonsdk.UMConfigure;
-import com.youmai.hxsdk.HuxinSdkManager;
 
 import cn.jpush.android.api.JPushInterface;
-import cn.net.cyberway.activity.MainActivity;
 import cn.net.cyberway.utils.CityManager;
 
 /**

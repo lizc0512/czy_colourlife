@@ -140,7 +140,6 @@ public class HttpResponseListener<T> implements OnResponseListener<T> {
                     requestParams.put(key, params.getValue(key));
                 }
                 if (Constants.SAVENOHTTPRECORD == 1) {
-
                     StringBuffer stringBuffer = new StringBuffer();
                     String paramString = "";
                     if (response.request().getRequestMethod().toString().equals(RequestMethod.GET)) {
