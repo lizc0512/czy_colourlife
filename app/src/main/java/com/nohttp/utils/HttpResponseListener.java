@@ -149,7 +149,7 @@ public class HttpResponseListener<T> implements OnResponseListener<T> {
                         stringBuffer.append(requestUrl + paramString);
                     } else {
                         if (requestUrl.endsWith("oauth/token")) {
-                            requestParams.put("resultTime", TimeUtil.getTime()+System.currentTimeMillis());
+                            requestParams.put("resultTime", TimeUtil.getTime() + System.currentTimeMillis());
                         }
                         paramString = JsonFormatTool.formatJson(GsonUtils.gsonString(requestParams), "  ");
                         stringBuffer.append("请求的url:");
@@ -163,11 +163,14 @@ public class HttpResponseListener<T> implements OnResponseListener<T> {
                 }
                 String result = String.valueOf(response.get());
                 if (!TextUtils.isEmpty(result)) {
-                    if (!new JSONObject(result).isNull("code")) {
+                    JSONObject resultJson = new JSONObject(result);
+                    if (!resultJson.isNull("code")) { //上传通用的接口
                         BaseContentEntity baseContentEntity = GsonUtils.gsonToBean(result, BaseContentEntity.class);
                         if (baseContentEntity.getCode() != 0) {
                             saveFailRequest(response, baseContentEntity.getMessage());
                         }
+                    } else if (!resultJson.isNull("error")) { //上传accesstoken请求失败的接口
+                        saveFailRequest(response, resultJson.optString("message"));
                     }
                 } else {
                     saveFailRequest(response, "");

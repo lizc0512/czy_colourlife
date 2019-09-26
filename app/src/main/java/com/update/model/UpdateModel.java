@@ -20,6 +20,8 @@ import org.json.JSONObject;
 import java.util.HashMap;
 import java.util.Map;
 
+import static com.update.activity.UpdateVerSion.showVersionName;
+
 public class UpdateModel extends BaseModel {
     public UpdateModel(Context context) {
         super(context);
@@ -34,11 +36,12 @@ public class UpdateModel extends BaseModel {
      */
     public void chekVersion(String version, final String minType, boolean showLoading, NewHttpResponse newHttpResponse) {
         Map<String, Object> params = new HashMap<>();
-        params.put("version", version);
+        params.put("version", showVersionName(version));
+        params.put("app", "czy");
         params.put("minType", minType);
-        params.put("type", "android");
-        String basePath = "app/czy/checkUpdate";
-        final Request<String> request = NoHttp.createStringRequest(RequestEncryptionUtils.getCombileMD5(mContext, 1, basePath, params), RequestMethod.GET);
+        params.put("type", "1");
+        String basePath = "get/version";
+        final Request<String> request = NoHttp.createStringRequest(RequestEncryptionUtils.getCombileMD5(mContext, 14, basePath, params), RequestMethod.GET);
         request(0, request, params, new HttpListener<String>() {
 
             @Override
@@ -51,10 +54,10 @@ public class UpdateModel extends BaseModel {
                         try {
                             UpdateVersionEntity updateVersionEntity = GsonUtils.gsonToBean(result, UpdateVersionEntity.class);
                             UpdateVersionEntity.ContentBean contentBean = updateVersionEntity.getContent();
-                            int update_code = contentBean.getUpdate_code();
-                            if (update_code == -1 || update_code == 0) {
+                            int update_code = contentBean.getResult();
+                            if (update_code == 2 || update_code == 3) {
                                 editor.putBoolean(UpdateVerSion.HASNEWCODE, true);
-                                editor.putString(UpdateVerSion.SAVEVERSION, contentBean.getUpdate_info().getNew_version());
+                                editor.putString(UpdateVerSion.SAVEVERSION, contentBean.getInfo().getVersion());
                             } else {
                                 editor.putBoolean(UpdateVerSion.HASNEWCODE, false);
                             }

@@ -23,7 +23,6 @@ public class NotificationModel extends BaseModel {
     private final String msgdetail = "app/home/msg/getBannerTxtMsgDetail";
     private final String msgmore = "app/home/msg/getMsgDetailList";
     private final String msgeye = "app/home/msg/setShowType";
-    private final String ver = UpdateVerSion.handleVersionName(UpdateVerSion.getVersionName(mContext));;
 
     public NotificationModel(Context context) {
         super(context);
@@ -38,10 +37,8 @@ public class NotificationModel extends BaseModel {
      * 获取消息列表
      */
     public void getMsgList(int what, Boolean isloding, final NewHttpResponse newHttpResponse) {
-        Map<String, Object> params = new HashMap<>();
-        params.put("version", ver);
-        final Request<String> request = NoHttp.createStringRequest(RequestEncryptionUtils.getCombileMD5(mContext, 1, msglist, params), RequestMethod.GET);
-        request(what, request, params, new HttpListener<String>() {
+        final Request<String> request = NoHttp.createStringRequest(RequestEncryptionUtils.getCombileMD5(mContext, 1, msglist, null), RequestMethod.GET);
+        request(what, request, null, new HttpListener<String>() {
 
             @Override
             public void onSucceed(int what, Response<String> response) {
@@ -77,7 +74,6 @@ public class NotificationModel extends BaseModel {
     public void getMsgDetail(int what, String msg_id, Boolean isloding, final NewHttpResponse newHttpResponse) {
         Map<String, Object> params = new HashMap<>();
         params.put("msg_id", msg_id);
-        params.put("version", ver);
         final Request<String> request = NoHttp.createStringRequest(RequestEncryptionUtils.getCombileMD5(mContext, 1, msgdetail, params), RequestMethod.GET);
         request(what, request, params, new HttpListener<String>() {
 
@@ -117,7 +113,6 @@ public class NotificationModel extends BaseModel {
     public void getMsgMoreList(int what,String app_id,int page, Boolean isloding, final NewHttpResponse newHttpResponse) {
         Map<String, Object> params = new HashMap<>();
         params.put("app_id", app_id);
-        params.put("version", ver);
         params.put("page", page);
         final Request<String> request = NoHttp.createStringRequest(RequestEncryptionUtils.getCombileMD5(mContext, 1, msgmore, params), RequestMethod.GET);
         request(what, request, params, new HttpListener<String>() {
@@ -161,7 +156,6 @@ public class NotificationModel extends BaseModel {
     public void getShowEye(int what,String msg_id,int show_type, Boolean isloding, final NewHttpResponse newHttpResponse) {
         Map<String, Object> params = new HashMap<>();
         params.put("msg_id", msg_id);
-        params.put("version", ver);
         params.put("show_type", show_type);
         final Request<String> request = NoHttp.createStringRequest(RequestEncryptionUtils.postCombileMD5(mContext, 3, msgeye), RequestMethod.POST);
         request(what, request, params, new HttpListener<String>() {

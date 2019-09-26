@@ -2,8 +2,6 @@ package com.update.entity;
 
 import com.nohttp.entity.BaseContentEntity;
 
-import java.util.List;
-
 /**
  * @name ${yuansk}
  * @class name：com.update.entity
@@ -18,10 +16,12 @@ public class UpdateVersionEntity extends BaseContentEntity {
 
 
     /**
-     * content : {"update_code":0,"update_info":{"bug_list":["细节优化","其他bug修复"],"func_list":["首页新增IM","支付新增多种方式"],"size":37.84,"create_time":"2018.12.15","new_version":"6.6.4","url":"http://www.colourlife"}}
+     * content : {"info":{"func":"测试","bug":"测试","size":"44.43MB","create_time":1552981532,"version":"4.0.0","url":"https://baidu.com"},"result":3,"type":1}
+     * contentEncrypt :
      */
 
     private ContentBean content;
+    private String contentEncrypt;
 
     public ContentBean getContent() {
         return content;
@@ -31,70 +31,104 @@ public class UpdateVersionEntity extends BaseContentEntity {
         this.content = content;
     }
 
+    public String getContentEncrypt() {
+        return contentEncrypt;
+    }
+
+    public void setContentEncrypt(String contentEncrypt) {
+        this.contentEncrypt = contentEncrypt;
+    }
+
     public static class ContentBean {
         /**
-         * update_code : 0
-         * update_info : {"bug_list":["细节优化","其他bug修复"],"func_list":["首页新增IM","支付新增多种方式"],"size":37.84,"create_time":"2018.12.15","new_version":"6.6.4","url":"http://www.colourlife"}
+         * info : {"func":"测试","bug":"测试","size":"44.43MB","create_time":1552981532,"version":"4.0.0","url":"https://baidu.com"}
+         * result : 3
+         * type : 1
          */
 
-        private int update_code;
-        private UpdateInfoBean update_info;
+        private InfoBean info;
+        private int result;
+        private int type;
 
-        public int getUpdate_code() {
-            return update_code;
+        public InfoBean getInfo() {
+            return info;
         }
 
-        public void setUpdate_code(int update_code) {
-            this.update_code = update_code;
+        public void setInfo(InfoBean info) {
+            this.info = info;
         }
 
-        public UpdateInfoBean getUpdate_info() {
-            return update_info;
+        public int getResult() {
+            return result;
         }
 
-        public void setUpdate_info(UpdateInfoBean update_info) {
-            this.update_info = update_info;
+        public void setResult(int result) {
+            this.result = result;
         }
 
-        public static class UpdateInfoBean {
+        public int getType() {
+            return type;
+        }
+
+        public void setType(int type) {
+            this.type = type;
+        }
+
+        public static class InfoBean {
             /**
-             * bug_list : ["细节优化","其他bug修复"]
-             * func_list : ["首页新增IM","支付新增多种方式"]
-             * size : 37.84
-             * create_time : 2018.12.15
-             * new_version : 6.6.4
-             * url : http://www.colourlife
+             * func : 测试
+             * bug : 测试
+             * size : 44.43MB
+             * create_time : 1552981532
+             * version : 4.0.0
+             * url : https://baidu.com
              */
 
-            private double size;
-            private String create_time;
-            private String new_version;
+            private String func;
+            private String bug;
+            private String size;
+            private int create_time;
+            private String version;
             private String url;
-            private List<String> bug_list;
-            private List<String> func_list;
 
-            public double getSize() {
+            public String getFunc() {
+                return func;
+            }
+
+            public void setFunc(String func) {
+                this.func = func;
+            }
+
+            public String getBug() {
+                return bug;
+            }
+
+            public void setBug(String bug) {
+                this.bug = bug;
+            }
+
+            public String getSize() {
                 return size;
             }
 
-            public void setSize(double size) {
+            public void setSize(String size) {
                 this.size = size;
             }
 
-            public String getCreate_time() {
+            public int getCreate_time() {
                 return create_time;
             }
 
-            public void setCreate_time(String create_time) {
+            public void setCreate_time(int create_time) {
                 this.create_time = create_time;
             }
 
-            public String getNew_version() {
-                return new_version;
+            public String getVersion() {
+                return version;
             }
 
-            public void setNew_version(String new_version) {
-                this.new_version = new_version;
+            public void setVersion(String version) {
+                this.version = version;
             }
 
             public String getUrl() {
@@ -103,22 +137,6 @@ public class UpdateVersionEntity extends BaseContentEntity {
 
             public void setUrl(String url) {
                 this.url = url;
-            }
-
-            public List<String> getBug_list() {
-                return bug_list;
-            }
-
-            public void setBug_list(List<String> bug_list) {
-                this.bug_list = bug_list;
-            }
-
-            public List<String> getFunc_list() {
-                return func_list;
-            }
-
-            public void setFunc_list(List<String> func_list) {
-                this.func_list = func_list;
             }
         }
     }

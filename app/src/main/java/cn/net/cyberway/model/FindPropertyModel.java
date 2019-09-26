@@ -49,7 +49,6 @@ public class FindPropertyModel extends BaseModel {
         appHomePropertyListGetApi.httpApiResponse = businessResponse;
         String baseUrl = appHomePropertyListGetApi.apiURI;
         Map<String, Object> map = new HashMap<>();
-        map.put("version", UpdateVerSion.handleVersionName(UpdateVerSion.getVersionName(mContext)));
         Request<String> request = NoHttp.createStringRequest(RequestEncryptionUtils.getCombileMD5(
                 mContext, 1, baseUrl, map), RequestMethod.GET);
         request(0, request, map, new HttpListener<String>() {

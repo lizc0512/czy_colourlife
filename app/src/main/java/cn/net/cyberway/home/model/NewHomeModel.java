@@ -33,13 +33,13 @@ public class NewHomeModel extends BaseModel {
     private String homeModelNewAdMsgUrl = "app/home/v5/getNewAdMsg";
     private String homeBeanSignIn = "integral/user/getPopup";
     private String homeBeanSignUrl = "integral/user/getSignIn";
-    private String SignInUrl = "v5/isManager";
-    private String isManagerUrl = "app/home/v5/isManager";
+    private boolean isLogin;
 
 
     public NewHomeModel(Context context) {
         super(context);
         this.mContext = context;
+        isLogin = shared.getBoolean(UserAppConst.IS_LOGIN, false);
     }
 
     public void getHomeLayout(int what, final NewHttpResponse newHttpResponse) {
@@ -99,6 +99,9 @@ public class NewHomeModel extends BaseModel {
      * 首页头部模块
      */
     public void getHomeModuleHeader(int what, final NewHttpResponse newHttpResponse) {
+        if (!isLogin) {
+            return;
+        }
         final Request<String> request = NoHttp.createStringRequest(
                 RequestEncryptionUtils.getCombileMD5(mContext, 1, homeHeadUrl, null), RequestMethod.GET);
         request.setConnectTimeout(25000);
@@ -200,6 +203,9 @@ public class NewHomeModel extends BaseModel {
     }
 
     public void getHomeModelManager(int what, final NewHttpResponse newHttpResponse) {
+        if (!isLogin) {
+            return;
+        }
         final Request<String> request = NoHttp.createStringRequest(
                 RequestEncryptionUtils.getCombileMD5(mContext, 1, homeModelKeeperUrl, null), RequestMethod.GET);
         request(what, request, null, new HttpListener<String>() {
@@ -230,6 +236,9 @@ public class NewHomeModel extends BaseModel {
 
     /***首页消息通知**/
     public void getHomeModelNotification(int what, final NewHttpResponse newHttpResponse) {
+        if (!isLogin) {
+            return;
+        }
         final Request<String> request = NoHttp.createStringRequest(
                 RequestEncryptionUtils.getCombileMD5(mContext, 1, homeModelMsgUrl, null), RequestMethod.GET);
         request(what, request, null, new HttpListener<String>() {
@@ -355,6 +364,9 @@ public class NewHomeModel extends BaseModel {
     }
 
     public void getHomeNewAdMsgActivity(int what, final NewHttpResponse newHttpResponse) {
+        if (!isLogin) {
+            return;
+        }
         final Request<String> request = NoHttp.createStringRequest(
                 RequestEncryptionUtils.getCombileMD5(mContext, 1, homeModelNewAdMsgUrl, null), RequestMethod.GET);
         request(what, request, null, new HttpListener<String>() {
