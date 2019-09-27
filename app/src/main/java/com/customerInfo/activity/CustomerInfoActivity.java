@@ -525,6 +525,7 @@ public class CustomerInfoActivity extends BaseActivity implements View.OnClickLi
                                 tv_real_name.setText("");
                                 tv_is_real.setText(getResources().getString(R.string.customer_real_no));
                                 iv_real_name.setVisibility(View.VISIBLE);
+                                mEditor.putString(UserAppConst.COLOUR_AUTH_REAL_NAME + customer_id, "").commit();
                                 getRealToken();
                             }
                         } else {
