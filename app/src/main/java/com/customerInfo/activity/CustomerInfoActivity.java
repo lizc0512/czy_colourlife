@@ -101,6 +101,7 @@ public class CustomerInfoActivity extends BaseActivity implements View.OnClickLi
     private String realName = "";
     private int customer_id;
     private boolean fromWeb;
+    private boolean noRealToken = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -305,8 +306,13 @@ public class CustomerInfoActivity extends BaseActivity implements View.OnClickLi
                 CustomerNameActivity.startCustomerNameActivityForResult(this, tv_gender.getText().toString(), "gender");
                 break;
             case R.id.ll_real_name://实名认证
-                if (TextUtils.isEmpty(tv_real_name.getText().toString().trim()) && !TextUtils.isEmpty(realToken)) {
-                    startAuthenticate(realToken);
+                if (TextUtils.isEmpty(tv_real_name.getText().toString().trim())) {
+                    if (!TextUtils.isEmpty(realToken)) {
+                        startAuthenticate(realToken);
+                    } else {
+                        noRealToken = true;
+                        getRealToken(true);
+                    }
                 }
                 break;
         }
@@ -526,7 +532,7 @@ public class CustomerInfoActivity extends BaseActivity implements View.OnClickLi
                                 tv_is_real.setText(getResources().getString(R.string.customer_real_no));
                                 iv_real_name.setVisibility(View.VISIBLE);
                                 mEditor.putString(UserAppConst.COLOUR_AUTH_REAL_NAME + customer_id, "").commit();
-                                getRealToken();
+                                getRealToken(false);
                             }
                         } else {
                             String message = jsonObject.getString("message");
@@ -543,6 +549,10 @@ public class CustomerInfoActivity extends BaseActivity implements View.OnClickLi
                         RealNameTokenEntity entity = GsonUtils.gsonToBean(result, RealNameTokenEntity.class);
                         RealNameTokenEntity.ContentBean bean = entity.getContent();
                         realToken = bean.getBizToken();
+                        if (noRealToken) {
+                            noRealToken = false;
+                            startAuthenticate(realToken);
+                        }
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
@@ -595,8 +605,8 @@ public class CustomerInfoActivity extends BaseActivity implements View.OnClickLi
     /**
      * 获取实名认证Token
      */
-    private void getRealToken() {
-        newUserModel.getRealNameToken(3, this, false);
+    private void getRealToken(boolean loading) {
+        newUserModel.getRealNameToken(3, this, loading);
     }
 
     /**
