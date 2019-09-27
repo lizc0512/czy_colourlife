@@ -137,6 +137,9 @@ public class RequestEncryptionUtils {
             case 13:
                 finalUrl = Constants.CARHUI_ADDRESS + urlString;  //彩惠人生
                 break;
+            case 14:
+                finalUrl = Constants.VERSION_ADDRESS + urlString;  //版本升级
+                break;
             default:
                 finalUrl = urlString;
         }

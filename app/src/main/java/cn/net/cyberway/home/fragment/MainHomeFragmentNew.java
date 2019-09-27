@@ -1028,7 +1028,6 @@ public class MainHomeFragmentNew extends Fragment implements NewHttpResponse, My
     }
 
     private void updateDoorView() {
-        choiceIndex = 0;
         useDoorSize = commonUseBeanList.size();
         viewpage_door.setScrollMode(UltraViewPager.ScrollMode.HORIZONTAL);
         if (viewpage_door.getAdapter() != null) {
@@ -1053,6 +1052,8 @@ public class MainHomeFragmentNew extends Fragment implements NewHttpResponse, My
 
             }
         });
+        choiceIndex = 0;
+        viewpage_door.setCurrentItem(0);
     }
 
     private int choiceIndex = 0;

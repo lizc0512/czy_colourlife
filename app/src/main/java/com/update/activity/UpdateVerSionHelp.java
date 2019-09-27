@@ -120,5 +120,32 @@ public class UpdateVerSionHelp implements NewHttpResponse {
                 ToastUtil.toastShow(contexts, "彩之云已经是最新版本");
             }
         }
+        /*
+        //        if (!TextUtils.isEmpty(result)) {
+//            try {
+//                UpdateVersionEntity updateVersionEntity = GsonUtils.gsonToBean(result, UpdateVersionEntity.class);
+//                UpdateVersionEntity.ContentBean contentBean = updateVersionEntity.getContent();
+//                code = contentBean.getResult();
+//                UpdateVersionEntity.ContentBean.InfoBean updateInfoBean = contentBean.getInfo();
+//                newversion = updateInfoBean.getVersion();
+//                updateList = Arrays.asList(updateInfoBean.getFunc().split("\n|\r"));
+//                downurl = updateInfoBean.getUrl();
+//                int type = contentBean.getType(); //当result为2时有效，1：大版本更新，2：小版本更新
+//                int showUpdate=0;
+//                if (isShowDialog) {  //大版本
+//                    if (type == 1) {
+//                        showUpdate = 1;
+//                    }
+//                } else {
+//                    showUpdate = 1;
+//                }
+//                if (!TextUtils.isEmpty(downurl) && showUpdate == 1) {
+//                    showUpdateDialog();
+//                }
+//            } catch (Exception e) {
+//
+//            }
+//        }
+         */
     }
 }

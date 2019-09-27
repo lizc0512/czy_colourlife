@@ -88,15 +88,15 @@ public class JPushReciever extends BroadcastReceiver {
             SharedPreferences mShared = context.getSharedPreferences(UserAppConst.USERINFO, 0);
             boolean isLogin = mShared.getBoolean(UserAppConst.IS_LOGIN, false);
             if (!TextUtils.isEmpty(cmd)) {
-                if (cmd.equalsIgnoreCase("c6") && !TextUtils.isEmpty(message)) {
+                if (cmd.equalsIgnoreCase("c6") && !TextUtils.isEmpty(message)) { //单设备挤出登录
                     sendNotification(context, bundle);
                 } else {
-                    if (cmd.equalsIgnoreCase("c7")) {
+                    if (cmd.equalsIgnoreCase("c7")) { //更换手机号挤出登录
                         Message msg = new Message();
                         msg.what = UserMessageConstant.AUDIT_PASS_OUT;
                         msg.obj = message;
                         EventBus.getDefault().post(msg);
-                    } else if (cmd.equalsIgnoreCase("colourlifeVideoOpenDoor")) {
+                    } else if (cmd.equalsIgnoreCase("colourlifeVideoOpenDoor")) {//门禁音视频
                         if (isLogin) {
                             String extraContent = bundle.getString(JPushInterface.EXTRA_EXTRA);
                             try {
@@ -115,7 +115,7 @@ public class JPushReciever extends BroadcastReceiver {
                                     context.startActivity(roomIntent);
                                 }
                             } catch (Exception e) {
-                                
+
                             }
                         }
                     }

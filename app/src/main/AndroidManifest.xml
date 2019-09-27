@@ -9,7 +9,7 @@
         android:configChanges="locale"
         android:hardwareAccelerated="true"
         android:icon="@drawable/icon"
-        android:label="@string/app_name_beta"
+        android:label="@string/app_name"
         android:resizeableActivity="false"
         android:screenOrientation="portrait"
         android:supportsRtl="true"
@@ -847,6 +847,7 @@
         <activity
             android:name="com.door.activity.NewDoorAuthorizeActivity"
             android:screenOrientation="portrait" />
+
         <activity-alias
             android:name=".wxapi.WXPayEntryActivity"
             android:exported="true"
@@ -1046,12 +1047,14 @@
     <permission
         android:name="cn.net.cyberway.permission.MIPUSH_RECEIVE"
         android:protectionLevel="signature" />
+
     <uses-feature
         android:name="android.hardware.camera"
         android:required="true" />
     <uses-feature
         android:name="android.hardware.camera.autofocus"
         android:required="true" />
+
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
     <uses-permission android:name="cn.net.cyberway.permission.JPUSH_MESSAGE" />
     <uses-permission android:name="android.permission.RECEIVE_USER_PRESENT" />
