@@ -599,7 +599,7 @@ public class CustomerInfoActivity extends BaseActivity implements View.OnClickLi
         }
         tv_real_name.setText(realName);
         tv_is_real.setText(getResources().getString(R.string.customer_real_already));
-        iv_real_name.setVisibility(View.INVISIBLE);
+        iv_real_name.setVisibility(View.GONE);
     }
 
     /**
