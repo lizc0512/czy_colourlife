@@ -144,7 +144,7 @@ public class DoorApplyActivity extends BaseActivity implements View.OnClickListe
 
                 //滑动隐藏键盘
                 if (AbsListView.OnScrollListener.SCROLL_STATE_TOUCH_SCROLL == scrollState) {
-                    dismissSoftKeyboard(DoorApplyActivity.this);
+                    dismissSoftKeyboard(edit_memo);
                 }
             }
 

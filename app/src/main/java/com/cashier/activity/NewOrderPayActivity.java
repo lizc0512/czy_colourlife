@@ -785,7 +785,7 @@ public class NewOrderPayActivity extends BaseActivity implements View.OnClickLis
                     if (code == 0) {
                         isPay = 1;
                         PayResultEntity payResultEntity = GsonUtils.gsonToBean(result, PayResultEntity.class);
-                        LinkedHashMap<String, String> publicParams = new LinkedHashMap<String, String>();
+                        LinkedHashMap<String, Object> publicParams = new LinkedHashMap<String, Object>();
                         Map<String, String> resultMap = GsonUtils.gsonObjectToMaps(payResultEntity.getContent());
                         publicParams.putAll(resultMap);
                         PayUtil.getInstance(NewOrderPayActivity.this).createPay(publicParams, Constants.CAIWALLET_ENVIRONMENT);
