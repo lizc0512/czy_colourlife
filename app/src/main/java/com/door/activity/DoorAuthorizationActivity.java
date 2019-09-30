@@ -175,7 +175,7 @@ public class DoorAuthorizationActivity extends BaseActivity implements View.OnCl
 
                     //滑动隐藏键盘
                     if (AbsListView.OnScrollListener.SCROLL_STATE_TOUCH_SCROLL == scrollState) {
-                        dismissSoftKeyboard(DoorAuthorizationActivity.this);
+                        dismissSoftKeyboard(edit_memo);
                     }
                 }
 
@@ -486,7 +486,7 @@ public class DoorAuthorizationActivity extends BaseActivity implements View.OnCl
                 }
                 break;
             case R.id.btn_autor:
-                dismissSoftKeyboard(DoorAuthorizationActivity.this);
+                dismissSoftKeyboard(edit_memo);
                 setAutor();
                 break;
         }

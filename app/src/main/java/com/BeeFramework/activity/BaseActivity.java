@@ -243,12 +243,11 @@ public class BaseActivity extends Activity {
     /**
      * 键盘隐藏方法
      *
-     * @param activity
      */
-    public void dismissSoftKeyboard(Activity activity) {
+    public void dismissSoftKeyboard(View view) {
         try {
             InputMethodManager inputMethodManage = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
-            inputMethodManage.hideSoftInputFromWindow(activity.getCurrentFocus().getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
+            inputMethodManage.hideSoftInputFromWindow(view.getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
         } catch (Exception e) {
             e.printStackTrace();
         }

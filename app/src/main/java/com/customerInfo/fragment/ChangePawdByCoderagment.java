@@ -201,14 +201,20 @@ public class ChangePawdByCoderagment extends BaseFragment implements View.OnClic
             tv_get_sms.requestFocus();
         }
 
+
+
+
+
         @Override
         public void onTick(long millisUntilFinished) {// 计时过程显示
             long currentSecond = millisUntilFinished / UserAppConst.INTERVAL;
-            tv_get_sms.setText(getActivity().getResources().getString(R.string.user_already_send) + "(" + currentSecond + "S)");
-            if (currentSecond <= 20) {
-                tv_voice_code.setVisibility(View.VISIBLE);
-            } else {
-                tv_voice_code.setVisibility(View.GONE);
+            if (getActivity()!=null){
+                tv_get_sms.setText(getActivity().getResources().getString(R.string.user_already_send) + "(" + currentSecond + "S)");
+                if (currentSecond <= 20) {
+                    tv_voice_code.setVisibility(View.VISIBLE);
+                } else {
+                    tv_voice_code.setVisibility(View.GONE);
+                }
             }
         }
     }

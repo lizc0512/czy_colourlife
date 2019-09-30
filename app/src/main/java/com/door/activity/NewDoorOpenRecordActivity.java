@@ -74,19 +74,23 @@ public class NewDoorOpenRecordActivity extends BaseActivity implements View.OnCl
         }
     }
 
+    private View footerView;
+
     private void loadingMoreData() {
         doorNewOpenRecordAdapter.disableLoadMoreIfNotFullPage();
         doorNewOpenRecordAdapter.loadMoreComplete();
         if (requestSize == 0 || !doorNewOpenRecordAdapter.isLoadMoreEnable()) {
             doorNewOpenRecordAdapter.setEnableLoadMore(false);
             doorNewOpenRecordAdapter.loadMoreEnd(true);
-            View footerView = LayoutInflater.from(NewDoorOpenRecordActivity.this).inflate(R.layout.adapter_header_itemapp, null);
-            footerView.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
-            TextView head_name = footerView.findViewById(R.id.head_name);
-            head_name.setText("暂无更多开门记录");
-            head_name.setGravity(Gravity.CENTER);
-            head_name.setBackgroundColor(Color.parseColor("#f5f5f5"));
-            doorNewOpenRecordAdapter.addFooterView(footerView);
+            if (null == footerView) {
+                footerView = LayoutInflater.from(NewDoorOpenRecordActivity.this).inflate(R.layout.adapter_header_itemapp, null);
+                footerView.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
+                TextView head_name = footerView.findViewById(R.id.head_name);
+                head_name.setText("暂无更多开门记录");
+                head_name.setGravity(Gravity.CENTER);
+                head_name.setBackgroundColor(Color.parseColor("#f5f5f5"));
+                doorNewOpenRecordAdapter.addFooterView(footerView);
+            }
         } else {
             doorNewOpenRecordAdapter.setEnableLoadMore(true);
         }

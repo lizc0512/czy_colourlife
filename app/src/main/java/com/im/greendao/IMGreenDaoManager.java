@@ -77,7 +77,7 @@ public class IMGreenDaoManager {
         }
     }
 
-    public  void deleteAllCache() {
+    public void deleteAllCache() {
         mDaoSession.getApplyRecordEntityDao().deleteAll();
         mDaoSession.getFriendInforEntityDao().deleteAll();
         mDaoSession.getMobileInforEntityDao().deleteAll();
