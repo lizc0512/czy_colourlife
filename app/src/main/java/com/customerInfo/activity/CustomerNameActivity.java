@@ -8,12 +8,10 @@ import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.BeeFramework.Utils.ThemeStyleHelper;
@@ -21,11 +19,6 @@ import com.BeeFramework.Utils.ToastUtil;
 import com.BeeFramework.Utils.Utils;
 import com.BeeFramework.activity.BaseActivity;
 import com.tendcloud.tenddata.TCAgent;
-import com.wheel.src.kankan.wheel.widget.OnWheelChangedListener;
-import com.wheel.src.kankan.wheel.widget.WheelView;
-import com.wheel.src.kankan.wheel.widget.adapters.AbstractWheelTextAdapter;
-
-import java.util.ArrayList;
 
 import cn.net.cyberway.R;
 
@@ -40,12 +33,8 @@ public class CustomerNameActivity extends BaseActivity implements View.OnClickLi
     private TextView mTitle;
     private EditText name_et;
     private Button complete_btn;
-
     private String type;
     private String name;
-    private ArrayList<String> genderList;
-    private WheelView choose_v;
-    private LinearLayout ll_gender;
     private ImageView iv_delete_name;
 
     @Override
@@ -68,12 +57,7 @@ public class CustomerNameActivity extends BaseActivity implements View.OnClickLi
     private void initView() {
         name_et = (EditText) findViewById(R.id.name_et);
         complete_btn = (Button) findViewById(R.id.complete_btn);
-        choose_v = (WheelView) findViewById(R.id.choose_wv);
-        ll_gender = (LinearLayout) findViewById(R.id.ll_choose);
         iv_delete_name = (ImageView) findViewById(R.id.iv_delete_name);
-        genderList = new ArrayList<>();
-        genderList.add(getResources().getString(R.string.customer_man));
-        genderList.add(getResources().getString(R.string.customer_femal));
         complete_btn.setOnClickListener(this);
         iv_delete_name.setOnClickListener(this);
     }
@@ -91,24 +75,7 @@ public class CustomerNameActivity extends BaseActivity implements View.OnClickLi
             mTitle.setText("昵称");
             name_et.setHint("请输入昵称");
             TCAgent.onEvent(getApplicationContext(), "203005");
-        } else if (type.equals("gender")) {
-            TCAgent.onEvent(getApplicationContext(), "203013");
-            name_et.setFocusable(false);
-            mTitle.setText("性别");
-            name_et.setHint("请选择性别");
-            ll_gender.setVisibility(View.VISIBLE);
-            choose_v.setViewAdapter(new genderAdapter(this, genderList));
-            choose_v.setVisibleItems(5);
-            choose_v.setCurrentItem(0);
-            name_et.setText(genderList.get(0));
-            choose_v.addChangingListener(new OnWheelChangedListener() {
-                @Override
-                public void onChanged(WheelView wheel, int oldValue, int newValue) {
-                    TCAgent.onEvent(getApplicationContext(), "203014");
-                    name_et.setText(genderList.get(newValue));
-                }
-            });
-        } else if (type.equals("email")) {
+        }  else if (type.equals("email")) {
             mTitle.setText("邮箱");
             name_et.setHint("请输入邮箱");
         }
@@ -120,8 +87,6 @@ public class CustomerNameActivity extends BaseActivity implements View.OnClickLi
                         TCAgent.onEvent(getApplicationContext(), "203010");
                     } else if (type.equals("nikeName")) {
                         TCAgent.onEvent(getApplicationContext(), "203006");
-                    } else if (type.equals("gender")) {
-
                     }
                 }
             }
@@ -166,8 +131,6 @@ public class CustomerNameActivity extends BaseActivity implements View.OnClickLi
                         ToastUtil.toastShow(this, "名字不能为空");
                     } else if (type.equals("nikeName")) {
                         ToastUtil.toastShow(this, "昵称不能为空");
-                    } else if (type.equals("gender")) {
-                        ToastUtil.toastShow(this, "请选择性别");
                     } else if (type.equals("email")) {
                         ToastUtil.toastShow(this, "邮箱不能为空");
                     }
@@ -180,10 +143,7 @@ public class CustomerNameActivity extends BaseActivity implements View.OnClickLi
                     } else if (type.equals("nikeName")) {
                         TCAgent.onEvent(getApplicationContext(), "203007");
                         setResult(3, intent);
-                    } else if (type.equals("gender")) {
-                        TCAgent.onEvent(getApplicationContext(), "203015");
-                        setResult(4, intent);
-                    } else if (type.equals("email")) {
+                    }else if (type.equals("email")) {
                         if (!Utils.checkEmail(name)) {
                             ToastUtil.toastShow(this, "邮箱的格式不正确,请检查后重新输入");
                             return;
@@ -205,33 +165,5 @@ public class CustomerNameActivity extends BaseActivity implements View.OnClickLi
         intent.putExtra("name", name);
         intent.putExtra("type", type);
         ((Activity) context).startActivityForResult(intent, 1);
-    }
-
-    /**
-     * 滚动选择栏适配器
-     */
-    private class genderAdapter extends AbstractWheelTextAdapter {
-        private ArrayList<String> list;
-
-        protected genderAdapter(Context context, ArrayList<String> list) {
-            super(context, R.layout.country_layout, NO_RESOURCE);//设置
-            this.list = list;
-            setItemTextResource(R.id.country_name);//设置Item的布局
-        }
-
-        @Override
-        public View getItem(int index, View cachedView, ViewGroup parent) {
-            return super.getItem(index, cachedView, parent);
-        }
-
-        @Override
-        public int getItemsCount() {
-            return list.size();
-        }
-
-        @Override
-        protected CharSequence getItemText(int index) {
-            return list.get(index);
-        }
     }
 }

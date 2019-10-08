@@ -2,12 +2,15 @@
 package cn.net.cyberway.wxapi;
 
 import android.content.Intent;
+import android.os.Message;
 import android.widget.Toast;
 
 import com.BeeFramework.Utils.ToastUtil;
+import com.external.eventbus.EventBus;
 import com.tencent.mm.opensdk.modelbase.BaseReq;
 import com.tencent.mm.opensdk.modelbase.BaseResp;
 import com.tencent.mm.opensdk.openapi.IWXAPIEventHandler;
+import com.user.UserMessageConstant;
 
 import cn.sharesdk.wechat.utils.WXAppExtendObject;
 import cn.sharesdk.wechat.utils.WXMediaMessage;
@@ -26,8 +29,10 @@ public class WXEntryActivity extends WechatHandlerActivity  {
      * 做点其他的事情，包括根本不打开任何页面
      */
     public void onGetMessageFromWXReq(WXMediaMessage msg) {
-        Intent iLaunchMyself = getPackageManager().getLaunchIntentForPackage(getPackageName());
-        startActivity(iLaunchMyself);
+        Message message = Message.obtain();
+        message.what = UserMessageConstant.GUANGCAI_PAY_MSG;
+        EventBus.getDefault().post(message);
+        finish();
     }
 
     /**

@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -50,6 +51,7 @@ import cn.csh.colourful.life.view.imagepicker.ImagePicker;
 import cn.csh.colourful.life.view.imagepicker.bean.ImageItem;
 import cn.csh.colourful.life.view.imagepicker.ui.ImageGridActivity;
 import cn.csh.colourful.life.view.imagepicker.view.CropImageView;
+import cn.csh.colourful.life.view.pickview.OptionsPickerView;
 import cn.net.cyberway.R;
 
 /**
@@ -301,8 +303,12 @@ public class CustomerInfoActivity extends BaseActivity implements View.OnClickLi
                 startActivityForResult(intent, 1);
                 break;
             case R.id.ll_gender:
+                ArrayList<String> genderList = new ArrayList<>();
+                genderList = new ArrayList<>();
+                genderList.add(getResources().getString(R.string.customer_man));
+                genderList.add(getResources().getString(R.string.customer_femal));
+                showSexPickerView(genderList);
                 TCAgent.onEvent(getApplicationContext(), "203012");
-                CustomerNameActivity.startCustomerNameActivityForResult(this, tv_gender.getText().toString(), "gender");
                 break;
             case R.id.ll_real_name://实名认证
                 if (TextUtils.isEmpty(tv_real_name.getText().toString().trim()) && !TextUtils.isEmpty(realToken)) {
@@ -310,6 +316,28 @@ public class CustomerInfoActivity extends BaseActivity implements View.OnClickLi
                 }
                 break;
         }
+    }
+
+    private void showSexPickerView(ArrayList<String> genderList) {// 弹出选择器
+        OptionsPickerView pvOptions = new OptionsPickerView.Builder(this, new OptionsPickerView.OnOptionsSelectListener() {
+            @Override
+            public void onOptionsSelect(int options1, int options2, int options3, View v) {
+                //返回的分别是三个级别的选中位置
+                TCAgent.onEvent(getApplicationContext(), "203014");
+                isChangeUserInfo = true;
+                tv_gender.setText(genderList.get(options1));
+            }
+        })
+                .setTitleText("性别")
+                .setDividerColor(Color.BLACK)
+                .setTextColorCenter(Color.BLACK) //设置选中项文字颜色
+                .setCancelColor(Color.parseColor("#629ef0"))
+                .setSubmitColor(Color.parseColor("#629ef0"))
+                .setContentTextSize(20)
+                .setOutSideCancelable(false)// default is true
+                .build();
+        pvOptions.setPicker(genderList);//一级选择器
+        pvOptions.show();
     }
 
     /**
@@ -421,10 +449,6 @@ public class CustomerInfoActivity extends BaseActivity implements View.OnClickLi
                 case 3://修改昵称
                     isChangeUserInfo = true;
                     nickname_tv.setText(data.getStringExtra("name"));
-                    break;
-                case 4://修改性别
-                    isChangeUserInfo = true;
-                    tv_gender.setText(data.getStringExtra("name"));
                     break;
                 case 5:
                     isChangeUserInfo = true;

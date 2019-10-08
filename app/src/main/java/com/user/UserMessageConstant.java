@@ -15,7 +15,6 @@ public class UserMessageConstant {
     public static final int REGISTER_TYPE_FIAL = USER_MESSAGE_BASE + 1;//注册失败
     public static final int CREATE_FEED = USER_MESSAGE_BASE + 13;
     public static final int CHANGE_COMMUNITY = USER_MESSAGE_BASE + 16;
-    public static final int CHOOSE_REGION = USER_MESSAGE_BASE + 21;
     public static final int DELETE_FEED = USER_MESSAGE_BASE + 18;
     public static final int DELETE_COMMENT = USER_MESSAGE_BASE + 19;
     public static final int COMMUNITY_REFRESH = USER_MESSAGE_BASE + 20;
