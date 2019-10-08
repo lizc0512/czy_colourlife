@@ -1,3 +1,12 @@
+打包注意修改
+
+1.小白鼠
+2.彩之云和IM的环境切换
+3,应用的名称
+4.进行爱加密加密
+
+
+
 gradlew assembleRelease  执行的是打基础包的操作
 gradlew buildTinkerPatchRelease 执行打补丁包的操作
 
@@ -20,6 +29,114 @@ view.loadDataWithBaseURL("商户申请H5时提交的授权域名", "<script>wind
    view.loadUrl(targetUrl, extraHeaders);
 }
 
+    @JavascriptInterface
+        public void colourlifeWXMiniProgramActivity(String json) {
+            if (!TextUtils.isEmpty(json)) {
+                try {
+                    JSONObject jsonObject = new JSONObject(json);
+                    String appid = jsonObject.getString("userName");
+                    String path = jsonObject.getString("path");
+                    Platform wechat = ShareSDK.getPlatform(Wechat.NAME);
+                    oks = new OnekeyShare();
+                    oks.setSilent(true);
+                    //隐藏自带的分享列表
+                    oks.setPlatform(wechat.getName());
+
+                    oks.setShareContentCustomizeCallback(new ShareContentCustomizeCallback() {
+                        @Override
+                        public void onShare(Platform platform,
+                                            cn.sharesdk.framework.Platform.ShareParams paramsToShare) {
+                            paramsToShare.setShareType(Platform.OPEN_WXMINIPROGRAM);
+                            paramsToShare.setWxUserName(appid);
+                            paramsToShare.setWxMiniProgramType(WXLaunchMiniProgram.Req.MINIPTOGRAM_TYPE_RELEASE);
+                            paramsToShare.setWxPath(path);
+                        }
+                    });
+                    oks.setCallback(new PlatformActionListener() {
+                        @Override
+                        public void onComplete(final Platform platform, int i, HashMap<String, Object> hashMap) {
+                            WebViewActivity.this.runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    if (i == Platform.OPEN_WXMINIPROGRAM) {
+                                        ToastUtil.toastShow(WebViewActivity.this, "打开小程序");
+                                    }
+                                }
+                            });
+                        }
+
+                        @Override
+                        public void onError(final Platform platform, int i, final Throwable throwable) {
+                            WebViewActivity.this.runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+
+                                }
+                            });
+                        }
+
+                        @Override
+                        public void onCancel(final Platform platform, int i) {
+                            WebViewActivity.this.runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+
+                                }
+                            });
+                        }
+                    });
+                    // 启动分享
+                    oks.show(WebViewActivity.this);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+
+
+    //        boolean isIntercepted = false;
+    //        //https://www.jianshu.com/p/ebaedd551365
+    //        if (urls.startsWith("http")) {
+    //            final PayTask task = new PayTask(WebViewActivity.this); //支持原生APP调用
+    //            //webView处理必须在同一个线程上
+    //            isIntercepted = task.payInterceptorWithUrl(urls, true, new H5PayCallback() {
+    //
+    //                @Override
+    //                public void onPayResult(final H5PayResultModel result) {
+    //                    /*
+    //                    resultCode
+    //	                String返回码，标识支付状态，含义如下：
+    //	                9000——订单支付成功
+    //	                8000——正在处理中
+    //	                4000——订单支付失败
+    //	                5000——重复请求
+    //	                6001——用户中途取消
+    //	                6002——网络连接出错
+    //                    returnUrl  String支付结束后应当跳转的 url 地址
+    //                     */
+    //                    // 支付结果返回
+    //                    final String url = result.getReturnUrl();
+    //                    if (!TextUtils.isEmpty(url)) {
+    //                        WebViewActivity.this.runOnUiThread(new Runnable() {
+    //                            @Override
+    //                            public void run() {
+    //                                webView.loadUrl(url);
+    //                            }
+    //                        });
+    //                    }
+    //                    // 5000支付失败 6001重复请求 6002中途取消
+    //                    if ("9000".equals(result.getResultCode())) {
+    //                        Message message = Message.obtain();
+    //                        message.what = UserMessageConstant.GUANGCAI_PAY_MSG;
+    //                        EventBus.getDefault().post(message);
+    //                        finish();
+    //                    }
+    //                }
+    //            });
+    //            if (!isIntercepted) {
+    //                jumpByUrls(urls);
+    //            }
+    //        } else {
 
 
 功能      	  快捷键
