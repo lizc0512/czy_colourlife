@@ -18,7 +18,6 @@ import com.BeeFramework.Utils.ToastUtil;
 import com.BeeFramework.activity.BaseActivity;
 import com.BeeFramework.model.Constants;
 import com.BeeFramework.model.NewHttpResponse;
-import com.BeeFramework.view.MyProgressDialog;
 import com.geetest.deepknow.DPAPI;
 import com.geetest.deepknow.bean.DPJudgementBean;
 import com.geetest.sensebot.SEAPI;

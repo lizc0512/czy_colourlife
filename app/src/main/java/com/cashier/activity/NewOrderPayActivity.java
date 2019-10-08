@@ -64,6 +64,8 @@ import cn.net.cyberway.activity.BroadcastReceiverActivity;
 import cn.net.cyberway.home.entity.PushNotificationEntity;
 import cn.net.cyberway.utils.LinkParseUtil;
 
+import static com.tencent.mm.opensdk.constants.ConstantsAPI.COMMAND_PAY_BY_WX;
+
 
 /**
  * @name ${yuansk}
@@ -720,6 +722,15 @@ public class NewOrderPayActivity extends BaseActivity implements View.OnClickLis
         } else if (message.what == UserMessageConstant.NET_CONN_CHANGE) {
             if (NetworkUtil.isConnect(getApplicationContext())) {
                 againGetPayList();
+            }
+        } else if (message.what == COMMAND_PAY_BY_WX) {
+            int payCode = message.arg1;
+            if (payCode == 0) {
+                payResultQuery();
+            } else if (payCode == 1) {
+                ToastUtil.toastShow(NewOrderPayActivity.this, message.obj.toString());
+            } else if (payCode == 2) {
+                ToastUtil.toastShow(NewOrderPayActivity.this, "用户取消支付");
             }
         }
     }
