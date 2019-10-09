@@ -19,6 +19,7 @@ import com.customerInfo.activity.CustomerColourBeanActivity;
 import com.customerInfo.activity.CustomerInfoActivity;
 import com.customerInfo.activity.DeliveryAddressListActivity;
 import com.dashuview.library.keep.Cqb_PayUtil;
+import com.door.activity.DoorApplyRenewalActivity;
 import com.door.activity.IntelligenceDoorActivity;
 import com.door.activity.NewDoorAuthorizeActivity;
 import com.eparking.activity.AppointmentParkingActivity;
@@ -301,6 +302,10 @@ public class LinkParseUtil {
                         case "ColourlifeBackHome":
                             intent = new Intent(context, MainActivity.class);
                             intent.putExtra(MainActivity.JUMPOTHERURL, "ColourlifeBackHome");
+                            context.startActivity(intent);
+                            break;
+                        case "apply":
+                            intent = new Intent(context, DoorApplyRenewalActivity.class);
                             context.startActivity(intent);
                             break;
                     }

@@ -32,9 +32,11 @@ public class PropertyChangeActivity extends BaseActivity implements View.OnClick
     public final static String IDENTITY_TYPE = "identity_type";
     public final static String IDENTITY_NAME = "identity_name";
     public final static String FROM_DEFAULT = "from_default";
+    public final static String FROM_DOOR = "from_door";
 
     private ImageView mBack;
     private TextView mTitle;
+    private TextView user_top_view_right;
 
     private CardView cv_owner;
     private CardView cv_tenant;
@@ -54,6 +56,7 @@ public class PropertyChangeActivity extends BaseActivity implements View.OnClick
     public int type = 0;
     private boolean cantBack = false;
     private boolean fromDefault = false;//从设置默认进入
+    private boolean fromDoor = false;//从门禁进入
     private NewCustomerInfoModel newCustomerInfoModel;
     private List<IdentityEntity.ContentBean> bean;
 
@@ -96,9 +99,16 @@ public class PropertyChangeActivity extends BaseActivity implements View.OnClick
     private void initData() {
         cantBack = getIntent().getBooleanExtra(CANT_BACK, false);//不可返回
         fromDefault = getIntent().getBooleanExtra(FROM_DEFAULT, false);//从设置默认进入
+        fromDoor = getIntent().getBooleanExtra(FROM_DOOR, false);//从门禁进入
+
         if (fromDefault) {
             mTitle.setText("身份选择");
             tv_choose.setText("该房产暂无身份哦，请选择");
+        } else if (fromDoor) {
+            mTitle.setText("申请权限");
+            user_top_view_right = findViewById(R.id.user_top_view_right);
+            user_top_view_right.setText("我的申请");
+            user_top_view_right.setOnClickListener(this);
         } else {
             mTitle.setText("身份修改");
         }
@@ -124,19 +134,19 @@ public class PropertyChangeActivity extends BaseActivity implements View.OnClick
                 break;
             case R.id.cv_owner:
                 type = 1;
-                setbg(1);
+                setBg(1);
                 break;
             case R.id.cv_tenant:
                 type = 2;
-                setbg(2);
+                setBg(2);
                 break;
             case R.id.cv_family:
                 type = 3;
-                setbg(3);
+                setBg(3);
                 break;
             case R.id.cv_tourist:
                 type = 4;
-                setbg(4);
+                setBg(4);
                 break;
             case R.id.bt_done:
                 Intent intent = null;
@@ -152,13 +162,16 @@ public class PropertyChangeActivity extends BaseActivity implements View.OnClick
                 setResult(1, intent);
                 finish();
                 break;
+            case R.id.user_top_view_right:
+
+                break;
         }
     }
 
     /**
      * 设置选中背景
      */
-    private void setbg(int num) {
+    private void setBg(int num) {
         bt_done.setBackground(getResources().getDrawable(R.drawable.shape_text_property_select));
         switch (num) {
             case 1:

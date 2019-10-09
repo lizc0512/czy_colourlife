@@ -122,7 +122,7 @@ public class TableLayoutUtils {
                     mTabStrip = (LinearLayout) tabLayout.getChildAt(0);
                 }
 
-                int dp16 = dip2px(tabLayout.getContext(), 16);
+                int dp12 = dip2px(tabLayout.getContext(), 12);
 
                 for (int i = 0; i < mTabStrip.getChildCount(); i++) {
                     View tabView = mTabStrip.getChildAt(i);
@@ -146,8 +146,8 @@ public class TableLayoutUtils {
                     // 设置tab左右间距,注意这里不能使用Padding,因为源码中线的宽度是根据tabView的宽度来设置的
                     LinearLayout.LayoutParams params = (LinearLayout.LayoutParams) tabView.getLayoutParams();
                     params.width = width;
-                    params.leftMargin = dp16;
-                    params.rightMargin = dp16;
+                    params.leftMargin = dp12;
+                    params.rightMargin = dp12;
                     tabView.setLayoutParams(params);
                     tabView.invalidate();
                 }

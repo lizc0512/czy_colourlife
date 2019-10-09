@@ -30,6 +30,7 @@ import com.BeeFramework.activity.BaseFragmentActivity;
 import com.BeeFramework.model.NewHttpResponse;
 import com.door.adapter.DoorFragmentAdapter;
 import com.door.dialog.ClickPwdDialog;
+import com.door.dialog.DoorOverdueDialog;
 import com.door.dialog.PwdDialog;
 import com.door.entity.DoorAllEntity;
 import com.door.entity.DoorGrantedEntity;
@@ -55,6 +56,7 @@ import java.util.List;
 import cn.net.cyberway.R;
 import cn.net.cyberway.home.service.LekaiParkLockController;
 import cn.net.cyberway.utils.LekaiHelper;
+import cn.net.cyberway.utils.LinkParseUtil;
 import cn.net.cyberway.utils.TableLayoutUtils;
 
 import static cn.net.cyberway.utils.TableLayoutUtils.showOpenDoorResultDialog;
@@ -119,6 +121,8 @@ public class IntelligenceDoorActivity extends BaseFragmentActivity implements Ne
         userCommunityUuid = shared.getString(UserAppConst.Colour_login_community_uuid, "03b98def-b5bd-400b-995f-a9af82be01da");
         initView();
         initData();
+
+//        showDoorOverdueDialog();
         if (!EventBus.getDefault().isregister(IntelligenceDoorActivity.this)) {
             EventBus.getDefault().register(IntelligenceDoorActivity.this);
         }
@@ -677,6 +681,13 @@ public class IntelligenceDoorActivity extends BaseFragmentActivity implements Ne
         newDoorModel.removeDoor(8, community_uuid, door_name, door_id, add ? "1" : "2", this);//添加、移除常用门禁
     }
 
+    /**
+     * 申请续期
+     */
+    public void apply() {
+        LinkParseUtil.parse(this, "colourlife://proto?type=apply", "");
+    }
+
     public void onEvent(Object event) {
         final Message message = (Message) event;
         switch (message.what) {
@@ -720,6 +731,29 @@ public class IntelligenceDoorActivity extends BaseFragmentActivity implements Ne
                     msg.what = UserMessageConstant.BLUETOOTH_CLOSE_DIALOG;
                     EventBus.getDefault().post(msg);
                 }
+            });
+        } catch (Exception e) {
+
+        }
+    }
+
+    private DoorOverdueDialog doorOverdueDialog;
+
+    public void showDoorOverdueDialog() {
+        try {
+            if (null == doorOverdueDialog) {
+                doorOverdueDialog = new DoorOverdueDialog(IntelligenceDoorActivity.this);
+            }
+            if (doorOverdueDialog.isShowing()) {
+                doorOverdueDialog.dismiss();
+            }
+            doorOverdueDialog.show();
+            doorOverdueDialog.tv_apply.setOnClickListener(v -> {
+                doorOverdueDialog.dismiss();
+                LinkParseUtil.parse(this, "colourlife://proto?type=apply", "");
+            });
+            doorOverdueDialog.tv_cancel.setOnClickListener(v -> {
+                doorOverdueDialog.dismiss();
             });
         } catch (Exception e) {
 

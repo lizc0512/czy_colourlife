@@ -61,10 +61,11 @@ public class IntelligenceDoorAdapter extends RecyclerView.Adapter<IntelligenceDo
         DoorAllEntity.ContentBean.DataBean.ListBean.KeyListBean item = mList.get(position);
         try {
             if (!TextUtils.isEmpty(titleList.get(position))) {
-                holder.tv_kind.setVisibility(View.VISIBLE);
+                holder.ll_kind.setVisibility(View.VISIBLE);
                 holder.tv_kind.setText(titleList.get(position));
+                holder.tv_apply.setOnClickListener(v -> ((IntelligenceDoorActivity) mContext).apply());
             } else {
-                holder.tv_kind.setVisibility(View.GONE);
+                holder.ll_kind.setVisibility(View.GONE);
             }
             String type = typeList.get(position);
             switch (type) {
@@ -196,6 +197,8 @@ public class IntelligenceDoorAdapter extends RecyclerView.Adapter<IntelligenceDo
         private ImageView iv_icon;
         private TextView tv_title;
         private TextView tv_kind;
+        private TextView tv_apply;
+        private LinearLayout ll_kind;
         private TextView tv_pwd;
         private LinearLayout ll_car;
         private TextView tv_car_title;
@@ -203,6 +206,12 @@ public class IntelligenceDoorAdapter extends RecyclerView.Adapter<IntelligenceDo
         private LinearLayout ll_down;
         private LinearLayout ll_up;
         private ImageView iv_handle;
+        private ImageView iv_icon1;
+        private View v_line1;
+        private ImageView iv_icon2;
+        private View v_line2;
+        private ImageView iv_icon3;
+        private TextView tv_avail_time_to;
         private TextView tv_common;
 
         public ViewHolder(View itemView) {
@@ -210,6 +219,8 @@ public class IntelligenceDoorAdapter extends RecyclerView.Adapter<IntelligenceDo
             rl_key = itemView.findViewById(R.id.rl_key);
             iv_icon = itemView.findViewById(R.id.iv_icon);
             tv_kind = itemView.findViewById(R.id.tv_kind);
+            tv_apply = itemView.findViewById(R.id.tv_apply);
+            ll_kind = itemView.findViewById(R.id.ll_kind);
             tv_title = itemView.findViewById(R.id.tv_title);
             tv_pwd = itemView.findViewById(R.id.tv_pwd);
             ll_car = itemView.findViewById(R.id.ll_car);
@@ -218,6 +229,12 @@ public class IntelligenceDoorAdapter extends RecyclerView.Adapter<IntelligenceDo
             ll_down = itemView.findViewById(R.id.ll_down);
             ll_up = itemView.findViewById(R.id.ll_up);
             iv_handle = itemView.findViewById(R.id.iv_handle);
+            iv_icon1 = itemView.findViewById(R.id.iv_icon1);
+            v_line1 = itemView.findViewById(R.id.v_line1);
+            iv_icon2 = itemView.findViewById(R.id.iv_icon2);
+            v_line2 = itemView.findViewById(R.id.v_line2);
+            iv_icon3 = itemView.findViewById(R.id.iv_icon3);
+            tv_avail_time_to = itemView.findViewById(R.id.tv_avail_time_to);
             tv_common = itemView.findViewById(R.id.tv_common);
         }
     }
