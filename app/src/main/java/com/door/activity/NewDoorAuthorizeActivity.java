@@ -1,5 +1,6 @@
 package com.door.activity;
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -107,15 +108,19 @@ public class NewDoorAuthorizeActivity extends BaseFragmentActivity implements Vi
                 finish();
                 break;
             case R.id.choice_identify_layout:
-
-                break;
-            case R.id.btn_define_authorize:
-
+                Intent pass_intent = new Intent(NewDoorAuthorizeActivity.this, NewDoorAuthorizePassActivity.class);
+                startActivity(pass_intent);
+                Intent audi_intent = new Intent(NewDoorAuthorizeActivity.this, NewDoorAuthorizeAuditActivity.class);
+                startActivity(audi_intent);
                 break;
             case R.id.choice_room_layout:
-
+                Intent apply_intent = new Intent(NewDoorAuthorizeActivity.this, NewDoorApplyActivity.class);
+                startActivity(apply_intent);
                 break;
-
+            case R.id.btn_define_authorize:
+                Intent apply_two_intent = new Intent(NewDoorAuthorizeActivity.this, NewDoorApplyTwoActivity.class);
+                startActivity(apply_two_intent);
+                break;
         }
     }
 }

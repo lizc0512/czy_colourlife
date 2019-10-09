@@ -244,7 +244,7 @@
         android:layout_marginLeft="16dp"
         android:layout_marginBottom="16dp"
         android:layout_marginRight="16dp"
-        android:background="@color/color_f1f2f3"
+        android:background="@drawable/onekey_login_default_bg"
         android:text="提交"
         android:textColor="@color/white"
         android:textSize="16sp" />

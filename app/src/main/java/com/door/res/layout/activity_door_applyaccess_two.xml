@@ -167,7 +167,7 @@
         android:layout_height="wrap_content"
         android:layout_marginLeft="16dp"
         android:layout_marginTop="20dp"
-        android:text="注：授权人通过您的申请后您即可获得开门权限，授权人账号可咨询小 区物业管理处"
+        android:text="注：授权人通过您的申请后您即可获得开门权限，授权人账号可咨询小区物业管理处"
         android:layout_marginRight="16dp" />
 
     <View
@@ -184,7 +184,7 @@
         android:layout_marginLeft="16dp"
         android:layout_marginBottom="16dp"
         android:layout_marginRight="16dp"
-        android:background="@color/color_f1f2f3"
+        android:background="@drawable/onekey_login_default_bg"
         android:text="提交"
         android:textColor="@color/white"
         android:textSize="16sp" />
