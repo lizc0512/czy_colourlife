@@ -45,7 +45,7 @@ public class NewDoorAuthorizePassActivity extends BaseActivity implements View.O
         btn_cancel_authorize = findViewById(R.id.btn_cancel_authorize);
         user_top_view_back.setOnClickListener(this::onClick);
         btn_cancel_authorize.setOnClickListener(this::onClick);
-
+        user_top_view_title.setText("申请信息");
     }
 
     @Override

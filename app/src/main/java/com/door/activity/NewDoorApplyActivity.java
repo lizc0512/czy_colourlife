@@ -5,6 +5,8 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.text.SpannableString;
 import android.text.Spanned;
+import android.text.TextPaint;
+import android.text.method.LinkMovementMethod;
 import android.text.style.ClickableSpan;
 import android.text.style.ForegroundColorSpan;
 import android.view.View;
@@ -18,7 +20,7 @@ import com.eparking.helper.PermissionUtils;
 
 import cn.net.cyberway.R;
 /*
- * 授权通过或拒绝的页面
+ * 申请远程门禁和蓝牙门禁
  *
  * */
 
@@ -59,19 +61,24 @@ public class NewDoorApplyActivity extends BaseActivity implements View.OnClickLi
         stringBuffer.append(door_notice_hotLine);
         stringBuffer.append(door_notice_two);
         SpannableString spannableString = new SpannableString(stringBuffer.toString());
-        ForegroundColorSpan onecolorSpan = new ForegroundColorSpan(Color.parseColor("#a9afb8"));
-        ForegroundColorSpan hotlinecolorSpan = new ForegroundColorSpan(Color.parseColor("#0567FA"));
-        spannableString.setSpan(onecolorSpan, 0, door_notice_one.length(), Spanned.SPAN_INCLUSIVE_EXCLUSIVE);
         int middleLength = door_notice_one.length() + door_notice_hotLine.length();
-        spannableString.setSpan(hotlinecolorSpan, door_notice_one.length(), middleLength, Spanned.SPAN_INCLUSIVE_EXCLUSIVE);
+        spannableString.setSpan(new ForegroundColorSpan(Color.parseColor("#a9afb8")), 0, door_notice_one.length(), Spanned.SPAN_INCLUSIVE_EXCLUSIVE);
+        spannableString.setSpan(new ForegroundColorSpan(Color.parseColor("#a9afb8")), middleLength, stringBuffer.toString().length(), Spanned.SPAN_INCLUSIVE_EXCLUSIVE);
         spannableString.setSpan(new ClickableSpan() {
             @Override
             public void onClick(@NonNull View widget) {
-                PermissionUtils.showPhonePermission(NewDoorApplyActivity.this, door_notice_hotLine);
+                PermissionUtils.showPhonePermission(NewDoorApplyActivity.this);
+            }
+
+            public void updateDrawState(@NonNull TextPaint ds) {
+                ds.setColor(Color.parseColor("#0567FA"));
+                ds.setUnderlineText(false);
             }
         }, door_notice_one.length(), middleLength, Spanned.SPAN_INCLUSIVE_EXCLUSIVE);
-        spannableString.setSpan(hotlinecolorSpan, middleLength, middleLength + door_notice_two.length(), Spanned.SPAN_INCLUSIVE_EXCLUSIVE);
+        tv_apply_notice.setMovementMethod(LinkMovementMethod.getInstance());
         tv_apply_notice.setText(spannableString);
+        user_top_view_title.setText("申请开门");
+        user_top_view_back.setOnClickListener(this::onClick);
     }
 
     @Override
@@ -80,7 +87,7 @@ public class NewDoorApplyActivity extends BaseActivity implements View.OnClickLi
             case R.id.user_top_view_back:
                 finish();
                 break;
-            case R.id.btn_cancel_authorize:
+            case R.id.btn_submit_infor:
 
                 break;
         }

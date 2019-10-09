@@ -45,6 +45,7 @@ public class NewDoorAuthorizeAuditActivity extends BaseActivity implements View.
         user_top_view_back.setOnClickListener(this::onClick);
         btn_agree_authorize.setOnClickListener(this::onClick);
         btn_refuse_authorize.setOnClickListener(this::onClick);
+        user_top_view_title.setText("申请信息");
 
     }
 

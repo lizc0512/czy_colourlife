@@ -5,6 +5,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.BeeFramework.activity.BaseActivity;
@@ -12,7 +13,7 @@ import com.BeeFramework.view.ClearEditText;
 
 import cn.net.cyberway.R;
 /*
- * 授权通过或拒绝的页面
+ * 业主申请门禁
  *
  * */
 
@@ -21,7 +22,7 @@ public class NewDoorApplyTwoActivity extends BaseActivity implements View.OnClic
     private ImageView user_top_view_back;
     private TextView user_top_view_title;
     private ClearEditText ed_real_name;
-    private LinearLayout choice_room_layout;
+    private RelativeLayout choice_room_layout;
     private TextView tv_apply_room;
     private TextView tv_apply_identify;
     private ClearEditText ed_authorize_phone;
@@ -42,6 +43,8 @@ public class NewDoorApplyTwoActivity extends BaseActivity implements View.OnClic
         btn_submit_infor = findViewById(R.id.btn_submit_infor);
         choice_room_layout.setOnClickListener(this::onClick);
         btn_submit_infor.setOnClickListener(this::onClick);
+        user_top_view_back.setOnClickListener(this::onClick);
+        user_top_view_title.setText("申请开门");
     }
 
     @Override
