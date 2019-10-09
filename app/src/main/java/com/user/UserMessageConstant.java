@@ -7,6 +7,7 @@ public class UserMessageConstant {
     public static final int SIGN_IN_FAIL = USER_MESSAGE_BASE + 100;  //登录失败
     public static final int APP_INSTANCE_MSG = USER_MESSAGE_BASE + 102;//首页各大应用获取app的推送消息
     public static final int GUANGCAI_PAY_MSG = USER_MESSAGE_BASE + 103;//光彩支付的
+    public static final int WEIXIN_PAY_MSG = USER_MESSAGE_BASE + 104;//微信支付的
     public static final int GET_SINGLE_FRIINFOR = USER_MESSAGE_BASE + 105;//好友同意申请的回调
     public static final int GET_APPLY_NUMBER = USER_MESSAGE_BASE + 106;//好友同意的记录
     public static final int COMMUNITY_MANAGER_NOTICE = USER_MESSAGE_BASE + 108;//社群审核的通知
@@ -15,7 +16,6 @@ public class UserMessageConstant {
     public static final int REGISTER_TYPE_FIAL = USER_MESSAGE_BASE + 1;//注册失败
     public static final int CREATE_FEED = USER_MESSAGE_BASE + 13;
     public static final int CHANGE_COMMUNITY = USER_MESSAGE_BASE + 16;
-    public static final int CHOOSE_REGION = USER_MESSAGE_BASE + 21;
     public static final int DELETE_FEED = USER_MESSAGE_BASE + 18;
     public static final int DELETE_COMMENT = USER_MESSAGE_BASE + 19;
     public static final int COMMUNITY_REFRESH = USER_MESSAGE_BASE + 20;

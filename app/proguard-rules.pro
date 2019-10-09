@@ -30,7 +30,6 @@
 #-libraryjars src/main/java/plugin/push/libs/pushservice-4.6.0.53.jar
 #-libraryjars src/main/java/plugin/scanCode/libs/core.jar
 #-libraryjars src/main/java/plugin/share/libs/libammsdk.jar
-#-libraryjars src/main/java/plugin/share/libs/open_sdk_r4547.jar
 #-libraryjars src/main/java/plugin/share/libs/weiboSDKCore_3.1.2.jar
 
 #-libraryjars libs/universal-image-loader-1.8.6-with-sources.jar
@@ -260,3 +259,38 @@
 *;
 
 }
+
+##########################################################################
+-keep class com.jdpaysdk.author.web.PayJsFunction {*;}
+-keep class com.jdpaysdk.author.JDPayAuthor {*;}
+-keep class com.jdpaysdk.author.Constants {*;}
+-keep class com.jdpaysdk.author.entity.CPOrderParam {*;}
+
+
+
+##########################################################################################
+
+-keepclassmembers class com.jdpaysdk.author.JDPayAuthor.** {
+    public *;
+    private *;
+}
+# entity
+-keepclassmembers class com.jdpaysdk.author.entity.** {
+    public *;
+    private *;
+}
+-keepclassmembers class com.jdpaysdk.author.protocol.** {
+    public *;
+    private *;
+}
+-keep class com.jdpaysdk.author.protocol.** { *; }
+
+#okio
+-dontwarn okio.**
+-keep class okio.**{*;}
+-keep interface okio.**{*;}
+
+#okhttp
+-dontwarn okhttp3.**
+-keep class okhttp3.**{*;}
+-keep interface okhttp3.**{*;}

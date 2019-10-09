@@ -28,8 +28,8 @@ import com.cashier.protocolchang.PayEntity;
 import com.cashier.protocolchang.PayResultEntity;
 import com.cashier.protocolchang.PayStatusEntity;
 import com.customerInfo.protocol.RealNameTokenEntity;
-import com.door.activity.NewDoorApplyActivity;
 import com.external.eventbus.EventBus;
+import com.jdpaysdk.author.JDPayAuthor;
 import com.lhqpay.ewallet.keepIntact.Listener;
 import com.lhqpay.ewallet.keepIntact.MyListener;
 import com.lhqpay.ewallet.keepIntact.PayListenerUtils;
@@ -50,6 +50,7 @@ import com.user.UserAppConst;
 import com.user.UserMessageConstant;
 import com.user.model.NewUserModel;
 
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
@@ -62,6 +63,8 @@ import cn.net.cyberway.R;
 import cn.net.cyberway.activity.BroadcastReceiverActivity;
 import cn.net.cyberway.home.entity.PushNotificationEntity;
 import cn.net.cyberway.utils.LinkParseUtil;
+
+import static com.tencent.mm.opensdk.constants.ConstantsAPI.COMMAND_PAY_BY_WX;
 
 
 /**
@@ -102,9 +105,6 @@ public class NewOrderPayActivity extends BaseActivity implements View.OnClickLis
     private double meal_total = 0; //饭票的
     private double total_fee = 0; //现金的
     private String sn = "";
-    private int payStyle = 0;
-    private int isPay = 0;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -192,7 +192,6 @@ public class NewOrderPayActivity extends BaseActivity implements View.OnClickLis
                             is_native = normalIsNative;
                             pay_url = normalPayUrl;
                             dialogTitle = payment_name;
-                            payStyle = 0;
                             payChannelId = select_pay_type.getTag().toString().trim();
                             changePayChannelStatus();
                         }
@@ -243,7 +242,6 @@ public class NewOrderPayActivity extends BaseActivity implements View.OnClickLis
                                 dialogTitle = payment_name;
                                 is_native = mealNative;
                                 pay_url = mealPayUrl;
-                                payStyle = 0;
                                 payChannelId = select_ticket_pay.getTag().toString().trim();
                                 changePayChannelStatus();
                             }
@@ -307,7 +305,6 @@ public class NewOrderPayActivity extends BaseActivity implements View.OnClickLis
                             is_native = balanceIsNative;
                             pay_url = balancePaymentUrl;
                             dialogTitle = payment_name;
-                            payStyle = 0;
                             payChannelId = select_pay_type.getTag().toString().trim();
                             changePayChannelStatus();
                         }
@@ -317,7 +314,6 @@ public class NewOrderPayActivity extends BaseActivity implements View.OnClickLis
                         is_native = balanceIsNative;
                         pay_url = balancePaymentUrl;
                         dialogTitle = payment_name;
-                        payStyle = 0;
                         payChannelId = select_pay_type.getTag().toString().trim();
                         changePayChannelStatus();
                     }
@@ -372,7 +368,6 @@ public class NewOrderPayActivity extends BaseActivity implements View.OnClickLis
                     is_native = otherNative;
                     pay_url = otherPayUrl;
                     dialogTitle = payment_name;
-                    payStyle = 1;
                     payChannelId = select_pay_type.getTag().toString().trim();
                     changePayChannelStatus();
                 }
@@ -383,9 +378,6 @@ public class NewOrderPayActivity extends BaseActivity implements View.OnClickLis
                 tv_paystyle_view.setVisibility(View.GONE);
             } else {
                 tv_paystyle_view.setVisibility(View.VISIBLE);
-            }
-            if (TextUtils.isEmpty(payChannelId)) {
-                payStyle = 1;
             }
             showStatus(select_pay_type, otherDiscount, otherPayment, otherNative, otherPayUrl, payment_name);
         }
@@ -629,6 +621,29 @@ public class NewOrderPayActivity extends BaseActivity implements View.OnClickLis
                 setResult(200, intent);
                 finish();
             }
+        } else if (com.jdpaysdk.author.Constants.PAY_RESPONSE_CODE == resultCode) {//返回信息接收
+            String result = data.getStringExtra(JDPayAuthor.JDPAY_RESULT);
+            try {
+                JSONObject jsonObject = new JSONObject(result);
+                String errorCode = jsonObject.optString("errorCode");
+                if (!jsonObject.isNull("payStatus")) {
+                    String payStatus = jsonObject.optString("payStatus");
+                    if ("JDP_PAY_SUCCESS".equals(payStatus)) {
+                        payResultQuery();
+                    } else if ("JDP_PAY_FAIL".equals(payStatus)) {
+                        payResultQuery();
+                    } else if ("JDP_PAY_CANCEL".equals(payStatus)) {
+                        ToastUtil.toastShow(NewOrderPayActivity.this, "用户取消支付");
+                    } else {
+                        ToastUtil.toastShow(NewOrderPayActivity.this, errorCode);
+                    }
+                } else {
+                    ToastUtil.toastShow(NewOrderPayActivity.this, errorCode);
+                }
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+
         }
     }
 
@@ -642,7 +657,6 @@ public class NewOrderPayActivity extends BaseActivity implements View.OnClickLis
 
     @Override
     public void onPayResult(int error_code, String message) {  //微信回调的接口
-        payStyle = 0;
         if (error_code == 200) {
             //支付成功
 //            payResult();
@@ -686,9 +700,6 @@ public class NewOrderPayActivity extends BaseActivity implements View.OnClickLis
         if (!EventBus.getDefault().isregister(NewOrderPayActivity.this)) {
             EventBus.getDefault().register(NewOrderPayActivity.this);
         }
-        if (payStyle == 1 && isPay == 1) {
-            showH5PayResultDialog();
-        }
     }
 
     @Override
@@ -707,11 +718,19 @@ public class NewOrderPayActivity extends BaseActivity implements View.OnClickLis
     public void onEvent(Object event) {
         final Message message = (Message) event;
         if (message.what == UserMessageConstant.GUANGCAI_PAY_MSG) {//登录成功刷新数据
-            payStyle = 0;
             showH5PayResultDialog();
         } else if (message.what == UserMessageConstant.NET_CONN_CHANGE) {
             if (NetworkUtil.isConnect(getApplicationContext())) {
                 againGetPayList();
+            }
+        } else if (message.what == COMMAND_PAY_BY_WX) {
+            int payCode = message.arg1;
+            if (payCode == 0) {
+                payResultQuery();
+            } else if (payCode == 1) {
+                ToastUtil.toastShow(NewOrderPayActivity.this, message.obj.toString());
+            } else if (payCode == 2) {
+                ToastUtil.toastShow(NewOrderPayActivity.this, "用户取消支付");
             }
         }
     }
@@ -754,14 +773,12 @@ public class NewOrderPayActivity extends BaseActivity implements View.OnClickLis
                             htmlPayDialog.dismiss();
                         }
                     });
-                    isPay = 0;
                 } catch (Exception e) {
 
                 }
             }
         }, 500);
     }
-
 
     @Override
     public void OnHttpResponse(int what, String result) {
@@ -783,12 +800,22 @@ public class NewOrderPayActivity extends BaseActivity implements View.OnClickLis
                 int code = baseContentEntity.getCode();
                 try {
                     if (code == 0) {
-                        isPay = 1;
                         PayResultEntity payResultEntity = GsonUtils.gsonToBean(result, PayResultEntity.class);
                         LinkedHashMap<String, Object> publicParams = new LinkedHashMap<String, Object>();
                         Map<String, String> resultMap = GsonUtils.gsonObjectToMaps(payResultEntity.getContent());
                         publicParams.putAll(resultMap);
                         PayUtil.getInstance(NewOrderPayActivity.this).createPay(publicParams, Constants.CAIWALLET_ENVIRONMENT);
+
+
+                        //京东支付
+//                        JDPayAuthor jdPayAuthor = new JDPayAuthor();
+//                        String orderId = "";
+//                        String merchant = "";
+//                        String appId = "";
+//                        String sourceStr = "merchant=" + merchant + "&orderId=" + orderId + "&key=" + appId;
+//                        String signData = MD5Util.encode(sourceStr).toLowerCase();
+//                        String extraInfo = "xxxxx";//json数据格式
+//                        jdPayAuthor.author(NewOrderPayActivity.this, orderId, merchant, appId, signData, extraInfo);
                     } else if (code == 305) {
                         showNoticeDialog(baseContentEntity.getMessage());
                     } else {

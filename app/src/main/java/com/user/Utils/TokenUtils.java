@@ -40,8 +40,6 @@ import cn.jpush.android.api.JPushInterface;
 import cn.net.cyberway.BuildConfig;
 import cn.net.cyberway.utils.CityCustomConst;
 
-import static com.tencent.open.utils.Global.getPackageName;
-
 
 public class TokenUtils {
     public static String getDeviceUUID(Context context) {
@@ -333,17 +331,33 @@ public class TokenUtils {
         } catch (Exception ex) {
             ex.printStackTrace();
         }
-        if (macSerial == null || "".equals(macSerial)) {
+        if (TextUtils.isEmpty(macSerial)) {
             try {
-                return loadFileAsString("/sys/class/net/eth0/address")
+                macSerial = loadFileAsString("/sys/class/net/eth0/address")
                         .toLowerCase().substring(0, 17);
             } catch (Exception e) {
                 e.printStackTrace();
+            }
+        }
+        if (TextUtils.isEmpty(macSerial)) {
+            try {
+                Enumeration<NetworkInterface> enumeration = NetworkInterface.getNetworkInterfaces();
+                if (enumeration == null) {
+                    return "";
+                }
+                while (enumeration.hasMoreElements()) {
+                    NetworkInterface netInterface = enumeration.nextElement();
+                    if (netInterface.getName().equals("wlan0")) {
+                        return new String(netInterface.getHardwareAddress(), "UTF-8");
+                    }
+                }
+            } catch (Exception e) {
 
             }
         }
         return macSerial;
     }
+
 
     public static String loadFileAsString(String fileName) throws Exception {
         FileReader reader = new FileReader(fileName);
@@ -534,11 +548,11 @@ public class TokenUtils {
             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             if (Build.VERSION.SDK_INT >= 9) {
                 intent.setAction("android.settings.APPLICATION_DETAILS_SETTINGS");
-                intent.setData(Uri.fromParts("package", getPackageName(), null));
+                intent.setData(Uri.fromParts("package", context.getPackageName(), null));
             } else if (Build.VERSION.SDK_INT <= 8) {
                 intent.setAction(Intent.ACTION_VIEW);
                 intent.setClassName("com.android.settings", "com.android.settings.InstalledAppDetails");
-                intent.putExtra("com.android.settings.ApplicationPkgName", getPackageName());
+                intent.putExtra("com.android.settings.ApplicationPkgName", context.getPackageName());
             }
         }
         context.startActivity(intent);
