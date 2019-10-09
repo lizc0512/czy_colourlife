@@ -13,14 +13,10 @@ import android.graphics.drawable.Icon;
 import android.graphics.drawable.StateListDrawable;
 import android.os.AsyncTask;
 import android.os.Build;
-import android.support.annotation.NonNull;
 import android.support.annotation.RequiresApi;
 import android.support.design.widget.TabLayout;
-import android.support.v7.util.DiffUtil;
-import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -102,6 +98,65 @@ public class TableLayoutUtils {
                 } catch (Exception e) {
 
                 }
+            }
+        });
+    }
+
+    /**
+     * 反射设置TabLayout底部条
+     * 适配android P 反射异常
+     */
+    public static void reflexAll(final TabLayout tabLayout) {
+        tabLayout.post(() -> {
+            try {
+                boolean androidP = android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.P;
+                LinearLayout mTabStrip;
+                Field field;
+
+                if (androidP) {
+                    //api 28 mTabStrip和mTextView已经改名为slidingTabIndicator和textView
+                    field = tabLayout.getClass().getDeclaredField("slidingTabIndicator");
+                    field.setAccessible(true);
+                    mTabStrip = (LinearLayout) field.get(tabLayout);
+                } else {
+                    mTabStrip = (LinearLayout) tabLayout.getChildAt(0);
+                }
+
+                int dp16 = dip2px(tabLayout.getContext(), 16);
+
+                for (int i = 0; i < mTabStrip.getChildCount(); i++) {
+                    View tabView = mTabStrip.getChildAt(i);
+                    //拿到tabView的TextView属性
+                    Field mTextViewField;
+                    try {
+                        mTextViewField = tabView.getClass().getDeclaredField("textView");
+                    } catch (NoSuchFieldException e) {
+                        e.printStackTrace();
+                        mTextViewField = tabView.getClass().getDeclaredField("mTextView");
+                    }
+                    mTextViewField.setAccessible(true);
+                    TextView mTextView = (TextView) mTextViewField.get(tabView);
+                    tabView.setPadding(0, 0, 0, 0);
+                    // 因为想要的效果是字多宽线就多宽，所以测量mTextView的宽度
+                    int width = mTextView.getWidth();
+                    if (width == 0) {
+                        mTextView.measure(0, 0);
+                        width = mTextView.getMeasuredWidth();
+                    }
+                    // 设置tab左右间距,注意这里不能使用Padding,因为源码中线的宽度是根据tabView的宽度来设置的
+                    LinearLayout.LayoutParams params = (LinearLayout.LayoutParams) tabView.getLayoutParams();
+                    params.width = width;
+                    params.leftMargin = dp16;
+                    params.rightMargin = dp16;
+                    tabView.setLayoutParams(params);
+                    tabView.invalidate();
+                }
+            } catch (NoSuchFieldException e) {
+                e.printStackTrace();
+            } catch (IllegalAccessException e) {
+                e.printStackTrace();
+            } catch (Exception e) {
+                e.printStackTrace();
             }
         });
     }

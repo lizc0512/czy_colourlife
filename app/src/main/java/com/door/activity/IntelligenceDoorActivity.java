@@ -28,7 +28,7 @@ import android.widget.RelativeLayout;
 import com.BeeFramework.Utils.ToastUtil;
 import com.BeeFramework.activity.BaseFragmentActivity;
 import com.BeeFramework.model.NewHttpResponse;
-import com.cashier.adapter.ViewPagerAdapter;
+import com.door.adapter.DoorFragmentAdapter;
 import com.door.dialog.ClickPwdDialog;
 import com.door.dialog.PwdDialog;
 import com.door.entity.DoorAllEntity;
@@ -55,6 +55,7 @@ import java.util.List;
 import cn.net.cyberway.R;
 import cn.net.cyberway.home.service.LekaiParkLockController;
 import cn.net.cyberway.utils.LekaiHelper;
+import cn.net.cyberway.utils.TableLayoutUtils;
 
 import static cn.net.cyberway.utils.TableLayoutUtils.showOpenDoorResultDialog;
 import static com.BeeFramework.Utils.Utils.dip2px;
@@ -84,13 +85,11 @@ public class IntelligenceDoorActivity extends BaseFragmentActivity implements Ne
     private TabLayout tl_door;
     private ViewPager vp_door;
     private ImageView iv_close;
-    private List<Fragment> fragmentList = new ArrayList<>();
     private String device;
     private ClickPwdDialog clickPwdDialog;
-    private boolean init = false;
     private PwdDialog pwdDialog;
     private List<String> communityUuidList = new ArrayList<>();
-    private ViewPagerAdapter adapter;
+    private DoorFragmentAdapter fragmentAdapter;
     private int userId;
     private String intelligenceDoorCache;
     private String resultData = "";
@@ -118,7 +117,6 @@ public class IntelligenceDoorActivity extends BaseFragmentActivity implements Ne
         LekaiHelper.setScanParkLockChangeListener(this);
         userId = shared.getInt(UserAppConst.Colour_User_id, 0);
         userCommunityUuid = shared.getString(UserAppConst.Colour_login_community_uuid, "03b98def-b5bd-400b-995f-a9af82be01da");
-        init = false;
         initView();
         initData();
         if (!EventBus.getDefault().isregister(IntelligenceDoorActivity.this)) {
@@ -140,92 +138,50 @@ public class IntelligenceDoorActivity extends BaseFragmentActivity implements Ne
     }
 
     private Gson gson;
-    private String[] tabTitle;
 
-    private void initTab(String[] tabTitleArray, String result) {
+    private void initTab(List<String> tabTitleArray, String result) {
         try {
-            if (!init) {
-                init = true;
-                try {
-                    DoorAllEntity doorAllEntity = GsonUtils.gsonToBean(result, DoorAllEntity.class);
-                    for (int i = 0; i < tabTitleArray.length; i++) {
-                        try {
-                            List<DoorAllEntity.ContentBean.DataBean.ListBean> list = doorAllEntity.getContent().getData().get(i).getList();
-                            tl_door.addTab(tl_door.newTab().setText(tabTitleArray[i]));
-                            if (null == gson) {
-                                gson = new Gson();
-                            }
-                            fragmentList.add(IntelligenceDoorFragment.newInstance(userId, gson.toJson(list)));
-                        } catch (Exception e) {
-                            e.printStackTrace();
-                        }
-                    }
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-
-                tl_door.setTabTextColors(getResources().getColor(R.color.color_b3ffffff), getResources().getColor(R.color.white));
-                tl_door.setSelectedTabIndicatorColor(getResources().getColor(R.color.white));
-                tl_door.setSelectedTabIndicatorHeight(dip2px(this, 3));
-                tl_door.setTabGravity(TabLayout.GRAVITY_FILL);
-
-                tabTitle = tabTitleArray;
-                adapter = new ViewPagerAdapter(getSupportFragmentManager(), this, fragmentList, tabTitle);
-                vp_door.setAdapter(adapter);
-                vp_door.setOffscreenPageLimit(fragmentList.size());
-                tl_door.setupWithViewPager(vp_door);
-                tl_door.setTabMode(TabLayout.MODE_SCROLLABLE);
-            } else {
-                tl_door.removeAllTabs();
-                for (String s : tabTitleArray) {
-                    tl_door.addTab(tl_door.newTab().setText(s));
-                }
-
-                if (null == gson) {
-                    gson = new Gson();
-                }
+            List<Fragment> fragmentList = new ArrayList<>();
+            try {
                 DoorAllEntity doorAllEntity = GsonUtils.gsonToBean(result, DoorAllEntity.class);
-                if (tabTitleArray.length == fragmentList.size()) {
-                    for (int j = 0; j < fragmentList.size(); j++) {
-                        List<DoorAllEntity.ContentBean.DataBean.ListBean> list = doorAllEntity.getContent().getData().get(j).getList();
-
-                        ((IntelligenceDoorFragment) fragmentList.get(j)).refresh(gson.toJson(list));
-                    }
-                    tabTitle = tabTitleArray;
-                    adapter = new ViewPagerAdapter(getSupportFragmentManager(), this, fragmentList, tabTitle);
-                    vp_door.setAdapter(adapter);
-                    vp_door.setOffscreenPageLimit(fragmentList.size());
-                    tl_door.setupWithViewPager(vp_door);
-                    tl_door.setTabMode(TabLayout.MODE_SCROLLABLE);
-                    TabLayout.Tab tab = tl_door.getTabAt(position);
-                    if (null != tab) {
-                        tab.select();
-                    }
-                } else if (tabTitleArray.length > fragmentList.size()) {
-                    Intent intent = new Intent(this, IntelligenceDoorActivity.class);
-                    startActivity(intent);
-                    this.finish();
-                } else {
-                    for (int i = fragmentList.size() - 1; i > tabTitleArray.length - 1; i--) {
-                        fragmentList.remove(i);
-                    }
-                    for (int j = 0; j < fragmentList.size(); j++) {
-                        List<DoorAllEntity.ContentBean.DataBean.ListBean> list = doorAllEntity.getContent().getData().get(j).getList();
-                        ((IntelligenceDoorFragment) fragmentList.get(j)).refresh(gson.toJson(list));
-                    }
-                    tabTitle = tabTitleArray;
-                    adapter = new ViewPagerAdapter(getSupportFragmentManager(), this, fragmentList, tabTitle);
-                    vp_door.setAdapter(adapter);
-                    vp_door.setOffscreenPageLimit(fragmentList.size());
-                    tl_door.setupWithViewPager(vp_door);
-                    tl_door.setTabMode(TabLayout.MODE_SCROLLABLE);
-                    TabLayout.Tab tab = tl_door.getTabAt(position);
-                    if (null != tab) {
-                        tab.select();
+                for (int i = 0; i < tabTitleArray.size(); i++) {
+                    try {
+                        List<DoorAllEntity.ContentBean.DataBean.ListBean> list = doorAllEntity.getContent().getData().get(i).getList();
+                        tl_door.addTab(tl_door.newTab().setText(tabTitleArray.get(i)));
+                        if (null == gson) {
+                            gson = new Gson();
+                        }
+                        fragmentList.add(IntelligenceDoorFragment.newInstance(userId, gson.toJson(list)));
+                    } catch (Exception e) {
+                        e.printStackTrace();
                     }
                 }
-
+            } catch (Exception e) {
+                e.printStackTrace();
             }
+
+            tl_door.setTabTextColors(getResources().getColor(R.color.color_b3ffffff), getResources().getColor(R.color.white));
+            tl_door.setSelectedTabIndicatorColor(getResources().getColor(R.color.white));
+            tl_door.setSelectedTabIndicatorHeight(dip2px(this, 3));
+            tl_door.setTabGravity(TabLayout.GRAVITY_FILL);
+
+            if (null == fragmentAdapter) {
+                fragmentAdapter = new DoorFragmentAdapter(getSupportFragmentManager(), fragmentList, tabTitleArray);
+            } else {
+                fragmentAdapter.setFragments(getSupportFragmentManager(), fragmentList, tabTitleArray);
+            }
+            vp_door.setAdapter(fragmentAdapter);
+            vp_door.setOffscreenPageLimit(fragmentList.size());
+            tl_door.setupWithViewPager(vp_door);
+            tl_door.setTabMode(TabLayout.MODE_SCROLLABLE);
+
+            TableLayoutUtils.reflexAll(tl_door);
+
+            TabLayout.Tab tab = tl_door.getTabAt(position);
+            if (null != tab) {
+                tab.select();
+            }
+
             resultData = result;
         } catch (Resources.NotFoundException e) {
             e.printStackTrace();
@@ -588,28 +544,21 @@ public class IntelligenceDoorActivity extends BaseFragmentActivity implements Ne
             if (!TextUtils.isEmpty(result)) {
                 DoorAllEntity doorAllEntity = GsonUtils.gsonToBean(result, DoorAllEntity.class);
                 List<DoorAllEntity.ContentBean.CommunityBean> titleList = doorAllEntity.getContent().getCommunity();
-                String titleString = "";
+                List<String> titleLists = new ArrayList<>();
                 communityUuidList.clear();
-                if (1 == titleList.size()) {
-                    communityUuidList.add(titleList.get(0).getCommunity_uuid());
-                    titleString = titleList.get(0).getCommunity_name();
-                } else {
-                    for (int i = 0; i < titleList.size(); i++) {
-                        communityUuidList.add(titleList.get(i).getCommunity_uuid());
-                        if (i == titleList.size() - 1) {
-                            titleString += titleList.get(i).getCommunity_name();
-                        } else {
-                            titleString += titleList.get(i).getCommunity_name() + ",";
-                        }
-                    }
+
+                for (int i = 0; i < titleList.size(); i++) {
+                    communityUuidList.add(titleList.get(i).getCommunity_uuid());
+                    titleLists.add(titleList.get(i).getCommunity_name());
                 }
-                if (!isCache && TextUtils.isEmpty(titleString)) {
+
+                if (!isCache && 0 == titleList.size()) {
                     Intent intent = new Intent(IntelligenceDoorActivity.this, NoRightDoorActivity.class);
                     startActivity(intent);
                     IntelligenceDoorActivity.this.finish();
                     this.overridePendingTransition(R.anim.push_up_in, R.anim.push_up_out);
-                } else if ((isCache && !TextUtils.isEmpty(titleString)) || (!isCache && !intelligenceDoorCache.equals(result))) {
-                    initTab(titleString.split(","), result);
+                } else if ((isCache && 0 != titleList.size()) || (!isCache && !intelligenceDoorCache.equals(result))) {
+                    initTab(titleLists, result);
                 }
             }
         } catch (Exception e) {
