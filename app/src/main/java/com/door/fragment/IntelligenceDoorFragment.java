@@ -59,18 +59,14 @@ public class IntelligenceDoorFragment extends BaseFragment {
     protected void initView(View rootView) {
         xrv_invite_list = rootView.findViewById(R.id.xrv_invite_list);
         ll_empty = rootView.findViewById(R.id.ll_empty);
-
         xrv_invite_list.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayout.VERTICAL, false));
-        initData();
     }
 
     @Override
     protected void onFragmentVisibleChange(boolean isVisible) {
-    }
-
-    public void refresh(String result) {
-        this.result = result;
-        initData();
+        if (isVisible) {
+            initData();
+        }
     }
 
     IntelligenceDoorAdapter mAdapter;
@@ -122,6 +118,5 @@ public class IntelligenceDoorFragment extends BaseFragment {
             e.printStackTrace();
         }
     }
-
 
 }

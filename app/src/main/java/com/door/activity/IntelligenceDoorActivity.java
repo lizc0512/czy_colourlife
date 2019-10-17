@@ -164,12 +164,11 @@ public class IntelligenceDoorActivity extends BaseFragmentActivity implements Ne
                 e.printStackTrace();
             }
 
-            tl_door.setTabTextColors(getResources().getColor(R.color.color_b3ffffff), getResources().getColor(R.color.white));
-            tl_door.setSelectedTabIndicatorColor(getResources().getColor(R.color.white));
-            tl_door.setSelectedTabIndicatorHeight(dip2px(this, 3));
-            tl_door.setTabGravity(TabLayout.GRAVITY_FILL);
-
             if (null == fragmentAdapter) {
+                tl_door.setTabTextColors(getResources().getColor(R.color.color_b3ffffff), getResources().getColor(R.color.white));
+                tl_door.setSelectedTabIndicatorColor(getResources().getColor(R.color.white));
+                tl_door.setSelectedTabIndicatorHeight(dip2px(this, 3));
+                tl_door.setTabGravity(TabLayout.GRAVITY_FILL);
                 fragmentAdapter = new DoorFragmentAdapter(getSupportFragmentManager(), fragmentList, tabTitleArray);
             } else {
                 fragmentAdapter.setFragments(getSupportFragmentManager(), fragmentList, tabTitleArray);
@@ -179,7 +178,7 @@ public class IntelligenceDoorActivity extends BaseFragmentActivity implements Ne
             tl_door.setupWithViewPager(vp_door);
             tl_door.setTabMode(TabLayout.MODE_SCROLLABLE);
 
-            TableLayoutUtils.reflexAll(tl_door);
+//            TableLayoutUtils.reflexAll(tl_door);
 
             TabLayout.Tab tab = tl_door.getTabAt(position);
             if (null != tab) {

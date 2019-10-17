@@ -17,7 +17,7 @@ public class DoorOverdueDialog extends Dialog {
     public TextView tv_apply;
 
     public DoorOverdueDialog(Context context) {
-        super(context, R.style.opendoor_dialog_theme);
+        super(context, R.style.benefit_dialog_theme);
     }
 
     @Override

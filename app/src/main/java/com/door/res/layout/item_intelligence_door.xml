@@ -185,8 +185,7 @@
             android:layout_marginBottom="8dp"
             android:text="有效期至 2019.9.22"
             android:textColor="@color/grayred_text_color"
-            android:textSize="12sp"
-            android:visibility="gone" />
+            android:textSize="12sp" />
     </RelativeLayout>
 
     <LinearLayout
