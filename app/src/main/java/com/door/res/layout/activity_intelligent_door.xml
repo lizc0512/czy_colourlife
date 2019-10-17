@@ -53,6 +53,10 @@
         android:layout_height="38dp"
         android:layout_marginLeft="4dp"
         android:layout_marginRight="4dp"
+        app:tabBackground="@null"
+        app:tabPaddingEnd="12dp"
+        app:tabPaddingStart="12dp"
+        app:tabRippleColor="@null"
         app:tabTextAppearance="@style/IntelligenceTabLayoutTextSize" />
 
     <android.support.v4.view.ViewPager

@@ -9,6 +9,7 @@ import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
 import android.os.Message;
 import android.support.design.widget.TabLayout;
@@ -57,7 +58,6 @@ import cn.net.cyberway.R;
 import cn.net.cyberway.home.service.LekaiParkLockController;
 import cn.net.cyberway.utils.LekaiHelper;
 import cn.net.cyberway.utils.LinkParseUtil;
-import cn.net.cyberway.utils.TableLayoutUtils;
 
 import static cn.net.cyberway.utils.TableLayoutUtils.showOpenDoorResultDialog;
 import static com.BeeFramework.Utils.Utils.dip2px;
@@ -168,6 +168,10 @@ public class IntelligenceDoorActivity extends BaseFragmentActivity implements Ne
                 tl_door.setTabTextColors(getResources().getColor(R.color.color_b3ffffff), getResources().getColor(R.color.white));
                 tl_door.setSelectedTabIndicatorColor(getResources().getColor(R.color.white));
                 tl_door.setSelectedTabIndicatorHeight(dip2px(this, 3));
+                tl_door.setTabIndicatorFullWidth(false);
+                GradientDrawable gradientDrawable = new GradientDrawable();
+                gradientDrawable.setCornerRadius(dip2px(this, 2));
+                tl_door.setSelectedTabIndicator(gradientDrawable);//设置圆角
                 tl_door.setTabGravity(TabLayout.GRAVITY_FILL);
                 fragmentAdapter = new DoorFragmentAdapter(getSupportFragmentManager(), fragmentList, tabTitleArray);
             } else {
