@@ -133,7 +133,8 @@ public class NewDoorActivity extends BaseActivity implements NewHttpResponse, Vi
             ll_homedoorpop_apply.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    Intent applyIntent = new Intent(NewDoorActivity.this, DoorApplyActivity.class);
+//                    Intent applyIntent = new Intent(NewDoorActivity.this, DoorApplyActivity.class);
+                    Intent applyIntent = new Intent(NewDoorActivity.this, NewDoorIndetifyActivity.class);
                     startActivity(applyIntent);
                     popupWindow.dismiss();
                 }

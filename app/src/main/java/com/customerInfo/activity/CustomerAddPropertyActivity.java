@@ -31,6 +31,9 @@ import com.customerInfo.protocol.AddListEntity;
 import com.customerInfo.protocol.AreaListEntity;
 import com.customerInfo.protocol.CityListEntity;
 import com.customerInfo.protocol.CityListsEntity;
+import com.door.activity.NewDoorApplyActivity;
+import com.door.entity.DoorSupportTypeEntity;
+import com.door.model.NewDoorAuthorModel;
 import com.external.eventbus.EventBus;
 import com.invite.adapter.SideBar;
 import com.myproperty.activity.PropertyChangeActivity;
@@ -49,6 +52,8 @@ import java.util.Objects;
 import cn.net.cyberway.R;
 import cn.net.cyberway.utils.CityCustomConst;
 
+import static com.door.activity.NewDoorApplyActivity.DOORSUPPORTTYPE;
+
 /**
  * 新增房产 编辑房产
  * hxg 2019/04/02
@@ -56,6 +61,8 @@ import cn.net.cyberway.utils.CityCustomConst;
 public class CustomerAddPropertyActivity extends BaseActivity implements View.OnClickListener, NewHttpResponse {
 
     public final static String ID = "id";
+    public final static String IDENTITY_ID = "identity_id";
+    public final static String IDENTITY_NAME = "identity_name";
     public final static String COMMUNITY_UUID = "community_uuid";
     public final static String COMMUNITY_NAME = "community_name";
     public final static String BUILD_UUID = "build_uuid";
@@ -121,6 +128,8 @@ public class CustomerAddPropertyActivity extends BaseActivity implements View.On
     private int type = 1;
     private int pageSize = 100;
     private String keyword = "";
+    private String identifyId = "";
+    private String identifyName = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -324,7 +333,13 @@ public class CustomerAddPropertyActivity extends BaseActivity implements View.On
             }
             identity = intent.getBooleanExtra(IDENTITY, false);//是否跳转选中身份
         } else {
-            mtitle.setText(getResources().getString(R.string.title_increase_property));
+            identifyId = getIntent().getStringExtra(IDENTITY_ID);
+            identifyName = getIntent().getStringExtra(IDENTITY_NAME);
+            if (TextUtils.isEmpty(identifyId)) {
+                mtitle.setText(getResources().getString(R.string.title_increase_property));
+            } else {
+                mtitle.setText(getResources().getString(R.string.title_choice_community));
+            }
             SharedPreferences mShared = getSharedPreferences(UserAppConst.USERINFO, 0);
             city_name = mShared.getString(CityCustomConst.LOCATION_CITY, "");
             if (!Util.isGps(Objects.requireNonNull(this)) || TextUtils.isEmpty(city_name)) {
@@ -450,6 +465,9 @@ public class CustomerAddPropertyActivity extends BaseActivity implements View.On
                             String identity = data.getStringExtra(PropertyChangeActivity.IDENTITY_TYPE);
                             newCustomerInfoModel.postCustomerAddress(10, community_uuid, community_name, building_uuid, building_name
                                     , unit_uuid, unit_name, room_uuid, room_name, identity, this);
+                        } else if ("选择小区".equals(mtitle.getText().toString().trim())) {
+                            NewDoorAuthorModel newDoorAuthorModel = new NewDoorAuthorModel(CustomerAddPropertyActivity.this);
+                            newDoorAuthorModel.getSupportDoorType(14, community_uuid, CustomerAddPropertyActivity.this);
                         } else {//修改
                             newCustomerInfoModel.postCustomerUpdateAddress(12, id, community_uuid, community_name, building_uuid, building_name
                                     , unit_uuid, unit_name, room_uuid, room_name, this);
@@ -457,6 +475,12 @@ public class CustomerAddPropertyActivity extends BaseActivity implements View.On
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
+                }
+                break;
+            case 100:
+                if (resultCode == 200) {
+                    setResult(200);
+                    finish();
                 }
                 break;
         }
@@ -541,6 +565,7 @@ public class CustomerAddPropertyActivity extends BaseActivity implements View.On
                 }
                 break;
             case R.id.tv_city://城市列表
+            case R.id.iv_city://城市列表
                 if (null != addAdapter && 0 < addBeanList.size()) {
                     rv_address.setVisibility(View.GONE);
                     addBeanList.clear();
@@ -551,19 +576,6 @@ public class CustomerAddPropertyActivity extends BaseActivity implements View.On
                 fl_city.setVisibility(View.VISIBLE);
                 dismissSoftKeyboard(et_search_area);
                 newCustomerInfoModel.cityListSelect(11, this);
-                break;
-            case R.id.iv_city://城市列表 按钮
-                if (null != addAdapter && 0 < addBeanList.size()) {
-                    rv_address.setVisibility(View.GONE);
-                    addBeanList.clear();
-                    addAdapter.notifyDataSetChanged();
-                }
-                tv_choose.setText("选择城市");
-                iv_city.setVisibility(View.GONE);
-                fl_city.setVisibility(View.VISIBLE);
-                dismissSoftKeyboard(et_search_area);
-                newCustomerInfoModel.cityListSelect(11, this);
-                break;
             case R.id.tv_garden://点击花园
                 if (null != addAdapter && 0 < addBeanList.size()) {
                     rv_address.setVisibility(View.GONE);
@@ -804,6 +816,7 @@ public class CustomerAddPropertyActivity extends BaseActivity implements View.On
                         if (!TextUtils.isEmpty(addDataList.get(i).getFloor())) {
                             AddListEntity.ContentBean.DataBean item = new AddListEntity.ContentBean.DataBean();
                             item.setFloor("");
+                            item.setUuid(addDataList.get(i).getUuid());
                             item.setName(addDataList.get(i).getFloor() + "楼" + addDataList.get(i).getName());
                             addDataList.set(i, item);
                         }
@@ -894,6 +907,9 @@ public class CustomerAddPropertyActivity extends BaseActivity implements View.On
                             if ("新增房产".equals(mtitle.getText().toString().trim())) {
                                 Intent intent = new Intent(this, PropertyChangeActivity.class);
                                 startActivityForResult(intent, 1);
+                            } else if ("选择小区".equals(mtitle.getText().toString().trim())) {
+                                NewDoorAuthorModel newDoorAuthorModel = new NewDoorAuthorModel(CustomerAddPropertyActivity.this);
+                                newDoorAuthorModel.getSupportDoorType(14, community_uuid, CustomerAddPropertyActivity.this);
                             } else {//修改
                                 newCustomerInfoModel.postCustomerUpdateAddress(12, id, community_uuid, community_name, building_uuid, building_name
                                         , unit_uuid, unit_name, room_uuid, room_name, this);
@@ -903,6 +919,27 @@ public class CustomerAddPropertyActivity extends BaseActivity implements View.On
                         e.printStackTrace();
                     }
                 }
+                break;
+            case 14:
+                try {
+                    DoorSupportTypeEntity doorSupportTypeEntity = GsonUtils.gsonToBean(result, DoorSupportTypeEntity.class);
+                    Intent intent = new Intent(CustomerAddPropertyActivity.this, NewDoorApplyActivity.class);
+                    intent.putExtra(COMMUNITY_UUID, community_uuid);
+                    intent.putExtra(COMMUNITY_NAME, community_name);
+                    intent.putExtra(BUILD_UUID, building_uuid);
+                    intent.putExtra(BUILD_NAME, building_name);
+                    intent.putExtra(UNIT_UUID, unit_uuid);
+                    intent.putExtra(UNIT_NAME, unit_name);
+                    intent.putExtra(ROOM_UUID, room_uuid);
+                    intent.putExtra(ROOM_NAME, room_name);
+                    intent.putExtra(DOORSUPPORTTYPE, doorSupportTypeEntity.getContent());
+                    intent.putExtra(IDENTITY_ID, identifyId);
+                    intent.putExtra(IDENTITY_NAME, identifyName);
+                    startActivityForResult(intent, 100);
+                } catch (Exception e) {
+
+                }
+
                 break;
         }
     }

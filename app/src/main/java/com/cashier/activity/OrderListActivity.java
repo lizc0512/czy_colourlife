@@ -79,6 +79,7 @@ public class OrderListActivity extends BaseFragmentActivity implements View.OnCl
         }
         orderlist_tablayout.setTabMode(TabLayout.MODE_SCROLLABLE);
         orderlist_tablayout.setSelectedTabIndicatorHeight(4);
+        orderlist_tablayout.setTabIndicatorFullWidth(false);
         orderlist_tablayout.setSelectedTabIndicatorColor(Color.parseColor("#27a2f0"));
         orderlist_tablayout.setTabTextColors(Color.parseColor("#333b46"), Color.parseColor("#27a2f0"));
         orderlist_tablayout.setTabGravity(TabLayout.GRAVITY_CENTER);
@@ -87,7 +88,6 @@ public class OrderListActivity extends BaseFragmentActivity implements View.OnCl
         orderlist_viewpager.setAdapter(adapter);
         orderlist_viewpager.setOffscreenPageLimit(fragmentList.size());
         orderlist_tablayout.setupWithViewPager(orderlist_viewpager);
-        reflex(orderlist_tablayout);
         initClick();
         if (!EventBus.getDefault().isregister(OrderListActivity.this)) {
             EventBus.getDefault().register(OrderListActivity.this);

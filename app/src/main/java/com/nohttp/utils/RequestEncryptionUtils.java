@@ -213,6 +213,9 @@ public class RequestEncryptionUtils {
             case 14:
                 finalUrl = Constants.FEEDBACK_ADDRESS + urlString;  //意见反馈
                 break;
+            case 15:
+                finalUrl = Constants.DOOR_ADDRESS + urlString;  //蓝牙门禁
+                break;
             default:
                 finalUrl = urlString;
                 break;

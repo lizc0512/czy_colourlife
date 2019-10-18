@@ -32,19 +32,25 @@ public class IntelligenceDoorAdapter extends RecyclerView.Adapter<IntelligenceDo
     public List<DoorAllEntity.ContentBean.DataBean.ListBean.KeyListBean> mList;
     public List<String> titleList;
     public List<String> typeList;
+    public List<String> tagList;
+    public List<String> identifyList;
     private PopupWindow popupWindow;
 
-    public IntelligenceDoorAdapter(Context mContext, int userId, List<String> titleList, List<String> typeList, List<DoorAllEntity.ContentBean.DataBean.ListBean.KeyListBean> mList) {
+    public IntelligenceDoorAdapter(Context mContext, int userId, List<String> titleList, List<String> typeList, List<String> tagList, List<String> identifyList, List<DoorAllEntity.ContentBean.DataBean.ListBean.KeyListBean> mList) {
         this.mContext = mContext;
         this.userId = userId;
         this.titleList = titleList;
         this.typeList = typeList;
+        this.tagList = tagList;
+        this.identifyList = identifyList;
         this.mList = mList;
     }
 
-    public void setData(List<String> titleList, List<String> typeList, List<DoorAllEntity.ContentBean.DataBean.ListBean.KeyListBean> mList) {
+    public void setData(List<String> titleList, List<String> typeList, List<String> tagList,List<String> identifyList, List<DoorAllEntity.ContentBean.DataBean.ListBean.KeyListBean> mList) {
         this.titleList.addAll(titleList);
         this.typeList.addAll(typeList);
+        this.tagList.addAll(tagList);
+        this.identifyList.addAll(identifyList);
         this.mList.addAll(mList);
         notifyDataSetChanged();
     }
@@ -63,10 +69,17 @@ public class IntelligenceDoorAdapter extends RecyclerView.Adapter<IntelligenceDo
             if (!TextUtils.isEmpty(titleList.get(position))) {
                 holder.ll_kind.setVisibility(View.VISIBLE);
                 holder.tv_kind.setText(titleList.get(position));
-                holder.tv_apply.setOnClickListener(v -> ((IntelligenceDoorActivity) mContext).apply());
             } else {
                 holder.ll_kind.setVisibility(View.GONE);
             }
+            if ("1".equals(tagList.get(position))) {
+                holder.tv_apply.setVisibility(View.VISIBLE);
+            } else {
+                holder.tv_apply.setVisibility(View.INVISIBLE);
+            }
+
+            holder.tv_apply.setOnClickListener(v -> ((IntelligenceDoorActivity) mContext).apply(item.getCommunity_uuid(),identifyList.get(position),typeList.get(position)));
+
             String type = typeList.get(position);
             switch (type) {
                 case "1":
@@ -151,9 +164,6 @@ public class IntelligenceDoorAdapter extends RecyclerView.Adapter<IntelligenceDo
                             //获取密码
                             holder.tv_pwd.setOnClickListener(v -> ((IntelligenceDoorActivity) mContext).getDevicePwd(item.getDeviceId()));
                             break;
-                        case "ISE10":
-                            holder.tv_pwd.setVisibility(View.GONE);
-                            break;
                         default:
                             holder.tv_pwd.setVisibility(View.GONE);
                     }
@@ -165,13 +175,11 @@ public class IntelligenceDoorAdapter extends RecyclerView.Adapter<IntelligenceDo
                     holder.tv_common.setVisibility(View.GONE);
                     holder.tv_car_title.setText(item.getName());
                     String time = item.getValid_date();
-                    try {
-                        if (time.contains("-")) {
-                            String[] times = time.split("-");
+                    if (time.contains("-")) {
+                        String[] times = time.split("-");
+                        if (times.length>1){
                             time = times[0] + "-\n" + times[1];
                         }
-                    } catch (Exception e) {
-                        e.printStackTrace();
                     }
                     holder.tv_avail_time.setText(time);
                     holder.ll_down.setOnClickListener(v -> {

@@ -39,6 +39,7 @@ import com.door.entity.DoorRecordEntity;
 import com.door.entity.DoorRightEntity;
 import com.door.entity.OpenDoorResultEntity;
 import com.door.fragment.IntelligenceDoorFragment;
+import com.door.model.NewDoorAuthorModel;
 import com.door.model.NewDoorModel;
 import com.door.view.DoorRenameDialog;
 import com.door.view.ShowOpenDoorDialog;
@@ -61,6 +62,9 @@ import cn.net.cyberway.utils.LinkParseUtil;
 
 import static cn.net.cyberway.utils.TableLayoutUtils.showOpenDoorResultDialog;
 import static com.BeeFramework.Utils.Utils.dip2px;
+import static com.customerInfo.activity.CustomerAddPropertyActivity.COMMUNITY_UUID;
+import static com.customerInfo.activity.CustomerAddPropertyActivity.IDENTITY_ID;
+import static com.door.activity.NewDoorRenewalActivity.DOOR_TYPE;
 import static com.user.UserAppConst.COLOUR_BLUETOOTH_ADVISE;
 
 /**
@@ -78,6 +82,7 @@ public class IntelligenceDoorActivity extends BaseFragmentActivity implements Ne
     private RelativeLayout ll_homedoorpop_authorization;
     private RelativeLayout ll_homedoorpop_compile;
     private RelativeLayout ll_homedoorpop_record;
+    private RelativeLayout ll_homedoorpop_myapply;
     private String isgranted = "0";
     private String door_code = "";
     private int position = 0;
@@ -214,7 +219,8 @@ public class IntelligenceDoorActivity extends BaseFragmentActivity implements Ne
         }
 
         newDoorModel.getCommunityKey(5, isLoading, this);//获取门禁列表
-        newDoorModel.getHaveDoorRight(1, false, this);//授权管理
+        NewDoorAuthorModel newDoorAuthorModel = new NewDoorAuthorModel(IntelligenceDoorActivity.this);
+        newDoorAuthorModel.getHaveDoorRight(1, false, this);//授权管理
     }
 
     /**
@@ -272,12 +278,14 @@ public class IntelligenceDoorActivity extends BaseFragmentActivity implements Ne
                 ll_homedoorpop_compile = popWindowView.findViewById(R.id.ll_homedoorpop_compile);
                 //门禁记录
                 ll_homedoorpop_record = popWindowView.findViewById(R.id.ll_homedoorpop_record);
+                ll_homedoorpop_myapply = popWindowView.findViewById(R.id.ll_homedoorpop_myapply);
             }
 
             ll_homedoorpop_apply.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    Intent applyIntent = new Intent(IntelligenceDoorActivity.this, DoorApplyActivity.class);
+//                    Intent applyIntent = new Intent(IntelligenceDoorActivity.this, DoorApplyActivity.class);
+                    Intent applyIntent = new Intent(IntelligenceDoorActivity.this, NewDoorIndetifyActivity.class);
                     startActivity(applyIntent);
                     popupWindow.dismiss();
                 }
@@ -290,7 +298,8 @@ public class IntelligenceDoorActivity extends BaseFragmentActivity implements Ne
                             ToastUtil.toastShow(IntelligenceDoorActivity.this, getResources().getString(R.string.door_no_grantauthor));
                             return;
                         }
-                        Intent authorIntent = new Intent(IntelligenceDoorActivity.this, DoorAuthorizationActivity.class);
+                        Intent authorIntent = new Intent(IntelligenceDoorActivity.this, NewDoorAuthorizeActivity.class);
+//                        Intent authorIntent = new Intent(IntelligenceDoorActivity.this, DoorAuthorizationActivity.class);
                         startActivity(authorIntent);
                     } catch (Resources.NotFoundException e) {
                         e.printStackTrace();
@@ -338,6 +347,13 @@ public class IntelligenceDoorActivity extends BaseFragmentActivity implements Ne
                     Intent intent = new Intent(IntelligenceDoorActivity.this, NewDoorOpenRecordActivity.class);
                     startActivity(intent);
                     popupWindow.dismiss();
+                }
+            });
+            ll_homedoorpop_myapply.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(IntelligenceDoorActivity.this, NewDoorApplyRecordActivity.class);
+                    startActivity(intent);
                 }
             });
             // 使其聚集
@@ -676,7 +692,7 @@ public class IntelligenceDoorActivity extends BaseFragmentActivity implements Ne
      * 添加，移除名操作
      *
      * @param position 位置
-     * @param add   true 添加，false 移除
+     * @param add      true 添加，false 移除
      */
     public void addOrRemoveHandle(int position, String community_uuid, String door_name, String door_id, boolean add) {
         this.position = vp_door.getCurrentItem();
@@ -687,8 +703,12 @@ public class IntelligenceDoorActivity extends BaseFragmentActivity implements Ne
     /**
      * 申请续期
      */
-    public void apply() {
-        LinkParseUtil.parse(this, "colourlife://proto?type=apply", "");
+    public void apply(String community_uuid,String identify_id,String door_type) {
+        Intent intent = new Intent(IntelligenceDoorActivity.this, NewDoorRenewalActivity.class);
+        intent.putExtra(COMMUNITY_UUID, community_uuid);
+        intent.putExtra(IDENTITY_ID, identify_id);
+        intent.putExtra(DOOR_TYPE, door_type);
+        startActivity(intent);
     }
 
     public void onEvent(Object event) {
@@ -734,29 +754,6 @@ public class IntelligenceDoorActivity extends BaseFragmentActivity implements Ne
                     msg.what = UserMessageConstant.BLUETOOTH_CLOSE_DIALOG;
                     EventBus.getDefault().post(msg);
                 }
-            });
-        } catch (Exception e) {
-
-        }
-    }
-
-    private DoorOverdueDialog doorOverdueDialog;
-
-    public void showDoorOverdueDialog() {
-        try {
-            if (null == doorOverdueDialog) {
-                doorOverdueDialog = new DoorOverdueDialog(IntelligenceDoorActivity.this);
-            }
-            if (doorOverdueDialog.isShowing()) {
-                doorOverdueDialog.dismiss();
-            }
-            doorOverdueDialog.show();
-            doorOverdueDialog.tv_apply.setOnClickListener(v -> {
-                doorOverdueDialog.dismiss();
-                LinkParseUtil.parse(this, "colourlife://proto?type=apply", "");
-            });
-            doorOverdueDialog.tv_cancel.setOnClickListener(v -> {
-                doorOverdueDialog.dismiss();
             });
         } catch (Exception e) {
 

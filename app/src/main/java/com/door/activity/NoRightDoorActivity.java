@@ -43,9 +43,11 @@ public class NoRightDoorActivity extends BaseActivity implements View.OnClickLis
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.tv_norightdoor_apply:
-                Intent applyIntent = new Intent(NoRightDoorActivity.this, DoorApplyActivity.class);
+//                Intent applyIntent = new Intent(NoRightDoorActivity.this, DoorApplyActivity.class);
+                Intent applyIntent = new Intent(NoRightDoorActivity.this, NewDoorIndetifyActivity.class);
                 startActivity(applyIntent);
                 this.overridePendingTransition(0, R.anim.door_push_bottom_out);
+                finish();
                 break;
             case R.id.tv_norightdoor_help:
                 Intent goodsIntent = new Intent(NoRightDoorActivity.this, DoorLeadActivity.class);

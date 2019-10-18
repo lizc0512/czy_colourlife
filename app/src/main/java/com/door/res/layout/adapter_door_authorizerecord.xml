@@ -4,6 +4,7 @@
     android:layout_height="75dp"
     android:layout_marginLeft="16dp"
     android:layout_marginRight="16dp"
+    android:layout_marginTop="12dp"
     android:background="@color/color_f7f8fa">
 
 
@@ -19,7 +20,6 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
             android:layout_marginLeft="16dp"
-            android:text="赵晓芳"
             android:textColor="@color/color_25282e"
             android:textSize="15sp" />
 
@@ -37,7 +37,6 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
             android:layout_marginLeft="10dp"
-            android:text="家属  新浩城"
             android:textColor="@color/color_25282e"
             android:textSize="15sp" />
 
@@ -73,7 +72,6 @@
         android:layout_centerVertical="true"
         android:layout_marginRight="16dp"
         android:layout_toLeftOf="@id/iv_right_arrow"
-        android:text="1个月"
         android:textColor="@color/color_25282e"
         android:textSize="13sp" />
 

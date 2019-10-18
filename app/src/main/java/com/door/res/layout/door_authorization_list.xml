@@ -20,22 +20,22 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="16dp"
-            android:text="授权房号"
+            android:text="授权小区"
             android:textColor="@color/color_25282e"
             android:textSize="15sp" />
 
         <TextView
-            android:id="@+id/tv_room_name"
+            android:id="@+id/tv_community_name"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginLeft="16dp"
             android:layout_weight="1"
             android:singleLine="true"
-            android:text="新浩成一栋一单元7A"
             android:textColor="@color/color_25282e"
             android:textSize="15sp" />
 
         <ImageView
+            android:id="@+id/iv_more_community"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginRight="15dp"
@@ -82,6 +82,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_marginLeft="16dp"
+            android:paddingRight="20dp"
             android:background="@null"
             android:hint="请输入被授权人的真实姓名"
             android:singleLine="true"
@@ -117,6 +118,9 @@
             android:layout_height="match_parent"
             android:layout_marginLeft="16dp"
             android:background="@null"
+            android:inputType="number"
+            android:maxLength="11"
+            android:paddingRight="20dp"
             android:hint="请输入被授权人的手机号码"
             android:singleLine="true"
             android:textColor="@color/color_25282e"
@@ -153,7 +157,6 @@
             android:layout_marginLeft="16dp"
             android:layout_weight="1"
             android:singleLine="true"
-            android:text="家属"
             android:textColor="@color/color_25282e"
             android:textSize="15sp" />
 
@@ -177,6 +180,7 @@
         android:layout_marginLeft="22dp"
         android:layout_marginTop="40dp"
         android:layout_marginRight="22dp"
+        android:enabled="false"
         android:background="@drawable/onekey_login_default_bg"
         android:text="确认授权"
         android:textColor="@color/white"

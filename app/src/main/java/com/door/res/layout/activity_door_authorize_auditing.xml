@@ -67,12 +67,14 @@
 
 
     <LinearLayout
+        android:id="@+id/layout_apply_room"
         android:layout_width="match_parent"
         android:layout_height="44dp"
         android:gravity="center_vertical"
         android:orientation="horizontal">
 
         <TextView
+            android:id="@+id/tv_apply_room_title"
             android:layout_width="90dp"
             android:layout_height="wrap_content"
             android:layout_marginLeft="16dp"
@@ -93,13 +95,43 @@
     </LinearLayout>
 
 
+
     <LinearLayout
+       android:id="@+id/layout_apply_during"
+        android:layout_width="match_parent"
+        android:layout_height="44dp"
+        android:visibility="gone"
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="90dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="16dp"
+            android:text="授权时限"
+            android:textColor="@color/color_8d9299"
+            android:textSize="15sp" />
+
+        <TextView
+            android:id="@+id/tv_apply_duration"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="16dp"
+            android:text="2019-08-27 15:26 至 2019-09-27 15:26"
+            android:textColor="@color/color_25282e"
+            android:textSize="15sp" />
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:id="@+id/layout_apply_time"
         android:layout_width="match_parent"
         android:layout_height="44dp"
         android:gravity="center_vertical"
         android:orientation="horizontal">
 
         <TextView
+            android:id="@+id/tv_apply_time_title"
             android:layout_width="90dp"
             android:layout_height="wrap_content"
             android:layout_marginLeft="16dp"
@@ -120,6 +152,7 @@
 
 
     <LinearLayout
+        android:id="@+id/layout_apply_duration"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:minHeight="44dp"
@@ -138,8 +171,7 @@
             android:id="@+id/rv_apply_duration"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="16dp"
-            android:layout_marginTop="10dp" />
+            android:layout_marginLeft="16dp" />
     </LinearLayout>
 
 

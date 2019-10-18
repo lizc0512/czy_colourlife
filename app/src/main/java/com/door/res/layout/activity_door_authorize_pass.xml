@@ -152,6 +152,7 @@
         android:orientation="horizontal">
 
         <TextView
+            android:id="@+id/tv_apply_title"
             android:layout_width="90dp"
             android:layout_height="wrap_content"
             android:layout_marginLeft="16dp"
@@ -171,6 +172,7 @@
 
 
     <LinearLayout
+        android:id="@+id/layout_pass_time"
         android:layout_width="match_parent"
         android:layout_height="44dp"
         android:gravity="center_vertical"

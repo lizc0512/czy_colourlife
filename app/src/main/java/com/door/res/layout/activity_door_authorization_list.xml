@@ -34,8 +34,12 @@
             <android.support.design.widget.TabLayout
                 android:id="@+id/record_tabs"
                 android:layout_width="match_parent"
-                android:layout_height="40dp"
-                android:background="@color/white" />
+                android:background="@color/white"
+                app:tabPaddingStart="16dp"
+                app:tabPaddingEnd="16dp"
+                app:tabGravity="center"
+                app:tabTextAppearance="@style/TabLayoutTextSizeStyle"
+                android:layout_height="40dp" />
 
         </android.support.design.widget.AppBarLayout>
 

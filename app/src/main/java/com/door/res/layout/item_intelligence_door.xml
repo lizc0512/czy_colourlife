@@ -36,6 +36,7 @@
             android:paddingLeft="8dp"
             android:paddingTop="3dp"
             android:paddingRight="8dp"
+            android:visibility="invisible"
             android:paddingBottom="3dp"
             android:text="申请续期"
             android:textColor="@color/white"

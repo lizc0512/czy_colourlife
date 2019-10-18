@@ -192,7 +192,11 @@ public class LekaiService extends Service {
                         ToastUtil.toastShow(getApplicationContext(), "钥匙过期，请联系管理员");
                         uploadOpenDoor(openCipherId, "door", code, message);
                     } else {
-                        ToastUtil.toastShow(getApplicationContext(), "开门失败");
+                        if (code == -87) {
+                            ToastUtil.toastShow(getApplicationContext(), message + ",请重启一下手机蓝牙重试");
+                        } else {
+                            ToastUtil.toastShow(getApplicationContext(), "开门失败");
+                        }
                         uploadOpenDoor(openCipherId, "door", code, message);
                     }
                 });

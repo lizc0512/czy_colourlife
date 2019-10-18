@@ -9,7 +9,7 @@
         android:configChanges="locale"
         android:hardwareAccelerated="true"
         android:icon="@drawable/icon"
-        android:label="@string/app_name"
+        android:label="@string/app_name_test"
         android:resizeableActivity="false"
         android:screenOrientation="portrait"
         android:supportsRtl="true"
@@ -886,10 +886,19 @@
             android:name="com.door.activity.NewDoorApplyActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name="com.door.activity.NewDoorApplyTwoActivity"
+            android:name="com.door.activity.NewDoorRenewalActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name="com.door.activity.NewDoorApplyRecordActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name="com.door.activity.NewDoorIndetifyActivity"
             android:screenOrientation="portrait" />
         <activity
             android:name="com.door.activity.NewDoorAuthorizePassActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name="com.door.activity.NewDoorAuthorizeCancelActivity"
             android:screenOrientation="portrait" />
         <activity
             android:name="com.door.activity.NewDoorAuthorizeAuditActivity"

@@ -77,7 +77,7 @@ public class IntelligenceDoorFragment extends BaseFragment {
             if (!TextUtils.isEmpty(result)) {
                 List<DoorAllEntity.ContentBean.DataBean.ListBean> mList = GsonUtils.jsonToList(result, DoorAllEntity.ContentBean.DataBean.ListBean.class);
 
-                mAdapter = new IntelligenceDoorAdapter(getActivity(), userId, new ArrayList<>(), new ArrayList<>(), new ArrayList<>());
+                mAdapter = new IntelligenceDoorAdapter(getActivity(), userId, new ArrayList<>(), new ArrayList<>(), new ArrayList<>(),new ArrayList<>(), new ArrayList<>());
                 xrv_invite_list.setAdapter(mAdapter);
 
                 if (0 < mList.size()) {
@@ -95,19 +95,24 @@ public class IntelligenceDoorFragment extends BaseFragment {
                                 type = "3";
                                 break;
                         }
-
                         List<String> titleList = new ArrayList<>();
                         List<String> typeList = new ArrayList<>();
+                        List<String> tagList = new ArrayList<>();
+                        List<String> identifyList = new ArrayList<>();
                         for (int j = 0; j < mList.get(i).getKeyList().size(); j++) {
                             if (0 == j) {
                                 titleList.add(mList.get(i).getName());
+                                tagList.add(mList.get(i).getApply_tag());
+                                identifyList.add(mList.get(i).getIdentity_id());
                             } else {
                                 titleList.add("");
+                                tagList.add("");
+                                identifyList.add("");
                             }
                             typeList.add(type);
                         }
                         List<DoorAllEntity.ContentBean.DataBean.ListBean.KeyListBean> listData = new ArrayList<>(mList.get(i).getKeyList());
-                        mAdapter.setData(titleList, typeList, listData);
+                        mAdapter.setData(titleList, typeList, tagList,identifyList, listData);
                         mAdapter.notifyDataSetChanged();
                     }
                 } else {

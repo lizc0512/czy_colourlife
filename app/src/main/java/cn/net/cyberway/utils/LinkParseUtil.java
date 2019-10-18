@@ -357,18 +357,12 @@ public class LinkParseUtil {
             try {
                 goodsJson = new JSONObject(goodsInfor);
                 ConsultingContent consultingContent = new ConsultingContent();
-
                 //咨询内容标题，必填
                 //CardMessageHolder
-
                 consultingContent.setSobotGoodsTitle(goodsJson.optString("goodsTitle"));
-
                 //咨询内容图片，选填 但必须是图片地址
-
-
                 //咨询来源页，必填
                 consultingContent.setSobotGoodsFromUrl(goodsJson.optString("goodsFromUrl"));
-
                 if (!goodsJson.isNull("goodsImgUrl")) {
                     consultingContent.setSobotGoodsImgUrl(goodsJson.optString("goodsImgUrl"));
                 }

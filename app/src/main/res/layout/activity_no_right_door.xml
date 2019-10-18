@@ -51,6 +51,7 @@
         android:gravity="center"
         android:text="怎么操作？"
         android:textSize="14dp"
+        android:visibility="gone"
         android:layout_marginTop="20dp"
         android:layout_below="@id/tv_norightdoor_apply"
         android:layout_centerHorizontal="true"

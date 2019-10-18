@@ -2,6 +2,7 @@ package com.door.entity;
 
 import com.nohttp.entity.BaseContentEntity;
 
+import java.io.Serializable;
 import java.util.List;
 
 /**
@@ -122,6 +123,26 @@ public class DoorAllEntity extends BaseContentEntity {
 
                 private String name;
                 private String type;
+
+                public String getIdentity_id() {
+                    return identity_id;
+                }
+
+                public void setIdentity_id(String identity_id) {
+                    this.identity_id = identity_id;
+                }
+
+                private String identity_id;
+
+                public String getApply_tag() {
+                    return apply_tag;
+                }
+
+                public void setApply_tag(String apply_tag) {
+                    this.apply_tag = apply_tag;
+                }
+
+                private String apply_tag;
                 private List<KeyListBean> keyList;
 
                 public String getName() {
@@ -148,7 +169,7 @@ public class DoorAllEntity extends BaseContentEntity {
                     this.keyList = keyList;
                 }
 
-                public static class KeyListBean {
+                public static class KeyListBean implements Serializable {
                     /**
                      * community_uuid : e513a47b-a8ea-40fe-9aae-fa9b501d06b8
                      * qr_code : 1554021044860

@@ -4,6 +4,8 @@ import com.nohttp.entity.BaseContentEntity;
 
 import java.util.List;
 
+import cn.csh.colourful.life.view.pickview.model.IPickerViewData;
+
 /**
  * @name ${yuansk}
  * @class name：com.door.entity
@@ -50,7 +52,7 @@ public class DoorCommunityEntity extends BaseContentEntity {
             this.communitylist = communitylist;
         }
 
-        public static class CommunitylistBean {
+        public static class CommunitylistBean implements IPickerViewData {
             /**
              * bid : 10003685
              * name : 彩生活大厦
@@ -93,6 +95,11 @@ public class DoorCommunityEntity extends BaseContentEntity {
 
             public void setUuid(String uuid) {
                 this.uuid = uuid;
+            }
+
+            @Override
+            public String getPickerViewText() {
+                return name;
             }
         }
     }

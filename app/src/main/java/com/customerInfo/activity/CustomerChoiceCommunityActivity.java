@@ -43,6 +43,7 @@ public class CustomerChoiceCommunityActivity extends BaseActivity implements Vie
     public static final String REGIONID = "region_id"; //
     public static final String REGIONIDNAME = "region_name"; //
     public static final String COMMUNITYUUID = "community_uuid"; //
+    public static final String COMMUNITYNAME = "community_name"; //
     public static final String BUILDINGUUID = "building_uuid"; //
     public static final String UNITUUID = "unit_uuid"; //
     public static final String NAME = "name"; //
@@ -133,25 +134,25 @@ public class CustomerChoiceCommunityActivity extends BaseActivity implements Vie
 
 
     private void getCommunityData(boolean isLoading) {
-        newCustomerInfoModel.getCommunityData(0, province_name, city_name, region_name, page, 20, isLoading,CustomerChoiceCommunityActivity.this);
+        newCustomerInfoModel.getCommunityData(0, province_name, city_name, region_name, page, 20, isLoading, CustomerChoiceCommunityActivity.this);
     }
 
     private String community_uuid;
 
     private void getBuildingData(boolean isLoading) {
-        newCustomerInfoModel.getBuildingData(0, community_uuid, page, 20, isLoading,CustomerChoiceCommunityActivity.this);
+        newCustomerInfoModel.getBuildingData(0, community_uuid, page, 20, isLoading, CustomerChoiceCommunityActivity.this);
     }
 
     private String building_uuid;
 
     private void getUnitData(boolean isLoading) {
-        newCustomerInfoModel.getUnitData(0, building_uuid, page, 20, isLoading,CustomerChoiceCommunityActivity.this);
+        newCustomerInfoModel.getUnitData(0, building_uuid, page, 20, isLoading, CustomerChoiceCommunityActivity.this);
     }
 
     private String unit_uuid;
 
-    private void getRoomData(boolean isLoading){
-        newCustomerInfoModel.getRoomData(0, unit_uuid, page, 20, isLoading,CustomerChoiceCommunityActivity.this);
+    private void getRoomData(boolean isLoading) {
+        newCustomerInfoModel.getRoomData(0, unit_uuid, page, 20, isLoading, CustomerChoiceCommunityActivity.this);
     }
 
     @Override

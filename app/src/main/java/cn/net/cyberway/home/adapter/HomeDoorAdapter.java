@@ -10,6 +10,8 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.door.activity.DoorApplyActivity;
+import com.door.activity.IntelligenceDoorActivity;
+import com.door.activity.NewDoorIndetifyActivity;
 import com.door.entity.SingleCommunityEntity;
 
 import java.util.ArrayList;
@@ -60,7 +62,8 @@ public class HomeDoorAdapter extends PagerAdapter {
                 if (isLogin) {
                     String doorQrcode = commonUseBeansBeanList.get(position).getQr_code();
                     if (TextUtils.isEmpty(doorQrcode)) {
-                        Intent intent = new Intent(mContext, DoorApplyActivity.class);
+//                        Intent intent = new Intent(mContext, DoorApplyActivity.class);
+                        Intent intent = new Intent(mContext, NewDoorIndetifyActivity.class);
                         mContext.startActivity(intent);
                     } else {
                         ((MainActivity) mContext).openDoor(doorQrcode);
