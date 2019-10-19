@@ -42,12 +42,6 @@ import cn.net.cyberway.utils.CityCustomConst;
 
 
 public class TokenUtils {
-    public static String getDeviceUUID(Context context) {
-        String blackBox = null;
-        blackBox = getUUID(context);
-        return blackBox;
-    }
-
 
     public static void clearUserCache(Context context) {
         SharedPreferences mshared = context.getSharedPreferences(UserAppConst.USERINFO, 0);
@@ -71,6 +65,7 @@ public class TokenUtils {
         mEditor.putString(UserAppConst.MYPAGELIST, "");
         mEditor.putString(UserAppConst.MYPAGESUBMENU, "");
         mEditor.putString(UserAppConst.ADDRESSLISTCACHE, "");
+        mEditor.putString(UserAppConst.COLOUR_DOOR_AUTHOUR_APPLY, "");
         mEditor.putString(UserAppConst.JOINCOMMUNITY, "");
         mEditor.putInt(UserAppConst.Colour_User_id, 0);
         mEditor.putString(UserAppConst.Colour_NAME, "");
