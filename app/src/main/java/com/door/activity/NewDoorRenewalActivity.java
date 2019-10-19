@@ -85,6 +85,8 @@ public class NewDoorRenewalActivity extends BaseActivity implements View.OnClick
         btn_submit_infor.setOnClickListener(this::onClick);
         user_top_view_title.setText("申请续期");
         user_top_view_back.setOnClickListener(this::onClick);
+        ed_validate_phone.addTextChangedListener(this);
+        ed_authorize_phone.addTextChangedListener(this);
         newDoorAuthorModel = new NewDoorAuthorModel(NewDoorRenewalActivity.this);
         Intent intent = getIntent();
         community_uuid = intent.getStringExtra(COMMUNITY_UUID);
@@ -108,6 +110,22 @@ public class NewDoorRenewalActivity extends BaseActivity implements View.OnClick
                 newDoorAuthorModel.bluetoothDoorVerify(1, community_uuid, NewDoorRenewalActivity.this);
             }
         }
+        String identify_name;
+        switch (identify_id) {
+            case "1":
+                identify_name = "业主  ";
+                break;
+            case "3":
+                identify_name = "租客  ";
+                break;
+            case "4":
+                identify_name = "访客  ";
+                break;
+            default:
+                identify_name = "家属  ";
+                break;
+        }
+        tv_apply_identify.setText(identify_name);
     }
 
     private void setNoticeSpannString() {

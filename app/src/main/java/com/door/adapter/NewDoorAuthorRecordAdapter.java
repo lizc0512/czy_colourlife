@@ -71,7 +71,7 @@ public class NewDoorAuthorRecordAdapter extends RecyclerView.Adapter<NewDoorAuth
                 holder.tv_authorize_duration.setText("永久");
             } else {
                 int distance = stopTime - authorizationListBean.getStarttime();
-                if (distance < 3600 * 2) {
+                if (distance <= 3600 * 2) {
                     holder.tv_authorize_duration.setText("2小时");
                 } else if (distance <= 3600 * 24) {
                     holder.tv_authorize_duration.setText("1天");

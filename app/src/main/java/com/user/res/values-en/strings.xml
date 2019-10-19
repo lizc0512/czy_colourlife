@@ -3,7 +3,7 @@
     <string name="user_input_oldpawd">请输入旧密码</string>
     <string name="user_input_newpawd">请输入新密码</string>
     <string name="user_define">确定</string>
-    <string name="user_set_pawd">请设置6-18位密码</string>
+    <string name="user_set_pawd">请设置8-18位密码</string>
     <string name="user_finish">完成</string>
     <string name="user_find_phone">输入要找回密码的手机号码</string>
     <string name="user_get_code">获取验证码</string>

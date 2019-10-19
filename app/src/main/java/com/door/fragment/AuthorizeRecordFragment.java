@@ -3,6 +3,7 @@ package com.door.fragment;
 import android.content.Intent;
 import android.support.v7.widget.LinearLayoutManager;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -29,6 +30,7 @@ public class AuthorizeRecordFragment extends BaseFragment {
     private XRecyclerView rv_authorize_record;
     private LinearLayout empty_layout;
     private TextView tv_empty_record;
+    private ImageView iv_empty;
     private NewDoorAuthorRecordAdapter newDoorAuthorRecordAdapter;
     private List<ApplyAuthorizeRecordEntity.ContentBean.AuthorizationListBean> authorizationBeanList = new ArrayList<>();
 
@@ -44,9 +46,14 @@ public class AuthorizeRecordFragment extends BaseFragment {
         tv_empty_record = rootView.findViewById(R.id.tv_empty_record);
         rv_authorize_record.setPullRefreshEnabled(false);
         rv_authorize_record.setLoadingMoreEnabled(false);
+        iv_empty = rootView.findViewById(R.id.iv_empty);
+        empty_layout.setVisibility(View.VISIBLE);
+        iv_empty.setVisibility(View.INVISIBLE);
+        tv_empty_record.setText("请稍等,正在获取授权记录...");
         newDoorAuthorRecordAdapter = new NewDoorAuthorRecordAdapter(authorizationBeanList);
         rv_authorize_record.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false));
         rv_authorize_record.setAdapter(newDoorAuthorRecordAdapter);
+        empty_layout.setVisibility(View.VISIBLE);
     }
 
     public void setAuthorData(List<ApplyAuthorizeRecordEntity.ContentBean.AuthorizationListBean> authorizationList) {
@@ -54,6 +61,7 @@ public class AuthorizeRecordFragment extends BaseFragment {
         authorizationBeanList.addAll(authorizationList);
         if (authorizationBeanList.size() == 0) {
             empty_layout.setVisibility(View.VISIBLE);
+            iv_empty.setVisibility(View.VISIBLE);
             tv_empty_record.setText("还没有授权记录呢～");
         } else {
             empty_layout.setVisibility(View.GONE);

@@ -72,8 +72,8 @@ public class NewDoorAuthorizeActivity extends BaseFragmentActivity implements Vi
     private int choicePos = 0;
     private String authorName;
     private String authorPhone;
-    private String autype = "";
-    private String granttype = "";
+    private String autype;
+    private String granttype;
     private long starttime;
     private long stoptime;
     private String community_uuid;
@@ -127,6 +127,10 @@ public class NewDoorAuthorizeActivity extends BaseFragmentActivity implements Vi
         dateList.add("6个月");
         dateList.add("1年");
         dateList.add("永久");
+        starttime = System.currentTimeMillis() / 1000;
+        stoptime = starttime + 3600 * 24 * 7;
+        autype = "1";
+        granttype = "0";
         applyRecordFragment = new ApplyRecordFragment();
         fragmentList.add(applyRecordFragment);
         authorizeRecordFragment = new AuthorizeRecordFragment();
