@@ -14,6 +14,7 @@ import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.BeeFramework.Utils.TimeUtil;
 import com.door.activity.IntelligenceDoorActivity;
 import com.door.entity.DoorAllEntity;
 
@@ -46,7 +47,7 @@ public class IntelligenceDoorAdapter extends RecyclerView.Adapter<IntelligenceDo
         this.mList = mList;
     }
 
-    public void setData(List<String> titleList, List<String> typeList, List<String> tagList,List<String> identifyList, List<DoorAllEntity.ContentBean.DataBean.ListBean.KeyListBean> mList) {
+    public void setData(List<String> titleList, List<String> typeList, List<String> tagList, List<String> identifyList, List<DoorAllEntity.ContentBean.DataBean.ListBean.KeyListBean> mList) {
         this.titleList.addAll(titleList);
         this.typeList.addAll(typeList);
         this.tagList.addAll(tagList);
@@ -78,7 +79,7 @@ public class IntelligenceDoorAdapter extends RecyclerView.Adapter<IntelligenceDo
                 holder.tv_apply.setVisibility(View.INVISIBLE);
             }
 
-            holder.tv_apply.setOnClickListener(v -> ((IntelligenceDoorActivity) mContext).apply(item.getCommunity_uuid(),identifyList.get(position),typeList.get(position)));
+            holder.tv_apply.setOnClickListener(v -> ((IntelligenceDoorActivity) mContext).apply(item.getCommunity_uuid(), identifyList.get(position), typeList.get(position)));
 
             String type = typeList.get(position);
             switch (type) {
@@ -97,6 +98,22 @@ public class IntelligenceDoorAdapter extends RecyclerView.Adapter<IntelligenceDo
                     holder.tv_title.setText(item.getDoor_name());
                     holder.iv_icon.setBackgroundResource(R.drawable.ic_door_key);
                     holder.tv_pwd.setVisibility(View.GONE);
+                    long stop_time = item.getStop_time();
+                    if (stop_time == 0) {
+                        holder.tv_avail_time_to.setText("永久有限");
+                    } else {
+                        long stop_millis = stop_time * 1000;
+                        long current_millis = System.currentTimeMillis();
+                        if (stop_millis < current_millis) {
+                            holder.tv_avail_time_to.setText("已过期  有效期至" + TimeUtil.getYearTime(stop_millis, "yyyy-MM-dd"));
+                        } else {
+                            if (stop_millis - current_millis > 5 * 3600 * 24 * 1000) {
+                                holder.tv_avail_time_to.setText("快过期  有效期至" + TimeUtil.getYearTime(stop_millis, "yyyy-MM-dd"));
+                            } else {
+                                holder.tv_avail_time_to.setText("有效期至" + TimeUtil.getYearTime(stop_millis, "yyyy-MM-dd"));
+                            }
+                        }
+                    }
                     //远程开门
                     holder.rl_key.setOnClickListener(v -> ((IntelligenceDoorActivity) mContext).remoteDoor(item.getQr_code()));
 
@@ -167,6 +184,22 @@ public class IntelligenceDoorAdapter extends RecyclerView.Adapter<IntelligenceDo
                         default:
                             holder.tv_pwd.setVisibility(View.GONE);
                     }
+                    long stopTime = item.getStop_time();
+                    if (stopTime == 0) {
+                        holder.tv_avail_time_to.setText("永久有限");
+                    } else {
+                        long stop_millis = stopTime * 1000;
+                        long current_millis = System.currentTimeMillis();
+                        if (stop_millis < current_millis) {
+                            holder.tv_avail_time_to.setText("已过期  有效期至" + TimeUtil.getYearTime(stop_millis, "yyyy-MM-dd"));
+                        } else {
+                            if (stop_millis - current_millis > 5 * 3600 * 24 * 1000) {
+                                holder.tv_avail_time_to.setText("快过期  有效期至" + TimeUtil.getYearTime(stop_millis, "yyyy-MM-dd"));
+                            } else {
+                                holder.tv_avail_time_to.setText("有效期至" + TimeUtil.getYearTime(stop_millis, "yyyy-MM-dd"));
+                            }
+                        }
+                    }
                     break;
                 case "3":
                     holder.rl_key.setVisibility(View.GONE);
@@ -177,7 +210,7 @@ public class IntelligenceDoorAdapter extends RecyclerView.Adapter<IntelligenceDo
                     String time = item.getValid_date();
                     if (time.contains("-")) {
                         String[] times = time.split("-");
-                        if (times.length>1){
+                        if (times.length > 1) {
                             time = times[0] + "-\n" + times[1];
                         }
                     }

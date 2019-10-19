@@ -154,6 +154,7 @@ public class UserAppConst {
     public static final String COLOUR_AUTH_REAL_NAME = "colour_auth_real_name";//腾讯实名认证
     public static final String COLOUR_INTELLIGENCE_DOOR = "colour_intelligence_door";//智能门禁
     public static final String COLOUR_BLUETOOTH_ADVISE = "COLOUR_BLUETOOTH_ADVISE";//蓝牙开门的广告banner
+    public static final String COLOUR_DOOR_AUTHOUR_APPLY= "colour_door_authour_apply";//门禁授权和申请记录
 
     /**
      * 彩惠人生

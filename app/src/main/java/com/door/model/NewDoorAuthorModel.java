@@ -6,6 +6,7 @@ import com.BeeFramework.model.BaseModel;
 import com.BeeFramework.model.NewHttpResponse;
 import com.nohttp.utils.HttpListener;
 import com.nohttp.utils.RequestEncryptionUtils;
+import com.user.UserAppConst;
 import com.yanzhenjie.nohttp.NoHttp;
 import com.yanzhenjie.nohttp.RequestMethod;
 import com.yanzhenjie.nohttp.rest.Request;
@@ -182,6 +183,7 @@ public class NewDoorAuthorModel extends BaseModel {
                     int code = showSuccesResultMessage(resultValue);
                     if (code == 0) {
                         newHttpResponse.OnHttpResponse(what, resultValue);
+                        editor.putString(UserAppConst.COLOUR_DOOR_AUTHOUR_APPLY,resultValue).apply();
                     }
                 } else if (responseCode == RequestEncryptionUtils.responseRequest) {
                     showErrorCodeMessage(responseCode, response);

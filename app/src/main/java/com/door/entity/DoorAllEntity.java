@@ -197,6 +197,25 @@ public class DoorAllEntity extends BaseContentEntity {
                     private int open_sp;
                     private int openSp;
                     private int position;
+
+                    public int getStart_time() {
+                        return start_time;
+                    }
+
+                    public void setStart_time(int start_time) {
+                        this.start_time = start_time;
+                    }
+
+                    public int getStop_time() {
+                        return stop_time;
+                    }
+
+                    public void setStop_time(int stop_time) {
+                        this.stop_time = stop_time;
+                    }
+
+                    private int start_time;
+                    private int stop_time;
                     private String community_name;
                     private int color_id;
 

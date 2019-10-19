@@ -34,6 +34,7 @@ import com.door.fragment.ApplyRecordFragment;
 import com.door.fragment.AuthorizeRecordFragment;
 import com.door.model.NewDoorAuthorModel;
 import com.nohttp.utils.GsonUtils;
+import com.user.UserAppConst;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -303,6 +304,10 @@ public class NewDoorAuthorizeActivity extends BaseFragmentActivity implements Vi
                         choice_room_layout.setEnabled(true);
                         iv_more_community.setVisibility(View.VISIBLE);
                     }
+                    String applyAuthorRecordCache = shared.getString(UserAppConst.COLOUR_DOOR_AUTHOUR_APPLY, "");
+                    if (!TextUtils.isEmpty(applyAuthorRecordCache)) {
+                        setApplyAuthorData(applyAuthorRecordCache);
+                    }
                 } catch (Exception e) {
 
                 }
@@ -317,16 +322,7 @@ public class NewDoorAuthorizeActivity extends BaseFragmentActivity implements Vi
                 }
                 break;
             case 2:
-                try {
-                    ApplyAuthorizeRecordEntity applyAuthorizeRecordEntity = GsonUtils.gsonToBean(result, ApplyAuthorizeRecordEntity.class);
-                    ApplyAuthorizeRecordEntity.ContentBean contentBean = applyAuthorizeRecordEntity.getContent();
-                    List<ApplyAuthorizeRecordEntity.ContentBean.ApplyListBean> applyListBeanList = contentBean.getApply_list();
-                    List<ApplyAuthorizeRecordEntity.ContentBean.AuthorizationListBean> authorizationList = contentBean.getAuthorization_list();
-                    authorizeRecordFragment.setAuthorData(authorizationList);
-                    applyRecordFragment.setApplyData(applyListBeanList);
-                } catch (Exception e) {
-
-                }
+                setApplyAuthorData(result);
                 break;
             case 3:
                 ToastUtil.toastShow(NewDoorAuthorizeActivity.this, "授权成功");
@@ -334,6 +330,19 @@ public class NewDoorAuthorizeActivity extends BaseFragmentActivity implements Vi
                 break;
         }
 
+    }
+
+    private void setApplyAuthorData(String result) {
+        try {
+            ApplyAuthorizeRecordEntity applyAuthorizeRecordEntity = GsonUtils.gsonToBean(result, ApplyAuthorizeRecordEntity.class);
+            ApplyAuthorizeRecordEntity.ContentBean contentBean = applyAuthorizeRecordEntity.getContent();
+            List<ApplyAuthorizeRecordEntity.ContentBean.ApplyListBean> applyListBeanList = contentBean.getApply_list();
+            List<ApplyAuthorizeRecordEntity.ContentBean.AuthorizationListBean> authorizationList = contentBean.getAuthorization_list();
+            authorizeRecordFragment.setAuthorData(authorizationList);
+            applyRecordFragment.setApplyData(applyListBeanList);
+        } catch (Exception e) {
+
+        }
     }
 
     @Override

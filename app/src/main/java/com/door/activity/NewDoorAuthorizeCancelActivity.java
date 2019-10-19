@@ -97,8 +97,6 @@ public class NewDoorAuthorizeCancelActivity extends BaseActivity implements View
         rv_apply_duration.setAdapter(doorDateAdapter);
         authorizationList = (ApplyAuthorizeRecordEntity.ContentBean.AuthorizationListBean) getIntent().getSerializableExtra("authorizationList");
         tv_apply_name.setText(authorizationList.getToname());
-        autype = authorizationList.getAutype();
-        granttype = authorizationList.getGranttype();
         isdelete = authorizationList.getIsdeleted();
         starttime = System.currentTimeMillis() / 1000;
         stoptime = starttime + 3600 * 24 * 30;
@@ -107,7 +105,6 @@ public class NewDoorAuthorizeCancelActivity extends BaseActivity implements View
             stoptime = starttime + 3600 * 24 * 7;
             btn_agree_authorize.setText("再次授权");
             layout_apply_time.setVisibility(View.GONE);
-            layout_apply_room.setVisibility(View.GONE);
         } else {
             btn_agree_authorize.setText("取消授权");
             layout_apply_duration.setVisibility(View.GONE);
@@ -148,22 +145,32 @@ public class NewDoorAuthorizeCancelActivity extends BaseActivity implements View
                     case 1:
                         starttime = System.currentTimeMillis() / 1000;
                         stoptime = starttime + 3600 * 24 * 30;
+                        autype = "1";
+                        granttype = "0";
                         break;
                     case 2:
                         starttime = System.currentTimeMillis() / 1000;
                         stoptime = starttime + 3600 * 24 * 30 * 6;
+                        autype = "1";
+                        granttype = "0";
                         break;
                     case 3:
                         starttime = System.currentTimeMillis() / 1000;
                         stoptime = starttime + 3600 * 24 * 365;
+                        autype = "1";
+                        granttype = "0";
                         break;
                     case 4:
                         starttime = System.currentTimeMillis() / 1000;
                         stoptime = 0;
+                        granttype = "1";
+                        autype = "2";
                         break;
                     default:
                         starttime = System.currentTimeMillis() / 1000;
                         stoptime = starttime + 3600 * 24 * 7;
+                        autype = "1";
+                        granttype = "0";
                         break;
                 }
             }

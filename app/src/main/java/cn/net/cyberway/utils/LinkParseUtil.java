@@ -97,17 +97,15 @@ public class LinkParseUtil {
                     Intent intent = null;
                     switch (value) {
                         case "testWeb":
-                            intent = new Intent(context, NewDoorAuthorizeActivity.class);
+                            intent = new Intent(context, WebViewActivity.class);
+                            link = "file:///android_asset/demo.html";
+                            intent.putExtra(WebViewActivity.WEBURL, link);
+                            intent.putExtra(WebViewActivity.WEBTITLE, title);
+                            intent.putExtra(WebViewActivity.THRIDSOURCE, false);
                             context.startActivity(intent);
-//                            intent = new Intent(context, WebViewActivity.class);
-//                            link = "file:///android_asset/demo.html";
-//                            intent.putExtra(WebViewActivity.WEBURL, link);
-//                            intent.putExtra(WebViewActivity.WEBTITLE, title);
-//                            intent.putExtra(WebViewActivity.THRIDSOURCE, false);
-//                            context.startActivity(intent);
-//                            if (context instanceof Activity) {
-//                                ((Activity) context).overridePendingTransition(R.anim.push_right_in, R.anim.push_right_out);
-//                            }
+                            if (context instanceof Activity) {
+                                ((Activity) context).overridePendingTransition(R.anim.push_right_in, R.anim.push_right_out);
+                            }
                             break;
                         case "EntranceGuard":  //门禁colourlife://proto?type=orderList
                         case "Guard":
@@ -345,6 +343,8 @@ public class LinkParseUtil {
         info.setFace(mShared.getString(UserAppConst.Colour_head_img, ""));
         info.setArtificialIntelligence(false);////默认false：显示转人工按钮。true：智能转人工
         info.setArtificialIntelligenceNum(2);//为true时生效
+        //客服模式控制 -1不控制 按照服务器后台设置的模式运行
+        //1仅机器人 2仅人工 3机器人优先 4人工优先
         info.setInitModeType(-1);
         HashSet<String> tmpSet = new HashSet<>();
         tmpSet.add("转人工");
@@ -375,6 +375,7 @@ public class LinkParseUtil {
                     consultingContent.setSobotGoodsLable(goodsJson.optString("goodsPrice"));
                 }
                 info.setConsultingContent(consultingContent);
+                consultingContent.setAutoSend(true);
                 //发送商品卡片消息接口
                 SobotApi.startSobotChat(context, info);
                 SobotApi.sendCardMsg(context, consultingContent);

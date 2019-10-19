@@ -354,6 +354,7 @@ public class IntelligenceDoorActivity extends BaseFragmentActivity implements Ne
                 public void onClick(View v) {
                     Intent intent = new Intent(IntelligenceDoorActivity.this, NewDoorApplyRecordActivity.class);
                     startActivity(intent);
+                    popupWindow.dismiss();
                 }
             });
             // 使其聚集

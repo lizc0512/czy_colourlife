@@ -3,6 +3,7 @@ package com.door.adapter;
 import android.content.Context;
 import android.graphics.Color;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,6 +12,7 @@ import android.widget.TextView;
 
 import com.BeeFramework.Utils.TimeUtil;
 import com.door.entity.DoorApplyRecordEntity;
+import com.user.UserAppConst;
 
 import java.util.List;
 
@@ -39,8 +41,12 @@ public class NewDoorOwnerApplyAdapter extends RecyclerView.Adapter<NewDoorOwnerA
     @Override
     public void onBindViewHolder(NewDoorOwnerApplyAdapter.NewDoorAuthorHolder holder, final int position) {
         DoorApplyRecordEntity.ContentBean.ListBean listBean = applyListBeanList.get(position);
-        holder.tv_authorize_name.setText(listBean.getToname());
-        holder.tv_authorize_time.setText("申请时间:"+TimeUtil.getDateToString(listBean.getCreationtime()));
+        if (TextUtils.isEmpty(listBean.getToname())) {
+            holder.tv_authorize_name.setText(holder.itemView.getContext().getSharedPreferences(UserAppConst.USERINFO, 0).getString(UserAppConst.Colour_NAME, ""));
+        } else {
+            holder.tv_authorize_name.setText(listBean.getToname());
+        }
+        holder.tv_authorize_time.setText("申请时间:" + TimeUtil.getDateToString(listBean.getCreationtime()));
         String community_name = listBean.getName();
         String identify_name;
         switch (listBean.getUsertype()) {
