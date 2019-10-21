@@ -100,14 +100,14 @@ public class IntelligenceDoorAdapter extends RecyclerView.Adapter<IntelligenceDo
                     holder.tv_pwd.setVisibility(View.GONE);
                     long stop_time = item.getStop_time();
                     if (stop_time == 0) {
-                        holder.tv_avail_time_to.setText("永久有限");
+                        holder.tv_avail_time_to.setText("永久有效");
                     } else {
                         long stop_millis = stop_time * 1000;
                         long current_millis = System.currentTimeMillis();
                         if (stop_millis < current_millis) {
                             holder.tv_avail_time_to.setText("已过期  有效期至" + TimeUtil.getYearTime(stop_millis, "yyyy-MM-dd"));
                         } else {
-                            if (stop_millis - current_millis > 5 * 3600 * 24 * 1000) {
+                            if (stop_millis - current_millis <= 5 * 3600 * 24 * 1000) {
                                 holder.tv_avail_time_to.setText("快过期  有效期至" + TimeUtil.getYearTime(stop_millis, "yyyy-MM-dd"));
                             } else {
                                 holder.tv_avail_time_to.setText("有效期至" + TimeUtil.getYearTime(stop_millis, "yyyy-MM-dd"));
@@ -186,14 +186,14 @@ public class IntelligenceDoorAdapter extends RecyclerView.Adapter<IntelligenceDo
                     }
                     long stopTime = item.getStop_time();
                     if (stopTime == 0) {
-                        holder.tv_avail_time_to.setText("永久有限");
+                        holder.tv_avail_time_to.setText("永久有效");
                     } else {
                         long stop_millis = stopTime * 1000;
                         long current_millis = System.currentTimeMillis();
                         if (stop_millis < current_millis) {
                             holder.tv_avail_time_to.setText("已过期  有效期至" + TimeUtil.getYearTime(stop_millis, "yyyy-MM-dd"));
                         } else {
-                            if (stop_millis - current_millis > 5 * 3600 * 24 * 1000) {
+                            if (stop_millis - current_millis <= 5 * 3600 * 24 * 1000) {
                                 holder.tv_avail_time_to.setText("快过期  有效期至" + TimeUtil.getYearTime(stop_millis, "yyyy-MM-dd"));
                             } else {
                                 holder.tv_avail_time_to.setText("有效期至" + TimeUtil.getYearTime(stop_millis, "yyyy-MM-dd"));

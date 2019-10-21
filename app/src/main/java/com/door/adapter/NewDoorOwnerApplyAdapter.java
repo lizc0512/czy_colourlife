@@ -46,8 +46,13 @@ public class NewDoorOwnerApplyAdapter extends RecyclerView.Adapter<NewDoorOwnerA
         } else {
             holder.tv_authorize_name.setText(listBean.getToname());
         }
+        String community_name;
         holder.tv_authorize_time.setText("申请时间:" + TimeUtil.getDateToString(listBean.getCreationtime()));
-        String community_name = listBean.getName();
+        if (TextUtils.isEmpty(listBean.getToname())) {
+            community_name= holder.itemView.getContext().getSharedPreferences(UserAppConst.USERINFO, 0).getString(UserAppConst.Colour_login_community_name, "");
+        }else{
+             community_name = listBean.getName();
+        }
         String identify_name;
         switch (listBean.getUsertype()) {
             case "1":

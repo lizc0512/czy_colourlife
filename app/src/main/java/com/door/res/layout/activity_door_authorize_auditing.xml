@@ -84,13 +84,23 @@
 
         <TextView
             android:id="@+id/tv_apply_room"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
+            android:layout_weight="1"
             android:layout_height="wrap_content"
             android:layout_marginLeft="16dp"
             android:singleLine="true"
             android:text="新浩城一栋一单元7A"
             android:textColor="@color/color_25282e"
             android:textSize="15sp" />
+
+        <ImageView
+            android:id="@+id/iv_apply_arrow"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="invisible"
+            android:layout_marginRight="16dp"
+            android:src="@drawable/arrow_right"
+            />
 
     </LinearLayout>
 

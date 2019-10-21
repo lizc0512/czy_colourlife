@@ -3,6 +3,7 @@ package com.door.activity;
 import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -50,6 +51,7 @@ public class NewDoorAuthorizeCancelActivity extends BaseActivity implements View
     private NewDoorAuthorModel newDoorAuthorModel;
     private int choicePos = 0;
     private String autype;
+    private String usertype;
     private String granttype;
     private String isdelete;
     private long starttime;
@@ -98,8 +100,11 @@ public class NewDoorAuthorizeCancelActivity extends BaseActivity implements View
         authorizationList = (ApplyAuthorizeRecordEntity.ContentBean.AuthorizationListBean) getIntent().getSerializableExtra("authorizationList");
         tv_apply_name.setText(authorizationList.getToname());
         isdelete = authorizationList.getIsdeleted();
+        usertype = authorizationList.getUsertype();
         starttime = System.currentTimeMillis() / 1000;
-        stoptime = starttime + 3600 * 24 * 30;
+        stoptime = starttime + 3600 * 24 * 7;
+        autype = "1";
+        granttype = "0";
         if ("1".equals(isdelete)) {
             starttime = System.currentTimeMillis() / 1000;
             stoptime = starttime + 3600 * 24 * 7;
@@ -110,15 +115,18 @@ public class NewDoorAuthorizeCancelActivity extends BaseActivity implements View
             layout_apply_duration.setVisibility(View.GONE);
             layout_apply_during.setVisibility(View.VISIBLE);
         }
-        if (authorizationList.getStoptime()==0){
+        if (authorizationList.getStoptime() == 0) {
             tv_apply_duration.setText("永久");
-        }else{
-            tv_apply_duration.setText(TimeUtil.getDateToString(authorizationList.getStarttime())+"至"+
-                    TimeUtil.getDateToString(authorizationList.getStoptime())  );
+        } else {
+            tv_apply_duration.setText(TimeUtil.getDateToString(authorizationList.getStarttime()) + "至" +
+                    TimeUtil.getDateToString(authorizationList.getStoptime()));
+        }
+        if (TextUtils.isEmpty(usertype)) {
+            usertype = "2";
         }
         btn_refuse_authorize.setVisibility(View.GONE);
         String identify_name;
-        switch (authorizationList.getUsertype()) {
+        switch (usertype) {
             case "1":
                 identify_name = "业主  ";
                 break;
@@ -130,7 +138,9 @@ public class NewDoorAuthorizeCancelActivity extends BaseActivity implements View
                 break;
             default:
                 identify_name = "家属  ";
+                usertype = "2";
                 break;
+
         }
         tv_apply_identify.setText(identify_name);
         tv_apply_room.setText(authorizationList.getName());
@@ -186,7 +196,7 @@ public class NewDoorAuthorizeCancelActivity extends BaseActivity implements View
             case R.id.btn_agree_authorize:
                 if ("1".equals(isdelete)) {
                     newDoorAuthorModel.setDoorAgainAuthorize(0, autype, granttype, starttime, stoptime,
-                            authorizationList.getBid(), authorizationList.getUsertype(), authorizationList.getToid(), NewDoorAuthorizeCancelActivity.this);
+                            authorizationList.getBid(), usertype, authorizationList.getToid(), NewDoorAuthorizeCancelActivity.this);
                 } else {
                     newDoorAuthorModel.cancelUserAutor(0, authorizationList.getId(), NewDoorAuthorizeCancelActivity.this);
                 }

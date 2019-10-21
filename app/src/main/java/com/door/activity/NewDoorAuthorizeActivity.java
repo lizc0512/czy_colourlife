@@ -200,10 +200,6 @@ public class NewDoorAuthorizeActivity extends BaseFragmentActivity implements Vi
                 }
             }
         });
-        autype = "1";
-        granttype = "0";
-        starttime = System.currentTimeMillis() / 1000;
-        stoptime = starttime + 3600 * 24 * 30;
     }
 
 
@@ -304,6 +300,7 @@ public class NewDoorAuthorizeActivity extends BaseFragmentActivity implements Vi
                         choice_room_layout.setEnabled(true);
                         iv_more_community.setVisibility(View.VISIBLE);
                     }
+                    applyRecordFragment.setCommmunityData(result);
                     String applyAuthorRecordCache = shared.getString(UserAppConst.COLOUR_DOOR_AUTHOUR_APPLY, "");
                     if (!TextUtils.isEmpty(applyAuthorRecordCache)) {
                         setApplyAuthorData(applyAuthorRecordCache);

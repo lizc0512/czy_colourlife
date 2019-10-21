@@ -8,8 +8,28 @@
     android:background="@color/color_f7f8fa">
 
 
-    <LinearLayout
+    <ImageView
+        android:id="@+id/iv_right_arrow"
         android:layout_width="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="16dp"
+        android:layout_marginTop="40dp"
+        android:src="@drawable/arrow_right"
+        android:layout_height="wrap_content" />
+
+
+    <TextView
+        android:id="@+id/tv_authorize_duration"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="40dp"
+        android:layout_marginRight="16dp"
+        android:layout_toLeftOf="@id/iv_right_arrow"
+        android:textColor="@color/color_25282e"
+        android:textSize="13sp" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
         android:orientation="horizontal">
@@ -36,6 +56,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
+            android:layout_marginRight="16dp"
+            android:singleLine="true"
             android:layout_marginLeft="10dp"
             android:textColor="@color/color_25282e"
             android:textSize="15sp" />
@@ -55,24 +77,5 @@
         android:textSize="13sp" />
 
 
-    <ImageView
-        android:id="@+id/iv_right_arrow"
-        android:layout_width="wrap_content"
-        android:layout_alignParentRight="true"
-        android:layout_marginRight="16dp"
-        android:src="@drawable/arrow_right"
-        android:layout_centerVertical="true"
-        android:layout_height="wrap_content" />
-
-
-    <TextView
-        android:id="@+id/tv_authorize_duration"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerVertical="true"
-        android:layout_marginRight="16dp"
-        android:layout_toLeftOf="@id/iv_right_arrow"
-        android:textColor="@color/color_25282e"
-        android:textSize="13sp" />
 
 </RelativeLayout>

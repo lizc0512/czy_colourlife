@@ -470,8 +470,6 @@ public class BenefitFragment extends Fragment implements View.OnClickListener, N
                 }
                 break;
             case 5:
-                result(what, result);
-                break;
             case 7:
                 result(what, result);
                 break;
@@ -521,20 +519,16 @@ public class BenefitFragment extends Fragment implements View.OnClickListener, N
                         } else {
                             iv_pay.setVisibility(View.GONE);
                         }
-
-                        try {
-                            BenefitProfileEntity.ContentBean.FloatAdBean floatAdBean = entity.getContent().getFloat_ad();
-                            if (null != floatAdBean) {//悬浮层广告，没有时为空对象 {}
-                                if (null != floatAdBean.getImage()) {
-                                    iv_red.setVisibility(View.VISIBLE);
-                                    GlideImageLoader.loadImageDefaultDisplay(getActivity(), floatAdBean.getImage(), iv_red, R.drawable.icon_default, R.drawable.icon_default);
-                                    iv_red.setOnClickListener(v -> LinkParseUtil.parse(mActivity, floatAdBean.getUrl(), floatAdBean.getTitle()));
-                                } else {
-                                    iv_red.setVisibility(View.GONE);
-                                }
+                        BenefitProfileEntity.ContentBean.FloatAdBean floatAdBean = entity.getContent().getFloat_ad();
+                        if (null != floatAdBean) {//悬浮层广告，没有时为空对象 {}
+                            if (!TextUtils.isEmpty(floatAdBean.getImage())) {
+                                iv_red.setVisibility(View.VISIBLE);
+                                GlideImageLoader.loadImageDefaultDisplay(getActivity(), floatAdBean.getImage(), iv_red, R.drawable.icon_default, R.drawable.icon_default);
+                                iv_red.setOnClickListener(v -> LinkParseUtil.parse(mActivity, floatAdBean.getUrl(), floatAdBean.getTitle()));
+                            } else {
+                                iv_red.setVisibility(View.GONE);
                             }
-                        } catch (Exception e) {
-                            e.printStackTrace();
+                        } else {
                             iv_red.setVisibility(View.GONE);
                         }
                     } catch (Exception e) {

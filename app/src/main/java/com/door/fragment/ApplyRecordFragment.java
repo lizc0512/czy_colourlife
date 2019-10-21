@@ -79,11 +79,17 @@ public class ApplyRecordFragment extends BaseFragment {
                     intent = new Intent(getActivity(), NewDoorAuthorizePassActivity.class);
                 } else {
                     intent = new Intent(getActivity(), NewDoorAuthorizeAuditActivity.class);
+                    intent.putExtra("communityData", communityData);
                 }
                 intent.putExtra("applyListBean", applyListBean);
                 getActivity().startActivityForResult(intent, 1000);
             }
         });
 
+    }
+    public String communityData;
+
+    public void setCommmunityData(String  commmunityData) {
+       this.communityData=commmunityData;
     }
 }
