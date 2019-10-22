@@ -59,7 +59,8 @@ public class NewDoorAuthorizePassActivity extends BaseActivity implements View.O
         tv_apply_name.setText(applyListBean.getName());
         String isDeleted = applyListBean.getIsdeleted();
         String identify_name;
-        switch (applyListBean.getUsertype()) {
+        String user_type=applyListBean.getUsertype();
+        switch (user_type) {
             case "1":
                 identify_name = "业主  ";
                 break;

@@ -81,7 +81,7 @@ public class IntelligenceDoorAdapter extends RecyclerView.Adapter<IntelligenceDo
             if ("1".equals(tagList.get(position))) {
                 holder.tv_apply.setVisibility(View.VISIBLE);
             } else {
-                holder.tv_apply.setVisibility(View.VISIBLE);
+                holder.tv_apply.setVisibility(View.INVISIBLE);
             }
             String type = typeList.get(position);
             holder.tv_apply.setOnClickListener(v -> {

@@ -319,7 +319,11 @@ public class NewDoorAuthorModel extends BaseModel {
         params.put("resident_mobile", resident_mobile);
         params.put("apply_type", apply_type);
         params.put("bid", bid);
-        params.put("tg_status", tg_status);
+        if (TextUtils.isEmpty(tg_status)){
+            params.put("tg_status", 1);
+        }else{
+            params.put("tg_status", tg_status);
+        }
         final Request<String> request = NoHttp.createStringRequest(RequestEncryptionUtils.postCombileMD5(mContext, 15, remoteDoorApplyUrl), RequestMethod.POST);
         request(what, request, params, new HttpListener<String>() {
 
@@ -346,10 +350,12 @@ public class NewDoorAuthorModel extends BaseModel {
         }, true, true);
     }
 
-    public void bluetoothDoorVerify(int what, String community_uuid,String unit_uuid, final NewHttpResponse newHttpResponse) {
+    public void bluetoothDoorVerify(int what, String community_uuid,String unit_uuid,String build_uuid,String room_uuid, final NewHttpResponse newHttpResponse) {
         Map<String, Object> params = new HashMap<String, Object>();
         params.put("community_uuid", community_uuid);
         params.put("unit_uuid", unit_uuid);
+        params.put("build_uuid", build_uuid);
+        params.put("room_uuid", room_uuid);
         final Request<String> request = NoHttp.createStringRequest(RequestEncryptionUtils.getCombileMD5(mContext, 11, bluetoothCommunitySetUrl, params), RequestMethod.GET);
         request(what, request, params, new HttpListener<String>() {
 
@@ -453,6 +459,8 @@ public class NewDoorAuthorModel extends BaseModel {
         params.put("auth_name", auth_name);
         if (!TextUtils.isEmpty(tg_status)){
             params.put("tg_status", tg_status);
+        }else{
+            params.put("tg_status", 1);
         }
         final Request<String> request = NoHttp.createStringRequest(RequestEncryptionUtils.postCombileMD5(mContext, 15, bluetoothDoorExtensionValidUrl), RequestMethod.POST);
         request(what, request, params, new HttpListener<String>() {

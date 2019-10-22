@@ -67,7 +67,7 @@ public class NewDoorRenewalActivity extends BaseActivity implements View.OnClick
     private String name;
     private String door_type;
     private String bid;
-    private String tgStatus;
+    private String tgStatus = "1";
     private String auth_mobile = "";
     private String validate_phone = "";
     private ArrayList<String> unitNameList;
@@ -133,7 +133,7 @@ public class NewDoorRenewalActivity extends BaseActivity implements View.OnClick
             unitIdList = intent.getStringArrayListExtra(UNIT_UUID_LIST);
             apply_room_layout.setEnabled(true);
             if ("1".equals(identify_id)) { //业主
-                newDoorAuthorModel.bluetoothDoorVerify(1, community_uuid, unit_uuid, NewDoorRenewalActivity.this);
+                newDoorAuthorModel.bluetoothDoorVerify(1, community_uuid, unit_uuid,"","", NewDoorRenewalActivity.this);
             } else {  //租客和家属
                 layout_register_phone.setVisibility(View.GONE);
                 layout_validate_phone.setVisibility(View.GONE);
@@ -244,7 +244,7 @@ public class NewDoorRenewalActivity extends BaseActivity implements View.OnClick
                     ed_real_name.setText(name);
                     ed_real_name.setFocusable(false);
                 } catch (Exception e) {
-                   ToastUtil.toastShow(NewDoorRenewalActivity.this,e.getMessage());
+                    ToastUtil.toastShow(NewDoorRenewalActivity.this, e.getMessage());
                 }
                 break;
             case 1:

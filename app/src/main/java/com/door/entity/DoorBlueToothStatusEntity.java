@@ -45,7 +45,7 @@ public class DoorBlueToothStatusEntity extends BaseContentEntity {
         /**
          * id : 1
          * communityUuid : bcfe0f35-37b0-49cf-a73d-ca96914a46a5
-         * tgStatus : 1
+         * tgStatus : 1   //是否需要小区管理审核 0否 1是
          * keyDate : 0
          * createTime : 2019-08-30 21:48:05
          * updateTime : 2019-09-02 14:31:27
