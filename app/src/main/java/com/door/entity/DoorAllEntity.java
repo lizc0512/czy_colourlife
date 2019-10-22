@@ -123,6 +123,16 @@ public class DoorAllEntity extends BaseContentEntity {
 
                 private String name;
                 private String type;
+
+                public String getCommunity_uuid() {
+                    return community_uuid;
+                }
+
+                public void setCommunity_uuid(String community_uuid) {
+                    this.community_uuid = community_uuid;
+                }
+
+                private String community_uuid;
                 private List<InvalidUnitBean> invalid_unit;
 
                 public String getIdentity_id() {

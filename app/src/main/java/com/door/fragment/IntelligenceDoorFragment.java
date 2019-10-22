@@ -101,6 +101,7 @@ public class IntelligenceDoorFragment extends BaseFragment {
                         List<String> typeList = new ArrayList<>();
                         List<String> tagList = new ArrayList<>();
                         List<String> identifyList = new ArrayList<>();
+                        List<String> communityList = new ArrayList<>();
                         DoorAllEntity.ContentBean.DataBean.ListBean  listBean=mList.get(i);
                         for (int j = 0; j < listBean.getKeyList().size(); j++) {
                             if (0 == j) {
@@ -114,10 +115,11 @@ public class IntelligenceDoorFragment extends BaseFragment {
                             }
                             typeList.add(type);
                             allUnitBeanList.add(listBean.getInvalid_unit())  ;
+                            communityList.add(listBean.getCommunity_uuid())  ;
                         }
                         List<DoorAllEntity.ContentBean.DataBean.ListBean.KeyListBean> listData = new ArrayList<>(mList.get(i).getKeyList());
                         mAdapter.setData(titleList, typeList, tagList,identifyList, listData);
-                        mAdapter.setData(allUnitBeanList);
+                        mAdapter.setData(allUnitBeanList,communityList);
                         mAdapter.notifyDataSetChanged();
                     }
                 } else {

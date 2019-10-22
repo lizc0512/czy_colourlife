@@ -35,6 +35,7 @@ public class IntelligenceDoorAdapter extends RecyclerView.Adapter<IntelligenceDo
     public List<String> typeList;
     public List<String> tagList;
     public List<String> identifyList;
+    public List<String> comunityList;
     public List<List<DoorAllEntity.ContentBean.DataBean.ListBean.InvalidUnitBean>> allUnitBeanList;
     private PopupWindow popupWindow;
 
@@ -57,8 +58,9 @@ public class IntelligenceDoorAdapter extends RecyclerView.Adapter<IntelligenceDo
         notifyDataSetChanged();
     }
 
-    public void setData(List<List<DoorAllEntity.ContentBean.DataBean.ListBean.InvalidUnitBean>> allUnitBeanList) {
+    public void setData(List<List<DoorAllEntity.ContentBean.DataBean.ListBean.InvalidUnitBean>> allUnitBeanList, List<String> comunityList) {
         this.allUnitBeanList = allUnitBeanList;
+        this.comunityList = comunityList;
     }
 
     @Override
@@ -86,9 +88,9 @@ public class IntelligenceDoorAdapter extends RecyclerView.Adapter<IntelligenceDo
             String type = typeList.get(position);
             holder.tv_apply.setOnClickListener(v -> {
                         if ("2".equals(type)) {
-                            ((IntelligenceDoorActivity) mContext).apply(item.getCommunityUuid(), identifyList.get(position), typeList.get(position), allUnitBeanList.get(position));
+                            ((IntelligenceDoorActivity) mContext).apply(comunityList.get(position), identifyList.get(position), typeList.get(position), allUnitBeanList.get(position));
                         } else {
-                            ((IntelligenceDoorActivity) mContext).apply(item.getCommunity_uuid(), identifyList.get(position), typeList.get(position), null);
+                            ((IntelligenceDoorActivity) mContext).apply(comunityList.get(position), identifyList.get(position), typeList.get(position), null);
                         }
                     }
             );

@@ -163,12 +163,14 @@ public class NewDoorApplyActivity extends BaseActivity implements View.OnClickLi
                     layout_validate_phone.setVisibility(View.GONE);
                     layout_authorize_phone.setVisibility(View.GONE);
                     tv_apply_notice.setText("注：业主或小区物业管理处工作人员通过您的申请后，您即可获得开门权限");
+                    newDoorAuthorModel.bluetoothDoorVerify(0, community_uuid,unit_uuid,build_uuid,room_uuid, NewDoorApplyActivity.this);
                     break;
                 default://远程门禁和蓝牙门禁都存在
                     //远程和蓝牙门禁门禁
                     layout_register_phone.setVisibility(View.GONE);
                     layout_validate_phone.setVisibility(View.GONE);
                     setNoticeSpannString(1);
+                    newDoorAuthorModel.bluetoothDoorVerify(0, community_uuid,unit_uuid,build_uuid,room_uuid, NewDoorApplyActivity.this);
                     break;
             }
         }
@@ -230,20 +232,22 @@ public class NewDoorApplyActivity extends BaseActivity implements View.OnClickLi
                     DoorBlueToothStatusEntity doorBlueToothStatusEntity = GsonUtils.gsonToBean(result, DoorBlueToothStatusEntity.class);
                     DoorBlueToothStatusEntity.ContentBean contentBean = doorBlueToothStatusEntity.getContent();
                     tgStatus = contentBean.getTgStatus();
-                    if ("2".equals(doorType)) { //蓝牙
-                        if ("0".equals(tgStatus)) { //
-                            setNoticeSpannString(0);
-                            layout_register_phone.setVisibility(View.VISIBLE);
-                            layout_validate_phone.setVisibility(View.VISIBLE);
-                            tv_register_phone.setText(contentBean.getMobile());
-                        } else {
-                            tv_apply_notice.setText("注：小区物业管理处工作人员通过您的申请后，您即可获得开门权限");
-                        }
-                    } else if ("3".equals(doorType)) {//都有
-                        if ("0".equals(tgStatus)) {
-                            layout_register_phone.setVisibility(View.VISIBLE);
-                            layout_validate_phone.setVisibility(View.VISIBLE);
-                            tv_register_phone.setText(contentBean.getMobile());
+                    if ("1".equals(identity_id)) {
+                        if ("2".equals(doorType)) { //蓝牙
+                            if ("0".equals(tgStatus)) { //
+                                setNoticeSpannString(0);
+                                layout_register_phone.setVisibility(View.VISIBLE);
+                                layout_validate_phone.setVisibility(View.VISIBLE);
+                                tv_register_phone.setText(contentBean.getMobile());
+                            } else {
+                                tv_apply_notice.setText("注：小区物业管理处工作人员通过您的申请后，您即可获得开门权限");
+                            }
+                        } else if ("3".equals(doorType)) {//都有
+                            if ("0".equals(tgStatus)) {
+                                layout_register_phone.setVisibility(View.VISIBLE);
+                                layout_validate_phone.setVisibility(View.VISIBLE);
+                                tv_register_phone.setText(contentBean.getMobile());
+                            }
                         }
                     }
                 } catch (Exception e) {

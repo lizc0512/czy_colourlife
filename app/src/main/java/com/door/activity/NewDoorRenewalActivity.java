@@ -132,9 +132,7 @@ public class NewDoorRenewalActivity extends BaseActivity implements View.OnClick
             unitNameList = intent.getStringArrayListExtra(UNIT_NAME_LIST);
             unitIdList = intent.getStringArrayListExtra(UNIT_UUID_LIST);
             apply_room_layout.setEnabled(true);
-            if ("1".equals(identify_id)) { //业主
-                newDoorAuthorModel.bluetoothDoorVerify(1, community_uuid, unit_uuid,"","", NewDoorRenewalActivity.this);
-            } else {  //租客和家属
+            if (!"1".equals(identify_id)) { //租客和家属
                 layout_register_phone.setVisibility(View.GONE);
                 layout_validate_phone.setVisibility(View.GONE);
                 layout_authorize_phone.setVisibility(View.GONE);
@@ -142,6 +140,7 @@ public class NewDoorRenewalActivity extends BaseActivity implements View.OnClick
                 btn_submit_infor.setEnabled(true);
                 tv_apply_notice.setText("注：业主或小区物业管理处工作人员通过您的申请后，您即可获得开门权限");
             }
+            newDoorAuthorModel.bluetoothDoorVerify(1, community_uuid, unit_uuid,"","", NewDoorRenewalActivity.this);
         }
     }
 
@@ -252,14 +251,16 @@ public class NewDoorRenewalActivity extends BaseActivity implements View.OnClick
                     DoorBlueToothStatusEntity doorBlueToothStatusEntity = GsonUtils.gsonToBean(result, DoorBlueToothStatusEntity.class);
                     DoorBlueToothStatusEntity.ContentBean contentBean = doorBlueToothStatusEntity.getContent();
                     tgStatus = contentBean.getTgStatus();
-                    if ("1".equals(tgStatus)) { //开启认证
-                        setNoticeSpannString();
-                        layout_authorize_phone.setVisibility(View.GONE);
-                    } else {
-                        tv_apply_notice.setText("注：业主或小区物业管理处工作人员通过您的申请后，您即可获得开门权限");
-                        layout_register_phone.setVisibility(View.GONE);
-                        layout_validate_phone.setVisibility(View.GONE);
-                        layout_authorize_phone.setVisibility(View.GONE);
+                    if ("1".equals(identify_id)){
+                        if ("1".equals(tgStatus)) { //开启认证
+                            setNoticeSpannString();
+                            layout_authorize_phone.setVisibility(View.GONE);
+                        } else {
+                            tv_apply_notice.setText("注：业主或小区物业管理处工作人员通过您的申请后，您即可获得开门权限");
+                            layout_register_phone.setVisibility(View.GONE);
+                            layout_validate_phone.setVisibility(View.GONE);
+                            layout_authorize_phone.setVisibility(View.GONE);
+                        }
                     }
                 } catch (Exception e) {
 
