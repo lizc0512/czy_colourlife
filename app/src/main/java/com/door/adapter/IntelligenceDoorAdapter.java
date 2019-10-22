@@ -35,6 +35,7 @@ public class IntelligenceDoorAdapter extends RecyclerView.Adapter<IntelligenceDo
     public List<String> typeList;
     public List<String> tagList;
     public List<String> identifyList;
+    public List<List<DoorAllEntity.ContentBean.DataBean.ListBean.InvalidUnitBean>> allUnitBeanList;
     private PopupWindow popupWindow;
 
     public IntelligenceDoorAdapter(Context mContext, int userId, List<String> titleList, List<String> typeList, List<String> tagList, List<String> identifyList, List<DoorAllEntity.ContentBean.DataBean.ListBean.KeyListBean> mList) {
@@ -54,6 +55,10 @@ public class IntelligenceDoorAdapter extends RecyclerView.Adapter<IntelligenceDo
         this.identifyList.addAll(identifyList);
         this.mList.addAll(mList);
         notifyDataSetChanged();
+    }
+
+    public void setData(List<List<DoorAllEntity.ContentBean.DataBean.ListBean.InvalidUnitBean>> allUnitBeanList) {
+        this.allUnitBeanList = allUnitBeanList;
     }
 
     @Override
@@ -76,12 +81,17 @@ public class IntelligenceDoorAdapter extends RecyclerView.Adapter<IntelligenceDo
             if ("1".equals(tagList.get(position))) {
                 holder.tv_apply.setVisibility(View.VISIBLE);
             } else {
-                holder.tv_apply.setVisibility(View.INVISIBLE);
+                holder.tv_apply.setVisibility(View.VISIBLE);
             }
-
-            holder.tv_apply.setOnClickListener(v -> ((IntelligenceDoorActivity) mContext).apply(item.getCommunity_uuid(), identifyList.get(position), typeList.get(position)));
-
             String type = typeList.get(position);
+            holder.tv_apply.setOnClickListener(v -> {
+                        if ("2".equals(type)) {
+                            ((IntelligenceDoorActivity) mContext).apply(item.getCommunityUuid(), identifyList.get(position), typeList.get(position), allUnitBeanList.get(position));
+                        } else {
+                            ((IntelligenceDoorActivity) mContext).apply(item.getCommunity_uuid(), identifyList.get(position), typeList.get(position), null);
+                        }
+                    }
+            );
             switch (type) {
                 case "1":
                     holder.rl_key.setVisibility(View.VISIBLE);
@@ -94,17 +104,17 @@ public class IntelligenceDoorAdapter extends RecyclerView.Adapter<IntelligenceDo
                     } else {
                         holder.tv_common.setVisibility(View.GONE);
                     }
-
                     holder.tv_title.setText(item.getDoor_name());
-                    holder.iv_icon.setBackgroundResource(R.drawable.ic_door_key);
                     holder.tv_pwd.setVisibility(View.GONE);
                     long stop_time = item.getStop_time();
                     if (stop_time == 0) {
                         holder.tv_avail_time_to.setText("永久有效");
+                        holder.iv_icon.setBackgroundResource(R.drawable.ic_door_key);
                     } else {
                         long stop_millis = stop_time * 1000;
                         long current_millis = System.currentTimeMillis();
                         if (stop_millis < current_millis) {
+                            holder.iv_icon.setBackgroundResource(R.drawable.ic_door_key_timeout);
                             holder.tv_avail_time_to.setText("已过期  有效期至" + TimeUtil.getYearTime(stop_millis, "yyyy-MM-dd"));
                         } else {
                             if (stop_millis - current_millis <= 5 * 3600 * 24 * 1000) {
@@ -112,6 +122,7 @@ public class IntelligenceDoorAdapter extends RecyclerView.Adapter<IntelligenceDo
                             } else {
                                 holder.tv_avail_time_to.setText("有效期至" + TimeUtil.getYearTime(stop_millis, "yyyy-MM-dd"));
                             }
+                            holder.iv_icon.setBackgroundResource(R.drawable.ic_door_key);
                         }
                     }
                     //远程开门
@@ -172,7 +183,6 @@ public class IntelligenceDoorAdapter extends RecyclerView.Adapter<IntelligenceDo
                     holder.iv_handle.setVisibility(View.GONE);
                     holder.tv_common.setVisibility(View.GONE);
                     holder.tv_title.setText(item.getName());
-                    holder.iv_icon.setBackgroundResource(R.drawable.ic_door_bluetooth);
                     String model = item.getModel().substring(0, item.getModel().length() - 1);
                     switch (model) {
                         case "ISE00":
@@ -187,10 +197,12 @@ public class IntelligenceDoorAdapter extends RecyclerView.Adapter<IntelligenceDo
                     long stopTime = item.getStop_time();
                     if (stopTime == 0) {
                         holder.tv_avail_time_to.setText("永久有效");
+                        holder.iv_icon.setBackgroundResource(R.drawable.ic_door_bluetooth);
                     } else {
                         long stop_millis = stopTime * 1000;
                         long current_millis = System.currentTimeMillis();
                         if (stop_millis < current_millis) {
+                            holder.iv_icon.setBackgroundResource(R.drawable.ic_door_bluetooth_timeout);
                             holder.tv_avail_time_to.setText("已过期  有效期至" + TimeUtil.getYearTime(stop_millis, "yyyy-MM-dd"));
                         } else {
                             if (stop_millis - current_millis <= 5 * 3600 * 24 * 1000) {
@@ -198,6 +210,7 @@ public class IntelligenceDoorAdapter extends RecyclerView.Adapter<IntelligenceDo
                             } else {
                                 holder.tv_avail_time_to.setText("有效期至" + TimeUtil.getYearTime(stop_millis, "yyyy-MM-dd"));
                             }
+                            holder.iv_icon.setBackgroundResource(R.drawable.ic_door_bluetooth);
                         }
                     }
                     break;

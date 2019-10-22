@@ -31,7 +31,6 @@ import com.BeeFramework.activity.BaseFragmentActivity;
 import com.BeeFramework.model.NewHttpResponse;
 import com.door.adapter.DoorFragmentAdapter;
 import com.door.dialog.ClickPwdDialog;
-import com.door.dialog.DoorOverdueDialog;
 import com.door.dialog.PwdDialog;
 import com.door.entity.DoorAllEntity;
 import com.door.entity.DoorGrantedEntity;
@@ -58,13 +57,14 @@ import java.util.List;
 import cn.net.cyberway.R;
 import cn.net.cyberway.home.service.LekaiParkLockController;
 import cn.net.cyberway.utils.LekaiHelper;
-import cn.net.cyberway.utils.LinkParseUtil;
 
 import static cn.net.cyberway.utils.TableLayoutUtils.showOpenDoorResultDialog;
 import static com.BeeFramework.Utils.Utils.dip2px;
 import static com.customerInfo.activity.CustomerAddPropertyActivity.COMMUNITY_UUID;
 import static com.customerInfo.activity.CustomerAddPropertyActivity.IDENTITY_ID;
 import static com.door.activity.NewDoorRenewalActivity.DOOR_TYPE;
+import static com.door.activity.NewDoorRenewalActivity.UNIT_NAME_LIST;
+import static com.door.activity.NewDoorRenewalActivity.UNIT_UUID_LIST;
 import static com.user.UserAppConst.COLOUR_BLUETOOTH_ADVISE;
 
 /**
@@ -418,6 +418,7 @@ public class IntelligenceDoorActivity extends BaseFragmentActivity implements Ne
             pwdDialog = new PwdDialog(this);
         }
         pwdDialog.show();
+        pwdDialog.tv_pwd.setText(password);
         pwdDialog.tv_pwd_num.setText(num);
         pwdDialog.tv_pwd_time.setText(time);
         pwdDialog.iv_close.setOnClickListener(v1 -> {
@@ -704,11 +705,21 @@ public class IntelligenceDoorActivity extends BaseFragmentActivity implements Ne
     /**
      * 申请续期
      */
-    public void apply(String community_uuid,String identify_id,String door_type) {
+    public void apply(String community_uuid,String identify_id,String door_type,List<DoorAllEntity.ContentBean.DataBean.ListBean.InvalidUnitBean> invalidUnitBeanList) {
         Intent intent = new Intent(IntelligenceDoorActivity.this, NewDoorRenewalActivity.class);
         intent.putExtra(COMMUNITY_UUID, community_uuid);
         intent.putExtra(IDENTITY_ID, identify_id);
         intent.putExtra(DOOR_TYPE, door_type);
+        if (null!=invalidUnitBeanList){
+            ArrayList<String>  unitNameList=new ArrayList<>();
+            ArrayList<String>  unitIdList=new ArrayList<>();
+            for (DoorAllEntity.ContentBean.DataBean.ListBean.InvalidUnitBean  invalidUnitBean: invalidUnitBeanList){
+                unitNameList.add(invalidUnitBean.getUnit_name());
+                unitIdList.add(invalidUnitBean.getUnit_uuid());
+            }
+            intent.putStringArrayListExtra(UNIT_NAME_LIST, unitNameList);
+            intent.putStringArrayListExtra(UNIT_UUID_LIST, unitIdList);
+        }
         startActivity(intent);
     }
 

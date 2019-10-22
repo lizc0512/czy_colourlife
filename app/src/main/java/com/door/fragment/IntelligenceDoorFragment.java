@@ -70,6 +70,7 @@ public class IntelligenceDoorFragment extends BaseFragment {
     }
 
     IntelligenceDoorAdapter mAdapter;
+    private List<List<DoorAllEntity.ContentBean.DataBean.ListBean.InvalidUnitBean>>  allUnitBeanList=new ArrayList<>();
 
     private void initData() {
         isFirst = true;
@@ -81,6 +82,7 @@ public class IntelligenceDoorFragment extends BaseFragment {
                 xrv_invite_list.setAdapter(mAdapter);
 
                 if (0 < mList.size()) {
+                    allUnitBeanList.clear();
                     ll_empty.setVisibility(View.GONE);
                     for (int i = 0; i < mList.size(); i++) {
                         String type = "";
@@ -99,20 +101,23 @@ public class IntelligenceDoorFragment extends BaseFragment {
                         List<String> typeList = new ArrayList<>();
                         List<String> tagList = new ArrayList<>();
                         List<String> identifyList = new ArrayList<>();
-                        for (int j = 0; j < mList.get(i).getKeyList().size(); j++) {
+                        DoorAllEntity.ContentBean.DataBean.ListBean  listBean=mList.get(i);
+                        for (int j = 0; j < listBean.getKeyList().size(); j++) {
                             if (0 == j) {
-                                titleList.add(mList.get(i).getName());
-                                tagList.add(mList.get(i).getApply_tag());
-                                identifyList.add(mList.get(i).getIdentity_id());
+                                titleList.add(listBean.getName());
+                                tagList.add(listBean.getApply_tag());
+                                identifyList.add(listBean.getIdentity_id());
                             } else {
                                 titleList.add("");
                                 tagList.add("");
                                 identifyList.add("");
                             }
                             typeList.add(type);
+                            allUnitBeanList.add(listBean.getInvalid_unit())  ;
                         }
                         List<DoorAllEntity.ContentBean.DataBean.ListBean.KeyListBean> listData = new ArrayList<>(mList.get(i).getKeyList());
                         mAdapter.setData(titleList, typeList, tagList,identifyList, listData);
+                        mAdapter.setData(allUnitBeanList);
                         mAdapter.notifyDataSetChanged();
                     }
                 } else {

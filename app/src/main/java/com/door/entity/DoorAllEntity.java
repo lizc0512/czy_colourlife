@@ -123,6 +123,7 @@ public class DoorAllEntity extends BaseContentEntity {
 
                 private String name;
                 private String type;
+                private List<InvalidUnitBean> invalid_unit;
 
                 public String getIdentity_id() {
                     return identity_id;
@@ -144,6 +145,7 @@ public class DoorAllEntity extends BaseContentEntity {
 
                 private String apply_tag;
                 private List<KeyListBean> keyList;
+
 
                 public String getName() {
                     return name;
@@ -168,6 +170,15 @@ public class DoorAllEntity extends BaseContentEntity {
                 public void setKeyList(List<KeyListBean> keyList) {
                     this.keyList = keyList;
                 }
+
+                public List<InvalidUnitBean> getInvalid_unit() {
+                    return invalid_unit;
+                }
+
+                public void setInvalid_unit(List<InvalidUnitBean> invalid_unit) {
+                    this.invalid_unit = invalid_unit;
+                }
+
 
                 public static class KeyListBean implements Serializable {
                     /**
@@ -241,6 +252,16 @@ public class DoorAllEntity extends BaseContentEntity {
                     private String model;
                     private String protocolVersion;
                     private String cipherId;
+
+                    public String getCommunityUuid() {
+                        return communityUuid;
+                    }
+
+                    public void setCommunityUuid(String communityUuid) {
+                        this.communityUuid = communityUuid;
+                    }
+
+                    private String communityUuid;
                     private int isUnit;
 
                     /**
@@ -479,6 +500,32 @@ public class DoorAllEntity extends BaseContentEntity {
                         this.is_common = is_common;
                     }
 
+                }
+
+                public static class InvalidUnitBean implements Serializable{
+                    /**
+                     * unit_name : 二单元
+                     * unit_uuid : gwg-herh-heh-heh
+                     */
+
+                    private String unit_name;
+                    private String unit_uuid;
+
+                    public String getUnit_name() {
+                        return unit_name;
+                    }
+
+                    public void setUnit_name(String unit_name) {
+                        this.unit_name = unit_name;
+                    }
+
+                    public String getUnit_uuid() {
+                        return unit_uuid;
+                    }
+
+                    public void setUnit_uuid(String unit_uuid) {
+                        this.unit_uuid = unit_uuid;
+                    }
                 }
             }
         }

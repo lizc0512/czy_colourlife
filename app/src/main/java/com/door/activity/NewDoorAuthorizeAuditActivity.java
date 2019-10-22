@@ -207,7 +207,7 @@ public class NewDoorAuthorizeAuditActivity extends BaseActivity implements View.
                 Object object = list.get(options1);
                 if (object instanceof DoorCommunityEntity.ContentBean.CommunitylistBean) {
                     DoorCommunityEntity.ContentBean.CommunitylistBean communitylistBean = (DoorCommunityEntity.ContentBean.CommunitylistBean) object;
-                    bid = communitylistBean.getName();
+                    bid = communitylistBean.getBid();
                     tv_apply_room.setText(communitylistBean.getName());
                 }
             }
@@ -246,7 +246,7 @@ public class NewDoorAuthorizeAuditActivity extends BaseActivity implements View.
                 }
                 break;
             case R.id.btn_refuse_authorize:
-                newDoorAuthorModel.approveApplyAuthority(0, applyListBean.getId(), applyListBean.getBid(),
+                newDoorAuthorModel.approveApplyAuthority(0, applyListBean.getId(), bid,
                         "2", applyListBean.getMemo(), autype, granttype, starttime, stoptime, usertype,
                         NewDoorAuthorizeAuditActivity.this);
                 break;

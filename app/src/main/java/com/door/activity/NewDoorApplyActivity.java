@@ -143,11 +143,11 @@ public class NewDoorApplyActivity extends BaseActivity implements View.OnClickLi
                     layout_register_phone.setVisibility(View.GONE);
                     layout_validate_phone.setVisibility(View.GONE);
                     layout_authorize_phone.setVisibility(View.GONE);
-                    newDoorAuthorModel.bluetoothDoorVerify(0, community_uuid, NewDoorApplyActivity.this);
+                    newDoorAuthorModel.bluetoothDoorVerify(0, community_uuid,unit_uuid, NewDoorApplyActivity.this);
                     break;
                 default://远程门禁和蓝牙门禁都存在
                     //远程和蓝牙门禁门禁
-                    newDoorAuthorModel.bluetoothDoorVerify(0, community_uuid, NewDoorApplyActivity.this);
+                    newDoorAuthorModel.bluetoothDoorVerify(0, community_uuid, unit_uuid,NewDoorApplyActivity.this);
                     break;
             }
         } else { //家属和访客

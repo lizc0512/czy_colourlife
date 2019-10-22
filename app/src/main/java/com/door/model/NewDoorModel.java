@@ -36,6 +36,7 @@ public class NewDoorModel extends BaseModel {
     public final String doorOpenRocordUrl = "app/door/getOpenRocord";
     public final String removeDoorUrl = "app/door/doorFixed/change";
     public final String doorRenameUrl = "app/door/doorFixed/modify";
+    public final String communityDoorUrl = "app/door/communityDoor";
 
     public NewDoorModel(Context context) {
         super(context);
@@ -487,5 +488,45 @@ public class NewDoorModel extends BaseModel {
                 newHttpResponse.OnHttpResponse(what, "");
             }
         }, true, true);
+    }
+
+    public void getCommunityAllDoor(int what, String community_uuid, final boolean isloading, final NewHttpResponse newHttpResponse) {
+        Map<String, Object> map = new HashMap<>();
+        map.put("community_uuid", community_uuid);
+        final Request<String> request = NoHttp.createStringRequest(
+                RequestEncryptionUtils.getCombileMD5(mContext, 11, communityDoorUrl, map), RequestMethod.GET);
+        request(what, request, RequestEncryptionUtils.getNewSaftyMap(mContext, map), new HttpListener<String>() {
+            @Override
+            public void onSucceed(int what, Response<String> response) {
+                int responseCode = response.getHeaders().getResponseCode();
+                String result = response.get();
+                if (responseCode == RequestEncryptionUtils.responseSuccess) {
+                    int code = 0;
+                    if (isloading) {
+                        code = showSuccesResultMessage(result);
+                    } else {
+                        code = showSuccesResultMessageTheme(result);
+                    }
+                    if (code == 0) {
+                        newHttpResponse.OnHttpResponse(what, result);
+                        editor.putString(UserAppConst.COLOR_HOME_USEDOOR, result).apply();
+                    } else {
+                        if (!isloading) {
+                            newHttpResponse.OnHttpResponse(what, "");
+                        }
+                    }
+                }
+            }
+
+            @Override
+            public void onFailed(int what, Response<String> response) {
+                if (isloading) {
+                    ToastUtil.toastShow(mContext, "获取常用门禁失败，请重试");
+                } else {
+                    newHttpResponse.OnHttpResponse(what, "");
+                }
+
+            }
+        }, true, isloading);
     }
 }

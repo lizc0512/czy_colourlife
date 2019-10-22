@@ -1,6 +1,8 @@
 package com.door.model;
 
+import android.arch.core.executor.TaskExecutor;
 import android.content.Context;
+import android.text.TextUtils;
 
 import com.BeeFramework.model.BaseModel;
 import com.BeeFramework.model.NewHttpResponse;
@@ -42,7 +44,8 @@ public class NewDoorAuthorModel extends BaseModel {
     private String applyListUrl = "app/door/remoteDoor/applyList"; //门禁-获取用户门禁申请记录
     private String doorAuthorizeToidUrl = "app/door/remoteDoor/authorizeToid"; //门禁-远程门禁重新授权
     private String doorExtensionMsgUrl = "app/door/remoteDoor/extensionMsg"; //门禁-门禁权限申请延期用户信息
-    private String doorExtensionValidUrl = "app/door/remoteDoor/extensionValid"; //门禁-门禁权限申请延期操作接口
+    private String remoteDoorExtensionValidUrl = "app/door/remoteDoor/extensionValid"; //门禁-门禁权限申请延期操作接口
+    private String bluetoothDoorExtensionValidUrl = "app/door/bluetooth/extensionValid"; //门禁-门禁权限申请延期操作接口
 
 
     public NewDoorAuthorModel(Context context) {
@@ -183,7 +186,7 @@ public class NewDoorAuthorModel extends BaseModel {
                     int code = showSuccesResultMessage(resultValue);
                     if (code == 0) {
                         newHttpResponse.OnHttpResponse(what, resultValue);
-                        editor.putString(UserAppConst.COLOUR_DOOR_AUTHOUR_APPLY,resultValue).apply();
+                        editor.putString(UserAppConst.COLOUR_DOOR_AUTHOUR_APPLY, resultValue).apply();
                     }
                 } else if (responseCode == RequestEncryptionUtils.responseRequest) {
                     showErrorCodeMessage(responseCode, response);
@@ -343,9 +346,10 @@ public class NewDoorAuthorModel extends BaseModel {
         }, true, true);
     }
 
-    public void bluetoothDoorVerify(int what, String community_uuid, final NewHttpResponse newHttpResponse) {
+    public void bluetoothDoorVerify(int what, String community_uuid,String unit_uuid, final NewHttpResponse newHttpResponse) {
         Map<String, Object> params = new HashMap<String, Object>();
         params.put("community_uuid", community_uuid);
+        params.put("unit_uuid", unit_uuid);
         final Request<String> request = NoHttp.createStringRequest(RequestEncryptionUtils.getCombileMD5(mContext, 11, bluetoothCommunitySetUrl, params), RequestMethod.GET);
         request(what, request, params, new HttpListener<String>() {
 
@@ -372,7 +376,7 @@ public class NewDoorAuthorModel extends BaseModel {
         }, true, true);
     }
 
-    public void getDoorExtensionMsg(int what, String  community_uuid,String identity_id,final NewHttpResponse newHttpResponse) {
+    public void getDoorExtensionMsg(int what, String community_uuid, String identity_id, final NewHttpResponse newHttpResponse) {
         Map<String, Object> params = new HashMap<String, Object>();
         params.put("community_uuid", community_uuid);
         params.put("identity_id", identity_id);
@@ -402,14 +406,55 @@ public class NewDoorAuthorModel extends BaseModel {
         }, true, true);
     }
 
-    public void setDoorExtensionValid(int what, String  community_uuid,String community_name,String identity_id,String bid,String auth_mobile,final NewHttpResponse newHttpResponse) {
+    public void setRemoteDoorExtensionValid(int what, String community_uuid, String community_name, String identity_id, String bid, String auth_mobile, final NewHttpResponse newHttpResponse) {
         Map<String, Object> params = new HashMap<String, Object>();
         params.put("community_uuid", community_uuid);
         params.put("community_name", community_name);
         params.put("identity_id", identity_id);
         params.put("bid", bid);
         params.put("auth_mobile", auth_mobile);
-        final Request<String> request = NoHttp.createStringRequest(RequestEncryptionUtils.postCombileMD5(mContext, 15, doorExtensionValidUrl), RequestMethod.POST);
+        final Request<String> request = NoHttp.createStringRequest(RequestEncryptionUtils.postCombileMD5(mContext, 15, remoteDoorExtensionValidUrl), RequestMethod.POST);
+        request(what, request, params, new HttpListener<String>() {
+
+            @Override
+            public void onSucceed(int what, Response<String> response) {
+                int responseCode = response.getHeaders().getResponseCode();
+                String resultValue = response.get();
+                if (responseCode == RequestEncryptionUtils.responseSuccess) {
+                    int code = showSuccesResultMessage(resultValue);
+                    if (code == 0) {
+                        newHttpResponse.OnHttpResponse(what, resultValue);
+                    }
+                } else if (responseCode == RequestEncryptionUtils.responseRequest) {
+                    showErrorCodeMessage(responseCode, response);
+                } else {
+                    showErrorCodeMessage(responseCode, response);
+                }
+            }
+
+            @Override
+            public void onFailed(int what, Response<String> response) {
+                showExceptionMessage(what, response);
+            }
+        }, true, true);
+    }
+
+
+    public void setBluetoothDoorExtensionValid(int what, String community_uuid, String community_name, String unit_name, String unit_uuid,
+                                               String identity_id, String auth_mobile, String auth_name, String tg_status,
+                                               final NewHttpResponse newHttpResponse) {
+        Map<String, Object> params = new HashMap<String, Object>();
+        params.put("community_uuid", community_uuid);
+        params.put("community_name", community_name);
+        params.put("unit_name", unit_name);
+        params.put("unit_uuid", unit_uuid);
+        params.put("identity_id", identity_id);
+        params.put("auth_mobile", auth_mobile);
+        params.put("auth_name", auth_name);
+        if (!TextUtils.isEmpty(tg_status)){
+            params.put("tg_status", tg_status);
+        }
+        final Request<String> request = NoHttp.createStringRequest(RequestEncryptionUtils.postCombileMD5(mContext, 15, bluetoothDoorExtensionValidUrl), RequestMethod.POST);
         request(what, request, params, new HttpListener<String>() {
 
             @Override
