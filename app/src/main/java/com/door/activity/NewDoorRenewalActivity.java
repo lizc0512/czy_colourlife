@@ -272,6 +272,8 @@ public class NewDoorRenewalActivity extends BaseActivity implements View.OnClick
                             layout_register_phone.setVisibility(View.GONE);
                             layout_validate_phone.setVisibility(View.GONE);
                             layout_authorize_phone.setVisibility(View.GONE);
+                            btn_submit_infor.setBackgroundResource(R.drawable.onekey_login_bg);
+                            btn_submit_infor.setEnabled(true);
                         }
                     }
                 } catch (Exception e) {
@@ -312,7 +314,7 @@ public class NewDoorRenewalActivity extends BaseActivity implements View.OnClick
                 btn_submit_infor.setEnabled(true);
             }
         } else {
-            if (!"1".equals(identify_id)) {
+            if ("1".equals(identify_id)&&"0".equals(tgStatus)) {
                 if (TextUtils.isEmpty(validate_phone) || 11 != validate_phone.length()) {
                     btn_submit_infor.setBackgroundResource(R.drawable.onekey_login_default_bg);
                     btn_submit_infor.setEnabled(false);

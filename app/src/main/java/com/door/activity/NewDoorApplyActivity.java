@@ -143,11 +143,11 @@ public class NewDoorApplyActivity extends BaseActivity implements View.OnClickLi
                     layout_register_phone.setVisibility(View.GONE);
                     layout_validate_phone.setVisibility(View.GONE);
                     layout_authorize_phone.setVisibility(View.GONE);
-                    newDoorAuthorModel.bluetoothDoorVerify(0, community_uuid,unit_uuid,build_uuid,room_uuid, NewDoorApplyActivity.this);
+                    newDoorAuthorModel.bluetoothDoorVerify(0, community_uuid, unit_uuid, build_uuid, room_uuid, NewDoorApplyActivity.this);
                     break;
                 default://远程门禁和蓝牙门禁都存在
                     setNoticeSpannString(1);
-                    newDoorAuthorModel.bluetoothDoorVerify(0, community_uuid, unit_uuid,build_uuid,room_uuid,NewDoorApplyActivity.this);
+                    newDoorAuthorModel.bluetoothDoorVerify(0, community_uuid, unit_uuid, build_uuid, room_uuid, NewDoorApplyActivity.this);
                     break;
             }
         } else { //家属和租户
@@ -163,13 +163,13 @@ public class NewDoorApplyActivity extends BaseActivity implements View.OnClickLi
                     layout_validate_phone.setVisibility(View.GONE);
                     layout_authorize_phone.setVisibility(View.GONE);
                     tv_apply_notice.setText("注：业主或小区物业管理处工作人员通过您的申请后，您即可获得开门权限");
-                    newDoorAuthorModel.bluetoothDoorVerify(0, community_uuid,unit_uuid,build_uuid,room_uuid, NewDoorApplyActivity.this);
+                    newDoorAuthorModel.bluetoothDoorVerify(0, community_uuid, unit_uuid, build_uuid, room_uuid, NewDoorApplyActivity.this);
                     break;
                 default://远程门禁和蓝牙门禁都存在
                     layout_register_phone.setVisibility(View.GONE);
                     layout_validate_phone.setVisibility(View.GONE);
                     setNoticeSpannString(1);
-                    newDoorAuthorModel.bluetoothDoorVerify(0, community_uuid,unit_uuid,build_uuid,room_uuid, NewDoorApplyActivity.this);
+                    newDoorAuthorModel.bluetoothDoorVerify(0, community_uuid, unit_uuid, build_uuid, room_uuid, NewDoorApplyActivity.this);
                     break;
             }
         }
@@ -215,6 +215,9 @@ public class NewDoorApplyActivity extends BaseActivity implements View.OnClickLi
                 finish();
                 break;
             case R.id.btn_submit_infor:
+                if (TextUtils.isEmpty(auth_mobile)){
+                    doorType="2";
+                }
                 newDoorAuthorModel.applyRemoteDoor(1, community_uuid, community_name, build_uuid, buid_name,
                         unit_uuid, unit_name, room_uuid, room_name, identity_id, auth_name, auth_mobile, validate_phone, doorType, bid, tgStatus, NewDoorApplyActivity.this);
 
@@ -254,14 +257,20 @@ public class NewDoorApplyActivity extends BaseActivity implements View.OnClickLi
                 }
                 break;
             case 1:
-                ToastUtil.toastShow(NewDoorApplyActivity.this, "申请已提交，请等待审核通过");
+                if ("2".equals(doorType)) {
+                    if ("0".equals(tgStatus)) {
+                        ToastUtil.toastShow(NewDoorApplyActivity.this, "审核通过，自动发放钥匙");
+                    } else {
+                        ToastUtil.toastShow(NewDoorApplyActivity.this, "申请已提交，请等待审核通过");
+                    }
+                } else {
+                    ToastUtil.toastShow(NewDoorApplyActivity.this, "申请已提交，请等待审核通过");
+                }
                 setResult(200);
                 finish();
                 break;
         }
     }
-
-
 
 
     @Override

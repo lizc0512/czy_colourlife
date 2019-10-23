@@ -1,6 +1,5 @@
 package com.door.model;
 
-import android.arch.core.executor.TaskExecutor;
 import android.content.Context;
 import android.text.TextUtils;
 
@@ -319,9 +318,9 @@ public class NewDoorAuthorModel extends BaseModel {
         params.put("resident_mobile", resident_mobile);
         params.put("apply_type", apply_type);
         params.put("bid", bid);
-        if (TextUtils.isEmpty(tg_status)){
+        if (TextUtils.isEmpty(tg_status)) {
             params.put("tg_status", 1);
-        }else{
+        } else {
             params.put("tg_status", tg_status);
         }
         final Request<String> request = NoHttp.createStringRequest(RequestEncryptionUtils.postCombileMD5(mContext, 15, remoteDoorApplyUrl), RequestMethod.POST);
@@ -350,7 +349,7 @@ public class NewDoorAuthorModel extends BaseModel {
         }, true, true);
     }
 
-    public void bluetoothDoorVerify(int what, String community_uuid,String unit_uuid,String build_uuid,String room_uuid, final NewHttpResponse newHttpResponse) {
+    public void bluetoothDoorVerify(int what, String community_uuid, String unit_uuid, String build_uuid, String room_uuid, final NewHttpResponse newHttpResponse) {
         Map<String, Object> params = new HashMap<String, Object>();
         params.put("community_uuid", community_uuid);
         params.put("unit_uuid", unit_uuid);
@@ -447,7 +446,7 @@ public class NewDoorAuthorModel extends BaseModel {
 
 
     public void setBluetoothDoorExtensionValid(int what, String community_uuid, String community_name, String unit_name, String unit_uuid,
-                                               String identity_id, String auth_mobile, String auth_name,String  resident_mobile, String tg_status,
+                                               String identity_id, String auth_mobile, String auth_name, String resident_mobile, String tg_status,
                                                final NewHttpResponse newHttpResponse) {
         Map<String, Object> params = new HashMap<String, Object>();
         params.put("community_uuid", community_uuid);
@@ -458,9 +457,9 @@ public class NewDoorAuthorModel extends BaseModel {
         params.put("auth_mobile", auth_mobile);
         params.put("auth_name", auth_name);
         params.put("resident_mobile", resident_mobile);
-        if (!TextUtils.isEmpty(tg_status)){
+        if (!TextUtils.isEmpty(tg_status)) {
             params.put("tg_status", tg_status);
-        }else{
+        } else {
             params.put("tg_status", 1);
         }
         final Request<String> request = NoHttp.createStringRequest(RequestEncryptionUtils.postCombileMD5(mContext, 15, bluetoothDoorExtensionValidUrl), RequestMethod.POST);
