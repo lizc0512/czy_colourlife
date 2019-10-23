@@ -25,7 +25,10 @@ import cn.net.cyberway.R;
 
 import static com.customerInfo.activity.CustomerAddPropertyActivity.IDENTITY_ID;
 import static com.customerInfo.activity.CustomerAddPropertyActivity.IDENTITY_NAME;
-
+/*
+* 申请门禁
+* 用户身份列表
+* */
 public class NewDoorIndetifyActivity extends BaseActivity implements View.OnClickListener, NewHttpResponse {
     private ImageView user_top_view_back;
     private TextView user_top_view_title;
@@ -46,7 +49,7 @@ public class NewDoorIndetifyActivity extends BaseActivity implements View.OnClic
         user_top_view_right = findViewById(R.id.user_top_view_right);
         rv_open_record = findViewById(R.id.rv_open_record);
         btn_next_step = findViewById(R.id.btn_next_step);
-        tv_identify_title = findViewById(R.id.btn_next_step);
+        tv_identify_title = findViewById(R.id.tv_identify_title);
         user_top_view_back.setOnClickListener(this::onClick);
         user_top_view_right.setOnClickListener(this::onClick);
         btn_next_step.setVisibility(View.VISIBLE);

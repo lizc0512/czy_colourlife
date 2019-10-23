@@ -447,7 +447,7 @@ public class NewDoorAuthorModel extends BaseModel {
 
 
     public void setBluetoothDoorExtensionValid(int what, String community_uuid, String community_name, String unit_name, String unit_uuid,
-                                               String identity_id, String auth_mobile, String auth_name, String tg_status,
+                                               String identity_id, String auth_mobile, String auth_name,String  resident_mobile, String tg_status,
                                                final NewHttpResponse newHttpResponse) {
         Map<String, Object> params = new HashMap<String, Object>();
         params.put("community_uuid", community_uuid);
@@ -457,6 +457,7 @@ public class NewDoorAuthorModel extends BaseModel {
         params.put("identity_id", identity_id);
         params.put("auth_mobile", auth_mobile);
         params.put("auth_name", auth_name);
+        params.put("resident_mobile", resident_mobile);
         if (!TextUtils.isEmpty(tg_status)){
             params.put("tg_status", tg_status);
         }else{

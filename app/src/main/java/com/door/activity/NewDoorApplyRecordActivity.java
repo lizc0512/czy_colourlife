@@ -20,7 +20,7 @@ import java.util.List;
 import cn.net.cyberway.R;
 
 /*
- * 门禁(我的申请记录)
+ * 门禁(我的主动申请记录)
  *
  * */
 public class NewDoorApplyRecordActivity extends BaseActivity implements View.OnClickListener, NewHttpResponse {

@@ -71,16 +71,16 @@ public class NewDoorAuthorizeActivity extends BaseFragmentActivity implements Vi
     private List<IdentityListEntity.ContentBean> identityList = new ArrayList<>();
     private List<String> dateList = new ArrayList<>();
     private int choicePos = 0;
-    private String authorName;
-    private String authorPhone;
-    private String autype;
+    private String authorName; //授权人姓名
+    private String authorPhone;//授权人的手机号
+    private String autype; //授权的类型
     private String granttype;
-    private long starttime;
+    private long starttime;//授权时长
     private long stoptime;
-    private String community_uuid;
+    private String community_uuid;//小区的uuid和名称信息
     private String community_name;
-    private String bid;
-    private String user_type;
+    private String bid;//申请远程门禁的id
+    private String user_type;//用的身份类型
 
     private ApplyRecordFragment applyRecordFragment;
     private AuthorizeRecordFragment authorizeRecordFragment;
@@ -165,33 +165,32 @@ public class NewDoorAuthorizeActivity extends BaseFragmentActivity implements Vi
             public void onItemClick(int i) {
                 choicePos = i;
                 doorDateAdapter.setChoicePos(i);
-                setAuthorizeBtn();
                 switch (choicePos) {
-                    case 1:
+                    case 1: //1个月
                         autype = "1";
                         granttype = "0";
                         starttime = System.currentTimeMillis() / 1000;
                         stoptime = starttime + 3600 * 24 * 30;
                         break;
-                    case 2:
+                    case 2://6个月
                         autype = "1";
                         granttype = "0";
                         starttime = System.currentTimeMillis() / 1000;
                         stoptime = starttime + 3600 * 24 * 30 * 6;
                         break;
-                    case 3:
+                    case 3://1个年
                         autype = "1";
                         granttype = "0";
                         starttime = System.currentTimeMillis() / 1000;
                         stoptime = starttime + 3600 * 24 * 365;
                         break;
-                    case 4:
+                    case 4://永久
                         granttype = "1";
                         autype = "2";
                         starttime = System.currentTimeMillis() / 1000;
                         stoptime = 0;
                         break;
-                    default:
+                    default://7天
                         starttime = System.currentTimeMillis() / 1000;
                         stoptime = starttime + 3600 * 24 * 7;
                         autype = "1";
@@ -206,7 +205,7 @@ public class NewDoorAuthorizeActivity extends BaseFragmentActivity implements Vi
     private void setAuthorizeBtn() {
         authorName = ed_real_name.getText().toString().trim();
         authorPhone = ed_authorize_phone.getText().toString().trim();
-        if (TextUtils.isEmpty(community_uuid) || choicePos == -1 || TextUtils.isEmpty(user_type) || TextUtils.isEmpty(authorName) || TextUtils.isEmpty(authorPhone) || 11 != authorPhone.length()) {
+        if (TextUtils.isEmpty(community_uuid) || TextUtils.isEmpty(user_type) || TextUtils.isEmpty(authorName) || TextUtils.isEmpty(authorPhone) || 11 != authorPhone.length()) {
             btn_define_authorize.setEnabled(false);
             btn_define_authorize.setBackgroundResource(R.drawable.onekey_login_default_bg);
         } else {
@@ -222,19 +221,19 @@ public class NewDoorAuthorizeActivity extends BaseFragmentActivity implements Vi
             case R.id.user_top_view_back:
                 finish();
                 break;
-            case R.id.choice_identify_layout:
+            case R.id.choice_identify_layout: //选择用户当前的身份
                 KeyBoardUtils.hideSoftKeyboard(NewDoorAuthorizeActivity.this);
                 if (identityList.size() > 0) {
                     showPickerView(identityList, "选择身份");
                 }
                 break;
-            case R.id.choice_room_layout:
+            case R.id.choice_room_layout: //选择授权的小区
                 KeyBoardUtils.hideSoftKeyboard(NewDoorAuthorizeActivity.this);
                 if (communityList.size() > 1) {
                     showPickerView(communityList, "授权小区");
                 }
                 break;
-            case R.id.btn_define_authorize:
+            case R.id.btn_define_authorize:  //主动给用户授权
                 newDoorAuthorModel.setAuthorizeByMobile(3, community_uuid, bid, user_type, autype, granttype, starttime, stoptime, authorPhone,
                         authorName, "", NewDoorAuthorizeActivity.this);
                 break;
@@ -318,10 +317,10 @@ public class NewDoorAuthorizeActivity extends BaseFragmentActivity implements Vi
 
                 }
                 break;
-            case 2:
+            case 2: //授权申请和授权记录的展示
                 setApplyAuthorData(result);
                 break;
-            case 3:
+            case 3://授权成功进行刷新
                 ToastUtil.toastShow(NewDoorAuthorizeActivity.this, "授权成功");
                 newDoorAuthorModel.getAuthorizeAndApplyList(2, false, NewDoorAuthorizeActivity.this);
                 break;

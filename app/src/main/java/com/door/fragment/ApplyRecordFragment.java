@@ -75,7 +75,8 @@ public class ApplyRecordFragment extends BaseFragment {
                 String type = applyListBean.getType();
                 String isDeleted = applyListBean.getIsdeleted();
                 Intent intent = null;
-                if ("2".equals(type) && !("1".equals(isDeleted))) {
+                if (("2".equals(type) && "2".equals(type)) || ("1".equals(isDeleted) && "1".equals(type))) {
+                    //已拒绝和申请通过的
                     intent = new Intent(getActivity(), NewDoorAuthorizePassActivity.class);
                 } else {
                     intent = new Intent(getActivity(), NewDoorAuthorizeAuditActivity.class);
@@ -87,9 +88,10 @@ public class ApplyRecordFragment extends BaseFragment {
         });
 
     }
+
     public String communityData;
 
-    public void setCommmunityData(String  commmunityData) {
-       this.communityData=commmunityData;
+    public void setCommmunityData(String commmunityData) {
+        this.communityData = commmunityData;
     }
 }

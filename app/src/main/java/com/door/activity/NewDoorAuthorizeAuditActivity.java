@@ -132,31 +132,31 @@ public class NewDoorAuthorizeAuditActivity extends BaseActivity implements View.
                 choicePos = i;
                 doorDateAdapter.setChoicePos(i);
                 switch (choicePos) {
-                    case 1:
+                    case 1://授权时长一个月
                         starttime = System.currentTimeMillis() / 1000;
                         stoptime = starttime + 3600 * 24 * 30;
                         autype = "1";
                         granttype = "0";
                         break;
-                    case 2:
+                    case 2://授权时长6个月
                         starttime = System.currentTimeMillis() / 1000;
                         stoptime = starttime + 3600 * 24 * 30 * 6;
                         autype = "1";
                         granttype = "0";
                         break;
-                    case 3:
+                    case 3://授权时长1年
                         starttime = System.currentTimeMillis() / 1000;
                         stoptime = starttime + 3600 * 24 * 365;
                         autype = "1";
                         granttype = "0";
                         break;
-                    case 4:
+                    case 4://授权时长永久
                         starttime = System.currentTimeMillis() / 1000;
                         stoptime = 0;
                         granttype = "1";
                         autype = "2";
                         break;
-                    default:
+                    default://授权时长7天
                         starttime = System.currentTimeMillis() / 1000;
                         stoptime = starttime + 3600 * 24 * 7;
                         autype = "1";
@@ -165,7 +165,7 @@ public class NewDoorAuthorizeAuditActivity extends BaseActivity implements View.
                 }
             }
         });
-        if (TextUtils.isEmpty(bid)) {
+        if (TextUtils.isEmpty(bid)) {  //5.1.2版本之前 旧版本申请门禁权限没有小区
             //获取小区
             String communityData = intent.getStringExtra("communityData");
             getCommunityList(communityData);
@@ -232,20 +232,16 @@ public class NewDoorAuthorizeAuditActivity extends BaseActivity implements View.
                 finish();
                 break;
             case R.id.btn_agree_authorize:
-                if (choicePos == -1) {
-                    ToastUtil.toastShow(NewDoorAuthorizeAuditActivity.this, "请选择授权时间");
-                } else {
-                    if ("2".equals(type)) {
+                    if ("2".equals(type)) {  //重新授权
                         newDoorAuthorModel.setDoorAgainAuthorize(0, autype, granttype, starttime, stoptime,
                                 bid, usertype, applyListBean.getToid(), NewDoorAuthorizeAuditActivity.this);
-                    } else {
+                    } else { //同意授权
                         newDoorAuthorModel.approveApplyAuthority(0, applyListBean.getId(), bid,
                                 "1", applyListBean.getMemo(), autype, granttype, starttime, stoptime, usertype,
                                 NewDoorAuthorizeAuditActivity.this);
                     }
-                }
                 break;
-            case R.id.btn_refuse_authorize:
+            case R.id.btn_refuse_authorize: //拒绝申请
                 newDoorAuthorModel.approveApplyAuthority(0, applyListBean.getId(), bid,
                         "2", applyListBean.getMemo(), autype, granttype, starttime, stoptime, usertype,
                         NewDoorAuthorizeAuditActivity.this);

@@ -35,6 +35,7 @@ import java.util.List;
 import cn.csh.colourful.life.view.pickview.OptionsPickerView;
 import cn.net.cyberway.R;
 
+import static com.customerInfo.activity.CustomerAddPropertyActivity.COMMUNITY_NAME;
 import static com.customerInfo.activity.CustomerAddPropertyActivity.COMMUNITY_UUID;
 import static com.customerInfo.activity.CustomerAddPropertyActivity.IDENTITY_ID;
 /*
@@ -51,6 +52,7 @@ public class NewDoorRenewalActivity extends BaseActivity implements View.OnClick
     private ClearEditText ed_real_name;
     private RelativeLayout apply_room_layout;
     private TextView tv_apply_room;
+    private ImageView iv_apply_arrow;
     private TextView tv_apply_identify;
     private RelativeLayout layout_register_phone;
     private TextView tv_register_phone;
@@ -85,6 +87,7 @@ public class NewDoorRenewalActivity extends BaseActivity implements View.OnClick
         apply_room_layout = findViewById(R.id.apply_room_layout);
         tv_apply_room = findViewById(R.id.tv_apply_room);
         tv_apply_identify = findViewById(R.id.tv_apply_identify);
+        iv_apply_arrow = findViewById(R.id.iv_apply_arrow);
         layout_register_phone = findViewById(R.id.layout_register_phone);
         tv_register_phone = findViewById(R.id.tv_register_phone);
         layout_validate_phone = findViewById(R.id.layout_validate_phone);
@@ -102,6 +105,7 @@ public class NewDoorRenewalActivity extends BaseActivity implements View.OnClick
         newDoorAuthorModel = new NewDoorAuthorModel(NewDoorRenewalActivity.this);
         Intent intent = getIntent();
         community_uuid = intent.getStringExtra(COMMUNITY_UUID);
+        community_name = intent.getStringExtra(COMMUNITY_NAME);
         identify_id = intent.getStringExtra(IDENTITY_ID);
         door_type = intent.getStringExtra(DOOR_TYPE);
         String identify_name;
@@ -128,10 +132,15 @@ public class NewDoorRenewalActivity extends BaseActivity implements View.OnClick
             ed_real_name.setFocusable(false);
             apply_room_layout.setEnabled(false);
             tv_apply_notice.setText("注：授权人通过您的申请后您即可获得开门权限，授权人账号可咨询小区物业管理处");
-        } else {  //蓝牙门禁
+        } else {  //蓝牙门禁 的续期需要关联到单元信息
             unitNameList = intent.getStringArrayListExtra(UNIT_NAME_LIST);
             unitIdList = intent.getStringArrayListExtra(UNIT_UUID_LIST);
             apply_room_layout.setEnabled(true);
+            if (unitNameList.size() > 1) {
+                iv_apply_arrow.setVisibility(View.VISIBLE);
+            } else {
+                iv_apply_arrow.setVisibility(View.INVISIBLE);
+            }
             if (!"1".equals(identify_id)) { //租客和家属
                 layout_register_phone.setVisibility(View.GONE);
                 layout_validate_phone.setVisibility(View.GONE);
@@ -140,7 +149,7 @@ public class NewDoorRenewalActivity extends BaseActivity implements View.OnClick
                 btn_submit_infor.setEnabled(true);
                 tv_apply_notice.setText("注：业主或小区物业管理处工作人员通过您的申请后，您即可获得开门权限");
             }
-            newDoorAuthorModel.bluetoothDoorVerify(1, community_uuid, unit_uuid,"","", NewDoorRenewalActivity.this);
+            newDoorAuthorModel.bluetoothDoorVerify(1, community_uuid, unit_uuid, "", "", NewDoorRenewalActivity.this);
         }
     }
 
@@ -177,11 +186,11 @@ public class NewDoorRenewalActivity extends BaseActivity implements View.OnClick
             case R.id.btn_submit_infor:
                 if ("1".equals(door_type)) {  //远程门禁的续期
                     newDoorAuthorModel.setRemoteDoorExtensionValid(2, community_uuid, community_name, identify_id, bid, auth_mobile, NewDoorRenewalActivity.this);
-                } else {
-                    newDoorAuthorModel.setBluetoothDoorExtensionValid(2, community_uuid, community_name, unit_name, unit_uuid, identify_id, auth_mobile, name, tgStatus, NewDoorRenewalActivity.this);
+                } else { //蓝牙门禁的续期
+                    newDoorAuthorModel.setBluetoothDoorExtensionValid(2, community_uuid, community_name, unit_name, unit_uuid, identify_id, auth_mobile, name, validate_phone, tgStatus, NewDoorRenewalActivity.this);
                 }
                 break;
-            case R.id.apply_room_layout:
+            case R.id.apply_room_layout: //蓝牙门禁续期  选择单元
                 if (roomUnitList.size() > 1) {
                     showPickerView(roomUnitList, "授权小区单元");
                 }
@@ -224,11 +233,13 @@ public class NewDoorRenewalActivity extends BaseActivity implements View.OnClick
                     DoorExtensionMsgEntity.ContentBean contentBean = doorExtensionMsgEntity.getContent();
                     name = contentBean.getName();
                     bid = contentBean.getBid();
-                    community_name = contentBean.getCommunity_name();
-                    if ("1".equals(door_type)) {
+                    if (!TextUtils.isEmpty(contentBean.getCommunity_name())) {
+                        community_name = contentBean.getCommunity_name();
+                    }
+                    if ("1".equals(door_type)) {//远程门禁
                         tv_apply_room.setText(community_name);
                     } else {
-                        if (null != unitNameList && unitNameList.size() > 0) {
+                        if (null != unitNameList && unitNameList.size() > 0) {  //蓝牙门禁拼接上单元名称
                             unit_name = unitNameList.get(0);
                             unit_uuid = unitIdList.get(0);
                             tv_apply_room.setText(community_name + unit_name);
@@ -251,11 +262,12 @@ public class NewDoorRenewalActivity extends BaseActivity implements View.OnClick
                     DoorBlueToothStatusEntity doorBlueToothStatusEntity = GsonUtils.gsonToBean(result, DoorBlueToothStatusEntity.class);
                     DoorBlueToothStatusEntity.ContentBean contentBean = doorBlueToothStatusEntity.getContent();
                     tgStatus = contentBean.getTgStatus();
-                    if ("1".equals(identify_id)){
-                        if ("1".equals(tgStatus)) { //开启认证
+                    tv_register_phone.setText(contentBean.getMobile());
+                    if ("1".equals(identify_id)) { //业主
+                        if ("0".equals(tgStatus)) { //RMS认证
                             setNoticeSpannString();
                             layout_authorize_phone.setVisibility(View.GONE);
-                        } else {
+                        } else { //物业认证
                             tv_apply_notice.setText("注：业主或小区物业管理处工作人员通过您的申请后，您即可获得开门权限");
                             layout_register_phone.setVisibility(View.GONE);
                             layout_validate_phone.setVisibility(View.GONE);
@@ -267,7 +279,11 @@ public class NewDoorRenewalActivity extends BaseActivity implements View.OnClick
                 }
                 break;
             case 2:
-                ToastUtil.toastShow(NewDoorRenewalActivity.this, "续期申请已提交，请等待审核通过");
+                if ("0".equals(tgStatus)) {
+                    ToastUtil.toastShow(NewDoorRenewalActivity.this, "审核通过，自动发放钥匙");
+                } else {
+                    ToastUtil.toastShow(NewDoorRenewalActivity.this, "续期申请已提交，请等待审核通过");
+                }
                 finish();
                 break;
         }

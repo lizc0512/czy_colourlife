@@ -152,31 +152,31 @@ public class NewDoorAuthorizeCancelActivity extends BaseActivity implements View
                 choicePos = i;
                 doorDateAdapter.setChoicePos(i);
                 switch (choicePos) {
-                    case 1:
+                    case 1://1个月
                         starttime = System.currentTimeMillis() / 1000;
                         stoptime = starttime + 3600 * 24 * 30;
                         autype = "1";
                         granttype = "0";
                         break;
-                    case 2:
+                    case 2://6个月
                         starttime = System.currentTimeMillis() / 1000;
                         stoptime = starttime + 3600 * 24 * 30 * 6;
                         autype = "1";
                         granttype = "0";
                         break;
-                    case 3:
+                    case 3://1年
                         starttime = System.currentTimeMillis() / 1000;
                         stoptime = starttime + 3600 * 24 * 365;
                         autype = "1";
                         granttype = "0";
                         break;
-                    case 4:
+                    case 4://永久
                         starttime = System.currentTimeMillis() / 1000;
                         stoptime = 0;
                         granttype = "1";
                         autype = "2";
                         break;
-                    default:
+                    default: //7天
                         starttime = System.currentTimeMillis() / 1000;
                         stoptime = starttime + 3600 * 24 * 7;
                         autype = "1";
@@ -194,10 +194,10 @@ public class NewDoorAuthorizeCancelActivity extends BaseActivity implements View
                 finish();
                 break;
             case R.id.btn_agree_authorize:
-                if ("1".equals(isdelete)) {
+                if ("1".equals(isdelete)) {  //权限失效 后重新进行授权
                     newDoorAuthorModel.setDoorAgainAuthorize(0, autype, granttype, starttime, stoptime,
                             authorizationList.getBid(), usertype, authorizationList.getToid(), NewDoorAuthorizeCancelActivity.this);
-                } else {
+                } else {//授权通过后 取消授权
                     newDoorAuthorModel.cancelUserAutor(0, authorizationList.getId(), NewDoorAuthorizeCancelActivity.this);
                 }
                 break;

@@ -75,10 +75,10 @@ public class NewDoorApplyActivity extends BaseActivity implements View.OnClickLi
     private String room_name = "";
     private String identity_id = "";
     private String identity_name = "";
-    private String auth_name = "";
-    private String auth_mobile = "";
+    private String auth_name = ""; //用户的姓名
+    private String auth_mobile = "";//远程门禁授权人的手机号
 
-    private String validate_phone = "";
+    private String validate_phone = "";//蓝牙门禁授权人手机号
 
 
     @Override
@@ -146,11 +146,11 @@ public class NewDoorApplyActivity extends BaseActivity implements View.OnClickLi
                     newDoorAuthorModel.bluetoothDoorVerify(0, community_uuid,unit_uuid,build_uuid,room_uuid, NewDoorApplyActivity.this);
                     break;
                 default://远程门禁和蓝牙门禁都存在
-                    //远程和蓝牙门禁门禁
+                    setNoticeSpannString(1);
                     newDoorAuthorModel.bluetoothDoorVerify(0, community_uuid, unit_uuid,build_uuid,room_uuid,NewDoorApplyActivity.this);
                     break;
             }
-        } else { //家属和访客
+        } else { //家属和租户
             switch (doorType) {
                 case "1"://只有远程门禁
                     ed_authorize_phone.setHint("请输入授权人的手机号码");
@@ -166,7 +166,6 @@ public class NewDoorApplyActivity extends BaseActivity implements View.OnClickLi
                     newDoorAuthorModel.bluetoothDoorVerify(0, community_uuid,unit_uuid,build_uuid,room_uuid, NewDoorApplyActivity.this);
                     break;
                 default://远程门禁和蓝牙门禁都存在
-                    //远程和蓝牙门禁门禁
                     layout_register_phone.setVisibility(View.GONE);
                     layout_validate_phone.setVisibility(View.GONE);
                     setNoticeSpannString(1);
@@ -232,17 +231,17 @@ public class NewDoorApplyActivity extends BaseActivity implements View.OnClickLi
                     DoorBlueToothStatusEntity doorBlueToothStatusEntity = GsonUtils.gsonToBean(result, DoorBlueToothStatusEntity.class);
                     DoorBlueToothStatusEntity.ContentBean contentBean = doorBlueToothStatusEntity.getContent();
                     tgStatus = contentBean.getTgStatus();
-                    if ("1".equals(identity_id)) {
-                        if ("2".equals(doorType)) { //蓝牙
-                            if ("0".equals(tgStatus)) { //
+                    if ("1".equals(identity_id)) {  //身份为业主
+                        if ("2".equals(doorType)) { //只有蓝牙门禁
+                            if ("0".equals(tgStatus)) { //开启了RMS认证 不进行物业审核
                                 setNoticeSpannString(0);
                                 layout_register_phone.setVisibility(View.VISIBLE);
                                 layout_validate_phone.setVisibility(View.VISIBLE);
                                 tv_register_phone.setText(contentBean.getMobile());
-                            } else {
+                            } else {  //物业审核
                                 tv_apply_notice.setText("注：小区物业管理处工作人员通过您的申请后，您即可获得开门权限");
                             }
-                        } else if ("3".equals(doorType)) {//都有
+                        } else if ("3".equals(doorType)) {//远程和蓝牙门禁都有
                             if ("0".equals(tgStatus)) {
                                 layout_register_phone.setVisibility(View.VISIBLE);
                                 layout_validate_phone.setVisibility(View.VISIBLE);

@@ -16,7 +16,7 @@ import com.door.model.NewDoorAuthorModel;
 
 import cn.net.cyberway.R;
 /*
- * 授权通过或拒绝的页面
+ * 授权通过后取消授权的页面
  *
  * */
 
@@ -84,7 +84,7 @@ public class NewDoorAuthorizePassActivity extends BaseActivity implements View.O
             tv_apply_duration.setText(TimeUtil.getDateToString(applyListBean.getModifiedtime()));
             layout_pass_time.setVisibility(View.GONE);
             btn_cancel_authorize.setVisibility(View.GONE);
-        }else{
+        }else{ //通过
             tv_apply_status.setText("已通过");
             if (applyListBean.getStoptime()==0){
                 tv_apply_duration.setText("永久");
@@ -104,7 +104,7 @@ public class NewDoorAuthorizePassActivity extends BaseActivity implements View.O
             case R.id.user_top_view_back:
                 finish();
                 break;
-            case R.id.btn_cancel_authorize:
+            case R.id.btn_cancel_authorize: //申请记录那里 已失效 取消授权
                 NewDoorAuthorModel newDoorAuthorModel=new NewDoorAuthorModel(NewDoorAuthorizePassActivity.this);
                 newDoorAuthorModel.cancelUserAutor(0,applyListBean.getId(),NewDoorAuthorizePassActivity.this);
                 break;

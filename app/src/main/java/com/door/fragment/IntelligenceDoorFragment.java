@@ -115,7 +115,7 @@ public class IntelligenceDoorFragment extends BaseFragment {
                             }
                             typeList.add(type);
                             allUnitBeanList.add(listBean.getInvalid_unit())  ;
-                            communityList.add(listBean.getCommunity_uuid())  ;
+                            communityList.add(listBean.getCommunity_uuid()+","+listBean.getCommunity_name())  ;
                         }
                         List<DoorAllEntity.ContentBean.DataBean.ListBean.KeyListBean> listData = new ArrayList<>(mList.get(i).getKeyList());
                         mAdapter.setData(titleList, typeList, tagList,identifyList, listData);

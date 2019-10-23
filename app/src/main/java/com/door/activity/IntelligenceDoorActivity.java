@@ -60,6 +60,7 @@ import cn.net.cyberway.utils.LekaiHelper;
 
 import static cn.net.cyberway.utils.TableLayoutUtils.showOpenDoorResultDialog;
 import static com.BeeFramework.Utils.Utils.dip2px;
+import static com.customerInfo.activity.CustomerAddPropertyActivity.COMMUNITY_NAME;
 import static com.customerInfo.activity.CustomerAddPropertyActivity.COMMUNITY_UUID;
 import static com.customerInfo.activity.CustomerAddPropertyActivity.IDENTITY_ID;
 import static com.door.activity.NewDoorRenewalActivity.DOOR_TYPE;
@@ -705,9 +706,21 @@ public class IntelligenceDoorActivity extends BaseFragmentActivity implements Ne
     /**
      * 申请续期
      */
-    public void apply(String community_uuid,String identify_id,String door_type,List<DoorAllEntity.ContentBean.DataBean.ListBean.InvalidUnitBean> invalidUnitBeanList) {
+    public void apply(String community_infor,String identify_id,String door_type,List<DoorAllEntity.ContentBean.DataBean.ListBean.InvalidUnitBean> invalidUnitBeanList) {
         Intent intent = new Intent(IntelligenceDoorActivity.this, NewDoorRenewalActivity.class);
+        String community_uuid="";
+        String community_name="";
+        if (community_infor.contains(",")){
+          String[]  communityArr=  community_infor.split(",");
+          if (communityArr.length>1){
+              community_uuid=communityArr[0];
+              community_name=communityArr[1];
+          }else{
+              community_uuid=communityArr[0];
+           }
+        }
         intent.putExtra(COMMUNITY_UUID, community_uuid);
+        intent.putExtra(COMMUNITY_NAME, community_name);
         intent.putExtra(IDENTITY_ID, identify_id);
         intent.putExtra(DOOR_TYPE, door_type);
         if (null!=invalidUnitBeanList){
