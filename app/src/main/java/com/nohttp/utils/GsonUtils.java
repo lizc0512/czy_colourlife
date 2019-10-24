@@ -24,6 +24,7 @@ import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonToken;
 import com.google.gson.stream.JsonWriter;
 
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.io.IOException;
@@ -72,25 +73,8 @@ public class GsonUtils {
                                     return treeMap;
                                 }
                             })
-                    .registerTypeHierarchyAdapter(List.class, new JsonDeserializer<List<?>>() {
-                        @Override
-                        public List<?> deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
-                            if (json.isJsonArray()) {
-                                JsonArray array = json.getAsJsonArray();
-                                Type itemType = ((ParameterizedType) typeOfT).getActualTypeArguments()[0];
-                                List list = new ArrayList<>();
-                                for (int i = 0; i < array.size(); i++) {
-                                    JsonElement element = array.get(i);
-                                    Object item = context.deserialize(element, itemType);
-                                    list.add(item);
-                                }
-                                return list;
-                            } else {
-                                //和接口类型不符，返回空List
-                                return Collections.EMPTY_LIST;
-                            }
-                        }
-                    }).registerTypeAdapterFactory(new NullStringToEmptyAdapterFactory()).create();
+                    .registerTypeAdapterFactory(new NullStringToEmptyAdapterFactory()).create();
+
         }
     }
 

@@ -281,9 +281,13 @@ public class NewDoorRenewalActivity extends BaseActivity implements View.OnClick
                 }
                 break;
             case 2:
-                if ("0".equals(tgStatus)) {
-                    ToastUtil.toastShow(NewDoorRenewalActivity.this, "审核通过，自动发放钥匙");
-                } else {
+                if ("1".equals(identify_id)) { //业主
+                    if ("0".equals(tgStatus)) {
+                        ToastUtil.toastShow(NewDoorRenewalActivity.this, "审核通过，自动发放钥匙");
+                    } else {
+                        ToastUtil.toastShow(NewDoorRenewalActivity.this, "续期申请已提交，请等待审核通过");
+                    }
+                }else{
                     ToastUtil.toastShow(NewDoorRenewalActivity.this, "续期申请已提交，请等待审核通过");
                 }
                 finish();

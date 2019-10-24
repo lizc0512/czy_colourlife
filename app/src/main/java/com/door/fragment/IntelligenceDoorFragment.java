@@ -71,6 +71,7 @@ public class IntelligenceDoorFragment extends BaseFragment {
 
     IntelligenceDoorAdapter mAdapter;
     private List<List<DoorAllEntity.ContentBean.DataBean.ListBean.InvalidUnitBean>>  allUnitBeanList=new ArrayList<>();
+    private     List<String> communityList = new ArrayList<>();
 
     private void initData() {
         isFirst = true;
@@ -81,6 +82,7 @@ public class IntelligenceDoorFragment extends BaseFragment {
                 xrv_invite_list.setAdapter(mAdapter);
                 if (0 < mList.size()) {
                     allUnitBeanList.clear();
+                    communityList.clear();
                     ll_empty.setVisibility(View.GONE);
                     for (int i = 0; i < mList.size(); i++) {
                         String type = "";
@@ -99,7 +101,6 @@ public class IntelligenceDoorFragment extends BaseFragment {
                         List<String> typeList = new ArrayList<>();
                         List<String> tagList = new ArrayList<>();
                         List<String> identifyList = new ArrayList<>();
-                        List<String> communityList = new ArrayList<>();
                         DoorAllEntity.ContentBean.DataBean.ListBean  listBean=mList.get(i);
                         for (int j = 0; j < listBean.getKeyList().size(); j++) {
                             if (0 == j) {

@@ -253,9 +253,13 @@ public class NewDoorApplyActivity extends BaseActivity implements View.OnClickLi
                 break;
             case 1:
                 if ("2".equals(doorType)) {
-                    if ("0".equals(tgStatus)) {
-                        ToastUtil.toastShow(NewDoorApplyActivity.this, "审核通过，自动发放钥匙");
-                    } else {
+                    if ("1".equals(identity_id)) {
+                        if ("0".equals(tgStatus)) {
+                            ToastUtil.toastShow(NewDoorApplyActivity.this, "审核通过，自动发放钥匙");
+                        } else {
+                            ToastUtil.toastShow(NewDoorApplyActivity.this, "申请已提交，请等待审核通过");
+                        }
+                    }else{
                         ToastUtil.toastShow(NewDoorApplyActivity.this, "申请已提交，请等待审核通过");
                     }
                 } else {
@@ -308,7 +312,7 @@ public class NewDoorApplyActivity extends BaseActivity implements View.OnClickLi
 
 
     private void setSubmitBtn() {
-        if ("0".equals(identity_id)) { //业主
+        if ("1".equals(identity_id)) { //业主
             switch (doorType) {
                 case "1"://只有远程门禁
                     setRomoteStatus();
@@ -327,7 +331,7 @@ public class NewDoorApplyActivity extends BaseActivity implements View.OnClickLi
                     }
                     break;
                 default://远程门禁和蓝牙门禁都存在
-                    if ("0".equals(tgStatus)) {
+                    if ("0".equals(tgStatus)) { //RMS
                         if (TextUtils.isEmpty(validate_phone) || 11 != validate_phone.length() || TextUtils.isEmpty(auth_name)) {
                             btn_submit_infor.setBackgroundResource(R.drawable.onekey_login_default_bg);
                             btn_submit_infor.setEnabled(false);
