@@ -12,6 +12,8 @@ import com.myproperty.protocol.ImageuploadPostApi;
 import com.nohttp.utils.HttpListener;
 import com.nohttp.utils.RequestEncryptionUtils;
 import com.user.UserAppConst;
+import com.yanzhenjie.nohttp.BasicBinary;
+import com.yanzhenjie.nohttp.FileBinary;
 import com.yanzhenjie.nohttp.NoHttp;
 import com.yanzhenjie.nohttp.RequestMethod;
 import com.yanzhenjie.nohttp.rest.Request;
@@ -151,18 +153,14 @@ public class PropertyInfoModel extends BaseModel {
         imageuploadPostApi = new ImageuploadPostApi();
         imageuploadPostApi.httpApiResponse = businessResponse;
         File uploadFile = new File(file);
-        imageuploadPostApi.request.type = types;
-        Map<String, Object> params = new HashMap<String, Object>();
-        try {
-            params = Utils.transformJsonToMap(imageuploadPostApi.request.toJson());
-            params.put("file", uploadFile);
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
+        BasicBinary binary = new FileBinary(uploadFile);
+        Map<String, Object> params = new HashMap<>();
+        params.put("type",types);
         String basePath = imageuploadPostApi.apiURI;
-        final Request<String> request_oauthRegister = NoHttp.createStringRequest(
+        final Request<String> request = NoHttp.createStringRequest(
                 RequestEncryptionUtils.postCombileMD5(mContext, 10, basePath), RequestMethod.POST);
-        request(0, request_oauthRegister, params, new HttpListener<String>() {
+        request.add("file", binary);
+        request(0, request, params, new HttpListener<String>() {
             @Override
             public void onSucceed(int what, Response<String> response) {
                 int responseCode = response.getHeaders().getResponseCode();

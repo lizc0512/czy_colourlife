@@ -43,7 +43,6 @@ import com.door.model.NewDoorModel;
 import com.door.view.DoorRenameDialog;
 import com.door.view.ShowOpenDoorDialog;
 import com.external.eventbus.EventBus;
-import com.google.gson.Gson;
 import com.nohttp.utils.GsonUtils;
 import com.user.UserAppConst;
 import com.user.UserMessageConstant;
@@ -147,29 +146,15 @@ public class IntelligenceDoorActivity extends BaseFragmentActivity implements Ne
         iv_close.setOnClickListener(this);
     }
 
-    private Gson gson;
-
     private void initTab(List<String> tabTitleArray, String result) {
+        List<Fragment> fragmentList = new ArrayList<>();
         try {
-            List<Fragment> fragmentList = new ArrayList<>();
-            try {
-                DoorAllEntity doorAllEntity = GsonUtils.gsonToBean(result, DoorAllEntity.class);
-                for (int i = 0; i < tabTitleArray.size(); i++) {
-                    try {
-                        List<DoorAllEntity.ContentBean.DataBean.ListBean> list = doorAllEntity.getContent().getData().get(i).getList();
-                        tl_door.addTab(tl_door.newTab().setText(tabTitleArray.get(i)));
-                        if (null == gson) {
-                            gson = new Gson();
-                        }
-                        fragmentList.add(IntelligenceDoorFragment.newInstance(userId, gson.toJson(list)));
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-                }
-            } catch (Exception e) {
-                e.printStackTrace();
+            DoorAllEntity doorAllEntity = GsonUtils.gsonToBean(result, DoorAllEntity.class);
+            for (int i = 0; i < tabTitleArray.size(); i++) {
+                List<DoorAllEntity.ContentBean.DataBean.ListBean> list = doorAllEntity.getContent().getData().get(i).getList();
+                tl_door.addTab(tl_door.newTab().setText(tabTitleArray.get(i)));
+                fragmentList.add(IntelligenceDoorFragment.newInstance(userId, GsonUtils.gsonString(list)));
             }
-
             if (null == fragmentAdapter) {
                 tl_door.setTabTextColors(getResources().getColor(R.color.color_b3ffffff), getResources().getColor(R.color.white));
                 tl_door.setSelectedTabIndicatorColor(getResources().getColor(R.color.white));
@@ -187,16 +172,12 @@ public class IntelligenceDoorActivity extends BaseFragmentActivity implements Ne
             vp_door.setOffscreenPageLimit(fragmentList.size());
             tl_door.setupWithViewPager(vp_door);
             tl_door.setTabMode(TabLayout.MODE_SCROLLABLE);
-
-//            TableLayoutUtils.reflexAll(tl_door);
-
             TabLayout.Tab tab = tl_door.getTabAt(position);
             if (null != tab) {
                 tab.select();
             }
-
             resultData = result;
-        } catch (Resources.NotFoundException e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
@@ -550,10 +531,8 @@ public class IntelligenceDoorActivity extends BaseFragmentActivity implements Ne
             case 9://门禁重命名
                 if (!TextUtils.isEmpty(result)) {
                     ToastUtil.toastShow(IntelligenceDoorActivity.this, getResources().getString(R.string.door_rename_success));
-
                     intelligenceDoorCache = shared.getString(UserAppConst.COLOUR_INTELLIGENCE_DOOR + userId, "");
                     newDoorModel.getCommunityKey(5, true, this);//获取门禁列表
-
                     if (userCommunityUuid.equals(changeCommunityUuid)) {
                         Message msg = new Message();
                         msg.what = UserMessageConstant.UPDATE_DOOR;
@@ -572,12 +551,10 @@ public class IntelligenceDoorActivity extends BaseFragmentActivity implements Ne
                 List<DoorAllEntity.ContentBean.CommunityBean> titleList = doorAllEntity.getContent().getCommunity();
                 List<String> titleLists = new ArrayList<>();
                 communityUuidList.clear();
-
                 for (int i = 0; i < titleList.size(); i++) {
                     communityUuidList.add(titleList.get(i).getCommunity_uuid());
                     titleLists.add(titleList.get(i).getCommunity_name());
                 }
-
                 if (!isCache && 0 == titleList.size()) {
                     Intent intent = new Intent(IntelligenceDoorActivity.this, NoRightDoorActivity.class);
                     startActivity(intent);
@@ -589,6 +566,7 @@ public class IntelligenceDoorActivity extends BaseFragmentActivity implements Ne
             }
         } catch (Exception e) {
             e.printStackTrace();
+            ToastUtil.toastShow(IntelligenceDoorActivity.this, e.getMessage());
         }
     }
 
@@ -706,27 +684,27 @@ public class IntelligenceDoorActivity extends BaseFragmentActivity implements Ne
     /**
      * 申请续期
      */
-    public void apply(String community_infor,String identify_id,String door_type,List<DoorAllEntity.ContentBean.DataBean.ListBean.InvalidUnitBean> invalidUnitBeanList) {
+    public void apply(String community_infor, String identify_id, String door_type, List<DoorAllEntity.ContentBean.DataBean.ListBean.InvalidUnitBean> invalidUnitBeanList) {
         Intent intent = new Intent(IntelligenceDoorActivity.this, NewDoorRenewalActivity.class);
-        String community_uuid="";
-        String community_name="";
-        if (community_infor.contains(",")){
-          String[]  communityArr=  community_infor.split(",");
-          if (communityArr.length>1){
-              community_uuid=communityArr[0];
-              community_name=communityArr[1];
-          }else{
-              community_uuid=communityArr[0];
-           }
+        String community_uuid = "";
+        String community_name = "";
+        if (community_infor.contains(",")) {
+            String[] communityArr = community_infor.split(",");
+            if (communityArr.length > 1) {
+                community_uuid = communityArr[0];
+                community_name = communityArr[1];
+            } else {
+                community_uuid = communityArr[0];
+            }
         }
         intent.putExtra(COMMUNITY_UUID, community_uuid);
         intent.putExtra(COMMUNITY_NAME, community_name);
         intent.putExtra(IDENTITY_ID, identify_id);
         intent.putExtra(DOOR_TYPE, door_type);
-        if (null!=invalidUnitBeanList){
-            ArrayList<String>  unitNameList=new ArrayList<>();
-            ArrayList<String>  unitIdList=new ArrayList<>();
-            for (DoorAllEntity.ContentBean.DataBean.ListBean.InvalidUnitBean  invalidUnitBean: invalidUnitBeanList){
+        if (null != invalidUnitBeanList) {
+            ArrayList<String> unitNameList = new ArrayList<>();
+            ArrayList<String> unitIdList = new ArrayList<>();
+            for (DoorAllEntity.ContentBean.DataBean.ListBean.InvalidUnitBean invalidUnitBean : invalidUnitBeanList) {
                 unitNameList.add(invalidUnitBean.getUnit_name());
                 unitIdList.add(invalidUnitBean.getUnit_uuid());
             }

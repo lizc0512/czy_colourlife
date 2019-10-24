@@ -77,10 +77,8 @@ public class IntelligenceDoorFragment extends BaseFragment {
         try {
             if (!TextUtils.isEmpty(result)) {
                 List<DoorAllEntity.ContentBean.DataBean.ListBean> mList = GsonUtils.jsonToList(result, DoorAllEntity.ContentBean.DataBean.ListBean.class);
-
                 mAdapter = new IntelligenceDoorAdapter(getActivity(), userId, new ArrayList<>(), new ArrayList<>(), new ArrayList<>(),new ArrayList<>(), new ArrayList<>());
                 xrv_invite_list.setAdapter(mAdapter);
-
                 if (0 < mList.size()) {
                     allUnitBeanList.clear();
                     ll_empty.setVisibility(View.GONE);

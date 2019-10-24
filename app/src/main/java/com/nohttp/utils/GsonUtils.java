@@ -1,6 +1,7 @@
 package com.nohttp.utils;
 
 
+import com.BeeFramework.Utils.ToastUtil;
 import com.google.gson.ExclusionStrategy;
 import com.google.gson.FieldAttributes;
 import com.google.gson.Gson;
@@ -23,10 +24,14 @@ import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonToken;
 import com.google.gson.stream.JsonWriter;
 
+import org.json.JSONObject;
+
 import java.io.IOException;
 import java.lang.reflect.Modifier;
+import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -50,12 +55,6 @@ public class GsonUtils {
             GsonBuilder builder = new GsonBuilder();
             builder.excludeFieldsWithModifiers(Modifier.FINAL, Modifier.TRANSIENT, Modifier.STATIC);
             gson = builder
-                    .registerTypeAdapter(Long.class, new LongDefault0Adapter())
-                    .registerTypeAdapter(long.class, new LongDefault0Adapter())
-                    .registerTypeAdapter(Double.class, new DoubleDefault0Adapter())
-                    .registerTypeAdapter(double.class, new DoubleDefault0Adapter())
-                    .registerTypeAdapter(int.class, new IntegerDefault0Adapter())
-                    .registerTypeAdapter(Integer.class, new IntegerDefault0Adapter())
                     .registerTypeAdapter(new TypeToken<Map<String, Object>>() {
                             }.getType(),
                             new JsonDeserializer<Map<String, String>>() {
@@ -73,8 +72,25 @@ public class GsonUtils {
                                     return treeMap;
                                 }
                             })
-                    .registerTypeAdapterFactory(new NullStringToEmptyAdapterFactory()).create();
-
+                    .registerTypeHierarchyAdapter(List.class, new JsonDeserializer<List<?>>() {
+                        @Override
+                        public List<?> deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
+                            if (json.isJsonArray()) {
+                                JsonArray array = json.getAsJsonArray();
+                                Type itemType = ((ParameterizedType) typeOfT).getActualTypeArguments()[0];
+                                List list = new ArrayList<>();
+                                for (int i = 0; i < array.size(); i++) {
+                                    JsonElement element = array.get(i);
+                                    Object item = context.deserialize(element, itemType);
+                                    list.add(item);
+                                }
+                                return list;
+                            } else {
+                                //和接口类型不符，返回空List
+                                return Collections.EMPTY_LIST;
+                            }
+                        }
+                    }).registerTypeAdapterFactory(new NullStringToEmptyAdapterFactory()).create();
         }
     }
 
@@ -83,93 +99,102 @@ public class GsonUtils {
 
     }
 
-    public static class IntegerDefault0Adapter implements JsonSerializer<Integer>, JsonDeserializer<Integer> {
+    private static TypeAdapter<Number> INTEGER = new TypeAdapter<Number>() {
         @Override
-        public Integer deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
-            try {
-                if (json.getAsString().equals("") || json.getAsString().equals("null")) {
-                    // /定义为int类型,如果后台返回""或者null,则返回0
-                    return 0;
-                }
-            } catch (Exception ignore) {
-            } finally {
-                try {
-                    return json.getAsInt();
-                } catch (NumberFormatException e) {
-                    throw new JsonSyntaxException(e);
-                }
+        public Number read(JsonReader in) throws IOException {
+            if (in.peek() == JsonToken.NULL) {
+                in.nextNull();
+                return 0;
             }
-        }
-
-        @Override
-        public JsonElement serialize(Integer src, Type typeOfSrc, JsonSerializationContext context) {
-            return new JsonPrimitive(src);
-        }
-    }
-
-
-    public static class DoubleDefault0Adapter implements JsonSerializer<Double>, JsonDeserializer<Double> {
-        @Override
-        public Double deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
             try {
-                if (json.getAsString().equals("") || json.getAsString().equals("null")) {
-                    //定义为double类型,如果后台返回""或者null,则返回0.00
-                    //
-                    return 0.00;
-                }
-            } catch (Exception ignore) {
-            } finally {
-                try {
-                    return json.getAsDouble();
-                } catch (NumberFormatException e) {
-                    throw new JsonSyntaxException(e);
-                }
+                return in.nextInt();
+            } catch (NumberFormatException e) {
+                in.nextString();
+            } catch (IllegalStateException e) {
+                in.nextBoolean();
             }
+            return 0;
         }
 
         @Override
-        public JsonElement serialize(Double src, Type typeOfSrc, JsonSerializationContext context) {
-            return new JsonPrimitive(src);
+        public void write(JsonWriter out, Number value) throws IOException {
+            if (value == null) {
+                out.nullValue();
+                return;
+            }
+            out.value(value);
         }
+    };
 
-    }
-
-
-    public static class LongDefault0Adapter implements JsonSerializer<Long>, JsonDeserializer<Long> {
+    private static TypeAdapter<Number> LONG = new TypeAdapter<Number>() {
         @Override
-        public Long deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
+        public Number read(JsonReader in) throws IOException {
+            if (in.peek() == JsonToken.NULL) {
+                in.nextNull();
+                return 0;
+            }
+            //这里同
             try {
-                if (json.getAsString().equals("") || json.getAsString().equals("null")) {
-                    //定义为long类型,如果后台返回""或者null,则返回0
-                    return 0L;
-                }
-            } catch (Exception ignore) {
-
-            } finally {
-                try {
-                    return json.getAsLong();
-                } catch (NumberFormatException e) {
-                    throw new JsonSyntaxException(e);
-                }
+                return in.nextLong();
+            } catch (Exception e) {
+                in.nextString();
             }
-
+            return 0;
         }
 
         @Override
-        public JsonElement serialize(Long src, Type typeOfSrc, JsonSerializationContext context) {
-            return new JsonPrimitive(src);
+        public void write(JsonWriter out, Number value) throws IOException {
+            if (value == null) {
+                out.nullValue();
+                return;
+            }
+            out.value(value);
+
         }
-    }
+    };
 
+    private static TypeAdapter<Number> DOUBLE = new TypeAdapter<Number>() {
+        @Override
+        public Number read(JsonReader in) throws IOException {
+            if (in.peek() == JsonToken.NULL) {
+                in.nextNull();
+                return 0.0;
+            }
+            //这里同
+            try {
+                return in.nextDouble();
+            } catch (Exception e) {
+                in.nextString();
+            }
+            return 0.0;
+        }
 
+        @Override
+        public void write(JsonWriter out, Number value) throws IOException {
+            if (value == null) {
+                out.nullValue();
+                return;
+            }
+            out.value(value);
+        }
+    };
+
+    /***处理基本数据类型***/
     public static class NullStringToEmptyAdapterFactory<T> implements TypeAdapterFactory {
         @SuppressWarnings("unchecked")
         public <T> TypeAdapter<T> create(Gson gson, TypeToken<T> type) {
             Class<T> rawType = (Class<T>) type.getRawType();
-            if (rawType != String.class) {
+            if (rawType == String.class) {
+                return (TypeAdapter<T>) new StringNullAdapter();
+            } else if (rawType == int.class) {
+                return (TypeAdapter<T>) INTEGER;
+            } else if (rawType == long.class) {
+                return (TypeAdapter<T>) LONG;
+            } else if (rawType == double.class) {
+                return (TypeAdapter<T>) DOUBLE;
+            } else {
                 return null;
             }
-            return (TypeAdapter<T>) new StringNullAdapter();
         }
     }
 
@@ -196,24 +221,6 @@ public class GsonUtils {
 
     }
 
-    //忽略字段id
-    public static Gson getSkipIdGson() {
-        Gson gson = new GsonBuilder().setExclusionStrategies(
-                new ExclusionStrategy() {
-                    @Override
-                    public boolean shouldSkipField(FieldAttributes f) {
-                        //过滤掉字段名包含"id","address"的字段
-                        return f.getName().equals("id");
-                    }
-
-                    @Override
-                    public boolean shouldSkipClass(Class<?> clazz) {
-                        // 过滤掉 类名包含 Bean的类
-                        return false;
-                    }
-                }).create();
-        return gson;
-    }
 
     public static Gson getSkipIdAndGroupIdGson() {
         Gson gson = new GsonBuilder().setExclusionStrategies(

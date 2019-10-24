@@ -14,7 +14,7 @@
         android:visibility="gone"
         android:layout_marginLeft="12dp"
         android:layout_marginTop="16dp"
-        android:text="选择您的身份！"
+        android:text="请选择您的身份"
         android:textColor="@color/black_text_color"
         android:textSize="20sp"
         android:layout_height="wrap_content"/>

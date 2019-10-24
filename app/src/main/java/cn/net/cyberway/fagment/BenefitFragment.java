@@ -21,6 +21,7 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.BeeFramework.Utils.ToastUtil;
 import com.BeeFramework.Utils.Utils;
 import com.BeeFramework.model.NewHttpResponse;
 import com.BeeFramework.view.NoScrollGridView;
@@ -533,6 +534,7 @@ public class BenefitFragment extends Fragment implements View.OnClickListener, N
                         }
                     } catch (Exception e) {
                         e.printStackTrace();
+                        ToastUtil.toastShow(getActivity(),e.getMessage());
                     }
                 }
                 break;

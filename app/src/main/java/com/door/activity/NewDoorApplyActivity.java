@@ -129,19 +129,20 @@ public class NewDoorApplyActivity extends BaseActivity implements View.OnClickLi
         } else {
             if ("1".equals(bluetooth_door)) {
                 doorType = "2";
+            } else {
+                ToastUtil.toastShow(NewDoorApplyActivity.this, "此小区目前没有彩之云门禁，无法申请");
+                finish();
             }
         }
+        layout_register_phone.setVisibility(View.GONE);
+        layout_validate_phone.setVisibility(View.GONE);
         if ("1".equals(identity_id)) { //业主
             switch (doorType) {
                 case "1"://只有远程门禁
-                    layout_register_phone.setVisibility(View.GONE);
-                    layout_validate_phone.setVisibility(View.GONE);
                     ed_authorize_phone.setHint("请输入授权人的手机号码");
                     tv_apply_notice.setText("注：授权人通过您的申请后您即可获得开门权限，授权人账号可咨询小区物业管理处");
                     break;
                 case "2"://只有蓝牙门禁
-                    layout_register_phone.setVisibility(View.GONE);
-                    layout_validate_phone.setVisibility(View.GONE);
                     layout_authorize_phone.setVisibility(View.GONE);
                     newDoorAuthorModel.bluetoothDoorVerify(0, community_uuid, unit_uuid, build_uuid, room_uuid, NewDoorApplyActivity.this);
                     break;
@@ -154,20 +155,14 @@ public class NewDoorApplyActivity extends BaseActivity implements View.OnClickLi
             switch (doorType) {
                 case "1"://只有远程门禁
                     ed_authorize_phone.setHint("请输入授权人的手机号码");
-                    layout_register_phone.setVisibility(View.GONE);
-                    layout_validate_phone.setVisibility(View.GONE);
                     tv_apply_notice.setText("注：授权人通过您的申请后您即可获得开门权限，授权人账号可咨询小区物业管理处");
                     break;
                 case "2"://只有蓝牙门禁
-                    layout_register_phone.setVisibility(View.GONE);
-                    layout_validate_phone.setVisibility(View.GONE);
                     layout_authorize_phone.setVisibility(View.GONE);
                     tv_apply_notice.setText("注：业主或小区物业管理处工作人员通过您的申请后，您即可获得开门权限");
                     newDoorAuthorModel.bluetoothDoorVerify(0, community_uuid, unit_uuid, build_uuid, room_uuid, NewDoorApplyActivity.this);
                     break;
                 default://远程门禁和蓝牙门禁都存在
-                    layout_register_phone.setVisibility(View.GONE);
-                    layout_validate_phone.setVisibility(View.GONE);
                     setNoticeSpannString(1);
                     newDoorAuthorModel.bluetoothDoorVerify(0, community_uuid, unit_uuid, build_uuid, room_uuid, NewDoorApplyActivity.this);
                     break;
@@ -215,8 +210,8 @@ public class NewDoorApplyActivity extends BaseActivity implements View.OnClickLi
                 finish();
                 break;
             case R.id.btn_submit_infor:
-                if (TextUtils.isEmpty(auth_mobile)){
-                    doorType="2";
+                if (TextUtils.isEmpty(auth_mobile)) {
+                    doorType = "2";
                 }
                 newDoorAuthorModel.applyRemoteDoor(1, community_uuid, community_name, build_uuid, buid_name,
                         unit_uuid, unit_name, room_uuid, room_name, identity_id, auth_name, auth_mobile, validate_phone, doorType, bid, tgStatus, NewDoorApplyActivity.this);
@@ -245,7 +240,7 @@ public class NewDoorApplyActivity extends BaseActivity implements View.OnClickLi
                                 tv_apply_notice.setText("注：小区物业管理处工作人员通过您的申请后，您即可获得开门权限");
                             }
                         } else if ("3".equals(doorType)) {//远程和蓝牙门禁都有
-                            if ("0".equals(tgStatus)) {
+                            if ("0".equals(tgStatus)) {  //RMS认证
                                 layout_register_phone.setVisibility(View.VISIBLE);
                                 layout_validate_phone.setVisibility(View.VISIBLE);
                                 tv_register_phone.setText(contentBean.getMobile());
@@ -313,7 +308,6 @@ public class NewDoorApplyActivity extends BaseActivity implements View.OnClickLi
 
 
     private void setSubmitBtn() {
-
         if ("0".equals(identity_id)) { //业主
             switch (doorType) {
                 case "1"://只有远程门禁
