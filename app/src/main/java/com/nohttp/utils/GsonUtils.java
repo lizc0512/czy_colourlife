@@ -1,11 +1,12 @@
 package com.nohttp.utils;
 
 
-import com.BeeFramework.Utils.ToastUtil;
 import com.google.gson.ExclusionStrategy;
 import com.google.gson.FieldAttributes;
+import com.google.gson.FieldNamingPolicy;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.google.gson.InstanceCreator;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonDeserializationContext;
 import com.google.gson.JsonDeserializer;
@@ -13,31 +14,21 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
 import com.google.gson.JsonParser;
-import com.google.gson.JsonPrimitive;
-import com.google.gson.JsonSerializationContext;
-import com.google.gson.JsonSerializer;
-import com.google.gson.JsonSyntaxException;
-import com.google.gson.TypeAdapter;
-import com.google.gson.TypeAdapterFactory;
+import com.google.gson.internal.ConstructorConstructor;
+import com.google.gson.internal.Excluder;
+import com.google.gson.internal.bind.TypeAdapters;
 import com.google.gson.reflect.TypeToken;
-import com.google.gson.stream.JsonReader;
-import com.google.gson.stream.JsonToken;
-import com.google.gson.stream.JsonWriter;
 
-import org.json.JSONArray;
-import org.json.JSONObject;
-
-import java.io.IOException;
+import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
-import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.TreeMap;
+
+import static com.nohttp.utils.GsonTools.stringTypeAdapter;
 
 
 /*
@@ -53,158 +44,58 @@ public class GsonUtils {
 
     static {
         if (gson == null) {
-            GsonBuilder builder = new GsonBuilder();
-            builder.excludeFieldsWithModifiers(Modifier.FINAL, Modifier.TRANSIENT, Modifier.STATIC);
-            gson = builder
-                    .registerTypeAdapter(new TypeToken<Map<String, Object>>() {
-                            }.getType(),
-                            new JsonDeserializer<Map<String, String>>() {
-                                @Override
-                                public Map<String, String> deserialize(
-                                        JsonElement json, Type typeOfT,
-                                        JsonDeserializationContext context) throws JsonParseException {
+            GsonBuilder gsonBuilder = new GsonBuilder();
+            Class builder = (Class) gsonBuilder.getClass();
+            gsonBuilder.excludeFieldsWithModifiers(Modifier.FINAL, Modifier.TRANSIENT, Modifier.STATIC);
+            Field f = null;
+            try {
+                //通过反射得到构造器
+                f = builder.getDeclaredField("instanceCreators");
+                f.setAccessible(true);
+                final Map<Type, InstanceCreator<?>> val = (Map<Type, InstanceCreator<?>>) f.get(gsonBuilder);//得到此属性的值
+                //注册String类型处理器
+                gsonBuilder.registerTypeAdapterFactory(TypeAdapters.newFactory(String.class, stringTypeAdapter()));
+                //注册int.class, Integer.class处理器
+                gsonBuilder.registerTypeAdapterFactory(TypeAdapters.newFactory(int.class, Integer.class, GsonTools.longAdapter(0)));
+                //注册short.class, Short.class处理器
+                gsonBuilder.registerTypeAdapterFactory(TypeAdapters.newFactory(short.class, Short.class, GsonTools.longAdapter(1)));
+                //注册long.class, Long.class处理器
+                gsonBuilder.registerTypeAdapterFactory(TypeAdapters.newFactory(long.class, Long.class, GsonTools.longAdapter(2)));
+                //注册double.class, Double.class处理器
+                gsonBuilder.registerTypeAdapterFactory(TypeAdapters.newFactory(double.class, Double.class, GsonTools.longAdapter(3)));
+                //注册float.class, Float.class处理器
+                gsonBuilder.registerTypeAdapterFactory(TypeAdapters.newFactory(float.class, Float.class, GsonTools.longAdapter(4)));
+                //注册反射对象的处理器
+                gsonBuilder.registerTypeAdapterFactory(new ReflectiveTypeAdapterFactory(new ConstructorConstructor(val), FieldNamingPolicy.IDENTITY, Excluder.DEFAULT));
+                //注册集合的处理器
+                gsonBuilder.registerTypeAdapterFactory(new CollectionTypeAdapterFactory(new ConstructorConstructor(val)));
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            gsonBuilder.registerTypeAdapter(new TypeToken<Map<String, Object>>() {
+                    }.getType(),
+                    new JsonDeserializer<Map<String, String>>() {
+                        @Override
+                        public Map<String, String> deserialize(
+                                JsonElement json, Type typeOfT,
+                                JsonDeserializationContext context) throws JsonParseException {
 
-                                    Map<String, String> treeMap = new HashMap<>();
-                                    JsonObject jsonObject = json.getAsJsonObject();
-                                    Set<Map.Entry<String, JsonElement>> entrySet = jsonObject.entrySet();
-                                    for (Map.Entry<String, JsonElement> entry : entrySet) {
-                                        treeMap.put(entry.getKey(), entry.getValue().getAsString());
-                                    }
-                                    return treeMap;
-                                }
-                            })
-                    .registerTypeAdapterFactory(new NullStringToEmptyAdapterFactory()).create();
-
+                            Map<String, String> treeMap = new HashMap<>();
+                            JsonObject jsonObject = json.getAsJsonObject();
+                            Set<Map.Entry<String, JsonElement>> entrySet = jsonObject.entrySet();
+                            for (Map.Entry<String, JsonElement> entry : entrySet) {
+                                treeMap.put(entry.getKey(), entry.getValue().getAsString());
+                            }
+                            return treeMap;
+                        }
+                    });
+            gson = gsonBuilder.create();
         }
     }
-
 
     private GsonUtils() {
 
     }
-
-    private static TypeAdapter<Number> INTEGER = new TypeAdapter<Number>() {
-        @Override
-        public Number read(JsonReader in) throws IOException {
-            if (in.peek() == JsonToken.NULL) {
-                in.nextNull();
-                return 0;
-            }
-            try {
-                return in.nextInt();
-            } catch (NumberFormatException e) {
-                in.nextString();
-            } catch (IllegalStateException e) {
-                in.nextBoolean();
-            }
-            return 0;
-        }
-
-        @Override
-        public void write(JsonWriter out, Number value) throws IOException {
-            if (value == null) {
-                out.nullValue();
-                return;
-            }
-            out.value(value);
-        }
-    };
-
-    private static TypeAdapter<Number> LONG = new TypeAdapter<Number>() {
-        @Override
-        public Number read(JsonReader in) throws IOException {
-            if (in.peek() == JsonToken.NULL) {
-                in.nextNull();
-                return 0;
-            }
-            //这里同
-            try {
-                return in.nextLong();
-            } catch (Exception e) {
-                in.nextString();
-            }
-            return 0;
-        }
-
-        @Override
-        public void write(JsonWriter out, Number value) throws IOException {
-            if (value == null) {
-                out.nullValue();
-                return;
-            }
-            out.value(value);
-
-        }
-    };
-
-    private static TypeAdapter<Number> DOUBLE = new TypeAdapter<Number>() {
-        @Override
-        public Number read(JsonReader in) throws IOException {
-            if (in.peek() == JsonToken.NULL) {
-                in.nextNull();
-                return 0.0;
-            }
-            //这里同
-            try {
-                return in.nextDouble();
-            } catch (Exception e) {
-                in.nextString();
-            }
-            return 0.0;
-        }
-
-        @Override
-        public void write(JsonWriter out, Number value) throws IOException {
-            if (value == null) {
-                out.nullValue();
-                return;
-            }
-            out.value(value);
-        }
-    };
-
-    /***处理基本数据类型***/
-    public static class NullStringToEmptyAdapterFactory<T> implements TypeAdapterFactory {
-        @SuppressWarnings("unchecked")
-        public <T> TypeAdapter<T> create(Gson gson, TypeToken<T> type) {
-            Class<T> rawType = (Class<T>) type.getRawType();
-            if (rawType == String.class) {
-                return (TypeAdapter<T>) new StringNullAdapter();
-            } else if (rawType == int.class) {
-                return (TypeAdapter<T>) INTEGER;
-            } else if (rawType == long.class) {
-                return (TypeAdapter<T>) LONG;
-            } else if (rawType == double.class) {
-                return (TypeAdapter<T>) DOUBLE;
-            } else {
-                return null;
-            }
-        }
-    }
-
-    public static class StringNullAdapter extends TypeAdapter<String> {
-        @Override
-        public String read(JsonReader reader) throws IOException {
-            // TODO Auto-generated method stub
-            if (reader.peek() == JsonToken.NULL) {
-                reader.nextNull();
-                return "";
-            }
-            return reader.nextString();
-        }
-
-        @Override
-        public void write(JsonWriter writer, String value) throws IOException {
-            // TODO Auto-generated method stub
-            if (value == null) {
-                writer.nullValue();
-                return;
-            }
-            writer.value(value);
-        }
-
-    }
-
 
     public static Gson getSkipIdAndGroupIdGson() {
         Gson gson = new GsonBuilder().setExclusionStrategies(
@@ -327,12 +218,6 @@ public class GsonUtils {
         return map;
     }
 
-    /**
-     * 转成map的
-     *
-     * @param gsonString
-     * @return
-     */
     public static Map<String, String> gsonObjectToMaps(String gsonString) {
         Map<String, String> map = null;
         if (gson != null) {
