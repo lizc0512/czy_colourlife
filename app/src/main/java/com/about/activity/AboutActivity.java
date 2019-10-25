@@ -113,7 +113,7 @@ public class AboutActivity extends BaseActivity implements View.OnClickListener 
                         if (TextUtils.isEmpty(appName)) {
                             updateVerSion.getNewVerSion("2", true, AboutActivity.this);
                         } else {
-                            UpdateService.installCzyAPP(getApplicationContext(), appName);
+                            UpdateService.installCzyAPP(AboutActivity.this, appName);
                         }
                     } else {
                         updateVerSion.getNewVerSion("2", true, AboutActivity.this);
@@ -146,5 +146,22 @@ public class AboutActivity extends BaseActivity implements View.OnClickListener 
             }
         }
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == 3000) {
+            boolean hasInstallPermission = false;
+            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+                hasInstallPermission = getPackageManager().canRequestPackageInstalls();
+                if (hasInstallPermission) {
+                    String appName = shared.getString(UserAppConst.APKNAME, "");
+                    UpdateService.installCzyAPP(AboutActivity.this, appName);
+                } else {
+                    ToastUtil.toastShow(AboutActivity.this, "未知应用程序安装权限未开启");
+                }
+            }
+        }
+        super.onActivityResult(requestCode, resultCode, data);
     }
 }

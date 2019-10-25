@@ -40,7 +40,7 @@ public class NewDoorApplyRecordActivity extends BaseActivity implements View.OnC
         rv_open_record = findViewById(R.id.rv_open_record);
         tv_empty_record = findViewById(R.id.tv_empty_record);
         user_top_view_back.setOnClickListener(this::onClick);
-        user_top_view_title.setText("我的申请");
+        user_top_view_title.setText("申请记录");
         NewDoorAuthorModel newDoorAuthorModel = new NewDoorAuthorModel(NewDoorApplyRecordActivity.this);
         newDoorAuthorModel.getUserApplyList(0, NewDoorApplyRecordActivity.this);
     }

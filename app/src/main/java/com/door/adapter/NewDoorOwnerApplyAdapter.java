@@ -11,6 +11,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.BeeFramework.Utils.TimeUtil;
+import com.BeeFramework.view.Util;
 import com.door.entity.DoorApplyRecordEntity;
 import com.user.UserAppConst;
 
@@ -41,11 +42,6 @@ public class NewDoorOwnerApplyAdapter extends RecyclerView.Adapter<NewDoorOwnerA
     @Override
     public void onBindViewHolder(NewDoorOwnerApplyAdapter.NewDoorAuthorHolder holder, final int position) {
         DoorApplyRecordEntity.ContentBean.ListBean listBean = applyListBeanList.get(position);
-        if (TextUtils.isEmpty(listBean.getToname())) {
-            holder.tv_authorize_name.setText(holder.itemView.getContext().getSharedPreferences(UserAppConst.USERINFO, 0).getString(UserAppConst.Colour_NAME, ""));
-        } else {
-            holder.tv_authorize_name.setText(listBean.getToname());
-        }
         String  community_name = listBean.getName();
         holder.tv_authorize_time.setText("申请时间:" + TimeUtil.getDateToString(listBean.getCreationtime()));
         String identify_name;
@@ -90,6 +86,7 @@ public class NewDoorOwnerApplyAdapter extends RecyclerView.Adapter<NewDoorOwnerA
             }
         }
         holder.tv_authorize_duration.setText(statuString);
+        holder.tv_authorize_address.setPadding(Util.DensityUtil.dip2px(holder.itemView.getContext(),16),0,0,0);
         holder.tv_authorize_address.setText(identify_name + community_name);
     }
 
@@ -102,6 +99,7 @@ public class NewDoorOwnerApplyAdapter extends RecyclerView.Adapter<NewDoorOwnerA
     public static class NewDoorAuthorHolder extends RecyclerView.ViewHolder {
 
         private TextView tv_authorize_name;
+        private View tv_authorize_line;
         private TextView tv_authorize_address;
         private TextView tv_authorize_time;
         private TextView tv_authorize_duration;
@@ -110,6 +108,9 @@ public class NewDoorOwnerApplyAdapter extends RecyclerView.Adapter<NewDoorOwnerA
         public NewDoorAuthorHolder(View itemView) {
             super(itemView);
             tv_authorize_name = itemView.findViewById(R.id.tv_authorize_name);
+            tv_authorize_line = itemView.findViewById(R.id.tv_authorize_line);
+            tv_authorize_name.setVisibility(View.GONE);
+            tv_authorize_line.setVisibility(View.GONE);
             tv_authorize_address = itemView.findViewById(R.id.tv_authorize_address);
             tv_authorize_time = itemView.findViewById(R.id.tv_authorize_time);
             tv_authorize_duration = itemView.findViewById(R.id.tv_authorize_duration);

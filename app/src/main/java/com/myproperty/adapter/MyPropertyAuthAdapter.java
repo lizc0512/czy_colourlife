@@ -45,14 +45,17 @@ public class MyPropertyAuthAdapter extends RecyclerView.Adapter<MyPropertyAuthAd
         AddressAuthListEntity.ContentBean communityBean = mnList.get(position);
         holder.tv_community_name.setText(communityBean.getCommunity_name());
         holder.tv_detail_name.setText(communityBean.getAddress());
-        if (communityBean.getSelect() == 0) {
+        if ("0".equals(communityBean.getSelect())) {
             holder.iv_select.setImageResource(R.drawable.icon_no_select);
         } else {
             holder.iv_select.setImageResource(R.drawable.icon_select);
         }
         holder.iv_select.setOnClickListener(v -> {
-            int select = communityBean.getSelect() == 0 ? 1 : 0;
-            ((MyPropertyActivity) mContext).choose(position, select);
+            if ("0".equals(communityBean.getSelect())) {
+                ((MyPropertyActivity) mContext).choose(position, "1");
+            } else {
+                ((MyPropertyActivity) mContext).choose(position, "0");
+            }
         });
     }
 

@@ -490,7 +490,7 @@ public class BenefitFragment extends Fragment implements View.OnClickListener, N
                         mineUrl = bean.getPersonal_center().getUrl();
 
                         tv_user_name.setText(bean.getNickname() + "您好~");
-                        if (1 == bean.getSign_in().getIs_show()) {
+                        if ("1".equals(bean.getSign_in().getIs_show())) {
                             iv_sign.setVisibility(View.VISIBLE);
                             GlideImageLoader.loadImageDefaultDisplay(getActivity(), bean.getSign_in().getImage(), iv_sign, R.drawable.ic_benefit_sign, R.drawable.ic_benefit_sign);
                             signUrl = bean.getSign_in().getUrl();
@@ -513,7 +513,7 @@ public class BenefitFragment extends Fragment implements View.OnClickListener, N
                         tv_deduct_money.setText(propertyDeductionBean.getBalance() + "");
 
                         BenefitProfileEntity.ContentBean.PropertyButtonBean propertyButtonBean = entity.getContent().getProperty_button();
-                        if (1 == propertyButtonBean.getIs_show()) {
+                        if ("1".equals(propertyButtonBean.getIs_show())) {
                             iv_pay.setVisibility(View.VISIBLE);
                             GlideImageLoader.loadImageDefaultDisplay(getActivity(), propertyButtonBean.getImage(), iv_pay, R.drawable.ic_benefit_pay, R.drawable.ic_benefit_pay);
                             payUrl = propertyButtonBean.getUrl();
@@ -534,7 +534,7 @@ public class BenefitFragment extends Fragment implements View.OnClickListener, N
                         }
                     } catch (Exception e) {
                         e.printStackTrace();
-                        ToastUtil.toastShow(getActivity(),e.getMessage());
+                        ToastUtil.toastShow(getActivity(), e.getMessage());
                     }
                 }
                 break;
@@ -563,12 +563,20 @@ public class BenefitFragment extends Fragment implements View.OnClickListener, N
                     try {
                         BenefitChannlEntity entity = GsonUtils.gsonToBean(result, BenefitChannlEntity.class);
                         BenefitChannlEntity.ContentBean bean = entity.getContent();
-                        tv_recommend.setText(bean.getRecommend().getTitle());
-                        tv_all.setText(bean.getAll().getTitle());
                         recommendList.clear();
                         allList.clear();
-                        recommendList.addAll(bean.getRecommend().getData());
-                        allList.addAll(bean.getAll().getData());
+                        if (bean != null) {
+                            BenefitChannlEntity.ContentBean.RecommendBean recommendBean = bean.getRecommend();
+                            if (null != recommendBean) {
+                                tv_recommend.setText(recommendBean.getTitle());
+                                recommendList.addAll(recommendBean.getData());
+                            }
+                            BenefitChannlEntity.ContentBean.AllBean allBean = bean.getAll();
+                            if (null != allBean) {
+                                tv_all.setText(allBean.getTitle());
+                                allList.addAll(allBean.getData());
+                            }
+                        }
                         if (0 == type) {
                             selectRecoment = true;
                             selectAll = false;
@@ -580,6 +588,7 @@ public class BenefitFragment extends Fragment implements View.OnClickListener, N
                         }
                     } catch (Exception e) {
                         e.printStackTrace();
+                        ToastUtil.toastShow(getActivity(), e.getMessage());
                     }
                 }
                 break;

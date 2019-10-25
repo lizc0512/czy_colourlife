@@ -219,14 +219,14 @@ public class DoorAllEntity extends BaseContentEntity {
                     //远程开门
                     private String community_uuid;
                     private String qr_code;//用于远程开门
-                    private int connection_type;
-                    private int door_type;
-                    private int community_type;
+                    private String connection_type;
+                    private String door_type;
+                    private String community_type;
                     private String door_id;//用于编辑
                     private String door_name;
                     private String door_img;
-                    private int open_sp;
-                    private int openSp;
+                    private String open_sp;
+                    private String openSp;
                     private int position;
 
                     public int getStart_time() {
@@ -248,7 +248,7 @@ public class DoorAllEntity extends BaseContentEntity {
                     private int start_time;
                     private int stop_time;
                     private String community_name;
-                    private int color_id;
+                    private String color_id;
 
                     /**
                      * id : 1159042041385529346
@@ -424,27 +424,27 @@ public class DoorAllEntity extends BaseContentEntity {
                         this.qr_code = qr_code;
                     }
 
-                    public int getConnection_type() {
+                    public String getConnection_type() {
                         return connection_type;
                     }
 
-                    public void setConnection_type(int connection_type) {
+                    public void setConnection_type(String connection_type) {
                         this.connection_type = connection_type;
                     }
 
-                    public int getDoor_type() {
+                    public String getDoor_type() {
                         return door_type;
                     }
 
-                    public void setDoor_type(int door_type) {
+                    public void setDoor_type(String door_type) {
                         this.door_type = door_type;
                     }
 
-                    public int getCommunity_type() {
+                    public String getCommunity_type() {
                         return community_type;
                     }
 
-                    public void setCommunity_type(int community_type) {
+                    public void setCommunity_type(String community_type) {
                         this.community_type = community_type;
                     }
 
@@ -472,19 +472,19 @@ public class DoorAllEntity extends BaseContentEntity {
                         this.door_img = door_img;
                     }
 
-                    public int getOpen_sp() {
+                    public String getOpen_sp() {
                         return open_sp;
                     }
 
-                    public void setOpen_sp(int open_sp) {
+                    public void setOpen_sp(String open_sp) {
                         this.open_sp = open_sp;
                     }
 
-                    public int getOpenSp() {
+                    public String getOpenSp() {
                         return openSp;
                     }
 
-                    public void setOpenSp(int openSp) {
+                    public void setOpenSp(String openSp) {
                         this.openSp = openSp;
                     }
 
@@ -504,11 +504,11 @@ public class DoorAllEntity extends BaseContentEntity {
                         this.community_name = community_name;
                     }
 
-                    public int getColor_id() {
+                    public String getColor_id() {
                         return color_id;
                     }
 
-                    public void setColor_id(int color_id) {
+                    public void setColor_id(String color_id) {
                         this.color_id = color_id;
                     }
 

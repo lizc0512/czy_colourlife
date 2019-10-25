@@ -88,9 +88,13 @@ public class LekaiHelper {
      * 启动开锁服务
      */
     public static void startOperationService(Activity activity) {
-        Intent intent = new Intent(activity, LekaiService.class);
-        activity.startService(intent);
-        activity.bindService(intent, mConn, Context.BIND_AUTO_CREATE);
+        try {
+            Intent intent = new Intent(activity, LekaiService.class);
+            activity.startService(intent);
+            activity.bindService(intent, mConn, Context.BIND_AUTO_CREATE);
+        }catch (Exception e){
+
+        }
     }
 
     /**

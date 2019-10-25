@@ -48,10 +48,10 @@ public class BeanDetailListEntity extends BaseContentEntity {
         private int current_page;
         private int from;
         private int last_page;
-        private Object next_page_url;
+        private String next_page_url;
         private String path;
         private int per_page;
-        private Object prev_page_url;
+        private String prev_page_url;
         private int to;
         private int total;
         private List<DataBean> data;
@@ -80,11 +80,11 @@ public class BeanDetailListEntity extends BaseContentEntity {
             this.last_page = last_page;
         }
 
-        public Object getNext_page_url() {
+        public String getNext_page_url() {
             return next_page_url;
         }
 
-        public void setNext_page_url(Object next_page_url) {
+        public void setNext_page_url(String next_page_url) {
             this.next_page_url = next_page_url;
         }
 
@@ -104,11 +104,11 @@ public class BeanDetailListEntity extends BaseContentEntity {
             this.per_page = per_page;
         }
 
-        public Object getPrev_page_url() {
+        public String getPrev_page_url() {
             return prev_page_url;
         }
 
-        public void setPrev_page_url(Object prev_page_url) {
+        public void setPrev_page_url(String prev_page_url) {
             this.prev_page_url = prev_page_url;
         }
 

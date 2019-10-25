@@ -118,17 +118,17 @@ public class BenefitFindEntity extends BaseContentEntity {
              * url : http://caihui.test.colourlife.com/redirect?redirect_link=http%3A%2F%2Fcaihui.test.colourlife.com%2Fdist%2F%23%2Farticle%2Fdetail%2F1
              */
 
-            private int id;
+            private String id;
             private String title;
             private String image;
             private String date;
             private String url;
 
-            public int getId() {
+            public String getId() {
                 return id;
             }
 
-            public void setId(int id) {
+            public void setId(String id) {
                 this.id = id;
             }
 

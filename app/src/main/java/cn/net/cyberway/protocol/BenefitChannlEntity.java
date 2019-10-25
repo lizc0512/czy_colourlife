@@ -197,31 +197,31 @@ public class BenefitChannlEntity extends BaseContentEntity {
                      * visit_num : 5
                      */
 
-                    private double avg_service_amount;
-                    private int good_comment_rate;
-                    private int visit_num;
+                    private String avg_service_amount;
+                    private String good_comment_rate;
+                    private String visit_num;
 
-                    public double getAvg_service_amount() {
+                    public String getAvg_service_amount() {
                         return avg_service_amount;
                     }
 
-                    public void setAvg_service_amount(double avg_service_amount) {
+                    public void setAvg_service_amount(String avg_service_amount) {
                         this.avg_service_amount = avg_service_amount;
                     }
 
-                    public int getGood_comment_rate() {
+                    public String getGood_comment_rate() {
                         return good_comment_rate;
                     }
 
-                    public void setGood_comment_rate(int good_comment_rate) {
+                    public void setGood_comment_rate(String good_comment_rate) {
                         this.good_comment_rate = good_comment_rate;
                     }
 
-                    public int getVisit_num() {
+                    public String getVisit_num() {
                         return visit_num;
                     }
 
-                    public void setVisit_num(int visit_num) {
+                    public void setVisit_num(String visit_num) {
                         this.visit_num = visit_num;
                     }
                 }
@@ -334,8 +334,6 @@ public class BenefitChannlEntity extends BaseContentEntity {
                 private String desc;
                 private String image;
                 private String url;
-                private int sort;
-                private String relation_object_id;
                 private int is_support_meal_ticket_pay;
                 private StatisticsBeanX statistics;
 
@@ -371,21 +369,7 @@ public class BenefitChannlEntity extends BaseContentEntity {
                     this.url = url;
                 }
 
-                public int getSort() {
-                    return sort;
-                }
 
-                public void setSort(int sort) {
-                    this.sort = sort;
-                }
-
-                public String getRelation_object_id() {
-                    return relation_object_id;
-                }
-
-                public void setRelation_object_id(String relation_object_id) {
-                    this.relation_object_id = relation_object_id;
-                }
 
                 public int getIs_support_meal_ticket_pay() {
                     return is_support_meal_ticket_pay;
@@ -410,31 +394,31 @@ public class BenefitChannlEntity extends BaseContentEntity {
                      * visit_num : 7
                      */
 
-                    private double avg_service_amount;
-                    private int good_comment_rate;
-                    private int visit_num;
+                    private String avg_service_amount;
+                    private String good_comment_rate;
+                    private String visit_num;
 
-                    public double getAvg_service_amount() {
+                    public String getAvg_service_amount() {
                         return avg_service_amount;
                     }
 
-                    public void setAvg_service_amount(double avg_service_amount) {
+                    public void setAvg_service_amount(String avg_service_amount) {
                         this.avg_service_amount = avg_service_amount;
                     }
 
-                    public int getGood_comment_rate() {
+                    public String getGood_comment_rate() {
                         return good_comment_rate;
                     }
 
-                    public void setGood_comment_rate(int good_comment_rate) {
+                    public void setGood_comment_rate(String good_comment_rate) {
                         this.good_comment_rate = good_comment_rate;
                     }
 
-                    public int getVisit_num() {
+                    public String getVisit_num() {
                         return visit_num;
                     }
 
-                    public void setVisit_num(int visit_num) {
+                    public void setVisit_num(String visit_num) {
                         this.visit_num = visit_num;
                     }
                 }

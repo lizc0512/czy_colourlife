@@ -119,7 +119,7 @@ public class IntelligenceDoorAdapter extends RecyclerView.Adapter<IntelligenceDo
                             holder.iv_icon.setBackgroundResource(R.drawable.ic_door_key_timeout);
                             holder.tv_avail_time_to.setText("已过期  有效期至" + TimeUtil.getYearTime(stop_millis, "yyyy-MM-dd"));
                         } else {
-                            if (stop_millis - current_millis <= 5 * 3600 * 24 * 1000) {
+                            if (stop_millis - current_millis <= 30 * 3600 * 24 * 1000) {
                                 holder.tv_avail_time_to.setText("快过期  有效期至" + TimeUtil.getYearTime(stop_millis, "yyyy-MM-dd"));
                             } else {
                                 holder.tv_avail_time_to.setText("有效期至" + TimeUtil.getYearTime(stop_millis, "yyyy-MM-dd"));
@@ -207,7 +207,7 @@ public class IntelligenceDoorAdapter extends RecyclerView.Adapter<IntelligenceDo
                             holder.iv_icon.setBackgroundResource(R.drawable.ic_door_bluetooth_timeout);
                             holder.tv_avail_time_to.setText("已过期  有效期至" + TimeUtil.getYearTime(stop_millis, "yyyy-MM-dd"));
                         } else {
-                            if (stop_millis - current_millis <= 5 * 3600 * 24 * 1000) {
+                            if (stop_millis - current_millis <= 30 * 3600 * 24 * 1000) {
                                 holder.tv_avail_time_to.setText("快过期  有效期至" + TimeUtil.getYearTime(stop_millis, "yyyy-MM-dd"));
                             } else {
                                 holder.tv_avail_time_to.setText("有效期至" + TimeUtil.getYearTime(stop_millis, "yyyy-MM-dd"));

@@ -107,7 +107,7 @@ public class DoorCommunityListEntity {
             private String door_type;
             private String door_name;
             private String position;
-            private int community_type;
+            private String community_type;
             private String door_id;
             private String door_img;
 
@@ -151,11 +151,11 @@ public class DoorCommunityListEntity {
                 this.position = position;
             }
 
-            public int getCommunity_type() {
+            public String getCommunity_type() {
                 return community_type;
             }
 
-            public void setCommunity_type(int community_type) {
+            public void setCommunity_type(String community_type) {
                 this.community_type = community_type;
             }
 

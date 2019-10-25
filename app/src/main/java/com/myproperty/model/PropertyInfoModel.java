@@ -160,6 +160,7 @@ public class PropertyInfoModel extends BaseModel {
         final Request<String> request = NoHttp.createStringRequest(
                 RequestEncryptionUtils.postCombileMD5(mContext, 10, basePath), RequestMethod.POST);
         request.add("file", binary);
+        request.setConnectTimeout(35000);
         request(0, request, params, new HttpListener<String>() {
             @Override
             public void onSucceed(int what, Response<String> response) {

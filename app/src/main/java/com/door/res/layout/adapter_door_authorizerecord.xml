@@ -44,6 +44,7 @@
             android:textSize="15sp" />
 
         <View
+            android:id="@+id/tv_authorize_line"
             android:layout_width="1dp"
             android:layout_height="15dp"
             android:layout_gravity="center_vertical"
@@ -58,7 +59,7 @@
             android:layout_gravity="center_vertical"
             android:layout_marginRight="16dp"
             android:singleLine="true"
-            android:layout_marginLeft="10dp"
+            android:paddingLeft="10dp"
             android:textColor="@color/color_25282e"
             android:textSize="15sp" />
 

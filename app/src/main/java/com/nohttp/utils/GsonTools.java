@@ -1,15 +1,14 @@
 package com.nohttp.utils;
 
-import java.io.IOException;
-
 import android.os.Looper;
 
 import com.cardcoupons.utils.StringUtils;
-import com.google.gson.JsonSyntaxException;
 import com.google.gson.TypeAdapter;
 import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonToken;
 import com.google.gson.stream.JsonWriter;
+
+import java.io.IOException;
 
 
 /**
@@ -151,11 +150,15 @@ class GsonTools {
                                 return StringUtils.toFloat(in.nextString()).floatValue();
                             }
                             return (float) in.nextDouble();
+
                     }
                     return in.nextLong();
                 } catch (NumberFormatException e) {
-                    throw new JsonSyntaxException(e);
+                    in.nextString();
+                } catch (IllegalStateException e) {
+                    in.nextBoolean();
                 }
+                return  0;
             }
 
             @Override

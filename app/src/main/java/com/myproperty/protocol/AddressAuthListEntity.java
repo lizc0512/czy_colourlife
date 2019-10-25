@@ -55,13 +55,13 @@ public class AddressAuthListEntity extends BaseContentEntity {
         private String build_uuid;
         private String build_name;
         private String unit_uuid;
-        private int is_default;
+        private String is_default;
         private String unit_name;
         private String room_uuid;
         private String room_name;
         private String address;
-        private int employee;
-        private int select;
+        private String employee;
+        private String select;
 
         public String getId() {
             return id;
@@ -111,11 +111,11 @@ public class AddressAuthListEntity extends BaseContentEntity {
             this.unit_uuid = unit_uuid;
         }
 
-        public int getIs_default() {
+        public String getIs_default() {
             return is_default;
         }
 
-        public void setIs_default(int is_default) {
+        public void setIs_default(String is_default) {
             this.is_default = is_default;
         }
 
@@ -151,19 +151,19 @@ public class AddressAuthListEntity extends BaseContentEntity {
             this.address = address;
         }
 
-        public int getEmployee() {
+        public String getEmployee() {
             return employee;
         }
 
-        public void setEmployee(int employee) {
+        public void setEmployee(String employee) {
             this.employee = employee;
         }
 
-        public int getSelect() {
+        public String getSelect() {
             return select;
         }
 
-        public void setSelect(int select) {
+        public void setSelect(String select) {
             this.select = select;
         }
     }

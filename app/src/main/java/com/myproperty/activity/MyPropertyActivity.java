@@ -160,12 +160,12 @@ public class MyPropertyActivity extends BaseActivity implements View.OnClickList
     /**
      * 点击选择
      */
-    public void choose(int position, int select) {
+    public void choose(int position, String select) {
         authBeanList.get(position).setSelect(select);
 
         int count = 0;
         for (AddressAuthListEntity.ContentBean bean : authBeanList) {
-            if (bean.getSelect() == 1) {
+            if ("1".equals(bean.getSelect())) {
                 count++;
             }
         }
@@ -256,7 +256,7 @@ public class MyPropertyActivity extends BaseActivity implements View.OnClickList
         try {
             String propertyList = "";
             for (AddressAuthListEntity.ContentBean bean : authBeanList) {
-                if (bean.getSelect() == 1) {
+                if ("1".equals(bean.getSelect())) {
                     propertyList += bean.getId() + ",";
                 }
             }
@@ -448,7 +448,7 @@ public class MyPropertyActivity extends BaseActivity implements View.OnClickList
                     AddressAuthListEntity entity = GsonUtils.gsonToBean(result, AddressAuthListEntity.class);
                     List<AddressAuthListEntity.ContentBean> list = entity.getContent();
                     for (AddressAuthListEntity.ContentBean bean : list) {
-                        bean.setSelect(0);//设置默认没选
+                        bean.setSelect("0");//设置默认没选
                         authBeanList.add(bean);
                     }
                     mAuthAdapter.notifyDataSetChanged();

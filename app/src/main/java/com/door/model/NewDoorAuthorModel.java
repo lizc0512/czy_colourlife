@@ -411,13 +411,14 @@ public class NewDoorAuthorModel extends BaseModel {
         }, true, true);
     }
 
-    public void setRemoteDoorExtensionValid(int what, String community_uuid, String community_name, String identity_id, String bid, String auth_mobile, final NewHttpResponse newHttpResponse) {
+    public void setRemoteDoorExtensionValid(int what, String community_uuid, String community_name, String identity_id, String bid, String auth_mobile, String memo, final NewHttpResponse newHttpResponse) {
         Map<String, Object> params = new HashMap<String, Object>();
         params.put("community_uuid", community_uuid);
         params.put("community_name", community_name);
         params.put("identity_id", identity_id);
         params.put("bid", bid);
         params.put("auth_mobile", auth_mobile);
+        params.put("memo", memo);
         final Request<String> request = NoHttp.createStringRequest(RequestEncryptionUtils.postCombileMD5(mContext, 15, remoteDoorExtensionValidUrl), RequestMethod.POST);
         request(what, request, params, new HttpListener<String>() {
 
@@ -447,7 +448,7 @@ public class NewDoorAuthorModel extends BaseModel {
 
     public void setBluetoothDoorExtensionValid(int what, String community_uuid, String community_name, String unit_name, String unit_uuid,
                                                String identity_id, String auth_mobile, String auth_name, String resident_mobile, String tg_status,
-                                               final NewHttpResponse newHttpResponse) {
+                                               String memo, final NewHttpResponse newHttpResponse) {
         Map<String, Object> params = new HashMap<String, Object>();
         params.put("community_uuid", community_uuid);
         params.put("community_name", community_name);
@@ -457,6 +458,7 @@ public class NewDoorAuthorModel extends BaseModel {
         params.put("auth_mobile", auth_mobile);
         params.put("auth_name", auth_name);
         params.put("resident_mobile", resident_mobile);
+        params.put("memo", memo);
         if (!TextUtils.isEmpty(tg_status)) {
             params.put("tg_status", tg_status);
         } else {

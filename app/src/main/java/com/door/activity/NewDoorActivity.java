@@ -277,7 +277,7 @@ public class NewDoorActivity extends BaseActivity implements NewHttpResponse, Vi
     /**
      * 显示快捷方式Diaog
      */
-    private void ShowShortcuts(final List<DoorCommunityListEntity.ContentBean> contentBeans, final int numPage, String name, final int community_type) {
+    private void ShowShortcuts(final List<DoorCommunityListEntity.ContentBean> contentBeans, final int numPage, String name, final String community_type) {
         showShortCutDialog = new ShowShortCutDialog(NewDoorActivity.this, R.style.custom_dialog_theme);
         showShortCutDialog.show();
         showShortCutDialog.setCanceledOnTouchOutside(true);
@@ -332,9 +332,9 @@ public class NewDoorActivity extends BaseActivity implements NewHttpResponse, Vi
     /**
      * 添加快捷方式
      */
-    private void creatShortCut(List<DoorCommunityListEntity.ContentBean> contentBeans, int numPage, String doorName, int community_type) {
+    private void creatShortCut(List<DoorCommunityListEntity.ContentBean> contentBeans, int numPage, String doorName, String community_type) {
         if (Build.VERSION.SDK_INT > 25) {
-            if (community_type == 1) {//1:住宅，2:写字楼
+            if ("1".equals(community_type)) {//1:住宅，2:写字楼
                 icon = Icon.createWithResource(NewDoorActivity.this, R.drawable.icon_shortcut);
             } else {
                 icon = Icon.createWithResource(NewDoorActivity.this, R.drawable.icon_shortcut_xzl);
@@ -361,7 +361,7 @@ public class NewDoorActivity extends BaseActivity implements NewHttpResponse, Vi
             shortcut.putExtra("duplicate", true);
             shortcut.putExtra(Intent.EXTRA_SHORTCUT_NAME, doorName);
             shortcut.putExtra(Intent.EXTRA_SHORTCUT_INTENT, shortcutIntent);
-            if (community_type == 1) {//1:住宅，2:写字楼
+            if ("1".equals(community_type)) {//1:住宅，2:写字楼
                 shortcutIconResource = Intent.ShortcutIconResource.fromContext(NewDoorActivity.this, R.drawable.icon_shortcut);
             } else {
                 shortcutIconResource = Intent.ShortcutIconResource.fromContext(NewDoorActivity.this, R.drawable.icon_shortcut_xzl);

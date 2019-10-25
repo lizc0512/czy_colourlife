@@ -131,6 +131,7 @@ public class NewDoorRenewalActivity extends BaseActivity implements View.OnClick
             layout_validate_phone.setVisibility(View.GONE);
             ed_real_name.setFocusable(false);
             apply_room_layout.setEnabled(false);
+            ed_authorize_phone.setHint("请输入授权人的手机号码");
             tv_apply_notice.setText("注：授权人通过您的申请后您即可获得开门权限，授权人账号可咨询小区物业管理处");
         } else {  //蓝牙门禁 的续期需要关联到单元信息
             unitNameList = intent.getStringArrayListExtra(UNIT_NAME_LIST);
@@ -185,9 +186,9 @@ public class NewDoorRenewalActivity extends BaseActivity implements View.OnClick
                 break;
             case R.id.btn_submit_infor:
                 if ("1".equals(door_type)) {  //远程门禁的续期
-                    newDoorAuthorModel.setRemoteDoorExtensionValid(2, community_uuid, community_name, identify_id, bid, auth_mobile, NewDoorRenewalActivity.this);
+                    newDoorAuthorModel.setRemoteDoorExtensionValid(2, community_uuid, community_name, identify_id, bid, auth_mobile, "", NewDoorRenewalActivity.this);
                 } else { //蓝牙门禁的续期
-                    newDoorAuthorModel.setBluetoothDoorExtensionValid(2, community_uuid, community_name, unit_name, unit_uuid, identify_id, auth_mobile, name, validate_phone, tgStatus, NewDoorRenewalActivity.this);
+                    newDoorAuthorModel.setBluetoothDoorExtensionValid(2, community_uuid, community_name, unit_name, unit_uuid, identify_id, auth_mobile, name, validate_phone, tgStatus, "", NewDoorRenewalActivity.this);
                 }
                 break;
             case R.id.apply_room_layout: //蓝牙门禁续期  选择单元
@@ -287,7 +288,7 @@ public class NewDoorRenewalActivity extends BaseActivity implements View.OnClick
                     } else {
                         ToastUtil.toastShow(NewDoorRenewalActivity.this, "续期申请已提交，请等待审核通过");
                     }
-                }else{
+                } else {
                     ToastUtil.toastShow(NewDoorRenewalActivity.this, "续期申请已提交，请等待审核通过");
                 }
                 finish();
@@ -318,7 +319,7 @@ public class NewDoorRenewalActivity extends BaseActivity implements View.OnClick
                 btn_submit_infor.setEnabled(true);
             }
         } else {
-            if ("1".equals(identify_id)&&"0".equals(tgStatus)) {
+            if ("1".equals(identify_id) && "0".equals(tgStatus)) {
                 if (TextUtils.isEmpty(validate_phone) || 11 != validate_phone.length()) {
                     btn_submit_infor.setBackgroundResource(R.drawable.onekey_login_default_bg);
                     btn_submit_infor.setEnabled(false);

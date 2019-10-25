@@ -190,7 +190,7 @@ public class BenefitProfileEntity extends BaseContentEntity {
              */
 
             private String title;
-            private int is_show;
+            private String is_show;
             private String image;
             private String url;
 
@@ -202,11 +202,11 @@ public class BenefitProfileEntity extends BaseContentEntity {
                 this.title = title;
             }
 
-            public int getIs_show() {
+            public String getIs_show() {
                 return is_show;
             }
 
-            public void setIs_show(int is_show) {
+            public void setIs_show(String is_show) {
                 this.is_show = is_show;
             }
 
@@ -344,7 +344,7 @@ public class BenefitProfileEntity extends BaseContentEntity {
              */
 
             private String title;
-            private int is_show;
+            private String is_show;
             private String image;
             private String url;
 
@@ -356,11 +356,11 @@ public class BenefitProfileEntity extends BaseContentEntity {
                 this.title = title;
             }
 
-            public int getIs_show() {
+            public String getIs_show() {
                 return is_show;
             }
 
-            public void setIs_show(int is_show) {
+            public void setIs_show(String is_show) {
                 this.is_show = is_show;
             }
 

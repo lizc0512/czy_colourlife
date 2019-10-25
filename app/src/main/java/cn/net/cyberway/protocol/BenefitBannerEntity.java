@@ -45,16 +45,16 @@ public class BenefitBannerEntity extends BaseContentEntity {
          * url : http://caihui.test.colourlife.com/redirect?redirect_link=http%3A%2F%2Fcaihui.test.colourlife.com%2Fdist%2F%23%2Flottery%2Flottery
          */
 
-        private int id;
+        private String id;
         private String name;
         private String img;
         private String url;
 
-        public int getId() {
+        public String getId() {
             return id;
         }
 
-        public void setId(int id) {
+        public void setId(String id) {
             this.id = id;
         }
 
