@@ -148,7 +148,7 @@ public class NewDoorRenewalActivity extends BaseActivity implements View.OnClick
                 layout_authorize_phone.setVisibility(View.GONE);
                 btn_submit_infor.setBackgroundResource(R.drawable.onekey_login_bg);
                 btn_submit_infor.setEnabled(true);
-                tv_apply_notice.setText("注：业主或小区物业管理处工作人员通过您的申请后，您即可获得开门权限");
+                tv_apply_notice.setText("注:小区物业管理处工作人员通过您的申请后，您即可获得开门权限");
             }
             newDoorAuthorModel.bluetoothDoorVerify(1, community_uuid, unit_uuid, "", "", NewDoorRenewalActivity.this);
         }
@@ -269,7 +269,7 @@ public class NewDoorRenewalActivity extends BaseActivity implements View.OnClick
                             setNoticeSpannString();
                             layout_authorize_phone.setVisibility(View.GONE);
                         } else { //物业认证
-                            tv_apply_notice.setText("注：业主或小区物业管理处工作人员通过您的申请后，您即可获得开门权限");
+                            tv_apply_notice.setText("注:小区物业管理处工作人员通过您的申请后，您即可获得开门权限");
                             layout_register_phone.setVisibility(View.GONE);
                             layout_validate_phone.setVisibility(View.GONE);
                             layout_authorize_phone.setVisibility(View.GONE);

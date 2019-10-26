@@ -84,7 +84,14 @@ public class LekaiService extends Service {
         if (null != mHandler) {
             mHandler.removeCallbacksAndMessages(null);
         }
-        mEdenApi.unBindBleService();
+        try {
+            if (null != mEdenApi) {
+                mEdenApi.unBindBleService();
+            }
+        } catch (IllegalArgumentException e) {
+
+        }
+
     }
 
     public void initEdenApi() {
