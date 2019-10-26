@@ -531,6 +531,16 @@ public class DoorAllEntity extends BaseContentEntity {
                     private String unit_name;
                     private String unit_uuid;
 
+                    public String getAddress() {
+                        return address;
+                    }
+
+                    public void setAddress(String address) {
+                        this.address = address;
+                    }
+
+                    private String address;
+
                     public String getUnit_name() {
                         return unit_name;
                     }

@@ -63,6 +63,7 @@ import static com.customerInfo.activity.CustomerAddPropertyActivity.COMMUNITY_NA
 import static com.customerInfo.activity.CustomerAddPropertyActivity.COMMUNITY_UUID;
 import static com.customerInfo.activity.CustomerAddPropertyActivity.IDENTITY_ID;
 import static com.door.activity.NewDoorRenewalActivity.DOOR_TYPE;
+import static com.door.activity.NewDoorRenewalActivity.UNIT_ADDRESS_LIST;
 import static com.door.activity.NewDoorRenewalActivity.UNIT_NAME_LIST;
 import static com.door.activity.NewDoorRenewalActivity.UNIT_UUID_LIST;
 import static com.user.UserAppConst.COLOUR_BLUETOOTH_ADVISE;
@@ -704,12 +705,15 @@ public class IntelligenceDoorActivity extends BaseFragmentActivity implements Ne
         if (null != invalidUnitBeanList) {
             ArrayList<String> unitNameList = new ArrayList<>();
             ArrayList<String> unitIdList = new ArrayList<>();
+            ArrayList<String> addressNameList = new ArrayList<>();
             for (DoorAllEntity.ContentBean.DataBean.ListBean.InvalidUnitBean invalidUnitBean : invalidUnitBeanList) {
                 unitNameList.add(invalidUnitBean.getUnit_name());
                 unitIdList.add(invalidUnitBean.getUnit_uuid());
+                addressNameList.add(invalidUnitBean.getAddress());
             }
             intent.putStringArrayListExtra(UNIT_NAME_LIST, unitNameList);
             intent.putStringArrayListExtra(UNIT_UUID_LIST, unitIdList);
+            intent.putStringArrayListExtra(UNIT_ADDRESS_LIST, addressNameList);
         }
         startActivity(intent);
     }
