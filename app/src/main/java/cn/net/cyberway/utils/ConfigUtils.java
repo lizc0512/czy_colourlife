@@ -165,8 +165,10 @@ public class ConfigUtils implements NewHttpResponse {
             @Override
             public void getOneKeyLoginStatus(int code, String result) {
                 //一键登录监听
-                if (code != 1000 && code != 1011) {
-                    ToastUtil.toastTime(mActivity, result + "(" + code + ")", 3000);
+                if (code != 1000) {
+                    if (code != 1011) {
+                        ToastUtil.toastTime(mActivity, result + "(" + code + ")", 3000);
+                    }
                     OneKeyLoginManager.getInstance().finishAuthActivity();
                 } else {
                     oneKeyLogin(result);
