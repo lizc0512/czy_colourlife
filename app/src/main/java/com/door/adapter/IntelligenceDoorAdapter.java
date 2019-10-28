@@ -113,16 +113,16 @@ public class IntelligenceDoorAdapter extends RecyclerView.Adapter<IntelligenceDo
                         holder.tv_avail_time_to.setText("永久有效");
                         holder.iv_icon.setBackgroundResource(R.drawable.ic_door_key);
                     } else {
-                        long stop_millis = stop_time * 1000;
-                        long current_millis = System.currentTimeMillis();
-                        if (stop_millis < current_millis) {
+                        long currentTime = System.currentTimeMillis() / 1000;
+                        if (stop_time < currentTime) {
                             holder.iv_icon.setBackgroundResource(R.drawable.ic_door_key_timeout);
-                            holder.tv_avail_time_to.setText("已过期  有效期至" + TimeUtil.getYearTime(stop_millis, "yyyy-MM-dd"));
+                            holder.tv_avail_time_to.setText("已过期  有效期至" + TimeUtil.getYearTime(stop_time * 1000, "yyyy-MM-dd"));
                         } else {
-                            if (stop_millis - current_millis <= 30 * 3600 * 24 * 1000) {
-                                holder.tv_avail_time_to.setText("快过期  有效期至" + TimeUtil.getYearTime(stop_millis, "yyyy-MM-dd"));
+                            long distanceTime = stop_time - currentTime;
+                            if (distanceTime <= 30 * 3600 * 24) {
+                                holder.tv_avail_time_to.setText("快过期  有效期至" + TimeUtil.getYearTime(stop_time * 1000, "yyyy-MM-dd"));
                             } else {
-                                holder.tv_avail_time_to.setText("有效期至" + TimeUtil.getYearTime(stop_millis, "yyyy-MM-dd"));
+                                holder.tv_avail_time_to.setText("有效期至" + TimeUtil.getYearTime(stop_time * 1000, "yyyy-MM-dd"));
                             }
                             holder.iv_icon.setBackgroundResource(R.drawable.ic_door_key);
                         }
@@ -201,16 +201,16 @@ public class IntelligenceDoorAdapter extends RecyclerView.Adapter<IntelligenceDo
                         holder.tv_avail_time_to.setText("永久有效");
                         holder.iv_icon.setBackgroundResource(R.drawable.ic_door_bluetooth);
                     } else {
-                        long stop_millis = stopTime * 1000;
-                        long current_millis = System.currentTimeMillis();
-                        if (stop_millis < current_millis) {
+                        long current_millis = System.currentTimeMillis() / 1000;
+                        if (stopTime < current_millis) {
                             holder.iv_icon.setBackgroundResource(R.drawable.ic_door_bluetooth_timeout);
-                            holder.tv_avail_time_to.setText("已过期  有效期至" + TimeUtil.getYearTime(stop_millis, "yyyy-MM-dd"));
+                            holder.tv_avail_time_to.setText("已过期  有效期至" + TimeUtil.getYearTime(stopTime * 1000, "yyyy-MM-dd"));
                         } else {
-                            if (stop_millis - current_millis <= 30 * 3600 * 24 * 1000) {
-                                holder.tv_avail_time_to.setText("快过期  有效期至" + TimeUtil.getYearTime(stop_millis, "yyyy-MM-dd"));
+                            long distanceTime = stopTime - current_millis;
+                            if (distanceTime <= 30 * 3600 * 24) {
+                                holder.tv_avail_time_to.setText("快过期  有效期至" + TimeUtil.getYearTime(stopTime * 1000, "yyyy-MM-dd"));
                             } else {
-                                holder.tv_avail_time_to.setText("有效期至" + TimeUtil.getYearTime(stop_millis, "yyyy-MM-dd"));
+                                holder.tv_avail_time_to.setText("有效期至" + TimeUtil.getYearTime(stopTime * 1000, "yyyy-MM-dd"));
                             }
                             holder.iv_icon.setBackgroundResource(R.drawable.ic_door_bluetooth);
                         }
