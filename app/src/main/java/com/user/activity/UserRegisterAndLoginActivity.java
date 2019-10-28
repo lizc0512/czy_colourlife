@@ -534,6 +534,9 @@ public class UserRegisterAndLoginActivity extends BaseActivity implements OnClic
                 decideJump();
                 break;
             case 2: //检查是不是白名单
+                if (TextUtils.isEmpty(password)) {
+                    password = shared.getString(UserAppConst.Colour_login_password, "");
+                }
                 loginPawd = password;
                 if (!TextUtils.isEmpty(result)) {
                     try {
@@ -560,12 +563,14 @@ public class UserRegisterAndLoginActivity extends BaseActivity implements OnClic
                         }
                         showReviewDialog(forbidNotice);
                     } else if (isWhite == 6) {
+                        editor.putString(UserAppConst.Colour_login_password, loginPawd).apply();
                         Intent intent = new Intent(UserRegisterAndLoginActivity.this, UserSmsCodeActivity.class);
                         intent.putExtra(UserRegisterAndLoginActivity.MOBILE, mobile);
                         intent.putExtra(UserRegisterAndLoginActivity.PASSWORD, password);
                         intent.putExtra(UserRegisterAndLoginActivity.SMSTYPE, 4);
                         startActivityForResult(intent, 1000);
                     } else {
+                        editor.putString(UserAppConst.Colour_login_password, loginPawd).apply();
                         Intent registerIntent = new Intent(UserRegisterAndLoginActivity.this, UserSafetyVerficationActivity.class);
                         registerIntent.putExtra(UserRegisterAndLoginActivity.MOBILE, mobile);
                         registerIntent.putExtra(UserRegisterAndLoginActivity.PASSWORD, loginPawd);
@@ -800,6 +805,11 @@ public class UserRegisterAndLoginActivity extends BaseActivity implements OnClic
         }
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        changeLoginBtnStatus();
+    }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {

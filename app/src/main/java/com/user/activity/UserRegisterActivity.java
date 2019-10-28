@@ -81,6 +81,8 @@ public class UserRegisterActivity extends BaseActivity implements View.OnClickLi
     }
 
 
+
+
     private void initView() {
         FrameLayout czy_title_layout = (FrameLayout) findViewById(R.id.czy_title_layout);
         user_top_view_back = (ImageView) findViewById(R.id.user_top_view_back);
@@ -200,6 +202,7 @@ public class UserRegisterActivity extends BaseActivity implements View.OnClickLi
                         switch (resultCode) {
                             case 0:
                                 ToastUtil.toastShow(UserRegisterActivity.this, getResources().getString(R.string.user_register_success));
+                                editor.putString(UserAppConst.Colour_login_password, password).apply();
                                 newUserModel.getAuthToken(4, mobile, password, "1", true, this);
                                 break;
                             case 1:

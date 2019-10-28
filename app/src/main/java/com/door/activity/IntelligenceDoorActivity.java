@@ -498,6 +498,7 @@ public class IntelligenceDoorActivity extends BaseFragmentActivity implements Ne
                         e.printStackTrace();
                     }
                 }
+                break;
             case 5://小区钥匙列表
                 if (!intelligenceDoorCache.equals(result)) {
                     editor.putString(UserAppConst.COLOUR_INTELLIGENCE_DOOR + userId, result);
@@ -567,7 +568,6 @@ public class IntelligenceDoorActivity extends BaseFragmentActivity implements Ne
             }
         } catch (Exception e) {
             e.printStackTrace();
-            ToastUtil.toastShow(IntelligenceDoorActivity.this, e.getMessage());
         }
     }
 
