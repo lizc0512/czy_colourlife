@@ -17,6 +17,7 @@ import android.support.v4.app.ActivityCompat;
 import android.telephony.TelephonyManager;
 import android.text.TextUtils;
 
+import com.update.activity.UpdateVerSion;
 import com.user.UserAppConst;
 import com.youmai.hxsdk.HuxinSdkManager;
 
@@ -53,6 +54,7 @@ public class TokenUtils {
         int userId = mshared.getInt(UserAppConst.Colour_User_id, 0);
         String communityid = mshared.getString(UserAppConst.Colour_login_community_uuid, "03b98def-b5bd-400b-995f-a9af82be01da");
         mEditor.putString(UserAppConst.COLOR_HOME_LAYOUT, "");
+        mEditor.putBoolean(UpdateVerSion.HASNEWCODE, false);
         mEditor.putString(UserAppConst.COLOR_HOME_HEADER, "");
         mEditor.putString(UserAppConst.COLOR_HOME_RESOURCE, "");
         mEditor.putString(UserAppConst.COLOR_HOME_FUNCTION, "");

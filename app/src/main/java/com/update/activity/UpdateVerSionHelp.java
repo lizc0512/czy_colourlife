@@ -52,14 +52,16 @@ public class UpdateVerSionHelp implements NewHttpResponse {
             case 1://最新版本
                 ToastUtil.toastShow(contexts, "彩之云已经是最新版本！");
                 break;
-            case 0://可选更新
+            case 0://可选更新  cwy控制平台
+            case 2://可选更新  新的版本控制平台
                 updateDialog.cancel.setVisibility(View.VISIBLE);
                 updateDialog.ok.setText("更新至V" + UpdateVerSion.handleVersionName(newversion) + "版本");
                 updateAdapter = new UpdateAdapter(contexts, updateList);
                 updateDialog.listView.setAdapter(updateAdapter);
                 updateDialog.show();
                 break;
-            case -1://强制更新
+            case -1://强制更新  cwy控制平台
+            case 3://新的版本控制平台
                 updateDialog.cancel.setVisibility(View.GONE);
                 updateDialog.ok.setText("更新至V" + UpdateVerSion.handleVersionName(newversion) + "版本");
                 updateAdapter = new UpdateAdapter(contexts, updateList);

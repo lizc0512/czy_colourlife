@@ -11,7 +11,6 @@ import com.BeeFramework.Utils.ToastUtil;
 import com.BeeFramework.model.NewHttpResponse;
 import com.nohttp.utils.GsonUtils;
 import com.update.adapter.UpdateAdapter;
-import com.update.entity.UpdateContentEntity;
 import com.update.entity.UpdateVersionEntity;
 import com.update.model.UpdateModel;
 import com.update.service.UpdateService;
@@ -144,11 +143,12 @@ public class UpdateVerSion implements NewHttpResponse {
             updateVerSionHelp.getNewVerSion(context, minType, showDialog);
         }
     }
-    public void getNewVerSion( Activity context, boolean showDialog){
+
+    public void getNewVerSion(Activity context, boolean showDialog) {
         isShowDialog = showDialog;
         contexts = context;
         UpdateModel updateModel = new UpdateModel(context);
-        updateModel.chekVersion(getVersionName(context), !showDialog, this);
+        updateModel.checkVersion(getVersionName(context), !showDialog, this);
     }
 
 
@@ -158,6 +158,9 @@ public class UpdateVerSion implements NewHttpResponse {
     public void showUpdateDialog() {
         updateDialog = new UpdateVerSionDialog(contexts);
         switch (code) {
+            case 1://最新版本
+                ToastUtil.toastShow(contexts, "彩之云已经是最新版本！");
+                break;
             case 0://可选更新
                 updateDialog.ok.setText("更新至V" + UpdateVerSion.handleVersionName(newversion) + "版本");
                 updateDialog.cancel.setVisibility(View.VISIBLE);
@@ -165,9 +168,56 @@ public class UpdateVerSion implements NewHttpResponse {
                 updateDialog.listView.setAdapter(updateAdapter);
                 updateDialog.show();
                 break;
-            case -1://强制更新
+            case -1://强制更新  cwy控制平台
                 updateDialog.cancel.setVisibility(View.GONE);
                 updateDialog.ok.setText("更新至V" + UpdateVerSion.handleVersionName(newversion) + "版本");
+                updateAdapter = new UpdateAdapter(contexts, updateList);
+                updateDialog.listView.setAdapter(updateAdapter);
+                updateDialog.mDialog.setCancelable(false);
+                updateDialog.show();
+                break;
+        }
+        updateDialog.ok.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (code != 1) {
+                    //用户点击更新，跳转到下载更新页面
+                    Intent intent = new Intent(contexts, UpdateService.class);
+                    intent.putExtra(UpdateService.DOWNLOAD_URL, downurl);
+                    intent.putExtra(UpdateService.VERSIONNAME, newversion);
+                    contexts.startService(intent);
+                    ToastUtil.toastShow(contexts, "彩之云已开始下载更新,详细信息可在通知栏查看哟!");
+                }
+                updateDialog.dismiss();
+            }
+        });
+        updateDialog.cancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                updateDialog.dismiss();
+            }
+        });
+    }
+
+
+    public void showNewUpdateDialog() {
+        updateDialog = new UpdateVerSionDialog(contexts);
+        switch (code) {
+            case 1://最新版本
+                if (!isShowDialog) {
+                    ToastUtil.toastShow(contexts, "彩之云已经是最新版本！");
+                }
+                break;
+            case 2://可选更新  新的版本控制平台
+                updateDialog.ok.setText("更新至V" + newversion+ "版本");
+                updateDialog.cancel.setVisibility(View.VISIBLE);
+                updateAdapter = new UpdateAdapter(contexts, updateList);
+                updateDialog.listView.setAdapter(updateAdapter);
+                updateDialog.show();
+                break;
+            case 3://新的版本控制平台
+                updateDialog.cancel.setVisibility(View.GONE);
+                updateDialog.ok.setText("更新至V" + newversion+ "版本");
                 updateAdapter = new UpdateAdapter(contexts, updateList);
                 updateDialog.listView.setAdapter(updateAdapter);
                 updateDialog.mDialog.setCancelable(false);
@@ -236,7 +286,7 @@ public class UpdateVerSion implements NewHttpResponse {
                     showUpdate = 1;
                 }
                 if (!TextUtils.isEmpty(downurl) && showUpdate == 1) {
-                    showUpdateDialog();
+                    showNewUpdateDialog();
                 }
             } catch (Exception e) {
 

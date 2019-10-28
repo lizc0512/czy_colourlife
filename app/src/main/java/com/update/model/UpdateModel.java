@@ -33,7 +33,7 @@ public class UpdateModel extends BaseModel {
      *
      * @param version 当前版本
      */
-    public void chekVersion(String version, boolean showLoading, NewHttpResponse newHttpResponse) {
+    public void checkVersion(String version, boolean showLoading, NewHttpResponse newHttpResponse) {
         Map<String, Object> params = new HashMap<>();
         params.put("version", showVersionName(version));
         params.put("app", "czy");
