@@ -32,13 +32,11 @@ public class UpdateModel extends BaseModel {
      * 检查软件版本更新
      *
      * @param version 当前版本
-     * @param minType 传1检查大版本 2检查小版本
      */
-    public void chekVersion(String version, final String minType, boolean showLoading, NewHttpResponse newHttpResponse) {
+    public void chekVersion(String version, boolean showLoading, NewHttpResponse newHttpResponse) {
         Map<String, Object> params = new HashMap<>();
         params.put("version", showVersionName(version));
         params.put("app", "czy");
-        params.put("minType", minType);
         params.put("type", "1");
         String basePath = "get/version";
         final Request<String> request = NoHttp.createStringRequest(RequestEncryptionUtils.getCombileMD5(mContext, 14, basePath, params), RequestMethod.GET);

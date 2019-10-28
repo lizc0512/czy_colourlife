@@ -144,6 +144,13 @@ public class UpdateVerSion implements NewHttpResponse {
             updateVerSionHelp.getNewVerSion(context, minType, showDialog);
         }
     }
+    public void getNewVerSion( Activity context, boolean showDialog){
+        isShowDialog = showDialog;
+        contexts = context;
+        UpdateModel updateModel = new UpdateModel(context);
+        updateModel.chekVersion(getVersionName(context), !showDialog, this);
+    }
+
 
     /**
      * 版本更新弹窗
@@ -191,49 +198,49 @@ public class UpdateVerSion implements NewHttpResponse {
 
     @Override
     public void OnHttpResponse(int what, String result) {
-        if (isShowDialog) {//isShowDialog 为false的时候不做处理，大版本检测更新
-            if (!TextUtils.isEmpty(result)) {
-                try {
-                    UpdateContentEntity updateContentEntity = GsonUtils.gsonToBean(result, UpdateContentEntity.class);
-                    code = updateContentEntity.getResult();////1：最新版本，2：介于最新和最低版本之间，3：低于支持的最低版本
-                    List<UpdateContentEntity.InfoBean> infoBeanList = updateContentEntity.getInfo();
-                    UpdateContentEntity.InfoBean infoBean = infoBeanList.get(0);
-                    newversion = infoBean.getVersion();
-                    updateList = infoBean.getFunc();
-                    downurl = infoBean.getUrl();
-                    if (!TextUtils.isEmpty(downurl)) {
-                        showUpdateDialog();
-                    }
-                } catch (Exception e) {
-
-                }
-            }
-        }
-
-//        if (!TextUtils.isEmpty(result)) {
-//            try {
-//                UpdateVersionEntity updateVersionEntity = GsonUtils.gsonToBean(result, UpdateVersionEntity.class);
-//                UpdateVersionEntity.ContentBean contentBean = updateVersionEntity.getContent();
-//                code = contentBean.getResult();
-//                UpdateVersionEntity.ContentBean.InfoBean updateInfoBean = contentBean.getInfo();
-//                newversion = updateInfoBean.getVersion();
-//                updateList = Arrays.asList(updateInfoBean.getFunc().split("\n|\r"));
-//                downurl = updateInfoBean.getUrl();
-//                int type = contentBean.getType(); //当result为2时有效，1：大版本更新，2：小版本更新
-//                int showUpdate=0;
-//                if (isShowDialog) {  //大版本
-//                    if (type == 1) {
-//                        showUpdate = 1;
+//        if (isShowDialog) {//isShowDialog 为false的时候不做处理，大版本检测更新
+//            if (!TextUtils.isEmpty(result)) {
+//                try {
+//                    UpdateContentEntity updateContentEntity = GsonUtils.gsonToBean(result, UpdateContentEntity.class);
+//                    code = updateContentEntity.getResult();////1：最新版本，2：介于最新和最低版本之间，3：低于支持的最低版本
+//                    List<UpdateContentEntity.InfoBean> infoBeanList = updateContentEntity.getInfo();
+//                    UpdateContentEntity.InfoBean infoBean = infoBeanList.get(0);
+//                    newversion = infoBean.getVersion();
+//                    updateList = infoBean.getFunc();
+//                    downurl = infoBean.getUrl();
+//                    if (!TextUtils.isEmpty(downurl)) {
+//                        showUpdateDialog();
 //                    }
-//                } else {
-//                    showUpdate = 1;
-//                }
-//                if (!TextUtils.isEmpty(downurl) && showUpdate == 1) {
-//                    showUpdateDialog();
-//                }
-//            } catch (Exception e) {
+//                } catch (Exception e) {
 //
+//                }
 //            }
 //        }
+
+        if (!TextUtils.isEmpty(result)) {
+            try {
+                UpdateVersionEntity updateVersionEntity = GsonUtils.gsonToBean(result, UpdateVersionEntity.class);
+                UpdateVersionEntity.ContentBean contentBean = updateVersionEntity.getContent();
+                code = contentBean.getResult();
+                UpdateVersionEntity.ContentBean.InfoBean updateInfoBean = contentBean.getInfo();
+                newversion = updateInfoBean.getVersion();
+                updateList = Arrays.asList(updateInfoBean.getFunc().split("\n|\r"));
+                downurl = updateInfoBean.getUrl();
+                int type = contentBean.getType(); //当result为2时有效，1：大版本更新，2：小版本更新
+                int showUpdate = 0;
+                if (isShowDialog) {  //大版本
+                    if (type == 1) {
+                        showUpdate = 1;
+                    }
+                } else {
+                    showUpdate = 1;
+                }
+                if (!TextUtils.isEmpty(downurl) && showUpdate == 1) {
+                    showUpdateDialog();
+                }
+            } catch (Exception e) {
+
+            }
+        }
     }
 }

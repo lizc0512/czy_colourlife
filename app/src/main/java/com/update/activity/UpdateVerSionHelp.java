@@ -10,9 +10,11 @@ import com.BeeFramework.model.NewHttpResponse;
 import com.nohttp.utils.GsonUtils;
 import com.update.adapter.UpdateAdapter;
 import com.update.entity.UpdateContentEntity;
+import com.update.entity.UpdateVersionEntity;
 import com.update.model.UpdateModel;
 import com.update.service.UpdateService;
 
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -90,62 +92,52 @@ public class UpdateVerSionHelp implements NewHttpResponse {
 
     @Override
     public void OnHttpResponse(int what, String result) {
-        if (isShowDialog) {//isShowDialog 为false的时候不做处理，大版本检测更新
+//        if (isShowDialog) {//isShowDialog 为false的时候不做处理，大版本检测更新
+//            if (!TextUtils.isEmpty(result)) {
+//                try {
+//                    UpdateContentEntity updateContentEntity = GsonUtils.gsonToBean(result, UpdateContentEntity.class);
+//                    code = updateContentEntity.getResult();
+//                    List<UpdateContentEntity.InfoBean> infoBeanList = updateContentEntity.getInfo();
+//                    UpdateContentEntity.InfoBean infoBean = infoBeanList.get(0);
+//                    newversion = infoBean.getVersion();
+//                    updateList = infoBean.getFunc();
+//                    downurl = infoBean.getUrl();
+//                    if (!TextUtils.isEmpty(downurl)) {
+//                        showUpdateDialog();
+//                    }
+//                } catch (Exception e) {
+//                    ToastUtil.toastShow(contexts, "彩之云已经是最新版本");
+//                }
+//            } else {
+//                ToastUtil.toastShow(contexts, "彩之云已经是最新版本");
+//            }
+//        }
+
             if (!TextUtils.isEmpty(result)) {
                 try {
-                  /*  UpdateVersionEntity updateVersionEntity = GsonUtils.gsonToBean(result, UpdateVersionEntity.class);
+                    UpdateVersionEntity updateVersionEntity = GsonUtils.gsonToBean(result, UpdateVersionEntity.class);
                     UpdateVersionEntity.ContentBean contentBean = updateVersionEntity.getContent();
-                    code = contentBean.getUpdate_code();
-                    UpdateVersionEntity.ContentBean.UpdateInfoBean updateInfoBean = contentBean.getUpdate_info();
-                    newversion = updateInfoBean.getNew_version();
-                    updateList = updateInfoBean.getFunc_list();
+                    code = contentBean.getResult();
+                    UpdateVersionEntity.ContentBean.InfoBean updateInfoBean = contentBean.getInfo();
+                    newversion = updateInfoBean.getVersion();
+                    updateList = Arrays.asList(updateInfoBean.getFunc().split("\n|\r"));
                     downurl = updateInfoBean.getUrl();
-                    if (!TextUtils.isEmpty(downurl)) {
-                        showUpdateDialog();
-                    }*/
-                    UpdateContentEntity updateContentEntity = GsonUtils.gsonToBean(result, UpdateContentEntity.class);
-                    code = updateContentEntity.getResult();
-                    List<UpdateContentEntity.InfoBean> infoBeanList = updateContentEntity.getInfo();
-                    UpdateContentEntity.InfoBean infoBean = infoBeanList.get(0);
-                    newversion = infoBean.getVersion();
-                    updateList = infoBean.getFunc();
-                    downurl = infoBean.getUrl();
-                    if (!TextUtils.isEmpty(downurl)) {
+                    int type = contentBean.getType(); //当result为2时有效，1：大版本更新，2：小版本更新
+                    int showUpdate = 0;
+                    if (isShowDialog) {  //大版本
+                        if (type == 1) {
+                            showUpdate = 1;
+                        }
+                    } else {
+                        showUpdate = 1;
+                    }
+                    if (!TextUtils.isEmpty(downurl) && showUpdate == 1) {
                         showUpdateDialog();
                     }
                 } catch (Exception e) {
-                    ToastUtil.toastShow(contexts, "彩之云已经是最新版本");
+
                 }
-            } else {
-                ToastUtil.toastShow(contexts, "彩之云已经是最新版本");
             }
+
         }
-        /*
-        //        if (!TextUtils.isEmpty(result)) {
-//            try {
-//                UpdateVersionEntity updateVersionEntity = GsonUtils.gsonToBean(result, UpdateVersionEntity.class);
-//                UpdateVersionEntity.ContentBean contentBean = updateVersionEntity.getContent();
-//                code = contentBean.getResult();
-//                UpdateVersionEntity.ContentBean.InfoBean updateInfoBean = contentBean.getInfo();
-//                newversion = updateInfoBean.getVersion();
-//                updateList = Arrays.asList(updateInfoBean.getFunc().split("\n|\r"));
-//                downurl = updateInfoBean.getUrl();
-//                int type = contentBean.getType(); //当result为2时有效，1：大版本更新，2：小版本更新
-//                int showUpdate=0;
-//                if (isShowDialog) {  //大版本
-//                    if (type == 1) {
-//                        showUpdate = 1;
-//                    }
-//                } else {
-//                    showUpdate = 1;
-//                }
-//                if (!TextUtils.isEmpty(downurl) && showUpdate == 1) {
-//                    showUpdateDialog();
-//                }
-//            } catch (Exception e) {
-//
-//            }
-//        }
-         */
     }
-}

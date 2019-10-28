@@ -5,7 +5,10 @@
 3,应用的名称
 4.进行爱加密加密
 
-
+门禁调试账号:15220114019   c123467    Z
+15400000011  1234456  Z
+15400000012  1234456  Z
+15400000030
 
 gradlew assembleRelease  执行的是打基础包的操作
 gradlew buildTinkerPatchRelease 执行打补丁包的操作
@@ -107,6 +110,7 @@ view.loadDataWithBaseURL("商户申请H5时提交的授权域名", "<script>wind
     //                    resultCode
     //	                String返回码，标识支付状态，含义如下：
     //	                9000——订单支付成功
+
     //	                8000——正在处理中
     //	                4000——订单支付失败
     //	                5000——重复请求
@@ -137,7 +141,6 @@ view.loadDataWithBaseURL("商户申请H5时提交的授权域名", "<script>wind
     //                jumpByUrls(urls);
     //            }
     //        } else {
-
 
 功能      	  快捷键
 
