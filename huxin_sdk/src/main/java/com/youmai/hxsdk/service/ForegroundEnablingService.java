@@ -15,19 +15,21 @@ public class ForegroundEnablingService extends Service {
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-        if (HuxinService.instance == null) {
-            //throw new RuntimeException(HuxinService.class.getSimpleName() + " not running");
-        } else {
-            //Set both services to foreground using the same notification id, resulting in just one notification
-            startForeground(HuxinService.instance);
-            startForeground(this);
+        try {
+            if (HuxinService.instance == null) {
+                //throw new RuntimeException(HuxinService.class.getSimpleName() + " not running");
+            } else {
+                //Set both services to foreground using the same notification id, resulting in just one notification
+                startForeground(HuxinService.instance);
+                startForeground(this);
+                //Cancel this service's notification, resulting in zero notifications
+                stopForeground(true);
+                //Stop this service so we don't waste RAM.
+                //Must only be called *after* doing the work or the notification won't be hidden.
+                stopSelf();
+            }
+        }catch (Exception e){
 
-            //Cancel this service's notification, resulting in zero notifications
-            stopForeground(true);
-
-            //Stop this service so we don't waste RAM.
-            //Must only be called *after* doing the work or the notification won't be hidden.
-            stopSelf();
         }
 
         return START_NOT_STICKY;
