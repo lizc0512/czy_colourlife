@@ -57,8 +57,18 @@ public class SingleCommunityEntity {
     }
 
     public static class ContentBean {
+        public String getAuthority() {
+            return authority;
+        }
+
+        public void setAuthority(String authority) {
+            this.authority = authority;
+        }
+
+        private String  authority;
         private List<CommonUseBean> common_use;
         private List<NotCommonUseBean> not_common_use;
+        private List<BluetoothBean> bluetooth;
 
         public List<CommonUseBean> getCommon_use() {
             return common_use;
@@ -74,6 +84,14 @@ public class SingleCommunityEntity {
 
         public void setNot_common_use(List<NotCommonUseBean> not_common_use) {
             this.not_common_use = not_common_use;
+        }
+
+        public List<BluetoothBean> getBluetooth() {
+            return bluetooth;
+        }
+
+        public void setBluetooth(List<BluetoothBean> bluetooth) {
+            this.bluetooth = bluetooth;
         }
 
         public static class CommonUseBean implements Serializable{
@@ -245,6 +263,132 @@ public class SingleCommunityEntity {
 
             public void setDoor_img(String door_img) {
                 this.door_img = door_img;
+            }
+        }
+
+        public static class BluetoothBean {
+            /**
+             * id : 1169444541615775746
+             * keyId : HQC8bJT8BwPZk3UKFwTGak
+             * name : 集团总部大门2222
+             * accessId : 1
+             * deviceId : vehyF2isobKHJawXmndhSb
+             * mac : 0081F971CC5F
+             * model : ISH012
+             * protocolVersion : StandardVersion_0
+             * cipherId : 7919FA95231E
+             * isUnit : 0
+             * startTime : 2019-09-05 17:05:48
+             * endTime : 2020-01-06 17:05:48
+             */
+
+            private String id;
+            private String keyId;
+            private String name;
+            private String accessId;
+            private String deviceId;
+            private String mac;
+            private String model;
+            private String protocolVersion;
+            private String cipherId;
+            private String isUnit;
+            private String startTime;
+            private String endTime;
+
+            public String getId() {
+                return id;
+            }
+
+            public void setId(String id) {
+                this.id = id;
+            }
+
+            public String getKeyId() {
+                return keyId;
+            }
+
+            public void setKeyId(String keyId) {
+                this.keyId = keyId;
+            }
+
+            public String getName() {
+                return name;
+            }
+
+            public void setName(String name) {
+                this.name = name;
+            }
+
+            public String getAccessId() {
+                return accessId;
+            }
+
+            public void setAccessId(String accessId) {
+                this.accessId = accessId;
+            }
+
+            public String getDeviceId() {
+                return deviceId;
+            }
+
+            public void setDeviceId(String deviceId) {
+                this.deviceId = deviceId;
+            }
+
+            public String getMac() {
+                return mac;
+            }
+
+            public void setMac(String mac) {
+                this.mac = mac;
+            }
+
+            public String getModel() {
+                return model;
+            }
+
+            public void setModel(String model) {
+                this.model = model;
+            }
+
+            public String getProtocolVersion() {
+                return protocolVersion;
+            }
+
+            public void setProtocolVersion(String protocolVersion) {
+                this.protocolVersion = protocolVersion;
+            }
+
+            public String getCipherId() {
+                return cipherId;
+            }
+
+            public void setCipherId(String cipherId) {
+                this.cipherId = cipherId;
+            }
+
+            public String getIsUnit() {
+                return isUnit;
+            }
+
+            public void setIsUnit(String isUnit) {
+                this.isUnit = isUnit;
+            }
+
+            public String getStartTime() {
+                return startTime;
+            }
+
+            public void setStartTime(String startTime) {
+                this.startTime = startTime;
+            }
+
+            public String getEndTime() {
+                return endTime;
+            }
+
+            public void setEndTime(String endTime) {
+                this.endTime = endTime;
             }
         }
     }

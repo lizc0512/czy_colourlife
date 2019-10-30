@@ -20,6 +20,7 @@ import com.nohttp.entity.BaseContentEntity;
 import com.nohttp.utils.GsonUtils;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import cn.net.cyberway.R;
@@ -119,7 +120,7 @@ public class OrderListFragment extends BaseFragment implements NewHttpResponse {
     //重新筛选月份后当前的fragment直接刷新
     public void resetMonthRefreshData(String startTime) {
         this.startTime = startTime;
-        if(null!=rv_orderlist){
+        if (null != rv_orderlist) {
             rv_orderlist.startHeaderRefresh();
         }
     }
@@ -160,7 +161,11 @@ public class OrderListFragment extends BaseFragment implements NewHttpResponse {
                         }
                         try {
                             OrderListEntity orderListEntity = GsonUtils.gsonToBean(result, OrderListEntity.class);
-                            orderList.addAll(orderListEntity.getContent());
+                            List<OrderListEntity.ContentBean> contentBeanList = orderListEntity.getContent();
+                            if (page == 1 && contentBeanList.isEmpty()) {
+                                ToastUtil.toastShow(getActivity(), "暂无更多订单记录");
+                            }
+                            orderList.addAll(contentBeanList);
                             if (orderListAdapter == null) {
                                 orderListAdapter = new OrderListAdapter(getActivity(), orderList);
                                 rv_orderlist.setAdapter(orderListAdapter);
@@ -168,9 +173,7 @@ public class OrderListFragment extends BaseFragment implements NewHttpResponse {
                                 orderListAdapter.setData(orderList);
                             }
                         } catch (Exception e) {
-//                            if (page > 1) {
-//                                ToastUtil.toastShow(getActivity(), "暂无更多订单记录");
-//                            }
+
                         }
                     } else {
                         ToastUtil.toastShow(getActivity(), baseContentEntity.getMessage());

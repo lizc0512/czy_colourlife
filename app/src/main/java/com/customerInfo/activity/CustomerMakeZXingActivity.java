@@ -6,6 +6,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.support.annotation.Nullable;
@@ -165,7 +166,12 @@ public class CustomerMakeZXingActivity extends BaseActivity implements NewHttpRe
 
     private String getFileRoot(Context context) {
         if (Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED)) {
-            File external = context.getExternalFilesDir(null);
+            File external = null;
+            if (Build.VERSION.SDK_INT >= 29) {
+                external = context.getExternalFilesDir(Environment.DIRECTORY_PICTURES);
+            } else {
+                external = context.getExternalFilesDir(null);
+            }
             if (external != null) {
                 return external.getAbsolutePath();
             }

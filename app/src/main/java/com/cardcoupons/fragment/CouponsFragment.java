@@ -76,7 +76,7 @@ public class CouponsFragment extends Fragment {
     }
 
     public void prepareData() {
-        if (!TextUtils.isEmpty(WEBURL)) {
+        if (!TextUtils.isEmpty(WEBURL) && null != getActivity()) {
             mAgentWeb = AgentWeb.with(this)//传入Activity
                     .setAgentWebParent((FrameLayout) rootView.findViewById(R.id.webview_layout), new RelativeLayout.LayoutParams(-1, -1))
                     .setIndicatorColorWithHeight(Color.parseColor("#01A7FF"), 2)

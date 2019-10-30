@@ -45,6 +45,7 @@ import com.allapp.model.AllAppModel;
 import com.customerInfo.protocol.RealNameTokenEntity;
 import com.dashuview.library.keep.ListenerUtils;
 import com.dashuview.library.keep.MyListener;
+import com.door.activity.NewDoorIndetifyActivity;
 import com.door.entity.SingleCommunityEntity;
 import com.door.model.NewDoorModel;
 import com.eparking.helper.PermissionUtils;
@@ -72,6 +73,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Objects;
@@ -1000,6 +1002,7 @@ public class MainHomeFragmentNew extends Fragment implements NewHttpResponse, My
 
     private ArrayList<SingleCommunityEntity.ContentBean.CommonUseBean> commonUseBeanList = new ArrayList<>();
     private int useDoorSize = 0;
+    private String authority;
 
 
     /***快捷开门模块**/
@@ -1008,12 +1011,16 @@ public class MainHomeFragmentNew extends Fragment implements NewHttpResponse, My
         try {
             commonUseBeanList.clear();
             SingleCommunityEntity.ContentBean contentBean = singleCommunityEntity.getContent();
+            authority = contentBean.getAuthority();
             commonUseBeanList.addAll(contentBean.getCommon_use());
             useDoorSize = commonUseBeanList.size();
             if (useDoorSize == 0) {
                 commonUseBeanList.addAll(addCommmonDoorList(contentBean));
             }
             useDoorSize = commonUseBeanList.size();
+            if (useDoorSize == 0) {
+                commonUseBeanList.addAll(addBlueToothDoorList(contentBean));
+            }
             if (useDoorSize == 0) {
                 SingleCommunityEntity.ContentBean.CommonUseBean singleCommonUse = new SingleCommunityEntity.ContentBean.CommonUseBean();
                 useDoorSize = commonUseBeanList.size();
@@ -1025,6 +1032,22 @@ public class MainHomeFragmentNew extends Fragment implements NewHttpResponse, My
             editor.putString(UserAppConst.COLOR_HOME_USEDOOR, "").apply();
             showExceptionDoorData();
         }
+    }
+
+    private static ArrayList<SingleCommunityEntity.ContentBean.CommonUseBean> addBlueToothDoorList(SingleCommunityEntity.ContentBean contentBean) {
+        ArrayList<SingleCommunityEntity.ContentBean.CommonUseBean> commonUseBeanList = new ArrayList<>();
+        List<SingleCommunityEntity.ContentBean.BluetoothBean> bluetoothBeanList = contentBean.getBluetooth();
+        for (SingleCommunityEntity.ContentBean.BluetoothBean bluetoothBean : bluetoothBeanList) {
+            SingleCommunityEntity.ContentBean.CommonUseBean singleCommonUse = new SingleCommunityEntity.ContentBean.CommonUseBean();
+            singleCommonUse.setDoor_name(bluetoothBean.getName());
+            singleCommonUse.setDoor_id(bluetoothBean.getId());
+            singleCommonUse.setQr_code("");
+            commonUseBeanList.add(singleCommonUse);
+            if (commonUseBeanList.size() == 6) {//只添加6个非常用门禁
+                break;
+            }
+        }
+        return commonUseBeanList;
     }
 
     private void updateDoorView() {
@@ -1173,20 +1196,25 @@ public class MainHomeFragmentNew extends Fragment implements NewHttpResponse, My
                     break;
                 case 5:
                     needRequestNumber++;
+                    //用户的客户经理模块
                     newHomeModel.getHomeModelManager(5, MainHomeFragmentNew.this);
                     break;
                 case 6:
                     needRequestNumber++;
+                    //活动页的banner
                     newHomeModel.getHomeModelBanner(6, MainHomeFragmentNew.this);
                     break;
                 case 7:
                     needRequestNumber++;
+                    //底部的四宫格
                     newHomeModel.getHomeNewAdMsgActivity(7, MainHomeFragmentNew.this);
                     break;
                 case 12:
+                    //用户是否实名
                     newUserModel.getIsRealName(12, MainHomeFragmentNew.this);
                     break;
                 case 14:
+                    //获取乐开的信息
                     newUserModel.getLekaiDoor(14, MainHomeFragmentNew.this);
                     break;
             }
@@ -1199,19 +1227,20 @@ public class MainHomeFragmentNew extends Fragment implements NewHttpResponse, My
         newHomeModel.getHomeModuleFunc(1, MainHomeFragmentNew.this);
     }
 
+    /**头部的资源配置和饭票等余额信息****/
     private void getUserBalance() {
         newHomeModel.getHomeThemeLayout(8, MainHomeFragmentNew.this);
         newHomeModel.getHomeModuleHeader(0, MainHomeFragmentNew.this);
     }
-
+    /**常用的应用****/
     public void updateRecentApp() {
         newHomeModel.getHomeModelApp(2, MainHomeFragmentNew.this);
     }
-
+    /**用户的常用门禁****/
     private void getCommonDoorData() {
-        newDoorModel.getSingleCommunityList(3, community_uuid, false, MainHomeFragmentNew.this);
+        newDoorModel.getCommunityAllDoor(3, community_uuid, false, MainHomeFragmentNew.this);
     }
-
+    /**用户未读的消息通知****/
     private void getNotification() {
         newHomeModel.getHomeModelNotification(4, MainHomeFragmentNew.this);
     }
@@ -1720,8 +1749,13 @@ public class MainHomeFragmentNew extends Fragment implements NewHttpResponse, My
                 }
                 break;
             case R.id.open_door_layout:
-                BuryingPointUtils.uploadClickMethod(getActivity(), BuryingPointUtils.homePageName, BuryingPointUtils.homeDoorCode, "门禁", "10401");
-                LinkParseUtil.parse(getActivity(), "colourlife://proto?type=EntranceGuard", "");
+                if ("0".equals(authority)) {
+                    Intent intent = new Intent(getActivity(), NewDoorIndetifyActivity.class);
+                    startActivity(intent);
+                } else {
+                    BuryingPointUtils.uploadClickMethod(getActivity(), BuryingPointUtils.homePageName, BuryingPointUtils.homeDoorCode, "门禁", "10401");
+                    LinkParseUtil.parse(getActivity(), "colourlife://proto?type=EntranceGuard", "");
+                }
                 break;
             case R.id.notification_layout:
                 String content = "10502" + BuryingPointUtils.divisionSign + "消息通知" + BuryingPointUtils.divisionSign + BuryingPointUtils.homeNotificationCode;

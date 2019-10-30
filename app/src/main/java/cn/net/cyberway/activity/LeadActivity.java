@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Environment;
 import android.support.v4.view.ViewPager;
 import android.view.View;
 import android.widget.TextView;
@@ -84,24 +85,31 @@ public class LeadActivity extends BaseActivity implements View.OnClickListener {
             public void onPageScrollStateChanged(int arg0) {
             }
         });
-
-
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+        int currentSDK_INT=Build.VERSION.SDK_INT;
+        if (currentSDK_INT>= Build.VERSION_CODES.M) {
             List<String> permissionList = new ArrayList<>();
+            if (currentSDK_INT<29){
+                permissionList.add(Manifest.permission.READ_PHONE_STATE);
+            }
             permissionList.add(Manifest.permission.ACCESS_FINE_LOCATION);
-            permissionList.add(Manifest.permission.READ_PHONE_STATE);
             permissionList.add(Manifest.permission.WRITE_EXTERNAL_STORAGE);
             permissionList.add(Manifest.permission.CAMERA);
             permissionList.add(Manifest.permission.RECORD_AUDIO);
             if (AndPermission.hasPermission(LeadActivity.this, permissionList)) {
 
             } else {
-                AndPermission.with(this)
-                        .permission(Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.READ_PHONE_STATE,
-                                Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.CAMERA, Manifest.permission.RECORD_AUDIO)
-                        .start();
+                if (currentSDK_INT<29){  //android10.0以下
+                    AndPermission.with(this)
+                            .permission(Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.READ_PHONE_STATE,
+                                    Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.CAMERA, Manifest.permission.RECORD_AUDIO)
+                            .start();
+                }else{
+                    AndPermission.with(this)
+                            .permission(Manifest.permission.ACCESS_FINE_LOCATION,
+                                    Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.CAMERA, Manifest.permission.RECORD_AUDIO)
+                            .start();
+                }
             }
-
         }
     }
 

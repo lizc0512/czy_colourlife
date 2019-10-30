@@ -136,7 +136,9 @@ public class LekaiHelper {
                 @Override
                 public void syncResponse(int code, String msg) {
                     if (403 == code) {
-                        ((MainActivity) activity).regetLekaiToken();
+                        if (null!=activity){
+                            ((MainActivity) activity).regetLekaiToken();
+                        }
                     }
                 }
 

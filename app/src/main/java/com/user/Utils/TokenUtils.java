@@ -390,26 +390,30 @@ public class TokenUtils {
         if (!shared.contains("UniqueID")) {
             m_szUniqueID = JPushInterface.getRegistrationID(context);
             if (TextUtils.isEmpty(m_szUniqueID)) {
-                String androidId = getAndroirdId(context);
-                String tmDevice = getImeiId(context);
-                String tmSerial = getSimNum(context);
-                String macAddress = getMac();
-                String m_szLongID = androidId + tmDevice + tmSerial + macAddress;
-                MessageDigest m = null;
-                try {
-                    m = MessageDigest.getInstance("MD5");
-                } catch (NoSuchAlgorithmException e) {
-                    e.printStackTrace();
+                if (Build.VERSION.SDK_INT < 29) {
+                    String androidId = getAndroirdId(context);
+                    String tmDevice = getImeiId(context);
+                    String tmSerial = getSimNum(context);
+                    String macAddress = getMac();
+                    String m_szLongID = androidId + tmDevice + tmSerial + macAddress;
+                    MessageDigest m = null;
+                    try {
+                        m = MessageDigest.getInstance("MD5");
+                    } catch (NoSuchAlgorithmException e) {
+                        e.printStackTrace();
+                    }
+                    m.update(m_szLongID.getBytes(), 0, m_szLongID.length());
+                    byte p_md5Data[] = m.digest();
+                    for (int i = 0; i < p_md5Data.length; i++) {
+                        int b = (0xFF & p_md5Data[i]);
+                        if (b <= 0xF)
+                            m_szUniqueID += "0";
+                        m_szUniqueID += Integer.toHexString(b);
+                    }
+                } else {
+                    m_szUniqueID = getNewUUID(context);
                 }
-                m.update(m_szLongID.getBytes(), 0, m_szLongID.length());
-                byte p_md5Data[] = m.digest();
 
-                for (int i = 0; i < p_md5Data.length; i++) {
-                    int b = (0xFF & p_md5Data[i]);
-                    if (b <= 0xF)
-                        m_szUniqueID += "0";
-                    m_szUniqueID += Integer.toHexString(b);
-                }
                 m_szUniqueID = m_szUniqueID.toLowerCase();
                 if (m_szUniqueID.contains("-")) {
                     m_szUniqueID = m_szUniqueID.replace("-", "");
@@ -554,4 +558,51 @@ public class TokenUtils {
         }
         context.startActivity(intent);
     }
+
+
+    /***针对androidQ以后的调整***/
+    public static String getNewUUID(Context context) {
+        String serial = "";
+        String m_szDevIDShort = "35" +
+                Build.BOARD.length() % 10 + Build.BRAND.length() % 10 +
+
+                Build.CPU_ABI.length() % 10 + Build.DEVICE.length() % 10 +
+
+                Build.DISPLAY.length() % 10 + Build.HOST.length() % 10 +
+
+                Build.ID.length() % 10 + Build.MANUFACTURER.length() % 10 +
+
+                Build.MODEL.length() % 10 + Build.PRODUCT.length() % 10 +
+
+                Build.TAGS.length() % 10 + Build.TYPE.length() % 10 +
+
+                Build.USER.length() % 10; //13 位
+
+        try {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                if (ActivityCompat.checkSelfPermission(context, Manifest.permission.READ_PHONE_STATE) != PackageManager.PERMISSION_GRANTED) {
+                    // TODO: Consider calling
+                    //    ActivityCompat#requestPermissions
+                    // here to request the missing permissions, and then overriding
+                    //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+                    //                                          int[] grantResults)
+                    // to handle the case where the user grants the permission. See the documentation
+                    // for ActivityCompat#requestPermissions for more details.
+
+                }else{
+                    serial = android.os.Build.getSerial();
+                }
+            } else {
+                serial = Build.SERIAL;
+            }
+            //API>=9 使用serial号
+            return new UUID(m_szDevIDShort.hashCode(), serial.hashCode()).toString();
+        } catch (Exception exception) {
+            //serial需要一个初始化
+            serial = "serial"; // 随便一个初始化
+        }
+        //使用硬件信息拼凑出来的15位号码
+        return new UUID(m_szDevIDShort.hashCode(), serial.hashCode()).toString();
+    }
+
 }

@@ -9,8 +9,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.door.activity.DoorApplyActivity;
-import com.door.activity.IntelligenceDoorActivity;
 import com.door.activity.NewDoorIndetifyActivity;
 import com.door.entity.SingleCommunityEntity;
 
@@ -60,13 +58,17 @@ public class HomeDoorAdapter extends PagerAdapter {
             @Override
             public void onClick(View v) {
                 if (isLogin) {
-                    String doorQrcode = commonUseBeansBeanList.get(position).getQr_code();
-                    if (TextUtils.isEmpty(doorQrcode)) {
+                    SingleCommunityEntity.ContentBean.CommonUseBean commonUseBean = commonUseBeansBeanList.get(position);
+                    String doorQrcode = commonUseBean.getQr_code();
+                    String doorId = commonUseBean.getDoor_id();
+                    if (TextUtils.isEmpty(doorId)) {  //申请门禁
 //                        Intent intent = new Intent(mContext, DoorApplyActivity.class);
                         Intent intent = new Intent(mContext, NewDoorIndetifyActivity.class);
                         mContext.startActivity(intent);
                     } else {
-                        ((MainActivity) mContext).openDoor(doorQrcode);
+                        if (!TextUtils.isEmpty(doorQrcode)) {  //远程门禁
+                            ((MainActivity) mContext).openDoor(doorQrcode);
+                        }
                     }
                 } else {
                     LinkParseUtil.parse(mContext, "", "");
