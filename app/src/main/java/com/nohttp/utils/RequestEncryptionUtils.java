@@ -278,7 +278,9 @@ public class RequestEncryptionUtils {
         paramsMap.put("nonce_str", getRandomNonceStr());
         paramsMap.put("native_type", 1);
         paramsMap.put("lang", ChangeLanguageHelper.getLanguageType(context));
-        paramsMap.put("version", UpdateVerSion.handleVersionName(UpdateVerSion.getVersionName(context)));
+        if (null!=paramsMap&&!paramsMap.containsKey("version")){
+            paramsMap.put("version", UpdateVerSion.handleVersionName(UpdateVerSion.getVersionName(context)));
+        }
         paramsMap.put("ip", TokenUtils.getIPAddress(context));
         paramsMap.put("OsVersionCode", TokenUtils.getOsVersionCode());
         String buff = "";

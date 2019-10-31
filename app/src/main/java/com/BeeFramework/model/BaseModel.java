@@ -34,6 +34,7 @@ import javax.net.ssl.SSLContext;
 import cn.net.cyberway.R;
 
 import static com.BeeFramework.model.Constants.NEWAPP_ADDRESS;
+import static com.BeeFramework.model.Constants.VERSION_ADDRESS;
 
 
 public class BaseModel {
