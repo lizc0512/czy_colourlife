@@ -220,6 +220,25 @@ public class PayEntity {
                     private String payment_name;
                     private String payment_uuid;
                     private String payment_logo;
+
+                    public String getPay_channel() {
+                        return pay_channel;
+                    }
+
+                    public void setPay_channel(String pay_channel) {
+                        this.pay_channel = pay_channel;
+                    }
+
+                    public String getShow_alert() {
+                        return show_alert;
+                    }
+
+                    public void setShow_alert(String show_alert) {
+                        this.show_alert = show_alert;
+                    }
+
+                    private String pay_channel;
+                    private String show_alert;
                     private int discount;
                     private String amount;
                     private String pay_url;
@@ -323,6 +342,16 @@ public class PayEntity {
                         private String payment_name;
                         private String payment_uuid;
                         private String payment_logo;
+
+                        public String getPay_channel() {
+                            return pay_channel;
+                        }
+
+                        public void setPay_channel(String pay_channel) {
+                            this.pay_channel = pay_channel;
+                        }
+
+                        private String pay_channel;
                         private int discount;
                         private double amount;
                         private String pay_url;
@@ -436,6 +465,25 @@ public class PayEntity {
                     private String payment_name;
                     private String payment_uuid;
                     private String payment_logo;
+
+                    public String getPay_channel() {
+                        return pay_channel;
+                    }
+
+                    public void setPay_channel(String pay_channel) {
+                        this.pay_channel = pay_channel;
+                    }
+
+                    public String getShow_alert() {
+                        return show_alert;
+                    }
+
+                    public void setShow_alert(String show_alert) {
+                        this.show_alert = show_alert;
+                    }
+
+                    private String pay_channel;
+                    private String show_alert;
                     private int discount;
                     private String amount;
                     private String pay_url;
@@ -550,6 +598,25 @@ public class PayEntity {
                     private String payment_logo;
                     private int discount;
                     private String amount;
+
+                    public String getPay_channel() {
+                        return pay_channel;
+                    }
+
+                    public void setPay_channel(String pay_channel) {
+                        this.pay_channel = pay_channel;
+                    }
+
+                    public String getShow_alert() {
+                        return show_alert;
+                    }
+
+                    public void setShow_alert(String show_alert) {
+                        this.show_alert = show_alert;
+                    }
+
+                    private String pay_channel;
+                    private String show_alert;
                     private String pay_url;
                     private int is_native;
                     private int payment_type;

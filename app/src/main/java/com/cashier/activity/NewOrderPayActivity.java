@@ -233,7 +233,7 @@ public class NewOrderPayActivity extends BaseActivity implements View.OnClickLis
                     final int mealpaymentType = listBean.getPayment_type();
                     final int mealNative = listBean.getIs_native();
                     final String mealPayUrl = listBean.getPay_url();
-                    select_ticket_pay.setTag(otherPaymentUUid);
+                    select_ticket_pay.setTag(otherPaymentUUid + "," + listBean.getPay_channel());
                     secondTicketShow.put(mealTypeId, true);
                     secondTicketMap.put(mealTypeId, dataViewList);
                     imageViewList.add(select_ticket_pay);
@@ -260,7 +260,7 @@ public class NewOrderPayActivity extends BaseActivity implements View.OnClickLis
                     pay_type_layout.setVisibility(View.GONE);
                 } else {
                     pay_type_layout.setVisibility(View.VISIBLE);
-                    select_pay_type.setTag(paymentUUid);
+                    select_pay_type.setTag(paymentUUid + "," + payListBean.getPay_channel());
                     imageViewList.add(select_pay_type);
                     if (i == size - 1) {
                         tv_paystyle_view.setVisibility(View.GONE);
@@ -326,7 +326,7 @@ public class NewOrderPayActivity extends BaseActivity implements View.OnClickLis
                     }
                 }
             });
-            select_pay_type.setTag(payListBean.getPayment_uuid());
+            select_pay_type.setTag(payListBean.getPayment_uuid() + "," + payListBean.getPay_channel());
             imageViewList.add(select_pay_type);
             if (i == size - 1) {
                 tv_paystyle_view.setVisibility(View.GONE);
@@ -380,7 +380,7 @@ public class NewOrderPayActivity extends BaseActivity implements View.OnClickLis
                     changePayChannelStatus();
                 }
             });
-            select_pay_type.setTag(payListBean.getPayment_uuid());
+            select_pay_type.setTag(payListBean.getPayment_uuid() + "," + payListBean.getPay_channel());
             imageViewList.add(select_pay_type);
             if (i == size - 1) {
                 tv_paystyle_view.setVisibility(View.GONE);
@@ -585,7 +585,8 @@ public class NewOrderPayActivity extends BaseActivity implements View.OnClickLis
             ToastUtil.toastShow(NewOrderPayActivity.this, "请选择一种支付方式");
         } else {
             if (is_native == 1) {
-                newOrderPayModel.goOrderPay(1, sn, payChannelId, this);
+                int index = payChannelId.indexOf(",");
+                newOrderPayModel.goOrderPay(1, sn, payChannelId.substring(0, index), this);
             } else {
                 LinkParseUtil.parse(NewOrderPayActivity.this, pay_url, "");
             }
@@ -652,9 +653,10 @@ public class NewOrderPayActivity extends BaseActivity implements View.OnClickLis
     }
 
     public void payResultQuery() {
+        int index = payChannelId.indexOf(",");
         Intent intent = new Intent(this, OrderWaitResultActivity.class);
         intent.putExtra(ORDER_SN, sn);
-        intent.putExtra(PAY_CHANNEL, payChannelId);
+        intent.putExtra(PAY_CHANNEL, payChannelId.substring(0, index));
         startActivityForResult(intent, 2000);
     }
 
@@ -666,7 +668,7 @@ public class NewOrderPayActivity extends BaseActivity implements View.OnClickLis
             //支付成功
 //            payResult();
             payResultQuery();
-        }else if (error_code == 1000) {
+        } else if (error_code == 1000) {
             //交易取消
 
         } else if (error_code == 1020) {
@@ -679,7 +681,6 @@ public class NewOrderPayActivity extends BaseActivity implements View.OnClickLis
             }
         }
     }
-
 
 
     private BroadcastReceiverActivity broadcast;
@@ -801,21 +802,21 @@ public class NewOrderPayActivity extends BaseActivity implements View.OnClickLis
                     if (code == 0) {
                         isPay = 1;
                         PayResultEntity payResultEntity = GsonUtils.gsonToBean(result, PayResultEntity.class);
-                        LinkedHashMap<String, Object> publicParams = new LinkedHashMap<String, Object>();
                         Map<String, String> resultMap = GsonUtils.gsonObjectToMaps(payResultEntity.getContent());
-                        publicParams.putAll(resultMap);
-                        PayUtil.getInstance(NewOrderPayActivity.this).createPay(publicParams, Constants.CAIWALLET_ENVIRONMENT);
-
-
-                        //京东支付
-//                        JDPayAuthor jdPayAuthor = new JDPayAuthor();
-//                        String orderId = "";
-//                        String merchant = "";
-//                        String appId = "";
-//                        String sourceStr = "merchant=" + merchant + "&orderId=" + orderId + "&key=" + appId;
-//                        String signData = MD5Util.encode(sourceStr).toLowerCase();
-//                        String extraInfo = "xxxxx";//json数据格式
-//                        jdPayAuthor.author(NewOrderPayActivity.this, orderId, merchant, appId, signData, extraInfo);
+                        if (payChannelId.endsWith("6")) {
+                            //京东支付
+                            JDPayAuthor jdPayAuthor = new JDPayAuthor();
+                            String orderId = resultMap.get("order_id");
+                            String merchant = resultMap.get("merchant");
+                            String appId = "jdjr112025784001";
+                            String signData = resultMap.get("sign_data");
+                            String extraInfo = "";//json数据格式
+                            jdPayAuthor.author(NewOrderPayActivity.this, orderId, merchant, appId, signData, extraInfo);
+                        } else {
+                            LinkedHashMap<String, Object> publicParams = new LinkedHashMap<String, Object>();
+                            publicParams.putAll(resultMap);
+                            PayUtil.getInstance(NewOrderPayActivity.this).createPay(publicParams, Constants.CAIWALLET_ENVIRONMENT);
+                        }
                     } else if (code == 305) {
                         showNoticeDialog(baseContentEntity.getMessage());
                     } else {

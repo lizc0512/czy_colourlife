@@ -3,6 +3,7 @@ package com.agentweb;
 
 import android.os.Build;
 import android.view.View;
+import android.webkit.CookieManager;
 import android.webkit.DownloadListener;
 import android.webkit.WebChromeClient;
 import android.webkit.WebSettings;
@@ -57,6 +58,8 @@ public class WebDefaultSettingsManager implements AgentWebSettings, WebListenerM
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             //适配5.0不允许http和https混合使用情况
             mWebSettings.setMixedContentMode(WebSettings.MIXED_CONTENT_ALWAYS_ALLOW);
+           CookieManager  cookieManager= CookieManager.getInstance();
+           cookieManager.setAcceptThirdPartyCookies(webView,true);
             webView.setLayerType(View.LAYER_TYPE_HARDWARE, null);
         } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
             webView.setLayerType(View.LAYER_TYPE_HARDWARE, null);
