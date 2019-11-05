@@ -107,11 +107,16 @@ public class LinkParseUtil {
                                 ((Activity) context).overridePendingTransition(R.anim.push_right_in, R.anim.push_right_out);
                             }
                             break;
-                        case "EntranceGuard":  //门禁colourlife://proto?type=orderList
+                        case "EntranceGuard":  //门禁colourlife://proto?type=EntranceGuard
                         case "Guard":
 //                            intent = new Intent(context, NewDoorActivity.class);
                             intent = new Intent(context, IntelligenceDoorActivity.class);
                             ((Activity) context).startActivityForResult(intent, 2000);
+                            ((Activity) context).overridePendingTransition(R.anim.push_up_in, R.anim.push_up_out);
+                            break;
+                        case "AuthorizedGuard":  //用户申请后接到消息通知 然后进行授权colourlife://proto?type=AuthorizedGuard
+                            intent = new Intent(context, NewDoorAuthorizeActivity.class);
+                            context.startActivity(intent);
                             ((Activity) context).overridePendingTransition(R.anim.push_up_in, R.anim.push_up_out);
                             break;
                         case "AreaNotive": //旧的消息通知
@@ -126,8 +131,6 @@ public class LinkParseUtil {
                             break;
                         case "Ticket":
                         case "NewTicket"://彩钱包
-                            if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.P) {
-                            }
                             Cqb_PayUtil.getInstance((Activity) context).createPay(Utils.getPublicParams(context), Constants.CAIWALLET_ENVIRONMENT);//彩钱包
                             break;
                         case "OpenColourlifeWallet": // 开通彩钱包

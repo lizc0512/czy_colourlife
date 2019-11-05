@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.BeeFramework.Utils.ToastUtil;
 import com.door.activity.NewDoorIndetifyActivity;
 import com.door.entity.SingleCommunityEntity;
 
@@ -68,6 +69,8 @@ public class HomeDoorAdapter extends PagerAdapter {
                     } else {
                         if (!TextUtils.isEmpty(doorQrcode)) {  //远程门禁
                             ((MainActivity) mContext).openDoor(doorQrcode);
+                        }else{
+                            ToastUtil.toastShow(mContext,"打开蓝牙靠近门禁设备即可感应开门哦～");
                         }
                     }
                 } else {

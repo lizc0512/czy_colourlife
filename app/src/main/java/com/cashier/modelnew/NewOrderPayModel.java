@@ -129,7 +129,7 @@ public class NewOrderPayModel extends BaseModel {
 
     /****去支付订单**/
     public void goOrderPay(int what, String sn, String payment_uuid, final NewHttpResponse newHttpResponse) {
-        Map<String, Object> paramsMap = new HashMap<String, Object>();
+        Map<String, Object> paramsMap = new HashMap<>();
         paramsMap.put("colour_sn", sn);
         paramsMap.put("payment_uuid", payment_uuid);
         paramsMap.put("limit", 1);

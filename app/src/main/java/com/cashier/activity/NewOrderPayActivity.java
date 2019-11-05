@@ -105,8 +105,6 @@ public class NewOrderPayActivity extends BaseActivity implements View.OnClickLis
     private double meal_total = 0; //饭票的
     private double total_fee = 0; //现金的
     private String sn = "";
-    private int payStyle = 0;
-    private int isPay = 0;
 
 
     @Override
@@ -195,7 +193,6 @@ public class NewOrderPayActivity extends BaseActivity implements View.OnClickLis
                             is_native = normalIsNative;
                             pay_url = normalPayUrl;
                             dialogTitle = payment_name;
-                            payStyle = 0;
                             payChannelId = select_pay_type.getTag().toString().trim();
                             changePayChannelStatus();
                         }
@@ -246,7 +243,6 @@ public class NewOrderPayActivity extends BaseActivity implements View.OnClickLis
                                 dialogTitle = payment_name;
                                 is_native = mealNative;
                                 pay_url = mealPayUrl;
-                                payStyle = 0;
                                 payChannelId = select_ticket_pay.getTag().toString().trim();
                                 changePayChannelStatus();
                             }
@@ -310,7 +306,6 @@ public class NewOrderPayActivity extends BaseActivity implements View.OnClickLis
                             is_native = balanceIsNative;
                             pay_url = balancePaymentUrl;
                             dialogTitle = payment_name;
-                            payStyle = 0;
                             payChannelId = select_pay_type.getTag().toString().trim();
                             changePayChannelStatus();
                         }
@@ -320,7 +315,6 @@ public class NewOrderPayActivity extends BaseActivity implements View.OnClickLis
                         is_native = balanceIsNative;
                         pay_url = balancePaymentUrl;
                         dialogTitle = payment_name;
-                        payStyle = 0;
                         payChannelId = select_pay_type.getTag().toString().trim();
                         changePayChannelStatus();
                     }
@@ -375,7 +369,6 @@ public class NewOrderPayActivity extends BaseActivity implements View.OnClickLis
                     is_native = otherNative;
                     pay_url = otherPayUrl;
                     dialogTitle = payment_name;
-                    payStyle = 1;
                     payChannelId = select_pay_type.getTag().toString().trim();
                     changePayChannelStatus();
                 }
@@ -386,9 +379,6 @@ public class NewOrderPayActivity extends BaseActivity implements View.OnClickLis
                 tv_paystyle_view.setVisibility(View.GONE);
             } else {
                 tv_paystyle_view.setVisibility(View.VISIBLE);
-            }
-            if (TextUtils.isEmpty(payChannelId)) {
-                payStyle = 1;
             }
             showStatus(select_pay_type, otherDiscount, otherPayment, otherNative, otherPayUrl, payment_name);
         }
@@ -597,9 +587,9 @@ public class NewOrderPayActivity extends BaseActivity implements View.OnClickLis
     private String errorNotice;
 
     @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {  //支付包,双乾支付
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == 1) {
+        if (requestCode == 1) {//支付包,双乾支付的回调
             if (10010 == resultCode) {
                 // 邻花钱插件返回
                 if (data != null) {
@@ -626,7 +616,7 @@ public class NewOrderPayActivity extends BaseActivity implements View.OnClickLis
                 setResult(200, intent);
                 finish();
             }
-        } else if (com.jdpaysdk.author.Constants.PAY_RESPONSE_CODE == resultCode) {//返回信息接收
+        } else if (com.jdpaysdk.author.Constants.PAY_RESPONSE_CODE == resultCode) {//京东支付返回信息的回调
             String result = data.getStringExtra(JDPayAuthor.JDPAY_RESULT);
             try {
                 JSONObject jsonObject = new JSONObject(result);
@@ -662,8 +652,7 @@ public class NewOrderPayActivity extends BaseActivity implements View.OnClickLis
 
 
     @Override
-    public void onPayResult(int error_code, String message) {  //微信回调的接口
-        payStyle = 0;
+    public void onPayResult(int error_code, String message) {  //双乾微信支付回调
         if (error_code == 200) {
             //支付成功
 //            payResult();
@@ -695,9 +684,6 @@ public class NewOrderPayActivity extends BaseActivity implements View.OnClickLis
         if (!EventBus.getDefault().isregister(NewOrderPayActivity.this)) {
             EventBus.getDefault().register(NewOrderPayActivity.this);
         }
-        if (payStyle == 1 && isPay == 1) {//用户点击返回键
-            showH5PayResultDialog();
-        }
     }
 
     @Override
@@ -716,7 +702,6 @@ public class NewOrderPayActivity extends BaseActivity implements View.OnClickLis
     public void onEvent(Object event) {
         final Message message = (Message) event;
         if (message.what == UserMessageConstant.GUANGCAI_PAY_MSG) {//登录成功刷新数据
-            payStyle = 0;
             showH5PayResultDialog();
         } else if (message.what == UserMessageConstant.NET_CONN_CHANGE) {
             if (NetworkUtil.isConnect(getApplicationContext())) {
@@ -772,7 +757,6 @@ public class NewOrderPayActivity extends BaseActivity implements View.OnClickLis
                             htmlPayDialog.dismiss();
                         }
                     });
-                    isPay = 0;
                 } catch (Exception e) {
 
                 }
@@ -800,17 +784,21 @@ public class NewOrderPayActivity extends BaseActivity implements View.OnClickLis
                 int code = baseContentEntity.getCode();
                 try {
                     if (code == 0) {
-                        isPay = 1;
                         PayResultEntity payResultEntity = GsonUtils.gsonToBean(result, PayResultEntity.class);
-                        Map<String, String> resultMap = GsonUtils.gsonObjectToMaps(payResultEntity.getContent());
+                        String content = payResultEntity.getContent();
+                        Map<String, String> resultMap = GsonUtils.gsonObjectToMaps(content);
+
                         if (payChannelId.endsWith("6")) {
                             //京东支付
                             JDPayAuthor jdPayAuthor = new JDPayAuthor();
                             String orderId = resultMap.get("order_id");
                             String merchant = resultMap.get("merchant");
-                            String appId = "jdjr112025784001";
+                            String appId = "7ad8a3d997994f6c26efee6cb2d27cdb";
                             String signData = resultMap.get("sign_data");
                             String extraInfo = "";//json数据格式
+//                            orderId="1035149011344822515219";
+//                            merchant="22294531";
+//                            signData="5f88c3e61db3365c086b03a5e26a9877";
                             jdPayAuthor.author(NewOrderPayActivity.this, orderId, merchant, appId, signData, extraInfo);
                         } else {
                             LinkedHashMap<String, Object> publicParams = new LinkedHashMap<String, Object>();
