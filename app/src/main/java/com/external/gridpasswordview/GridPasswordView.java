@@ -47,6 +47,7 @@ public class GridPasswordView extends LinearLayout implements PasswordView {
     private int mLineWidth;
     private int mLineColor;
     private int mGridColor;
+    private int lineVisible;
     private Drawable mLineDrawable;
     private Drawable mOuterLineDrawable;
     private int mPasswordLength;
@@ -138,21 +139,23 @@ public class GridPasswordView extends LinearLayout implements PasswordView {
         mInputView.addTextChangedListener(textWatcher);
         mInputView.setDelKeyEventListener(onDelKeyEventListener);
         setCustomAttr(mInputView);
-
         mViewArr[0] = mInputView;
-
         int index = 1;
         while (index < mPasswordLength) {
             View dividerView = inflater.inflate(R.layout.divider, null);
-            LayoutParams dividerParams = new LayoutParams(mLineWidth, LayoutParams.MATCH_PARENT,1);
+            LayoutParams dividerParams = new LayoutParams(mLineWidth, LayoutParams.MATCH_PARENT, 1);
             dividerView.setBackgroundDrawable(mLineDrawable);
             addView(dividerView, dividerParams);
-
-            TextView textView = (TextView) inflater.inflate(R.layout.textview, null);
+            View view = inflater.inflate(R.layout.textview, null);
+            TextView textView = view.findViewById(R.id.gridView_text);
+            View line_view = view.findViewById(R.id.line_view);
+            if (lineVisible == 1) {
+                line_view.setVisibility(View.VISIBLE);
+            } else {
+                line_view.setVisibility(View.GONE);
+            }
             setCustomAttr(textView);
-            LayoutParams textViewParams = new LayoutParams(Util.dp2px(context, 44), Util.dp2px(context, 44));
-            addView(textView, textViewParams);
-
+            addView(view);
             mViewArr[index] = textView;
             index++;
         }
@@ -387,6 +390,10 @@ public class GridPasswordView extends LinearLayout implements PasswordView {
         return mViewArr[0].getTransformationMethod() == null;
     }
 
+    public void setLineVisible(int lineVisible) {
+        this.lineVisible = lineVisible;
+    }
+
     /**
      * Register a callback to be invoked when password changed.
      */
@@ -444,12 +451,14 @@ public class GridPasswordView extends LinearLayout implements PasswordView {
 
         /**
          * Invoked when the password changed.
+         *
          * @param psw new text
          */
         void onTextChanged(String psw);
 
         /**
          * Invoked when the password is at the maximum length.
+         *
          * @param psw complete text
          */
         void onInputFinish(String psw);

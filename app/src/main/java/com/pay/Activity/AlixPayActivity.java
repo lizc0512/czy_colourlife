@@ -2,20 +2,16 @@ package com.pay.Activity;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.text.TextUtils;
-import android.view.KeyEvent;
 import android.widget.Toast;
 
 import com.alipay.sdk.app.PayTask;
 import com.pay.alipay.AlixId;
 import com.pay.alipay.PartnerConfig;
 import com.pay.alipay.Rsa;
-import com.pay.protocol.ORDER_INFO;
 
 import java.lang.ref.WeakReference;
 import java.net.URLEncoder;
@@ -27,55 +23,33 @@ import cn.net.cyberway.R;
  * 
  * 1. 将商户ID，收款帐号，外部订单号，商品名称，商品介绍，价格，通知地址封装成订单信息 2. 对订单信息进行签名 3.
  * 将订单信息，签名，签名方式封装成请求参数 4. 调用pay方法
- * 
- * @version v4_0413 2012-03-02
+ *
  */
 public class AlixPayActivity extends Activity  {
-    private  static String TAG = "AppDemo";
     private ProgressDialog mProgress = null;
-    private ORDER_INFO order_info;
-    public static String  ORDER_INFOMATION = "ORDER_INFOMATION";
-    public static String  PAY_INFOMATION = "PAY_INFOMATION";
     private PartnerConfig partnerConfig;
-    private String        mPayStr;
-
     private static final int SDK_PAY_FLAG = 1;
 
+    public static final String ALIPAY_OUT_TRADE_NO="alipay_out_trade_no";
+    public static final String ALIPAY_SUBJECT="alipay_subject";
+    public static final String ALIPAY_BODY="alipay_body";
+    public static final String ALIPAY_TOTAL_FEE="alipay_total_fee";
 
-    //T+0支付改造
-    public static String PAY_FPINFOMASSAGE = "PAY_FPINFOMASSAGE";
-    public static String FPTAG = "FPTAG";
-    private String mFpPayStr;
-    private String mFChangeMsg;
+    private String out_trade_no;
+    private String subject;
+    private String body;
+    private String total_fee;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        order_info=(ORDER_INFO)getIntent().getSerializableExtra(ORDER_INFOMATION);
         partnerConfig = new PartnerConfig(this);
-
-
-        //T+0
-        mFChangeMsg = getIntent().getStringExtra(FPTAG);
-        if (!TextUtils.isEmpty(mFChangeMsg)){
-            mFpPayStr = (String) getIntent().getSerializableExtra(PAY_FPINFOMASSAGE);
-            if (null != mFpPayStr){
-                fpPerformInfo(mFpPayStr);
-            }else {
-                performPay();
-            }
-        }
-
-
-        mPayStr = (String) getIntent().getSerializableExtra(PAY_INFOMATION);
-        if (null!=mPayStr){
-            performInfo(mPayStr);
-        }
-        else {
-            performPay();
-        }
-
-
+        Intent intent=getIntent();
+        out_trade_no=intent.getStringExtra(ALIPAY_OUT_TRADE_NO);
+        subject=intent.getStringExtra(ALIPAY_SUBJECT);
+        body=intent.getStringExtra(ALIPAY_BODY);
+        total_fee=intent.getStringExtra(ALIPAY_TOTAL_FEE);
+        performPay();
 
     }
 
@@ -93,15 +67,15 @@ public class AlixPayActivity extends Activity  {
         strOrderInfo += "&";
         strOrderInfo += "seller_id=" + "\"" + partnerConfig.SELLER + "\"";
         strOrderInfo += "&";
-        strOrderInfo += "out_trade_no=" + "\"" + order_info.order_sn + "\"";
+        strOrderInfo += "out_trade_no=" + "\"" +out_trade_no + "\"";
         strOrderInfo += "&";
-        strOrderInfo += "subject=" + "\"" + order_info.service_type.title
+        strOrderInfo += "subject=" + "\"" + subject
                 + "\"";
         strOrderInfo += "&";
-        strOrderInfo += "body=" + "\"" + order_info.content.text + "\"";
+        strOrderInfo += "body=" + "\"" +body + "\"";
         strOrderInfo += "&";
         strOrderInfo += "total_fee=" + "\""
-                + order_info.transaction_price + "\"";
+                + total_fee + "\"";
         strOrderInfo += "&";
         strOrderInfo += "notify_url=" + "\""
                 + partnerConfig.ALIPAY_CALLBACK + "\"";
@@ -152,104 +126,8 @@ public class AlixPayActivity extends Activity  {
         return getSignType;
     }
 
-    protected void performInfo(final String info) {
-
-
-
-        // start pay for this order.
-        // 根据订单信息开始进行支付
-        try {
-
-
-            Runnable payRunnable = new Runnable() {
-
-                @Override
-                public void run() {
-                    // 构造PayTask 对象
-                    PayTask alipay = new PayTask(AlixPayActivity.this);
-                    // 调用支付接口，获取支付结果
-                    String result = alipay.pay(info,true);
-
-                    Message msg = new Message();
-                    msg.what = SDK_PAY_FLAG;
-                    msg.obj = result;
-                    mHandler.sendMessage(msg);
-                }
-            };
-
-            // 必须异步调用
-            Thread payThread = new Thread(payRunnable);
-            payThread.start();
-
-        } catch (Exception ex) {
-            Toast.makeText(AlixPayActivity.this, R.string.remote_call_failed,
-                    Toast.LENGTH_SHORT).show();
-        }
-    }
-
-
-    protected void fpPerformInfo(final String info) {
-
-
-
-        // start pay for this order.
-        // 根据订单信息开始进行支付
-        try {
-
-
-            Runnable payRunnable = new Runnable() {
-
-                @Override
-                public void run() {
-                    // 构造PayTask 对象
-                    PayTask alipay = new PayTask(AlixPayActivity.this);
-                    // 调用支付接口，获取支付结果
-                    String result = alipay.pay(info,true);
-
-                    Message msg = new Message();
-                    msg.what = SDK_PAY_FLAG;
-                    msg.obj = result;
-                    mHandler.sendMessage(msg);
-                }
-            };
-
-            // 必须异步调用
-            Thread payThread = new Thread(payRunnable);
-            payThread.start();
-
-        } catch (Exception ex) {
-            Toast.makeText(AlixPayActivity.this, R.string.remote_call_failed,
-                    Toast.LENGTH_SHORT).show();
-        }
-    }
-
-
-
-
 
     protected void performPay() {
-        //
-        // check to see if the MobileSecurePay is already installed.
-        // 检测安全支付服务是否安装
-//        MobileSecurePayHelper mspHelper = new MobileSecurePayHelper(this, order_info);
-//        boolean isMobile_spExist = mspHelper.detectMobile_sp();
-//        if (!isMobile_spExist) {
-//            return;
-//        }
-//
-//        // check some info.
-//        // 检测配置信息
-//        if (!checkInfo()) {
-//            BaseHelper
-//                    .showDialog(
-//                            AlixPayActivity.this,
-//                            getResources().getString(R.string.prompt),
-//                            "缺少partner或者seller，请在src/com/alipay/android/appDemo4/PartnerConfig.java中增加。",
-//                            R.drawable.infoicon);
-//            return;
-//        }
-
-        // start pay for this order.
         // 根据订单信息开始进行支付
         try {
             // prepare the order info.
@@ -261,11 +139,8 @@ public class AlixPayActivity extends Activity  {
             // 对签名进行编码
             strsign = URLEncoder.encode(strsign, "UTF-8");
             // 组装好参数
-            //getOrderInfo
-
             final String info = orderInfo + "&sign=" + "\"" + strsign + "\"" + "&"
                     + getSignType();
-
             Runnable payRunnable = new Runnable() {
 
                 @Override
@@ -274,41 +149,20 @@ public class AlixPayActivity extends Activity  {
                     PayTask alipay = new PayTask(AlixPayActivity.this);
                     // 调用支付接口，获取支付结果
                     String result = alipay.pay(info,true);
-
                     Message msg = new Message();
                     msg.what = SDK_PAY_FLAG;
                     msg.obj = result;
                     mHandler.sendMessage(msg);
                 }
             };
-
             // 必须异步调用
             Thread payThread = new Thread(payRunnable);
             payThread.start();
-
         } catch (Exception ex) {
             Toast.makeText(AlixPayActivity.this, R.string.remote_call_failed,
                     Toast.LENGTH_SHORT).show();
         }
     }
-
-    /**
-     * check some info.the partner,seller etc. 检测配置信息
-     * partnerid商户id，seller收款帐号不能为空
-     *
-     * @return
-     */
-    private boolean checkInfo() {
-        String partner = partnerConfig.PARTNER;
-        String seller = partnerConfig.SELLER;
-        if (partner == null || partner.length() <= 0 || seller == null
-                || seller.length() <= 0)
-            return false;
-
-        return true;
-    }
-
-
 
     private MyHandler mHandler = new MyHandler(this);
 
@@ -330,9 +184,7 @@ public class AlixPayActivity extends Activity  {
                         String ret = (String) msg.obj;
                         activity.closeProgress();
                         activity.payResult(ret);
-
                     }
-
                     default:
                         break;
                 }
@@ -345,9 +197,6 @@ public class AlixPayActivity extends Activity  {
 
 
     private void  payResult(String resultInfo ){
-
-
-
         // 处理交易结果
         try {
             // 获取交易状态码，具体状态代码请参看文档
@@ -356,7 +205,13 @@ public class AlixPayActivity extends Activity  {
             imemoStart += tradeStatus.length();
             int imemoEnd = resultInfo.indexOf("};memo=");
             tradeStatus = resultInfo.substring(imemoStart, imemoEnd);
-            if (tradeStatus.equals("9000"))// 判断交易状态码，只有9000表示交易成功
+            /*  9000——订单支付成功
+    //	                8000——正在处理中
+    //	                4000——订单支付失败
+    //	                5000——重复请求
+    //	                6001——用户中途取消
+    //	                6002——网络连接出错*/
+            if (tradeStatus.equals("9000"))
             {
                 Intent data=new Intent();
                 data.putExtra("pay_result", "success");
@@ -367,40 +222,17 @@ public class AlixPayActivity extends Activity  {
                 data.putExtra("pay_result", "cancel");
                 setResult(Activity.RESULT_OK, data);
                 finish();
-            }
-
-            else {
+            } else {
                 Intent data=new Intent();
                 data.putExtra("pay_result", "fail");
                 setResult(Activity.RESULT_OK, data);
                 finish();
             }
-
         } catch (Exception e) {
             e.printStackTrace();
-//            BaseHelper.showDialog(AlixPayActivity.this, getResources().getString(R.string.prompt), resultInfo,
-//                    R.drawable.infoicon);
         }
     }
 
-	/**
-	 * the OnCancelListener for lephone platform. lephone系统使用到的取消dialog监听
-	 */
-	public static class AlixOnCancelListener implements
-			DialogInterface.OnCancelListener {
-		Activity mcontext;
-
-		public AlixOnCancelListener(Activity context) {
-			mcontext = context;
-		}
-
-		@Override
-		public void onCancel(DialogInterface dialog) {
-			mcontext.onKeyDown(KeyEvent.KEYCODE_BACK, null);
-		}
-	}
-
-	// close the progress bar
 	// 关闭进度框
 	public void closeProgress() {
 		try {
@@ -413,7 +245,6 @@ public class AlixPayActivity extends Activity  {
 		}
 	}
 
-	//
 	@Override
 	public void onDestroy() {
 		super.onDestroy();

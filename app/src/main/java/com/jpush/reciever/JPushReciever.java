@@ -151,7 +151,7 @@ public class JPushReciever extends BroadcastReceiver {
                 JSONObject jsonObject = new JSONObject(extraAlert);
                 if (!jsonObject.isNull("content_type")) {
                     String contentType = jsonObject.optString("content_type");
-                    if (contentType.equals("colourlifeInstant")) {
+                    if ("colourlifeInstant".equals(contentType)) {
                         Message msg = new Message();
                         msg.what = UserMessageConstant.APP_INSTANCE_MSG;
                         msg.obj = jsonObject.optString("single_message");
@@ -280,6 +280,7 @@ public class JPushReciever extends BroadcastReceiver {
             intent.putExtra("command", cmd);
             pi = PendingIntent.getBroadcast(ctx, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
             builder.setContentIntent(pi);
+            mNotifMan= (NotificationManager) aContext.getSystemService(Context.NOTIFICATION_SERVICE);
             Notification notification1 = builder.build();
             mNotifMan.notify(0, notification1);
             Intent data6 = new Intent();

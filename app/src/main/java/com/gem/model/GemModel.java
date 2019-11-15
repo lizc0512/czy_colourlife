@@ -1,29 +1,14 @@
 package com.gem.model;
 
 import android.content.Context;
-import android.content.Intent;
-import android.text.TextUtils;
-import android.view.View;
 import android.widget.ImageView;
 
-import com.BeeFramework.BeeFrameworkApp;
 import com.BeeFramework.Utils.Utils;
-import com.BeeFramework.activity.AdsWebViewActivity;
 import com.BeeFramework.model.BaseModel;
-import com.BeeFramework.model.Constants;
-import com.gem.IsTimeData;
 import com.gem.protocol.HomeconfigGetactivitytipGetApi;
 import com.gem.protocol.HomeconfigGetactivitytipGetResponse;
-import com.nohttp.utils.HttpListener;
-import com.nohttp.utils.RequestEncryptionUtils;
-import com.nostra13.universalimageloader.core.ImageLoader;
-import com.yanzhenjie.nohttp.NoHttp;
-import com.yanzhenjie.nohttp.RequestMethod;
-import com.yanzhenjie.nohttp.rest.Request;
-import com.yanzhenjie.nohttp.rest.Response;
 
 import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.util.HashMap;
 import java.util.Map;

@@ -69,7 +69,6 @@ import com.BeeFramework.protocol.JsAlertEntity;
 import com.BeeFramework.view.CustomDialog;
 import com.about.activity.FeedBackActivity;
 import com.agentweb.AgentWeb;
-import com.agentweb.AgentWebConfig;
 import com.agentweb.AgentWebSettings;
 import com.agentweb.ChromeClientCallbackManager;
 import com.agentweb.ILoader;
@@ -81,9 +80,6 @@ import com.cashier.activity.NewOrderPayActivity;
 import com.customerInfo.activity.CustomerInfoActivity;
 import com.customerInfo.activity.DeliveryAddressListActivity;
 import com.customerInfo.protocol.RealNameTokenEntity;
-import com.dashuview.library.keep.Cqb_PayUtil;
-import com.dashuview.library.keep.ListenerUtils;
-import com.dashuview.library.keep.MyListener;
 import com.external.eventbus.EventBus;
 import com.feed.activity.CreateNormalFeedActivity;
 import com.feed.activity.FeedOrActivityActivity;
@@ -149,7 +145,6 @@ import cn.net.cyberway.R;
 import cn.net.cyberway.activity.MainActivity;
 import cn.net.cyberway.home.service.LekaiParkLockController;
 import cn.net.cyberway.sharesdk.onekeyshare.OnekeyShare;
-import cn.net.cyberway.sharesdk.onekeyshare.ShareContentCustomizeCallback;
 import cn.net.cyberway.sharesdk.onekeyshare.js.ShareSDKUtils;
 import cn.net.cyberway.utils.BuryingPointUtils;
 import cn.net.cyberway.utils.ChangeLanguageHelper;
@@ -170,7 +165,7 @@ import static cn.net.cyberway.utils.BuryingPointUtils.UPLOAD_DETAILS;
 import static com.BeeFramework.Utils.Utils.getAuthPublicParams;
 
 @SuppressLint("SetJavaScriptEnabled")
-public class WebViewActivity extends BaseActivity implements View.OnLongClickListener, OnClickListener, HttpApiResponse, NewHttpResponse, MyListener, LekaiParkLockController.OnScanParkLockChangeListener {
+public class WebViewActivity extends BaseActivity implements View.OnLongClickListener, OnClickListener, HttpApiResponse, NewHttpResponse, LekaiParkLockController.OnScanParkLockChangeListener {
     public static final String WEBURL = "weburl";
     public static final String JUSHURL = "jushurl"; //极光推送过来的url
     public static final String JUSHRESOURCEID = "jushjushresourceidurl"; //极光推送的resourceId
@@ -219,6 +214,7 @@ public class WebViewActivity extends BaseActivity implements View.OnLongClickLis
     private String officialOauthUrl = "https://oauth2czy.colourlife.com";
     private String awardState = "";
     private String finishStatus = "1";
+    private String photoType = "imagepath";
 
     @SuppressLint("AddJavascriptInterface")
     protected void onCreate(Bundle savedInstanceState) {
@@ -288,7 +284,6 @@ public class WebViewActivity extends BaseActivity implements View.OnLongClickLis
         CityManager.getInstance(this).initLocation();
         TCAgent.LOG_ON = true;
         webView.setOnLongClickListener(this);
-        ListenerUtils.setCallBack(this);
     }
 
     private PermissionInterceptor permissionInterceptor = new PermissionInterceptor() {
@@ -586,21 +581,6 @@ public class WebViewActivity extends BaseActivity implements View.OnLongClickLis
                     finish();
                     break;
                 }
-            case 1:
-                try {
-                    ThridBindStatusEntity thridBindStatusEntity = com.nohttp.utils.GsonUtils.gsonToBean(result, ThridBindStatusEntity.class);
-                    ThridBindStatusEntity.ContentBean contentBean = thridBindStatusEntity.getContent();
-                    if (contentBean.getBind_weixin() == 1) {
-                        // wechat已经绑定
-
-                    } else {
-                        Intent intent = new Intent(WebViewActivity.this, UserAccountSaftyActivity.class);
-                        startActivityForResult(intent, BINDWECHAT);
-                    }
-                } catch (Exception e) {
-
-                }
-                break;
             case 2://获取实名认证token
                 try {
                     RealNameTokenEntity entity = com.nohttp.utils.GsonUtils.gsonToBean(result, RealNameTokenEntity.class);
@@ -645,55 +625,6 @@ public class WebViewActivity extends BaseActivity implements View.OnLongClickLis
                 webView.reload();
                 break;
         }
-    }
-
-
-    private String photoType = "imagepath";
-
-    @Override
-    public void authenticationFeedback(String s, int i) {
-        switch (i) {
-            case 14:
-                JSONObject jsonObject = new JSONObject();
-                try {
-                    jsonObject.put("openStatus", 1); //开通彩钱包成功
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-                webView.loadUrl("javascript:window.colourlifeBindCardHandler('" + jsonObject.toString() + "')");
-                break;
-            case 15:
-                JSONObject successJsonObject = new JSONObject();
-                try {
-                    successJsonObject.put("openStatus", 0);  //取消开通彩钱包
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-                webView.loadUrl("javascript:window.colourlifeBindCardHandler('" + successJsonObject.toString() + "')");
-                break;
-            case 16:
-                //外部实名认证成功
-                ToastUtil.toastShow(WebViewActivity.this, "实名认证成功");
-                JSONObject authSuccessJsonObject = new JSONObject();
-                try {
-                    authSuccessJsonObject.put("result", 200);
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-                webView.loadUrl("javascript:window.ColourlifeWalletAuthHandler('" + authSuccessJsonObject.toString() + "')");
-                break;
-            case 17:
-                ToastUtil.toastShow(WebViewActivity.this, "已取消实名认证");
-                break;
-            case 18:
-                ToastUtil.toastShow(WebViewActivity.this, "已实名认证");
-                break;
-        }
-    }
-
-    @Override
-    public void toCFRS(String s) {
-
     }
 
 
@@ -1329,10 +1260,6 @@ public class WebViewActivity extends BaseActivity implements View.OnLongClickLis
                     JSONObject jsonObject = new JSONObject(json);
                     String appid = jsonObject.getString("userName");
                     String path = jsonObject.getString("path");
-//                    if (!jsonObject.isNull("relatedWeChat")) {
-//                        NewUserModel newUserModel = new NewUserModel(WebViewActivity.this);
-//                        newUserModel.getThridBindStatus(1, WebViewActivity.this);
-//                    }
                     if (!TextUtils.isEmpty(appid)) {
                         IWXAPI api = WXAPIFactory.createWXAPI(WebViewActivity.this, Config.WEIXIN_APP_ID);//微信APPID
                         WXLaunchMiniProgram.Req req = new WXLaunchMiniProgram.Req();
@@ -1349,8 +1276,8 @@ public class WebViewActivity extends BaseActivity implements View.OnLongClickLis
         }
 
         @JavascriptInterface
-        public void ColourlifeWalletAuth(String authJson) {
-            Cqb_PayUtil.getInstance(WebViewActivity.this).openCertification(getAuthPublicParams(WebViewActivity.this, authJson), Constants.CAIWALLET_ENVIRONMENT, "CertificationFlag");
+        public void ColourlifeWalletAuth(String authJson) {//彩钱包实名认证
+
         }
 
         @JavascriptInterface

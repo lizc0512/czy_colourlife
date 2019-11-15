@@ -102,7 +102,7 @@ public class LekaiHelper {
      */
     public static void stop(Activity activity) {
         try {
-            if (null != mConn) {
+            if (null != mConn&&activity!=null) {
                 activity.unbindService(mConn);
                 activity.stopService(new Intent(activity, LekaiService.class));
             }

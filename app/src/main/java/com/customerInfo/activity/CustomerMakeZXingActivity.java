@@ -17,7 +17,6 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.BeeFramework.BeeFrameworkApp;
 import com.BeeFramework.Utils.QRCodeUtil;
 import com.BeeFramework.Utils.ThemeStyleHelper;
 import com.BeeFramework.Utils.Utils;
@@ -28,6 +27,7 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.bumptech.glide.request.target.ImageViewTarget;
 import com.external.maxwin.view.XListView;
+import com.nohttp.utils.GlideImageLoader;
 import com.nohttp.utils.GsonUtils;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.user.UserAppConst;
@@ -94,7 +94,7 @@ public class CustomerMakeZXingActivity extends BaseActivity implements NewHttpRe
         }
         tvCommunity.setText(mShared.getString(UserAppConst.Colour_login_community_name, ""));
         String headImgUrl = mShared.getString(UserAppConst.Colour_head_img, "");
-        ImageLoader.getInstance().displayImage(headImgUrl, imgAvatar, BeeFrameworkApp.optionsImage);
+        ImageLoader.getInstance().displayImage(headImgUrl, imgAvatar, GlideImageLoader.optionsImage );
     }
 
     private void initXView() {

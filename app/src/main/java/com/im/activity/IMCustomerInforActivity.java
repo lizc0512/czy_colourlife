@@ -1,7 +1,6 @@
 package com.im.activity;
 
 import android.content.Intent;
-import android.os.Build;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
@@ -11,14 +10,9 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.BeeFramework.Utils.ToastUtil;
-import com.BeeFramework.Utils.Utils;
 import com.BeeFramework.activity.BaseActivity;
-import com.BeeFramework.model.Constants;
 import com.BeeFramework.model.NewHttpResponse;
 import com.alibaba.android.arouter.facade.annotation.Route;
-import com.dashuview.library.keep.Cqb_PayUtil;
-import com.dashuview.library.keep.ListenerUtils;
-import com.dashuview.library.keep.MyListener;
 import com.feed.activity.PersonalFeedActivity;
 import com.im.entity.MobileBookEntity;
 import com.im.model.IMUploadPhoneModel;
@@ -28,8 +22,6 @@ import com.youmai.hxsdk.HuxinSdkManager;
 import com.youmai.hxsdk.router.APath;
 
 import cn.net.cyberway.R;
-
-import static com.BeeFramework.activity.WebViewActivity.SCAN_GIVE_TICKET;
 
 /**
  * @name ${yuansk}
@@ -42,7 +34,7 @@ import static com.BeeFramework.activity.WebViewActivity.SCAN_GIVE_TICKET;
  * @class describe  彩之云注册用户但不是好友的资料
  */
 @Route(path = APath.BUDDY_NOT_FRIEND)
-public class IMCustomerInforActivity extends BaseActivity implements View.OnClickListener, NewHttpResponse, MyListener {
+public class IMCustomerInforActivity extends BaseActivity implements View.OnClickListener, NewHttpResponse {
 
     private ImageView user_top_view_back;
     private TextView user_top_view_title;
@@ -84,7 +76,6 @@ public class IMCustomerInforActivity extends BaseActivity implements View.OnClic
         useruuid = intent.getStringExtra(IMFriendInforActivity.USERUUID);
         IMUploadPhoneModel imUploadPhoneModel = new IMUploadPhoneModel(IMCustomerInforActivity.this);
         imUploadPhoneModel.getUserInforByUuid(0, useruuid, true, this);
-        ListenerUtils.setCallBack(this);
         HuxinSdkManager.instance().getStackAct().addActivity(this);
     }
 
@@ -134,7 +125,7 @@ public class IMCustomerInforActivity extends BaseActivity implements View.OnClic
                 if (TextUtils.isEmpty(mobilePhone)) {
                     ToastUtil.toastShow(IMCustomerInforActivity.this, "被转账人手机号码为空");
                 } else {
-                    Cqb_PayUtil.getInstance(IMCustomerInforActivity.this).skipActivityForFlag(Utils.getPublicParams(IMCustomerInforActivity.this), mobilePhone, SCAN_GIVE_TICKET, Constants.CAIWALLET_ENVIRONMENT);
+
                 }
                 break;
         }
@@ -170,16 +161,6 @@ public class IMCustomerInforActivity extends BaseActivity implements View.OnClic
                 }
                 break;
         }
-    }
-
-    @Override
-    public void authenticationFeedback(String s, int i) {
-        ToastUtil.toastShow(IMCustomerInforActivity.this, s);
-    }
-
-    @Override
-    public void toCFRS(String s) {
-
     }
 
     @Override

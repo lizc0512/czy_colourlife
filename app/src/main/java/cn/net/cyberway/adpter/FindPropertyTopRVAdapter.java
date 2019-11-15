@@ -11,6 +11,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.BeeFramework.BeeFrameworkApp;
+import com.nohttp.utils.GlideImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.user.UserAppConst;
 
@@ -49,7 +50,7 @@ public class FindPropertyTopRVAdapter extends RecyclerView.Adapter<RecyclerView.
     public void onBindViewHolder(RecyclerView.ViewHolder holder, final int position) {
         ((FindTopViewHolder) holder).name.setText(content.get(position).name);
         ((FindTopViewHolder) holder).desc.setText(content.get(position).desc);
-        ImageLoader.getInstance().displayImage(content.get(position).img, ((FindTopViewHolder) holder).img, BeeFrameworkApp.optionsImage);
+        ImageLoader.getInstance().displayImage(content.get(position).img, ((FindTopViewHolder) holder).img, GlideImageLoader.optionsImage );
         ((FindTopViewHolder) holder).rl_findpro_top.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

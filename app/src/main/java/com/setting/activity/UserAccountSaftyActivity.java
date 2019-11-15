@@ -19,6 +19,7 @@ import com.customerInfo.activity.CustomerPwdActivity;
 import com.mob.MobSDK;
 import com.mob.tools.utils.UIHandler;
 import com.nohttp.utils.GsonUtils;
+import com.point.activity.ChangePawdStyleActivity;
 import com.setting.switchButton.SwitchButton;
 import com.user.UserAppConst;
 import com.user.entity.ChangeMobileEntity;
@@ -55,7 +56,7 @@ public class UserAccountSaftyActivity extends BaseActivity implements View.OnCli
     private ImageView user_top_view_back;
     private TextView user_top_view_title;
     private RelativeLayout gesture_pwd_layout;
-    private RelativeLayout pay_pswd_layout;
+    private RelativeLayout change_paypawd_layout;
     private RelativeLayout change_mobile_layout;
     private RelativeLayout logout_phone_layout;
     private String changeMobileUrl;
@@ -85,7 +86,7 @@ public class UserAccountSaftyActivity extends BaseActivity implements View.OnCli
         tv_login_pwd = findViewById(R.id.tv_login_pwd);
         tv_is_setpawd = findViewById(R.id.tv_is_setpawd);
         gesture_pwd_layout = findViewById(R.id.gesture_pwd_layout);
-        pay_pswd_layout = findViewById(R.id.pay_pswd_layout);
+        change_paypawd_layout = findViewById(R.id.change_paypawd_layout);
         change_mobile_layout = findViewById(R.id.change_mobile_layout);
         logout_phone_layout = findViewById(R.id.logout_phone_layout);
         set_pwd_layout = findViewById(R.id.set_pwd_layout);  //为设置密码显示
@@ -96,7 +97,7 @@ public class UserAccountSaftyActivity extends BaseActivity implements View.OnCli
         tv_wechat_status = findViewById(R.id.tv_wechat_status);
         user_top_view_back.setOnClickListener(this);
         gesture_pwd_layout.setOnClickListener(this);
-        pay_pswd_layout.setOnClickListener(this);
+        change_paypawd_layout.setOnClickListener(this);
         change_mobile_layout.setOnClickListener(this);
         logout_phone_layout.setOnClickListener(this);
         ll_auth_manege.setOnClickListener(this);
@@ -185,6 +186,10 @@ public class UserAccountSaftyActivity extends BaseActivity implements View.OnCli
                 if (!TextUtils.isEmpty(loginoutUrl)) {
                     LinkParseUtil.parse(UserAccountSaftyActivity.this, loginoutUrl, "");
                 }
+                break;
+            case R.id.change_paypawd_layout:
+                intent = new Intent(this, ChangePawdStyleActivity.class);
+                startActivity(intent);
                 break;
         }
     }

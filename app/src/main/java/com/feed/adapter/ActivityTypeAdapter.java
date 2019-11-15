@@ -10,6 +10,7 @@ import android.widget.TextView;
 
 import com.BeeFramework.BeeFrameworkApp;
 import com.feed.protocol.ACTIVITY_CATEGORY;
+import com.nohttp.utils.GlideImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoader;
 
 import java.util.List;
@@ -59,14 +60,7 @@ public class ActivityTypeAdapter extends BaseAdapter {
             holder = (ViewHoder) convertView.getTag();
         }
         ACTIVITY_CATEGORY category = mList.get(position);
-
-//        Glide.with(mContext)
-//                .load(category.photo)
-//                .centerCrop()
-//                .placeholder(R.drawable.default_image)
-//                .crossFade()
-//                .into(holder.imageView);
-        ImageLoader.getInstance().displayImage(category.photo,holder.imageView, BeeFrameworkApp.optionsImage);
+        ImageLoader.getInstance().displayImage(category.photo,holder.imageView, GlideImageLoader.optionsImage );
         holder.name.setText(category.name);
         return convertView;
     }

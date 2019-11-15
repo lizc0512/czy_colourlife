@@ -22,8 +22,6 @@ import com.BeeFramework.model.Constants;
 import com.BeeFramework.model.NewHttpResponse;
 import com.customerInfo.activity.CustomerInfoActivity;
 import com.customerInfo.activity.CustomerMakeZXingActivity;
-import com.dashuview.library.keep.ListenerUtils;
-import com.dashuview.library.keep.MyListener;
 import com.external.eventbus.EventBus;
 import com.external.maxwin.view.XListView;
 import com.nohttp.utils.GlideImageLoader;
@@ -61,7 +59,7 @@ import static com.user.UserAppConst.MYPAGESUBMENU;
  * 个人中心
  */
 
-public class ProfileFragment extends Fragment implements View.OnClickListener, MyListener, NewHttpResponse {
+public class ProfileFragment extends Fragment implements View.OnClickListener, NewHttpResponse {
     private View mView;
     private CircleImageView mHeadImg;
     private TextView mUsername;
@@ -221,7 +219,6 @@ public class ProfileFragment extends Fragment implements View.OnClickListener, M
         rl_profile_info.setOnClickListener(this);
         qr_code_layout.setOnClickListener(this);
         TCAgent.onEvent(getActivity(), "203001");
-        ListenerUtils.setCallBack(this);
         refresh_layout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
@@ -332,25 +329,6 @@ public class ProfileFragment extends Fragment implements View.OnClickListener, M
         beanPoint = mShared.getBoolean(UserAppConst.COLOUR_BEAN_SIGN_POINT + customer_id, false);//防止切换用户没变化状态
         MobclickAgent.onPageEnd("我的");
         TCAgent.onPageEnd(getActivity(), "我的");
-    }
-
-    @Override
-    public void authenticationFeedback(String s, int i) {
-        switch (i) {
-            case 14:
-                ToastUtil.toastShow(getActivity(), getResources().getString(R.string.open_wallet_success));
-                break;
-            case 15:
-                ToastUtil.toastShow(getActivity(), getResources().getString(R.string.cancel_open_wallet));
-                break;
-        }
-    }
-
-    @Override
-    public void toCFRS(String s) {
-        if (!TextUtils.isEmpty(s)) {
-            LinkParseUtil.parse(getActivity(), s, "");
-        }
     }
 
 

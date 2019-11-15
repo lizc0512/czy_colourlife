@@ -139,20 +139,22 @@ public class HomeViewUtils {
     /***用户没有常用门禁 但是有非常用门禁**/
     public static ArrayList<SingleCommunityEntity.ContentBean.CommonUseBean> addCommmonDoorList(SingleCommunityEntity.ContentBean contentBean) {
         ArrayList<SingleCommunityEntity.ContentBean.CommonUseBean> commonUseBeanList = new ArrayList<>();
-        List<SingleCommunityEntity.ContentBean.NotCommonUseBean> notCommonUseBeanList = contentBean.getNot_common_use();
-        for (SingleCommunityEntity.ContentBean.NotCommonUseBean notCommonUseBean : notCommonUseBeanList) {
-            SingleCommunityEntity.ContentBean.CommonUseBean singleCommonUse = new SingleCommunityEntity.ContentBean.CommonUseBean();
-            singleCommonUse.setDoor_name(notCommonUseBean.getDoor_name());
-            singleCommonUse.setCommunity_type(notCommonUseBean.getCommunity_type());
-            singleCommonUse.setConnection_type(notCommonUseBean.getConnection_type());
-            singleCommonUse.setDoor_id(notCommonUseBean.getDoor_id());
-            singleCommonUse.setDoor_img(notCommonUseBean.getDoor_img());
-            singleCommonUse.setDoor_type(notCommonUseBean.getDoor_type());
-            singleCommonUse.setPosition(notCommonUseBean.getPosition());
-            singleCommonUse.setQr_code(notCommonUseBean.getQr_code());
-            commonUseBeanList.add(singleCommonUse);
-            if (commonUseBeanList.size() == 6) {//只添加6个非常用门禁
-                break;
+        if (contentBean.getNot_common_use()!=null){
+            List<SingleCommunityEntity.ContentBean.NotCommonUseBean> notCommonUseBeanList = contentBean.getNot_common_use();
+            for (SingleCommunityEntity.ContentBean.NotCommonUseBean notCommonUseBean : notCommonUseBeanList) {
+                SingleCommunityEntity.ContentBean.CommonUseBean singleCommonUse = new SingleCommunityEntity.ContentBean.CommonUseBean();
+                singleCommonUse.setDoor_name(notCommonUseBean.getDoor_name());
+                singleCommonUse.setCommunity_type(notCommonUseBean.getCommunity_type());
+                singleCommonUse.setConnection_type(notCommonUseBean.getConnection_type());
+                singleCommonUse.setDoor_id(notCommonUseBean.getDoor_id());
+                singleCommonUse.setDoor_img(notCommonUseBean.getDoor_img());
+                singleCommonUse.setDoor_type(notCommonUseBean.getDoor_type());
+                singleCommonUse.setPosition(notCommonUseBean.getPosition());
+                singleCommonUse.setQr_code(notCommonUseBean.getQr_code());
+                commonUseBeanList.add(singleCommonUse);
+                if (commonUseBeanList.size() == 6) {//只添加6个非常用门禁
+                    break;
+                }
             }
         }
         return commonUseBeanList;

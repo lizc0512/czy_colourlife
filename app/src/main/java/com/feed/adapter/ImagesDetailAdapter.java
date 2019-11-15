@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 
 import com.BeeFramework.BeeFrameworkApp;
 import com.BeeFramework.view.TouchImageView;
+import com.nohttp.utils.GlideImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoader;
 
 import java.util.List;
@@ -55,7 +56,7 @@ public class ImagesDetailAdapter extends PagerAdapter {
 		String attach = list.get(position);
 		if(attach != null && attach.length() > 0) {
 			holder.mImage.setImageLoadUrl(attach);
-			ImageLoader.getInstance().displayImage(attach, holder.mImage, BeeFrameworkApp.optionsImage);
+			ImageLoader.getInstance().displayImage(attach, holder.mImage, GlideImageLoader.optionsImage );
 			holder.mImage.isDownload(true);
 			holder.mImage.isClickBack(true);
 		} else {

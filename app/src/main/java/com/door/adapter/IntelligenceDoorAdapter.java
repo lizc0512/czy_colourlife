@@ -189,7 +189,6 @@ public class IntelligenceDoorAdapter extends RecyclerView.Adapter<IntelligenceDo
                     switch (model) {
                         case "ISE00":
                         case "ISE02":
-                            holder.tv_pwd.setVisibility(View.VISIBLE);
                             //获取密码
                             holder.tv_pwd.setOnClickListener(v -> ((IntelligenceDoorActivity) mContext).getDevicePwd(item.getDeviceId()));
                             break;
@@ -203,9 +202,11 @@ public class IntelligenceDoorAdapter extends RecyclerView.Adapter<IntelligenceDo
                     } else {
                         long current_millis = System.currentTimeMillis() / 1000;
                         if (stopTime < current_millis) {
+                            holder.tv_pwd.setVisibility(View.GONE);
                             holder.iv_icon.setBackgroundResource(R.drawable.ic_door_bluetooth_timeout);
                             holder.tv_avail_time_to.setText("已过期  有效期至" + TimeUtil.getYearTime(stopTime * 1000, "yyyy-MM-dd"));
                         } else {
+                            holder.tv_pwd.setVisibility(View.VISIBLE);
                             long distanceTime = stopTime - current_millis;
                             if (distanceTime <= 30 * 3600 * 24) {
                                 holder.tv_avail_time_to.setText("快过期  有效期至" + TimeUtil.getYearTime(stopTime * 1000, "yyyy-MM-dd"));

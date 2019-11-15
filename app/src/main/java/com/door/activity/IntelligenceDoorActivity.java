@@ -267,7 +267,6 @@ public class IntelligenceDoorActivity extends BaseFragmentActivity implements Ne
             ll_homedoorpop_apply.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-//                    Intent applyIntent = new Intent(IntelligenceDoorActivity.this, DoorApplyActivity.class);
                     Intent applyIntent = new Intent(IntelligenceDoorActivity.this, NewDoorIndetifyActivity.class);
                     startActivity(applyIntent);
                     popupWindow.dismiss();
@@ -282,7 +281,6 @@ public class IntelligenceDoorActivity extends BaseFragmentActivity implements Ne
                             return;
                         }
                         Intent authorIntent = new Intent(IntelligenceDoorActivity.this, NewDoorAuthorizeActivity.class);
-//                        Intent authorIntent = new Intent(IntelligenceDoorActivity.this, DoorAuthorizationActivity.class);
                         startActivity(authorIntent);
                     } catch (Resources.NotFoundException e) {
                         e.printStackTrace();

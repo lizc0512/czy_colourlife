@@ -19,6 +19,7 @@ import com.BeeFramework.Utils.ThemeStyleHelper;
 import com.BeeFramework.activity.BaseActivity;
 import com.BeeFramework.model.HttpApi;
 import com.BeeFramework.model.HttpApiResponse;
+import com.nohttp.utils.GlideImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.notification.protocol.NotifyGetApi;
 import com.user.UserAppConst;
@@ -237,21 +238,21 @@ public class FindPropertyActivity extends BaseActivity implements HttpApiRespons
                     midurlonename = middle.get(i).name;
                     tv_findpro_mindname.setText(middle.get(i).name);
                     tv_findpro_minddesr.setText(middle.get(i).desc);
-                    ImageLoader.getInstance().displayImage(middle.get(i).img, iv_findpro_midlogo, BeeFrameworkApp.optionsImage);
+                    ImageLoader.getInstance().displayImage(middle.get(i).img, iv_findpro_midlogo, GlideImageLoader.optionsImage );
                 }
                 if (i == 1) {
                     midurltwo = middle.get(i).url;
                     midurltwoname = middle.get(i).name;
                     tv_findpro_midrightname.setText(middle.get(i).name);
                     tv_findpro_midrightdesc.setText(middle.get(i).desc);
-                    ImageLoader.getInstance().displayImage(middle.get(i).img, iv_findpro_midright, BeeFrameworkApp.optionsImage);
+                    ImageLoader.getInstance().displayImage(middle.get(i).img, iv_findpro_midright, GlideImageLoader.optionsImage );
                 }
                 if (i == 2) {
                     midurlthree = middle.get(i).url;
                     midurlthreename = middle.get(i).name;
                     tv_findpro_midbottomname.setText(middle.get(i).name);
                     tv_findpro_midbottomdesc.setText(middle.get(i).desc);
-                    ImageLoader.getInstance().displayImage(middle.get(i).img, iv_findpro_midbottom, BeeFrameworkApp.optionsImage);
+                    ImageLoader.getInstance().displayImage(middle.get(i).img, iv_findpro_midbottom, GlideImageLoader.optionsImage );
                 }
             }
 

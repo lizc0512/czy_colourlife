@@ -306,19 +306,19 @@ public class LekaiService extends Service {
                     }
 
                     @Override
-                    public void connectError(int error, String message) {
+                    public void connectError(int error, String message1) {
 //                        LogUtil.e("LekaiService 下降", "m失败：mac: " + parkDevice.getCipherId() + "error：" + error + "  message：" + message);
                         if (null == mHandler) {
                             mHandler = new Handler(Looper.getMainLooper());
                         }
                         mHandler.post(() -> {
                             try {
-                                ToastUtil.toastShow(getApplicationContext(), message);
+                                ToastUtil.toastShow(getApplicationContext(), message1);
                                 if (null == newUserModel) {
                                     newUserModel = new NewUserModel(LekaiService.this);
                                 }
                                 if (!TextUtils.isEmpty(parkDevice.getCipherId())) {
-                                    newUserModel.uploadOpenDoor(0, parkDevice.getCipherId(), "car", 2, 0 == error ? error + "" : error + "," + message);
+                                    newUserModel.uploadOpenDoor(0, parkDevice.getCipherId(), "car", 2, 0 == error ? error + "" : error + "," + message1);
                                 }
                             } catch (Exception e) {
                                 e.printStackTrace();

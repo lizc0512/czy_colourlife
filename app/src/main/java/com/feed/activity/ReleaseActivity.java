@@ -26,6 +26,7 @@ import com.feed.protocol.ACTIVITY_CATEGORY;
 import com.feed.protocol.VerFeedPublishActivityApi;
 import com.gem.GemConstant;
 import com.gem.util.GemDialogUtil;
+import com.nohttp.utils.GlideImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.tendcloud.tenddata.TCAgent;
 import com.user.UserAppConst;
@@ -227,7 +228,7 @@ public class ReleaseActivity extends BaseActivity implements View.OnClickListene
 
                 mActivityCategory = (ACTIVITY_CATEGORY) data.getSerializableExtra(ACTIVITY_TYPE);
                 if (null != mActivityCategory) {
-                    ImageLoader.getInstance().displayImage(mActivityCategory.photo, mImageViewType, BeeFrameworkApp.optionsImage);
+                    ImageLoader.getInstance().displayImage(mActivityCategory.photo, mImageViewType, GlideImageLoader.optionsImage );
                     mActivityName.setText(mActivityCategory.name);
                 }
             }

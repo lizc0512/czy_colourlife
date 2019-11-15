@@ -28,6 +28,7 @@ public class Constants {
 //    public static final String DOOR_ADDRESS = "https://bluetooth-door.colourlife.com/";
 //    public static final String AUTH_APP_ADDRESS = "https://oauth-czy.colourlife.com/";//授权应用
 //    public static final String CARHUI_ADDRESS = "https://api-caihui.colourlife.com/";//彩惠人生
+//    public static final String ACCOUNT_ADDRESS = "https://account-finance.colourlife.com/";//新版彩钱包
 //    public static final String PAY_WALLET_APPID = "327494513335603200";  //双乾彩钱包和支付
 //    public static final String publicKeyString = "MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQCTFnAR7ORLx0jGzf9Ux1We7yHvRi+kQXKSRmtgBjDCXQzakGm2mrb6EupCkDbUcj4BUs7S7zm/rICQuVNC9fujeJGj"
 //            + "cNWRg0XWVtm90XpbTqfKiXzGDHI9W8aULYZ3of/JJ9lyCyjqjigyCdLBPtQ27gOu"
@@ -57,6 +58,7 @@ public class Constants {
     public static final String DOOR_ADDRESS = "https://bluetoothtest-door.colourlife.com/";//乐开门禁
     public static final String AUTH_APP_ADDRESS = "https://oauth-czytest.colourlife.com/";//授权应用
     public static final String CARHUI_ADDRESS = "https://api-caihuitest.colourlife.com/";//彩惠人生
+    public static final String ACCOUNT_ADDRESS = "https://account-finance-test.colourlife.com/";//新版彩钱包
     public static final String PAY_WALLET_APPID = "323521861252157440";  //双乾彩钱包和支付
     public static final String publicKeyString = "MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQDZDqnWph9LxtD0zgtGAYT" +
             "Tf2jYeV+ni5F1o0w3Fag4OOD1YHCRUCXIsFy+iJYmuPf5vMkZrkoiJmKBfkaIzNlrJZzHzq+LsPQNCF86p1nLsuHbkWNvy" +
@@ -87,6 +89,7 @@ public class Constants {
 //    public static final String DOOR_ADDRESS = "https://bluetoothbeta-door.colourlife.com/";
 //    public static final String AUTH_APP_ADDRESS = "https://oauth-czybeta.colourlife.com/";//授权应用
 //    public static final String CARHUI_ADDRESS = "https://api-caihuibeta.colourlife.com/";//彩惠人生
+//    public static final String ACCOUNT_ADDRESS = "https://account-finance-beta.colourlife.com/";//新版彩钱包
 //    public static final String PAY_WALLET_APPID = "327494513335603200";  //双乾彩钱包和支付
 //    /*****关于nohttp请求日记的保存*****/
 //    public static final String publicKeyString = "MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQCTFnAR7ORLx0jGzf9Ux1We7yHvRi+kQXKSRmtgBjDCXQzakGm2mrb6EupCkDbUcj4BUs7S7zm/rICQuVNC9fujeJGj"

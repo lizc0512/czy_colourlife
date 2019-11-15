@@ -1,5 +1,6 @@
 package com.cashier.activity;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.graphics.Color;
@@ -38,6 +39,7 @@ import com.lhqpay.ewallet.keepIntact.WXPayEntryActivity;
 import com.nohttp.entity.BaseContentEntity;
 import com.nohttp.utils.GlideImageLoader;
 import com.nohttp.utils.GsonUtils;
+import com.pay.Activity.AlixPayActivity;
 import com.popupScreen.PopupScUtils;
 import com.setting.activity.CertificateResultDialog;
 import com.setting.activity.EditDialog;
@@ -46,6 +48,9 @@ import com.tencent.authsdk.AuthConfig;
 import com.tencent.authsdk.AuthSDKApi;
 import com.tencent.authsdk.IDCardInfo;
 import com.tencent.authsdk.callback.IdentityCallback;
+import com.tencent.mm.opensdk.modelpay.PayReq;
+import com.tencent.mm.opensdk.openapi.IWXAPI;
+import com.tencent.mm.opensdk.openapi.WXAPIFactory;
 import com.user.UserAppConst;
 import com.user.UserMessageConstant;
 import com.user.model.NewUserModel;
@@ -64,7 +69,11 @@ import cn.net.cyberway.activity.BroadcastReceiverActivity;
 import cn.net.cyberway.home.entity.PushNotificationEntity;
 import cn.net.cyberway.utils.LinkParseUtil;
 
-import static com.tencent.mm.opensdk.constants.ConstantsAPI.COMMAND_PAY_BY_WX;
+import static com.pay.Activity.AlixPayActivity.ALIPAY_BODY;
+import static com.pay.Activity.AlixPayActivity.ALIPAY_OUT_TRADE_NO;
+import static com.pay.Activity.AlixPayActivity.ALIPAY_SUBJECT;
+import static com.pay.Activity.AlixPayActivity.ALIPAY_TOTAL_FEE;
+import static com.user.UserMessageConstant.WEIXIN_PAY_MSG;
 
 
 /**
@@ -589,7 +598,7 @@ public class NewOrderPayActivity extends BaseActivity implements View.OnClickLis
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == 1) {//支付包,双乾支付的回调
+        if (requestCode == 1) {//彩钱包里面支付包,双乾支付的回调
             if (10010 == resultCode) {
                 // 邻花钱插件返回
                 if (data != null) {
@@ -616,6 +625,18 @@ public class NewOrderPayActivity extends BaseActivity implements View.OnClickLis
                 setResult(200, intent);
                 finish();
             }
+        } else if (requestCode == 10000) {  //彩之云接入支付宝支付的回调
+            if (Activity.RESULT_OK == resultCode) {
+                String result = data.getStringExtra("pay_result");
+                if ("success".equals(result)) {
+                    payResultQuery();
+                } else if ("cancel".equals(result)) {
+                    ToastUtil.toastShow(NewOrderPayActivity.this, "用户取消支付");
+                } else {
+                    ToastUtil.toastShow(NewOrderPayActivity.this, "支付失败");
+                }
+            }
+
         } else if (com.jdpaysdk.author.Constants.PAY_RESPONSE_CODE == resultCode) {//京东支付返回信息的回调
             String result = data.getStringExtra(JDPayAuthor.JDPAY_RESULT);
             try {
@@ -626,7 +647,7 @@ public class NewOrderPayActivity extends BaseActivity implements View.OnClickLis
                     if ("JDP_PAY_SUCCESS".equals(payStatus)) {
                         payResultQuery();
                     } else if ("JDP_PAY_FAIL".equals(payStatus)) {
-                        payResultQuery();
+                        ToastUtil.toastShow(NewOrderPayActivity.this, "支付失败[" + errorCode + "]");
                     } else if ("JDP_PAY_CANCEL".equals(payStatus)) {
                         ToastUtil.toastShow(NewOrderPayActivity.this, "用户取消支付");
                     } else {
@@ -707,7 +728,7 @@ public class NewOrderPayActivity extends BaseActivity implements View.OnClickLis
             if (NetworkUtil.isConnect(getApplicationContext())) {
                 againGetPayList();
             }
-        } else if (message.what == COMMAND_PAY_BY_WX) {
+        } else if (message.what == WEIXIN_PAY_MSG) {
             int payCode = message.arg1;
             if (payCode == 0) {
                 payResultQuery();
@@ -764,6 +785,54 @@ public class NewOrderPayActivity extends BaseActivity implements View.OnClickLis
         }, 500);
     }
 
+
+    //微信支付
+    private void wexinPayOrder(Map<String, String> resultMap) {
+        String appId = resultMap.get("appId");
+        String partnerId = resultMap.get("partnerId");
+        String prepayId = resultMap.get("prepayId");
+        String nonceStr = resultMap.get("nonceStr");
+        String timeStamp = resultMap.get("timeStamp");
+        String packageValue = resultMap.get("packageValue");
+        String sign = resultMap.get("sign");
+        IWXAPI mWeixinAPI = WXAPIFactory.createWXAPI(this, appId);
+        // 将该app注册到微信
+        mWeixinAPI.registerApp(appId);
+        PayReq req = new PayReq();
+        req.appId = appId;
+        req.partnerId = partnerId;
+        req.prepayId = prepayId;
+        req.nonceStr = nonceStr;
+        req.timeStamp =timeStamp;
+        req.packageValue = packageValue;//"Sign=" + packageValue;
+        req.sign = sign;
+        // 在支付之前，如果应用没有注册到微信，应该先调用IWXMsg.registerApp将应用注册到微信
+        mWeixinAPI.sendReq(req);
+    }
+
+
+    //京东支付
+    private void jindongPayOrder(Map<String, String> resultMap) {
+        JDPayAuthor jdPayAuthor = new JDPayAuthor();
+        String orderId = resultMap.get("order_id");
+        String merchant = resultMap.get("merchant");
+        String appId = "7ad8a3d997994f6c26efee6cb2d27cdb";
+        String signData = resultMap.get("sign_data");
+        String extraInfo = "";
+        jdPayAuthor.author(NewOrderPayActivity.this, orderId, merchant, appId, signData, extraInfo);
+    }
+
+    //支付宝支付
+    private void alipayPayOrder(Map<String, String> resultMap) {
+        Intent intent = new Intent(NewOrderPayActivity.this, AlixPayActivity.class);
+        intent.putExtra(ALIPAY_OUT_TRADE_NO,resultMap.get("out_trade_no"));
+        intent.putExtra(ALIPAY_SUBJECT,resultMap.get("subject"));
+        intent.putExtra(ALIPAY_BODY,resultMap.get("body"));
+        intent.putExtra(ALIPAY_TOTAL_FEE,resultMap.get("total_fee"));
+        startActivityForResult(intent, 10000);
+    }
+
+
     @Override
     public void OnHttpResponse(int what, String result) {
         switch (what) {
@@ -787,20 +856,11 @@ public class NewOrderPayActivity extends BaseActivity implements View.OnClickLis
                         PayResultEntity payResultEntity = GsonUtils.gsonToBean(result, PayResultEntity.class);
                         String content = payResultEntity.getContent();
                         Map<String, String> resultMap = GsonUtils.gsonObjectToMaps(content);
-
                         if (payChannelId.endsWith("6")) {
                             //京东支付
-                            JDPayAuthor jdPayAuthor = new JDPayAuthor();
-                            String orderId = resultMap.get("order_id");
-                            String merchant = resultMap.get("merchant");
-                            String appId = "7ad8a3d997994f6c26efee6cb2d27cdb";
-                            String signData = resultMap.get("sign_data");
-                            String extraInfo = "";//json数据格式
-//                            orderId="1035149011344822515219";
-//                            merchant="22294531";
-//                            signData="5f88c3e61db3365c086b03a5e26a9877";
-                            jdPayAuthor.author(NewOrderPayActivity.this, orderId, merchant, appId, signData, extraInfo);
+                            jindongPayOrder(resultMap);
                         } else {
+                            //彩钱包支付
                             LinkedHashMap<String, Object> publicParams = new LinkedHashMap<String, Object>();
                             publicParams.putAll(resultMap);
                             PayUtil.getInstance(NewOrderPayActivity.this).createPay(publicParams, Constants.CAIWALLET_ENVIRONMENT);

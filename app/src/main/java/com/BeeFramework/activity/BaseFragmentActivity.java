@@ -2,7 +2,6 @@ package com.BeeFramework.activity;
 
 import android.annotation.TargetApi;
 import android.app.Activity;
-import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.content.res.Resources;
@@ -26,7 +25,6 @@ import java.lang.reflect.Method;
 import cn.csh.colourful.life.view.imagepicker.view.SystemBarTintManager;
 import cn.jpush.android.api.JPushInterface;
 import cn.net.cyberway.R;
-import cn.net.cyberway.utils.ChangeLanguageHelper;
 
 public class BaseFragmentActivity extends FragmentActivity {
 
@@ -250,17 +248,6 @@ public class BaseFragmentActivity extends FragmentActivity {
         configuration.setToDefaults();
         resources.updateConfiguration(configuration, resources.getDisplayMetrics());
         return resources;
-    }
-
-    @Override
-    protected void attachBaseContext(Context newBase) {
-        SharedPreferences sharedPreferences = newBase.getSharedPreferences(UserAppConst.USERINFO, 0);
-        int language = sharedPreferences.getInt(UserAppConst.CURRENTLANGUAGE, 0);
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-            super.attachBaseContext(ChangeLanguageHelper.updateResourceContext(newBase, language));
-        } else {
-            super.attachBaseContext(newBase);
-        }
     }
 
     protected boolean fastClick() {

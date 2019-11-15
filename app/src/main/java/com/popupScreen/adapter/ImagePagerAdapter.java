@@ -7,8 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
-import com.BeeFramework.BeeFrameworkApp;
-import com.nostra13.universalimageloader.core.ImageLoader;
+import com.nohttp.utils.GlideImageLoader;
 
 import java.util.List;
 
@@ -59,8 +58,7 @@ public class ImagePagerAdapter extends PagerAdapter {
                 }
             }
         });
-
-        ImageLoader.getInstance().displayImage(imageList.get(position), imageView, BeeFrameworkApp.optionsImage);
+        GlideImageLoader.loadImageDisplay(context, imageList.get(position), imageView);
         container.addView(rootView);
         return rootView;
     }

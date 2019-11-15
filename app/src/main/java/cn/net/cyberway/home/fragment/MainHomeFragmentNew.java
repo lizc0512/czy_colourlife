@@ -1,5 +1,6 @@
 package cn.net.cyberway.home.fragment;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -14,6 +15,7 @@ import android.os.Message;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentActivity;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -43,13 +45,12 @@ import com.alibaba.android.vlayout.layout.GridLayoutHelper;
 import com.alibaba.android.vlayout.layout.OnePlusNLayoutHelper;
 import com.allapp.model.AllAppModel;
 import com.customerInfo.protocol.RealNameTokenEntity;
-import com.dashuview.library.keep.ListenerUtils;
-import com.dashuview.library.keep.MyListener;
 import com.door.activity.NewDoorIndetifyActivity;
 import com.door.entity.SingleCommunityEntity;
 import com.door.model.NewDoorModel;
 import com.eparking.helper.PermissionUtils;
 import com.external.eventbus.EventBus;
+import com.google.android.exoplayer2.C;
 import com.nohttp.utils.GlideImageLoader;
 import com.nohttp.utils.GridSpacingItemDecoration;
 import com.nohttp.utils.GsonUtils;
@@ -72,8 +73,8 @@ import com.youmai.hxsdk.im.IMMsgCallback;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.lang.ref.WeakReference;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Objects;
@@ -121,7 +122,7 @@ import static com.youmai.hxsdk.utils.DisplayUtil.getStatusBarHeight;
  * 2017/10/18
  * 新版彩之云5.0新首页
  */
-public class MainHomeFragmentNew extends Fragment implements NewHttpResponse, MyListener, View.OnClickListener, IMMsgCallback {
+public class MainHomeFragmentNew extends Fragment implements NewHttpResponse, View.OnClickListener, IMMsgCallback {
 
     private View mView;
     private SwipeRefreshLayout refresh_layout;
@@ -143,17 +144,18 @@ public class MainHomeFragmentNew extends Fragment implements NewHttpResponse, My
     private ConnectivityManager connectivityManager;
     private int height = 120;
     private String realName = "";
+    private MyHandler handler;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mShared = getActivity().getSharedPreferences(UserAppConst.USERINFO, 0);
         editor = mShared.edit();
+        handler=new MyHandler(getActivity());
         newHomeModel = new NewHomeModel(getActivity());
         newDoorModel = new NewDoorModel(getActivity());
         newUserModel = new NewUserModel(getActivity());
         initNetWorkListener();
-
         LekaiHelper.init(getActivity());
     }
 
@@ -164,7 +166,6 @@ public class MainHomeFragmentNew extends Fragment implements NewHttpResponse, My
         initHeaderView();
         loadCacheData();
         EventBus.getDefault().register(this);
-        ListenerUtils.setCallBack(this);
         return mView;
     }
 
@@ -201,6 +202,9 @@ public class MainHomeFragmentNew extends Fragment implements NewHttpResponse, My
                 connectivityManager.unregisterNetworkCallback(networkCallback);
             }
         }
+        if (null!=handler){
+            handler.removeCallbacksAndMessages(null);
+        }
         LekaiHelper.stop(getActivity());
     }
 
@@ -214,13 +218,6 @@ public class MainHomeFragmentNew extends Fragment implements NewHttpResponse, My
         }
     }
 
-    @Override
-    public void onHiddenChanged(boolean hidden) {
-        super.onHiddenChanged(hidden);
-        if (!hidden) {
-//            ((MainActivity) getActivity()).setHomeStyle(tabColor);
-        }
-    }
 
     private QBadgeView badgeView;
     private QBadgeView headbadgeView;
@@ -1012,7 +1009,9 @@ public class MainHomeFragmentNew extends Fragment implements NewHttpResponse, My
             commonUseBeanList.clear();
             SingleCommunityEntity.ContentBean contentBean = singleCommunityEntity.getContent();
             authority = contentBean.getAuthority();
-            commonUseBeanList.addAll(contentBean.getCommon_use());
+            if (contentBean.getCommon_use()!=null){
+                commonUseBeanList.addAll(contentBean.getCommon_use());
+            }
             useDoorSize = commonUseBeanList.size();
             if (useDoorSize == 0) {
                 commonUseBeanList.addAll(addCommmonDoorList(contentBean));
@@ -1021,6 +1020,7 @@ public class MainHomeFragmentNew extends Fragment implements NewHttpResponse, My
             if (useDoorSize == 0) {
                 commonUseBeanList.addAll(addBlueToothDoorList(contentBean));
             }
+            useDoorSize = commonUseBeanList.size();
             if (useDoorSize == 0) {
                 SingleCommunityEntity.ContentBean.CommonUseBean singleCommonUse = new SingleCommunityEntity.ContentBean.CommonUseBean();
                 useDoorSize = commonUseBeanList.size();
@@ -1036,15 +1036,14 @@ public class MainHomeFragmentNew extends Fragment implements NewHttpResponse, My
 
     private static ArrayList<SingleCommunityEntity.ContentBean.CommonUseBean> addBlueToothDoorList(SingleCommunityEntity.ContentBean contentBean) {
         ArrayList<SingleCommunityEntity.ContentBean.CommonUseBean> commonUseBeanList = new ArrayList<>();
-        List<SingleCommunityEntity.ContentBean.BluetoothBean> bluetoothBeanList = contentBean.getBluetooth();
-        for (SingleCommunityEntity.ContentBean.BluetoothBean bluetoothBean : bluetoothBeanList) {
-            SingleCommunityEntity.ContentBean.CommonUseBean singleCommonUse = new SingleCommunityEntity.ContentBean.CommonUseBean();
-            singleCommonUse.setDoor_name(bluetoothBean.getName());
-            singleCommonUse.setDoor_id(bluetoothBean.getId());
-            singleCommonUse.setQr_code("");
-            commonUseBeanList.add(singleCommonUse);
-            if (commonUseBeanList.size() == 6) {//只添加6个非常用门禁
-                break;
+        if (contentBean.getBluetooth()!=null){
+            List<SingleCommunityEntity.ContentBean.BluetoothBean> bluetoothBeanList = contentBean.getBluetooth();
+            for (SingleCommunityEntity.ContentBean.BluetoothBean bluetoothBean : bluetoothBeanList) {
+                SingleCommunityEntity.ContentBean.CommonUseBean singleCommonUse = new SingleCommunityEntity.ContentBean.CommonUseBean();
+                singleCommonUse.setDoor_name(bluetoothBean.getName());
+                singleCommonUse.setDoor_id(bluetoothBean.getId());
+                singleCommonUse.setQr_code("");
+                commonUseBeanList.add(singleCommonUse);
             }
         }
         return commonUseBeanList;
@@ -1171,55 +1170,65 @@ public class MainHomeFragmentNew extends Fragment implements NewHttpResponse, My
         getFristData();
     }
 
-    private Handler handler = new Handler() {
+    private  class MyHandler extends Handler{
+        public MyHandler(Context context) {
+            reference= new WeakReference<>(context);
+        }
+
+        private WeakReference<Context> reference;
+
         @Override
         public void handleMessage(Message msg) {
             super.handleMessage(msg);
-            switch (msg.what) {
-                case 0:
-                    getLayoutAndFuncModel();
-                    break;
-                case 1:
-                    getUserBalance();
-                    break;
-                case 2:
-                    needRequestNumber++;
-                    updateRecentApp();
-                    break;
-                case 3:
-                    needRequestNumber++;
-                    getCommonDoorData();
-                    break;
-                case 4:
-                    needRequestNumber++;
-                    getNotification();
-                    break;
-                case 5:
-                    needRequestNumber++;
-                    //用户的客户经理模块
-                    newHomeModel.getHomeModelManager(5, MainHomeFragmentNew.this);
-                    break;
-                case 6:
-                    needRequestNumber++;
-                    //活动页的banner
-                    newHomeModel.getHomeModelBanner(6, MainHomeFragmentNew.this);
-                    break;
-                case 7:
-                    needRequestNumber++;
-                    //底部的四宫格
-                    newHomeModel.getHomeNewAdMsgActivity(7, MainHomeFragmentNew.this);
-                    break;
-                case 12:
-                    //用户是否实名
-                    newUserModel.getIsRealName(12, MainHomeFragmentNew.this);
-                    break;
-                case 14:
-                    //获取乐开的信息
-                    newUserModel.getLekaiDoor(14, MainHomeFragmentNew.this);
-                    break;
+            Context context= reference.get();
+            if (null!=context) {
+                switch (msg.what) {
+                    case 0:
+                        getLayoutAndFuncModel();
+                        break;
+                    case 1:
+                        getUserBalance();
+                        break;
+                    case 2:
+                        needRequestNumber++;
+                        updateRecentApp();
+                        break;
+                    case 3:
+                        needRequestNumber++;
+                        getCommonDoorData();
+                        break;
+                    case 4:
+                        needRequestNumber++;
+                        getNotification();
+                        break;
+                    case 5:
+                        needRequestNumber++;
+                        //用户的客户经理模块
+                        newHomeModel.getHomeModelManager(5, MainHomeFragmentNew.this);
+                        break;
+                    case 6:
+                        needRequestNumber++;
+                        //活动页的banner
+                        newHomeModel.getHomeModelBanner(6, MainHomeFragmentNew.this);
+                        break;
+                    case 7:
+                        needRequestNumber++;
+                        //底部的四宫格
+                        newHomeModel.getHomeNewAdMsgActivity(7, MainHomeFragmentNew.this);
+                        break;
+                    case 12:
+                        //用户是否实名
+                        newUserModel.getIsRealName(12, MainHomeFragmentNew.this);
+                        break;
+                    case 14:
+                        //获取乐开的信息
+                        newUserModel.getLekaiDoor(14, MainHomeFragmentNew.this);
+                        break;
+                }
             }
         }
-    };
+    }
+
 
     /***获取layout模块和四宫格数据**/
     private void getLayoutAndFuncModel() {
@@ -1227,20 +1236,31 @@ public class MainHomeFragmentNew extends Fragment implements NewHttpResponse, My
         newHomeModel.getHomeModuleFunc(1, MainHomeFragmentNew.this);
     }
 
-    /**头部的资源配置和饭票等余额信息****/
+    /**
+     * 头部的资源配置和饭票等余额信息
+     ****/
     private void getUserBalance() {
         newHomeModel.getHomeThemeLayout(8, MainHomeFragmentNew.this);
         newHomeModel.getHomeModuleHeader(0, MainHomeFragmentNew.this);
     }
-    /**常用的应用****/
+
+    /**
+     * 常用的应用
+     ****/
     public void updateRecentApp() {
         newHomeModel.getHomeModelApp(2, MainHomeFragmentNew.this);
     }
-    /**用户的常用门禁****/
+
+    /**
+     * 用户的常用门禁
+     ****/
     private void getCommonDoorData() {
         newDoorModel.getCommunityAllDoor(3, community_uuid, false, MainHomeFragmentNew.this);
     }
-    /**用户未读的消息通知****/
+
+    /**
+     * 用户未读的消息通知
+     ****/
     private void getNotification() {
         newHomeModel.getHomeModelNotification(4, MainHomeFragmentNew.this);
     }
@@ -1670,25 +1690,6 @@ public class MainHomeFragmentNew extends Fragment implements NewHttpResponse, My
         }
         questReturnNumber++;
         stopRefresh();
-    }
-
-    @Override
-    public void authenticationFeedback(String s, int i) {
-        switch (i) {
-            case 14:
-                ToastUtil.toastShow(getActivity(), "开通彩钱包成功");
-                break;
-            case 15:
-                ToastUtil.toastShow(getActivity(), "取消彩钱包成功");
-                break;
-        }
-    }
-
-    @Override
-    public void toCFRS(String s) {
-        if (!TextUtils.isEmpty(s)) {
-            LinkParseUtil.parse(getActivity(), s, "");
-        }
     }
 
     @Override

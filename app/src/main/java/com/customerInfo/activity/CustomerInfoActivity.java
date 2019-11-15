@@ -16,8 +16,6 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-
-import com.BeeFramework.BeeFrameworkApp;
 import com.BeeFramework.Utils.ThemeStyleHelper;
 import com.BeeFramework.Utils.ToastUtil;
 import com.BeeFramework.activity.BaseActivity;
@@ -28,6 +26,7 @@ import com.customerInfo.view.CustomerInfoDialog;
 import com.gem.GemConstant;
 import com.gem.util.GemDialogUtil;
 import com.myproperty.activity.MyPropertyActivity;
+import com.nohttp.utils.GlideImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.permission.AndPermission;
 import com.tencent.authsdk.AuthConfig;
@@ -45,7 +44,6 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 
-import cn.csh.colourful.life.utils.GlideImageLoader;
 import cn.csh.colourful.life.utils.GsonUtils;
 import cn.csh.colourful.life.view.imagepicker.ImagePicker;
 import cn.csh.colourful.life.view.imagepicker.bean.ImageItem;
@@ -133,7 +131,7 @@ public class CustomerInfoActivity extends BaseActivity implements View.OnClickLi
 
     private void initPicker() {
         imagePicker = ImagePicker.getInstance();
-        imagePicker.setImageLoader(new GlideImageLoader());   //设置图片加载器
+        imagePicker.setImageLoader( new cn.csh.colourful.life.utils.GlideImageLoader());   //设置图片加载器
         imagePicker.setShowCamera(false);  //显示拍照按钮
         imagePicker.setMultiMode(false);
         imagePicker.setStyle(CropImageView.Style.RECTANGLE);
@@ -192,7 +190,7 @@ public class CustomerInfoActivity extends BaseActivity implements View.OnClickLi
 
     private void initPhoto() {
         String headImgUrl = shared.getString(UserAppConst.Colour_head_img, "");
-        ImageLoader.getInstance().displayImage(headImgUrl, photo_img, BeeFrameworkApp.optionsImage);
+        ImageLoader.getInstance().displayImage(headImgUrl, photo_img, GlideImageLoader.optionsImage );
     }
 
     private void initData() {

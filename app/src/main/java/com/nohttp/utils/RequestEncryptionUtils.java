@@ -5,6 +5,7 @@ import android.content.SharedPreferences;
 import android.text.TextUtils;
 
 import com.BeeFramework.model.Constants;
+import com.eparking.view.cardcamera.global.Constant;
 import com.update.activity.UpdateVerSion;
 import com.user.UserAppConst;
 import com.user.Utils.TokenUtils;
@@ -96,16 +97,16 @@ public class RequestEncryptionUtils {
         switch (type) {
             case 0:
                 String serviceUrl = getCombileMD5(context, urlString, paramsMap);
-                finalUrl = Constants.SERVER_ADDRESS + serviceUrl;
+                finalUrl = Constants.SERVER_ADDRESS + serviceUrl;//旧版combile
                 break;
             case 1:
-                finalUrl = Constants.HOMEAPP_ADDRESS + urlString;
+                finalUrl = Constants.HOMEAPP_ADDRESS + urlString;//4.0的
                 break;
             case 2:
-                finalUrl = Constants.BUSINESS_ADDRESS + urlString;
+                finalUrl = Constants.BUSINESS_ADDRESS + urlString; //收银台
                 break;
             case 3:
-                finalUrl = Constants.USERINFO_ADDRESS + urlString;
+                finalUrl = Constants.USERINFO_ADDRESS + urlString;//用户信息微服务
                 break;
             case 4:
                 finalUrl = Constants.IMAPP_ADDRESS + urlString;//IM通讯相关
@@ -139,6 +140,9 @@ public class RequestEncryptionUtils {
                 break;
             case 14:
                 finalUrl = Constants.VERSION_ADDRESS + urlString;  //版本升级
+                break;
+            case 15:
+                finalUrl=Constants.ACCOUNT_ADDRESS+urlString;//新彩钱包
                 break;
             default:
                 finalUrl = urlString;
@@ -215,6 +219,9 @@ public class RequestEncryptionUtils {
                 break;
             case 15:
                 finalUrl = Constants.DOOR_ADDRESS + urlString;  //蓝牙门禁
+                break;
+            case 16:
+                finalUrl= Constants.ACCOUNT_ADDRESS + urlString;  //新彩钱包
                 break;
             default:
                 finalUrl = urlString;

@@ -162,7 +162,7 @@ public class OrderListFragment extends BaseFragment implements NewHttpResponse {
                         try {
                             OrderListEntity orderListEntity = GsonUtils.gsonToBean(result, OrderListEntity.class);
                             List<OrderListEntity.ContentBean> contentBeanList = orderListEntity.getContent();
-                            if (page == 1 && contentBeanList.isEmpty()) {
+                            if (page > 1 && contentBeanList.isEmpty()) {
                                 ToastUtil.toastShow(getActivity(), "暂无更多订单记录");
                             }
                             orderList.addAll(contentBeanList);

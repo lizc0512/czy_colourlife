@@ -21,6 +21,7 @@ import com.Neighborhood.protocol.FeedPublishShareRequest;
 import com.Neighborhood.protocol.FeedPublishShareResponse;
 import com.external.eventbus.EventBus;
 import com.feed.model.ShareFeedModel;
+import com.nohttp.utils.GlideImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.user.UserAppConst;
 import com.user.UserMessageConstant;
@@ -83,7 +84,7 @@ public class ShareFeedActivity extends BaseActivity implements View.OnClickListe
         mtitle = getIntent().getStringExtra("Title");
         mUrl = getIntent().getStringExtra("Url");
 
-        ImageLoader.getInstance().displayImage(mImgUrl, mImg, BeeFrameworkApp.optionsImage);
+        ImageLoader.getInstance().displayImage(mImgUrl, mImg, GlideImageLoader.optionsImage );
         mTextview.setText(mtitle);
         shareFeedModel = new ShareFeedModel(this);
         ThemeStyleHelper.backTexteFrameLayout(getApplicationContext(), czy_title_layout, mBackText, mTitle, mRightText);

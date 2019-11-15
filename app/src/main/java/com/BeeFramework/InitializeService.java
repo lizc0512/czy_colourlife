@@ -34,7 +34,7 @@ public class InitializeService extends IntentService {
     protected void onHandleIntent(@Nullable Intent intent) {
         try {
             DPAPI.getInstance(getApplicationContext(), null);
-            Stetho.initializeWithDefaults(getApplicationContext());
+//            Stetho.initializeWithDefaults(getApplicationContext());  实时查看数据库
             MobSDK.init(getApplicationContext());
             SobotApi.initSobotSDK(getApplicationContext(), Constants.SMART_SERVICE_KEY, "");
             JPushInterface.setDebugMode(false); // 设置开启日志,发布时请关闭日志

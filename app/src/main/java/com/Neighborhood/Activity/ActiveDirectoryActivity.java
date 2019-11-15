@@ -39,6 +39,7 @@ import com.feed.protocol.REPLY;
 import com.feed.protocol.VerFeedCommentApi;
 import com.feed.protocol.VerFeedLikeApi;
 import com.feed.protocol.VerFeedUnlikeApi;
+import com.nohttp.utils.GlideImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.user.UserAppConst;
 import com.user.UserMessageConstant;
@@ -124,7 +125,7 @@ public class ActiveDirectoryActivity extends BaseActivity implements HttpApiResp
         view = LayoutInflater.from(this).inflate(R.layout.activelist_item, null);
         imageView_head = (ImageView) view.findViewById(R.id.image);
         if (!TextUtils.isEmpty(mFeed.activity_feed_content.activity_categoty.photo)) {
-            ImageLoader.getInstance().displayImage(mFeed.activity_feed_content.activity_categoty.photo, imageView_head, BeeFrameworkApp.optionsImage);
+            ImageLoader.getInstance().displayImage(mFeed.activity_feed_content.activity_categoty.photo, imageView_head, GlideImageLoader.optionsImage);
         }
         imageView_head.setOnClickListener(this);
         xListView.addHeaderView(view);
@@ -436,7 +437,7 @@ public class ActiveDirectoryActivity extends BaseActivity implements HttpApiResp
             if (resultCode == 6) {
                 ACTIVITY_CATEGORY activity_category = (ACTIVITY_CATEGORY) data.getSerializableExtra("data");
                 if (!TextUtils.isEmpty(activity_category.photo)) {
-                    ImageLoader.getInstance().displayImage(activity_category.photo, imageView_head, BeeFrameworkApp.optionsImage);
+                    ImageLoader.getInstance().displayImage(activity_category.photo, imageView_head, GlideImageLoader.optionsImage );
                 }
                 mActiveType = Integer.parseInt(activity_category.id);
                 request.activity_type_id = mActiveType;

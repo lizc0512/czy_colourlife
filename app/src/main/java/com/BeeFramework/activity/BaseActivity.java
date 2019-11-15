@@ -344,14 +344,4 @@ public class BaseActivity extends Activity {
         return true;
     }
 
-    @Override
-    protected void attachBaseContext(Context newBase) {
-        SharedPreferences sharedPreferences = newBase.getSharedPreferences(UserAppConst.USERINFO, 0);
-        int language = sharedPreferences.getInt(UserAppConst.CURRENTLANGUAGE, 0);
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-            super.attachBaseContext(ChangeLanguageHelper.updateResourceContext(newBase, language));
-        } else {
-            super.attachBaseContext(newBase);
-        }
-    }
 }

@@ -4,10 +4,8 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.os.Build;
 import android.text.TextUtils;
 
-import com.BeeFramework.Utils.Utils;
 import com.BeeFramework.activity.WebViewActivity;
 import com.BeeFramework.model.Constants;
 import com.about.activity.AboutActivity;
@@ -18,7 +16,6 @@ import com.cashier.activity.OrderListActivity;
 import com.customerInfo.activity.CustomerColourBeanActivity;
 import com.customerInfo.activity.CustomerInfoActivity;
 import com.customerInfo.activity.DeliveryAddressListActivity;
-import com.dashuview.library.keep.Cqb_PayUtil;
 import com.door.activity.DoorApplyRenewalActivity;
 import com.door.activity.IntelligenceDoorActivity;
 import com.door.activity.NewDoorAuthorizeActivity;
@@ -41,6 +38,7 @@ import com.mycarinfo.activity.MyCarInfoActivity;
 import com.myproperty.activity.MyPropertyActivity;
 import com.notification.activity.ENotificationActivity;
 import com.notification.activity.NotificationActivity;
+import com.point.activity.MyPointActivity;
 import com.scanCode.activity.CaptureActivity;
 import com.setting.activity.SettingActivity;
 import com.sobot.chat.SobotApi;
@@ -130,14 +128,9 @@ public class LinkParseUtil {
                             ((Activity) context).overridePendingTransition(R.anim.push_right_in, R.anim.push_right_out);
                             break;
                         case "Ticket":
-                        case "NewTicket"://彩钱包
-                            Cqb_PayUtil.getInstance((Activity) context).createPay(Utils.getPublicParams(context), Constants.CAIWALLET_ENVIRONMENT);//彩钱包
-                            break;
-                        case "OpenColourlifeWallet": // 开通彩钱包
-                            Cqb_PayUtil.getInstance((Activity) context).openActivityUI(Utils.getPublicParams(context), Constants.CAIWALLET_ENVIRONMENT);//开通彩钱包
-                            break;
-                        case "openZCB"://打开招财宝
-                            Cqb_PayUtil.getInstance((Activity) context).openZCB(Utils.getPublicParams(context), Constants.CAIWALLET_ENVIRONMENT, "zhaocaibao");//进入招财宝
+                        case "NewTicket"://我的积分
+                            intent =new Intent(context, MyPointActivity.class);
+                            context.startActivity(intent);
                             break;
                         case "Invite"://邀请好友
                             intent = new Intent(context, InviteActivity.class);

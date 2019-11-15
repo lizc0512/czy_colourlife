@@ -2,7 +2,6 @@ package com.im.activity;
 
 import android.content.Intent;
 import android.graphics.Color;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
@@ -17,13 +16,9 @@ import android.widget.TextView;
 import com.BeeFramework.Utils.ToastUtil;
 import com.BeeFramework.Utils.Utils;
 import com.BeeFramework.activity.BaseActivity;
-import com.BeeFramework.model.Constants;
 import com.BeeFramework.model.NewHttpResponse;
 import com.BeeFramework.view.Util;
 import com.alibaba.android.arouter.facade.annotation.Route;
-import com.dashuview.library.keep.Cqb_PayUtil;
-import com.dashuview.library.keep.ListenerUtils;
-import com.dashuview.library.keep.MyListener;
 import com.feed.activity.PersonalFeedActivity;
 import com.im.entity.FriendInforEntity;
 import com.im.entity.MobileBookEntity;
@@ -50,7 +45,6 @@ import java.util.List;
 import cn.net.cyberway.R;
 import cn.net.cyberway.view.adapter.BaseRecyclerAdapter;
 
-import static com.BeeFramework.activity.WebViewActivity.SCAN_GIVE_TICKET;
 import static com.youmai.hxsdk.proto.YouMaiBuddy.BuddyOptType.BUDDY_OPT_ADD_BLACKLIST;
 import static com.youmai.hxsdk.proto.YouMaiBuddy.BuddyOptType.BUDDY_OPT_DEL;
 import static com.youmai.hxsdk.proto.YouMaiBuddy.BuddyOptType.BUDDY_OPT_REMOVE_BLACKLIST;
@@ -66,7 +60,7 @@ import static com.youmai.hxsdk.proto.YouMaiBuddy.BuddyOptType.BUDDY_OPT_REMOVE_B
  * @class describe  好友的资料  通过用户的uuid
  */
 @Route(path = APath.BUDDY_FRIEND)
-public class IMFriendInforActivity extends BaseActivity implements View.OnClickListener, NewHttpResponse, MyListener {
+public class IMFriendInforActivity extends BaseActivity implements View.OnClickListener, NewHttpResponse {
     public static final String USERUUID = "useruuid";  //用户的uuid
     private ImageView user_top_view_back;
     private TextView user_top_view_title;
@@ -126,7 +120,6 @@ public class IMFriendInforActivity extends BaseActivity implements View.OnClickL
         useruuid = intent.getStringExtra(IMFriendInforActivity.USERUUID);
         IMUploadPhoneModel imUploadPhoneModel = new IMUploadPhoneModel(IMFriendInforActivity.this);
         imUploadPhoneModel.getUserInforByUuid(0, useruuid, true, this);
-        ListenerUtils.setCallBack(this);
         HuxinSdkManager.instance().getStackAct().addActivity(this);
     }
 
@@ -229,8 +222,8 @@ public class IMFriendInforActivity extends BaseActivity implements View.OnClickL
                 break;
             case R.id.details_community_layout:
                 Intent LiLinIntent = new Intent(this, PersonalFeedActivity.class);
-                LiLinIntent.putExtra(PersonalFeedActivity.USERID,userId);
-                LiLinIntent.putExtra(IMInviteRegisterActivity.USERNAME,username);
+                LiLinIntent.putExtra(PersonalFeedActivity.USERID, userId);
+                LiLinIntent.putExtra(IMInviteRegisterActivity.USERNAME, username);
                 startActivity(LiLinIntent);
                 break;
             case R.id.tv_cancel:
@@ -266,7 +259,7 @@ public class IMFriendInforActivity extends BaseActivity implements View.OnClickL
                 if (TextUtils.isEmpty(mobilePhone)) {
                     ToastUtil.toastShow(IMFriendInforActivity.this, "被转账人手机号码为空");
                 } else {
-                    Cqb_PayUtil.getInstance(IMFriendInforActivity.this).skipActivityForFlag(Utils.getPublicParams(IMFriendInforActivity.this), mobilePhone, SCAN_GIVE_TICKET, Constants.CAIWALLET_ENVIRONMENT);
+
                 }
                 break;
 
@@ -391,7 +384,7 @@ public class IMFriendInforActivity extends BaseActivity implements View.OnClickL
                             nickname = contentBean.getNick_name();
                             portrait = contentBean.getPortrait();
                             gender = contentBean.getGender();
-                            userId=contentBean.getUser_id();
+                            userId = contentBean.getUser_id();
 
                             setUserInfor();
                         }
@@ -419,16 +412,6 @@ public class IMFriendInforActivity extends BaseActivity implements View.OnClickL
             gender = friendInforEntity.getGender();
             setUserInfor();
         }
-    }
-
-    @Override
-    public void authenticationFeedback(String s, int i) {
-        ToastUtil.toastShow(IMFriendInforActivity.this, s);
-    }
-
-    @Override
-    public void toCFRS(String s) {
-
     }
 
     @Override

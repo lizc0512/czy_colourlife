@@ -11,6 +11,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.BeeFramework.BeeFrameworkApp;
+import com.nohttp.utils.GlideImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.user.UserAppConst;
 
@@ -48,7 +49,7 @@ public class FindPropertyBottomRVAdapter extends RecyclerView.Adapter<RecyclerVi
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, final int position) {
         ((MyTicketBottomViewHolder) holder).name.setText(content.get(position).name);
-        ImageLoader.getInstance().displayImage(content.get(position).img, ((MyTicketBottomViewHolder) holder).img, BeeFrameworkApp.optionsImage);
+        ImageLoader.getInstance().displayImage(content.get(position).img, ((MyTicketBottomViewHolder) holder).img, GlideImageLoader.optionsImage );
         ((MyTicketBottomViewHolder) holder).rl_findpro_bottom.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

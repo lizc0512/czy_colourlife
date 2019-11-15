@@ -7,6 +7,7 @@ import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.BeeFramework.Utils.ToastUtil;
@@ -55,13 +56,24 @@ public class HomeDoorAdapter extends PagerAdapter {
         final Context mContext = container.getContext();
         View doorView = LayoutInflater.from(mContext).inflate(R.layout.adapter_usedoor_item, null);
         TextView tv_door_name = doorView.findViewById(R.id.tv_door_name);
+        ImageView iv_door = doorView.findViewById(R.id.iv_door);
+        String doorQrcode = commonUseBean.getQr_code();
+        String doorId = commonUseBean.getDoor_id();
+        if (TextUtils.isEmpty(doorId)) {
+            iv_door.setImageResource(R.drawable.home_key);
+        } else {
+            if (!TextUtils.isEmpty(doorQrcode)) {  //远程门禁
+                iv_door.setImageResource(R.drawable.home_key);
+            } else {
+                iv_door.setImageResource(R.drawable.home_bluetooth);
+            }
+        }
         doorView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (isLogin) {
                     SingleCommunityEntity.ContentBean.CommonUseBean commonUseBean = commonUseBeansBeanList.get(position);
-                    String doorQrcode = commonUseBean.getQr_code();
-                    String doorId = commonUseBean.getDoor_id();
+
                     if (TextUtils.isEmpty(doorId)) {  //申请门禁
 //                        Intent intent = new Intent(mContext, DoorApplyActivity.class);
                         Intent intent = new Intent(mContext, NewDoorIndetifyActivity.class);
@@ -69,8 +81,8 @@ public class HomeDoorAdapter extends PagerAdapter {
                     } else {
                         if (!TextUtils.isEmpty(doorQrcode)) {  //远程门禁
                             ((MainActivity) mContext).openDoor(doorQrcode);
-                        }else{
-                            ToastUtil.toastShow(mContext,"打开蓝牙靠近门禁设备即可感应开门哦～");
+                        } else {
+                            ToastUtil.toastShow(mContext, "打开蓝牙靠近门禁设备即可感应开门哦～");
                         }
                     }
                 } else {

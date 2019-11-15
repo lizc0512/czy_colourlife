@@ -1,0 +1,163 @@
+package com.point.activity;
+
+import android.content.Intent;
+import android.graphics.Color;
+import android.os.Bundle;
+import android.support.v7.widget.LinearLayoutManager;
+import android.view.View;
+import android.widget.ImageView;
+import android.widget.TextView;
+
+import com.BeeFramework.Utils.TimeUtil;
+import com.BeeFramework.activity.BaseActivity;
+import com.BeeFramework.model.NewHttpResponse;
+import com.nohttp.utils.GsonUtils;
+import com.point.adapter.PointTransactionAdapter;
+import com.point.entity.PointTransactionRecordEntity;
+import com.point.model.PointModel;
+import com.yanzhenjie.recyclerview.swipe.SwipeMenuRecyclerView;
+
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.List;
+
+import cn.csh.colourful.life.view.pickview.TimePickerView;
+import cn.net.cyberway.R;
+
+/***
+ * 积分交易的明细
+ */
+public class PointTransactionListActivity extends BaseActivity implements View.OnClickListener, NewHttpResponse {
+    public static final String POINTTITLE = "pointtitle";
+    public static final String POINTTPANO= "pointtpano";
+    private ImageView mBack;
+    private TextView mTitle;
+    private TextView tv_filter_month;
+    private ImageView iv_filter_month;
+    private SwipeMenuRecyclerView rv_transaction;
+    private TimePickerView pvTime;
+    private int page = 1;
+    private PointModel pointModel;
+    private long time_start;
+    private long time_stop;
+    private String pano;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_point_transaction_list);
+        mBack = findViewById(R.id.user_top_view_back);
+        mTitle = findViewById(R.id.user_top_view_title);
+        tv_filter_month = findViewById(R.id.tv_filter_month);
+        iv_filter_month = findViewById(R.id.iv_filter_month);
+        rv_transaction = findViewById(R.id.rv_transaction);
+        iv_filter_month.setOnClickListener(this::onClick);
+        mBack.setOnClickListener(this::onClick);
+        Intent intent = getIntent();
+        mTitle.setText(intent.getStringExtra(POINTTITLE));
+        pano=intent.getStringExtra(POINTTPANO);
+        pointModel = new PointModel(PointTransactionListActivity.this);
+        pointModel.getAccountFlowList(0, page,pano, time_start, time_stop, true, PointTransactionListActivity.this);
+        rv_transaction.setLoadMoreListener(() -> {
+            page++;
+            pointModel.getAccountFlowList(0, page, pano,time_start, time_stop, false, PointTransactionListActivity.this);
+        });
+    }
+
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.user_top_view_back:
+                finish();
+                break;
+            case R.id.iv_filter_month:
+                Calendar selectedDate = Calendar.getInstance();
+                Calendar beforeDate = Calendar.getInstance();
+                int year = selectedDate.get(Calendar.YEAR) - 5;
+                beforeDate.set(Calendar.YEAR, year);
+                pvTime = new TimePickerView.Builder(this, (date, v1) -> {//选中事件回调
+                    time_start = date.getTime() / 1000;
+                    tv_filter_month.setText(TimeUtil.getYearMonthToString(date.getTime()));
+                    Calendar calendar = Calendar.getInstance();
+                    calendar.setTime(date);
+                    int lastDay = calendar.getActualMaximum(Calendar.DAY_OF_MONTH);
+                    calendar.set(Calendar.DAY_OF_MONTH, lastDay);
+                    time_stop = calendar.getTimeInMillis() / 1000 + 24 * 3600 - 1;
+                    pointModel.getAccountFlowList(0, page,pano, time_start, time_stop, true, PointTransactionListActivity.this);
+
+                })
+                        .setType(new boolean[]{true, true, false, false, false, false})
+                        .setCancelText("取消")//取消按钮文字
+                        .setSubmitText("确定")//确认按钮文字
+                        .setContentSize(18)//滚轮文字大小
+                        .setTitleSize(20)//标题文字大小
+                        .setTitleText("选择年月")//标题文字
+                        .setOutSideCancelable(false)//点击屏幕，点在控件外部范围时，是否取消显示
+                        .isCyclic(true)//是否循环滚动
+                        .setTitleColor(Color.parseColor("#333b46"))//标题文字颜色
+                        .setSubmitColor(Color.parseColor("#27a2f0"))//确定按钮文字颜色
+                        .setCancelColor(Color.parseColor("#27a2f0"))//取消按钮文字颜色
+                        .setTitleBgColor(Color.parseColor("#f5f5f5"))//标题背景颜色 Night mode
+                        .setBgColor(Color.parseColor("#ffffff"))//滚轮背景颜色 Night mode
+                        .setDate(selectedDate)// 默认是系统时间*/
+                        .setRangDate(beforeDate, selectedDate)
+                        .setLabel("年", "月", "", "", "", "")
+                        .build();
+                pvTime.show();
+                break;
+        }
+    }
+
+    private List<PointTransactionRecordEntity.ContentBean.ListBean> totalListBean = new ArrayList<>();
+    private PointTransactionAdapter pointTransactionAdapter;
+
+    @Override
+    public void OnHttpResponse(int what, String result) {
+        switch (what) {
+            case 0:
+                try {
+                    PointTransactionRecordEntity pointTransactionRecordEntity = GsonUtils.gsonToBean(result, PointTransactionRecordEntity.class);
+                    PointTransactionRecordEntity.ContentBean contentBean = pointTransactionRecordEntity.getContent();
+                    if (page == 1) {
+                        totalListBean.clear();
+                    }
+                    boolean dataEmpty = false;
+                    boolean moreEmpty = false;
+                    if (null != contentBean) {
+                        List<PointTransactionRecordEntity.ContentBean.ListBean> listBeanList = contentBean.getList();
+                        if (null != listBeanList) {
+                            dataEmpty = true;
+                            totalListBean.addAll(listBeanList);
+                            if (listBeanList.size() < 20) {
+                                moreEmpty = false;
+                            } else {
+                                moreEmpty = true;
+                            }
+                        } else {
+                            dataEmpty = false;
+                            moreEmpty = false;
+                        }
+                    }
+                    if (null == pointTransactionAdapter) {
+                        pointTransactionAdapter = new PointTransactionAdapter(totalListBean);
+                        rv_transaction.setLayoutManager(new LinearLayoutManager(PointTransactionListActivity.this, LinearLayoutManager.VERTICAL, false));
+                        rv_transaction.setAdapter(pointTransactionAdapter);
+                    } else {
+                        pointTransactionAdapter.notifyDataSetChanged();
+                    }
+                    rv_transaction.loadMoreFinish(dataEmpty, moreEmpty);
+                    if (null != pointTransactionAdapter) {
+                        pointTransactionAdapter.setOnItemClickListener(i -> {
+                            Intent intent = new Intent(PointTransactionListActivity.this, PointTransactionDetailsActivity.class);
+                            intent.putExtra(PointTransactionDetailsActivity.POINTTRANSACTIONDETAIL, totalListBean.get(i));
+                            startActivity(intent);
+                        });
+                    }
+                } catch (Exception e) {
+
+                }
+                break;
+        }
+
+    }
+}

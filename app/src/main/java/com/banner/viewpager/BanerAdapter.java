@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 
 import com.BeeFramework.BeeFrameworkApp;
+import com.nohttp.utils.GlideImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.user.UserAppConst;
 
@@ -60,7 +61,7 @@ public class BanerAdapter extends PagerAdapter
         final ATTR banner = list.get(position);
         final int currentPosition = position;
 
-        ImageLoader.getInstance().displayImage(banner.img, holder.image, BeeFrameworkApp.optionsImage);
+        ImageLoader.getInstance().displayImage(banner.img, holder.image, GlideImageLoader.optionsImage );
 //        Glide.with(mContext)
 //                .load(banner.img)
 //                .centerCrop()

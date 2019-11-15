@@ -199,6 +199,7 @@ public class MainActivity extends BaseFragmentActivity implements View.OnClickLi
         HuxinSdkManager.instance().getStackAct().addActivity(this);
         newUserModel = new NewUserModel(MainActivity.this);
         tintManager.setStatusBarTintColor(Color.TRANSPARENT);
+        GlideImageLoader.initImageLoader(getApplicationContext());
     }
 
 

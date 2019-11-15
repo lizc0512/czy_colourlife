@@ -40,6 +40,7 @@ import com.nostra13.universalimageloader.core.assist.QueueProcessingType;
 import com.shell.SdkManager;
 import com.user.UserAppConst;
 import com.user.UserMessageConstant;
+import com.user.Utils.TokenUtils;
 import com.youmai.hxsdk.HuxinSdkManager;
 import com.youmai.hxsdk.ProtoCallback;
 import com.youmai.hxsdk.proto.YouMaiBuddy;
@@ -57,7 +58,6 @@ import cn.net.cyberway.utils.ChangeLanguageHelper;
 public class BeeFrameworkApp extends MultiDexApplication {
     private static BeeFrameworkApp instance;
 
-    public static DisplayImageOptions optionsImage;        // DisplayImageOptions是用于设置图片显示的类
 
     public static BeeFrameworkApp getInstance() {
         if (instance == null) {
@@ -76,46 +76,36 @@ public class BeeFrameworkApp extends MultiDexApplication {
             crashHandler.init(getApplicationContext());
             Intent initialIntent = new Intent(this, InitializeService.class);
             startService(initialIntent);
+            HuxinSdkManager.instance().init(getApplicationContext());
+            HuxinSdkManager.instance().setHomeAct(MainActivity.class);
+            IMGreenDaoManager.instance(getApplicationContext());
+            HuxinSdkManager.instance().regeditCommonPushMsg(new ProtoCallback.BuddyNotify() {
+                @Override
+                public void result(YouMaiBuddy.IMOptBuddyNotify notify) {
+                    String srcUuid = notify.getSrcUserId();
+                    String dstUuid = notify.getDestUserId();
+                    String optRemark = notify.getOptRemark();
+                    String nickName = notify.getNickname();
+                    String userName = notify.getUsername();
+                    String avatar = notify.getAvatar();
+                    YouMaiBuddy.BuddyOptType type = notify.getOptType();
+                    addFriendNotify(srcUuid, dstUuid, optRemark, nickName, userName, avatar, type);
+                }
+            });
+            OneKeyLoginManager.getInstance().init(getApplicationContext(), "DbBj26Nj", "DOMYqkZR", new InitListener() {
+                @Override
+                public void getInitStatus(int code, String result) {
+
+
+                }
+            });
         } catch (Exception e) {
 
         }
-        initImageLoader(getApplicationContext());
-        initLoaderOptions();
-        HuxinSdkManager.instance().init(getApplicationContext());
-        HuxinSdkManager.instance().setHomeAct(MainActivity.class);
-        IMGreenDaoManager.instance(getApplicationContext());
-        HuxinSdkManager.instance().regeditCommonPushMsg(new ProtoCallback.BuddyNotify() {
-            @Override
-            public void result(YouMaiBuddy.IMOptBuddyNotify notify) {
-                String srcUuid = notify.getSrcUserId();
-                String dstUuid = notify.getDestUserId();
-                String optRemark = notify.getOptRemark();
-                String nickName = notify.getNickname();
-                String userName = notify.getUsername();
-                String avatar = notify.getAvatar();
-                YouMaiBuddy.BuddyOptType type = notify.getOptType();
-                addFriendNotify(srcUuid, dstUuid, optRemark, nickName, userName, avatar, type);
-            }
-        });
-        OneKeyLoginManager.getInstance().setDebug(true);
-        OneKeyLoginManager.getInstance().init(getApplicationContext(), "DbBj26Nj", "DOMYqkZR", new InitListener() {
-            @Override
-            public void getInitStatus(int code, String result) {
-
-
-            }
-        });
         registerActivityLifecycleCallbacks(new ActivityLifecycleListener());
         closeAndroidPDialog();
     }
 
-
-    /**
-     * 数位 保留 场景识别
-     */
-//    private void initSWLocation() {
-//        SWLocationClient.initialization(this, true);
-//    }
     private void addFriendNotify(String srcUuid, String dstUuid, String optRemark, String nickName, String userName, String avatar, YouMaiBuddy.BuddyOptType type) {
         if (type == YouMaiBuddy.BuddyOptType.BUDDY_OPT_ADD_REQ) { //请求添加好友
             if (!srcUuid.equals(dstUuid)) {  //过滤自己申请添加自己为好友的记录
@@ -221,29 +211,6 @@ public class BeeFrameworkApp extends MultiDexApplication {
         }
     }
 
-    /***初始化imageloader的options***/
-    private void initLoaderOptions() {
-        optionsImage = new DisplayImageOptions.Builder()
-                .showImageOnLoading(R.drawable.default_image)            // 设置图片下载期间显示的图片
-                .showImageForEmptyUri(R.drawable.default_image)    // 设置图片Uri为空或是错误的时候显示的图片
-                .showImageOnFail(R.drawable.default_image)        // 设置图片加载或解码过程中发生错误显示的图片
-                .cacheInMemory(true)                        // 设置下载的图片是否缓存在内存中*
-                .cacheOnDisk(true)                            // 设置下载的图片是否缓存在SD卡中
-                .bitmapConfig(Bitmap.Config.RGB_565)
-                .build();
-    }
-
-    public void initImageLoader(Context context) {
-        ImageLoaderConfiguration config = new ImageLoaderConfiguration.Builder(context)
-                .threadPriority(Thread.NORM_PRIORITY - 2)//设置线程的优先级
-                .threadPoolSize(3)
-                .denyCacheImageMultipleSizesInMemory()//当同一个Uri获取不同大小的图片，缓存到内存时，只缓存一个。默认会缓存多个不同的大小的相同图片
-                .diskCacheFileNameGenerator(new Md5FileNameGenerator())//设置缓存文件的名字
-                .tasksProcessingOrder(QueueProcessingType.FIFO)// 设置图片下载和显示的工作队列排序
-                .memoryCache(new WeakMemoryCache())
-                .build();
-        ImageLoader.getInstance().init(config);
-    }
 
     @TargetApi(Build.VERSION_CODES.JELLY_BEAN_MR1)
     @Override
@@ -252,10 +219,7 @@ public class BeeFrameworkApp extends MultiDexApplication {
         try {
             MultiDex.install(base); //解决差分包的问题
             SdkManager.initSdkManager(this);
-            SharedPreferences sharedPreferences = getSharedPreferences(UserAppConst.USERINFO, 0);
-            int currentLanguage = sharedPreferences.getInt(UserAppConst.CURRENTLANGUAGE, 0);
-            ChangeLanguageHelper.changeLanguage(getApplicationContext(), currentLanguage);
-            fix();
+            fixOppoAssetManager();
         } catch (Exception e) {
 
         }
@@ -294,29 +258,22 @@ public class BeeFrameworkApp extends MultiDexApplication {
         }
     }
 
-    public void fix() {
-        try {
-            final Class clazz = Class.forName("java.lang.Daemons$FinalizerWatchdogDaemon");
-            final Field field = clazz.getDeclaredField("INSTANCE");
-            field.setAccessible(true);
-            final Object watchdog = field.get(null);
-            try {
-                final Field thread = clazz.getSuperclass().getDeclaredField("thread");
-                thread.setAccessible(true);
-                thread.set(watchdog, null);
-            } catch (final Throwable t) {
-                t.printStackTrace();
+    public void fixOppoAssetManager() {
+        String device= TokenUtils.getDeviceBrand().toLowerCase();
+        if (!TextUtils.isEmpty(device)) {
+            if (device.contains("oppo")) {
                 try {
-                    // 直接调用stop方法，在Android 6.0之前会有线程安全问题
-                    final Method method = clazz.getSuperclass().getDeclaredMethod("stop");
+                    // 关闭掉FinalizerWatchdogDaemon
+                    Class clazz = Class.forName("java.lang.Daemons$FinalizerWatchdogDaemon");
+                    Method method = clazz.getSuperclass().getDeclaredMethod("stop");
                     method.setAccessible(true);
-                    method.invoke(watchdog);
-                } catch (final Throwable e) {
-                    t.printStackTrace();
+                    Field field = clazz.getDeclaredField("INSTANCE");
+                    field.setAccessible(true);
+                    method.invoke(field.get(null));
+                } catch (Throwable e) {
+                    e.printStackTrace();
                 }
             }
-        } catch (final Throwable t) {
-            t.printStackTrace();
         }
     }
 }

@@ -90,14 +90,15 @@ public class UpdateService extends Service {
     }
 
     private void downloadApk() {
-        File apkFile = new File(Environment.DIRECTORY_DOWNLOADS + "/" + apk_name);
-        if (apkFile.exists()) {
-            apkFile.delete();
+        if (Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED)) {
+            File apkFile= new File(Environment.DIRECTORY_DOWNLOADS + "/" + apk_name);
+            if (apkFile.exists()) {
+                apkFile.delete();
+            }
+            SharedPreferences sPreferences = getSharedPreferences(UserAppConst.USERINFO, 0);
+            DownloadManager manager = (DownloadManager) getSystemService(DOWNLOAD_SERVICE);
+            startDownLoading(manager, sPreferences);
         }
-        SharedPreferences sPreferences = getSharedPreferences(UserAppConst.USERINFO, 0);
-        DownloadManager manager = (DownloadManager) getSystemService(DOWNLOAD_SERVICE);
-        startDownLoading(manager, sPreferences);
-
     }
 
     /**
@@ -160,7 +161,7 @@ public class UpdateService extends Service {
                 installApp(context);
             } else {
                 //跳转至“安装未知应用”权限界面，引导用户开启权限
-                ToastUtil.toastShow(context,"请开启安装未知应用的权限");
+                ToastUtil.toastShow(context, "请开启安装未知应用的权限");
                 Uri selfPackageUri = Uri.parse("package:" + this.getPackageName());
                 Intent intent = new Intent(Settings.ACTION_MANAGE_UNKNOWN_APP_SOURCES, selfPackageUri);
                 if (context instanceof Activity) {

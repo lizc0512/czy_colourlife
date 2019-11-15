@@ -156,6 +156,11 @@ public class UserAppConst {
     public static final String COLOUR_BLUETOOTH_ADVISE = "COLOUR_BLUETOOTH_ADVISE";//蓝牙开门的广告banner
     public static final String COLOUR_DOOR_AUTHOUR_APPLY= "colour_door_authour_apply";//门禁授权和申请记录
 
+
+   //新版彩钱包
+    public static final String COLOUR_WALLET_KEYWORD_SIGN ="colour_wallet_keyword_sign";//彩钱包显示饭票还是积分的标识
+    public static final String COLOUR_WALLET_ACCOUNT_LIST ="colour_wallet_account_list";//彩钱包的账户列表
+
     /**
      * 彩惠人生
      */
