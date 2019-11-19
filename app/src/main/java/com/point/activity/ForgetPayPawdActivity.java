@@ -12,8 +12,10 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.BeeFramework.activity.BaseActivity;
+import com.BeeFramework.model.NewHttpResponse;
 import com.BeeFramework.view.ClearEditText;
 import com.user.UserAppConst;
+import com.user.model.NewUserModel;
 
 import cn.net.cyberway.R;
 
@@ -22,7 +24,7 @@ import static cn.net.cyberway.utils.ConfigUtils.jumpContactService;
 /***
  * 忘记密码填写资料
  */
-public class ForgetPayPawdActivity extends BaseActivity implements View.OnClickListener, TextWatcher {
+public class ForgetPayPawdActivity extends BaseActivity implements View.OnClickListener, TextWatcher, NewHttpResponse {
     private ImageView mBack;
     private TextView mTitle;
     private TextView tv_user_phone;
@@ -34,7 +36,9 @@ public class ForgetPayPawdActivity extends BaseActivity implements View.OnClickL
     private TextView tv_contact_service;
     private MyTimeCount myTimeCount = null;
     private String idCardNumber;
+    private String mobile;
     private String smsCode;
+    private NewUserModel newUserModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,6 +61,7 @@ public class ForgetPayPawdActivity extends BaseActivity implements View.OnClickL
         mTitle.setText("支付密码");
         input_pawd_code.addTextChangedListener(this);
         input_pawd_idcard.addTextChangedListener(this);
+        newUserModel=new NewUserModel(ForgetPayPawdActivity.this);
     }
 
     @Override
@@ -66,7 +71,9 @@ public class ForgetPayPawdActivity extends BaseActivity implements View.OnClickL
                 finish();
                 break;
             case R.id.tv_get_code:
-                initTimeCount();
+                if (fastClick()){
+                    newUserModel.getSmsCode(0,mobile,7,1,ForgetPayPawdActivity.this);
+                }
                 break;
             case R.id.btn_define:
                 Intent intent = new Intent(ForgetPayPawdActivity.this, ChangePawdTwoStepActivity.class);
@@ -119,6 +126,15 @@ public class ForgetPayPawdActivity extends BaseActivity implements View.OnClickL
             btn_define.setBackgroundResource(R.drawable.point_password_click_bg);
         }
 
+    }
+
+    @Override
+    public void OnHttpResponse(int what, String result) {
+        switch (what){
+            case 0:
+                initTimeCount();
+                break;
+        }
     }
 
     /**

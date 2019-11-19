@@ -13,7 +13,7 @@ import com.user.UserAppConst;
 import cn.net.cyberway.R;
 
 /**
- * 积分描述的
+ * 积分或饭票的描述
  */
 public class PointDescDialog {
 

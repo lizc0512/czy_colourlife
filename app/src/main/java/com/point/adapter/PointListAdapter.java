@@ -50,7 +50,7 @@ public class PointListAdapter extends RecyclerView.Adapter<PointListAdapter.Poin
         }
         String pointTitle = listBean.getName();
         viewHolder.tv_point_title.setText(pointTitle);
-        viewHolder.tv_point_total.setText(String.valueOf(listBean.getBalance() / 100.0f));
+        viewHolder.tv_point_total.setText(String.valueOf(listBean.getBalance()*1.0f / 100));
         viewHolder.tv_point_details.setOnClickListener(v -> {
             Context mContext = viewHolder.itemView.getContext();
             Intent intent = new Intent(mContext, PointTransactionListActivity.class);
@@ -62,6 +62,7 @@ public class PointListAdapter extends RecyclerView.Adapter<PointListAdapter.Poin
         viewHolder.tv_point_given.setOnClickListener(v -> {
             Context mContext = viewHolder.itemView.getContext();
             Intent intent = new Intent(mContext, GivenPointMobileActivity.class);
+            intent.putExtra(POINTTPANO, listBean.getPano());
             mContext.startActivity(intent);
         });
         viewHolder.tv_point_return.setOnClickListener(v -> {

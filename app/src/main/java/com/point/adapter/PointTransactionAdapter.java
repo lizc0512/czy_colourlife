@@ -1,5 +1,6 @@
 package com.point.adapter;
 
+import android.graphics.Color;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -44,7 +45,16 @@ public class PointTransactionAdapter extends RecyclerView.Adapter<PointTransacti
         PointTransactionRecordEntity.ContentBean.ListBean listBean = totalListBean.get(i);
         viewHolder.tv_transaction_name.setText(listBean.getTrans_name());
         viewHolder.tv_transaction_date.setText(listBean.getCreate_time());
-        viewHolder.tv_transaction_amout.setText(listBean.getOrg_money());
+        int org_money=listBean.getOrg_money();
+        String type=listBean.getType();
+        if ("1".equals(type)){
+            viewHolder.tv_transaction_amout.setText("+"+org_money*1.0f/100);
+            viewHolder.tv_transaction_amout.setTextColor(Color.parseColor("#F24724"));
+        }else{
+            viewHolder.tv_transaction_amout.setTextColor(Color.parseColor("#25282E"));
+            viewHolder.tv_transaction_amout.setText("-"+org_money*1.0f/100);
+        }
+
         GlideImageLoader.loadImageDisplay(viewHolder.itemView.getContext(), listBean.getLogo(), viewHolder.iv_transaction_type);
     }
 

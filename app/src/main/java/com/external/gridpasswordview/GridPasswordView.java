@@ -102,6 +102,7 @@ public class GridPasswordView extends LinearLayout implements PasswordView {
         mLineWidth = (int) ta.getDimension(R.styleable.gridPasswordView_gpvLineWidth, Util.dp2px(getContext(), 1));
         mLineColor = ta.getColor(R.styleable.gridPasswordView_gpvLineColor, DEFAULT_LINECOLOR);
         mGridColor = ta.getColor(R.styleable.gridPasswordView_gpvGridColor, DEFAULT_GRIDCOLOR);
+        lineVisible = ta.getInt(R.styleable.gridPasswordView_gpvVisible, 0);
         mLineDrawable = ta.getDrawable(R.styleable.gridPasswordView_gpvLineColor);
         if (mLineDrawable == null)
             mLineDrawable = new ColorDrawable(mLineColor);
@@ -388,10 +389,6 @@ public class GridPasswordView extends LinearLayout implements PasswordView {
      */
     private boolean getPassWordVisibility() {
         return mViewArr[0].getTransformationMethod() == null;
-    }
-
-    public void setLineVisible(int lineVisible) {
-        this.lineVisible = lineVisible;
     }
 
     /**

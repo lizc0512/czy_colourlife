@@ -30,6 +30,9 @@ public class UserMessageConstant {
     public static final int BLUETOOTH_OPEN_DOOR = USER_MESSAGE_BASE + 81;//蓝牙开门成功的提示
     public static final int BLUETOOTH_CLOSE_DIALOG = USER_MESSAGE_BASE + 82;//蓝牙列表页开门成功关闭首页的
     public static final int UPDATE_DOOR = USER_MESSAGE_BASE + 83;//更新门禁
+    public static final int POINT_SUCCESS_RETURN = USER_MESSAGE_BASE + 84;//积分或饭票赠送成功返回首页
+    public static final int POINT_CONTINUE_GIVEN= USER_MESSAGE_BASE + 85;//积分或饭票赠送成功返回首页
+    public static final int POINT_INPUT_PAYPAWD = USER_MESSAGE_BASE + 86;//输入支付密码
 
 
 }

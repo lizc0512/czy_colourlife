@@ -40,6 +40,11 @@ import com.nohttp.entity.BaseContentEntity;
 import com.nohttp.utils.GlideImageLoader;
 import com.nohttp.utils.GsonUtils;
 import com.pay.Activity.AlixPayActivity;
+import com.point.activity.ChangePawdTwoStepActivity;
+import com.point.activity.GivenPointAmountActivity;
+import com.point.activity.PointPasswordDialog;
+import com.point.entity.PointTransactionTokenEntity;
+import com.point.model.PointModel;
 import com.popupScreen.PopupScUtils;
 import com.setting.activity.CertificateResultDialog;
 import com.setting.activity.EditDialog;
@@ -114,6 +119,8 @@ public class NewOrderPayActivity extends BaseActivity implements View.OnClickLis
     private double meal_total = 0; //饭票的
     private double total_fee = 0; //现金的
     private String sn = "";
+    private String token;
+    private String state;
 
 
     @Override
@@ -832,6 +839,11 @@ public class NewOrderPayActivity extends BaseActivity implements View.OnClickLis
         startActivityForResult(intent, 10000);
     }
 
+    private void pointPayOrder(){
+        PointModel pointModel=new PointModel(NewOrderPayActivity.this);
+        pointModel.getTransactionToken(7, NewOrderPayActivity.this);
+    }
+
 
     @Override
     public void OnHttpResponse(int what, String result) {
@@ -939,8 +951,13 @@ public class NewOrderPayActivity extends BaseActivity implements View.OnClickLis
                             if ("1".equals(content)) {
                                 ToastUtil.toastShow(this, "认证成功");
                                 editor.putString(UserAppConst.COLOUR_AUTH_REAL_NAME + shared.getInt(UserAppConst.Colour_User_id, 0), realName).commit();
-                                newUserModel.finishTask(6, "2", "task_web", this);//实名认证任务
-                                createCzyOrder();
+                                newUserModel.finishTask(10, "2", "task_web", this);//实名认证任务
+                                if ("3".equals(state)){
+                                    Intent intent = new Intent(NewOrderPayActivity.this, ChangePawdTwoStepActivity.class);
+                                    startActivity(intent);
+                                }else{
+                                    createCzyOrder();
+                                }
                             } else {
                                 showCertificateFail();
                             }
@@ -976,9 +993,40 @@ public class NewOrderPayActivity extends BaseActivity implements View.OnClickLis
                     }
                 }
                 break;
+            case 7:
+                try {
+                    PointTransactionTokenEntity pointTransactionTokenEntity = GsonUtils.gsonToBean(result, PointTransactionTokenEntity.class);
+                    PointTransactionTokenEntity.ContentBean contentBean = pointTransactionTokenEntity.getContent();
+                    token = contentBean.getToken();
+                    state=contentBean.getState();
+                    switch (state) {
+                        case "2"://已实名未设置支付密码
+                            Intent intent = new Intent(NewOrderPayActivity.this, ChangePawdTwoStepActivity.class);
+                            startActivity(intent);
+                            break;
+                        case "3"://未实名未设置支付密码
+                        case "4"://未实名已设置支付密码
+                            newUserModel.getRealNameToken(5, this, true);
+                            break;
+                        default://1已实名已设置支付密码
+                            showPayDialog();
+                            break;
+                    }
+                } catch (Exception e) {
+
+                }
+                break;
         }
     }
 
+
+    /***支付密码的弹窗**/
+    private void showPayDialog(){
+        PointPasswordDialog pointPasswordDialog = new PointPasswordDialog(NewOrderPayActivity.this);
+        pointPasswordDialog.show();
+    }
+
+    /***实名认证的弹窗**/
     private void showCertificateFail() {
         CertificateResultDialog certificateResultDialog = new CertificateResultDialog(NewOrderPayActivity.this, R.style.dialog);
         certificateResultDialog.show();

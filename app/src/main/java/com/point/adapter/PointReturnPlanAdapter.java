@@ -7,34 +7,47 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.point.entity.PointReturnEntity;
+
+import java.util.List;
+
 import cn.net.cyberway.R;
 
-public class PointReturnPlanAdapter extends RecyclerView.Adapter<PointReturnPlanAdapter.PointGivenHistoryViewHolder> {
+public class PointReturnPlanAdapter extends RecyclerView.Adapter<PointReturnPlanAdapter.PointReturnPlanViewHolder> {
+    private List<PointReturnEntity.ContentBean.ListBean> totalBeanList;
+
+    public PointReturnPlanAdapter(List<PointReturnEntity.ContentBean.ListBean> totalBeanList) {
+        this.totalBeanList = totalBeanList;
+    }
+
+
     @NonNull
     @Override
-    public PointReturnPlanAdapter.PointGivenHistoryViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
+    public PointReturnPlanAdapter.PointReturnPlanViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
         View view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.adapter_return_point_plan, viewGroup, false);
-        PointReturnPlanAdapter.PointGivenHistoryViewHolder pointListViewHolder = new PointReturnPlanAdapter.PointGivenHistoryViewHolder(view);
+        PointReturnPlanAdapter.PointReturnPlanViewHolder pointListViewHolder = new PointReturnPlanAdapter.PointReturnPlanViewHolder(view);
         return pointListViewHolder;
     }
 
     @Override
-    public void onBindViewHolder(@NonNull PointReturnPlanAdapter.PointGivenHistoryViewHolder viewHolder, int i) {
-
+    public void onBindViewHolder(@NonNull PointReturnPlanAdapter.PointReturnPlanViewHolder viewHolder, int i) {
+        PointReturnEntity.ContentBean.ListBean listBean = totalBeanList.get(i);
+        viewHolder.tv_return_date.setText(listBean.getTime());
+        viewHolder.tv_return_amount.setText("返还" + listBean.getMoney() * 1.0 / 100);
     }
 
     @Override
     public int getItemCount() {
-        return 0;
+        return totalBeanList.size();
     }
 
 
-    class PointGivenHistoryViewHolder extends RecyclerView.ViewHolder {
+    class PointReturnPlanViewHolder extends RecyclerView.ViewHolder {
         private TextView tv_return_date;
         private TextView tv_return_amount;
 
 
-        public PointGivenHistoryViewHolder(View itemView) {
+        public PointReturnPlanViewHolder(View itemView) {
             super(itemView);
             tv_return_date = itemView.findViewById(R.id.tv_return_date);
             tv_return_amount = itemView.findViewById(R.id.tv_return_amount);

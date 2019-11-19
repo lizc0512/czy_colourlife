@@ -7,9 +7,20 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.point.entity.PointTransferListEntity;
+
+import java.util.List;
+
 import cn.net.cyberway.R;
 
 public class PointGivenHistoryAdapter extends RecyclerView.Adapter<PointGivenHistoryAdapter.PointGivenHistoryViewHolder> {
+
+    public PointGivenHistoryAdapter(List<PointTransferListEntity.ContentBean.ListBean> totalContentBeanList) {
+        this.totalContentBeanList = totalContentBeanList;
+    }
+
+    private List<PointTransferListEntity.ContentBean.ListBean> totalContentBeanList;
+
     @NonNull
     @Override
     public PointGivenHistoryAdapter.PointGivenHistoryViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
@@ -20,12 +31,15 @@ public class PointGivenHistoryAdapter extends RecyclerView.Adapter<PointGivenHis
 
     @Override
     public void onBindViewHolder(@NonNull PointGivenHistoryAdapter.PointGivenHistoryViewHolder viewHolder, int i) {
-
+        PointTransferListEntity.ContentBean.ListBean  listBean=totalContentBeanList.get(i);
+        viewHolder.tv_given_username.setText(listBean.getDest_client());
+        viewHolder.tv_given_date.setText(listBean.getCreate_time());
+        viewHolder.tv_given_amount.setText(String.valueOf(listBean.getDest_money()*1.0f/100));
     }
 
     @Override
     public int getItemCount() {
-        return 0;
+        return totalContentBeanList == null ? 0 : totalContentBeanList.size();
     }
 
 
@@ -33,7 +47,6 @@ public class PointGivenHistoryAdapter extends RecyclerView.Adapter<PointGivenHis
         private TextView tv_given_username;
         private TextView tv_given_date;
         private TextView tv_given_amount;
-
 
 
         public PointGivenHistoryViewHolder(View itemView) {

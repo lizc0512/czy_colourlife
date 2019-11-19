@@ -1,7 +1,7 @@
 package com.point.activity;
 
-import android.content.Intent;
 import android.os.Bundle;
+import android.os.Message;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
@@ -11,11 +11,13 @@ import android.widget.TextView;
 
 import com.BeeFramework.activity.BaseActivity;
 import com.BeeFramework.model.NewHttpResponse;
+import com.external.eventbus.EventBus;
 import com.nohttp.utils.GsonUtils;
 import com.point.adapter.PointListAdapter;
 import com.point.entity.PointAccountListEntity;
 import com.point.entity.PointKeywordEntity;
 import com.point.model.PointModel;
+import com.user.UserMessageConstant;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -33,9 +35,9 @@ public class MyPointActivity extends BaseActivity implements View.OnClickListene
     private ImageView mBack;
     private TextView mTitle;
     private ImageView iv_point_desc;
-    private TextView tv_point_title;
-    private TextView tv_point_total;
-    private RecyclerView rv_point;
+    private TextView tv_point_title;//显示是积分还是饭票的类型
+    private TextView tv_point_total; //积分或饭票的余额
+    private RecyclerView rv_point;//饭票或积分类型的列表
     private PointModel pointModel;
     private PointListAdapter pointListAdapter;
     private List<PointAccountListEntity.ContentBean.ListBean> listBeanList = new ArrayList<>();
@@ -54,8 +56,7 @@ public class MyPointActivity extends BaseActivity implements View.OnClickListene
         iv_point_desc.setOnClickListener(this);
         tv_point_total.setOnClickListener(this);
         pointModel = new PointModel(MyPointActivity.this);
-        pointModel.getWalletKeyWord(0, MyPointActivity.this);
-        pointModel.getAccountList(1, MyPointActivity.this);
+        getPointList();
         String keyWordSign = shared.getString(COLOUR_WALLET_KEYWORD_SIGN, "积分");
         String accountList = shared.getString(COLOUR_WALLET_ACCOUNT_LIST, "");
         if (!TextUtils.isEmpty(keyWordSign)) {
@@ -63,6 +64,9 @@ public class MyPointActivity extends BaseActivity implements View.OnClickListene
         }
         if (!TextUtils.isEmpty(accountList)) {
             showAccountList(accountList);
+        }
+        if (!EventBus.getDefault().isregister(MyPointActivity.this)) {
+            EventBus.getDefault().register(MyPointActivity.this);
         }
     }
 
@@ -77,10 +81,6 @@ public class MyPointActivity extends BaseActivity implements View.OnClickListene
                     pointDescDialog = new PointDescDialog(MyPointActivity.this);
                 }
                 pointDescDialog.show();
-                break;
-            case R.id.tv_point_total:
-                Intent transactionIntent = new Intent(MyPointActivity.this, PointTransactionListActivity.class);
-                startActivity(transactionIntent);
                 break;
         }
     }
@@ -133,4 +133,27 @@ public class MyPointActivity extends BaseActivity implements View.OnClickListene
         }
     }
 
+    public void onEvent(Object event) {
+        final Message message = (Message) event;
+        switch (message.what) {
+            case UserMessageConstant.POINT_SUCCESS_RETURN:
+            case UserMessageConstant.POINT_CONTINUE_GIVEN:
+                getPointList();
+                break;
+
+        }
+    }
+
+    private void getPointList(){
+        pointModel.getWalletKeyWord(0, MyPointActivity.this);
+        pointModel.getAccountList(1, MyPointActivity.this);
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if (EventBus.getDefault().isregister(MyPointActivity.this)) {
+            EventBus.getDefault().unregister(MyPointActivity.this);
+        }
+    }
 }

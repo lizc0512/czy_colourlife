@@ -2,7 +2,6 @@ package com.point.entity;
 
 import com.nohttp.entity.BaseContentEntity;
 
-import java.io.Serializable;
 import java.util.List;
 
 /**
@@ -12,9 +11,11 @@ import java.util.List;
  * 创建日期:
  * 描述:
  **/
-public class PointTransactionRecordEntity extends BaseContentEntity {
+public class PointTransferListEntity extends BaseContentEntity {
+
+
     /**
-     * content : {"list":[{"finance_no":"1909_201909111631473ade730fb4029","trans_type":"转账","trans_name":"转账-131****1032","order_no":"621382129458098176_5278","org_money":"2","dest_money":"2","org_platform":"彩生活饭票【可用】","dest_platform":"彩生活饭票【可用】","org_client":"周霞","dest_client":"131****1032","type":2,"create_time":"2019-09-11 16:31:47","detail":"测试啊啊啊吧嘿嘿嘿嘿嘿test233333","logo":"https://business-czytest.colourlife.com/img/icon_list_zhichu.png"},{"finance_no":"1909_20190911104529b4b0c29905a9d","trans_type":"转账","trans_name":"转账-131****1032","order_no":"621294979056152576_4250","org_money":"1","dest_money":"1","org_platform":"彩生活饭票【可用】","dest_platform":"彩生活饭票【可用】","org_client":"周霞","dest_client":"131****1032","type":2,"create_time":"2019-09-11 10:45:29","detail":"赠送","logo":"https://business-czytest.colourlife.com/img/icon_list_zhichu.png"},{"finance_no":"1908_20190829113349566ad01612521","trans_type":"消费","trans_name":"消费-商户超级管理员","order_no":"201908_ba2c4d73804cc84d1889b9f8ee5696743496","org_money":"1","dest_money":"1","org_platform":"彩生活饭票【可用】","dest_platform":"彩生活饭票【可用】","org_client":"周霞","dest_client":"商户超级管理员","type":2,"create_time":"2019-08-29 11:33:49","detail":"11-饭票消费0.01","logo":"https://business-czytest.colourlife.com/img/icon_list_zhichu.png"},{"finance_no":"1908_2019082814421817f8ba9bf7328","trans_type":"消费","trans_name":"消费-商户超级管理员","order_no":"201908_69d72dd15919b54e5759c065d4fe19d7b103","org_money":"150","dest_money":"150","org_platform":"彩生活饭票【可用】","dest_platform":"彩生活饭票【可用】","org_client":"周霞","dest_client":"商户超级管理员","type":2,"create_time":"2019-08-28 14:42:18","detail":"11-饭票消费1.50","logo":"https://business-czytest.colourlife.com/img/icon_list_zhichu.png"},{"finance_no":"1908_201908211047259817614726832","trans_type":"消费","trans_name":"消费-商户超级管理员","order_no":"201908_c05961128dc9984cff8835489c7dfdcff054","org_money":"1","dest_money":"1","org_platform":"彩生活饭票【可用】","dest_platform":"彩生活饭票【可用】","org_client":"周霞","dest_client":"商户超级管理员","type":2,"create_time":"2019-08-21 10:47:25","detail":"11-饭票消费0.01","logo":"https://business-czytest.colourlife.com/img/icon_list_zhichu.png"}]}
+     * content : {"list":[{"finance_no":"1904_201904261630536783b1346e191","trans_type":"转账","trans_name":"转账-张锡旺","order_no":"624377040","org_money":"200","dest_money":"200","org_platform":"彩之云","dest_platform":"彩生活饭票【可用】","org_client":"张锡旺","dest_client":"user_18617194368","type":1,"create_time":"2019-04-26 16:30:53","detail":"兑换彩豆","logo":"https://business-czytest.colourlife.com/img/icon_list_shouru.png"},{"finance_no":"1904_20190426162652d64d527f9e5af","trans_type":"转账","trans_name":"转账-兑换彩豆","order_no":"1083979527","org_money":"500","dest_money":"500","org_platform":"彩之云","dest_platform":"彩生活饭票【可用】","org_client":"第三方服务","dest_client":"user_18617194368","type":1,"create_time":"2019-04-26 16:26:52","detail":"兑换彩豆","logo":"https://business-czytest.colourlife.com/img/icon_list_shouru.png"},{"finance_no":"1904_201904261557421a934f0ae8373","trans_type":"转账","trans_name":"转账-张锡旺","order_no":"1333819917","org_money":"1000","dest_money":"1000","org_platform":"彩之云","dest_platform":"彩生活饭票【可用】","org_client":"张锡旺","dest_client":"user_18617194368","type":1,"create_time":"2019-04-26 15:57:42","detail":"兑换彩豆","logo":"https://business-czytest.colourlife.com/img/icon_list_shouru.png"}]}
      * contentEncrypt :
      */
 
@@ -48,22 +49,22 @@ public class PointTransactionRecordEntity extends BaseContentEntity {
             this.list = list;
         }
 
-        public static class ListBean  implements Serializable {
+        public static class ListBean {
             /**
-             * finance_no : 1909_201909111631473ade730fb4029
+             * finance_no : 1904_201904261630536783b1346e191
              * trans_type : 转账
-             * trans_name : 转账-131****1032
-             * order_no : 621382129458098176_5278
-             * org_money : 2
-             * dest_money : 2
-             * org_platform : 彩生活饭票【可用】
+             * trans_name : 转账-张锡旺
+             * order_no : 624377040
+             * org_money : 200
+             * dest_money : 200
+             * org_platform : 彩之云
              * dest_platform : 彩生活饭票【可用】
-             * org_client : 周霞
-             * dest_client : 131****1032
-             * type : 2
-             * create_time : 2019-09-11 16:31:47
-             * detail : 测试啊啊啊吧嘿嘿嘿嘿嘿test233333
-             * logo : https://business-czytest.colourlife.com/img/icon_list_zhichu.png
+             * org_client : 张锡旺
+             * dest_client : user_18617194368
+             * type : 1
+             * create_time : 2019-04-26 16:30:53
+             * detail : 兑换彩豆
+             * logo : https://business-czytest.colourlife.com/img/icon_list_shouru.png
              */
 
             private String finance_no;

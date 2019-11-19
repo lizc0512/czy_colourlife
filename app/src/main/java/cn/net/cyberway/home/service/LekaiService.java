@@ -53,6 +53,7 @@ public class LekaiService extends Service {
 
     private static String ACC = "";
     private static String TOK = "";
+    private static final int connect_time=8000;
 
     @Nullable
     @Override
@@ -181,7 +182,6 @@ public class LekaiService extends Service {
                             msg.what = UserMessageConstant.BLUETOOTH_OPEN_DOOR;
                             mShared.edit().putLong("saveTime", currentTimeMillis).apply();
                             EventBus.getDefault().post(msg);
-
                             uploadOpenDoor(openCipherId, "door", code, message);
                         } else {//开门成功一次后 20s再弹出
                             long saveTime = mShared.getLong("saveTime", currentTimeMillis - 20000);
@@ -279,7 +279,7 @@ public class LekaiService extends Service {
 //            LogUtil.e("LekaiService", " =====================================");
 //            LogUtil.e("LekaiService 下降", "mac地址：" + deviceMac);
             if (parkDevice != null) {
-                mEdenApi.connectDevice(parkDevice, 5000, new OnConnectCallback() {
+                mEdenApi.connectDevice(parkDevice, connect_time, new OnConnectCallback() {
                     @Override
                     public void connectSuccess(Device device) {
 //                        LogUtil.e("LekaiService 下降", "请求 ACC:" + ACC + "  TOK:" + TOK);
@@ -343,7 +343,7 @@ public class LekaiService extends Service {
 //            LogUtil.e("LekaiService", " =====================================");
 //            LogUtil.e("LekaiService 下降", "mac地址：" + deviceMac);
             if (parkDevice != null) {
-                mEdenApi.connectDevice(parkDevice, 5000, new OnConnectCallback() {
+                mEdenApi.connectDevice(parkDevice, connect_time, new OnConnectCallback() {
                     @Override
                     public void connectSuccess(Device device) {
 //                        LogUtil.e("LekaiService 下降", "请求 ACC:" + ACC + "  TOK:" + TOK);
@@ -376,7 +376,7 @@ public class LekaiService extends Service {
 //            LogUtil.e("LekaiService", " =====================================");
 //            LogUtil.e("LekaiService 升起", "mac地址：" + deviceMac);
             if (parkDevice != null) {
-                mEdenApi.connectDevice(parkDevice, 5000, new OnConnectCallback() {
+                mEdenApi.connectDevice(parkDevice, connect_time, new OnConnectCallback() {
                     @Override
                     public void connectSuccess(Device device) {
 //                        LogUtil.e("LekaiService 升起", "请求 ACC:" + ACC + "  TOK:" + TOK);
@@ -444,7 +444,7 @@ public class LekaiService extends Service {
 //            LogUtil.e("LekaiService", " =====================================");
 //            LogUtil.e("LekaiService 升起", "mac地址：" + deviceMac);
             if (parkDevice != null) {
-                mEdenApi.connectDevice(parkDevice, 5000, new OnConnectCallback() {
+                mEdenApi.connectDevice(parkDevice, connect_time, new OnConnectCallback() {
                     @Override
                     public void connectSuccess(Device device) {
 //                        LogUtil.e("LekaiService 升起", "请求 ACC:" + ACC + "  TOK:" + TOK);

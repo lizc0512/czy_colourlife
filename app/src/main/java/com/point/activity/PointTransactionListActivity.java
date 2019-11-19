@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -32,15 +33,16 @@ public class PointTransactionListActivity extends BaseActivity implements View.O
     public static final String POINTTPANO= "pointtpano";
     private ImageView mBack;
     private TextView mTitle;
-    private TextView tv_filter_month;
+    private TextView tv_filter_month; //筛选的年月
     private ImageView iv_filter_month;
-    private SwipeMenuRecyclerView rv_transaction;
+    private SwipeMenuRecyclerView rv_transaction;//交易的记录列表
+    private TextView tv_no_record;//交易的记录列表
     private TimePickerView pvTime;
     private int page = 1;
     private PointModel pointModel;
-    private long time_start;
-    private long time_stop;
-    private String pano;
+    private long time_start;//开始的时间
+    private long time_stop;//结束时间
+    private String pano;//饭票的类型
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,6 +53,7 @@ public class PointTransactionListActivity extends BaseActivity implements View.O
         tv_filter_month = findViewById(R.id.tv_filter_month);
         iv_filter_month = findViewById(R.id.iv_filter_month);
         rv_transaction = findViewById(R.id.rv_transaction);
+        tv_no_record = findViewById(R.id.tv_no_record);
         iv_filter_month.setOnClickListener(this::onClick);
         mBack.setOnClickListener(this::onClick);
         Intent intent = getIntent();
@@ -115,46 +118,59 @@ public class PointTransactionListActivity extends BaseActivity implements View.O
     public void OnHttpResponse(int what, String result) {
         switch (what) {
             case 0:
-                try {
-                    PointTransactionRecordEntity pointTransactionRecordEntity = GsonUtils.gsonToBean(result, PointTransactionRecordEntity.class);
-                    PointTransactionRecordEntity.ContentBean contentBean = pointTransactionRecordEntity.getContent();
-                    if (page == 1) {
-                        totalListBean.clear();
-                    }
-                    boolean dataEmpty = false;
-                    boolean moreEmpty = false;
-                    if (null != contentBean) {
-                        List<PointTransactionRecordEntity.ContentBean.ListBean> listBeanList = contentBean.getList();
-                        if (null != listBeanList) {
-                            dataEmpty = true;
-                            totalListBean.addAll(listBeanList);
-                            if (listBeanList.size() < 20) {
-                                moreEmpty = false;
-                            } else {
-                                moreEmpty = true;
-                            }
-                        } else {
-                            dataEmpty = false;
-                            moreEmpty = false;
+                if (!TextUtils.isEmpty(result)){
+                    try {
+                        PointTransactionRecordEntity pointTransactionRecordEntity = GsonUtils.gsonToBean(result, PointTransactionRecordEntity.class);
+                        PointTransactionRecordEntity.ContentBean contentBean = pointTransactionRecordEntity.getContent();
+                        if (page == 1) {
+                            totalListBean.clear();
                         }
-                    }
-                    if (null == pointTransactionAdapter) {
-                        pointTransactionAdapter = new PointTransactionAdapter(totalListBean);
-                        rv_transaction.setLayoutManager(new LinearLayoutManager(PointTransactionListActivity.this, LinearLayoutManager.VERTICAL, false));
-                        rv_transaction.setAdapter(pointTransactionAdapter);
-                    } else {
-                        pointTransactionAdapter.notifyDataSetChanged();
-                    }
-                    rv_transaction.loadMoreFinish(dataEmpty, moreEmpty);
-                    if (null != pointTransactionAdapter) {
-                        pointTransactionAdapter.setOnItemClickListener(i -> {
-                            Intent intent = new Intent(PointTransactionListActivity.this, PointTransactionDetailsActivity.class);
-                            intent.putExtra(PointTransactionDetailsActivity.POINTTRANSACTIONDETAIL, totalListBean.get(i));
-                            startActivity(intent);
-                        });
-                    }
-                } catch (Exception e) {
+                        boolean dataEmpty = false;
+                        boolean moreEmpty = false;
+                        if (null != contentBean) {
+                            List<PointTransactionRecordEntity.ContentBean.ListBean> listBeanList = contentBean.getList();
+                            if (null != listBeanList) {
+                                dataEmpty = true;
+                                totalListBean.addAll(listBeanList);
+                                if (listBeanList.size() < 20) {
+                                    moreEmpty = false;
+                                } else {
+                                    moreEmpty = true;
+                                }
+                            } else {
+                                dataEmpty = false;
+                                moreEmpty = false;
+                            }
+                        }
+                        if (totalListBean.size()>0){
+                            rv_transaction.setVisibility(View.VISIBLE);
+                            tv_no_record.setVisibility(View.GONE);
+                        }else{
+                            rv_transaction.setVisibility(View.GONE);
+                            tv_no_record.setVisibility(View.VISIBLE);
+                        }
+                        if (null == pointTransactionAdapter) {
+                            pointTransactionAdapter = new PointTransactionAdapter(totalListBean);
+                            rv_transaction.setLayoutManager(new LinearLayoutManager(PointTransactionListActivity.this, LinearLayoutManager.VERTICAL, false));
+                            rv_transaction.setAdapter(pointTransactionAdapter);
+                        } else {
+                            pointTransactionAdapter.notifyDataSetChanged();
+                        }
+                        rv_transaction.loadMoreFinish(dataEmpty, moreEmpty);
+                        if (null != pointTransactionAdapter) {
+                            pointTransactionAdapter.setOnItemClickListener(i -> {
+                                Intent intent = new Intent(PointTransactionListActivity.this, PointTransactionDetailsActivity.class);
+                                intent.putExtra(PointTransactionDetailsActivity.POINTTRANSACTIONDETAIL, totalListBean.get(i));
+                                startActivity(intent);
+                            });
+                        }
 
+                    } catch (Exception e) {
+
+                    }
+                }else {
+                    rv_transaction.setVisibility(View.GONE);
+                    tv_no_record.setVisibility(View.VISIBLE);
                 }
                 break;
         }

@@ -54,7 +54,7 @@ public class UserIdInforEntity extends BaseContentEntity {
          * community_name : 彩悦大厦
          */
 
-        private int id;
+        private String id;
         private String uuid;
         private String mobile;
         private String email;
@@ -68,11 +68,11 @@ public class UserIdInforEntity extends BaseContentEntity {
         private String community_uuid;
         private String community_name;
 
-        public int getId() {
+        public String getId() {
             return id;
         }
 
-        public void setId(int id) {
+        public void setId(String id) {
             this.id = id;
         }
 

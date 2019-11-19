@@ -9,7 +9,7 @@
         <attr name="gpvLineColor" format="color" />
         <attr name="gpvGridColor" format="color" />
         <attr name="gpvLineWidth" format="dimension" />
-
+        <attr name="gpvVisible" format="integer" />
         <attr name="gpvPasswordLength" format="integer" />
         <attr name="gpvPasswordTransformation" format="string" />
 

@@ -544,7 +544,7 @@ public class NewUserModel extends BaseModel {
                             UserInformationEntity.ContentBean contentBean = userInformationEntity.getContent();
                             editor.putString(UserAppConst.Colour_login_community_uuid, contentBean.getCommunity_uuid());
                             editor.putString(UserAppConst.Colour_login_community_name, contentBean.getCommunity_name());
-                            editor.putString(UserAppConst.Colour_login_mobile, String.valueOf(contentBean.getMobile()));
+                            editor.putString(UserAppConst.Colour_login_mobile,contentBean.getMobile());
                             editor.putString(UserAppConst.Colour_GENDER, String.valueOf(contentBean.getGender()));
                             editor.putString(UserAppConst.Colour_NAME, contentBean.getName());
                             editor.putString(UserAppConst.COLOUR_EMAIL, contentBean.getEmail());
