@@ -1,6 +1,5 @@
 package cn.net.cyberway.home.fragment;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -15,7 +14,6 @@ import android.os.Message;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentActivity;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -50,7 +48,6 @@ import com.door.entity.SingleCommunityEntity;
 import com.door.model.NewDoorModel;
 import com.eparking.helper.PermissionUtils;
 import com.external.eventbus.EventBus;
-import com.google.android.exoplayer2.C;
 import com.nohttp.utils.GlideImageLoader;
 import com.nohttp.utils.GridSpacingItemDecoration;
 import com.nohttp.utils.GsonUtils;

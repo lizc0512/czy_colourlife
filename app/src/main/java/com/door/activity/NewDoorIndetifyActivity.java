@@ -110,13 +110,15 @@ public class NewDoorIndetifyActivity extends BaseActivity implements View.OnClic
                 newDoorIdentifyAdapter.setOnItemClickListener(new OnItemClickListener() {
                     @Override
                     public void onItemClick(int i) {
-                        choicePos=i;
-                        newDoorIdentifyAdapter.setChoicePos(i);
-                        IdentityListEntity.ContentBean contentBean=identityList.get(i);
-                        identityId = contentBean.getId();
-                        identityName =contentBean.getName();
-                        btn_next_step.setBackground(getResources().getDrawable(R.drawable.shape_text_property_select));
-                        btn_next_step.setEnabled(true);
+                        if (i>=0){
+                            choicePos=i;
+                            newDoorIdentifyAdapter.setChoicePos(i);
+                            IdentityListEntity.ContentBean contentBean=identityList.get(i);
+                            identityId = contentBean.getId();
+                            identityName =contentBean.getName();
+                            btn_next_step.setBackground(getResources().getDrawable(R.drawable.shape_text_property_select));
+                            btn_next_step.setEnabled(true);
+                        }
                     }
                 });
             } catch (Exception e) {
