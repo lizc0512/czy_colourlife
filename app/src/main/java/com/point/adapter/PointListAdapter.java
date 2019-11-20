@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.point.activity.GivenPointAmountActivity;
 import com.point.activity.GivenPointMobileActivity;
 import com.point.activity.PointTransactionListActivity;
 import com.point.activity.ReturnPointPlanActivity;
@@ -24,12 +25,24 @@ import static com.point.activity.PointTransactionListActivity.POINTTPANO;
 
 public class PointListAdapter extends RecyclerView.Adapter<PointListAdapter.PointListViewHolder> {
     private List<PointAccountListEntity.ContentBean.ListBean> listBeanList;
+    private int fromSource=0;
+    private String mobilePhone;
+    private String portrait;
+    private String userId;
+    private String username;
 
 
     public PointListAdapter(List<PointAccountListEntity.ContentBean.ListBean> listBeanList) {
         this.listBeanList = listBeanList;
     }
 
+    public  void setUserInfor(int fromSource,String mobilePhone,String portrait,String userId, String username){
+        this.fromSource=fromSource;
+        this.mobilePhone=mobilePhone;
+        this.portrait=portrait;
+        this.userId=userId;
+        this.username=username;
+    }
     @NonNull
     @Override
     public PointListAdapter.PointListViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
@@ -61,8 +74,20 @@ public class PointListAdapter extends RecyclerView.Adapter<PointListAdapter.Poin
         });
         viewHolder.tv_point_given.setOnClickListener(v -> {
             Context mContext = viewHolder.itemView.getContext();
-            Intent intent = new Intent(mContext, GivenPointMobileActivity.class);
-            intent.putExtra(POINTTPANO, listBean.getPano());
+            Intent intent;
+            if (fromSource==1){
+                intent=  new Intent(mContext, GivenPointAmountActivity.class);
+                intent.putExtra(POINTTPANO, listBean.getPano());
+                intent.putExtra(GivenPointAmountActivity.GIVENMOBILE, mobilePhone);
+                intent.putExtra(GivenPointAmountActivity.USERPORTRAIT,portrait);
+                intent.putExtra(GivenPointAmountActivity.USERID, userId);
+                intent.putExtra(GivenPointAmountActivity.USERNAME, username);
+                intent.putExtra(GivenPointAmountActivity.LASTAMOUNT, -1);
+                intent.putExtra(GivenPointAmountActivity.LASTTIME, -1);
+            }else{
+                intent=  new Intent(mContext, GivenPointMobileActivity.class);
+                intent.putExtra(POINTTPANO, listBean.getPano());
+            }
             mContext.startActivity(intent);
         });
         viewHolder.tv_point_return.setOnClickListener(v -> {

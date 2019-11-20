@@ -1,5 +1,6 @@
 package com.point.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Message;
 import android.support.v7.widget.LinearLayoutManager;
@@ -24,6 +25,11 @@ import java.util.List;
 
 import cn.net.cyberway.R;
 
+import static com.point.activity.GivenPointAmountActivity.GIVENMOBILE;
+import static com.point.activity.GivenPointAmountActivity.GIVENSOURCE;
+import static com.point.activity.GivenPointAmountActivity.USERID;
+import static com.point.activity.GivenPointAmountActivity.USERNAME;
+import static com.point.activity.GivenPointAmountActivity.USERPORTRAIT;
 import static com.user.UserAppConst.COLOUR_WALLET_ACCOUNT_LIST;
 import static com.user.UserAppConst.COLOUR_WALLET_KEYWORD_SIGN;
 
@@ -41,6 +47,11 @@ public class MyPointActivity extends BaseActivity implements View.OnClickListene
     private PointModel pointModel;
     private PointListAdapter pointListAdapter;
     private List<PointAccountListEntity.ContentBean.ListBean> listBeanList = new ArrayList<>();
+    private int fromSource=0;
+    private String mobilePhone;
+    private String portrait;
+    private String userId;
+    private String username;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,6 +79,15 @@ public class MyPointActivity extends BaseActivity implements View.OnClickListene
         if (!EventBus.getDefault().isregister(MyPointActivity.this)) {
             EventBus.getDefault().register(MyPointActivity.this);
         }
+        Intent intent=getIntent();
+        fromSource=intent.getIntExtra(GIVENSOURCE,0);
+        if (fromSource==1){
+            mobilePhone=intent.getStringExtra(GIVENMOBILE);
+            portrait=intent.getStringExtra(USERPORTRAIT);
+            userId=intent.getStringExtra(USERID);
+            username=intent.getStringExtra(USERNAME);
+        }
+
     }
 
     @Override
@@ -123,8 +143,10 @@ public class MyPointActivity extends BaseActivity implements View.OnClickListene
             }
             if (null == pointListAdapter) {
                 pointListAdapter = new PointListAdapter(listBeanList);
+                pointListAdapter.setUserInfor(fromSource,mobilePhone,portrait,userId,username);
                 rv_point.setLayoutManager(new LinearLayoutManager(MyPointActivity.this, LinearLayoutManager.VERTICAL, false));
                 rv_point.setAdapter(pointListAdapter);
+
             } else {
                 pointListAdapter.notifyDataSetChanged();
             }

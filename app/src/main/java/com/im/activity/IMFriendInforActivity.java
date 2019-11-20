@@ -30,6 +30,8 @@ import com.im.view.FriendOperationDialogFragment;
 import com.im.view.UploadPhoneDialog;
 import com.nohttp.utils.GlideImageLoader;
 import com.nohttp.utils.GsonUtils;
+import com.point.activity.GivenPointAmountActivity;
+import com.point.activity.MyPointActivity;
 import com.youmai.hxsdk.HuxinSdkManager;
 import com.youmai.hxsdk.ProtoCallback;
 import com.youmai.hxsdk.chatgroup.IMGroupActivity;
@@ -259,10 +261,15 @@ public class IMFriendInforActivity extends BaseActivity implements View.OnClickL
                 if (TextUtils.isEmpty(mobilePhone)) {
                     ToastUtil.toastShow(IMFriendInforActivity.this, "被转账人手机号码为空");
                 } else {
-
+                    Intent transfer_intent=new Intent(IMFriendInforActivity.this, MyPointActivity.class);
+                    transfer_intent.putExtra(GivenPointAmountActivity.GIVENMOBILE, mobilePhone);
+                    transfer_intent.putExtra(GivenPointAmountActivity.USERPORTRAIT, portrait);
+                    transfer_intent.putExtra(GivenPointAmountActivity.USERID, userId);
+                    transfer_intent.putExtra(GivenPointAmountActivity.GIVENSOURCE, 1);
+                    transfer_intent.putExtra(GivenPointAmountActivity.USERNAME, username);
+                    startActivity(transfer_intent);
                 }
                 break;
-
         }
     }
 

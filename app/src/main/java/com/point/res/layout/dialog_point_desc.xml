@@ -17,6 +17,8 @@
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="30dp"
+            android:drawableLeft="@drawable/point_vip_icon"
+            android:drawablePadding="5dp"
             android:text="@string/point_honor_title"
             android:textColor="@color/color_25282e"
             android:textSize="16sp" />
@@ -35,12 +37,23 @@
             android:textColor="@color/color_25282e"
             android:textSize="12sp" />
 
+        <View
+            android:layout_width="match_parent"
+            android:background="@color/color_ededed"
+            android:layout_marginRight="15dp"
+            android:layout_below="@id/tv_honor_point_desc"
+            android:layout_marginTop="15dp"
+            android:layout_marginLeft="15dp"
+            android:layout_height="1px"/>
+
         <TextView
             android:id="@+id/tv_normal_point"
             android:layout_below="@id/tv_honor_point_desc"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
+            android:drawableLeft="@drawable/point_normal_icon"
+            android:drawablePadding="5dp"
             android:layout_marginTop="30dp"
             android:text="@string/point_normal_title"
             android:textColor="@color/color_25282e"

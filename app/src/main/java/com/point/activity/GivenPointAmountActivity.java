@@ -1,6 +1,5 @@
 package com.point.activity;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Message;
@@ -47,6 +46,7 @@ import static com.user.UserMessageConstant.POINT_INPUT_PAYPAWD;
  */
 public class GivenPointAmountActivity extends BaseActivity implements View.OnClickListener, TextWatcher, NewHttpResponse {
 
+    public static final String GIVENSOURCE= "givensource";
     public static final String GIVENMOBILE = "givenmobile";
     public static final String GIVENAMOUNT = "givenamount";
     public static final String LASTTIME = "lasttime";
@@ -111,7 +111,11 @@ public class GivenPointAmountActivity extends BaseActivity implements View.OnCli
         pano = intent.getStringExtra(PointTransactionListActivity.POINTTPANO);
         pointModel = new PointModel(GivenPointAmountActivity.this);
         pointModel.getAccountBalance(1, pano, GivenPointAmountActivity.this);
-        tv_remain_notice.setText("今日可赠送" + last_time + "次，剩余额度" + last_amount + keyword_sign);
+        if (last_time==-1){//表示从IM好友那里直接过来的
+            pointModel.getAccountLimit(2, pano, GivenPointAmountActivity.this);
+        }else{
+            tv_remain_notice.setText("今日可赠送" + last_time + "次，剩余额度" + last_amount + keyword_sign);
+        }
         if (!EventBus.getDefault().isregister(GivenPointAmountActivity.this)) {
             EventBus.getDefault().register(GivenPointAmountActivity.this);
         }
