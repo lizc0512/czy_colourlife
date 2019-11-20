@@ -108,8 +108,8 @@ public class IMCustomerInforActivity extends BaseActivity implements View.OnClic
                 break;
             case R.id.details_community_layout:
                 Intent LiLinIntent = new Intent(this, PersonalFeedActivity.class);
-                LiLinIntent.putExtra(PersonalFeedActivity.USERID,userId);
-                LiLinIntent.putExtra(IMInviteRegisterActivity.USERNAME,username);
+                LiLinIntent.putExtra(PersonalFeedActivity.USERID, userId);
+                LiLinIntent.putExtra(IMInviteRegisterActivity.USERNAME, username);
                 startActivity(LiLinIntent);
                 break;
             case R.id.btn_add_friend:  //调用IM的接口
@@ -127,12 +127,8 @@ public class IMCustomerInforActivity extends BaseActivity implements View.OnClic
                 if (TextUtils.isEmpty(mobilePhone)) {
                     ToastUtil.toastShow(IMCustomerInforActivity.this, "被转账人手机号码为空");
                 } else {
-                    Intent transfer_intent=new Intent(IMCustomerInforActivity.this, MyPointActivity.class);
+                    Intent transfer_intent = new Intent(IMCustomerInforActivity.this, MyPointActivity.class);
                     transfer_intent.putExtra(GivenPointAmountActivity.GIVENMOBILE, mobilePhone);
-                    transfer_intent.putExtra(GivenPointAmountActivity.USERPORTRAIT, portrait);
-                    transfer_intent.putExtra(GivenPointAmountActivity.USERID, userId);
-                    transfer_intent.putExtra(GivenPointAmountActivity.GIVENSOURCE, 1);
-                    transfer_intent.putExtra(GivenPointAmountActivity.USERNAME, username);
                     startActivity(transfer_intent);
                 }
                 break;
@@ -150,7 +146,7 @@ public class IMCustomerInforActivity extends BaseActivity implements View.OnClic
                             details_community_layout.setVisibility(View.VISIBLE);
                             MobileBookEntity.ContentBean contentBean = mobileBookEntity.getContent().get(0);
                             mobilePhone = contentBean.getMobile();
-                            userId=contentBean.getUser_id();
+                            userId = contentBean.getUser_id();
                             communityname = contentBean.getCommunity_name();
                             String realName = contentBean.getReal_name();
                             if (TextUtils.isEmpty(realName)) {

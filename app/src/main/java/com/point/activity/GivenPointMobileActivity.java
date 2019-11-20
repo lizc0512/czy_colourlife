@@ -27,6 +27,7 @@ import com.user.UserMessageConstant;
 import cn.csh.colourful.life.utils.KeyBoardUtils;
 import cn.net.cyberway.R;
 
+import static com.point.activity.GivenPointAmountActivity.GIVENMOBILE;
 import static com.point.activity.PointTransactionListActivity.POINTTPANO;
 
 /***
@@ -70,11 +71,16 @@ public class GivenPointMobileActivity extends BaseActivity implements View.OnCli
         user_top_view_right.setText("记录");
         user_top_view_right.setOnClickListener(this::onClick);
         input_given_mobile.addTextChangedListener(this);
-        pano = getIntent().getStringExtra(POINTTPANO);
+        Intent intent = getIntent();
+        pano = intent.getStringExtra(POINTTPANO);
+        givePhone = intent.getStringExtra(GIVENMOBILE);
         pointModel = new PointModel(GivenPointMobileActivity.this);
         pointModel.getAccountLimit(0, pano, GivenPointMobileActivity.this);
         if (!EventBus.getDefault().isregister(GivenPointMobileActivity.this)) {
             EventBus.getDefault().register(GivenPointMobileActivity.this);
+        }
+        if (!TextUtils.isEmpty(givePhone)) {
+            input_given_mobile.setText(givePhone);
         }
     }
 
@@ -187,7 +193,7 @@ public class GivenPointMobileActivity extends BaseActivity implements View.OnCli
                     }
                     Intent amount_Intent = new Intent(GivenPointMobileActivity.this, GivenPointAmountActivity.class);
                     amount_Intent.putExtra(POINTTPANO, pano);
-                    amount_Intent.putExtra(GivenPointAmountActivity.GIVENMOBILE, givePhone);
+                    amount_Intent.putExtra(GIVENMOBILE, givePhone);
                     amount_Intent.putExtra(GivenPointAmountActivity.USERPORTRAIT, contentBean.getPortrait());
                     amount_Intent.putExtra(GivenPointAmountActivity.USERID, contentBean.getId());
                     amount_Intent.putExtra(GivenPointAmountActivity.USERNAME, show_name);

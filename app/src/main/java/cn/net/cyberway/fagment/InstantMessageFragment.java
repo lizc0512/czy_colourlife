@@ -199,6 +199,7 @@ public class InstantMessageFragment extends Fragment implements View.OnClickList
                     msg.what = UserMessageConstant.LOGOUT;//退出登录之后，
                     EventBus.getDefault().post(msg);
                     if (null != getActivity()) {
+                        ToastUtil.toastShow(getActivity(),"你的账号在其他地方登录");
                         jumpLoginPage(getActivity(), mShared, 1000);
                     }
                 }

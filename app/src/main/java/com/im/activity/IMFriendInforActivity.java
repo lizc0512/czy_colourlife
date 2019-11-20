@@ -263,10 +263,6 @@ public class IMFriendInforActivity extends BaseActivity implements View.OnClickL
                 } else {
                     Intent transfer_intent=new Intent(IMFriendInforActivity.this, MyPointActivity.class);
                     transfer_intent.putExtra(GivenPointAmountActivity.GIVENMOBILE, mobilePhone);
-                    transfer_intent.putExtra(GivenPointAmountActivity.USERPORTRAIT, portrait);
-                    transfer_intent.putExtra(GivenPointAmountActivity.USERID, userId);
-                    transfer_intent.putExtra(GivenPointAmountActivity.GIVENSOURCE, 1);
-                    transfer_intent.putExtra(GivenPointAmountActivity.USERNAME, username);
                     startActivity(transfer_intent);
                 }
                 break;

@@ -111,11 +111,7 @@ public class GivenPointAmountActivity extends BaseActivity implements View.OnCli
         pano = intent.getStringExtra(PointTransactionListActivity.POINTTPANO);
         pointModel = new PointModel(GivenPointAmountActivity.this);
         pointModel.getAccountBalance(1, pano, GivenPointAmountActivity.this);
-        if (last_time==-1){//表示从IM好友那里直接过来的
-            pointModel.getAccountLimit(2, pano, GivenPointAmountActivity.this);
-        }else{
-            tv_remain_notice.setText("今日可赠送" + last_time + "次，剩余额度" + last_amount + keyword_sign);
-        }
+        tv_remain_notice.setText("今日可赠送" + last_time + "次，剩余额度" + last_amount + keyword_sign);
         if (!EventBus.getDefault().isregister(GivenPointAmountActivity.this)) {
             EventBus.getDefault().register(GivenPointAmountActivity.this);
         }
@@ -151,11 +147,8 @@ public class GivenPointAmountActivity extends BaseActivity implements View.OnCli
         final Message message = (Message) event;
         switch (message.what) {
             case UserMessageConstant.POINT_SUCCESS_RETURN:
-                finish();
-                break;
             case UserMessageConstant.POINT_CONTINUE_GIVEN:
-                pointModel.getAccountLimit(2, pano, GivenPointAmountActivity.this);
-                pointModel.getAccountBalance(1, pano, GivenPointAmountActivity.this);
+                finish();
                 break;
             case POINT_INPUT_PAYPAWD:
                 String giveAmount = ed_given_amount.getText().toString().trim();
