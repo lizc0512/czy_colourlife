@@ -85,6 +85,7 @@ public class FileConfig {
         }
         return fileDir.getAbsolutePath();
     }
+
     /**
      * 视频文件下载路径
      *
@@ -114,7 +115,6 @@ public class FileConfig {
         }
         return fileDir.getAbsolutePath();
     }
-
 
 
     /**
@@ -157,12 +157,22 @@ public class FileConfig {
      * @return
      */
     public static String getLogPaths() {
-        String path = Environment.getExternalStorageDirectory().getPath() + LogPaths;
-        File fileDir = new File(path);
-        if (!fileDir.exists()) {
-            fileDir.mkdirs();
+        String path = "";
+        try {
+            if (Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED)) {
+                path = Environment.getExternalStorageDirectory().getPath() + LogPaths;
+            } else {
+                path = Environment.getRootDirectory().getPath() + LogPaths;
+            }
+            File fileDir = new File(path);
+            if (!fileDir.exists()) {
+                fileDir.mkdirs();
+            }
+            return fileDir.getAbsolutePath();
+        } catch (Exception e) {
+
         }
-        return fileDir.getAbsolutePath();
+        return path;
     }
 
 
@@ -243,6 +253,7 @@ public class FileConfig {
 
     /**
      * 非原图发送图片时，缩略图路径
+     *
      * @return
      */
     public static String getThumbImagePaths() {
@@ -256,6 +267,7 @@ public class FileConfig {
 
     /**
      * 头像大图路径
+     *
      * @return
      */
     public static String getHeaderLargePaths() {

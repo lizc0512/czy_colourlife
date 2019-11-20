@@ -22,6 +22,7 @@ public class HuxinStartJobService extends JobService {
     private static final int START_HUXIN_SERVER = 1;
 
 
+
     private Handler mJobHandler = new Handler(new Handler.Callback() {
         @Override
         public boolean handleMessage(Message msg) {
