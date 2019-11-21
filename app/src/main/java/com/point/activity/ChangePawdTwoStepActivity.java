@@ -2,14 +2,17 @@ package com.point.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Message;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.BeeFramework.activity.BaseActivity;
+import com.external.eventbus.EventBus;
 import com.external.gridpasswordview.GridPasswordView;
 import com.external.gridpasswordview.PasswordType;
+import com.user.UserMessageConstant;
 
 import cn.net.cyberway.R;
 
@@ -24,7 +27,6 @@ public class ChangePawdTwoStepActivity extends BaseActivity implements View.OnCl
     private TextView tv_tips_content;
     private GridPasswordView gridPasswordView_cqb;
     private int passwordType = 0;
-    private String oldPawd = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,7 +40,6 @@ public class ChangePawdTwoStepActivity extends BaseActivity implements View.OnCl
         gridPasswordView_cqb.setPasswordType(PasswordType.NUMBER);
         Intent intent = getIntent();
         passwordType = intent.getIntExtra(PAWDTYPE, 0);
-        oldPawd = intent.getStringExtra(ChangePawdThreeStepActivity.OLDPAYPAWD);
         gridPasswordView_cqb.setOnPasswordChangedListener(new GridPasswordView.OnPasswordChangedListener() {
             @Override
             public void onTextChanged(String psw) {
@@ -50,12 +51,10 @@ public class ChangePawdTwoStepActivity extends BaseActivity implements View.OnCl
                 Intent intent = new Intent(ChangePawdTwoStepActivity.this, ChangePawdThreeStepActivity.class);
                 intent.putExtra(ChangePawdThreeStepActivity.NEWPAYPAWD, psw);
                 intent.putExtra(PAWDTYPE, passwordType);
-                intent.putExtra(ChangePawdThreeStepActivity.OLDPAYPAWD, oldPawd);
                 startActivity(intent);
             }
         });
         mBack.setOnClickListener(this);
-
         switch (passwordType) {
             case 1:
                 mTitle.setText("修改支付密码");
@@ -70,10 +69,26 @@ public class ChangePawdTwoStepActivity extends BaseActivity implements View.OnCl
                 tv_tips_content.setText("请输入支付密码");
                 break;
         }
-
-
+        if (!EventBus.getDefault().isregister(ChangePawdTwoStepActivity.this)) {
+            EventBus.getDefault().register(ChangePawdTwoStepActivity.this);
+        }
+    }
+    public void onEvent(Object event) {
+        final Message message = (Message) event;
+        switch (message.what) {
+            case UserMessageConstant.POINT_CHANGE_PAYPAWD:
+                finish();
+                break;
+        }
     }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if (EventBus.getDefault().isregister(ChangePawdTwoStepActivity.this)) {
+            EventBus.getDefault().unregister(ChangePawdTwoStepActivity.this);
+        }
+    }
     @Override
     public void onClick(View v) {
         switch (v.getId()) {

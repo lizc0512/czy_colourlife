@@ -1,5 +1,6 @@
 package com.point.activity;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Message;
@@ -10,8 +11,11 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.BeeFramework.Utils.Utils;
 import com.BeeFramework.activity.BaseActivity;
+import com.BeeFramework.model.Constants;
 import com.BeeFramework.model.NewHttpResponse;
+import com.dashuview.library.keep.Cqb_PayUtil;
 import com.external.eventbus.EventBus;
 import com.nohttp.utils.GsonUtils;
 import com.point.adapter.PointListAdapter;
@@ -26,10 +30,6 @@ import java.util.List;
 import cn.net.cyberway.R;
 
 import static com.point.activity.GivenPointAmountActivity.GIVENMOBILE;
-import static com.point.activity.GivenPointAmountActivity.GIVENSOURCE;
-import static com.point.activity.GivenPointAmountActivity.USERID;
-import static com.point.activity.GivenPointAmountActivity.USERNAME;
-import static com.point.activity.GivenPointAmountActivity.USERPORTRAIT;
 import static com.user.UserAppConst.COLOUR_WALLET_ACCOUNT_LIST;
 import static com.user.UserAppConst.COLOUR_WALLET_KEYWORD_SIGN;
 
@@ -40,6 +40,7 @@ public class MyPointActivity extends BaseActivity implements View.OnClickListene
 
     private ImageView mBack;
     private TextView mTitle;
+    private TextView user_top_view_right;
     private ImageView iv_point_desc;
     private TextView tv_point_title;//显示是积分还是饭票的类型
     private TextView tv_point_total; //积分或饭票的余额
@@ -55,6 +56,7 @@ public class MyPointActivity extends BaseActivity implements View.OnClickListene
         setContentView(R.layout.activity_point_list);
         mBack = findViewById(R.id.user_top_view_back);
         mTitle = findViewById(R.id.user_top_view_title);
+        user_top_view_right = findViewById(R.id.user_top_view_right);
         iv_point_desc = findViewById(R.id.iv_point_desc);
         tv_point_title = findViewById(R.id.tv_point_title);
         tv_point_total = findViewById(R.id.tv_point_total);
@@ -62,6 +64,7 @@ public class MyPointActivity extends BaseActivity implements View.OnClickListene
         mBack.setOnClickListener(this);
         iv_point_desc.setOnClickListener(this);
         tv_point_total.setOnClickListener(this);
+        user_top_view_right.setOnClickListener(this);
         pointModel = new PointModel(MyPointActivity.this);
         getPointList();
         String keyWordSign = shared.getString(COLOUR_WALLET_KEYWORD_SIGN, "积分");
@@ -69,6 +72,8 @@ public class MyPointActivity extends BaseActivity implements View.OnClickListene
         if (!TextUtils.isEmpty(keyWordSign)) {
             mTitle.setText("彩" + keyWordSign);
         }
+        user_top_view_right.setVisibility(View.VISIBLE);
+        user_top_view_right.setText("旧版");
         if (!TextUtils.isEmpty(accountList)) {
             showAccountList(accountList);
         }
@@ -90,6 +95,9 @@ public class MyPointActivity extends BaseActivity implements View.OnClickListene
                     pointDescDialog = new PointDescDialog(MyPointActivity.this);
                 }
                 pointDescDialog.show();
+                break;
+            case R.id.user_top_view_right:
+                Cqb_PayUtil.getInstance(MyPointActivity.this).createPay(Utils.getPublicParams(MyPointActivity.this), Constants.CAIWALLET_ENVIRONMENT);//彩钱包
                 break;
         }
     }

@@ -78,6 +78,7 @@ import static com.pay.Activity.AlixPayActivity.ALIPAY_BODY;
 import static com.pay.Activity.AlixPayActivity.ALIPAY_OUT_TRADE_NO;
 import static com.pay.Activity.AlixPayActivity.ALIPAY_SUBJECT;
 import static com.pay.Activity.AlixPayActivity.ALIPAY_TOTAL_FEE;
+import static com.user.UserMessageConstant.POINT_CHANGE_PAYPAWD;
 import static com.user.UserMessageConstant.WEIXIN_PAY_MSG;
 
 
@@ -729,21 +730,29 @@ public class NewOrderPayActivity extends BaseActivity implements View.OnClickLis
 
     public void onEvent(Object event) {
         final Message message = (Message) event;
-        if (message.what == UserMessageConstant.GUANGCAI_PAY_MSG) {//登录成功刷新数据
-            showH5PayResultDialog();
-        } else if (message.what == UserMessageConstant.NET_CONN_CHANGE) {
-            if (NetworkUtil.isConnect(getApplicationContext())) {
-                againGetPayList();
-            }
-        } else if (message.what == WEIXIN_PAY_MSG) {
-            int payCode = message.arg1;
-            if (payCode == 0) {
-                payResultQuery();
-            } else if (payCode == 1) {
-                ToastUtil.toastShow(NewOrderPayActivity.this, message.obj.toString());
-            } else if (payCode == 2) {
-                ToastUtil.toastShow(NewOrderPayActivity.this, "用户取消支付");
-            }
+        switch (message.what) {
+            case UserMessageConstant.GUANGCAI_PAY_MSG:
+                showH5PayResultDialog();
+                break;
+            case UserMessageConstant.NET_CONN_CHANGE:
+                if (NetworkUtil.isConnect(getApplicationContext())) {
+                    againGetPayList();
+                }
+                break;
+            case WEIXIN_PAY_MSG:
+                int payCode = message.arg1;
+                if (payCode == 0) {
+                    payResultQuery();
+                } else if (payCode == 1) {
+                    ToastUtil.toastShow(NewOrderPayActivity.this, message.obj.toString());
+                } else if (payCode == 2) {
+                    ToastUtil.toastShow(NewOrderPayActivity.this, "用户取消支付");
+                }
+                break;
+            case POINT_CHANGE_PAYPAWD://积分支付 设置密码成功后的回调
+                String password = (String) message.obj;
+
+                break;
         }
     }
 
@@ -810,7 +819,7 @@ public class NewOrderPayActivity extends BaseActivity implements View.OnClickLis
         req.partnerId = partnerId;
         req.prepayId = prepayId;
         req.nonceStr = nonceStr;
-        req.timeStamp =timeStamp;
+        req.timeStamp = timeStamp;
         req.packageValue = packageValue;//"Sign=" + packageValue;
         req.sign = sign;
         // 在支付之前，如果应用没有注册到微信，应该先调用IWXMsg.registerApp将应用注册到微信
@@ -832,15 +841,15 @@ public class NewOrderPayActivity extends BaseActivity implements View.OnClickLis
     //支付宝支付
     private void alipayPayOrder(Map<String, String> resultMap) {
         Intent intent = new Intent(NewOrderPayActivity.this, AlixPayActivity.class);
-        intent.putExtra(ALIPAY_OUT_TRADE_NO,resultMap.get("out_trade_no"));
-        intent.putExtra(ALIPAY_SUBJECT,resultMap.get("subject"));
-        intent.putExtra(ALIPAY_BODY,resultMap.get("body"));
-        intent.putExtra(ALIPAY_TOTAL_FEE,resultMap.get("total_fee"));
+        intent.putExtra(ALIPAY_OUT_TRADE_NO, resultMap.get("out_trade_no"));
+        intent.putExtra(ALIPAY_SUBJECT, resultMap.get("subject"));
+        intent.putExtra(ALIPAY_BODY, resultMap.get("body"));
+        intent.putExtra(ALIPAY_TOTAL_FEE, resultMap.get("total_fee"));
         startActivityForResult(intent, 10000);
     }
 
-    private void pointPayOrder(){
-        PointModel pointModel=new PointModel(NewOrderPayActivity.this);
+    private void pointPayOrder() {
+        PointModel pointModel = new PointModel(NewOrderPayActivity.this);
         pointModel.getTransactionToken(7, NewOrderPayActivity.this);
     }
 
@@ -952,10 +961,10 @@ public class NewOrderPayActivity extends BaseActivity implements View.OnClickLis
                                 ToastUtil.toastShow(this, "认证成功");
                                 editor.putString(UserAppConst.COLOUR_AUTH_REAL_NAME + shared.getInt(UserAppConst.Colour_User_id, 0), realName).commit();
                                 newUserModel.finishTask(10, "2", "task_web", this);//实名认证任务
-                                if ("3".equals(state)){
+                                if ("3".equals(state)) {
                                     Intent intent = new Intent(NewOrderPayActivity.this, ChangePawdTwoStepActivity.class);
                                     startActivity(intent);
-                                }else{
+                                } else {
                                     createCzyOrder();
                                 }
                             } else {
@@ -998,7 +1007,7 @@ public class NewOrderPayActivity extends BaseActivity implements View.OnClickLis
                     PointTransactionTokenEntity pointTransactionTokenEntity = GsonUtils.gsonToBean(result, PointTransactionTokenEntity.class);
                     PointTransactionTokenEntity.ContentBean contentBean = pointTransactionTokenEntity.getContent();
                     token = contentBean.getToken();
-                    state=contentBean.getState();
+                    state = contentBean.getState();
                     switch (state) {
                         case "2"://已实名未设置支付密码
                             Intent intent = new Intent(NewOrderPayActivity.this, ChangePawdTwoStepActivity.class);
@@ -1021,7 +1030,7 @@ public class NewOrderPayActivity extends BaseActivity implements View.OnClickLis
 
 
     /***支付密码的弹窗**/
-    private void showPayDialog(){
+    private void showPayDialog() {
         PointPasswordDialog pointPasswordDialog = new PointPasswordDialog(NewOrderPayActivity.this);
         pointPasswordDialog.show();
     }

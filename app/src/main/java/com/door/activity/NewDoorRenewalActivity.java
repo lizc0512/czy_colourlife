@@ -43,7 +43,7 @@ import static com.customerInfo.activity.CustomerAddPropertyActivity.IDENTITY_ID;
  *
  * */
 
-public class NewDoorRenewalActivity extends BaseActivity implements View.OnClickListener, NewHttpResponse, TextWatcher {
+public class  NewDoorRenewalActivity extends BaseActivity implements View.OnClickListener, NewHttpResponse, TextWatcher {
     public static final String DOOR_TYPE = "door_type";
     public static final String UNIT_NAME_LIST = "unit_name_list";
     public static final String UNIT_UUID_LIST = "unit_uuid_list";

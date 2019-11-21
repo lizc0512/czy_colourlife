@@ -3,6 +3,7 @@ package com.point.activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.CountDownTimer;
+import android.os.Message;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
@@ -14,7 +15,9 @@ import android.widget.TextView;
 import com.BeeFramework.activity.BaseActivity;
 import com.BeeFramework.model.NewHttpResponse;
 import com.BeeFramework.view.ClearEditText;
+import com.external.eventbus.EventBus;
 import com.user.UserAppConst;
+import com.user.UserMessageConstant;
 import com.user.model.NewUserModel;
 
 import cn.net.cyberway.R;
@@ -62,6 +65,25 @@ public class ForgetPayPawdActivity extends BaseActivity implements View.OnClickL
         input_pawd_code.addTextChangedListener(this);
         input_pawd_idcard.addTextChangedListener(this);
         newUserModel=new NewUserModel(ForgetPayPawdActivity.this);
+        if (!EventBus.getDefault().isregister(ForgetPayPawdActivity.this)) {
+            EventBus.getDefault().register(ForgetPayPawdActivity.this);
+        }
+    }
+    public void onEvent(Object event) {
+        final Message message = (Message) event;
+        switch (message.what) {
+            case UserMessageConstant.POINT_CHANGE_PAYPAWD:
+                finish();
+                break;
+        }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if (EventBus.getDefault().isregister(ForgetPayPawdActivity.this)) {
+            EventBus.getDefault().unregister(ForgetPayPawdActivity.this);
+        }
     }
 
     @Override

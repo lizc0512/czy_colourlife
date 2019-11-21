@@ -31,7 +31,6 @@ public class LeadActivity extends BaseActivity implements View.OnClickListener {
     private ViewPager leadViewPager;
     private CirclePageIndicator indicator;
     private int[] imageBg = {R.drawable.zero, R.drawable.one, R.drawable.two, R.drawable.three};
-    ;
     private TextView cancel;
     private int page;
 

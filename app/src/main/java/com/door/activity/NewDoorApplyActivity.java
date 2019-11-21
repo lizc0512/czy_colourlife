@@ -147,7 +147,7 @@ public class NewDoorApplyActivity extends BaseActivity implements View.OnClickLi
                     newDoorAuthorModel.bluetoothDoorVerify(0, community_uuid, unit_uuid, build_uuid, room_uuid, NewDoorApplyActivity.this);
                     break;
                 default://远程门禁和蓝牙门禁都存在
-                    tv_apply_notice.setText("注:小区物业管理处工作人员通过您的申请后，您即可获得开门权限，授权人账号也可咨询小区物业管理处");
+                    tv_apply_notice.setText("注:仅申请蓝牙开门，则无需填写授权人手机号\n      申请远程开门,可咨询物业管理处获得授权人手机号\n      小区物业管理处工作人员通过您的申请后,您即可获得开门权限");
                     newDoorAuthorModel.bluetoothDoorVerify(0, community_uuid, unit_uuid, build_uuid, room_uuid, NewDoorApplyActivity.this);
                     break;
             }
@@ -163,7 +163,7 @@ public class NewDoorApplyActivity extends BaseActivity implements View.OnClickLi
                     newDoorAuthorModel.bluetoothDoorVerify(0, community_uuid, unit_uuid, build_uuid, room_uuid, NewDoorApplyActivity.this);
                     break;
                 default://远程门禁和蓝牙门禁都存在
-                    tv_apply_notice.setText("注:小区物业管理处工作人员通过您的申请后，您即可获得开门权限，授权人账号也可咨询小区物业管理处");
+                    tv_apply_notice.setText("注:仅申请蓝牙开门，则无需填写授权人手机号\n      申请远程开门,可咨询物业管理处获得授权人手机号\n      小区物业管理处工作人员通过您的申请后,您即可获得开门权限");
                     newDoorAuthorModel.bluetoothDoorVerify(0, community_uuid, unit_uuid, build_uuid, room_uuid, NewDoorApplyActivity.this);
                     break;
             }

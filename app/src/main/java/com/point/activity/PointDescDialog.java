@@ -27,12 +27,7 @@ public class PointDescDialog {
         mDialog.setContentView(view);
         mDialog.setCanceledOnTouchOutside(true);
         iv_close_dialog = view.findViewById(R.id.iv_close_dialog);
-        iv_close_dialog.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                dismiss();
-            }
-        });
+        iv_close_dialog.setOnClickListener(v -> dismiss());
         TextView tv_honor_point = view.findViewById(R.id.tv_honor_point);
         TextView tv_honor_point_desc = view.findViewById(R.id.tv_honor_point_desc);
         TextView tv_normal_point = view.findViewById(R.id.tv_normal_point);

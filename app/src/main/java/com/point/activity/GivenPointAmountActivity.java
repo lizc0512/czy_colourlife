@@ -40,13 +40,13 @@ import cn.net.cyberway.R;
 
 import static com.point.activity.PointTransactionListActivity.POINTTPANO;
 import static com.user.UserMessageConstant.POINT_INPUT_PAYPAWD;
+import static com.user.UserMessageConstant.POINT_SET_PAYPAWD;
 
 /***
  * 赠送积分输入金额
  */
 public class GivenPointAmountActivity extends BaseActivity implements View.OnClickListener, TextWatcher, NewHttpResponse {
 
-    public static final String GIVENSOURCE= "givensource";
     public static final String GIVENMOBILE = "givenmobile";
     public static final String GIVENAMOUNT = "givenamount";
     public static final String LASTTIME = "lasttime";
@@ -150,7 +150,8 @@ public class GivenPointAmountActivity extends BaseActivity implements View.OnCli
             case UserMessageConstant.POINT_CONTINUE_GIVEN:
                 finish();
                 break;
-            case POINT_INPUT_PAYPAWD:
+            case POINT_INPUT_PAYPAWD://密码框输入密码
+            case POINT_SET_PAYPAWD: //设置支付密码成功 直接拿密码进行支付
                 String giveAmount = ed_given_amount.getText().toString().trim();
                 String password = message.obj.toString();
                 int length = giveAmount.length();

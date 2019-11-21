@@ -219,6 +219,9 @@ dependencies {
     implementation(name: 'lekai-open-sdk-v3.0.9', ext: 'aar')
     //数位场景识别 保留
     implementation files('libs/alipaySdk-20180601.jar')
+    implementation(name: 'mylibrary-release', ext: 'aar')
+    compileOnly files('sdknec/classes123.jar')
+    implementation 'com.flyco.banner:FlycoBanner_Lib:2.0.2@aar'
 }
 
 project.afterEvaluate {
