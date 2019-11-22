@@ -49,6 +49,7 @@ public class MyPointActivity extends BaseActivity implements View.OnClickListene
     private PointListAdapter pointListAdapter;
     private List<PointAccountListEntity.ContentBean.ListBean> listBeanList = new ArrayList<>();
     private String mobilePhone;
+    private boolean isLoading=true;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,7 +67,8 @@ public class MyPointActivity extends BaseActivity implements View.OnClickListene
         tv_point_total.setOnClickListener(this);
         user_top_view_right.setOnClickListener(this);
         pointModel = new PointModel(MyPointActivity.this);
-        getPointList();
+        Intent intent=getIntent();
+        mobilePhone=intent.getStringExtra(GIVENMOBILE);
         String keyWordSign = shared.getString(COLOUR_WALLET_KEYWORD_SIGN, "积分");
         String accountList = shared.getString(COLOUR_WALLET_ACCOUNT_LIST, "");
         if (!TextUtils.isEmpty(keyWordSign)) {
@@ -75,13 +77,13 @@ public class MyPointActivity extends BaseActivity implements View.OnClickListene
         user_top_view_right.setVisibility(View.VISIBLE);
         user_top_view_right.setText("旧版");
         if (!TextUtils.isEmpty(accountList)) {
+            isLoading=false;
             showAccountList(accountList);
         }
         if (!EventBus.getDefault().isregister(MyPointActivity.this)) {
             EventBus.getDefault().register(MyPointActivity.this);
         }
-        Intent intent=getIntent();
-        mobilePhone=intent.getStringExtra(GIVENMOBILE);
+        getPointList();
     }
 
     @Override
@@ -171,7 +173,7 @@ public class MyPointActivity extends BaseActivity implements View.OnClickListene
 
     private void getPointList(){
         pointModel.getWalletKeyWord(0, MyPointActivity.this);
-        pointModel.getAccountList(1, MyPointActivity.this);
+        pointModel.getAccountList(1, isLoading,MyPointActivity.this);
     }
 
     @Override

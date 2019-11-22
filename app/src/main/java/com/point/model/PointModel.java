@@ -3,6 +3,7 @@ package com.point.model;
 import android.content.Context;
 import android.text.TextUtils;
 
+import com.BeeFramework.Utils.PasswordRSAUtils;
 import com.BeeFramework.model.BaseModel;
 import com.BeeFramework.model.NewHttpResponse;
 import com.nohttp.utils.HttpListener;
@@ -60,7 +61,7 @@ public class PointModel extends BaseModel {
             public void onFailed(int what, Response<String> response) {
 
             }
-        }, true, true);
+        }, true, false);
     }
 
     public void getAccountFlowList(int what, int page,String pano, long time_start, long time_stop, boolean isLoading, final NewHttpResponse newHttpResponse) {
@@ -102,7 +103,7 @@ public class PointModel extends BaseModel {
     }
 
 
-    public void getAccountList(int what, final NewHttpResponse newHttpResponse) {
+    public void getAccountList(int what,boolean isLoading, final NewHttpResponse newHttpResponse) {
         final Request<String> request = NoHttp.createStringRequest(RequestEncryptionUtils.getCombileMD5(mContext, 15, accountListUrl, null), RequestMethod.GET);
         request(what, request, null, new HttpListener<String>() {
             @Override
@@ -122,7 +123,7 @@ public class PointModel extends BaseModel {
             public void onFailed(int what, Response<String> response) {
 
             }
-        }, true, true);
+        }, true, isLoading);
     }
 
     public void getTransferList(int what,String pano, int page,boolean isLoading, final NewHttpResponse newHttpResponse) {
@@ -274,7 +275,7 @@ public class PointModel extends BaseModel {
         if (!TextUtils.isEmpty(detail)){
             params.put("detail",detail);
         }
-        params.put("password",password);
+        params.put("password", PasswordRSAUtils.encryptByPublicKey(password));
         final Request<String> request = NoHttp.createStringRequest(RequestEncryptionUtils.postCombileMD5(mContext, 16, transactionTransferUrl), RequestMethod.POST);
         request(what, request, params, new HttpListener<String>() {
             @Override

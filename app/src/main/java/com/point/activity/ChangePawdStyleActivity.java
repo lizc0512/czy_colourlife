@@ -35,16 +35,19 @@ public class ChangePawdStyleActivity extends BaseActivity implements View.OnClic
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.user_top_view_back:
-
                 finish();
                 break;
             case R.id.change_paypawd_layout:
-                Intent intent = new Intent(ChangePawdStyleActivity.this, ChangePawdOneStepActivity.class);
-                startActivity(intent);
+                if (fastClick()){
+                    Intent intent = new Intent(ChangePawdStyleActivity.this, ChangePawdOneStepActivity.class);
+                    startActivity(intent);
+                }
                 break;
             case R.id.forget_paypawd_layout:
-                Intent forget_intent = new Intent(ChangePawdStyleActivity.this, ForgetPayPawdActivity.class);
-                startActivity(forget_intent);
+                if (fastClick()){
+                    Intent forget_intent = new Intent(ChangePawdStyleActivity.this, ForgetPayPawdActivity.class);
+                    startActivity(forget_intent);
+                }
                 break;
         }
 
