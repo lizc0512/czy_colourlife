@@ -43,6 +43,16 @@ public class PayPwdCheckEntity extends BaseContentEntity {
         private String is_pwd;
         private String right_pwd;
 
+        public String getToken() {
+            return token;
+        }
+
+        public void setToken(String token) {
+            this.token = token;
+        }
+
+        private String token;
+
         public String getIs_pwd() {
             return is_pwd;
         }

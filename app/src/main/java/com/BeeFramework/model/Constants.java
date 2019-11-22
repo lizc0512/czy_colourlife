@@ -33,6 +33,10 @@ public class Constants {
 //    public static final String publicKeyString = "MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQCTFnAR7ORLx0jGzf9Ux1We7yHvRi+kQXKSRmtgBjDCXQzakGm2mrb6EupCkDbUcj4BUs7S7zm/rICQuVNC9fujeJGj"
 //            + "cNWRg0XWVtm90XpbTqfKiXzGDHI9W8aULYZ3of/JJ9lyCyjqjigyCdLBPtQ27gOu"
 //            + "boDzQuieR2ywPHawzQIDAQAB";
+//    public static final String PAYKEYSTRING = "MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQCob8XGWbTfWx4EZZXfqHB2ufu0" +
+//            "GDTTS7tfNnGX1OhjhqnzX357qwqhLCmW3jfRLtjp4GtOzfFfvZI5hbUaGwArOOZF" +
+//            "mtm3tI6Uo/D1I0Dc3cu1+9GwnkovOoBORRNGwXVHqLAJQ2otb17Ycj71pxntG9SE" +
+//            "+9X0JzDArUYNRIYj8QIDAQAB";
 //    public static final boolean CAIWALLET_ENVIRONMENT = true;  //true为彩钱包的正式环境
 //    public static int SAVENOHTTPRECORD = 1;  // 正式打包为0
 
@@ -63,6 +67,10 @@ public class Constants {
     public static final String publicKeyString = "MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQDZDqnWph9LxtD0zgtGAYT" +
             "Tf2jYeV+ni5F1o0w3Fag4OOD1YHCRUCXIsFy+iJYmuPf5vMkZrkoiJmKBfkaIzNlrJZzHzq+LsPQNCF86p1nLsuHbkWNvy" +
             "jOEPn/CUryP2Kxme4S+eEqLIeNwp70VOaMuPmRoEZxMDAgvc6Z0DWsVdQIDAQAB";
+    public static final String PAYKEYSTRING = "MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQCob8XGWbTfWx4EZZXfqHB2ufu0" +
+            "GDTTS7tfNnGX1OhjhqnzX357qwqhLCmW3jfRLtjp4GtOzfFfvZI5hbUaGwArOOZF" +
+            "mtm3tI6Uo/D1I0Dc3cu1+9GwnkovOoBORRNGwXVHqLAJQ2otb17Ycj71pxntG9SE" +
+            "+9X0JzDArUYNRIYj8QIDAQAB";
     /*****关于nohttp请求日记的保存*****/
     public static final boolean CAIWALLET_ENVIRONMENT = false;  //false为彩钱包的测试环境
     public static int SAVENOHTTPRECORD = 1;  // 测试为1，正式打包为0
@@ -95,6 +103,10 @@ public class Constants {
 //    public static final String publicKeyString = "MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQCTFnAR7ORLx0jGzf9Ux1We7yHvRi+kQXKSRmtgBjDCXQzakGm2mrb6EupCkDbUcj4BUs7S7zm/rICQuVNC9fujeJGj"
 //            + "cNWRg0XWVtm90XpbTqfKiXzGDHI9W8aULYZ3of/JJ9lyCyjqjigyCdLBPtQ27gOu"
 //            + "boDzQuieR2ywPHawzQIDAQAB";
+//    public static final String PAYKEYSTRING = "MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQCob8XGWbTfWx4EZZXfqHB2ufu0" +
+//            "GDTTS7tfNnGX1OhjhqnzX357qwqhLCmW3jfRLtjp4GtOzfFfvZI5hbUaGwArOOZF" +
+//            "mtm3tI6Uo/D1I0Dc3cu1+9GwnkovOoBORRNGwXVHqLAJQ2otb17Ycj71pxntG9SE" +
+//            "+9X0JzDArUYNRIYj8QIDAQAB";
 //    /*****关于nohttp请求日记的保存*****/
 //    public static final boolean CAIWALLET_ENVIRONMENT = true;  //false为彩钱包的测试环境
 //    public static int SAVENOHTTPRECORD = 1;  // 测试为1，正式打包为0

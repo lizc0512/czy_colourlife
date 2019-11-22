@@ -21,6 +21,7 @@ import com.user.UserMessageConstant;
 
 import cn.net.cyberway.R;
 
+import static com.point.activity.ChangePawdThreeStepActivity.PAWDTOEKN;
 import static com.point.activity.ChangePawdThreeStepActivity.PAWDTYPE;
 
 /***
@@ -97,6 +98,7 @@ public class ChangePawdOneStepActivity extends BaseActivity implements View.OnCl
                     if ("1".equals(contentBean.getRight_pwd())){//原支付密码校验正确
                         Intent intent = new Intent(ChangePawdOneStepActivity.this, ChangePawdTwoStepActivity.class);
                         intent.putExtra(PAWDTYPE,1);
+                        intent.putExtra(PAWDTOEKN,contentBean.getToken());
                         startActivity(intent);
                     }else{
                         ToastUtil.toastShow(ChangePawdOneStepActivity.this,"你输入的原密码有误,请重新输入");

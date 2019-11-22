@@ -27,6 +27,7 @@ import static com.user.UserMessageConstant.POINT_SET_PAYPAWD;
  */
 public class ChangePawdThreeStepActivity extends BaseActivity implements View.OnClickListener, NewHttpResponse {
     public static final String NEWPAYPAWD = "newpaypawd";
+    public static final String PAWDTOEKN = "pawdtoekn";
     public static final String PAWDTYPE = "pawdtype";//支付密码的类型  0表示设置密码  1表示修改密码 2 表示忘记密码
     private ImageView mBack;
     private TextView mTitle;
@@ -35,6 +36,7 @@ public class ChangePawdThreeStepActivity extends BaseActivity implements View.On
     private GridPasswordView gridPasswordView_cqb;
     private String newPayPawd;
     private String definePayPawd;
+    private String passordToken;
     private int passwordType;
     private PayPasswordModel payPasswordModel;
 
@@ -55,6 +57,7 @@ public class ChangePawdThreeStepActivity extends BaseActivity implements View.On
         btn_define.setOnClickListener(this);
         Intent intent = getIntent();
         newPayPawd = intent.getStringExtra(NEWPAYPAWD);
+        passordToken = intent.getStringExtra(PAWDTOEKN);
         passwordType = intent.getIntExtra(PAWDTYPE, 0);
         switch (passwordType) {
             case 1:
@@ -98,12 +101,9 @@ public class ChangePawdThreeStepActivity extends BaseActivity implements View.On
                 finish();
                 break;
             case R.id.btn_define:
-                if (passwordType == 1) {
-                    //修改支付密码
-                    payPasswordModel.setPayPassword(0, definePayPawd, ChangePawdThreeStepActivity.this);
-                } else if (passwordType == 2) {
-                    //忘记支付密码
-
+                if (passwordType == 1 || passwordType == 2) {
+                    //修改支付密码    //忘记支付密码
+                    payPasswordModel.setPayPassword(0, definePayPawd, passordToken, ChangePawdThreeStepActivity.this);
                 } else { //设置支付密码
                     payPasswordModel.addPayPassword(0, definePayPawd, ChangePawdThreeStepActivity.this);
                 }
@@ -117,21 +117,21 @@ public class ChangePawdThreeStepActivity extends BaseActivity implements View.On
         if (what == 0) {
             switch (passwordType) {
                 case 1:
-                    ToastUtil.toastShow(ChangePawdThreeStepActivity.this,"支付密码修改成功");
+                    ToastUtil.toastShow(ChangePawdThreeStepActivity.this, "支付密码修改成功");
                     Message msg = Message.obtain();
                     msg.what = POINT_CHANGE_PAYPAWD;
                     EventBus.getDefault().post(msg);
                     finish();
                     break;
                 case 2:
-                    ToastUtil.toastShow(ChangePawdThreeStepActivity.this,"支付密码重置成功");
+                    ToastUtil.toastShow(ChangePawdThreeStepActivity.this, "支付密码重置成功");
                     Message msg1 = Message.obtain();
                     msg1.what = POINT_CHANGE_PAYPAWD;
                     EventBus.getDefault().post(msg1);
                     finish();
                     break;
                 default:
-                    ToastUtil.toastShow(ChangePawdThreeStepActivity.this,"支付密码设置成功");
+                    ToastUtil.toastShow(ChangePawdThreeStepActivity.this, "支付密码设置成功");
                     Message msg2 = Message.obtain();
                     msg2.what = POINT_SET_PAYPAWD;
                     msg2.obj = definePayPawd;

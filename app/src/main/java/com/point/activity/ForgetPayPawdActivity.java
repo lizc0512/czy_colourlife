@@ -12,17 +12,26 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.BeeFramework.Utils.ToastUtil;
+import com.BeeFramework.Utils.Utils;
 import com.BeeFramework.activity.BaseActivity;
 import com.BeeFramework.model.NewHttpResponse;
 import com.BeeFramework.view.ClearEditText;
 import com.external.eventbus.EventBus;
+import com.nohttp.utils.GsonUtils;
+import com.point.entity.IndentityInforEntity;
+import com.point.entity.PayPwdCheckEntity;
+import com.point.model.PayPasswordModel;
 import com.user.UserAppConst;
 import com.user.UserMessageConstant;
+import com.user.activity.UserSmsCodeActivity;
+import com.user.entity.SendCodeEntity;
 import com.user.model.NewUserModel;
 
 import cn.net.cyberway.R;
 
 import static cn.net.cyberway.utils.ConfigUtils.jumpContactService;
+import static com.point.activity.ChangePawdThreeStepActivity.PAWDTOEKN;
 
 /***
  * 忘记密码填写资料
@@ -42,6 +51,7 @@ public class ForgetPayPawdActivity extends BaseActivity implements View.OnClickL
     private String mobile;
     private String smsCode;
     private NewUserModel newUserModel;
+    private PayPasswordModel payPasswordModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,11 +74,14 @@ public class ForgetPayPawdActivity extends BaseActivity implements View.OnClickL
         mTitle.setText("支付密码");
         input_pawd_code.addTextChangedListener(this);
         input_pawd_idcard.addTextChangedListener(this);
-        newUserModel=new NewUserModel(ForgetPayPawdActivity.this);
+        newUserModel = new NewUserModel(ForgetPayPawdActivity.this);
+        payPasswordModel = new PayPasswordModel(ForgetPayPawdActivity.this);
         if (!EventBus.getDefault().isregister(ForgetPayPawdActivity.this)) {
             EventBus.getDefault().register(ForgetPayPawdActivity.this);
         }
+        payPasswordModel.getIdentityInfor(0, ForgetPayPawdActivity.this);
     }
+
     public void onEvent(Object event) {
         final Message message = (Message) event;
         switch (message.what) {
@@ -93,14 +106,14 @@ public class ForgetPayPawdActivity extends BaseActivity implements View.OnClickL
                 finish();
                 break;
             case R.id.tv_get_code:
-                if (fastClick()){
-                    newUserModel.getSmsCode(0,mobile,7,1,ForgetPayPawdActivity.this);
+                if (fastClick()) {
+                    newUserModel.getSmsCode(1, mobile, 7, 1, ForgetPayPawdActivity.this);
                 }
                 break;
             case R.id.btn_define:
-                Intent intent = new Intent(ForgetPayPawdActivity.this, ChangePawdTwoStepActivity.class);
-                intent.putExtra(ChangePawdThreeStepActivity.PAWDTYPE, 2);
-                startActivity(intent);
+                if (fastClick()) {
+                    payPasswordModel.validIdentityInfor(2, mobile, smsCode, idCardNumber, ForgetPayPawdActivity.this);
+                }
                 break;
             case R.id.tv_contact_service:
                 jumpContactService(ForgetPayPawdActivity.this);
@@ -150,11 +163,50 @@ public class ForgetPayPawdActivity extends BaseActivity implements View.OnClickL
 
     }
 
+
     @Override
     public void OnHttpResponse(int what, String result) {
-        switch (what){
+        switch (what) {
             case 0:
-                initTimeCount();
+                try {
+                    IndentityInforEntity indentityInforEntity = GsonUtils.gsonToBean(result, IndentityInforEntity.class);
+                    IndentityInforEntity.ContentBean contentBean = indentityInforEntity.getContent();
+                    mobile = contentBean.getMobile();
+                    tv_user_phone.setText(Utils.getHandlePhone(mobile));
+                    String identity_name = contentBean.getIdentity_name();
+                    int length = identity_name.length();
+                    StringBuffer stringBuffer = new StringBuffer();
+                    for (int j = 0; j < length - 1; j++) {
+                        stringBuffer.append("*");
+                    }
+                    stringBuffer.append(identity_name.substring(length - 1, length));
+                    tv_user_realname.setText(stringBuffer.toString());
+                } catch (Exception e) {
+
+                }
+                break;
+            case 1:
+                if (!TextUtils.isEmpty(result)){
+                    try {
+                        initTimeCount();
+                        SendCodeEntity sendCodeEntity = GsonUtils.gsonToBean(result, SendCodeEntity.class);
+                        ToastUtil.toastShow(ForgetPayPawdActivity.this, sendCodeEntity.getContent().getNotice());
+                    }catch (Exception e){
+                        ToastUtil.toastShow(ForgetPayPawdActivity.this, getResources().getString(R.string.user_code_send));
+                    }
+                }
+                break;
+            case 2:
+                try {
+                    PayPwdCheckEntity payPwdCheckEntity = GsonUtils.gsonToBean(result, PayPwdCheckEntity.class);
+                    PayPwdCheckEntity.ContentBean contentBean = payPwdCheckEntity.getContent();
+                    Intent intent = new Intent(ForgetPayPawdActivity.this, ChangePawdTwoStepActivity.class);
+                    intent.putExtra(ChangePawdThreeStepActivity.PAWDTYPE, 2);
+                    intent.putExtra(PAWDTOEKN, contentBean.getToken());
+                    startActivity(intent);
+                } catch (Exception e) {
+
+                }
                 break;
         }
     }

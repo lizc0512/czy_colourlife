@@ -16,6 +16,7 @@ import com.user.UserMessageConstant;
 
 import cn.net.cyberway.R;
 
+import static com.point.activity.ChangePawdThreeStepActivity.PAWDTOEKN;
 import static com.point.activity.ChangePawdThreeStepActivity.PAWDTYPE;
 
 /***
@@ -27,6 +28,7 @@ public class ChangePawdTwoStepActivity extends BaseActivity implements View.OnCl
     private TextView tv_tips_content;
     private GridPasswordView gridPasswordView_cqb;
     private int passwordType = 0;
+    private String passordToken;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,6 +42,7 @@ public class ChangePawdTwoStepActivity extends BaseActivity implements View.OnCl
         gridPasswordView_cqb.setPasswordType(PasswordType.NUMBER);
         Intent intent = getIntent();
         passwordType = intent.getIntExtra(PAWDTYPE, 0);
+        passordToken = intent.getStringExtra(PAWDTOEKN);
         gridPasswordView_cqb.setOnPasswordChangedListener(new GridPasswordView.OnPasswordChangedListener() {
             @Override
             public void onTextChanged(String psw) {
@@ -50,6 +53,7 @@ public class ChangePawdTwoStepActivity extends BaseActivity implements View.OnCl
             public void onInputFinish(String psw) {
                 Intent intent = new Intent(ChangePawdTwoStepActivity.this, ChangePawdThreeStepActivity.class);
                 intent.putExtra(ChangePawdThreeStepActivity.NEWPAYPAWD, psw);
+                intent.putExtra(PAWDTOEKN, passordToken);
                 intent.putExtra(PAWDTYPE, passwordType);
                 startActivity(intent);
             }
