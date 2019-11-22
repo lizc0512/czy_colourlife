@@ -33,7 +33,7 @@ public class PayPasswordModel extends BaseModel {
         Map<String, Object> params = new HashMap<String, Object>();
         params.put("password", password);
         final Request<String> request = NoHttp.createStringRequest(RequestEncryptionUtils.postCombileMD5(mContext, 16, addPawdUrl), RequestMethod.POST);
-        request(what, request, null, new HttpListener<String>() {
+        request(what, request, params, new HttpListener<String>() {
             @Override
             public void onSucceed(int what, Response<String> response) {
                 int responseCode = response.getHeaders().getResponseCode();
@@ -59,7 +59,7 @@ public class PayPasswordModel extends BaseModel {
         Map<String, Object> params = new HashMap<String, Object>();
         params.put("password", password);
         final Request<String> request = NoHttp.createStringRequest(RequestEncryptionUtils.postCombileMD5(mContext, 16, setPawdUrl), RequestMethod.POST);
-        request(what, request, null, new HttpListener<String>() {
+        request(what, request, params, new HttpListener<String>() {
             @Override
             public void onSucceed(int what, Response<String> response) {
                 int responseCode = response.getHeaders().getResponseCode();
@@ -85,7 +85,7 @@ public class PayPasswordModel extends BaseModel {
         Map<String, Object> params = new HashMap<String, Object>();
         params.put("password", password);
         final Request<String> request = NoHttp.createStringRequest(RequestEncryptionUtils.postCombileMD5(mContext, 16, checkPawdUrl), RequestMethod.POST);
-        request(what, request, null, new HttpListener<String>() {
+        request(what, request, params, new HttpListener<String>() {
             @Override
             public void onSucceed(int what, Response<String> response) {
                 int responseCode = response.getHeaders().getResponseCode();

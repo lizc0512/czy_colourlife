@@ -43,6 +43,16 @@ public class PointKeywordEntity extends BaseContentEntity {
 
         private String keyword;
 
+        public String getIs_show_old() {
+            return is_show_old;
+        }
+
+        public void setIs_show_old(String is_show_old) {
+            this.is_show_old = is_show_old;
+        }
+
+        private String is_show_old;
+
         public String getKeyword() {
             return keyword;
         }

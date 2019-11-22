@@ -110,9 +110,15 @@ public class MyPointActivity extends BaseActivity implements View.OnClickListene
             case 0:
                 try {
                     PointKeywordEntity pointKeywordEntity = GsonUtils.gsonToBean(result, PointKeywordEntity.class);
-                    String keywordSign = pointKeywordEntity.getContent().getKeyword();
+                    PointKeywordEntity.ContentBean contentBean=   pointKeywordEntity.getContent();
+                    String keywordSign = contentBean.getKeyword();
                     editor.putString(COLOUR_WALLET_KEYWORD_SIGN, keywordSign).apply();
                     mTitle.setText("彩" + keywordSign);
+                    if ("1".equals(contentBean.getIs_show_old())){
+                        user_top_view_right.setVisibility(View.VISIBLE);
+                    }else{
+                        user_top_view_right.setVisibility(View.GONE);
+                    }
                 } catch (Exception e) {
 
                 }

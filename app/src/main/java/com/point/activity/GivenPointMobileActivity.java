@@ -144,7 +144,7 @@ public class GivenPointMobileActivity extends BaseActivity implements View.OnCli
 
 
     private void setBtnClick() {
-        if (11 != givePhone.length() || !canGiven) {
+        if (TextUtils.isEmpty(givePhone)||11 != givePhone.length() || !canGiven) {
             btn_next_step.setEnabled(false);
             btn_next_step.setBackgroundResource(R.drawable.point_password_default_bg);
         } else {

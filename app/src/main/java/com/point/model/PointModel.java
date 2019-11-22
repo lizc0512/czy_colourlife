@@ -1,6 +1,7 @@
 package com.point.model;
 
 import android.content.Context;
+import android.text.TextUtils;
 
 import com.BeeFramework.model.BaseModel;
 import com.BeeFramework.model.NewHttpResponse;
@@ -270,7 +271,9 @@ public class PointModel extends BaseModel {
         params.put("order_no",order_no);
         params.put("dest_account",dest_account);
         params.put("pano",pano);
-        params.put("detail",detail);
+        if (!TextUtils.isEmpty(detail)){
+            params.put("detail",detail);
+        }
         params.put("password",password);
         final Request<String> request = NoHttp.createStringRequest(RequestEncryptionUtils.postCombileMD5(mContext, 16, transactionTransferUrl), RequestMethod.POST);
         request(what, request, params, new HttpListener<String>() {

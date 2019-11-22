@@ -77,6 +77,7 @@ public class ChangePawdTwoStepActivity extends BaseActivity implements View.OnCl
         final Message message = (Message) event;
         switch (message.what) {
             case UserMessageConstant.POINT_CHANGE_PAYPAWD:
+            case UserMessageConstant.POINT_SET_PAYPAWD:
                 finish();
                 break;
         }
