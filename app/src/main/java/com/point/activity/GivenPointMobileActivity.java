@@ -81,6 +81,7 @@ public class GivenPointMobileActivity extends BaseActivity implements View.OnCli
         }
         if (!TextUtils.isEmpty(givePhone)) {
             input_given_mobile.setText(givePhone);
+            input_given_mobile.setSelection(givePhone.length());
         }
     }
 
@@ -93,7 +94,7 @@ public class GivenPointMobileActivity extends BaseActivity implements View.OnCli
             case R.id.user_top_view_right:
                 Intent intent = new Intent(GivenPointMobileActivity.this, GivenPointHistoryActivity.class);
                 intent.putExtra(POINTTPANO, pano);
-                startActivity(intent);
+                startActivityForResult(intent, 200);
                 break;
             case R.id.btn_next_step:
                 if (shared.getString(UserAppConst.Colour_login_mobile, "").equals(givePhone)) {
@@ -144,7 +145,7 @@ public class GivenPointMobileActivity extends BaseActivity implements View.OnCli
 
 
     private void setBtnClick() {
-        if (TextUtils.isEmpty(givePhone)||11 != givePhone.length() || !canGiven) {
+        if (TextUtils.isEmpty(givePhone) || 11 != givePhone.length() || !canGiven) {
             btn_next_step.setEnabled(false);
             btn_next_step.setBackgroundResource(R.drawable.point_password_default_bg);
         } else {
@@ -153,6 +154,15 @@ public class GivenPointMobileActivity extends BaseActivity implements View.OnCli
         }
     }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode == 200) {
+            givePhone = data.getStringExtra(GIVENMOBILE);
+            input_given_mobile.setText(givePhone);
+            input_given_mobile.setSelection(givePhone.length());
+        }
+    }
 
     @Override
     public void OnHttpResponse(int what, String result) {

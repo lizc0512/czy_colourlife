@@ -70,6 +70,16 @@ public class PointTransferListEntity extends BaseContentEntity {
             private String finance_no;
             private String trans_type;
             private String trans_name;
+
+            public String getMobile() {
+                return mobile;
+            }
+
+            public void setMobile(String mobile) {
+                this.mobile = mobile;
+            }
+
+            private String mobile;
             private String order_no;
             private int org_money;
             private int dest_money;

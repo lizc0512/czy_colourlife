@@ -239,14 +239,18 @@ public class BaseModel {
             if (!jsonObject.isNull("code")) {
                 try {
                     BaseContentEntity baseErrorEntity = GsonUtils.gsonToBean(result, BaseContentEntity.class);
-                    if (baseErrorEntity.getCode() != 0) {
+                    int code = baseErrorEntity.getCode();
+                    if (code != 0) {
                         final String message = baseErrorEntity.getMessage();
-                        callback(message);
+                        if (code == 422) {
+                            callback(message + "[" + jsonObject.getString("content") + "]");
+                        } else {
+                            callback(message);
+                        }
                     }
                 } catch (Exception e) {
 
                 }
-
             }
         }
         return jsonObject;

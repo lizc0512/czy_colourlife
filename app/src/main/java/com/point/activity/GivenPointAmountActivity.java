@@ -56,10 +56,10 @@ public class GivenPointAmountActivity extends BaseActivity implements View.OnCli
     public static final String USERID = "userid";
     private ImageView mBack;
     private TextView mTitle;
-    private TextView user_top_view_right;
     private ImageView iv_given_photo;
     private TextView tv_given_username;
     private ClearEditText ed_given_amount;
+    private TextView tv_hint_notice;
     private ClearEditText ed_given_remark;
     private TextView tv_remain_amount;
     private TextView tv_remain_notice;
@@ -85,16 +85,13 @@ public class GivenPointAmountActivity extends BaseActivity implements View.OnCli
         setContentView(R.layout.activity_point_given_amount);
         mBack = findViewById(R.id.user_top_view_back);
         mTitle = findViewById(R.id.user_top_view_title);
-        user_top_view_right = findViewById(R.id.user_top_view_right);
         iv_given_photo = findViewById(R.id.iv_given_photo);
         tv_given_username = findViewById(R.id.tv_given_username);
         ed_given_amount = findViewById(R.id.ed_given_amount);
+        tv_hint_notice = findViewById(R.id.tv_hint_notice);
         ed_given_remark = findViewById(R.id.ed_given_remark);
         tv_remain_amount = findViewById(R.id.tv_remain_amount);
         tv_remain_notice = findViewById(R.id.tv_remain_notice);
-        user_top_view_right.setVisibility(View.VISIBLE);
-        user_top_view_right.setText("记录");
-        user_top_view_right.setOnClickListener(this::onClick);
         btn_given = findViewById(R.id.btn_given);
         btn_given.setEnabled(false);
         mBack.setOnClickListener(this);
@@ -115,7 +112,7 @@ public class GivenPointAmountActivity extends BaseActivity implements View.OnCli
         if (!EventBus.getDefault().isregister(GivenPointAmountActivity.this)) {
             EventBus.getDefault().register(GivenPointAmountActivity.this);
         }
-        CashierInputFilter cashierInputFilter = new CashierInputFilter(5000);
+        CashierInputFilter cashierInputFilter = new CashierInputFilter(GivenPointAmountActivity.this,1,5000);
         ed_given_amount.setFilters(new InputFilter[]{cashierInputFilter});
         String user_name = intent.getStringExtra(USERNAME);
         String user_portrait = intent.getStringExtra(USERPORTRAIT);
@@ -128,11 +125,6 @@ public class GivenPointAmountActivity extends BaseActivity implements View.OnCli
         switch (v.getId()) {
             case R.id.user_top_view_back:
                 finish();
-                break;
-            case R.id.user_top_view_right:
-                Intent intent = new Intent(GivenPointAmountActivity.this, GivenPointHistoryActivity.class);
-                intent.putExtra(POINTTPANO, pano);
-                startActivity(intent);
                 break;
             case R.id.btn_given:
                 if (fastClick()) {
@@ -189,8 +181,13 @@ public class GivenPointAmountActivity extends BaseActivity implements View.OnCli
     @Override
     public void afterTextChanged(Editable s) {
         giveAmount = s.toString().trim();
+        if (TextUtils.isEmpty(giveAmount)) {
+            tv_hint_notice.setVisibility(View.VISIBLE);
+        } else {
+            tv_hint_notice.setVisibility(View.GONE);
+        }
         if (TextUtils.isEmpty(giveAmount) || giveAmount.equals("0") || giveAmount.equals("0.")
-                || giveAmount.equals("0.0") || giveAmount.equals("0.00") || last_amount <= 0 || last_time <= 0) {
+                || giveAmount.equals("0.0") || giveAmount.equals("0.00")) {
             btn_given.setEnabled(false);
             btn_given.setBackgroundResource(R.drawable.point_password_default_bg);
         } else {
@@ -209,23 +206,12 @@ public class GivenPointAmountActivity extends BaseActivity implements View.OnCli
                     float balanceAmount = contentBean.getBalance() * 1.0f / 100;
                     CashierInputFilter cashierInputFilter;
                     if (balanceAmount <= last_amount) {
-                        cashierInputFilter = new CashierInputFilter(balanceAmount);
+                        cashierInputFilter = new CashierInputFilter(GivenPointAmountActivity.this,0,balanceAmount);
                     } else {
-                        cashierInputFilter = new CashierInputFilter(last_amount);
+                        cashierInputFilter = new CashierInputFilter(GivenPointAmountActivity.this,1,last_amount);
                     }
                     ed_given_amount.setFilters(new InputFilter[]{cashierInputFilter});
                     tv_remain_amount.setText("可用余额:" + balanceAmount);
-                } catch (Exception e) {
-
-                }
-                break;
-            case 2:
-                try {
-                    PointAccountLimitEntity pointAccountLimitEntity = GsonUtils.gsonToBean(result, PointAccountLimitEntity.class);
-                    PointAccountLimitEntity.ContentBean contentBean = pointAccountLimitEntity.getContent();
-                    last_time = contentBean.getLast_times();
-                    last_amount = contentBean.getLast_amount() * 1.0f / 100;
-                    tv_remain_notice.setText("今天可赠送" + last_time + "次，剩余额度" + last_amount + keyword_sign);
                 } catch (Exception e) {
 
                 }

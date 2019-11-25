@@ -1,8 +1,11 @@
 package com.nohttp.utils;
 
+import android.content.Context;
 import android.text.InputFilter;
 import android.text.Spanned;
 import android.text.TextUtils;
+
+import com.BeeFramework.Utils.ToastUtil;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -19,8 +22,13 @@ public class CashierInputFilter implements InputFilter {
 
     private static final String ZERO = "0";
 
-    public CashierInputFilter(double maxValue) {
+    private Context context;
+    private int  type;
+
+    public CashierInputFilter(Context context ,int type,double maxValue) {
         this.maxValue=maxValue;
+        this.context=context;
+        this.type=type;
         mPattern = Pattern.compile("([0-9]|\\.)*");
     }
 
@@ -86,6 +94,11 @@ public class CashierInputFilter implements InputFilter {
         //验证输入金额的大小
         double sumText = Double.parseDouble(destText + sourceText);
         if (sumText > maxValue) {
+            if (type==0){
+                ToastUtil.toastShow(context,"赠送金额不能超过可用余额");
+            }else{
+                ToastUtil.toastShow(context,"赠送金额不能超过剩余额度");
+            }
             return dest.subSequence(dstart, dend);
         }
         return dest.subSequence(dstart, dend) + sourceText;

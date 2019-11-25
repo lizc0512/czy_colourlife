@@ -62,22 +62,36 @@
                     android:textSize="15sp"
                     android:text="赠送金额"/>
 
-                <com.BeeFramework.view.ClearEditText
-                    android:id="@+id/ed_given_amount"
-                    android:hint="请输入赠送金额"
+                <RelativeLayout
                     android:layout_width="match_parent"
-                    android:drawablePadding="10dp"
-                    android:drawableLeft="@drawable/point_black_sign"
-                    android:background="@null"
-                    android:paddingLeft="16dp"
-                    android:paddingRight="16dp"
-                    android:maxLength="10"
-                    android:inputType="numberDecimal"
-                    android:textSize="24sp"
-                    android:textColor="@color/color_25282e"
                     android:layout_weight="1"
-                    android:textColorHint="@color/color_626466"
-                    android:layout_height="0dp"/>
+                    android:layout_height="0dp">
+
+                    <com.BeeFramework.view.ClearEditText
+                        android:id="@+id/ed_given_amount"
+                        android:layout_width="match_parent"
+                        android:drawablePadding="10dp"
+                        android:drawableLeft="@drawable/point_black_sign"
+                        android:background="@null"
+                        android:paddingLeft="16dp"
+                        android:paddingRight="16dp"
+                        android:maxLength="10"
+                        android:inputType="numberDecimal"
+                        android:textSize="24sp"
+                        android:textColor="@color/color_25282e"
+                        android:layout_height="match_parent"/>
+
+                    <TextView
+                        android:id="@+id/tv_hint_notice"
+                        android:textColor="@color/color_626466"
+                        android:layout_width="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_marginLeft="45dp"
+                        android:textSize="15sp"
+                        android:layout_height="wrap_content"
+                        android:text="请输入赠送金额"/>
+
+                </RelativeLayout>
 
                 <View
                     android:layout_width="match_parent"

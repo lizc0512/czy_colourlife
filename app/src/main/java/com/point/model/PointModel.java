@@ -69,9 +69,9 @@ public class PointModel extends BaseModel {
         params.put("type", 1);
         params.put("page", page);
         params.put("page_size", 20);
-        params.put("is_pay", 1);
+        params.put("is_pay", 0);
         params.put("pano", pano);
-        if (time_start == 0) {
+        if (time_start != 0) {
             params.put("time_start", time_start);
             params.put("time_stop", time_stop);
         }

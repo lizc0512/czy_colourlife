@@ -39,7 +39,7 @@
     </RelativeLayout>
 
 
-    <com.yanzhenjie.recyclerview.swipe.SwipeMenuRecyclerView
+    <com.jcodecraeer.xrecyclerview.XRecyclerView
         android:id="@+id/rv_transaction"
         android:layout_width="match_parent"
         android:layout_marginTop="12dp"

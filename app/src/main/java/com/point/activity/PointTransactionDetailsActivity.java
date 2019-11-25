@@ -1,6 +1,7 @@
 package com.point.activity;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
@@ -50,8 +51,10 @@ public class PointTransactionDetailsActivity extends BaseActivity implements Vie
         tv_transaction_name.setText(listBean.getTrans_name());
         int amount = listBean.getDest_money();
         if ("1".equals(listBean.getType())) {
+            tv_transaction_amount.setTextColor(Color.parseColor("#F24724"));
             tv_transaction_amount.setText("+" + amount/100.0f);
         } else {
+            tv_transaction_amount.setTextColor(Color.parseColor("#25282E"));
             tv_transaction_amount.setText("-" + amount/100.0f);
         }
         String trans_type = listBean.getTrans_type();
