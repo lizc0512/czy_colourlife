@@ -38,12 +38,13 @@ public class PointGivenHistoryAdapter extends RecyclerView.Adapter<PointGivenHis
     @Override
     public void onBindViewHolder(@NonNull PointGivenHistoryAdapter.PointGivenHistoryViewHolder viewHolder, int i) {
         PointTransferListEntity.ContentBean.ListBean  listBean=totalContentBeanList.get(i);
-        viewHolder.tv_given_username.setText(listBean.getDest_client()+" "+listBean.getMobile());
         viewHolder.tv_given_date.setText(listBean.getCreate_time());
         if ("1".equals(listBean.getType())){
             viewHolder.tv_given_amount.setText("+"+listBean.getDest_money()*1.0f/100);
             viewHolder.tv_given_amount.setTextColor(Color.parseColor("#F24724"));
+            viewHolder.tv_given_username.setText(listBean.getOrg_client()+" "+listBean.getMobile());
         }else{
+            viewHolder.tv_given_username.setText(listBean.getDest_client()+" "+listBean.getMobile());
             viewHolder.tv_given_amount.setTextColor(Color.parseColor("#25282E"));
             viewHolder.tv_given_amount.setText("-"+listBean.getDest_money()*1.0f/100);
         }

@@ -143,7 +143,7 @@ public class PointTransactionListActivity extends BaseActivity implements View.O
                         }
                         if (null != contentBean) {
                             List<PointTransactionRecordEntity.ContentBean.ListBean> listBeanList = contentBean.getList();
-                            if (null != listBeanList && listBeanList.size() >= 20) {
+                            if (null != listBeanList && listBeanList.size() >= 19) {
                                 moreEmpty = true;
                             } else {
                                 moreEmpty = false;
@@ -155,6 +155,7 @@ public class PointTransactionListActivity extends BaseActivity implements View.O
                     }
                 }
                 rv_transaction.setLoadingMoreEnabled(moreEmpty);
+                rv_transaction.loadMoreComplete();
                 if (totalListBean.size() > 0) {
                     rv_transaction.setVisibility(View.VISIBLE);
                     tv_no_record.setVisibility(View.GONE);

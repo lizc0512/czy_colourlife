@@ -52,6 +52,9 @@ public class GivenPointHistoryActivity extends BaseActivity implements View.OnCl
         pointModel = new PointModel(GivenPointHistoryActivity.this);
         String pano = getIntent().getStringExtra(POINTTPANO);
         pointModel.getTransferList(0, pano, page, true, GivenPointHistoryActivity.this);
+        pointGivenHistoryAdapter = new PointGivenHistoryAdapter(totalContentBeanList);
+        rv_given_history.setLayoutManager(new LinearLayoutManager(GivenPointHistoryActivity.this, LinearLayoutManager.VERTICAL, false));
+        rv_given_history.setAdapter(pointGivenHistoryAdapter);
         rv_given_history.setLoadingMoreEnabled(true);
         rv_given_history.setPullRefreshEnabled(false);
         rv_given_history.setLoadingListener(new XRecyclerView.LoadingListener() {
@@ -93,7 +96,7 @@ public class GivenPointHistoryActivity extends BaseActivity implements View.OnCl
                         if (null != contentBean) {
                             List<PointTransferListEntity.ContentBean.ListBean> listBeanList = contentBean.getList();
                             totalContentBeanList.addAll(listBeanList);
-                            if (null != listBeanList && listBeanList.size() >= 20) {
+                            if (null != listBeanList && listBeanList.size() >= 14) {
                                 moreEmpty = true;
                             } else {
                                 moreEmpty = false;
@@ -103,6 +106,8 @@ public class GivenPointHistoryActivity extends BaseActivity implements View.OnCl
 
                     }
                 }
+                rv_given_history.setLoadingMoreEnabled(moreEmpty);
+                rv_given_history.loadMoreComplete();
                 if (totalContentBeanList.size() > 0) {
                     rv_given_history.setVisibility(View.VISIBLE);
                     tv_no_record.setVisibility(View.GONE);
@@ -110,26 +115,13 @@ public class GivenPointHistoryActivity extends BaseActivity implements View.OnCl
                     rv_given_history.setVisibility(View.GONE);
                     tv_no_record.setVisibility(View.VISIBLE);
                 }
-                rv_given_history.setLoadingMoreEnabled(moreEmpty);
-                if (null == pointGivenHistoryAdapter) {
-                    pointGivenHistoryAdapter = new PointGivenHistoryAdapter(totalContentBeanList);
-                    rv_given_history.setLayoutManager(new LinearLayoutManager(GivenPointHistoryActivity.this, LinearLayoutManager.VERTICAL, false));
-                    rv_given_history.setAdapter(pointGivenHistoryAdapter);
-                } else {
-                    pointGivenHistoryAdapter.notifyDataSetChanged();
-                }
-
-                if (null != pointGivenHistoryAdapter) {
-                    pointGivenHistoryAdapter.setOnItemClickListener(new OnItemClickListener() {
-                        @Override
-                        public void onItemClick(int i) {
-                            Intent intent = new Intent();
-                            intent.putExtra(GivenPointAmountActivity.GIVENMOBILE, totalContentBeanList.get(i - 1).getMobile());
-                            setResult(200, intent);
-                            finish();
-                        }
-                    });
-                }
+                pointGivenHistoryAdapter.notifyDataSetChanged();
+                pointGivenHistoryAdapter.setOnItemClickListener(i -> {
+                    Intent intent = new Intent();
+                    intent.putExtra(GivenPointAmountActivity.GIVENMOBILE, totalContentBeanList.get(i - 1).getMobile());
+                    setResult(200, intent);
+                    finish();
+                });
                 break;
         }
 
