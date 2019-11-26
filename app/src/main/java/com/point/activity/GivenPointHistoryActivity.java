@@ -96,7 +96,7 @@ public class GivenPointHistoryActivity extends BaseActivity implements View.OnCl
                         if (null != contentBean) {
                             List<PointTransferListEntity.ContentBean.ListBean> listBeanList = contentBean.getList();
                             totalContentBeanList.addAll(listBeanList);
-                            if (null != listBeanList && listBeanList.size() >= 14) {
+                            if (null != listBeanList && listBeanList.size() >= 19) {
                                 moreEmpty = true;
                             } else {
                                 moreEmpty = false;

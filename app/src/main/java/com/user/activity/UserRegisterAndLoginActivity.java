@@ -39,6 +39,7 @@ import com.mob.tools.utils.UIHandler;
 import com.nohttp.utils.GsonUtils;
 import com.permission.AndPermission;
 import com.permission.PermissionListener;
+import com.point.activity.GivenPointAmountActivity;
 import com.smileback.bankcommunicationsstyle.BCSIJMInputEditText;
 import com.tendcloud.tenddata.TCAgent;
 import com.user.UserAppConst;

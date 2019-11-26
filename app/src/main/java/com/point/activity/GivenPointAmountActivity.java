@@ -74,7 +74,7 @@ public class GivenPointAmountActivity extends BaseActivity implements View.OnCli
     private String dest_account;//目标用户的id
     private int last_time; //剩余次数
     private float last_amount;//剩余金额
-    private float balanceAmount;//账户余额
+    private float balanceAmount=0.01f;//账户余额
     private String realName;//用户实名的
     private int giveBalance;//赠送的金额(单位分)
 
@@ -113,7 +113,7 @@ public class GivenPointAmountActivity extends BaseActivity implements View.OnCli
             EventBus.getDefault().register(GivenPointAmountActivity.this);
         }
         CashierInputFilter cashierInputFilter = new CashierInputFilter(GivenPointAmountActivity.this, 1, 5000);
-        ed_given_amount.setFilters(new InputFilter[]{new InputFilter.LengthFilter(12), cashierInputFilter});
+        ed_given_amount.setFilters(new InputFilter[]{new InputFilter.LengthFilter(10), cashierInputFilter});
         String user_name = intent.getStringExtra(USERNAME);
         String user_portrait = intent.getStringExtra(USERPORTRAIT);
         tv_given_username.setText("正在向" + user_name + "\n" + "赠送" + keyword_sign);
@@ -136,7 +136,7 @@ public class GivenPointAmountActivity extends BaseActivity implements View.OnCli
                         int pos = giveAmount.lastIndexOf('0');
                         giveAmount = giveAmount.substring(pos + 1, length);
                     }
-                    double give_Amount = Double.valueOf(giveAmount);
+                    float give_Amount = Float.valueOf(giveAmount);
                     if (give_Amount > balanceAmount) {
                         ToastUtil.toastShow(GivenPointAmountActivity.this, "赠送金额不能超过可用余额");
                         return;
@@ -219,7 +219,7 @@ public class GivenPointAmountActivity extends BaseActivity implements View.OnCli
                     } else {
                         cashierInputFilter = new CashierInputFilter(GivenPointAmountActivity.this, 1, last_amount);
                     }
-                    ed_given_amount.setFilters(new InputFilter[]{new InputFilter.LengthFilter(12), cashierInputFilter});
+                    ed_given_amount.setFilters(new InputFilter[]{new InputFilter.LengthFilter(10), cashierInputFilter});
                     tv_remain_amount.setText("可用余额:" + balanceAmount);
                 } catch (Exception e) {
 

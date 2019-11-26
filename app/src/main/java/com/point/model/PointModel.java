@@ -130,7 +130,7 @@ public class PointModel extends BaseModel {
         Map<String, Object> params = new HashMap<String, Object>();
         params.put("pano",pano);
         params.put("page", page);
-        params.put("page_size", 15);
+        params.put("page_size", 20);
         final Request<String> request = NoHttp.createStringRequest(RequestEncryptionUtils.getCombileMD5(mContext, 15, transferListUrl, params), RequestMethod.GET);
         request(what, request, params, new HttpListener<String>() {
             @Override
