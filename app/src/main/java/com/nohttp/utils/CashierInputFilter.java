@@ -90,17 +90,16 @@ public class CashierInputFilter implements InputFilter {
                 }
             }
         }
-
-        //验证输入金额的大小
-        double sumText = Double.parseDouble(destText + sourceText);
-        if (sumText > maxValue) {
-            if (type==0){
-                ToastUtil.toastShow(context,"赠送金额不能超过可用余额");
-            }else{
-                ToastUtil.toastShow(context,"赠送金额不能超过剩余额度");
-            }
-            return dest.subSequence(dstart, dend);
-        }
+//        //验证输入金额的大小
+//        double sumText = Double.parseDouble(destText + sourceText);
+//        if (sumText > maxValue) {
+//            if (type==0){
+//                ToastUtil.toastShow(context,"赠送金额不能超过可用余额");
+//            }else{
+//                ToastUtil.toastShow(context,"赠送金额不能超过剩余额度");
+//            }
+//            return dest.subSequence(dstart, dend);
+//        }
         return dest.subSequence(dstart, dend) + sourceText;
     }
 }

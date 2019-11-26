@@ -33,7 +33,7 @@ public class UpdateModel extends BaseModel {
      *
      * @param version 当前版本
      */
-    public void checkVersion(String version, boolean showLoading, NewHttpResponse newHttpResponse) {
+    public void checkVersion(String version, boolean showLoading,boolean slient, NewHttpResponse newHttpResponse) {
         Map<String, Object> params = new HashMap<>();
         params.put("version", showVersionName(version));
         params.put("app", "czy");
@@ -63,9 +63,9 @@ public class UpdateModel extends BaseModel {
                         } catch (Exception e) {
 
                         }
-                        newHttpResponse.OnHttpResponse(what, result);
-                    } else {
-                        newHttpResponse.OnHttpResponse(what, "");
+                        if (!slient){ //不是静默的有回调处理
+                            newHttpResponse.OnHttpResponse(what, result);
+                        }
                     }
                 }
             }

@@ -217,21 +217,25 @@ public class UserAccountSaftyActivity extends BaseActivity implements View.OnCli
                 }
                 break;
             case R.id.change_paypawd_layout:
-
-                switch (state) {
-                    case "2"://已实名未设置支付密码
-                        Intent pay_intent = new Intent(UserAccountSaftyActivity.this, ChangePawdTwoStepActivity.class);
-                        startActivity(pay_intent);
-                        break;
-                    case "3"://未实名未设置支付密码
-                    case "4"://未实名已设置支付密码
-                        newUserModel = new NewUserModel(UserAccountSaftyActivity.this);
-                        newUserModel.getRealNameToken(6, this, true);
-                        break;
-                    default://1已实名已设置支付密码
-                        intent = new Intent(this, ChangePawdStyleActivity.class);
-                        startActivity(intent);
-                        break;
+                if (TextUtils.isEmpty(state)){
+                    intent = new Intent(this, ChangePawdStyleActivity.class);
+                    startActivity(intent);
+                }else{
+                    switch (state) {
+                        case "2"://已实名未设置支付密码
+                            Intent pay_intent = new Intent(UserAccountSaftyActivity.this, ChangePawdTwoStepActivity.class);
+                            startActivity(pay_intent);
+                            break;
+                        case "3"://未实名未设置支付密码
+                        case "4"://未实名已设置支付密码
+                            newUserModel = new NewUserModel(UserAccountSaftyActivity.this);
+                            newUserModel.getRealNameToken(6, this, true);
+                            break;
+                        default://1已实名已设置支付密码
+                            intent = new Intent(this, ChangePawdStyleActivity.class);
+                            startActivity(intent);
+                            break;
+                    }
                 }
                 break;
         }
@@ -339,6 +343,7 @@ public class UserAccountSaftyActivity extends BaseActivity implements View.OnCli
                                 editor.putString(UserAppConst.COLOUR_AUTH_REAL_NAME + shared.getInt(UserAppConst.Colour_User_id, 0), realName).commit();
                                 newUserModel.finishTask(10, "2", "task_web", this);//实名认证任务
                                 if ("3".equals(state)) {
+                                    state = "2";
                                     Intent pawd_intent = new Intent(UserAccountSaftyActivity.this, ChangePawdTwoStepActivity.class);
                                     startActivity(pawd_intent);
                                 } else {

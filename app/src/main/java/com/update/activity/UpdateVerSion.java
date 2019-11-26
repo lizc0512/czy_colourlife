@@ -144,11 +144,11 @@ public class UpdateVerSion implements NewHttpResponse {
         }
     }
 
-    public void getNewVerSion(Activity context, boolean showDialog) {
+    public void getNewVerSion(Activity context, boolean showDialog,boolean slient) {
         isShowDialog = showDialog;
         contexts = context;
         UpdateModel updateModel = new UpdateModel(context);
-        updateModel.checkVersion(getVersionName(context), !showDialog, this);
+        updateModel.checkVersion(getVersionName(context), !showDialog,slient, this);
     }
 
 

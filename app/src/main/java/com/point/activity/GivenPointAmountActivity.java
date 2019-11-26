@@ -22,7 +22,6 @@ import com.external.eventbus.EventBus;
 import com.nohttp.utils.CashierInputFilter;
 import com.nohttp.utils.GlideImageLoader;
 import com.nohttp.utils.GsonUtils;
-import com.point.entity.PointAccountLimitEntity;
 import com.point.entity.PointBalanceEntity;
 import com.point.entity.PointTransactionTokenEntity;
 import com.point.model.PointModel;
@@ -38,7 +37,6 @@ import org.json.JSONObject;
 
 import cn.net.cyberway.R;
 
-import static com.point.activity.PointTransactionListActivity.POINTTPANO;
 import static com.user.UserMessageConstant.POINT_INPUT_PAYPAWD;
 import static com.user.UserMessageConstant.POINT_SET_PAYPAWD;
 
@@ -76,7 +74,9 @@ public class GivenPointAmountActivity extends BaseActivity implements View.OnCli
     private String dest_account;//目标用户的id
     private int last_time; //剩余次数
     private float last_amount;//剩余金额
+    private float balanceAmount;//账户余额
     private String realName;//用户实名的
+    private int giveBalance;//赠送的金额(单位分)
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -112,8 +112,8 @@ public class GivenPointAmountActivity extends BaseActivity implements View.OnCli
         if (!EventBus.getDefault().isregister(GivenPointAmountActivity.this)) {
             EventBus.getDefault().register(GivenPointAmountActivity.this);
         }
-        CashierInputFilter cashierInputFilter = new CashierInputFilter(GivenPointAmountActivity.this,1,5000);
-        ed_given_amount.setFilters(new InputFilter[]{cashierInputFilter});
+        CashierInputFilter cashierInputFilter = new CashierInputFilter(GivenPointAmountActivity.this, 1, 5000);
+        ed_given_amount.setFilters(new InputFilter[]{new InputFilter.LengthFilter(12), cashierInputFilter});
         String user_name = intent.getStringExtra(USERNAME);
         String user_portrait = intent.getStringExtra(USERPORTRAIT);
         tv_given_username.setText("正在向" + user_name + "\n" + "赠送" + keyword_sign);
@@ -128,6 +128,24 @@ public class GivenPointAmountActivity extends BaseActivity implements View.OnCli
                 break;
             case R.id.btn_given:
                 if (fastClick()) {
+                    giveAmount = ed_given_amount.getText().toString().trim();
+                    int length = giveAmount.length();
+                    if (giveAmount.endsWith(".")) {
+                        giveAmount = giveAmount.substring(0, length - 1);
+                    } else if (giveAmount.startsWith("0") && !giveAmount.contains(".")) {
+                        int pos = giveAmount.lastIndexOf('0');
+                        giveAmount = giveAmount.substring(pos + 1, length);
+                    }
+                    double give_Amount = Double.valueOf(giveAmount);
+                    if (give_Amount > balanceAmount) {
+                        ToastUtil.toastShow(GivenPointAmountActivity.this, "赠送金额不能超过可用余额");
+                        return;
+                    }
+                    if (give_Amount > last_amount) {
+                        ToastUtil.toastShow(GivenPointAmountActivity.this, "赠送金额不能超过剩余额度");
+                        return;
+                    }
+                    giveBalance = (int) (give_Amount * 100);
                     pointModel.getTransactionToken(3, GivenPointAmountActivity.this);
                 }
                 break;
@@ -144,17 +162,8 @@ public class GivenPointAmountActivity extends BaseActivity implements View.OnCli
                 break;
             case POINT_INPUT_PAYPAWD://密码框输入密码
             case POINT_SET_PAYPAWD: //设置支付密码成功 直接拿密码进行支付
-                String giveAmount = ed_given_amount.getText().toString().trim();
                 String password = message.obj.toString();
-                int length = giveAmount.length();
-                if (giveAmount.endsWith(".")) {
-                    giveAmount = giveAmount.substring(0, length - 1);
-                } else if (giveAmount.startsWith("0") && !giveAmount.contains(".")) {
-                    int pos = giveAmount.lastIndexOf('0');
-                    giveAmount = giveAmount.substring(pos + 1, length);
-                }
-                int trans_fee = (int) (Double.valueOf(giveAmount) * 100);
-                pointModel.transferTransaction(4, trans_fee, password, token, order_no, dest_account, pano,
+                pointModel.transferTransaction(4, giveBalance, password, token, order_no, dest_account, pano,
                         ed_given_remark.getText().toString().trim(), GivenPointAmountActivity.this);
                 break;
         }
@@ -203,14 +212,14 @@ public class GivenPointAmountActivity extends BaseActivity implements View.OnCli
                 try {
                     PointBalanceEntity pointBalanceEntity = GsonUtils.gsonToBean(result, PointBalanceEntity.class);
                     PointBalanceEntity.ContentBean contentBean = pointBalanceEntity.getContent();
-                    float balanceAmount = contentBean.getBalance() * 1.0f / 100;
+                    balanceAmount = contentBean.getBalance() * 1.0f / 100;
                     CashierInputFilter cashierInputFilter;
                     if (balanceAmount <= last_amount) {
-                        cashierInputFilter = new CashierInputFilter(GivenPointAmountActivity.this,0,balanceAmount);
+                        cashierInputFilter = new CashierInputFilter(GivenPointAmountActivity.this, 0, balanceAmount);
                     } else {
-                        cashierInputFilter = new CashierInputFilter(GivenPointAmountActivity.this,1,last_amount);
+                        cashierInputFilter = new CashierInputFilter(GivenPointAmountActivity.this, 1, last_amount);
                     }
-                    ed_given_amount.setFilters(new InputFilter[]{cashierInputFilter});
+                    ed_given_amount.setFilters(new InputFilter[]{new InputFilter.LengthFilter(12), cashierInputFilter});
                     tv_remain_amount.setText("可用余额:" + balanceAmount);
                 } catch (Exception e) {
 
@@ -241,7 +250,10 @@ public class GivenPointAmountActivity extends BaseActivity implements View.OnCli
 
                 }
                 break;
-            case 4:
+            case 4://赠送成功  刷新首页的余额
+                Message message = new Message();
+                message.what = UserMessageConstant.SUREBTNCHECKET;
+                EventBus.getDefault().post(message);
                 Intent intent = new Intent(GivenPointAmountActivity.this, GivenPointResultActivity.class);
                 intent.putExtra(GIVENMOBILE, givenMobile);
                 intent.putExtra(GIVENAMOUNT, giveAmount);
@@ -269,8 +281,9 @@ public class GivenPointAmountActivity extends BaseActivity implements View.OnCli
                             if ("1".equals(content)) {
                                 ToastUtil.toastShow(this, "认证成功");
                                 editor.putString(UserAppConst.COLOUR_AUTH_REAL_NAME + shared.getInt(UserAppConst.Colour_User_id, 0), realName).commit();
-                                newUserModel.finishTask(10, "2", "task_web", this);//实名认证任务
+                                newUserModel.finishTask(10, "2", "task_web", this);//实名认证任务s
                                 if ("3".equals(state)) {
+                                    state = "2";
                                     Intent pawd_intent = new Intent(GivenPointAmountActivity.this, ChangePawdTwoStepActivity.class);
                                     startActivity(pawd_intent);
                                 } else {
@@ -278,8 +291,8 @@ public class GivenPointAmountActivity extends BaseActivity implements View.OnCli
                                 }
                             }
                         } else {
-                            String message = jsonObject.getString("message");
-                            ToastUtil.toastShow(this, message);
+                            String noticeMsg = jsonObject.getString("message");
+                            ToastUtil.toastShow(this, noticeMsg);
                         }
                     } catch (Exception e) {
                         e.printStackTrace();

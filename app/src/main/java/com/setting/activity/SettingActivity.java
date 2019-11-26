@@ -124,8 +124,8 @@ public class SettingActivity extends BaseActivity implements HttpApiResponse, Vi
         } else {
             tv_current_language.setText(Locale.getDefault().getDisplayLanguage());
         }
-//        UpdateVerSion mUpdateVerSion = new UpdateVerSion();
-//        mUpdateVerSion.getNewVerSion("2", false, SettingActivity.this);
+        UpdateVerSion updateVerSion = new UpdateVerSion();
+        updateVerSion.getNewVerSion(SettingActivity.this, false, true);//切换小区时静默检查更新
     }
 
     private void initView() {
@@ -209,7 +209,7 @@ public class SettingActivity extends BaseActivity implements HttpApiResponse, Vi
                 startActivity(intent);
                 break;
             case R.id.feedback_layout:
-                LinkParseUtil.parse(SettingActivity.this,"colourlife://proto?type=FeedBack","");
+                LinkParseUtil.parse(SettingActivity.this, "colourlife://proto?type=FeedBack", "");
                 break;
             case R.id.exit_btn:
                 // 退出登录

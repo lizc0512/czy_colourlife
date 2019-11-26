@@ -188,7 +188,7 @@ public class MainActivity extends BaseFragmentActivity implements View.OnClickLi
         onTabSelected(FLAG_TAB_ONE);
         if (mShared.getBoolean(UserAppConst.IS_CHECK_UPDATE, false)) {//为TURE，说明第二次进入才检测更新
 //            mUpdateVerSion.getNewVerSion("1", true, MainActivity.this);
-            mUpdateVerSion.getNewVerSion(MainActivity.this, true);
+            mUpdateVerSion.getNewVerSion(MainActivity.this, true,false);
         }
         mEditor.putInt(UpdateVerSion.SAVEVERSIONCODE, UpdateVerSion.getVersionCode(MainActivity.this));//保存版本号
         mEditor.putBoolean(UserAppConst.IS_CHECK_UPDATE, true);

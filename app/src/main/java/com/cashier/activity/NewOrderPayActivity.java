@@ -962,6 +962,7 @@ public class NewOrderPayActivity extends BaseActivity implements View.OnClickLis
                                 editor.putString(UserAppConst.COLOUR_AUTH_REAL_NAME + shared.getInt(UserAppConst.Colour_User_id, 0), realName).commit();
                                 newUserModel.finishTask(10, "2", "task_web", this);//实名认证任务
                                 if ("3".equals(state)) {
+                                    state="2";
                                     Intent intent = new Intent(NewOrderPayActivity.this, ChangePawdTwoStepActivity.class);
                                     startActivity(intent);
                                 } else {

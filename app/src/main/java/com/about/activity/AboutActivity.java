@@ -112,13 +112,13 @@ public class AboutActivity extends BaseActivity implements View.OnClickListener 
                         String appName = shared.getString(UserAppConst.APKNAME, "");
                         if (TextUtils.isEmpty(appName)) {
 //                            updateVerSion.getNewVerSion("2", true, AboutActivity.this);
-                            updateVerSion.getNewVerSion(AboutActivity.this, false);
+                            updateVerSion.getNewVerSion(AboutActivity.this, false,false);
                         } else {
                             UpdateService.installCzyAPP(AboutActivity.this, appName);
                         }
                     } else {
 //                        updateVerSion.getNewVerSion("2", true, AboutActivity.this);
-                         updateVerSion.getNewVerSion(AboutActivity.this, false);
+                         updateVerSion.getNewVerSion(AboutActivity.this, false,false);
                     }
                 }
                 break;
