@@ -143,10 +143,10 @@ public class PointTransactionListActivity extends BaseActivity implements View.O
                         }
                         if (null != contentBean) {
                             List<PointTransactionRecordEntity.ContentBean.ListBean> listBeanList = contentBean.getList();
-                            if (null != listBeanList && listBeanList.size() >= 19) {
-                                moreEmpty = true;
-                            } else {
+                            if (null == listBeanList || listBeanList.size() < 20) {
                                 moreEmpty = false;
+                            } else {
+                                moreEmpty = true;
                             }
                             totalListBean.addAll(listBeanList);
                         }

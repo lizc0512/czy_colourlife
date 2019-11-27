@@ -832,7 +832,7 @@ public class NewOrderPayActivity extends BaseActivity implements View.OnClickLis
         JDPayAuthor jdPayAuthor = new JDPayAuthor();
         String orderId = resultMap.get("order_id");
         String merchant = resultMap.get("merchant");
-        String appId = "7ad8a3d997994f6c26efee6cb2d27cdb";
+        String appId = "4c36f573025fd6997396e8f387c745d9";
         String signData = resultMap.get("sign_data");
         String extraInfo = "";
         jdPayAuthor.author(NewOrderPayActivity.this, orderId, merchant, appId, signData, extraInfo);
