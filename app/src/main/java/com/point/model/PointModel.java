@@ -34,9 +34,10 @@ public class PointModel extends BaseModel {
     private String transferListUrl = "app/wallet/transferList";//获取用户的转账记录
     private String userInfoByMobileUrl = "app/wallet/getInfoByMobile";//根据号码获取转账用户的信息
     private String accountBalanceUrl = "app/wallet/accountBalance";//获取用户某个账户的余额
+    private String transactionReturnPlanUrl = "app/wallet/returnPlan";//彩粮票返还计划
     private String transactionTokenUrl = "app/transaction/checkpwd";//获取彩之云交易令牌
     private String transactionTransferUrl = "app/transaction/transfer";//彩之云饭票转账交易
-    private String transactionReturnPlanUrl = "app/transaction/returnPlan";//彩粮票返还计划
+
 
     public PointModel(Context context) {
         super(context);

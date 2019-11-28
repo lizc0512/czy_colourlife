@@ -148,7 +148,7 @@ public class MainHomeFragmentNew extends Fragment implements NewHttpResponse, Vi
         super.onCreate(savedInstanceState);
         mShared = getActivity().getSharedPreferences(UserAppConst.USERINFO, 0);
         editor = mShared.edit();
-        handler=new MyHandler(getActivity());
+        handler = new MyHandler(getActivity());
         newHomeModel = new NewHomeModel(getActivity());
         newDoorModel = new NewDoorModel(getActivity());
         newUserModel = new NewUserModel(getActivity());
@@ -199,7 +199,7 @@ public class MainHomeFragmentNew extends Fragment implements NewHttpResponse, Vi
                 connectivityManager.unregisterNetworkCallback(networkCallback);
             }
         }
-        if (null!=handler){
+        if (null != handler) {
             handler.removeCallbacksAndMessages(null);
         }
         LekaiHelper.stop(getActivity());
@@ -534,15 +534,29 @@ public class MainHomeFragmentNew extends Fragment implements NewHttpResponse, Vi
             HomeHeaderEntity.ContentBean contentBean = homeHeaderEntity.getContent();
             colourWalletUrl = contentBean.getIcon_redirect_01();
             colourHomeUrl = contentBean.getIcon_redirect_02();
-            if (TextUtils.isEmpty(contentBean.getReturn_total())) {
+            String return_name = contentBean.getReturn_name();
+            String balance_name = contentBean.getBalance_name();
+            String return_total = contentBean.getReturn_total();
+            String return_stage = contentBean.getReturn_stage();
+            if (TextUtils.isEmpty(return_name)) {
+                title_return_amount.setText("已返积分");
+            } else {
+                title_return_amount.setText(return_name);
+            }
+            if (TextUtils.isEmpty(return_total)) {
                 tv_return_amount.setText("0.00");
             } else {
-                tv_return_amount.setText(contentBean.getReturn_total());
+                tv_return_amount.setText(return_total);
             }
-            if (TextUtils.isEmpty(contentBean.getReturn_stage())) {
+            if (TextUtils.isEmpty(return_stage)) {
                 tv_return_periods.setText("0/0");
             } else {
-                tv_return_periods.setText(contentBean.getReturn_stage());
+                tv_return_periods.setText(return_stage);
+            }
+            if (TextUtils.isEmpty(balance_name)) {
+                title_meal_amount.setText("积分余额");
+            } else {
+                title_meal_amount.setText(balance_name);
             }
             tv_meal_amount.setText(contentBean.getFp_balance());
             tv_account_amount.setText(contentBean.getLq_balance());
@@ -1006,7 +1020,7 @@ public class MainHomeFragmentNew extends Fragment implements NewHttpResponse, Vi
             commonUseBeanList.clear();
             SingleCommunityEntity.ContentBean contentBean = singleCommunityEntity.getContent();
             authority = contentBean.getAuthority();
-            if (contentBean.getCommon_use()!=null){
+            if (contentBean.getCommon_use() != null) {
                 commonUseBeanList.addAll(contentBean.getCommon_use());
             }
             useDoorSize = commonUseBeanList.size();
@@ -1033,7 +1047,7 @@ public class MainHomeFragmentNew extends Fragment implements NewHttpResponse, Vi
 
     private static ArrayList<SingleCommunityEntity.ContentBean.CommonUseBean> addBlueToothDoorList(SingleCommunityEntity.ContentBean contentBean) {
         ArrayList<SingleCommunityEntity.ContentBean.CommonUseBean> commonUseBeanList = new ArrayList<>();
-        if (contentBean.getBluetooth()!=null){
+        if (contentBean.getBluetooth() != null) {
             List<SingleCommunityEntity.ContentBean.BluetoothBean> bluetoothBeanList = contentBean.getBluetooth();
             for (SingleCommunityEntity.ContentBean.BluetoothBean bluetoothBean : bluetoothBeanList) {
                 SingleCommunityEntity.ContentBean.CommonUseBean singleCommonUse = new SingleCommunityEntity.ContentBean.CommonUseBean();
@@ -1167,9 +1181,9 @@ public class MainHomeFragmentNew extends Fragment implements NewHttpResponse, Vi
         getFristData();
     }
 
-    private  class MyHandler extends Handler{
+    private class MyHandler extends Handler {
         public MyHandler(Context context) {
-            reference= new WeakReference<>(context);
+            reference = new WeakReference<>(context);
         }
 
         private WeakReference<Context> reference;
@@ -1177,8 +1191,8 @@ public class MainHomeFragmentNew extends Fragment implements NewHttpResponse, Vi
         @Override
         public void handleMessage(Message msg) {
             super.handleMessage(msg);
-            Context context= reference.get();
-            if (null!=context) {
+            Context context = reference.get();
+            if (null != context) {
                 switch (msg.what) {
                     case 0:
                         getLayoutAndFuncModel();

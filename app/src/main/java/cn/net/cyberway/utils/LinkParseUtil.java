@@ -130,13 +130,13 @@ public class LinkParseUtil {
                             ((Activity) context).overridePendingTransition(R.anim.push_right_in, R.anim.push_right_out);
                             break;
                         case "Ticket":
-                        case "NewTicket"://彩钱包
-                        case "colourlifePoint"://我的积分
+                        case "NewTicket"://新彩钱包
                             intent =new Intent(context, MyPointActivity.class);
                             context.startActivity(intent);
                             break;
-//                            Cqb_PayUtil.getInstance((Activity)context).createPay(Utils.getPublicParams(context), Constants.CAIWALLET_ENVIRONMENT);//彩钱包
-//                            break;
+                        case "OldColourlifeWallet"://我的积分
+                            Cqb_PayUtil.getInstance((Activity)context).createPay(Utils.getPublicParams(context), Constants.CAIWALLET_ENVIRONMENT);
+                            break;
                         case "OpenColourlifeWallet": // 开通彩钱包
                             Cqb_PayUtil.getInstance((Activity) context).openActivityUI(Utils.getPublicParams(context), Constants.CAIWALLET_ENVIRONMENT);//开通彩钱包
                             break;

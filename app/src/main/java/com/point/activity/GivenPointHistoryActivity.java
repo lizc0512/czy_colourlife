@@ -1,31 +1,24 @@
 package com.point.activity;
 
 import android.content.Intent;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.text.TextUtils;
-import android.view.Gravity;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.BeeFramework.activity.BaseActivity;
 import com.BeeFramework.model.NewHttpResponse;
-import com.door.activity.NewDoorOpenRecordActivity;
 import com.jcodecraeer.xrecyclerview.XRecyclerView;
 import com.nohttp.utils.GsonUtils;
 import com.point.adapter.PointGivenHistoryAdapter;
 import com.point.entity.PointTransferListEntity;
 import com.point.model.PointModel;
-import com.yanzhenjie.recyclerview.swipe.SwipeMenuRecyclerView;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import cn.csh.colourful.life.listener.OnItemClickListener;
 import cn.net.cyberway.R;
 
 import static com.point.activity.PointTransactionListActivity.POINTTPANO;
@@ -99,11 +92,13 @@ public class GivenPointHistoryActivity extends BaseActivity implements View.OnCl
                         }
                         if (null != contentBean) {
                             List<PointTransferListEntity.ContentBean.ListBean> listBeanList = contentBean.getList();
-                            totalContentBeanList.addAll(listBeanList);
                             if (null == listBeanList || listBeanList.size() == 0) {
                                 moreEmpty = false;
                             } else {
                                 moreEmpty = true;
+                            }
+                            if (listBeanList!=null){
+                                totalContentBeanList.addAll(listBeanList);
                             }
                         }
                     } catch (Exception e) {

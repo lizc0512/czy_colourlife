@@ -101,6 +101,7 @@ public class PointTransactionListActivity extends BaseActivity implements View.O
                     calendar.set(Calendar.DAY_OF_MONTH, lastDay);
                     time_stop = calendar.getTimeInMillis() / 1000 + 24 * 3600 - 1;
                     page = 1;
+                    rv_transaction.setLoadingMoreEnabled(true);
                     pointModel.getAccountFlowList(0, page, pano, time_start, time_stop, true, PointTransactionListActivity.this);
 
                 })

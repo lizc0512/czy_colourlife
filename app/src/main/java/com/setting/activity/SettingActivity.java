@@ -125,7 +125,7 @@ public class SettingActivity extends BaseActivity implements HttpApiResponse, Vi
             tv_current_language.setText(Locale.getDefault().getDisplayLanguage());
         }
         UpdateVerSion updateVerSion = new UpdateVerSion();
-        updateVerSion.getNewVerSion(SettingActivity.this, false, true);//切换小区时静默检查更新
+        updateVerSion.getNewVerSion(SettingActivity.this, true, true);//切换小区时静默检查更新
     }
 
     private void initView() {

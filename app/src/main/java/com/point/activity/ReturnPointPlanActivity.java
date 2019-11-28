@@ -10,11 +10,11 @@ import android.widget.TextView;
 
 import com.BeeFramework.activity.BaseActivity;
 import com.BeeFramework.model.NewHttpResponse;
+import com.jcodecraeer.xrecyclerview.XRecyclerView;
 import com.nohttp.utils.GsonUtils;
 import com.point.adapter.PointReturnPlanAdapter;
 import com.point.entity.PointReturnEntity;
 import com.point.model.PointModel;
-import com.yanzhenjie.recyclerview.swipe.SwipeMenuRecyclerView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -33,10 +33,10 @@ public class ReturnPointPlanActivity extends BaseActivity implements View.OnClic
     private ImageView mBack;
     private TextView mTitle;
     private TextView tv_no_record;
-    private SwipeMenuRecyclerView rv_given_history;
+    private XRecyclerView rv_given_history;
     private String pano;
     private PointModel pointModel;
-    private int page=1;
+    private int page = 1;
 
 
     @Override
@@ -48,23 +48,23 @@ public class ReturnPointPlanActivity extends BaseActivity implements View.OnClic
         rv_given_history = findViewById(R.id.rv_given_history);
         tv_no_record = findViewById(R.id.tv_no_record);
         mBack.setOnClickListener(this);
-        Intent intent=getIntent();
-        pano=intent.getStringExtra(POINTTPANO);
+        Intent intent = getIntent();
+        pano = intent.getStringExtra(POINTTPANO);
         mTitle.setText("返回计划");
-        pointModel=new PointModel(ReturnPointPlanActivity.this);
-        pointModel.getTransactionPlan(0,pano,page,ReturnPointPlanActivity.this);
+        pointModel = new PointModel(ReturnPointPlanActivity.this);
+        pointModel.getTransactionPlan(0, pano, page, ReturnPointPlanActivity.this);
     }
 
     @Override
     public void onClick(View v) {
-        switch (v.getId()){
+        switch (v.getId()) {
             case R.id.user_top_view_back:
                 finish();
                 break;
         }
     }
 
-    private List<PointReturnEntity.ContentBean.ListBean>  totalBeanList=new ArrayList<>();
+    private List<PointReturnEntity.ContentBean.ListBean> totalBeanList = new ArrayList<>();
     private PointReturnPlanAdapter pointReturnPlanAdapter;
 
     @Override
@@ -72,28 +72,23 @@ public class ReturnPointPlanActivity extends BaseActivity implements View.OnClic
 
         switch (what) {
             case 0:
-                if (!TextUtils.isEmpty(result)){
+                if (!TextUtils.isEmpty(result)) {
                     try {
                         PointReturnEntity pointReturnEntity = GsonUtils.gsonToBean(result, PointReturnEntity.class);
                         PointReturnEntity.ContentBean contentBean = pointReturnEntity.getContent();
                         if (page == 1) {
                             totalBeanList.clear();
                         }
-                        boolean dataEmpty = false;
                         boolean moreEmpty = false;
                         if (null != contentBean) {
                             List<PointReturnEntity.ContentBean.ListBean> listBeanList = contentBean.getList();
-                            if (null != listBeanList) {
-                                dataEmpty = true;
-                                listBeanList.addAll(listBeanList);
-                                if (listBeanList.size() < 20) {
-                                    moreEmpty = false;
-                                } else {
-                                    moreEmpty = true;
-                                }
-                            } else {
-                                dataEmpty = false;
+                            if (null == listBeanList || listBeanList.size() < 20) {
                                 moreEmpty = false;
+                            } else {
+                                moreEmpty = true;
+                            }
+                            if (null != listBeanList) {
+                                totalBeanList.addAll(listBeanList);
                             }
                         }
                         if (totalBeanList.size() > 0) {
@@ -110,11 +105,12 @@ public class ReturnPointPlanActivity extends BaseActivity implements View.OnClic
                         } else {
                             pointReturnPlanAdapter.notifyDataSetChanged();
                         }
-                        rv_given_history.loadMoreFinish(dataEmpty, moreEmpty);
-                    }catch (Exception e){
+                        rv_given_history.setLoadingMoreEnabled(moreEmpty);
+                        rv_given_history.loadMoreComplete();
+                    } catch (Exception e) {
 
                     }
-                }else{
+                } else {
                     rv_given_history.setVisibility(View.GONE);
                     tv_no_record.setVisibility(View.VISIBLE);
                 }

@@ -73,7 +73,7 @@ public class NewUserModel extends BaseModel {
     private String verifyPasswordUrl = "user/verifyPassword";
     private String getResetPasswordUrl = "user/setPassword";
     private String authRegisterUrl = "user/checkAuthRegister";
-    private String thridIsNewUrl = "user//thirdAuth";
+    private String thridIsNewUrl = "user/thirdAuth";
     private String unbindThirdAuthUrl = "user/unbindThirdAuth";
     private String bindThirdAuthUrl = "user/bindThirdAuth";
     private String inviteUrl = "user/invite";
@@ -1014,15 +1014,15 @@ public class NewUserModel extends BaseModel {
                         newHttpResponse.OnHttpResponse(what, result);
                     }
                 } else if (responseCode == RequestEncryptionUtils.responseRequest) {
-                    showErrorCodeMessage(responseCode, response);
+
                 } else {
-                    showErrorCodeMessage(responseCode, response);
+
                 }
             }
 
             @Override
             public void onFailed(int what, Response<String> response) {
-                showExceptionMessage(what, response);
+
             }
         }, true, true);
     }

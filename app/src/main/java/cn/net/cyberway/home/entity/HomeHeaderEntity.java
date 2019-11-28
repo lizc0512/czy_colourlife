@@ -75,6 +75,25 @@ public class HomeHeaderEntity extends BaseContentEntity {
         private int is_holiday;
         private String identity_name;
         private String tab_color;
+        private String return_name;
+
+        public String getReturn_name() {
+            return return_name;
+        }
+
+        public void setReturn_name(String return_name) {
+            this.return_name = return_name;
+        }
+
+        public String getBalance_name() {
+            return balance_name;
+        }
+
+        public void setBalance_name(String balance_name) {
+            this.balance_name = balance_name;
+        }
+
+        private String balance_name;
 
 
         public String getFp_icon() {
