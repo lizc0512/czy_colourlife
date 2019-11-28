@@ -67,7 +67,7 @@ public class PointModel extends BaseModel {
 
     public void getAccountFlowList(int what, int page,String pano, long time_start, long time_stop, boolean isLoading, final NewHttpResponse newHttpResponse) {
         Map<String, Object> params = new HashMap<String, Object>();
-        params.put("type", 1);
+        params.put("type", 0);
         params.put("page", page);
         params.put("page_size", 20);
         params.put("is_pay", 0);

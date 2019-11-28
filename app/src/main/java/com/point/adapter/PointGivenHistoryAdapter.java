@@ -45,12 +45,12 @@ public class PointGivenHistoryAdapter extends RecyclerView.Adapter<PointGivenHis
             mobile="";
         }
         if ("1".equals(listBean.getType())){
+            viewHolder.tv_given_amount.setTextColor(Color.parseColor("#25282E"));
             viewHolder.tv_given_amount.setText("+"+listBean.getDest_money()*1.0f/100);
-            viewHolder.tv_given_amount.setTextColor(Color.parseColor("#F24724"));
             viewHolder.tv_given_username.setText(listBean.getOrg_client()+" "+mobile);
         }else{
             viewHolder.tv_given_username.setText(listBean.getDest_client()+" "+mobile);
-            viewHolder.tv_given_amount.setTextColor(Color.parseColor("#25282E"));
+            viewHolder.tv_given_amount.setTextColor(Color.parseColor("#F24724"));
             viewHolder.tv_given_amount.setText("-"+listBean.getDest_money()*1.0f/100);
         }
     }

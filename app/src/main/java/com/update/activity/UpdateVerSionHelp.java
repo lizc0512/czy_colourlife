@@ -139,6 +139,8 @@ public class UpdateVerSionHelp implements NewHttpResponse {
                 } catch (Exception e) {
 
                 }
+            }else{
+                ToastUtil.toastShow(contexts, "彩之云已经是最新版本！");
             }
 
         }

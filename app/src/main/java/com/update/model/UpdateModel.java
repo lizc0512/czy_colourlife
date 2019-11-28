@@ -66,13 +66,23 @@ public class UpdateModel extends BaseModel {
                         if (!slient){ //不是静默的有回调处理
                             newHttpResponse.OnHttpResponse(what, result);
                         }
+                    }else {
+                        if (!slient){ //不是静默的有回调处理
+                            newHttpResponse.OnHttpResponse(what, "");
+                        }
+                    }
+                }else{
+                    if (!slient){ //不是静默的有回调处理
+                        newHttpResponse.OnHttpResponse(what, "");
                     }
                 }
             }
 
             @Override
             public void onFailed(int what, Response<String> response) {
-
+                if (!slient){ //不是静默的有回调处理
+                    newHttpResponse.OnHttpResponse(what, "");
+                }
             }
         }, true, showLoading);
     }

@@ -73,6 +73,8 @@ public class PayPasswordModel extends BaseModel {
                     int resultCode = showSuccesResultMessage(result);
                     if (resultCode == 0) {
                         newHttpResponse.OnHttpResponse(what, result);
+                    }else if (resultCode==1001){
+                        newHttpResponse.OnHttpResponse(what, "");
                     }
                 }else{
                     showErrorCodeMessage(responseCode,response);

@@ -3,6 +3,7 @@ package com.point.activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Message;
+import android.text.TextUtils;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
@@ -117,14 +118,18 @@ public class ChangePawdThreeStepActivity extends BaseActivity implements View.On
         if (what == 0) {
             switch (passwordType) {
                 case 1:
-                    ToastUtil.toastShow(ChangePawdThreeStepActivity.this, "支付密码修改成功");
+                    if (!TextUtils.isEmpty(result)){
+                        ToastUtil.toastShow(ChangePawdThreeStepActivity.this, "支付密码修改成功");
+                    }
                     Message msg = Message.obtain();
                     msg.what = POINT_CHANGE_PAYPAWD;
                     EventBus.getDefault().post(msg);
                     finish();
                     break;
                 case 2:
-                    ToastUtil.toastShow(ChangePawdThreeStepActivity.this, "支付密码重置成功");
+                    if (!TextUtils.isEmpty(result)){
+                        ToastUtil.toastShow(ChangePawdThreeStepActivity.this, "支付密码重置成功");
+                    }
                     Message msg1 = Message.obtain();
                     msg1.what = POINT_CHANGE_PAYPAWD;
                     EventBus.getDefault().post(msg1);

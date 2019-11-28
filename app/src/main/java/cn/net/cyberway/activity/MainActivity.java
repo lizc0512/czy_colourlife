@@ -45,6 +45,7 @@ import com.im.model.IMUploadPhoneModel;
 import com.jpush.Constant;
 import com.nohttp.utils.GlideImageLoader;
 import com.nohttp.utils.GsonUtils;
+import com.nohttp.utils.RequestEncryptionUtils;
 import com.popupScreen.PopupScUtils;
 import com.popupScreen.model.PopupModel;
 import com.scanCode.activity.CaptureActivity;
@@ -57,8 +58,10 @@ import com.user.UserAppConst;
 import com.user.UserMessageConstant;
 import com.user.entity.CheckRegisterEntity;
 import com.user.model.NewUserModel;
+import com.user.model.RequestFailModel;
 import com.user.model.TokenModel;
 import com.user.protocol.CheckDeviceLoginApi;
+import com.user.protocol.CheckDeviceLoginResponse;
 import com.youmai.hxsdk.HuxinSdkManager;
 
 import org.json.JSONException;
@@ -726,7 +729,8 @@ public class MainActivity extends BaseFragmentActivity implements View.OnClickLi
     @Override
     public void OnHttpResponse(HttpApi api) {
         if (api.getClass().equals(CheckDeviceLoginApi.class)) {
-            int login_state = ((CheckDeviceLoginApi) api).response.login_state;
+            CheckDeviceLoginResponse  checkDeviceLoginResponse=((CheckDeviceLoginApi) api).response;
+            int login_state = checkDeviceLoginResponse.login_state;
             if (login_state == 1) {
                 Message message = new Message();
                 message.what = UserMessageConstant.SQUEEZE_OUT;

@@ -19,7 +19,7 @@ public class Constant {
     public static final String ACTION_OUT = "com.magicsoft.weitown.notice.ACTION_OUT";
     // 推送通知栏信息的ID
     public static int pushId = 0;
-    // 退出应用
+    // 应用登录成功时
     public static final String ACTION_LOGIN_FINISH_COMPLETED = "com.ender.cardtoon.notice.ACTION_FINISH_LOGIN_COMPLETED";
 
 }

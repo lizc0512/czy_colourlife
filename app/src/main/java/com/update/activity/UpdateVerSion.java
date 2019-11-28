@@ -291,6 +291,10 @@ public class UpdateVerSion implements NewHttpResponse {
             } catch (Exception e) {
 
             }
+        }else{
+            if (!isShowDialog) {
+                ToastUtil.toastShow(contexts, "彩之云已经是最新版本！");
+            }
         }
     }
 }

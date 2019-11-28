@@ -24,6 +24,8 @@ import org.json.JSONObject;
 import java.util.HashMap;
 import java.util.Map;
 
+import cn.net.cyberway.activity.MainActivity;
+
 public class TokenModel extends BaseModel {
 
     public TokenModel(Context context) {
@@ -192,6 +194,13 @@ public class TokenModel extends BaseModel {
                     try {
                         jsonObject = new JSONObject(result);
                         checkDeviceLoginApi.response.fromJson(jsonObject);
+                        if (checkDeviceLoginApi.response.login_state==1){ //账号异地被登录 未接到通知 检查账号登录状态时发现已在异地登录进行退出操作
+                            Map<String, Object> failMap = new HashMap<>();
+                            failMap.put("URL", response.request().url());
+                            failMap.put("response", result);
+                            RequestFailModel requestFailModel=new RequestFailModel(mContext);
+                            requestFailModel.uploadRequestFailLogs(1000,RequestEncryptionUtils.getMapToString(failMap));
+                        }
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
