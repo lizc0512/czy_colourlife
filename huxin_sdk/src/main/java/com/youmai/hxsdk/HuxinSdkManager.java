@@ -12,6 +12,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.ServiceConnection;
 import android.content.pm.PackageManager;
+import android.os.Build;
 import android.os.Handler;
 import android.os.HandlerThread;
 import android.os.IBinder;
@@ -54,6 +55,7 @@ import com.youmai.hxsdk.proto.YouMaiBuddy;
 import com.youmai.hxsdk.proto.YouMaiGroup;
 import com.youmai.hxsdk.proto.YouMaiMsg;
 import com.youmai.hxsdk.router.APath;
+import com.youmai.hxsdk.service.ForegroundEnablingService;
 import com.youmai.hxsdk.service.HuxinService;
 import com.youmai.hxsdk.socket.IMContentUtil;
 import com.youmai.hxsdk.socket.NotifyListener;
@@ -568,14 +570,23 @@ public class HuxinSdkManager {
      * 重新登录
      */
     private void reLogin() {
-        HuxinSdkManager.instance().loginOut();//清楚用户信息
-        Intent in = new Intent(mContext, HuxinService.class);
-        in.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        in.setAction(HuxinService.IM_LOGIN_OUT);
-        mContext.startService(in);//启动服务
-        ARouter.getInstance().build(APath.RE_LOGIN)
-                .withBoolean("login_out", true)
-                .navigation(mContext);
+        try {
+            HuxinSdkManager.instance().loginOut();//清楚用户信息
+            Intent in = new Intent(mContext, HuxinService.class);
+            in.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            in.setAction(HuxinService.IM_LOGIN_OUT);
+            //启动服务
+            if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                mContext.startForegroundService(in);
+            }else{
+                mContext.startService(in);
+            }
+            ARouter.getInstance().build(APath.RE_LOGIN)
+                    .withBoolean("login_out", true)
+                    .navigation(mContext);
+        }catch (Exception e){
+
+        }
     }
 
 

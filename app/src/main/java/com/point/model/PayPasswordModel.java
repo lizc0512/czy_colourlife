@@ -46,6 +46,8 @@ public class PayPasswordModel extends BaseModel {
                     int resultCode = showSuccesResultMessage(result);
                     if (resultCode == 0) {
                         newHttpResponse.OnHttpResponse(what, result);
+                    }else if (resultCode==1000){//设置密码过于简单
+                        newHttpResponse.OnHttpResponse(what, "1000");
                     }
                 }else{
                     showErrorCodeMessage(responseCode,response);
@@ -73,8 +75,10 @@ public class PayPasswordModel extends BaseModel {
                     int resultCode = showSuccesResultMessage(result);
                     if (resultCode == 0) {
                         newHttpResponse.OnHttpResponse(what, result);
-                    }else if (resultCode==1001){
-                        newHttpResponse.OnHttpResponse(what, "");
+                    }else if (resultCode==1001){//token过期
+                        newHttpResponse.OnHttpResponse(what, "1001");
+                    }else if (resultCode==1000){//设置密码过于简单
+                        newHttpResponse.OnHttpResponse(what, "1000");
                     }
                 }else{
                     showErrorCodeMessage(responseCode,response);

@@ -62,13 +62,9 @@ public class LeadActivity extends BaseActivity implements View.OnClickListener {
                 if (arg0 == imageBg.length - 1) {
                     indicator.setVisibility(View.GONE);
                     cancel.setVisibility(View.GONE);
-                    cancel.setText(getResources().getString(R.string.lead_go_open));
-                    cancel.setTextColor(getResources().getColor(R.color.blue));
                 } else {
                     indicator.setVisibility(View.VISIBLE);
                     cancel.setVisibility(View.VISIBLE);
-                    cancel.setText(getResources().getString(R.string.lead_jump));
-                    cancel.setTextColor(getResources().getColor(R.color.gray));
                 }
                 if (page > 0 && page < imageBg.length - 1) {
                     TCAgent.onPageStart(getApplicationContext(), "引导页第" + page + "页");

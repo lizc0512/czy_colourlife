@@ -43,6 +43,16 @@ public class PayPwdCheckEntity extends BaseContentEntity {
         private String is_pwd;
         private String right_pwd;
 
+        public int getRemain() {
+            return remain;
+        }
+
+        public void setRemain(int remain) {
+            this.remain = remain;
+        }
+
+        private int remain ;
+
         public String getToken() {
             return token;
         }

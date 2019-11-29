@@ -88,7 +88,7 @@ public class ChangePawdThreeStepActivity extends BaseActivity implements View.On
                     btn_define.setBackgroundResource(R.drawable.point_password_click_bg);
                     definePayPawd = psw;
                 } else {
-                    ToastUtil.toastShow(ChangePawdThreeStepActivity.this, "前后2次密码输入不一致，请重新输入");
+                    ToastUtil.toastShow(ChangePawdThreeStepActivity.this, "密码输入不一致，请重新输入");
                 }
             }
         });
@@ -118,29 +118,35 @@ public class ChangePawdThreeStepActivity extends BaseActivity implements View.On
         if (what == 0) {
             switch (passwordType) {
                 case 1:
-                    if (!TextUtils.isEmpty(result)){
-                        ToastUtil.toastShow(ChangePawdThreeStepActivity.this, "支付密码修改成功");
+                    if (!"1000".equals(result)) { //密码过于简单
+                        if (!"1001".equals(result)) {
+                            ToastUtil.toastShow(ChangePawdThreeStepActivity.this, "支付密码修改成功");
+                        }
+                        Message msg = Message.obtain();
+                        msg.what = POINT_CHANGE_PAYPAWD;
+                        EventBus.getDefault().post(msg);
                     }
-                    Message msg = Message.obtain();
-                    msg.what = POINT_CHANGE_PAYPAWD;
-                    EventBus.getDefault().post(msg);
                     finish();
                     break;
                 case 2:
-                    if (!TextUtils.isEmpty(result)){
-                        ToastUtil.toastShow(ChangePawdThreeStepActivity.this, "支付密码重置成功");
+                    if (!"1000".equals(result)) { //密码过于简单
+                        if (!"1001".equals(result)) {
+                            ToastUtil.toastShow(ChangePawdThreeStepActivity.this, "支付密码重置成功");
+                        }
+                        Message msg1 = Message.obtain();
+                        msg1.what = POINT_CHANGE_PAYPAWD;
+                        EventBus.getDefault().post(msg1);
                     }
-                    Message msg1 = Message.obtain();
-                    msg1.what = POINT_CHANGE_PAYPAWD;
-                    EventBus.getDefault().post(msg1);
                     finish();
                     break;
                 default:
-                    ToastUtil.toastShow(ChangePawdThreeStepActivity.this, "支付密码设置成功");
-                    Message msg2 = Message.obtain();
-                    msg2.what = POINT_SET_PAYPAWD;
-                    msg2.obj = definePayPawd;
-                    EventBus.getDefault().post(msg2);
+                    if (!"1000".equals(result)) { //密码过于简单
+                        ToastUtil.toastShow(ChangePawdThreeStepActivity.this, "支付密码设置成功");
+                        Message msg2 = Message.obtain();
+                        msg2.what = POINT_SET_PAYPAWD;
+                        msg2.obj = definePayPawd;
+                        EventBus.getDefault().post(msg2);
+                    }
                     finish();
                     break;
             }

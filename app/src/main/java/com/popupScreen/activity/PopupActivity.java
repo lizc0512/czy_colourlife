@@ -62,7 +62,6 @@ public class PopupActivity extends BaseActivity {
         llRoot = (LinearLayout) findViewById(R.id.ll_all_container);
         fl_indicator = (FrameLayout) findViewById(R.id.fl_indicator);
         indicator = (CirclePageIndicator) findViewById(R.id.indicator);
-
         getIntentData();
         initEnterAnim(-500);
         iniData();

@@ -101,7 +101,12 @@ public class ChangePawdOneStepActivity extends BaseActivity implements View.OnCl
                         intent.putExtra(PAWDTOEKN,contentBean.getToken());
                         startActivity(intent);
                     }else{
-                        ToastUtil.toastShow(ChangePawdOneStepActivity.this,"你输入的原密码有误,请重新输入");
+                        int remain=contentBean.getRemain();
+                        if (remain==0){
+                            ToastUtil.toastShow(ChangePawdOneStepActivity.this,"您已输入5次错误密码，账户被锁定，请明日再进行操作");
+                        }else{
+                            ToastUtil.toastShow(ChangePawdOneStepActivity.this,"支付密码不正确，您还可以输入"+remain+"次");
+                        }
                     }
                 }else{
                     //没有支付密码 前去设置支付密码

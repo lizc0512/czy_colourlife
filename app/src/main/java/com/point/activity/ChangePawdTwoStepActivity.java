@@ -14,6 +14,9 @@ import com.external.gridpasswordview.GridPasswordView;
 import com.external.gridpasswordview.PasswordType;
 import com.user.UserMessageConstant;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import cn.net.cyberway.R;
 
 import static com.point.activity.ChangePawdThreeStepActivity.PAWDTOEKN;
