@@ -62,6 +62,7 @@ import com.user.model.RequestFailModel;
 import com.user.model.TokenModel;
 import com.user.protocol.CheckDeviceLoginApi;
 import com.user.protocol.CheckDeviceLoginResponse;
+import com.xiaomi.mipush.sdk.MiPushClient;
 import com.youmai.hxsdk.HuxinSdkManager;
 
 import org.json.JSONException;
@@ -74,6 +75,7 @@ import java.util.List;
 import java.util.Set;
 
 import cn.jpush.android.api.JPushInterface;
+import cn.jpush.android.service.PluginOppoPushService;
 import cn.net.cyberway.R;
 import cn.net.cyberway.fagment.BenefitFragment;
 import cn.net.cyberway.fagment.InstantMessageFragment;
@@ -203,6 +205,8 @@ public class MainActivity extends BaseFragmentActivity implements View.OnClickLi
         newUserModel = new NewUserModel(MainActivity.this);
         tintManager.setStatusBarTintColor(Color.TRANSPARENT);
         GlideImageLoader.initImageLoader(getApplicationContext());
+        ToastUtil.toastShow(MainActivity.this, JPushInterface.getRegistrationID(getApplicationContext()));
+
     }
 
 

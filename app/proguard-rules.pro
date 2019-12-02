@@ -294,3 +294,19 @@
 -dontwarn okhttp3.**
 -keep class okhttp3.**{*;}
 -keep interface okhttp3.**{*;}
+
+-dontwarncom.xiaomi.push.**
+-keepclasscom.xiaomi.push.**{*;}
+-keepclasscom.huawei.hms.**{*;}
+-dontwarn com.huawei.**
+
+-keep interface com.huawei.android.hms.agent.common.INoProguard {*;}
+-keep class * extends com.huawei.android.hms.agent.common.INoProguard {*;}
+
+
+-dontwarn com.coloros.mcsdk.**
+-keep class com.coloros.mcsdk.** { *; }
+
+-dontwarn com.vivo.push.**
+-keep class com.vivo.push.**{*; }
+-keep class com.vivo.vms.**{*; }

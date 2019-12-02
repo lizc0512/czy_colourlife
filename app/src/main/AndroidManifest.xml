@@ -10,9 +10,9 @@
         android:hardwareAccelerated="true"
         android:icon="@drawable/icon"
         android:label="@string/app_name_beta"
+        android:largeHeap="true"
         android:resizeableActivity="false"
         android:screenOrientation="portrait"
-        android:largeHeap="true"
         android:supportsRtl="true"
         android:theme="@style/AppResultTheme"
         android:usesCleartextTraffic="true"
@@ -82,6 +82,7 @@
         <activity
             android:name="com.scanCode.activity.ScanResultActivity"
             android:screenOrientation="portrait" />
+        <!--彩之云扫码-->
 
         <activity
             android:name="com.imagepicker.activity.ReviewImageActivity"
@@ -104,6 +105,8 @@
             android:name="com.tencent.connect.common.AssistActivity"
             android:configChanges="orientation|keyboardHidden"
             android:theme="@android:style/Theme.Translucent.NoTitleBar" />
+
+        <!--邻里发活动 动态-->
         <activity
             android:name="com.feed.activity.LinLiActivity"
             android:screenOrientation="portrait" />
@@ -131,10 +134,13 @@
             android:name="com.feed.activity.PersonalFeedActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden|adjustResize" />
+        <!--邻里发活动 动态-->
         <activity
             android:name="com.notification.activity.ENotificationActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustResize" />
+
+        <!-- 门禁授权-->
         <activity
             android:name="com.door.activity.DoorAuthorizationActivity"
             android:screenOrientation="portrait" />
@@ -145,7 +151,7 @@
             android:name="com.door.activity.DoorApplyActivity"
             android:screenOrientation="portrait" />
 
-        <!-- 门禁授权-->
+
         <activity
             android:name="com.door.activity.DoorAuthorizationApproveActivity"
             android:screenOrientation="portrait" />
@@ -153,6 +159,7 @@
         <activity
             android:name="com.door.activity.DoorControlAuthorizationDetailActivity"
             android:screenOrientation="portrait" />
+        <!-- 门禁授权-->
         <activity
             android:name="com.cardcoupons.activity.CardCouponsActivity"
             android:screenOrientation="portrait" />
@@ -174,6 +181,7 @@
             android:theme="@style/Theme.AppCompat"
             android:windowSoftInputMode="stateHidden" />
 
+        <!--邀请记录-->
         <activity
             android:name="com.invite.activity.InviteActivity"
             android:screenOrientation="portrait" />
@@ -184,6 +192,8 @@
         <activity
             android:name="com.invite.activity.ContactsActivity"
             android:screenOrientation="portrait" />
+        <!--邀请记录-->
+
         <!--京东支付-->
         <activity
             android:name="com.jdpaysdk.author.AuthorActivity"
@@ -203,20 +213,21 @@
             android:name="com.jdpaysdk.author.browser.BrowserActivity"
             android:exported="false"
             android:screenOrientation="portrait" />
+        <!--京东支付-->
 
         <!--支付宝支付-->
         <activity
             android:name="com.alipay.sdk.app.H5PayActivity"
             android:configChanges="orientation|keyboardHidden|navigation"
             android:exported="false"
-            tools:replace="android:configChanges"
-            android:screenOrientation="behind"></activity>
+            android:screenOrientation="behind"
+            tools:replace="android:configChanges"></activity>
         <activity
             android:name="com.alipay.sdk.auth.AuthActivity"
             android:configChanges="orientation|keyboardHidden|navigation"
             android:exported="false"
-            tools:replace="android:configChanges"
-            android:screenOrientation="behind"></activity>
+            android:screenOrientation="behind"
+            tools:replace="android:configChanges"></activity>
 
 
         <!-- 用户信息 -->
@@ -239,13 +250,17 @@
         <activity
             android:name="com.customerInfo.activity.CustomerMakeZXingActivity"
             android:screenOrientation="portrait" />
+        <!-- 用户信息 -->
 
+
+        <!--旧消息通知-->
         <activity
             android:name="com.message.activity.MessageCenterActivity"
             android:screenOrientation="portrait" />
         <activity
             android:name="com.message.activity.SystemMsgDetailActivity"
             android:screenOrientation="portrait" />
+        <!--旧消息通知-->
         <activity
             android:name="com.mob.tools.MobUIShell"
             android:configChanges="keyboardHidden|orientation|screenSize"
@@ -263,23 +278,6 @@
                 <category android:name="android.intent.category.BROWSABLE" />
 
                 <data android:scheme="tencent1101958589" />
-            </intent-filter>
-        </activity>
-        <activity
-            android:name="cn.jpush.android.ui.PopWinActivity"
-            android:exported="false"
-            android:theme="@style/MyDialogStyle" />
-
-
-        <activity
-            android:name="cn.jpush.android.ui.PushActivity"
-            android:configChanges="orientation|keyboardHidden"
-            android:exported="false">
-            <intent-filter>
-                <action android:name="cn.jpush.android.ui.PushActivity" />
-
-                <category android:name="android.intent.category.DEFAULT" />
-                <category android:name="cn.net.cyberway" />
             </intent-filter>
         </activity>
 
@@ -303,12 +301,13 @@
         <activity
             android:name="com.gesturepwd.activity.CreateGesturePasswordActivity"
             android:screenOrientation="portrait" />
+        <!--手势密码相关-->
 
         <activity
             android:name="com.jsbridge.activity.BridgeWebViewActivity"
             android:screenOrientation="portrait" />
 
-
+        <!--邻里-->
         <activity
             android:name="com.Neighborhood.Activity.ActiveListActivity"
             android:screenOrientation="portrait" />
@@ -322,8 +321,8 @@
         <activity
             android:name="com.feed.activity.ShareFeedActivity"
             android:screenOrientation="portrait" />
-
-
+        <!--邻里-->
+    <!--意见反馈-->
         <activity
             android:name="com.about.activity.FeedBackDetailsActivity"
             android:screenOrientation="portrait" />
@@ -332,8 +331,8 @@
         <activity
             android:name="com.about.activity.FeedBackListActivity"
             android:screenOrientation="portrait" />
-
-
+        <!--意见反馈-->
+        <!--我的车辆相关-->
         <activity
             android:name="com.myproperty.activity.MyPropertyActivity"
             android:screenOrientation="portrait" />
@@ -341,7 +340,6 @@
         <activity
             android:name="com.myproperty.activity.NameAuthActivity"
             android:screenOrientation="portrait" />
-        <!--我的车辆相关-->
 
         <activity
             android:name="com.mycarinfo.activity.MyCarInfoActivity"
@@ -360,7 +358,7 @@
         <activity
             android:name="com.mycarinfo.activity.BindFPActivity"
             android:screenOrientation="portrait" />
-
+        <!--我的车辆相关-->
 
         <!-- 用户支付收银台 -->
         <activity
@@ -375,8 +373,8 @@
             android:name="com.cashier.activity.OrderPaySuccessActivity"
             android:launchMode="singleTop"
             android:screenOrientation="portrait" />
-
-        <!--支付订单列表-->
+        <!-- 用户支付收银台 -->
+        <!--支付订单-->
         <activity
             android:name="com.cashier.activity.OrderListActivity"
             android:screenOrientation="portrait"
@@ -384,6 +382,7 @@
         <activity
             android:name="com.cashier.activity.OrderResultAndDetailActivity"
             android:screenOrientation="portrait" />
+        <!--支付订单-->
 
         <activity
             android:name="com.permission.PermissionActivity"
@@ -405,6 +404,7 @@
             android:screenOrientation="portrait"
             android:theme="@style/shareDialog" />
 
+        <!--微信小程序-->
         <activity
             android:name=".wxapi.WXEntryActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
@@ -422,7 +422,7 @@
                 <data android:scheme="sdksample" />
             </intent-filter>
         </activity>
-        <!--用户注册登录-->
+        <!--用户注册登录 忘记密码等-->
         <activity
             android:name="com.user.activity.UserRegisterAndLoginActivity"
             android:launchMode="singleTask"
@@ -457,7 +457,7 @@
             android:name="com.user.activity.UserForgetPasswordActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan" />
-
+        <!--用户注册登录 忘记密码等-->
         <!--消息通知-->
         <activity
             android:name="com.notification.activity.NotificationActivity"
@@ -469,12 +469,13 @@
             android:windowSoftInputMode="adjustPan" />
 
         <activity android:name="com.notification.activity.NotificationAllInfoActivity"></activity>
+        <!--消息通知-->
+
+        <!--房产 收货地址-->
         <activity
             android:name="com.customerInfo.activity.CustomerAddCommunityActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan" />
-
-        <!--房产-->
         <activity
             android:name="com.customerInfo.activity.CustomerAddPropertyActivity"
             android:screenOrientation="portrait"
@@ -499,6 +500,9 @@
             android:name="com.customerInfo.activity.DeliveryAddressListActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan" />
+        <!--房产-->
+
+        <!--门禁-->
         <activity
             android:name="com.door.activity.NewDoorActivity"
             android:exported="true"
@@ -535,6 +539,7 @@
         <activity
             android:name="com.door.activity.NewDoorOpenRecordActivity"
             android:screenOrientation="portrait" />
+        <!--门禁-->
 
         <activity
             android:name="com.door.activity.NoRightDoorActivity"
@@ -542,6 +547,8 @@
         <activity
             android:name="com.door.activity.DoorLeadActivity"
             android:screenOrientation="portrait" />
+
+        <!--账号部分-->
 
         <activity
             android:name="com.setting.activity.UserAccountSaftyActivity"
@@ -557,6 +564,8 @@
             android:name="com.setting.activity.UserClearCacheActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan" />
+
+        <!--账号部分-->
 
         <!--IM模块 添加好友 聊天等-->
         <activity
@@ -642,7 +651,7 @@
             android:name="com.im.activity.IMApplyProgressActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan" />
-
+        <!--IM模块 添加好友 聊天等-->
 
         <!--e停原生-->
         <activity
@@ -653,7 +662,6 @@
             android:name="com.eparking.activity.EParkingCardHolderActivity"
             android:screenOrientation="portrait"
             android:theme="@style/Theme.AppCompat" />
-
 
         <activity
             android:name="com.eparking.activity.EParkingHistoryRecordActivity"
@@ -785,6 +793,8 @@
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:theme="@android:style/Theme.Light.NoTitleBar.Fullscreen" />
 
+        <!--e停车原生-->
+
         <activity
             android:name="com.allapp.activity.WholeApplicationActivity"
             android:screenOrientation="portrait" />
@@ -795,7 +805,7 @@
             android:launchMode="singleTop"
             android:screenOrientation="portrait"
             android:theme="@style/Theme.AppCompat.NoActionBar" />
-
+        <!--七牛云音视频-->
 
         <activity
             android:name="com.customerInfo.activity.CustomerColourBeanActivity"
@@ -809,7 +819,7 @@
         <activity
             android:name="com.myproperty.activity.PropertyQuestionActivity"
             android:screenOrientation="portrait" />
-
+        <!--邀请好友-->
         <activity
             android:name="com.invite.activity.InviteFriendActivity"
             android:screenOrientation="portrait" />
@@ -820,6 +830,8 @@
             android:name="com.invite.activity.InviteListActivity"
             android:screenOrientation="portrait"
             android:theme="@style/Theme.AppCompat" />
+        <!--邀请好友-->
+        <!--房产相关-->
         <activity
             android:name="com.myproperty.activity.PropertyDetailActivity"
             android:screenOrientation="portrait" />
@@ -830,6 +842,9 @@
         <activity
             android:name="com.myproperty.activity.PropertyRealNameActivity"
             android:screenOrientation="portrait" />
+        <!--房产相关-->
+
+        <!--授权管理-->
         <activity
             android:name="com.setting.activity.AuthManegeListActivity"
             android:screenOrientation="portrait"
@@ -838,6 +853,7 @@
             android:name="com.setting.activity.AuthManegeDetailActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan" />
+        <!--授权管理-->
 
         <activity
             android:name="cn.net.cyberway.home.activity.LekaiListActivity"
@@ -849,12 +865,17 @@
             android:configChanges="keyboardHidden|orientation|screenSize|locale"
             android:theme="@android:style/Theme.Translucent" />
 
+        <!--网页加载-->
+
         <activity
             android:name="com.agentweb.ActionActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:launchMode="standard"
             android:theme="@style/actionActivity"
             android:windowSoftInputMode="stateHidden|stateAlwaysHidden" />
+        <!--网页加载-->
+
+        <!--创蓝一键登录-->
 
         <activity
             android:name="com.sdk.mobile.manager.login.cucc.OauthActivity"
@@ -874,6 +895,9 @@
             android:name="com.chuanglan.shanyan_sdk.view.CTCCPrivacyProtocolActivity"
             android:launchMode="singleTop"
             android:screenOrientation="portrait" />
+        <!--创蓝一键登录-->
+
+        <!--门禁授权和申请批复-->
         <activity
             android:name="com.door.activity.NewDoorAuthorizeActivity"
             android:screenOrientation="portrait" />
@@ -899,7 +923,10 @@
             android:name="com.door.activity.NewDoorAuthorizeAuditActivity"
             android:screenOrientation="portrait" />
 
-        <!--彩之云饭票改积分-->
+
+        <!--门禁授权和申请批复-->
+
+        <!--新钱包 积分-->
         <activity
             android:name="com.point.activity.ChangePawdStyleActivity"
             android:screenOrientation="portrait" />
@@ -948,11 +975,42 @@
             android:name="com.point.activity.ReturnPointPlanActivity"
             android:screenOrientation="portrait" />
 
+        <!--新钱包 积分-->
+
         <!--百度sdk-->
+        <activity
+            android:name="cn.jpush.android.ui.PopWinActivity"
+            android:exported="true"
+            android:theme="@style/MyDialogStyle"
+            tools:node="replace">
+            <intent-filter>
+                <action android:name="cn.jpush.android.ui.PopWinActivity" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="${applicationId}" />
+            </intent-filter>
+        </activity>
+        <!--友盟sdk-->
+        <activity
+            android:name="cn.jpush.android.ui.PushActivity"
+            android:configChanges="orientation|keyboardHidden"
+            android:exported="true"
+            android:theme="@android:style/Theme.NoTitleBar"
+            tools:node="replace">
+            <intent-filter>
+
+                <action android:name="cn.jpush.android.ui.PushActivity" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="${applicationId}" />
+            </intent-filter>
+        </activity>
+
+
         <meta-data
             android:name="com.baidu.lbsapi.API_KEY"
             android:value="B0433f7d882de0c20433e36fabe2269c" />
-        <!--友盟sdk-->
+        <!--极光推送-->
+
         <meta-data
             android:name="UMENG_APPKEY"
             android:value="569c7de167e58e572100176c" />
@@ -961,42 +1019,32 @@
         <meta-data
             android:name="UMENG_CHANNEL"
             android:value="Colourlife" />
-        <!--极光推送-->
-
+        <!--高德sdk-->
         <meta-data
             android:name="JPUSH_CHANNEL"
             android:value="developer-default" />
 
 
+        <!--  <meta-data
+              android:name="com.shuwei.location.APP_KEY"
+              android:value="0a23a964-a973-40e1-b14d-249e72875e70" />
+
+
+          <meta-data
+              android:name="com.shuwei.location.APP_ID"
+              android:value="34826ee148f9" />-->
+
+
         <meta-data
             android:name="JPUSH_APPKEY"
             android:value="85850e81bcaba45af4f4b6a6" />
-        <!--高德sdk-->
+
+
         <meta-data
             android:name="com.amap.api.v2.apikey"
             android:value="bdb104e98dfa7e816b40c4148ea7b938"
             tools:replace="android:value" />
 
-
-      <!--  <meta-data
-            android:name="com.shuwei.location.APP_KEY"
-            android:value="0a23a964-a973-40e1-b14d-249e72875e70" />
-
-
-        <meta-data
-            android:name="com.shuwei.location.APP_ID"
-            android:value="34826ee148f9" />-->
-
-        <provider
-            android:name="cn.jpush.android.service.DataProvider"
-            android:authorities="cn.net.cyberway.DataProvider"
-            android:exported="false" />
-
-
-        <provider
-            android:name="cn.jpush.android.service.DownloadProvider"
-            android:authorities="cn.net.cyberway.DownloadProvider"
-            android:exported="true" />
 
         <provider
             android:name="android.support.v4.content.FileProvider"
@@ -1018,63 +1066,15 @@
                 <action android:name="com.tencent.mm.plugin.openapi.Intent.ACTION_REFRESH_WXAPP" />
             </intent-filter>
         </receiver>
-
-
         <receiver
-            android:name="cn.jpush.android.service.PushReceiver"
-            android:enabled="true">
-            <intent-filter android:priority="1000">
-                <action android:name="cn.jpush.android.intent.NOTIFICATION_RECEIVED_PROXY" />
-
-                <category android:name="cn.net.cyberway" />
-            </intent-filter>
-            <intent-filter>
-                <action android:name="android.intent.action.USER_PRESENT" />
-                <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />
-            </intent-filter>
-            <!-- Optional -->
-            <intent-filter>
-                <action android:name="android.intent.action.PACKAGE_ADDED" />
-                <action android:name="android.intent.action.PACKAGE_REMOVED" />
-
-                <data android:scheme="package" />
-            </intent-filter>
-        </receiver>
-
-
-        <receiver android:name="cn.jpush.android.service.AlarmReceiver" />
-
-        <receiver
-            android:name="com.jpush.reciever.JPushReciever"
-            android:enabled="true">
-            <intent-filter>
-
-                <!-- Required 用户注册SDK的intent -->
-                <action android:name="cn.jpush.android.intent.REGISTRATION" />
-                <action android:name="cn.jpush.android.intent.UNREGISTRATION" />
-                <!-- Required 用户接收SDK消息的intent -->
-                <action android:name="cn.jpush.android.intent.MESSAGE_RECEIVED" />
-                <!-- Required 用户接收SDK通知栏信息的intent -->
-                <action android:name="cn.jpush.android.intent.NOTIFICATION_RECEIVED" />
-                <!-- Required 用户打开自定义通知栏的intent -->
-                <action android:name="cn.jpush.android.intent.NOTIFICATION_OPENED" />
-                <!-- Optional 用户接受Rich Push Javascript 回调函数的intent -->
-                <action android:name="cn.jpush.android.intent.ACTION_RICHPUSH_CALLBACK" />
-                <!-- 接收网络变化 连接/断开 since 1.6.3 -->
-                <action android:name="cn.jpush.android.intent.CONNECTION" />
-
-                <category android:name="cn.net.cyberway" />
-            </intent-filter>
-        </receiver>
-
-
-        <receiver android:name="com.jpush.reciever.MyJPushMessageReceiver">
+            android:name="com.jpush.reciever.MyReceiver"
+            android:enabled="true"
+            android:exported="false">
             <intent-filter>
                 <action android:name="cn.jpush.android.intent.RECEIVE_MESSAGE" />
-                <category android:name="cn.net.cyberway"></category>
+                <category android:name="cn.net.cyberwa" />
             </intent-filter>
         </receiver>
-
 
         <service
             android:name="com.baidu.location.f"
@@ -1083,47 +1083,48 @@
 
 
         <service android:name="com.BeeFramework.InitializeService" />
+
+
+        <!--门禁的改造-->
         <service android:name="com.update.service.UpdateService" />
 
+
+        <!--极光推送配置-->
+        <!-- 若您的业务中有使用极光富媒体功能，或者极光早上好功能，需要把此 Activity 的 exported 修改成 true 覆盖 jcenter 上的组件。 -->
         <service android:name="com.amap.api.location.APSService" />
 
-
-        <!-- **********************联通授权页activity**************************-->
-        <service
-            android:name="cn.jpush.android.service.PushService"
-            android:enabled="true"
-            android:exported="false">
-            <intent-filter>
-                <action android:name="cn.jpush.android.intent.REGISTER" />
-                <action android:name="cn.jpush.android.intent.REPORT" />
-                <action android:name="cn.jpush.android.intent.PushService" />
-                <action android:name="cn.jpush.android.intent.PUSH_TIME" />
-            </intent-filter>
-        </service>
-        <!-- **********************移动授权页activity**************************-->
-        <service
-            android:name="cn.jpush.android.service.DaemonService"
-            android:enabled="true"
-            android:exported="true">
-            <intent-filter>
-                <action android:name="cn.jpush.android.intent.DaemonService" />
-
-                <category android:name="cn.net.cyberway" />
-            </intent-filter>
-        </service>
-        <!-- **********************电信授权页activity**************************-->
-        <service
-            android:name="cn.jpush.android.service.DownloadService"
-            android:enabled="true"
-            android:exported="false" />
-        <!-- **********************协议页activity**************************-->
+        <!-- 若您的业务中有使用极光富媒体功能，或者极光早上好功能，需要把此 Activity 的 exported 修改成 true 覆盖 jcenter 上的组件。 -->
         <service
             android:name="com.intelspace.library.service.BleService"
             android:exported="false" />
 
-
-        <!--门禁的改造-->
+        <!-- Since JCore2.0.0 Required SDK核心功能-->
+        <!-- 可配置android:process参数将Service放在其他进程中；android:enabled属性不能是false -->
+        <!-- 这个是自定义Service，要继承极光JCommonService，可以在更多手机平台上使得推送通道保持的更稳定 -->
         <service android:name="cn.net.cyberway.home.service.LekaiService" />
+
+        <!-- Required since 3.0.7 -->
+        <!-- 新的 tag/alias 接口结果返回需要开发者配置一个自定的广播 -->
+        <!-- 3.3.0开始所有事件将通过该类回调 -->
+        <!-- 该广播需要继承 JPush 提供的 JPushMessageReceiver 类, 并如下新增一个 Intent-Filter -->
+        <service
+            android:name="com.jpush.reciever.MyJPushService"
+            android:enabled="true"
+            android:exported="false"
+            android:process=":pushcore">
+            <intent-filter>
+                <action android:name="cn.jiguang.user.service.action" />
+            </intent-filter>
+        </service>
+
+
+        <provider android:name="com.huawei.hms.update.provider.UpdateProvider"
+            android:authorities="cn.net.cyberway.hms.update.provider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+        </provider>
+        <!--极光推送-->
+
 
     </application>
 

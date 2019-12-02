@@ -86,7 +86,10 @@ public class ForgetPayPawdActivity extends BaseActivity implements View.OnClickL
         final Message message = (Message) event;
         switch (message.what) {
             case UserMessageConstant.POINT_CHANGE_PAYPAWD:
-                finish();
+                int tokenInvalid = message.arg1;
+                if (tokenInvalid == 1) {
+                    finish();
+                }
                 break;
         }
     }

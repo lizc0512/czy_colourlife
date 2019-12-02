@@ -2,7 +2,6 @@ package com.point.activity;
 
 import android.app.Activity;
 import android.app.Dialog;
-import android.content.DialogInterface;
 import android.os.Handler;
 import android.os.Message;
 import android.view.LayoutInflater;

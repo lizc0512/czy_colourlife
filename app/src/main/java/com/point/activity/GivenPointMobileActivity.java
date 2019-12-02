@@ -24,7 +24,6 @@ import com.point.model.PointModel;
 import com.user.UserAppConst;
 import com.user.UserMessageConstant;
 
-import cn.csh.colourful.life.utils.KeyBoardUtils;
 import cn.net.cyberway.R;
 
 import static com.point.activity.GivenPointAmountActivity.GIVENMOBILE;

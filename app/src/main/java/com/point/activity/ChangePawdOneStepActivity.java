@@ -50,7 +50,7 @@ public class ChangePawdOneStepActivity extends BaseActivity implements View.OnCl
 
             @Override
             public void onInputFinish(String psw) {
-                payPasswordModel.checkPayPassword(0,psw,ChangePawdOneStepActivity.this);
+                payPasswordModel.checkPayPassword(0, psw, ChangePawdOneStepActivity.this);
             }
         });
         mBack.setOnClickListener(this);
@@ -58,14 +58,17 @@ public class ChangePawdOneStepActivity extends BaseActivity implements View.OnCl
         if (!EventBus.getDefault().isregister(ChangePawdOneStepActivity.this)) {
             EventBus.getDefault().register(ChangePawdOneStepActivity.this);
         }
-        payPasswordModel=new PayPasswordModel(this);
+        payPasswordModel = new PayPasswordModel(this);
     }
 
     public void onEvent(Object event) {
         final Message message = (Message) event;
         switch (message.what) {
             case UserMessageConstant.POINT_CHANGE_PAYPAWD:
-                finish();
+                int tokenInvalid = message.arg1;
+                if (tokenInvalid == 1) {
+                    finish();
+                }
                 break;
         }
     }
@@ -90,30 +93,30 @@ public class ChangePawdOneStepActivity extends BaseActivity implements View.OnCl
 
     @Override
     public void OnHttpResponse(int what, String result) {
-        if (what==0){
+        if (what == 0) {
             try {
-                PayPwdCheckEntity payPwdCheckEntity= GsonUtils.gsonToBean(result,PayPwdCheckEntity.class);
-                PayPwdCheckEntity.ContentBean contentBean=   payPwdCheckEntity.getContent();
-                if ("1".equals(contentBean.getIs_pwd())){ //已设置支付密码
-                    if ("1".equals(contentBean.getRight_pwd())){//原支付密码校验正确
+                PayPwdCheckEntity payPwdCheckEntity = GsonUtils.gsonToBean(result, PayPwdCheckEntity.class);
+                PayPwdCheckEntity.ContentBean contentBean = payPwdCheckEntity.getContent();
+                if ("1".equals(contentBean.getIs_pwd())) { //已设置支付密码
+                    if ("1".equals(contentBean.getRight_pwd())) {//原支付密码校验正确
                         Intent intent = new Intent(ChangePawdOneStepActivity.this, ChangePawdTwoStepActivity.class);
-                        intent.putExtra(PAWDTYPE,1);
-                        intent.putExtra(PAWDTOEKN,contentBean.getToken());
+                        intent.putExtra(PAWDTYPE, 1);
+                        intent.putExtra(PAWDTOEKN, contentBean.getToken());
                         startActivity(intent);
-                    }else{
-                        int remain=contentBean.getRemain();
-                        if (remain==0){
-                            ToastUtil.toastShow(ChangePawdOneStepActivity.this,"您已输入5次错误密码，账户被锁定，请明日再进行操作");
-                        }else{
-                            ToastUtil.toastShow(ChangePawdOneStepActivity.this,"支付密码不正确，您还可以输入"+remain+"次");
+                    } else {
+                        int remain = contentBean.getRemain();
+                        if (remain == 0) {
+                            ToastUtil.toastShow(ChangePawdOneStepActivity.this, "您已输入5次错误密码，账户被锁定，请明日再进行操作");
+                        } else {
+                            ToastUtil.toastShow(ChangePawdOneStepActivity.this, "支付密码不正确，您还可以输入" + remain + "次");
                         }
                     }
-                }else{
+                } else {
                     //没有支付密码 前去设置支付密码
                     Intent intent = new Intent(ChangePawdOneStepActivity.this, ChangePawdTwoStepActivity.class);
                     startActivity(intent);
                 }
-            }catch (Exception e){
+            } catch (Exception e) {
 
             }
         }

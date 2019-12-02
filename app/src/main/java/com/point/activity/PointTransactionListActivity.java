@@ -17,7 +17,6 @@ import com.nohttp.utils.GsonUtils;
 import com.point.adapter.PointTransactionAdapter;
 import com.point.entity.PointTransactionRecordEntity;
 import com.point.model.PointModel;
-import com.yanzhenjie.recyclerview.swipe.SwipeMenuRecyclerView;
 
 import java.util.ArrayList;
 import java.util.Calendar;

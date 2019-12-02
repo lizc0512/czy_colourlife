@@ -3,7 +3,6 @@ package com.point.activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Message;
-import android.text.TextUtils;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
@@ -119,23 +118,29 @@ public class ChangePawdThreeStepActivity extends BaseActivity implements View.On
             switch (passwordType) {
                 case 1:
                     if (!"1000".equals(result)) { //密码过于简单
-                        if (!"1001".equals(result)) {
-                            ToastUtil.toastShow(ChangePawdThreeStepActivity.this, "支付密码修改成功");
-                        }
                         Message msg = Message.obtain();
                         msg.what = POINT_CHANGE_PAYPAWD;
                         EventBus.getDefault().post(msg);
+                        if (!"1001".equals(result)) {
+                            msg.arg1=0;
+                            ToastUtil.toastShow(ChangePawdThreeStepActivity.this, "支付密码修改成功");
+                        }else{//token失效不关闭原验证码验证
+                            msg.arg1=1;
+                        }
                     }
                     finish();
                     break;
                 case 2:
                     if (!"1000".equals(result)) { //密码过于简单
-                        if (!"1001".equals(result)) {
-                            ToastUtil.toastShow(ChangePawdThreeStepActivity.this, "支付密码重置成功");
-                        }
                         Message msg1 = Message.obtain();
                         msg1.what = POINT_CHANGE_PAYPAWD;
                         EventBus.getDefault().post(msg1);
+                        if (!"1001".equals(result)) {
+                            msg1.arg1=0;
+                            ToastUtil.toastShow(ChangePawdThreeStepActivity.this, "支付密码重置成功");
+                        }else{//token失效不关闭填写资料页面
+                            msg1.arg1=1;
+                        }
                     }
                     finish();
                     break;
