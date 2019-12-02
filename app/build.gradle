@@ -235,12 +235,12 @@ dependencies {
     compileOnly files('sdknec/classes123.jar')
     implementation 'com.flyco.banner:FlycoBanner_Lib:2.0.2@aar'
 
-    implementation 'cn.jiguang.sdk:jpush:3.3.9'  // 此处以JPush 3.3.9 版本为例。
-    implementation 'cn.jiguang.sdk:jcore:2.1.6'  // 此处以JCore 2.1.6 版本为例。
-    implementation 'cn.jiguang.sdk.plugin:xiaomi:3.3.4'
-    implementation'cn.jiguang.sdk.plugin:huawei:3.3.4'
-    implementation'cn.jiguang.sdk.plugin:oppo:3.1.8'
-    implementation 'cn.jiguang.sdk.plugin:vivo:3.3.4'
+    implementation 'cn.jiguang.sdk:jpush:3.4.1'
+    implementation 'cn.jiguang.sdk:jcore:2.2.4'
+    implementation 'cn.jiguang.sdk.plugin:xiaomi:3.4.1'
+    implementation'cn.jiguang.sdk.plugin:huawei:3.4.1'
+    implementation'cn.jiguang.sdk.plugin:oppo:3.4.1'
+    implementation 'cn.jiguang.sdk.plugin:vivo:3.4.1'
     implementation(name: 'HMSSdk-agent', ext: 'aar')
 }
 

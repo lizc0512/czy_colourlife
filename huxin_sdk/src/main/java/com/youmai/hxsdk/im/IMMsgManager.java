@@ -970,7 +970,7 @@ public class IMMsgManager {
 
         if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             builder.setSmallIcon(R.drawable.img_icon);
-            builder.setColor(mContext.getResources().getColor(R.color.notification_color));
+            builder.setColor(mContext.getResources().getColor(R.color.hx_toolbar_font));
         } else {
             builder.setSmallIcon(R.drawable.img_icon);
         }
