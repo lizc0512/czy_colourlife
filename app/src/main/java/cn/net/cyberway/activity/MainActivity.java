@@ -205,8 +205,6 @@ public class MainActivity extends BaseFragmentActivity implements View.OnClickLi
         newUserModel = new NewUserModel(MainActivity.this);
         tintManager.setStatusBarTintColor(Color.TRANSPARENT);
         GlideImageLoader.initImageLoader(getApplicationContext());
-        ToastUtil.toastShow(MainActivity.this, JPushInterface.getRegistrationID(getApplicationContext()));
-
     }
 
 
