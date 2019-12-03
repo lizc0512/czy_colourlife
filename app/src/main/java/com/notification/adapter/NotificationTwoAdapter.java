@@ -101,7 +101,7 @@ public class NotificationTwoAdapter extends RecyclerView.Adapter<RecyclerView.Vi
                 @Override
                 public void onClick(View v) {
                     if (!TextUtils.isEmpty(detailUrl)) {
-                        if (detailUrl.startsWith("http")) {
+                        if (detailUrl.startsWith("http")||detailUrl.endsWith("EntranceGuard")||detailUrl.endsWith("apply")) {
                             LinkParseUtil.parse(mContext, detailUrl, "");
                         } else {
                             Intent intent = new Intent(mContext, NotificationDetailsActivity.class);
@@ -181,7 +181,7 @@ public class NotificationTwoAdapter extends RecyclerView.Adapter<RecyclerView.Vi
                 @Override
                 public void onClick(View v) {
                     if (!TextUtils.isEmpty(detailUrl)) {
-                        if (detailUrl.startsWith("http")) {
+                        if (detailUrl.startsWith("http")||detailUrl.endsWith("EntranceGuard")||detailUrl.endsWith("apply")) {
                             LinkParseUtil.parse(mContext, detailUrl, "");
                         } else {
                             Intent intent = new Intent(mContext, NotificationDetailsActivity.class);
@@ -269,7 +269,7 @@ public class NotificationTwoAdapter extends RecyclerView.Adapter<RecyclerView.Vi
                 @Override
                 public void onClick(View v) {
                     if (!TextUtils.isEmpty(detailUrl)) {
-                        if (detailUrl.startsWith("http")) {
+                        if (detailUrl.startsWith("http")||detailUrl.endsWith("EntranceGuard")||detailUrl.endsWith("apply")) {
                             LinkParseUtil.parse(mContext, detailUrl, "");
                         } else {
                             Intent intent = new Intent(mContext, NotificationDetailsActivity.class);

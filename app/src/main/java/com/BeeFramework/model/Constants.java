@@ -41,75 +41,75 @@ public class Constants {
 //    public static int SAVENOHTTPRECORD = 1;  // 正式打包为0
 
     // ---------------------------测试版-----------------------------
-//    public static final String SERVER_ADDRESS = "https://cmobile-czytest.colourlife.com";
-//    public static final String VERSION_ADDRESS = "https://version-czytest.colourlife.com/";//新的版本升级
-//    public static final String TOKEN_ADDRESS = "http://oauth2-czytest.colourlife.com";
-//    public static final String NEWAPP_ADDRESS = "http://single-czytest.colourlife.com/app/";
-//    public static final String OAUTH_ADDRESS = "http://oauth2-czytest.colourlife.com/oauth2/";
-//    public static final String HOMEAPP_ADDRESS = "http://colourhome-czytest.colourlife.com/";
-//    public static final String IMAPP_ADDRESS = "https://imapi-czytest.colourlife.com";//IM的新域名
-//    public static final String BUSINESS_ADDRESS = "http://business-czytest.colourlife.com/app/";
-//    public static final String USERINFO_ADDRESS = "http://user.czytest.colourlife.com/app/";
-//    public static final String PROPERTY_ADDRESS = "http://property-czytest.colourlife.com";
-//    public static final String VERIFY_ADDRESS = "http://verify-czytest.colourlife.com";
-//    public static final String EPARKING_ADDRESS = "https://ep-test.colourlife.com";
-//    public static final String FEEDBACK_ADDRESS = "https://service-czytest.colourlife.com";
-//    public static final String QRCODE_ADDRESS = "http://qrcode-czytest.colourlife.com/";
-//    public static final String BEHAVIOR_ADDRESS = "https://probe-czytest.colourlife.com/";
-//    public static final String BEAN_ADDRESS = "https://userbackend-czytest.colourlife.com/";//彩豆积分
-//    public static final String DELIVERY_ADDRESS = "https://kdaddr-ice-test.colourlife.com/app/delivery";
-//    public static final String LINLI_ADDRESS = "http://linli-czytest.colourlife.com/";
-//    public static final String DOOR_ADDRESS = "https://bluetoothtest-door.colourlife.com/";//乐开门禁
-//    public static final String AUTH_APP_ADDRESS = "https://oauth-czytest.colourlife.com/";//授权应用
-//    public static final String CARHUI_ADDRESS = "https://api-caihuitest.colourlife.com/";//彩惠人生
-//    public static final String ACCOUNT_ADDRESS = "https://account-finance-test.colourlife.com/";//新版彩钱包
-//    public static final String PAY_WALLET_APPID = "323521861252157440";  //双乾彩钱包和支付
-//    public static final String publicKeyString = "MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQDZDqnWph9LxtD0zgtGAYT" +
-//            "Tf2jYeV+ni5F1o0w3Fag4OOD1YHCRUCXIsFy+iJYmuPf5vMkZrkoiJmKBfkaIzNlrJZzHzq+LsPQNCF86p1nLsuHbkWNvy" +
-//            "jOEPn/CUryP2Kxme4S+eEqLIeNwp70VOaMuPmRoEZxMDAgvc6Z0DWsVdQIDAQAB";
-//    public static final String PAYKEYSTRING = "MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQCob8XGWbTfWx4EZZXfqHB2ufu0" +
-//            "GDTTS7tfNnGX1OhjhqnzX357qwqhLCmW3jfRLtjp4GtOzfFfvZI5hbUaGwArOOZF" +
-//            "mtm3tI6Uo/D1I0Dc3cu1+9GwnkovOoBORRNGwXVHqLAJQ2otb17Ycj71pxntG9SE" +
-//            "+9X0JzDArUYNRIYj8QIDAQAB";
-//    /*****关于nohttp请求日记的保存*****/
-//    public static final boolean CAIWALLET_ENVIRONMENT = false;  //false为彩钱包的测试环境
-//    public static int SAVENOHTTPRECORD = 1;  // 测试为1，正式打包为0
-
-    // ---------------------------预发版-----------------------------
-    public static final String SERVER_ADDRESS = "https://cmobile.colourlife.com";
-    public static final String VERSION_ADDRESS = "https://version.colourlife.com/";//新的版本升级
-    public static final String TOKEN_ADDRESS = "https://oauth2czy-czybeta.colourlife.com";
-    public static final String NEWAPP_ADDRESS = "https://single.colourlife.com/app/"; //新接口的域名
-    public static final String OAUTH_ADDRESS = "http://oauth2czy.colourlife.com/oauth2/";
-    public static final String HOMEAPP_ADDRESS = "https://colourhome-czybeta.colourlife.com/";
-    public static final String BUSINESS_ADDRESS = "https://business-czybeta.colourlife.com/app/";
-    public static final String IMAPP_ADDRESS = "https://imapi-czybeta.colourlife.com";
-    public static final String USERINFO_ADDRESS = "https://user-czybeta.colourlife.com/app/";
-    public static final String PROPERTY_ADDRESS = "https://property.colourlife.com";
-    public static final String VERIFY_ADDRESS = "http://verify-czybeta.colourlife.com";
-    public static final String EPARKING_ADDRESS = "https://ep-beat.colourlife.com";
-    public static final String FEEDBACK_ADDRESS = "https://service-czybeta.colourlife.com";
-    public static final String QRCODE_ADDRESS = "https://qrcode.colourlife.com/";
-    public static final String BEHAVIOR_ADDRESS = "https://probe-czybeta.colourlife.com/";
-    public static final String DELIVERY_ADDRESS = "https://kdaddr-ice-beta.colourlife.com/app/delivery";
-    public static final String LINLI_ADDRESS = "http://linli-czybeta.colourlife.com/";
-    public static final String BEAN_ADDRESS = "https://userbackend-czybeta.colourlife.com/";//彩豆积分
-    public static final String DOOR_ADDRESS = "https://bluetoothbeta-door.colourlife.com/";
-    public static final String AUTH_APP_ADDRESS = "https://oauth-czybeta.colourlife.com/";//授权应用
-    public static final String CARHUI_ADDRESS = "https://api-caihuibeta.colourlife.com/";//彩惠人生
-    public static final String ACCOUNT_ADDRESS = "https://account-finance-beta.colourlife.com/";//新版彩钱包
-    public static final String PAY_WALLET_APPID = "327494513335603200";  //双乾彩钱包和支付
-    /*****关于nohttp请求日记的保存*****/
-    public static final String publicKeyString = "MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQCTFnAR7ORLx0jGzf9Ux1We7yHvRi+kQXKSRmtgBjDCXQzakGm2mrb6EupCkDbUcj4BUs7S7zm/rICQuVNC9fujeJGj"
-            + "cNWRg0XWVtm90XpbTqfKiXzGDHI9W8aULYZ3of/JJ9lyCyjqjigyCdLBPtQ27gOu"
-            + "boDzQuieR2ywPHawzQIDAQAB";
+    public static final String SERVER_ADDRESS = "https://cmobile-czytest.colourlife.com";
+    public static final String VERSION_ADDRESS = "https://version-czytest.colourlife.com/";//新的版本升级
+    public static final String TOKEN_ADDRESS = "http://oauth2-czytest.colourlife.com";
+    public static final String NEWAPP_ADDRESS = "http://single-czytest.colourlife.com/app/";
+    public static final String OAUTH_ADDRESS = "http://oauth2-czytest.colourlife.com/oauth2/";
+    public static final String HOMEAPP_ADDRESS = "http://colourhome-czytest.colourlife.com/";
+    public static final String IMAPP_ADDRESS = "https://imapi-czytest.colourlife.com";//IM的新域名
+    public static final String BUSINESS_ADDRESS = "http://business-czytest.colourlife.com/app/";
+    public static final String USERINFO_ADDRESS = "http://user.czytest.colourlife.com/app/";
+    public static final String PROPERTY_ADDRESS = "http://property-czytest.colourlife.com";
+    public static final String VERIFY_ADDRESS = "http://verify-czytest.colourlife.com";
+    public static final String EPARKING_ADDRESS = "https://ep-test.colourlife.com";
+    public static final String FEEDBACK_ADDRESS = "https://service-czytest.colourlife.com";
+    public static final String QRCODE_ADDRESS = "http://qrcode-czytest.colourlife.com/";
+    public static final String BEHAVIOR_ADDRESS = "https://probe-czytest.colourlife.com/";
+    public static final String BEAN_ADDRESS = "https://userbackend-czytest.colourlife.com/";//彩豆积分
+    public static final String DELIVERY_ADDRESS = "https://kdaddr-ice-test.colourlife.com/app/delivery";
+    public static final String LINLI_ADDRESS = "http://linli-czytest.colourlife.com/";
+    public static final String DOOR_ADDRESS = "https://bluetoothtest-door.colourlife.com/";//乐开门禁
+    public static final String AUTH_APP_ADDRESS = "https://oauth-czytest.colourlife.com/";//授权应用
+    public static final String CARHUI_ADDRESS = "https://api-caihuitest.colourlife.com/";//彩惠人生
+    public static final String ACCOUNT_ADDRESS = "https://account-finance-test.colourlife.com/";//新版彩钱包
+    public static final String PAY_WALLET_APPID = "323521861252157440";  //双乾彩钱包和支付
+    public static final String publicKeyString = "MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQDZDqnWph9LxtD0zgtGAYT" +
+            "Tf2jYeV+ni5F1o0w3Fag4OOD1YHCRUCXIsFy+iJYmuPf5vMkZrkoiJmKBfkaIzNlrJZzHzq+LsPQNCF86p1nLsuHbkWNvy" +
+            "jOEPn/CUryP2Kxme4S+eEqLIeNwp70VOaMuPmRoEZxMDAgvc6Z0DWsVdQIDAQAB";
     public static final String PAYKEYSTRING = "MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQCob8XGWbTfWx4EZZXfqHB2ufu0" +
             "GDTTS7tfNnGX1OhjhqnzX357qwqhLCmW3jfRLtjp4GtOzfFfvZI5hbUaGwArOOZF" +
             "mtm3tI6Uo/D1I0Dc3cu1+9GwnkovOoBORRNGwXVHqLAJQ2otb17Ycj71pxntG9SE" +
             "+9X0JzDArUYNRIYj8QIDAQAB";
     /*****关于nohttp请求日记的保存*****/
-    public static final boolean CAIWALLET_ENVIRONMENT = true;  //false为彩钱包的测试环境
+    public static final boolean CAIWALLET_ENVIRONMENT = false;  //false为彩钱包的测试环境
     public static int SAVENOHTTPRECORD = 1;  // 测试为1，正式打包为0
+
+    // ---------------------------预发版-----------------------------
+//    public static final String SERVER_ADDRESS = "https://cmobile.colourlife.com";
+//    public static final String VERSION_ADDRESS = "https://version.colourlife.com/";//新的版本升级
+//    public static final String TOKEN_ADDRESS = "https://oauth2czy-czybeta.colourlife.com";
+//    public static final String NEWAPP_ADDRESS = "https://single.colourlife.com/app/"; //新接口的域名
+//    public static final String OAUTH_ADDRESS = "http://oauth2czy.colourlife.com/oauth2/";
+//    public static final String HOMEAPP_ADDRESS = "https://colourhome-czybeta.colourlife.com/";
+//    public static final String BUSINESS_ADDRESS = "https://business-czybeta.colourlife.com/app/";
+//    public static final String IMAPP_ADDRESS = "https://imapi-czybeta.colourlife.com";
+//    public static final String USERINFO_ADDRESS = "https://user-czybeta.colourlife.com/app/";
+//    public static final String PROPERTY_ADDRESS = "https://property.colourlife.com";
+//    public static final String VERIFY_ADDRESS = "http://verify-czybeta.colourlife.com";
+//    public static final String EPARKING_ADDRESS = "https://ep-beat.colourlife.com";
+//    public static final String FEEDBACK_ADDRESS = "https://service-czybeta.colourlife.com";
+//    public static final String QRCODE_ADDRESS = "https://qrcode.colourlife.com/";
+//    public static final String BEHAVIOR_ADDRESS = "https://probe-czybeta.colourlife.com/";
+//    public static final String DELIVERY_ADDRESS = "https://kdaddr-ice-beta.colourlife.com/app/delivery";
+//    public static final String LINLI_ADDRESS = "http://linli-czybeta.colourlife.com/";
+//    public static final String BEAN_ADDRESS = "https://userbackend-czybeta.colourlife.com/";//彩豆积分
+//    public static final String DOOR_ADDRESS = "https://bluetoothbeta-door.colourlife.com/";
+//    public static final String AUTH_APP_ADDRESS = "https://oauth-czybeta.colourlife.com/";//授权应用
+//    public static final String CARHUI_ADDRESS = "https://api-caihuibeta.colourlife.com/";//彩惠人生
+//    public static final String ACCOUNT_ADDRESS = "https://account-finance-beta.colourlife.com/";//新版彩钱包
+//    public static final String PAY_WALLET_APPID = "327494513335603200";  //双乾彩钱包和支付
+//    /*****关于nohttp请求日记的保存*****/
+//    public static final String publicKeyString = "MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQCTFnAR7ORLx0jGzf9Ux1We7yHvRi+kQXKSRmtgBjDCXQzakGm2mrb6EupCkDbUcj4BUs7S7zm/rICQuVNC9fujeJGj"
+//            + "cNWRg0XWVtm90XpbTqfKiXzGDHI9W8aULYZ3of/JJ9lyCyjqjigyCdLBPtQ27gOu"
+//            + "boDzQuieR2ywPHawzQIDAQAB";
+//    public static final String PAYKEYSTRING = "MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQCob8XGWbTfWx4EZZXfqHB2ufu0" +
+//            "GDTTS7tfNnGX1OhjhqnzX357qwqhLCmW3jfRLtjp4GtOzfFfvZI5hbUaGwArOOZF" +
+//            "mtm3tI6Uo/D1I0Dc3cu1+9GwnkovOoBORRNGwXVHqLAJQ2otb17Ycj71pxntG9SE" +
+//            "+9X0JzDArUYNRIYj8QIDAQAB";
+//    /*****关于nohttp请求日记的保存*****/
+//    public static final boolean CAIWALLET_ENVIRONMENT = true;  //false为彩钱包的测试环境
+//    public static int SAVENOHTTPRECORD = 1;  // 测试为1，正式打包为0
 
 
     /**

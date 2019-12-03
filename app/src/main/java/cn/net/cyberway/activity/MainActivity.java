@@ -424,6 +424,7 @@ public class MainActivity extends BaseFragmentActivity implements View.OnClickLi
         myManager.cancel(NOTIFICATION_ID_1);
         Constants.NOTIFICATION_BTN = false;
         JPushInterface.stopPush(getApplicationContext());
+        JPushInterface.setAlias(getApplicationContext(),userId,"");
         JPushInterface.cleanTags(getApplicationContext(), userId);
         if (!TextUtils.isEmpty(notice)) {
             ToastUtil.toastShow(getApplicationContext(), notice);

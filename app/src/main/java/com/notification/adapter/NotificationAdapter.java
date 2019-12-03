@@ -103,7 +103,7 @@ public class NotificationAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
                 @Override
                 public void onClick(View v) {
                     if (!TextUtils.isEmpty(msgUrl)) {
-                        if (msgUrl.startsWith("http")) {
+                        if (msgUrl.startsWith("http")||msgUrl.endsWith("EntranceGuard")||msgUrl.endsWith("apply")) {
                             LinkParseUtil.parse(mContext, msgUrl, "");
                         } else {
                             Intent intent = new Intent(mContext, NotificationDetailsActivity.class);
@@ -185,7 +185,7 @@ public class NotificationAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
                 @Override
                 public void onClick(View v) {
                     if (!TextUtils.isEmpty(msgUrl)) {
-                        if (msgUrl.startsWith("http")) {
+                        if (msgUrl.startsWith("http")||msgUrl.endsWith("EntranceGuard")||msgUrl.endsWith("apply")) {
                             LinkParseUtil.parse(mContext, msgUrl, "");
                         } else {
                             Intent intent = new Intent(mContext, NotificationDetailsActivity.class);
@@ -275,7 +275,7 @@ public class NotificationAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
                 @Override
                 public void onClick(View v) {
                     if (!TextUtils.isEmpty(msgUrl)) {
-                        if (msgUrl.startsWith("http")) {
+                        if (msgUrl.startsWith("http")||msgUrl.endsWith("EntranceGuard")||msgUrl.endsWith("apply")) {
                             LinkParseUtil.parse(mContext, msgUrl, "");
                         } else {
                             Intent intent = new Intent(mContext, NotificationDetailsActivity.class);

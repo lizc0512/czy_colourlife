@@ -18,6 +18,7 @@ import android.support.v4.content.LocalBroadcastManager;
 import android.text.TextUtils;
 import android.util.Log;
 
+import com.BeeFramework.Utils.ToastUtil;
 import com.BeeFramework.activity.WebViewActivity;
 import com.audio.activity.RoomActivity;
 import com.audio.entity.RoomTokenEntity;
@@ -169,7 +170,8 @@ public class MyReceiver extends JPushMessageReceiver {
             if (TextUtils.isEmpty(command)) {
                 String extraExtra = message.notificationExtras;
                 JSONObject jsonObject = null;
-                try {
+                try
+                {
                     jsonObject = new JSONObject(extraExtra);
                     String resourceId = "";
                     if (!jsonObject.isNull("resource_id")) {

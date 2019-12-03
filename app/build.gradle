@@ -34,7 +34,7 @@ android {
                 OPPO_APPSECRET: "OP-1Bb067A9a366132a70364E012203acF6",//OPPO平台注册的appsecret
                 VIVO_APPKEY: "94d2f243-a648-49be-bb43-7a0cdc18186b",//vivo平台注册的appkey
                 VIVO_APPID: "16887",//vivo平台注册的appid
-                HUAWEI_APPID: "2331923",//华为平台注册的appid
+                HUAWEI_APPID: "101447125",//华为平台注册的appid
         ]
     }
 

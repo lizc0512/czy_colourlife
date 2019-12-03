@@ -2,11 +2,13 @@ package com.point.activity;
 
 import android.app.Activity;
 import android.app.Dialog;
+import android.content.Intent;
 import android.os.Handler;
 import android.os.Message;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.external.eventbus.EventBus;
 import com.external.gridpasswordview.GridPasswordView;
@@ -24,6 +26,7 @@ public class PointPasswordDialog {
     public Dialog mDialog;
     private GridPasswordView grid_pay_pawd;
     private ImageView iv_close_dialog;
+    private TextView tv_forget_pawd;
 
 
     public PointPasswordDialog(Activity activity) {
@@ -34,6 +37,7 @@ public class PointPasswordDialog {
         mDialog.setCanceledOnTouchOutside(true);
         grid_pay_pawd = view.findViewById(R.id.grid_pay_pawd);
         iv_close_dialog = view.findViewById(R.id.iv_close_dialog);
+        tv_forget_pawd = view.findViewById(R.id.tv_forget_pawd);
         grid_pay_pawd.setOnPasswordChangedListener(new GridPasswordView.OnPasswordChangedListener() {
             @Override
             public void onTextChanged(String psw) {
@@ -48,6 +52,10 @@ public class PointPasswordDialog {
                 EventBus.getDefault().post(message);
                 dismiss();
             }
+        });
+        tv_forget_pawd.setOnClickListener(v -> {
+            Intent forget_intent = new Intent(activity, ForgetPayPawdActivity.class);
+            activity.startActivity(forget_intent);
         });
         iv_close_dialog.setOnClickListener(v -> dismiss());
         mDialog.setOnDismissListener(dialog -> KeyBoardUtils.hideSoftKeyboard(activity));

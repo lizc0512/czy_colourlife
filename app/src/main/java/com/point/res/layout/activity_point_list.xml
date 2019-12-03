@@ -3,16 +3,20 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:tools="http://schemas.android.com/tools"
-    android:background="@color/color_f9f9f9"
+    android:background="@color/white"
     android:fitsSystemWindows="true"
     android:orientation="vertical">
 
     <include layout="@layout/top_view" />
 
+
     <RelativeLayout
         android:layout_width="match_parent"
         android:background="@drawable/point_total_balance_bg"
-        android:layout_margin="16dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginBottom="5dp"
         android:layout_height="110dp">
 
         <ImageView
@@ -33,7 +37,7 @@
             android:layout_centerHorizontal="true"
             android:text="我的积分"
             android:textColor="@color/white"
-            android:textSize="10sp"  />
+            android:textSize="14sp"  />
 
         <TextView
             android:id="@+id/tv_point_total"
@@ -50,11 +54,16 @@
 
     </RelativeLayout>
 
+    <View
+        android:layout_width="match_parent"
+        android:background="@color/color_f9f9f9"
+        android:layout_height="15dp"/>
+
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/rv_point"
         android:layout_width="match_parent"
-        android:layout_marginTop="10dp"
+        android:background="@color/color_f9f9f9"
         android:layout_height="match_parent"/>
 
 

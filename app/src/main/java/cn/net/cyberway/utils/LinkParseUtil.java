@@ -18,9 +18,9 @@ import com.customerInfo.activity.CustomerColourBeanActivity;
 import com.customerInfo.activity.CustomerInfoActivity;
 import com.customerInfo.activity.DeliveryAddressListActivity;
 import com.dashuview.library.keep.Cqb_PayUtil;
-import com.door.activity.DoorApplyRenewalActivity;
 import com.door.activity.IntelligenceDoorActivity;
 import com.door.activity.NewDoorAuthorizeActivity;
+import com.door.activity.NewDoorRenewalActivity;
 import com.eparking.activity.AppointmentParkingActivity;
 import com.eparking.activity.EParkingCardHolderActivity;
 import com.eparking.activity.EParkingHistoryRecordActivity;
@@ -311,7 +311,7 @@ public class LinkParseUtil {
                             context.startActivity(intent);
                             break;
                         case "apply":
-                            intent = new Intent(context, DoorApplyRenewalActivity.class);
+                            intent = new Intent(context, NewDoorRenewalActivity.class);
                             context.startActivity(intent);
                             break;
                     }
