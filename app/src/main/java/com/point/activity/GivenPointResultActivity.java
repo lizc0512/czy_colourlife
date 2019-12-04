@@ -3,6 +3,7 @@ package com.point.activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Message;
+import android.view.KeyEvent;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -52,7 +53,8 @@ public class GivenPointResultActivity extends BaseActivity implements View.OnCli
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.user_top_view_back:
-                finish();
+            case R.id.tv_return:
+                returnGivenPoint();
                 break;
             case R.id.tv_continue_given:
                 Message message = Message.obtain();
@@ -60,13 +62,20 @@ public class GivenPointResultActivity extends BaseActivity implements View.OnCli
                 EventBus.getDefault().post(message);
                 finish();
                 break;
-            case R.id.tv_return:
-                EventBus eventBus = EventBus.getDefault();
-                Message message1 = Message.obtain();
-                message1.what = POINT_SUCCESS_RETURN;
-                eventBus.post(message1);
-                finish();
-                break;
         }
+    }
+
+    private void returnGivenPoint(){
+        EventBus eventBus = EventBus.getDefault();
+        Message message1 = Message.obtain();
+        message1.what = POINT_SUCCESS_RETURN;
+        eventBus.post(message1);
+        finish();
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        returnGivenPoint();
     }
 }

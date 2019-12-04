@@ -7,6 +7,7 @@ import android.text.Editable;
 import android.text.InputFilter;
 import android.text.TextUtils;
 import android.text.TextWatcher;
+import android.view.Gravity;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
@@ -25,6 +26,7 @@ import com.nohttp.utils.GsonUtils;
 import com.point.entity.PointBalanceEntity;
 import com.point.entity.PointTransactionTokenEntity;
 import com.point.model.PointModel;
+import com.point.password.PopEnterPassword;
 import com.tencent.authsdk.AuthConfig;
 import com.tencent.authsdk.AuthSDKApi;
 import com.tencent.authsdk.IDCardInfo;
@@ -303,8 +305,13 @@ public class GivenPointAmountActivity extends BaseActivity implements View.OnCli
     }
 
     private void showPayDialog() {
-        PointPasswordDialog pointPasswordDialog = new PointPasswordDialog(GivenPointAmountActivity.this);
-        pointPasswordDialog.show();
+//        PointPasswordDialog pointPasswordDialog = new PointPasswordDialog(GivenPointAmountActivity.this);
+//        pointPasswordDialog.show();
+        PopEnterPassword popEnterPassword = new PopEnterPassword(this);
+
+        // 显示窗口
+        popEnterPassword.showAtLocation(this.findViewById(R.id.layoutContent),
+                Gravity.BOTTOM | Gravity.CENTER_HORIZONTAL, 0, 0); // 设置layout在PopupWindow中显示的位置
     }
 
     /**
