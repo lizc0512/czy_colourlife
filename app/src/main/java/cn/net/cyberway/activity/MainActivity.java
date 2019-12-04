@@ -45,7 +45,6 @@ import com.im.model.IMUploadPhoneModel;
 import com.jpush.Constant;
 import com.nohttp.utils.GlideImageLoader;
 import com.nohttp.utils.GsonUtils;
-import com.nohttp.utils.RequestEncryptionUtils;
 import com.popupScreen.PopupScUtils;
 import com.popupScreen.model.PopupModel;
 import com.scanCode.activity.CaptureActivity;
@@ -58,11 +57,9 @@ import com.user.UserAppConst;
 import com.user.UserMessageConstant;
 import com.user.entity.CheckRegisterEntity;
 import com.user.model.NewUserModel;
-import com.user.model.RequestFailModel;
 import com.user.model.TokenModel;
 import com.user.protocol.CheckDeviceLoginApi;
 import com.user.protocol.CheckDeviceLoginResponse;
-import com.xiaomi.mipush.sdk.MiPushClient;
 import com.youmai.hxsdk.HuxinSdkManager;
 
 import org.json.JSONException;
@@ -75,7 +72,6 @@ import java.util.List;
 import java.util.Set;
 
 import cn.jpush.android.api.JPushInterface;
-import cn.jpush.android.service.PluginOppoPushService;
 import cn.net.cyberway.R;
 import cn.net.cyberway.fagment.BenefitFragment;
 import cn.net.cyberway.fagment.InstantMessageFragment;
@@ -174,14 +170,7 @@ public class MainActivity extends BaseFragmentActivity implements View.OnClickLi
         openModel = new NewDoorModel(this);
         Intent intentMessage = getIntent();
         if (intentMessage != null) {
-            String doorid = intentMessage.getStringExtra("shortcut");
-            if (!TextUtils.isEmpty(doorid)) {
-                openModel.openDoor(2, doorid, true, MainActivity.this);
-            }
-            String jumpUrl = intentMessage.getStringExtra(JUMPOTHERURL);
-            if (!TextUtils.isEmpty(jumpUrl)) {
-                LinkParseUtil.parse(MainActivity.this, jumpUrl, "");
-            }
+            jpushJumpPage(intentMessage);
         }
         initView();
         userId = mShared.getInt(UserAppConst.Colour_User_id, 0);
@@ -193,7 +182,7 @@ public class MainActivity extends BaseFragmentActivity implements View.OnClickLi
         onTabSelected(FLAG_TAB_ONE);
         if (mShared.getBoolean(UserAppConst.IS_CHECK_UPDATE, false)) {//为TURE，说明第二次进入才检测更新
 //            mUpdateVerSion.getNewVerSion("1", true, MainActivity.this);
-            mUpdateVerSion.getNewVerSion(MainActivity.this, true,false);
+            mUpdateVerSion.getNewVerSion(MainActivity.this, true, false);
         }
         mEditor.putInt(UpdateVerSion.SAVEVERSIONCODE, UpdateVerSion.getVersionCode(MainActivity.this));//保存版本号
         mEditor.putBoolean(UserAppConst.IS_CHECK_UPDATE, true);
@@ -322,15 +311,27 @@ public class MainActivity extends BaseFragmentActivity implements View.OnClickLi
         }
     }
 
-    @Override
-    protected void onNewIntent(Intent intent) {
-        super.onNewIntent(intent);
-        shortEnter(MainActivity.this, intent, mShared);
-        String doorid = intent.getStringExtra("shortcut");
-        if (!TextUtils.isEmpty(doorid)) {
-            openDoor(doorid);
+    private void jpushJumpPage(Intent intent) {
+        String doorId = intent.getStringExtra("shortcut");
+        if (!TextUtils.isEmpty(doorId)) {//快捷开门的
+            openDoor(doorId);
         }
-        String linkURl = intent.getStringExtra(JUMPOTHERURL);
+        String linkURl = intent.getStringExtra(JUMPOTHERURL);//通知栏推送的url
+        String messageExtra = intent.getStringExtra("JMessageExtra");
+        if (!TextUtils.isEmpty(messageExtra)) {
+            try {
+                JSONObject jsonObject = new JSONObject(messageExtra);
+                //byte类型的整数，0为极 光，1为小米，2为华为，3为魅族，4为OPPO，8为FCM。
+                int whichPushSDK = jsonObject.optInt("rom_type");
+                //通知附加字段
+                JSONObject extrasJson = jsonObject.optJSONObject("n_extras");
+                if (whichPushSDK == 4 || whichPushSDK == 8) {
+                    linkURl = extrasJson.getString("url");
+                }
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
         if (!TextUtils.isEmpty(linkURl)) {
             if ("colourlifeCaiHui".equals(linkURl)) {
                 onTabSelected(FLAG_TAB_TWO);
@@ -343,6 +344,13 @@ public class MainActivity extends BaseFragmentActivity implements View.OnClickLi
                 LinkParseUtil.parse(MainActivity.this, linkURl, "");
             }
         }
+    }
+
+    @Override
+    protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
+        shortEnter(MainActivity.this, intent, mShared);
+        jpushJumpPage(intent);
     }
 
     public void openDoor(String door_id) {
@@ -424,7 +432,7 @@ public class MainActivity extends BaseFragmentActivity implements View.OnClickLi
         myManager.cancel(NOTIFICATION_ID_1);
         Constants.NOTIFICATION_BTN = false;
         JPushInterface.stopPush(getApplicationContext());
-        JPushInterface.setAlias(getApplicationContext(),userId,"");
+        JPushInterface.setAlias(getApplicationContext(), userId, "");
         JPushInterface.cleanTags(getApplicationContext(), userId);
         if (!TextUtils.isEmpty(notice)) {
             ToastUtil.toastShow(getApplicationContext(), notice);
@@ -732,7 +740,7 @@ public class MainActivity extends BaseFragmentActivity implements View.OnClickLi
     @Override
     public void OnHttpResponse(HttpApi api) {
         if (api.getClass().equals(CheckDeviceLoginApi.class)) {
-            CheckDeviceLoginResponse  checkDeviceLoginResponse=((CheckDeviceLoginApi) api).response;
+            CheckDeviceLoginResponse checkDeviceLoginResponse = ((CheckDeviceLoginApi) api).response;
             int login_state = checkDeviceLoginResponse.login_state;
             if (login_state == 1) {
                 Message message = new Message();

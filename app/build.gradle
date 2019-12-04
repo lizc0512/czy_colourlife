@@ -242,6 +242,7 @@ dependencies {
     implementation'cn.jiguang.sdk.plugin:oppo:3.4.1'
     implementation 'cn.jiguang.sdk.plugin:vivo:3.4.1'
     implementation(name: 'HMSSdk-agent', ext: 'aar')
+    implementation 'org.jetbrains:annotations:15.0'
 }
 
 project.afterEvaluate {

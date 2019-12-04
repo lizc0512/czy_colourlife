@@ -24,7 +24,11 @@
             android:launchMode="singleTask"
             android:screenOrientation="portrait"
             android:theme="@style/Theme.AppCompat"
-            android:windowSoftInputMode="adjustPan|stateHidden" />
+            android:windowSoftInputMode="adjustPan|stateHidden" >
+            <intent-filter>
+                <action  android:name="cn.net.cyberway.jpush.openactivity"/>
+            </intent-filter>
+        </activity>
 
         <activity
             android:name=".activity.BrowerJumpExcessiveActivity"
