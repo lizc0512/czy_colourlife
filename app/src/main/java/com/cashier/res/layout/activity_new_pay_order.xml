@@ -3,6 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
+    android:id="@+id/layoutContent"
     android:background="@color/bg_color"
     android:orientation="vertical">
     <!--新版支付改版的布局 支付订单页面 2017.11.13-->

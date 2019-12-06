@@ -17,8 +17,6 @@ import android.support.v4.app.NotificationCompat;
 import android.support.v4.content.LocalBroadcastManager;
 import android.text.TextUtils;
 import android.util.Log;
-
-import com.BeeFramework.Utils.ToastUtil;
 import com.BeeFramework.activity.WebViewActivity;
 import com.audio.activity.RoomActivity;
 import com.audio.entity.RoomTokenEntity;
@@ -165,7 +163,6 @@ public class MyReceiver extends JPushMessageReceiver {
     @Override
     public void onNotifyMessageOpened(Context context, NotificationMessage message) {
         String command = message.notificationContent;
-        Intent intent = new Intent();
         if (isRunningForeground(context)) {
             if (TextUtils.isEmpty(command)) {
                 String extraExtra = message.notificationExtras;
@@ -179,13 +176,10 @@ public class MyReceiver extends JPushMessageReceiver {
                     }
                     String url = jsonObject.getString("url");
                     if (TextUtils.isEmpty(url)) {
-                        intent.setClass(context, MainActivity.class);
-                        intent.setFlags(Intent.FLAG_ACTIVITY_MULTIPLE_TASK
-                                | Intent.FLAG_ACTIVITY_NEW_TASK
-                                | Intent.FLAG_ACTIVITY_RESET_TASK_IF_NEEDED);// 关键的一步，设置启动模式*
-                        context.startActivity(intent);
+                        jumpMainPage(context);
                     } else {
                         if (url.startsWith("http") || url.startsWith("https")) {
+                            Intent intent = new Intent();
                             intent.setClass(context, WebViewActivity.class);
                             intent.putExtra(WebViewActivity.JUSHURL, url);
                             intent.putExtra(WebViewActivity.JUSHRESOURCEID, resourceId);
@@ -194,6 +188,7 @@ public class MyReceiver extends JPushMessageReceiver {
                                     | Intent.FLAG_ACTIVITY_RESET_TASK_IF_NEEDED);// 关键的一步，设置启动模式
                             context.startActivity(intent);
                         } else {
+                            Intent intent = new Intent();
                             Intent jumpIntent = new Intent(context, MainActivity.class);
                             intent.putExtra(MainActivity.JUMPOTHERURL, url);
                             context.startActivity(jumpIntent);
@@ -201,20 +196,21 @@ public class MyReceiver extends JPushMessageReceiver {
                     }
                 } catch (Exception e) {
                     e.printStackTrace();
-                    intent.setClass(context, MainActivity.class);
-                    intent.setFlags(Intent.FLAG_ACTIVITY_MULTIPLE_TASK
-                            | Intent.FLAG_ACTIVITY_NEW_TASK
-                            | Intent.FLAG_ACTIVITY_RESET_TASK_IF_NEEDED);// 关键的一步，设置启动模式*
-                    context.startActivity(intent);
+                    jumpMainPage(context);
                 }
             } else {
-                intent.setClass(context, MainActivity.class);
-                intent.setFlags(Intent.FLAG_ACTIVITY_MULTIPLE_TASK
-                        | Intent.FLAG_ACTIVITY_NEW_TASK
-                        | Intent.FLAG_ACTIVITY_RESET_TASK_IF_NEEDED);// 关键的一步，设置启动模式*
-                context.startActivity(intent);
+                jumpMainPage(context);
             }
         }
+    }
+
+    private void jumpMainPage(Context context){
+        Intent intent = new Intent();
+        intent.setClass(context, MainActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_MULTIPLE_TASK
+                | Intent.FLAG_ACTIVITY_NEW_TASK
+                | Intent.FLAG_ACTIVITY_RESET_TASK_IF_NEEDED);// 关键的一步，设置启动模式*
+        context.startActivity(intent);
     }
 
 
@@ -272,6 +268,10 @@ public class MyReceiver extends JPushMessageReceiver {
 
     @Override
     public void onRegister(Context context, String registrationId) {
+        SharedPreferences shared = context.getSharedPreferences(UserAppConst.USERINFO, 0);
+        SharedPreferences.Editor editor = shared.edit();
+        editor.putString("UniqueID", registrationId);
+        editor.apply();
         if (mLocalBroadcastManager == null) {
             mLocalBroadcastManager = LocalBroadcastManager.getInstance(context);
         }

@@ -135,7 +135,13 @@ public class NotificationTwoAdapter extends RecyclerView.Adapter<RecyclerView.Vi
             viewHolderTwo.send_time.setText(TimeUtil.noticeTime(readBean.getSend_time()));
             viewHolderTwo.msg_status.setText(readBean.getMsg_sub_title());
             viewHolderTwo.msg_title.setText(readBean.getOrder_status());
-            viewHolderTwo.order_amount.setText(readBean.getOrder_amount());
+            String order_amount=readBean.getOrder_amount();
+            if (TextUtils.isEmpty(order_amount)){
+                viewHolderTwo.order_amount_type.setVisibility(View.INVISIBLE);
+            }else{
+                viewHolderTwo.order_amount_type.setVisibility(View.VISIBLE);
+            }
+            viewHolderTwo.order_amount.setText(order_amount);
             if ("0".equals(readBean.getOrder_amount_type())) {
                 viewHolderTwo.order_amount_type.setImageResource(R.drawable.message_icon_fanpiao);
             } else {
@@ -223,7 +229,13 @@ public class NotificationTwoAdapter extends RecyclerView.Adapter<RecyclerView.Vi
             viewHolderThree.app_name.setText(readBean.getApp_name());
             viewHolderThree.send_time.setText(TimeUtil.noticeTime(readBean.getSend_time()));
             viewHolderThree.order_status.setText(readBean.getOrder_status());
-            viewHolderThree.order_amount.setText(readBean.getOrder_amount());
+            String order_amount=readBean.getOrder_amount();
+            if (TextUtils.isEmpty(order_amount)){
+                viewHolderThree.iv_item_notice_fu.setVisibility(View.INVISIBLE);
+            }else{
+                viewHolderThree.iv_item_notice_fu.setVisibility(View.VISIBLE);
+            }
+            viewHolderThree.order_amount.setText(order_amount);
             viewHolderThree.tv_item_notice_describeNum.setText(orderDesc);
             viewHolderThree.order_name.setText(orderName);
             if (isShow == 0) {//0闭眼
@@ -237,6 +249,7 @@ public class NotificationTwoAdapter extends RecyclerView.Adapter<RecyclerView.Vi
                 viewHolderThree.order_total_time.setText(orderTotalTime);
                 viewHolderThree.iv_item_notice_isshow.setImageResource(R.drawable.message_icon_obviously_password);
             }
+
             if ("0".equals(readBean.getOrder_amount_type())) {
                 viewHolderThree.iv_item_notice_fu.setImageResource(R.drawable.message_icon_fanpiao);
             } else {

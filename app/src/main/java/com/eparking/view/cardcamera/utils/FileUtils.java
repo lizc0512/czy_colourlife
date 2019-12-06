@@ -6,12 +6,7 @@ import java.io.Closeable;
 import java.io.File;
 import java.io.IOException;
 
-/**
- * Author       wildma
- * Github       https://github.com/wildma
- * Date         2018/6/10
- * Desc	        ${文件相关工具类}
- */
+
 public final class FileUtils {
 
     /**

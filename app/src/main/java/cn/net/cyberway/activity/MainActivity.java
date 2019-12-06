@@ -317,19 +317,20 @@ public class MainActivity extends BaseFragmentActivity implements View.OnClickLi
             openDoor(doorId);
         }
         String linkURl = intent.getStringExtra(JUMPOTHERURL);//通知栏推送的url
-        String messageExtra = intent.getStringExtra("JMessageExtra");
-        if (!TextUtils.isEmpty(messageExtra)) {
-            try {
-                JSONObject jsonObject = new JSONObject(messageExtra);
-                //byte类型的整数，0为极 光，1为小米，2为华为，3为魅族，4为OPPO，8为FCM。
-                int whichPushSDK = jsonObject.optInt("rom_type");
-                //通知附加字段
-                JSONObject extrasJson = jsonObject.optJSONObject("n_extras");
-                if (whichPushSDK == 4 || whichPushSDK == 8) {
+        Bundle bundle=intent.getExtras();
+        if (null!=bundle){
+            String messageExtra = bundle.getString("JMessageExtra");
+            if (!TextUtils.isEmpty(messageExtra)) {
+                try {
+                    JSONObject jsonObject = new JSONObject(messageExtra);
+                    //byte类型的整数，0为极光，1为小米，2为华为，3为魅族，4为OPPO，8为FCM。
+                    int whichPushSDK = jsonObject.optInt("rom_type");
+                    //通知附加字段
+                    JSONObject extrasJson = jsonObject.optJSONObject("n_extras");
                     linkURl = extrasJson.getString("url");
+                } catch (JSONException e) {
+                    e.printStackTrace();
                 }
-            } catch (JSONException e) {
-                e.printStackTrace();
             }
         }
         if (!TextUtils.isEmpty(linkURl)) {
@@ -447,7 +448,6 @@ public class MainActivity extends BaseFragmentActivity implements View.OnClickLi
         if (JPushInterface.isPushStopped(MainActivity.this)) {
             JPushInterface.resumePush(MainActivity.this);
         }
-        String mDeviceID = JPushInterface.getRegistrationID(getApplicationContext());// 获取设备推送的设备码
         mPhoneStr = mShared.getString(UserAppConst.Colour_login_mobile, "");
         String community_uuid = mShared.getString(UserAppConst.Colour_login_community_uuid, "03b98def-b5bd-400b-995f-a9af82be01da");
         Set<String> tags = new HashSet<>();
@@ -459,8 +459,6 @@ public class MainActivity extends BaseFragmentActivity implements View.OnClickLi
         JPushInterface.setAlias(getApplicationContext(), userId, mPhoneStr);
         JPushInterface.setTags(getApplicationContext(), userId, tags);
         JPushInterface.setMobileNumber(getApplicationContext(), userId, mPhoneStr);
-        mEditor.putString(UserAppConst.Colour_mDeviceID, mDeviceID);
-        mEditor.commit();
     }
 
 

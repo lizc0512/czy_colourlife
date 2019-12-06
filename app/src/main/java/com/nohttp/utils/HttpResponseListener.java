@@ -158,7 +158,7 @@ public class HttpResponseListener<T> implements OnResponseListener<T> {
                     }
                     stringBuffer.append("请求返回结果:");
                     stringBuffer.append(response.get());
-                    FileUtils.saveQuestAndResultRecord(stringBuffer.toString());
+                    FileUtils.saveQuestAndResultRecord(mActivity,stringBuffer.toString());
                 }
                 String result = String.valueOf(response.get());
                 if (!TextUtils.isEmpty(result)) {

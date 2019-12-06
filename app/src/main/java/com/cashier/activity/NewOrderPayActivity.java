@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.text.TextUtils;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
@@ -45,6 +46,7 @@ import com.point.activity.GivenPointAmountActivity;
 import com.point.activity.PointPasswordDialog;
 import com.point.entity.PointTransactionTokenEntity;
 import com.point.model.PointModel;
+import com.point.password.PopEnterPassword;
 import com.popupScreen.PopupScUtils;
 import com.setting.activity.CertificateResultDialog;
 import com.setting.activity.EditDialog;
@@ -1032,8 +1034,10 @@ public class NewOrderPayActivity extends BaseActivity implements View.OnClickLis
 
     /***支付密码的弹窗**/
     private void showPayDialog() {
-        PointPasswordDialog pointPasswordDialog = new PointPasswordDialog(NewOrderPayActivity.this);
-        pointPasswordDialog.show();
+        PopEnterPassword popEnterPassword = new PopEnterPassword(this);
+        // 显示窗口
+        popEnterPassword.showAtLocation(this.findViewById(R.id.layoutContent),
+                Gravity.BOTTOM | Gravity.CENTER_HORIZONTAL, 0, 0); // 设置layout在PopupWindow中显示的位置
     }
 
     /***实名认证的弹窗**/

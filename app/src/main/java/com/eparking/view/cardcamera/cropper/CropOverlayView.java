@@ -12,6 +12,7 @@ import android.graphics.PorterDuff;
 import android.graphics.PorterDuffXfermode;
 import android.graphics.Rect;
 import android.graphics.Region;
+import android.os.Build;
 import android.support.annotation.Nullable;
 import android.util.AttributeSet;
 import android.util.Log;
@@ -137,7 +138,11 @@ public class CropOverlayView extends View {
         path.close();
 
         canvas.save();
-        canvas.clipPath(path, Region.Op.DIFFERENCE);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
+            canvas.clipPath(path);
+        } else {
+            canvas.clipPath(path, Region.Op.DIFFERENCE);
+        }
         canvas.drawColor(Color.parseColor("#66000000"));
         canvas.restore();
     }

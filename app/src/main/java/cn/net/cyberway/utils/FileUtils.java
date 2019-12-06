@@ -1,8 +1,10 @@
 package cn.net.cyberway.utils;
 
 import android.annotation.SuppressLint;
+import android.content.ContentResolver;
 import android.content.ContentUris;
 import android.content.Context;
+import android.content.res.AssetFileDescriptor;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -16,6 +18,7 @@ import android.os.Build;
 import android.os.Environment;
 import android.provider.DocumentsContract;
 import android.provider.MediaStore;
+import android.support.annotation.RequiresApi;
 import android.text.TextUtils;
 
 import com.BeeFramework.Utils.Base64Utils;
@@ -29,6 +32,8 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.text.DecimalFormat;
+
+import static com.huawei.android.hms.agent.common.IOUtils.close;
 
 
 /**
@@ -440,20 +445,25 @@ public class FileUtils {
 
     private final static String SD_PATH = Environment.getExternalStorageDirectory().getAbsolutePath() + File.separator + "ColourLife" + File.separator + "requestLog";
 
-    public static void saveQuestAndResultRecord(String result) {
+    public static void saveQuestAndResultRecord(Context context, String result) {
         if (!isCanUse()) {
             return;
         }
         try {
             File dir = new File(SD_PATH);
-            if (!dir.exists()) {
-                dir.mkdirs();
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+                if (isAndroidQFileExists(context,dir.getPath())) {
+                    dir.mkdirs();
+                }
+            }else{
+                if (!dir.exists()){
+                    dir.mkdirs();
+                }
             }
             String dateTime = TimeUtil.getToday();
             File file = new File(dir, "log" + dateTime + ".txt");
             FileOutputStream fout = new FileOutputStream(file, true);
             byte[] bytes = result.getBytes("UTF-8");
-//            fout.write(Base64Utils.encode(bytes).getBytes("UTF-8"));
             fout.write(bytes);
             fout.close();
         } catch (FileNotFoundException e) {
@@ -461,6 +471,26 @@ public class FileUtils {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
+    public static boolean isAndroidQFileExists(Context context, String path){
+        AssetFileDescriptor afd = null;
+        ContentResolver cr = context.getContentResolver();
+        try {
+            Uri uri = Uri.parse(path);
+            afd = cr.openAssetFileDescriptor(uri, "r");
+            if (afd == null) {
+                return false;
+            } else {
+                close(afd);
+            }
+        } catch (FileNotFoundException e) {
+            return false;
+        }finally {
+            close(afd);
+        }
+        return true;
     }
 
     public static void saveAccessToken(String fileName, String result) {

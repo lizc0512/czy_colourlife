@@ -83,12 +83,7 @@ public class PopEnterPassword extends PopupWindow {
         });
 
         // 监听键盘上方的返回
-        pwdView.getVirtualKeyboardView().getLayoutBack().setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                dismiss();
-            }
-        });
+        pwdView.getVirtualKeyboardView().getLayoutBack().setVisibility(View.GONE);
         pwdView.getForgetText().setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

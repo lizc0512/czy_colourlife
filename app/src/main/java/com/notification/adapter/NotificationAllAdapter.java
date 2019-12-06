@@ -83,8 +83,13 @@ public class NotificationAllAdapter extends RecyclerView.Adapter<RecyclerView.Vi
                 holder.tv_notice_all_money.setText(contentBean.getMsg_intro());
                 holder.tv_notice_all_money.setTextSize(14.0f);
             } else {
-                holder.tv_notice_all_fuhao.setVisibility(View.VISIBLE);
-                holder.tv_notice_all_money.setText(contentBean.getOrder_amount());
+                String order_amount = contentBean.getOrder_amount();
+                if (TextUtils.isEmpty(order_amount)) {
+                    holder.tv_notice_all_fuhao.setVisibility(View.INVISIBLE);
+                } else {
+                    holder.tv_notice_all_fuhao.setVisibility(View.VISIBLE);
+                }
+                holder.tv_notice_all_money.setText(order_amount);
                 holder.tv_notice_all_money.setTextSize(30.0f);
             }
             if ("0".equals(contentBean.getOrder_amount_type())) {//0饭票
@@ -99,7 +104,7 @@ public class NotificationAllAdapter extends RecyclerView.Adapter<RecyclerView.Vi
                 @Override
                 public void onClick(View v) {
                     if (!TextUtils.isEmpty(msgUrl)) {
-                        if (msgUrl.startsWith("http")||msgUrl.endsWith("EntranceGuard")||msgUrl.endsWith("apply")) {
+                        if (msgUrl.startsWith("http") || msgUrl.endsWith("EntranceGuard") || msgUrl.endsWith("apply")) {
                             LinkParseUtil.parse(mContext, msgUrl, "");
                         } else {
                             Intent intent = new Intent(mContext, NotificationDetailsActivity.class);
@@ -117,7 +122,7 @@ public class NotificationAllAdapter extends RecyclerView.Adapter<RecyclerView.Vi
                 @Override
                 public void onItemClick(int i) {
                     if (!TextUtils.isEmpty(msgUrl)) {
-                        if (msgUrl.startsWith("http")||msgUrl.endsWith("EntranceGuard")||msgUrl.endsWith("apply")) {
+                        if (msgUrl.startsWith("http") || msgUrl.endsWith("EntranceGuard") || msgUrl.endsWith("apply")) {
                             LinkParseUtil.parse(mContext, msgUrl, "");
                         } else {
                             Intent intent = new Intent(mContext, NotificationDetailsActivity.class);
@@ -141,7 +146,7 @@ public class NotificationAllAdapter extends RecyclerView.Adapter<RecyclerView.Vi
                 @Override
                 public void onClick(View v) {
                     if (!TextUtils.isEmpty(msgUrl)) {
-                        if (msgUrl.startsWith("http")||msgUrl.endsWith("EntranceGuard")||msgUrl.endsWith("apply")) {
+                        if (msgUrl.startsWith("http") || msgUrl.endsWith("EntranceGuard") || msgUrl.endsWith("apply")) {
                             LinkParseUtil.parse(mContext, msgUrl, "");
                         } else {
                             Intent intent = new Intent(mContext, NotificationDetailsActivity.class);

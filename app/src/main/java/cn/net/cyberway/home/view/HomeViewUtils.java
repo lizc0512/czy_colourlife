@@ -160,49 +160,4 @@ public class HomeViewUtils {
         return commonUseBeanList;
     }
 
-    public static void downLoadStartImage(Context context) {
-        SharedPreferences shared = context.getSharedPreferences(UserAppConst.USERINFO, 0);
-        String splashCathe = shared.getString(UserAppConst.Colour_SPLASH_CACHE, "");
-        if (!TextUtils.isEmpty(splashCathe)) {//有缓存
-            try {
-                JSONObject jsonObject = new JSONObject(splashCathe);
-                String startImage = jsonObject.optString("img");
-                if (!TextUtils.isEmpty(startImage)) {
-                    Glide.with(context).asBitmap().load(startImage).into(new SimpleTarget<Bitmap>() {
-                        @Override
-                        public void onResourceReady(@NonNull Bitmap resource, @Nullable Transition<? super Bitmap> transition) {
-                            File splashDir = new File(UserAppConst.FILEPATH + "splash");
-                            if (!splashDir.exists()) {
-                                splashDir.mkdirs();
-                            }
-                            File splashImg = new File(splashDir + startImage.substring(startImage.lastIndexOf("/")));
-                            if (!splashImg.exists()) {
-                                ImageUtil.saveMyBitmap(UserAppConst.FILEPATH + "splash" + startImage.substring(startImage.lastIndexOf("/")), resource);
-                            }
-                        }
-                    });
-                }
-            } catch (Exception e) {
-
-            }
-        }
-    }
-
-    /**
-     * 遮罩引导
-     */
-//    public static GuideView guideView(Context c, View hintView, GuideView guideView, View layoutView) {
-//        if (null == guideView) {
-//            guideView = new GuideView.Builder(c)
-//                    .setTargetView(R.id.rl_local)
-//                    .setHintView(hintView)
-//                    .setHintViewDirection(GuideView.Direction.BOTTOM)
-//                    .setmForm(GuideView.Form.ELLIPSE)
-//                    .create();
-//        }
-//        if (!guideView.show()) {
-//            layoutView.setVisibility(View.GONE);
-//        }
-//        return guideView;
-//    }
 }

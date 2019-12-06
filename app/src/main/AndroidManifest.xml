@@ -24,14 +24,17 @@
             android:launchMode="singleTask"
             android:screenOrientation="portrait"
             android:theme="@style/Theme.AppCompat"
-            android:windowSoftInputMode="adjustPan|stateHidden" >
+            android:windowSoftInputMode="adjustPan|stateHidden">
             <intent-filter>
-                <action  android:name="cn.net.cyberway.jpush.openactivity"/>
+                <action android:name="cn.net.cyberway.jpush.openactivity" />
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
 
         <activity
             android:name=".activity.BrowerJumpExcessiveActivity"
+            android:exported="true"
             android:theme="@style/activityTheme">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
@@ -216,6 +219,7 @@
         <activity
             android:name="com.jdpaysdk.author.browser.BrowserActivity"
             android:exported="false"
+            android:hardwareAccelerated="true"
             android:screenOrientation="portrait" />
         <!--京东支付-->
 
@@ -326,7 +330,7 @@
             android:name="com.feed.activity.ShareFeedActivity"
             android:screenOrientation="portrait" />
         <!--邻里-->
-    <!--意见反馈-->
+        <!--意见反馈-->
         <activity
             android:name="com.about.activity.FeedBackDetailsActivity"
             android:screenOrientation="portrait" />
@@ -975,6 +979,7 @@
             tools:node="replace">
             <intent-filter>
                 <action android:name="cn.jpush.android.ui.PopWinActivity" />
+
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="${applicationId}" />
             </intent-filter>
@@ -1049,6 +1054,11 @@
         </provider>
 
 
+        <provider
+            android:name="com.huawei.hms.update.provider.UpdateProvider"
+            android:authorities="cn.net.cyberway.hms.update.provider"
+            android:exported="false"
+            android:grantUriPermissions="true"></provider>
         <receiver
             android:name="com.pay.Activity.AppRegister"
             android:permission="com.tencent.mm.plugin.permission.SEND">
@@ -1056,6 +1066,7 @@
                 <action android:name="com.tencent.mm.plugin.openapi.Intent.ACTION_REFRESH_WXAPP" />
             </intent-filter>
         </receiver>
+
         <receiver
             android:name="com.jpush.reciever.MyReceiver"
             android:enabled="true"
@@ -1067,9 +1078,11 @@
                 <action android:name="cn.jpush.android.intent.NOTIFICATION_OPENED" />
                 <action android:name="cn.jpush.android.intent.NOTIFICATION_CLICK_ACTION" />
                 <action android:name="cn.jpush.android.intent.CONNECTION" />
+
                 <category android:name="cn.net.cyberway" />
             </intent-filter>
         </receiver>
+
 
         <service
             android:name="com.baidu.location.f"
@@ -1077,31 +1090,31 @@
             android:process=":remote" />
 
 
-        <service android:name="com.BeeFramework.InitializeService" />
-
-
         <!--门禁的改造-->
-        <service android:name="com.update.service.UpdateService" />
+        <service android:name="com.BeeFramework.InitializeService" />
 
 
         <!--极光推送配置-->
         <!-- 若您的业务中有使用极光富媒体功能，或者极光早上好功能，需要把此 Activity 的 exported 修改成 true 覆盖 jcenter 上的组件。 -->
-        <service android:name="com.amap.api.location.APSService" />
+        <service android:name="com.update.service.UpdateService" />
 
         <!-- 若您的业务中有使用极光富媒体功能，或者极光早上好功能，需要把此 Activity 的 exported 修改成 true 覆盖 jcenter 上的组件。 -->
-        <service
-            android:name="com.intelspace.library.service.BleService"
-            android:exported="false" />
+        <service android:name="com.amap.api.location.APSService" />
 
         <!-- Since JCore2.0.0 Required SDK核心功能-->
         <!-- 可配置android:process参数将Service放在其他进程中；android:enabled属性不能是false -->
         <!-- 这个是自定义Service，要继承极光JCommonService，可以在更多手机平台上使得推送通道保持的更稳定 -->
-        <service android:name="cn.net.cyberway.home.service.LekaiService" />
+        <service
+            android:name="com.intelspace.library.service.BleService"
+            android:exported="false" />
 
         <!-- Required since 3.0.7 -->
         <!-- 新的 tag/alias 接口结果返回需要开发者配置一个自定的广播 -->
         <!-- 3.3.0开始所有事件将通过该类回调 -->
         <!-- 该广播需要继承 JPush 提供的 JPushMessageReceiver 类, 并如下新增一个 Intent-Filter -->
+        <service android:name="cn.net.cyberway.home.service.LekaiService" />
+
+
         <service
             android:name="com.jpush.reciever.MyJPushService"
             android:enabled="true"
@@ -1111,13 +1124,6 @@
                 <action android:name="cn.jiguang.user.service.action" />
             </intent-filter>
         </service>
-
-
-        <provider android:name="com.huawei.hms.update.provider.UpdateProvider"
-            android:authorities="cn.net.cyberway.hms.update.provider"
-            android:exported="false"
-            android:grantUriPermissions="true">
-        </provider>
         <!--极光推送-->
 
 

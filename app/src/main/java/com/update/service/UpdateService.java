@@ -6,6 +6,8 @@ import android.app.Activity;
 import android.app.DownloadManager;
 import android.app.Service;
 import android.content.BroadcastReceiver;
+import android.content.ContentResolver;
+import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
@@ -16,6 +18,7 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Environment;
 import android.os.IBinder;
+import android.provider.MediaStore;
 import android.provider.Settings;
 import android.support.v4.content.FileProvider;
 
@@ -25,6 +28,9 @@ import com.user.UserAppConst;
 import com.user.Utils.TokenUtils;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.util.Date;
 
 

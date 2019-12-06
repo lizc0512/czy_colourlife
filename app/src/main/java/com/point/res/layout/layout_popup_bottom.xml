@@ -20,7 +20,7 @@
         android:layout_marginRight="40dp"
         android:layout_above="@id/virtualKeyboardView"
         android:layout_marginBottom="30dp"
-        android:background="#FFFFFF"
+        android:background="@drawable/about_corners4"
         android:orientation="vertical">
 
 
