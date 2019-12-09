@@ -31,6 +31,7 @@ import com.cashier.protocolchang.PayResultEntity;
 import com.cashier.protocolchang.PayStatusEntity;
 import com.customerInfo.protocol.RealNameTokenEntity;
 import com.external.eventbus.EventBus;
+import com.google.gson.JsonObject;
 import com.jdpaysdk.author.JDPayAuthor;
 import com.lhqpay.ewallet.keepIntact.Listener;
 import com.lhqpay.ewallet.keepIntact.MyListener;
@@ -745,9 +746,9 @@ public class NewOrderPayActivity extends BaseActivity implements View.OnClickLis
                 int payCode = message.arg1;
                 if (payCode == 0) {
                     payResultQuery();
-                } else if (payCode == 1) {
+                } else if (payCode == -1) {
                     ToastUtil.toastShow(NewOrderPayActivity.this, message.obj.toString());
-                } else if (payCode == 2) {
+                } else if (payCode == -2) {
                     ToastUtil.toastShow(NewOrderPayActivity.this, "用户取消支付");
                 }
                 break;
@@ -806,26 +807,37 @@ public class NewOrderPayActivity extends BaseActivity implements View.OnClickLis
 
     //微信支付
     private void wexinPayOrder(Map<String, String> resultMap) {
-        String appId = resultMap.get("appId");
-        String partnerId = resultMap.get("partnerId");
-        String prepayId = resultMap.get("prepayId");
-        String nonceStr = resultMap.get("nonceStr");
-        String timeStamp = resultMap.get("timeStamp");
-        String packageValue = resultMap.get("packageValue");
-        String sign = resultMap.get("sign");
-        IWXAPI mWeixinAPI = WXAPIFactory.createWXAPI(this, appId);
-        // 将该app注册到微信
-        mWeixinAPI.registerApp(appId);
-        PayReq req = new PayReq();
-        req.appId = appId;
-        req.partnerId = partnerId;
-        req.prepayId = prepayId;
-        req.nonceStr = nonceStr;
-        req.timeStamp = timeStamp;
-        req.packageValue = packageValue;//"Sign=" + packageValue;
-        req.sign = sign;
-        // 在支付之前，如果应用没有注册到微信，应该先调用IWXMsg.registerApp将应用注册到微信
-        mWeixinAPI.sendReq(req);
+        if (resultMap.containsKey("wxPayInfo")) {
+            String wxPayInfo = resultMap.get("wxPayInfo");
+            JSONObject jsonObject = null;
+            try {
+                jsonObject = new JSONObject(wxPayInfo);
+                String appId = jsonObject.optString("appId");
+                String partnerId = jsonObject.optString("partnerId");
+                String prepayId = jsonObject.optString("prepayId");
+                String nonceStr = jsonObject.optString("nonceStr");
+                String timeStamp = jsonObject.optString("timeStamp");
+                String packageValue = jsonObject.optString("packageValue");
+                String sign = jsonObject.optString("sign");
+                IWXAPI mWeixinAPI = WXAPIFactory.createWXAPI(this, appId);
+                // 将该app注册到微信
+                mWeixinAPI.registerApp(appId);
+                PayReq req = new PayReq();
+                req.appId = appId;
+                req.partnerId = partnerId;
+                req.prepayId = prepayId;
+                req.nonceStr = nonceStr;
+                req.timeStamp = timeStamp;
+                req.packageValue = packageValue;//"Sign=" + packageValue;
+                req.sign = sign;
+                // 在支付之前，如果应用没有注册到微信，应该先调用IWXMsg.registerApp将应用注册到微信
+                mWeixinAPI.sendReq(req);
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        } else {
+            ToastUtil.toastShow(NewOrderPayActivity.this, resultMap.get("respMsg") + "[" + resultMap.get("respCode") + "]");
+        }
     }
 
 
@@ -855,7 +867,6 @@ public class NewOrderPayActivity extends BaseActivity implements View.OnClickLis
         pointModel.getTransactionToken(7, NewOrderPayActivity.this);
     }
 
-
     @Override
     public void OnHttpResponse(int what, String result) {
         switch (what) {
@@ -878,15 +889,25 @@ public class NewOrderPayActivity extends BaseActivity implements View.OnClickLis
                     if (code == 0) {
                         PayResultEntity payResultEntity = GsonUtils.gsonToBean(result, PayResultEntity.class);
                         String content = payResultEntity.getContent();
-                        Map<String, String> resultMap = GsonUtils.gsonObjectToMaps(content);
-                        if (payChannelId.endsWith("6")) {
-                            //京东支付
-                            jindongPayOrder(resultMap);
-                        } else {
-                            //彩钱包支付
-                            LinkedHashMap<String, Object> publicParams = new LinkedHashMap<String, Object>();
-                            publicParams.putAll(resultMap);
-                            PayUtil.getInstance(NewOrderPayActivity.this).createPay(publicParams, Constants.CAIWALLET_ENVIRONMENT);
+                        if (TextUtils.isEmpty(content)){
+                            ToastUtil.toastShow(NewOrderPayActivity.this, baseContentEntity.getMessage());
+                        }else{
+                            Map<String, String> resultMap = GsonUtils.gsonObjectToMaps(content);
+                            if (payChannelId.endsWith("6")) {
+                                //京东支付
+                                jindongPayOrder(resultMap);
+                            } else if (payChannelId.endsWith("2")) {
+                                //彩之云饭票
+                                pointPayOrder();
+                            } else if (payChannelId.endsWith("7")) {
+                                //工行微信
+                                wexinPayOrder(resultMap);
+                            } else {
+                                //彩钱包支付
+                                LinkedHashMap<String, Object> publicParams = new LinkedHashMap<String, Object>();
+                                publicParams.putAll(resultMap);
+                                PayUtil.getInstance(NewOrderPayActivity.this).createPay(publicParams, Constants.CAIWALLET_ENVIRONMENT);
+                            }
                         }
                     } else if (code == 305) {
                         showNoticeDialog(baseContentEntity.getMessage());
@@ -964,7 +985,7 @@ public class NewOrderPayActivity extends BaseActivity implements View.OnClickLis
                                 editor.putString(UserAppConst.COLOUR_AUTH_REAL_NAME + shared.getInt(UserAppConst.Colour_User_id, 0), realName).commit();
                                 newUserModel.finishTask(10, "2", "task_web", this);//实名认证任务
                                 if ("3".equals(state)) {
-                                    state="2";
+                                    state = "2";
                                     Intent intent = new Intent(NewOrderPayActivity.this, ChangePawdTwoStepActivity.class);
                                     startActivity(intent);
                                 } else {

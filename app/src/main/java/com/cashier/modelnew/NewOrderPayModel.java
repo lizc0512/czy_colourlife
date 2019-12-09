@@ -134,6 +134,8 @@ public class NewOrderPayModel extends BaseModel {
         paramsMap.put("payment_uuid", payment_uuid);
         paramsMap.put("limit", 1);
         final Request<String> request = NoHttp.createStringRequest(RequestEncryptionUtils.postCombileMD5(mContext, 5, payOrderUrl), RequestMethod.POST);
+        request.setConnectTimeout(25000);
+        request.setReadTimeout(25000);
         request(what, request, paramsMap, new HttpListener<String>() {
             @Override
             public void onSucceed(int what, Response<String> response) {

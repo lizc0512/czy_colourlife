@@ -211,7 +211,6 @@
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
                 <!--jdpauth是固定的后面的数字是appId-->
-                <!--此处的123456789测试使用的，如果用户已经注册需要使用自己注册的appId-->
                 <data android:scheme="jdpauth4c36f573025fd6997396e8f387c745d9"></data>
             </intent-filter>
         </activity>
@@ -224,6 +223,10 @@
         <!--京东支付-->
 
         <!--支付宝支付-->
+        <activity
+            android:name="com.pay.Activity.AlixPayActivity"
+            android:screenOrientation="portrait"
+            android:theme="@android:style/Theme.Dialog" />
         <activity
             android:name="com.alipay.sdk.app.H5PayActivity"
             android:configChanges="orientation|keyboardHidden|navigation"

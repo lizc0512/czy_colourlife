@@ -79,12 +79,16 @@ public class GsonUtils {
                         public Map<String, String> deserialize(
                                 JsonElement json, Type typeOfT,
                                 JsonDeserializationContext context) throws JsonParseException {
-
                             Map<String, String> treeMap = new HashMap<>();
                             JsonObject jsonObject = json.getAsJsonObject();
                             Set<Map.Entry<String, JsonElement>> entrySet = jsonObject.entrySet();
                             for (Map.Entry<String, JsonElement> entry : entrySet) {
-                                treeMap.put(entry.getKey(), entry.getValue().getAsString());
+                                JsonElement  jsonElement=entry.getValue();
+                                if (jsonElement.isJsonObject()) {
+                                    treeMap.put(entry.getKey(), jsonElement.toString());
+                                } else {
+                                    treeMap.put(entry.getKey(), jsonElement.getAsString());
+                                }
                             }
                             return treeMap;
                         }
