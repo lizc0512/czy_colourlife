@@ -259,15 +259,19 @@
 *;
 
 }
-
+-keepattributes *Annotation*
+-keepattributes *JavascriptInterface*
 ##########################################################################
 -keep class com.jdpaysdk.author.web.PayJsFunction {*;}
 -keep class com.jdpaysdk.author.JDPayAuthor {*;}
 -keep class com.jdpaysdk.author.Constants {*;}
 -keep class com.jdpaysdk.author.entity.CPOrderParam {*;}
-
-
-
+-keep class com.jdpaysdk.author.protocol.** { *; }
+-keep class com.nineoldandroids.**{*;}
+-keepclassmembers class fqcn.of.javascript.interface.for.webview {
+   public *;
+}
+-dontwarn com.nineoldandroids.**
 ##########################################################################################
 
 -keepclassmembers class com.jdpaysdk.author.JDPayAuthor.** {
@@ -310,3 +314,41 @@
 -dontwarn com.vivo.push.**
 -keep class com.vivo.push.**{*; }
 -keep class com.vivo.vms.**{*; }
+
+# Gson
+# Gson uses generic type information stored in a class file when working with fields. Proguard
+# removes such information by default, so configure it to keep all of it.
+-keepattributes Signature
+
+# Gson specific classes
+-keep class sun.misc.Unsafe { *; }
+-keep class com.google.gson.stream.** { *; }
+-keep class com.google.gson.examples.android.model.** { *; }
+-keep class com.google.gson.** { *;}
+-dontwarn com.google.gson.**
+
+## end of Gson
+##########################################################################
+
+##########################################################################
+# google-play-service
+
+-dontwarn com.google.**.R
+-dontwarn com.google.**.R$*
+
+-keep class * extends java.util.ListResourceBundle {
+    protected Object[][] getContents();
+}
+
+-keep public class com.google.android.gms.common.internal.safeparcel.SafeParcelable {
+    public static final *** NULL;
+}
+
+-keepnames @com.google.android.gms.common.annotation.KeepName class *
+-keepclassmembernames class * {
+    @com.google.android.gms.common.annotation.KeepName *;
+}
+
+-keepnames class * implements android.os.Parcelable {
+    public static final ** CREATOR;
+}

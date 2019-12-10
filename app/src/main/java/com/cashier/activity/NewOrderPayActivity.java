@@ -596,7 +596,11 @@ public class NewOrderPayActivity extends BaseActivity implements View.OnClickLis
         } else {
             if (is_native == 1) {
                 int index = payChannelId.indexOf(",");
-                newOrderPayModel.goOrderPay(1, sn, payChannelId.substring(0, index), this);
+                if (payChannelId.endsWith("2")) { //彩之云积分支付
+                    pointPayOrder();
+                } else {//京东支付  双乾支付
+                    newOrderPayModel.goOrderPay(1, sn, payChannelId.substring(0, index), this);
+                }
             } else {
                 LinkParseUtil.parse(NewOrderPayActivity.this, pay_url, "");
             }
@@ -862,7 +866,7 @@ public class NewOrderPayActivity extends BaseActivity implements View.OnClickLis
         startActivityForResult(intent, 10000);
     }
 
-    private void pointPayOrder() {
+    private void pointPayOrder() { //判断用户是否实名设置支付密码
         PointModel pointModel = new PointModel(NewOrderPayActivity.this);
         pointModel.getTransactionToken(7, NewOrderPayActivity.this);
     }
@@ -889,16 +893,13 @@ public class NewOrderPayActivity extends BaseActivity implements View.OnClickLis
                     if (code == 0) {
                         PayResultEntity payResultEntity = GsonUtils.gsonToBean(result, PayResultEntity.class);
                         String content = payResultEntity.getContent();
-                        if (TextUtils.isEmpty(content)){
-                            ToastUtil.toastShow(NewOrderPayActivity.this, baseContentEntity.getMessage());
-                        }else{
+                        if (TextUtils.isEmpty(content)) {
+                            ToastUtil.toastShow(NewOrderPayActivity.this, "数据格式异常,请稍后重试");
+                        } else {
                             Map<String, String> resultMap = GsonUtils.gsonObjectToMaps(content);
                             if (payChannelId.endsWith("6")) {
                                 //京东支付
                                 jindongPayOrder(resultMap);
-                            } else if (payChannelId.endsWith("2")) {
-                                //彩之云饭票
-                                pointPayOrder();
                             } else if (payChannelId.endsWith("7")) {
                                 //工行微信
                                 wexinPayOrder(resultMap);
@@ -949,13 +950,13 @@ public class NewOrderPayActivity extends BaseActivity implements View.OnClickLis
                         PayStatusEntity payStatusEntity = GsonUtils.gsonToBean(result, PayStatusEntity.class);
                         int orderStaus = payStatusEntity.getContent().getPay_success();
                         if (orderStaus == 2) {
-                            newOrderPayModel.goOrderPay(1, sn, payChannelId, NewOrderPayActivity.this);
+                            createCzyOrder();
                         } else {
                             payResultQuery();
                         }
                     }
                 } catch (Exception e) {
-                    newOrderPayModel.goOrderPay(1, sn, payChannelId, NewOrderPayActivity.this);
+                    createCzyOrder();
                 }
                 break;
             case 4:

@@ -186,19 +186,27 @@ public class IntelligenceDoorAdapter extends RecyclerView.Adapter<IntelligenceDo
                     holder.tv_common.setVisibility(View.GONE);
                     holder.tv_title.setText(item.getName());
                     String model = item.getModel().substring(0, item.getModel().length() - 1);
+                    int isShow=0;
                     switch (model) {
                         case "ISE00":
                         case "ISE02":
                             //获取密码
-                            holder.tv_pwd.setOnClickListener(v -> ((IntelligenceDoorActivity) mContext).getDevicePwd(item.getDeviceId()));
+                            isShow=1;
                             break;
                         default:
-                            holder.tv_pwd.setVisibility(View.GONE);
+                            isShow=0;
+                            break;
                     }
+                    holder.tv_pwd.setOnClickListener(v -> ((IntelligenceDoorActivity) mContext).getDevicePwd(item.getDeviceId()));
                     long stopTime = item.getStop_time();
                     if (stopTime == 0) {
                         holder.tv_avail_time_to.setText("永久有效");
                         holder.iv_icon.setBackgroundResource(R.drawable.ic_door_bluetooth);
+                        if (isShow==1){
+                            holder.tv_pwd.setVisibility(View.VISIBLE);
+                        }else{
+                            holder.tv_pwd.setVisibility(View.GONE);
+                        }
                     } else {
                         long current_millis = System.currentTimeMillis() / 1000;
                         if (stopTime < current_millis) {
@@ -206,7 +214,11 @@ public class IntelligenceDoorAdapter extends RecyclerView.Adapter<IntelligenceDo
                             holder.iv_icon.setBackgroundResource(R.drawable.ic_door_bluetooth_timeout);
                             holder.tv_avail_time_to.setText("已过期  有效期至" + TimeUtil.getYearTime(stopTime * 1000, "yyyy-MM-dd"));
                         } else {
-                            holder.tv_pwd.setVisibility(View.VISIBLE);
+                            if (isShow==1){
+                                holder.tv_pwd.setVisibility(View.VISIBLE);
+                            }else{
+                                holder.tv_pwd.setVisibility(View.GONE);
+                            }
                             long distanceTime = stopTime - current_millis;
                             if (distanceTime <= 30 * 3600 * 24) {
                                 holder.tv_avail_time_to.setText("快过期  有效期至" + TimeUtil.getYearTime(stopTime * 1000, "yyyy-MM-dd"));
