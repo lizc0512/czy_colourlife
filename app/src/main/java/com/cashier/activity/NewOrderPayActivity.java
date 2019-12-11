@@ -99,7 +99,7 @@ import static com.user.UserMessageConstant.WEIXIN_PAY_MSG;
 public class NewOrderPayActivity extends BaseActivity implements View.OnClickListener, NewHttpResponse, Listener, MyListener {
 
     public static final String ORDER_SN = "ORDER_SN";
-    public static final String PAY_CHANNEL = "pay_channel";
+    public static final String PAY_CHANNEL = "PAY_CHANNEL";
     private NewOrderPayModel newOrderPayModel;
     private FrameLayout czy_title_layout;
     private ImageView user_top_view_back;
@@ -746,7 +746,7 @@ public class NewOrderPayActivity extends BaseActivity implements View.OnClickLis
                     againGetPayList();
                 }
                 break;
-            case WEIXIN_PAY_MSG:
+            case WEIXIN_PAY_MSG: //微信支付回调
                 int payCode = message.arg1;
                 if (payCode == 0) {
                     payResultQuery();
@@ -809,7 +809,7 @@ public class NewOrderPayActivity extends BaseActivity implements View.OnClickLis
     }
 
 
-    //微信支付
+    //彩之云微信支付
     private void wexinPayOrder(Map<String, String> resultMap) {
         if (resultMap.containsKey("wxPayInfo")) {
             String wxPayInfo = resultMap.get("wxPayInfo");
@@ -893,9 +893,13 @@ public class NewOrderPayActivity extends BaseActivity implements View.OnClickLis
                     if (code == 0) {
                         PayResultEntity payResultEntity = GsonUtils.gsonToBean(result, PayResultEntity.class);
                         String content = payResultEntity.getContent();
-                        if (TextUtils.isEmpty(content)) {
-                            ToastUtil.toastShow(NewOrderPayActivity.this, "数据格式异常,请稍后重试");
-                        } else {
+                        if (TextUtils.isEmpty(content)) { //处理后台content内容为jsonobject对象时
+                            JSONObject jsonObject = new JSONObject(result);
+                            if (!jsonObject.isNull("content")) {
+                                content = jsonObject.optJSONObject("content").toString();
+                            }
+                        }
+                        if (!TextUtils.isEmpty(content)){
                             Map<String, String> resultMap = GsonUtils.gsonObjectToMaps(content);
                             if (payChannelId.endsWith("6")) {
                                 //京东支付
@@ -909,6 +913,8 @@ public class NewOrderPayActivity extends BaseActivity implements View.OnClickLis
                                 publicParams.putAll(resultMap);
                                 PayUtil.getInstance(NewOrderPayActivity.this).createPay(publicParams, Constants.CAIWALLET_ENVIRONMENT);
                             }
+                        }else{
+                            ToastUtil.toastShow(NewOrderPayActivity.this, "数据格式异常,请稍后重试");
                         }
                     } else if (code == 305) {
                         showNoticeDialog(baseContentEntity.getMessage());
@@ -1051,6 +1057,7 @@ public class NewOrderPayActivity extends BaseActivity implements View.OnClickLis
                 }
                 break;
         }
+
     }
 
 
