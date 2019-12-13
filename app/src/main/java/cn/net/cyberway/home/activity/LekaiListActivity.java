@@ -46,9 +46,7 @@ public class LekaiListActivity extends BaseActivity implements View.OnClickListe
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_lekai_list);
         getWindow().setBackgroundDrawable(null);
-
         LekaiHelper.setScanParkLockChangeListener(this);
-
         initView();
         initData();
     }

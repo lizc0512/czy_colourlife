@@ -982,6 +982,7 @@ public class MainHomeFragmentNew extends Fragment implements NewHttpResponse, Vi
             rv_activity.setLayoutManager(manager);
             delegateAdapter = new DelegateAdapter(manager);
             delegateAdapter.setAdapters(adapters);
+            rv_activity.setNestedScrollingEnabled(false);
             rv_activity.setAdapter(delegateAdapter);
         } catch (Exception e) {
             editor.putString(UserAppConst.COLOR_HOME_ACTIVITY, "").apply();

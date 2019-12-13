@@ -82,6 +82,7 @@ import static com.pay.Activity.AlixPayActivity.ALIPAY_OUT_TRADE_NO;
 import static com.pay.Activity.AlixPayActivity.ALIPAY_SUBJECT;
 import static com.pay.Activity.AlixPayActivity.ALIPAY_TOTAL_FEE;
 import static com.user.UserMessageConstant.POINT_CHANGE_PAYPAWD;
+import static com.user.UserMessageConstant.POINT_INPUT_PAYPAWD;
 import static com.user.UserMessageConstant.WEIXIN_PAY_MSG;
 
 
@@ -125,6 +126,7 @@ public class NewOrderPayActivity extends BaseActivity implements View.OnClickLis
     private String sn = "";
     private String token;
     private String state;
+    private String encrypt;
 
 
     @Override
@@ -596,11 +598,7 @@ public class NewOrderPayActivity extends BaseActivity implements View.OnClickLis
         } else {
             if (is_native == 1) {
                 int index = payChannelId.indexOf(",");
-                if (payChannelId.endsWith("2")) { //彩之云积分支付
-                    pointPayOrder();
-                } else {//京东支付  双乾支付
-                    newOrderPayModel.goOrderPay(1, sn, payChannelId.substring(0, index), this);
-                }
+                newOrderPayModel.goOrderPay(1, sn, payChannelId.substring(0, index), this);
             } else {
                 LinkParseUtil.parse(NewOrderPayActivity.this, pay_url, "");
             }
@@ -757,8 +755,9 @@ public class NewOrderPayActivity extends BaseActivity implements View.OnClickLis
                 }
                 break;
             case POINT_CHANGE_PAYPAWD://积分支付 设置密码成功后的回调
+            case POINT_INPUT_PAYPAWD://积分支付 设置密码成功后的回调
                 String password = (String) message.obj;
-
+                newOrderPayModel.goOrderPayByPoint(8, encrypt, password, token, NewOrderPayActivity.this);
                 break;
         }
     }
@@ -866,7 +865,10 @@ public class NewOrderPayActivity extends BaseActivity implements View.OnClickLis
         startActivityForResult(intent, 10000);
     }
 
-    private void pointPayOrder() { //判断用户是否实名设置支付密码
+    private void pointPayOrder(Map<String, String> resultMap) { //判断用户是否实名设置支付密码
+        if (resultMap!=null&&resultMap.containsKey("encrypt")){
+            encrypt=resultMap.get("encrypt");
+        }
         PointModel pointModel = new PointModel(NewOrderPayActivity.this);
         pointModel.getTransactionToken(7, NewOrderPayActivity.this);
     }
@@ -899,7 +901,7 @@ public class NewOrderPayActivity extends BaseActivity implements View.OnClickLis
                                 content = jsonObject.optJSONObject("content").toString();
                             }
                         }
-                        if (!TextUtils.isEmpty(content)){
+                        if (!TextUtils.isEmpty(content)) {
                             Map<String, String> resultMap = GsonUtils.gsonObjectToMaps(content);
                             if (payChannelId.endsWith("6")) {
                                 //京东支付
@@ -907,13 +909,15 @@ public class NewOrderPayActivity extends BaseActivity implements View.OnClickLis
                             } else if (payChannelId.endsWith("7")) {
                                 //工行微信
                                 wexinPayOrder(resultMap);
-                            } else {
+                            } else if (payChannelId.endsWith("2")) { //彩之云积分支付
+                                pointPayOrder(resultMap);
+                            }else {
                                 //彩钱包支付
                                 LinkedHashMap<String, Object> publicParams = new LinkedHashMap<String, Object>();
                                 publicParams.putAll(resultMap);
                                 PayUtil.getInstance(NewOrderPayActivity.this).createPay(publicParams, Constants.CAIWALLET_ENVIRONMENT);
                             }
-                        }else{
+                        } else {
                             ToastUtil.toastShow(NewOrderPayActivity.this, "数据格式异常,请稍后重试");
                         }
                     } else if (code == 305) {
@@ -1056,8 +1060,10 @@ public class NewOrderPayActivity extends BaseActivity implements View.OnClickLis
 
                 }
                 break;
+            case 8:
+                payResultQuery();
+                break;
         }
-
     }
 
 

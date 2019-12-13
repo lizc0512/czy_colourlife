@@ -202,7 +202,7 @@ public class ForgetPayPawdActivity extends BaseActivity implements View.OnClickL
         switch (message.what) {
             case UserMessageConstant.POINT_CHANGE_PAYPAWD:
                 int tokenInvalid = message.arg1;
-                if (tokenInvalid == 1) {
+                if (tokenInvalid == 0) {
                     finish();
                 }
                 break;

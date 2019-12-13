@@ -289,6 +289,7 @@ public class RequestEncryptionUtils {
             paramsMap.put("version", UpdateVerSion.handleVersionName(UpdateVerSion.getVersionName(context)));
         }
         paramsMap.put("ip", TokenUtils.getIPAddress(context));
+        paramsMap.put("dev_uuid", TokenUtils.getUUID(context));
         paramsMap.put("OsVersionCode", TokenUtils.getOsVersionCode());
         String buff = "";
         try {

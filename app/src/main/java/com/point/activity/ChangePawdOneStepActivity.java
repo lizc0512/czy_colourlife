@@ -66,7 +66,7 @@ public class ChangePawdOneStepActivity extends BaseActivity implements View.OnCl
         switch (message.what) {
             case UserMessageConstant.POINT_CHANGE_PAYPAWD:
                 int tokenInvalid = message.arg1;
-                if (tokenInvalid == 1) {
+                if (tokenInvalid == 0) {
                     finish();
                 }
                 break;

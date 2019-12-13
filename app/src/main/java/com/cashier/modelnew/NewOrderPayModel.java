@@ -2,10 +2,12 @@ package com.cashier.modelnew;
 
 import android.content.Context;
 
+import com.BeeFramework.Utils.PasswordRSAUtils;
 import com.BeeFramework.model.BaseModel;
 import com.BeeFramework.model.NewHttpResponse;
 import com.nohttp.utils.HttpListener;
 import com.nohttp.utils.RequestEncryptionUtils;
+import com.user.Utils.TokenUtils;
 import com.yanzhenjie.nohttp.NoHttp;
 import com.yanzhenjie.nohttp.RequestMethod;
 import com.yanzhenjie.nohttp.rest.Request;
@@ -28,6 +30,7 @@ import java.util.Map;
 public class NewOrderPayModel extends BaseModel {
     private final String orderDetailUrl = "pay/orderdetail";//支付订单支付方式列表
     private final String payOrderUrl = "pay/orderpay";//支付
+    private final String payTransactionPoint= "app/transaction/consume";//积分支付
     private final String payOrderList = "pay/orderlist";//订单列表
     private final String payOrderSingleInfo = "pay/orderquery";//订单详情
     private final String orderCancel = "pay/ordercancel";//取消订单
@@ -143,6 +146,38 @@ public class NewOrderPayModel extends BaseModel {
                 String result = response.get();
                 if (responseCode == RequestEncryptionUtils.responseSuccess) {
                     newHttpResponse.OnHttpResponse(what, result);
+                } else if (responseCode == RequestEncryptionUtils.responseRequest) {
+
+                } else {
+                    showErrorCodeMessage(responseCode, response);
+                }
+            }
+
+            @Override
+            public void onFailed(int what, Response<String> response) {
+                showExceptionMessage(what, response);
+            }
+        }, true, true);
+    }
+
+    public void goOrderPayByPoint(int what, String encrypt, String password,String token, final NewHttpResponse newHttpResponse) {
+        Map<String, Object> paramsMap = new HashMap<>();
+        paramsMap.put("encrypt", encrypt);
+        paramsMap.put("password",PasswordRSAUtils.encryptByPublicKey(password));
+        paramsMap.put("token", token);
+        final Request<String> request = NoHttp.createStringRequest(RequestEncryptionUtils.postCombileMD5(mContext, 16, payTransactionPoint), RequestMethod.POST);
+        request.setConnectTimeout(25000);
+        request.setReadTimeout(25000);
+        request(what, request, paramsMap, new HttpListener<String>() {
+            @Override
+            public void onSucceed(int what, Response<String> response) {
+                int responseCode = response.getHeaders().getResponseCode();
+                String result = response.get();
+                if (responseCode == RequestEncryptionUtils.responseSuccess) {
+                    int resultCode = showSuccesResultMessage(result);
+                    if (resultCode == 0) {
+                        newHttpResponse.OnHttpResponse(what, result);
+                    }
                 } else if (responseCode == RequestEncryptionUtils.responseRequest) {
 
                 } else {
