@@ -5,10 +5,8 @@ import android.graphics.Color;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import android.widget.RelativeLayout;
+import android.widget.ImageView;
 import android.widget.TextView;
-
-
 
 import java.util.ArrayList;
 import java.util.Map;
@@ -50,31 +48,36 @@ public class KeyBoardAdapter extends BaseAdapter {
         if (convertView == null) {
             convertView = View.inflate(mContext, R.layout.grid_item_virtual_keyboard, null);
             viewHolder = new ViewHolder();
-            viewHolder.btnKey = (TextView) convertView.findViewById(R.id.btn_keys);
-            viewHolder.imgDelete = (RelativeLayout) convertView.findViewById(R.id.imgDelete);
-
+            viewHolder.btnKey = convertView.findViewById(R.id.btn_keys);
+            viewHolder.imgDelete = convertView.findViewById(R.id.imgDelete);
             convertView.setTag(viewHolder);
         } else {
             viewHolder = (ViewHolder) convertView.getTag();
         }
-
-        if (position == 9) {
-            viewHolder.imgDelete.setVisibility(View.INVISIBLE);
-            viewHolder.btnKey.setVisibility(View.VISIBLE);
-            viewHolder.btnKey.setText(valueList.get(position).get("name"));
-            viewHolder.btnKey.setBackgroundColor(Color.parseColor("#e0e0e0"));
-        } else if (position == 11) {
-            viewHolder.btnKey.setBackgroundResource(R.drawable.keyboard_delete_img);
-            viewHolder.imgDelete.setVisibility(View.VISIBLE);
-            viewHolder.btnKey.setVisibility(View.INVISIBLE);
-
-        } else {
-            viewHolder.imgDelete.setVisibility(View.INVISIBLE);
-            viewHolder.btnKey.setVisibility(View.VISIBLE);
-
-            viewHolder.btnKey.setText(valueList.get(position).get("name"));
+        String value = valueList.get(position).get("name");
+        switch (value) {
+            case "10":
+                viewHolder.imgDelete.setImageResource(R.drawable.keyboard_finish_img);
+                viewHolder.imgDelete.setVisibility(View.VISIBLE);
+                viewHolder.btnKey.setVisibility(View.INVISIBLE);
+                break;
+            case "12":
+                viewHolder.imgDelete.setImageResource(R.drawable.keyboard_delete_img);
+                viewHolder.imgDelete.setVisibility(View.VISIBLE);
+                viewHolder.btnKey.setVisibility(View.INVISIBLE);
+                break;
+            case "":
+                viewHolder.imgDelete.setVisibility(View.INVISIBLE);
+                viewHolder.btnKey.setVisibility(View.VISIBLE);
+                viewHolder.btnKey.setText(value);
+                viewHolder.btnKey.setBackgroundColor(Color.parseColor("#e0e0e0"));
+                break;
+            default:
+                viewHolder.imgDelete.setVisibility(View.INVISIBLE);
+                viewHolder.btnKey.setVisibility(View.VISIBLE);
+                viewHolder.btnKey.setText(value);
+                break;
         }
-
         return convertView;
     }
 
@@ -83,6 +86,6 @@ public class KeyBoardAdapter extends BaseAdapter {
      */
     public final class ViewHolder {
         public TextView btnKey;
-        public RelativeLayout imgDelete;
+        public ImageView imgDelete;
     }
 }

@@ -451,14 +451,17 @@ public class FileUtils {
         }
         try {
             File dir = new File(SD_PATH);
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-                if (isAndroidQFileExists(context,dir.getPath())) {
-                    dir.mkdirs();
-                }
-            }else{
-                if (!dir.exists()){
-                    dir.mkdirs();
-                }
+//            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+//                if (isAndroidQFileExists(context,dir.getPath())) {
+//                    dir.mkdirs();
+//                }
+//            }else{
+//                if (!dir.exists()){
+//                    dir.mkdirs();
+//                }
+//            }
+            if (!dir.exists()){
+                dir.mkdirs();
             }
             String dateTime = TimeUtil.getToday();
             File file = new File(dir, "log" + dateTime + ".txt");

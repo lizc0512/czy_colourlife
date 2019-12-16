@@ -27,6 +27,7 @@ import com.point.entity.PointBalanceEntity;
 import com.point.entity.PointTransactionTokenEntity;
 import com.point.model.PointModel;
 import com.point.password.PopEnterPassword;
+import com.point.password.PopInputCodeView;
 import com.tencent.authsdk.AuthConfig;
 import com.tencent.authsdk.AuthSDKApi;
 import com.tencent.authsdk.IDCardInfo;
@@ -39,8 +40,11 @@ import org.json.JSONObject;
 
 import cn.net.cyberway.R;
 
+import static com.user.UserMessageConstant.POINT_GET_CODE;
+import static com.user.UserMessageConstant.POINT_INPUT_CODE;
 import static com.user.UserMessageConstant.POINT_INPUT_PAYPAWD;
 import static com.user.UserMessageConstant.POINT_SET_PAYPAWD;
+import static com.user.UserMessageConstant.POINT_SHOW_CODE;
 
 /***
  * 赠送积分输入金额
@@ -76,9 +80,11 @@ public class GivenPointAmountActivity extends BaseActivity implements View.OnCli
     private String dest_account;//目标用户的id
     private int last_time; //剩余次数
     private float last_amount;//剩余金额
-    private float balanceAmount=0.01f;//账户余额
+    private float balanceAmount = 0.01f;//账户余额
     private String realName;//用户实名的
     private int giveBalance;//赠送的金额(单位分)
+    private String loginMobile;
+    private PopInputCodeView popInputCodeView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -98,6 +104,7 @@ public class GivenPointAmountActivity extends BaseActivity implements View.OnCli
         btn_given.setEnabled(false);
         mBack.setOnClickListener(this);
         btn_given.setOnClickListener(this);
+        loginMobile = shared.getString(UserAppConst.Colour_login_mobile, "");
         keyword_sign = shared.getString(UserAppConst.COLOUR_WALLET_KEYWORD_SIGN, "积分");
         mTitle.setText(keyword_sign + "赠送");
         ed_given_amount.addTextChangedListener(this);
@@ -109,6 +116,7 @@ public class GivenPointAmountActivity extends BaseActivity implements View.OnCli
         last_amount = last_amount * 1.0f / 100;
         pano = intent.getStringExtra(PointTransactionListActivity.POINTTPANO);
         pointModel = new PointModel(GivenPointAmountActivity.this);
+        newUserModel = new NewUserModel(GivenPointAmountActivity.this);
         pointModel.getAccountBalance(1, pano, GivenPointAmountActivity.this);
         tv_remain_notice.setText("今日可赠送" + last_time + "次，剩余额度" + last_amount + keyword_sign);
         if (!EventBus.getDefault().isregister(GivenPointAmountActivity.this)) {
@@ -168,7 +176,28 @@ public class GivenPointAmountActivity extends BaseActivity implements View.OnCli
                 pointModel.transferTransaction(4, giveBalance, password, token, order_no, dest_account, pano,
                         ed_given_remark.getText().toString().trim(), GivenPointAmountActivity.this);
                 break;
+            case POINT_SHOW_CODE:
+                popInputCodeView = new PopInputCodeView(GivenPointAmountActivity.this);
+                // 显示窗口
+                popInputCodeView.showAtLocation(findViewById(R.id.layoutContent),
+                        Gravity.BOTTOM | Gravity.CENTER_HORIZONTAL, 0, 0); // 设置layout在PopupWindow中显示的位置
+                break;
+            case POINT_GET_CODE: //获取验证码的接口
+                getChangeDeviceCode();
+                break;
+            case POINT_INPUT_CODE: //验证码输入完成的接口校验验证码是否正确
+                String code = (String) message.obj;
+                if (null != popInputCodeView) {
+                    popInputCodeView.dismiss();
+                }
+                newUserModel.checkSMSCode(8, loginMobile, code, "changedevice", GivenPointAmountActivity.this);
+                break;
         }
+    }
+
+
+    private void getChangeDeviceCode() {
+        newUserModel.getSmsCode(7, loginMobile, 7, 1, GivenPointAmountActivity.this);
     }
 
     @Override
@@ -241,7 +270,6 @@ public class GivenPointAmountActivity extends BaseActivity implements View.OnCli
                             break;
                         case "3"://未实名未设置支付密码
                         case "4"://未实名已设置支付密码
-                            newUserModel = new NewUserModel(GivenPointAmountActivity.this);
                             newUserModel.getRealNameToken(5, this, true);
                             break;
                         default://1已实名已设置支付密码
@@ -301,12 +329,27 @@ public class GivenPointAmountActivity extends BaseActivity implements View.OnCli
                     }
                 }
                 break;
+            case 7:
+                if (null != popInputCodeView) {
+                    popInputCodeView.getCodeSuccess();
+                }
+                ToastUtil.toastTime(GivenPointAmountActivity.this, "验证码已发送至手机号" + loginMobile, 3000);
+                break;
+            case 8:
+                showPayDialog();
+                break;
         }
     }
 
+
+    /**弹出更换设备支付的选择框**/
+    private void showCodeDialog() {
+        PointChangeDeviceDialog pointChangeDeviceDialog = new PointChangeDeviceDialog(GivenPointAmountActivity.this);
+        pointChangeDeviceDialog.show();
+    }
+
+    /**输入短信验证码**/
     private void showPayDialog() {
-//        PointPasswordDialog pointPasswordDialog = new PointPasswordDialog(GivenPointAmountActivity.this);
-//        pointPasswordDialog.show();
         PopEnterPassword popEnterPassword = new PopEnterPassword(this);
         // 显示窗口
         popEnterPassword.showAtLocation(this.findViewById(R.id.layoutContent),

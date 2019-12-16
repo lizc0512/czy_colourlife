@@ -70,7 +70,7 @@ public class VirtualKeyboardView extends RelativeLayout {
             } else if (i == 11) {
                 map.put("name", String.valueOf(0));
             } else if (i == 12) {
-                map.put("name", "");
+                map.put("name", "12");
             }
             valueList.add(map);
         }

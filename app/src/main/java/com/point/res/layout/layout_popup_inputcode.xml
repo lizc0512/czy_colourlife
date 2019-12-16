@@ -1,0 +1,163 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#8C000000">
+
+    <com.point.password.VirtualKeyboardView
+        android:id="@+id/virtualKeyboardView"
+        android:layout_width="match_parent"
+        android:layout_height="300dp"
+        android:layout_alignParentBottom="true"
+        android:layout_gravity="bottom" />
+
+
+    <LinearLayout
+        android:id="@+id/linear_pass"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="40dp"
+        android:layout_marginRight="40dp"
+        android:layout_above="@id/virtualKeyboardView"
+        android:layout_marginBottom="30dp"
+        android:background="@drawable/about_corners4"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="20dp"
+            android:text="请输入验证码"
+            android:textColor="@color/color_000000"
+            android:textSize="18sp" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_marginBottom="16dp"
+            android:layout_marginLeft="30dp"
+            android:layout_marginRight="30dp"
+            android:layout_marginTop="20dp"
+            android:orientation="horizontal">
+
+            <RelativeLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1">
+
+                <TextView
+                    android:id="@+id/tv_pass1"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:inputType="number"
+                    android:text=""
+                    android:textColor="@color/color_25282e"
+                    android:textSize="22sp" />
+
+
+                <View
+                    android:layout_width="match_parent"
+                    android:background="@color/color_d8d8d8"
+                    android:layout_alignParentBottom="true"
+                    android:layout_height="1dp"/>
+
+            </RelativeLayout>
+
+
+            <RelativeLayout
+                android:layout_width="0dp"
+                android:layout_marginLeft="15dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1">
+
+                <TextView
+                    android:id="@+id/tv_pass2"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:inputType="number"
+                    android:text=""
+                    android:textColor="@color/color_25282e"
+                    android:textSize="22sp" />
+
+
+                <View
+                    android:layout_width="match_parent"
+                    android:background="@color/color_d8d8d8"
+                    android:layout_alignParentBottom="true"
+                    android:layout_height="1dp"/>
+
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="15dp"
+                android:layout_weight="1">
+
+                <TextView
+                    android:id="@+id/tv_pass3"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:inputType="number"
+                    android:text=""
+                    android:textColor="@color/color_25282e"
+                    android:textSize="22sp"/>
+
+
+                <View
+                    android:layout_width="match_parent"
+                    android:background="@color/color_d8d8d8"
+                    android:layout_alignParentBottom="true"
+                    android:layout_height="1dp"/>
+
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="15dp"
+                android:layout_weight="1">
+
+                <TextView
+                    android:id="@+id/tv_pass4"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:inputType="number"
+                    android:text=""
+                    android:textColor="@color/color_25282e"
+                    android:textSize="22sp"/>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:background="@color/color_d8d8d8"
+                    android:layout_alignParentBottom="true"
+                    android:layout_height="1dp"/>
+            </RelativeLayout>
+
+
+
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/tv_get_code"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="right"
+            android:gravity="center"
+            android:layout_marginTop="5dp"
+            android:padding="5dp"
+            android:layout_marginBottom="15dp"
+            android:layout_marginRight="25dp"
+            android:text="获取验证码"
+            android:textColor="@color/color_3282fa"
+            android:textSize="12sp" />
+
+    </LinearLayout>
+
+</RelativeLayout>

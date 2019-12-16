@@ -16,57 +16,44 @@ import com.external.gridpasswordview.GridPasswordView;
 import cn.csh.colourful.life.utils.KeyBoardUtils;
 import cn.net.cyberway.R;
 
+import static com.user.UserMessageConstant.POINT_GET_CODE;
 import static com.user.UserMessageConstant.POINT_INPUT_PAYPAWD;
+import static com.user.UserMessageConstant.POINT_SHOW_CODE;
 
 /**
  * 积分或饭票的描述
  */
-public class PointPasswordDialog {
+public class PointChangeDeviceDialog {
 
     public Dialog mDialog;
-    private GridPasswordView grid_pay_pawd;
-    private ImageView iv_close_dialog;
-    private TextView tv_forget_pawd;
+    private TextView btn_cancel;
+    public TextView btn_define;
 
 
-    public PointPasswordDialog(Activity activity) {
+    public PointChangeDeviceDialog(Activity activity) {
         LayoutInflater inflater = LayoutInflater.from(activity);
-        View view = inflater.inflate(R.layout.dialog_point_password, null);
+        View view = inflater.inflate(R.layout.dialog_change_device, null);
         mDialog = new Dialog(activity, R.style.custom_dialog_theme);
         mDialog.setContentView(view);
         mDialog.setCanceledOnTouchOutside(true);
-        grid_pay_pawd = view.findViewById(R.id.grid_pay_pawd);
-        iv_close_dialog = view.findViewById(R.id.iv_close_dialog);
-        tv_forget_pawd = view.findViewById(R.id.tv_forget_pawd);
-        grid_pay_pawd.setOnPasswordChangedListener(new GridPasswordView.OnPasswordChangedListener() {
-            @Override
-            public void onTextChanged(String psw) {
+        btn_cancel = view.findViewById(R.id.btn_cancel);
+        btn_define = view.findViewById(R.id.btn_define);
 
-            }
-
+        btn_cancel.setOnClickListener(v -> dismiss());
+        btn_define.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onInputFinish(String psw) {
+            public void onClick(View v) {
                 Message message = Message.obtain();
-                message.what = POINT_INPUT_PAYPAWD;
-                message.obj = psw;
+                message.what = POINT_SHOW_CODE;
                 EventBus.getDefault().post(message);
                 dismiss();
             }
         });
-        tv_forget_pawd.setOnClickListener(v -> {
-            Intent forget_intent = new Intent(activity, ForgetPayPawdActivity.class);
-            activity.startActivity(forget_intent);
-        });
-        iv_close_dialog.setOnClickListener(v -> dismiss());
         mDialog.setOnDismissListener(dialog -> KeyBoardUtils.hideSoftKeyboard(activity));
     }
 
     public void show() {
         mDialog.show();
-        new Handler().postDelayed(() -> {
-            grid_pay_pawd.performClick();
-        }, 300);
-
     }
 
     public void dismiss() {
@@ -74,5 +61,4 @@ public class PointPasswordDialog {
             mDialog.dismiss();
         }
     }
-
 }

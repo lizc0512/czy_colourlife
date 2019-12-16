@@ -31,7 +31,6 @@ import com.cashier.protocolchang.PayResultEntity;
 import com.cashier.protocolchang.PayStatusEntity;
 import com.customerInfo.protocol.RealNameTokenEntity;
 import com.external.eventbus.EventBus;
-import com.google.gson.JsonObject;
 import com.jdpaysdk.author.JDPayAuthor;
 import com.lhqpay.ewallet.keepIntact.Listener;
 import com.lhqpay.ewallet.keepIntact.MyListener;
@@ -44,10 +43,11 @@ import com.nohttp.utils.GsonUtils;
 import com.pay.Activity.AlixPayActivity;
 import com.point.activity.ChangePawdTwoStepActivity;
 import com.point.activity.GivenPointAmountActivity;
-import com.point.activity.PointPasswordDialog;
+import com.point.activity.PointChangeDeviceDialog;
 import com.point.entity.PointTransactionTokenEntity;
 import com.point.model.PointModel;
 import com.point.password.PopEnterPassword;
+import com.point.password.PopInputCodeView;
 import com.popupScreen.PopupScUtils;
 import com.setting.activity.CertificateResultDialog;
 import com.setting.activity.EditDialog;
@@ -82,7 +82,10 @@ import static com.pay.Activity.AlixPayActivity.ALIPAY_OUT_TRADE_NO;
 import static com.pay.Activity.AlixPayActivity.ALIPAY_SUBJECT;
 import static com.pay.Activity.AlixPayActivity.ALIPAY_TOTAL_FEE;
 import static com.user.UserMessageConstant.POINT_CHANGE_PAYPAWD;
+import static com.user.UserMessageConstant.POINT_GET_CODE;
+import static com.user.UserMessageConstant.POINT_INPUT_CODE;
 import static com.user.UserMessageConstant.POINT_INPUT_PAYPAWD;
+import static com.user.UserMessageConstant.POINT_SHOW_CODE;
 import static com.user.UserMessageConstant.WEIXIN_PAY_MSG;
 
 
@@ -127,7 +130,8 @@ public class NewOrderPayActivity extends BaseActivity implements View.OnClickLis
     private String token;
     private String state;
     private String encrypt;
-
+    private String loginMobile;
+    private PopInputCodeView popInputCodeView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -140,6 +144,7 @@ public class NewOrderPayActivity extends BaseActivity implements View.OnClickLis
 
     private void initData() {
         sn = getIntent().getStringExtra(ORDER_SN);
+        loginMobile = shared.getString(UserAppConst.Colour_login_mobile, "");
         newOrderPayModel = new NewOrderPayModel(NewOrderPayActivity.this);
         newOrderPayModel.getPayOrderDetails(0, sn, false, this);
         newOrderPayModel.getPayPopupDate(6, this);
@@ -759,7 +764,27 @@ public class NewOrderPayActivity extends BaseActivity implements View.OnClickLis
                 String password = (String) message.obj;
                 newOrderPayModel.goOrderPayByPoint(8, encrypt, password, token, NewOrderPayActivity.this);
                 break;
+            case POINT_SHOW_CODE:
+                popInputCodeView = new PopInputCodeView(NewOrderPayActivity.this);
+                // 显示窗口
+                popInputCodeView.showAtLocation(findViewById(R.id.layoutContent),
+                        Gravity.BOTTOM | Gravity.CENTER_HORIZONTAL, 0, 0); // 设置layout在PopupWindow中显示的位置
+                break;
+            case POINT_GET_CODE: //获取验证码的接口
+                getChangeDeviceCode();
+                break;
+            case POINT_INPUT_CODE: //验证码输入完成的接口校验验证码是否正确
+                String code = (String) message.obj;
+                if (null != popInputCodeView) {
+                    popInputCodeView.dismiss();
+                }
+                newUserModel.checkSMSCode(10, loginMobile, code, "changedevice", NewOrderPayActivity.this);
+                break;
         }
+    }
+
+    private void getChangeDeviceCode() {
+        newUserModel.getSmsCode(9, loginMobile, 7, 1, NewOrderPayActivity.this);
     }
 
 
@@ -866,8 +891,8 @@ public class NewOrderPayActivity extends BaseActivity implements View.OnClickLis
     }
 
     private void pointPayOrder(Map<String, String> resultMap) { //判断用户是否实名设置支付密码
-        if (resultMap!=null&&resultMap.containsKey("encrypt")){
-            encrypt=resultMap.get("encrypt");
+        if (resultMap != null && resultMap.containsKey("encrypt")) {
+            encrypt = resultMap.get("encrypt");
         }
         PointModel pointModel = new PointModel(NewOrderPayActivity.this);
         pointModel.getTransactionToken(7, NewOrderPayActivity.this);
@@ -911,7 +936,7 @@ public class NewOrderPayActivity extends BaseActivity implements View.OnClickLis
                                 wexinPayOrder(resultMap);
                             } else if (payChannelId.endsWith("2")) { //彩之云积分支付
                                 pointPayOrder(resultMap);
-                            }else {
+                            } else {
                                 //彩钱包支付
                                 LinkedHashMap<String, Object> publicParams = new LinkedHashMap<String, Object>();
                                 publicParams.putAll(resultMap);
@@ -1063,9 +1088,25 @@ public class NewOrderPayActivity extends BaseActivity implements View.OnClickLis
             case 8:
                 payResultQuery();
                 break;
+            case 9:
+                if (null != popInputCodeView) {
+                    popInputCodeView.getCodeSuccess();
+                }
+                ToastUtil.toastTime(NewOrderPayActivity.this, "验证码已发送至手机号" + loginMobile, 3000);
+                break;
+            case 10:
+                showPayDialog();
+                break;
         }
     }
 
+    /**
+     * 弹出更换设备支付的选择框
+     **/
+    private void showCodeDialog() {
+        PointChangeDeviceDialog pointChangeDeviceDialog = new PointChangeDeviceDialog(NewOrderPayActivity.this);
+        pointChangeDeviceDialog.show();
+    }
 
     /***支付密码的弹窗**/
     private void showPayDialog() {
