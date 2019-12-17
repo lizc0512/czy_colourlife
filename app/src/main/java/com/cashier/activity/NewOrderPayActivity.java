@@ -595,7 +595,6 @@ public class NewOrderPayActivity extends BaseActivity implements View.OnClickLis
                 finish();
                 break;
             case R.id.btn_sure_pay:  //确认支付订单
-//                newOrderPayModel.getUserRealCertificate(3, sn, this);
                 createCzyOrder();
                 break;
         }
@@ -895,10 +894,7 @@ public class NewOrderPayActivity extends BaseActivity implements View.OnClickLis
         startActivityForResult(intent, 10000);
     }
 
-    private void pointPayOrder(Map<String, String> resultMap) { //判断用户是否实名设置支付密码
-        if (resultMap != null && resultMap.containsKey("encrypt")) {
-            encrypt = resultMap.get("encrypt");
-        }
+    private void pointPayOrder() { //判断用户是否实名设置支付密码
         PointModel pointModel = new PointModel(NewOrderPayActivity.this);
         pointModel.getTransactionToken(7, NewOrderPayActivity.this);
     }
@@ -918,7 +914,7 @@ public class NewOrderPayActivity extends BaseActivity implements View.OnClickLis
                     againGetPayList();
                 }
                 break;
-            case 1:
+            case 1: //支付渠道返回各个第三方的对接参数
                 BaseContentEntity baseContentEntity = GsonUtils.gsonToBean(result, BaseContentEntity.class);
                 int code = baseContentEntity.getCode();
                 try {
@@ -940,7 +936,10 @@ public class NewOrderPayActivity extends BaseActivity implements View.OnClickLis
                                 //工行微信
                                 wexinPayOrder(resultMap);
                             } else if (payChannelId.endsWith("2")) { //彩之云积分支付
-                                pointPayOrder(resultMap);
+                                if (resultMap != null && resultMap.containsKey("encrypt")) {
+                                    encrypt = resultMap.get("encrypt");
+                                }
+                                pointPayOrder();
                             } else {
                                 //彩钱包支付
                                 LinkedHashMap<String, Object> publicParams = new LinkedHashMap<String, Object>();
@@ -959,31 +958,7 @@ public class NewOrderPayActivity extends BaseActivity implements View.OnClickLis
                     ToastUtil.toastShow(NewOrderPayActivity.this, baseContentEntity.getMessage());
                 }
                 break;
-            case 2:
-                if (!TextUtils.isEmpty(result)) {
-                    try {
-                        BaseContentEntity baseEntity = GsonUtils.gsonToBean(result, BaseContentEntity.class);
-                        if (baseEntity.getCode() == 0) {
-                            PayStatusEntity payStatusEntity = GsonUtils.gsonToBean(result, PayStatusEntity.class);
-                            int orderStaus = payStatusEntity.getContent().getPay_success();
-                            if (orderStaus == 2) {
-                                if (TextUtils.isEmpty(errorNotice)) {
-                                    errorNotice = "支付失败";
-                                }
-                                ToastUtil.toastShow(getApplicationContext(), errorNotice);
-                                finish();
-                            } else {
-                                payResultQuery();
-                            }
-                        }
-                    } catch (Exception e) {
-                        payResultQuery();
-                    }
-                } else {
-                    payResultQuery();
-                }
-                break;
-            case 3:
+            case 3://查询订单状态
                 try {
                     BaseContentEntity queryContentEntity = GsonUtils.gsonToBean(result, BaseContentEntity.class);
                     if (queryContentEntity.getCode() == 0) {
@@ -999,7 +974,7 @@ public class NewOrderPayActivity extends BaseActivity implements View.OnClickLis
                     createCzyOrder();
                 }
                 break;
-            case 4:
+            case 4://实名认证sdk的调起
                 if (!TextUtils.isEmpty(result)) {
                     try {
                         RealNameTokenEntity entity = GsonUtils.gsonToBean(result, RealNameTokenEntity.class);
@@ -1014,7 +989,7 @@ public class NewOrderPayActivity extends BaseActivity implements View.OnClickLis
                     showCertificateFail();
                 }
                 break;
-            case 5:
+            case 5://提交实名认证信息
                 if (!TextUtils.isEmpty(result)) {
                     try {
                         JSONObject jsonObject = new JSONObject(result);
@@ -1067,45 +1042,45 @@ public class NewOrderPayActivity extends BaseActivity implements View.OnClickLis
                     }
                 }
                 break;
-            case 7:
+            case 7://判断用户支付密码和实名的状态
                 try {
                     PointTransactionTokenEntity pointTransactionTokenEntity = GsonUtils.gsonToBean(result, PointTransactionTokenEntity.class);
                     PointTransactionTokenEntity.ContentBean contentBean = pointTransactionTokenEntity.getContent();
                     token = contentBean.getToken();
                     state = contentBean.getState();
                     String dev_change = contentBean.getDev_change();
-                    if ("1".equals(dev_change)) {
-                        showCodeDialog();
-                    }else{
-                        switch (state) {
-                            case "2"://已实名未设置支付密码
-                                Intent intent = new Intent(NewOrderPayActivity.this, ChangePawdTwoStepActivity.class);
-                                startActivity(intent);
-                                break;
-                            case "3"://未实名未设置支付密码
-                            case "4"://未实名已设置支付密码
-                                newUserModel.getRealNameToken(4, this, true);
-                                break;
-                            default://1已实名已设置支付密码
+                    switch (state) {
+                        case "2"://已实名未设置支付密码
+                            Intent intent = new Intent(NewOrderPayActivity.this, ChangePawdTwoStepActivity.class);
+                            startActivity(intent);
+                            break;
+                        case "3"://未实名未设置支付密码
+                        case "4"://未实名已设置支付密码
+                            newUserModel.getRealNameToken(4, this, true);
+                            break;
+                        default://1已实名已设置支付密码
+                            if ("1".equals(dev_change)) {
+                                showCodeDialog();
+                            } else {
                                 showPayDialog();
-                                break;
-                        }
+                            }
+                            break;
                     }
                 } catch (Exception e) {
 
                 }
                 break;
-            case 8:
+            case 8://彩之云积分支付成功
                 payResultQuery();
                 break;
-            case 9:
+            case 9: //短信验证码发送成功
                 if (null != popInputCodeView) {
                     popInputCodeView.getCodeSuccess();
                 }
                 ToastUtil.toastTime(NewOrderPayActivity.this, "验证码已发送至手机号" + loginMobile, 3000);
                 break;
-            case 10:
-                showPayDialog();
+            case 10://短信验证码验证通过
+                pointPayOrder();
                 break;
         }
     }

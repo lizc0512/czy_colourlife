@@ -266,22 +266,22 @@ public class GivenPointAmountActivity extends BaseActivity implements View.OnCli
                     state = contentBean.getState();
                     order_no = contentBean.getOrder_no();
                     String dev_change = contentBean.getDev_change();
-                    if ("1".equals(dev_change)) {
-                        showCodeDialog();
-                    } else {
-                        switch (state) {
-                            case "2"://已实名未设置支付密码
-                                Intent intent = new Intent(GivenPointAmountActivity.this, ChangePawdTwoStepActivity.class);
-                                startActivity(intent);
-                                break;
-                            case "3"://未实名未设置支付密码
-                            case "4"://未实名已设置支付密码
-                                newUserModel.getRealNameToken(5, this, true);
-                                break;
-                            default://1已实名已设置支付密码
+                    switch (state) {
+                        case "2"://已实名未设置支付密码
+                            Intent intent = new Intent(GivenPointAmountActivity.this, ChangePawdTwoStepActivity.class);
+                            startActivity(intent);
+                            break;
+                        case "3"://未实名未设置支付密码
+                        case "4"://未实名已设置支付密码
+                            newUserModel.getRealNameToken(5, this, true);
+                            break;
+                        default://1已实名已设置支付密码
+                            if ("1".equals(dev_change)) {
+                                showCodeDialog();
+                            } else {
                                 showPayDialog();
-                                break;
-                        }
+                            }
+                            break;
                     }
                 } catch (Exception e) {
 
@@ -336,14 +336,14 @@ public class GivenPointAmountActivity extends BaseActivity implements View.OnCli
                     }
                 }
                 break;
-            case 7:
+            case 7://短信验证码发送成功
                 if (null != popInputCodeView) {
                     popInputCodeView.getCodeSuccess();
                 }
                 ToastUtil.toastTime(GivenPointAmountActivity.this, "验证码已发送至手机号" + loginMobile, 3000);
                 break;
-            case 8:
-                showPayDialog();
+            case 8://短信验证码验证成功
+                pointModel.getTransactionToken(3, GivenPointAmountActivity.this);
                 break;
         }
     }
