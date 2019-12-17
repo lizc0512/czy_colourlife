@@ -18,8 +18,10 @@ import com.BeeFramework.Utils.ToastUtil;
 import com.BeeFramework.activity.BaseActivity;
 import com.BeeFramework.model.NewHttpResponse;
 import com.BeeFramework.view.ClearEditText;
+import com.cashier.activity.NewOrderPayActivity;
 import com.customerInfo.protocol.RealNameTokenEntity;
 import com.external.eventbus.EventBus;
+import com.nohttp.entity.BaseContentEntity;
 import com.nohttp.utils.CashierInputFilter;
 import com.nohttp.utils.GlideImageLoader;
 import com.nohttp.utils.GsonUtils;
@@ -190,7 +192,7 @@ public class GivenPointAmountActivity extends BaseActivity implements View.OnCli
                 if (null != popInputCodeView) {
                     popInputCodeView.dismiss();
                 }
-                newUserModel.checkSMSCode(8, loginMobile, code, "changedevice", GivenPointAmountActivity.this);
+                newUserModel.checkSMSCode(8, loginMobile, code, "walletSet", GivenPointAmountActivity.this);
                 break;
         }
     }
@@ -263,18 +265,23 @@ public class GivenPointAmountActivity extends BaseActivity implements View.OnCli
                     token = contentBean.getToken();
                     state = contentBean.getState();
                     order_no = contentBean.getOrder_no();
-                    switch (state) {
-                        case "2"://已实名未设置支付密码
-                            Intent intent = new Intent(GivenPointAmountActivity.this, ChangePawdTwoStepActivity.class);
-                            startActivity(intent);
-                            break;
-                        case "3"://未实名未设置支付密码
-                        case "4"://未实名已设置支付密码
-                            newUserModel.getRealNameToken(5, this, true);
-                            break;
-                        default://1已实名已设置支付密码
-                            showPayDialog();
-                            break;
+                    String dev_change = contentBean.getDev_change();
+                    if ("1".equals(dev_change)) {
+                        showCodeDialog();
+                    } else {
+                        switch (state) {
+                            case "2"://已实名未设置支付密码
+                                Intent intent = new Intent(GivenPointAmountActivity.this, ChangePawdTwoStepActivity.class);
+                                startActivity(intent);
+                                break;
+                            case "3"://未实名未设置支付密码
+                            case "4"://未实名已设置支付密码
+                                newUserModel.getRealNameToken(5, this, true);
+                                break;
+                            default://1已实名已设置支付密码
+                                showPayDialog();
+                                break;
+                        }
                     }
                 } catch (Exception e) {
 
@@ -342,13 +349,17 @@ public class GivenPointAmountActivity extends BaseActivity implements View.OnCli
     }
 
 
-    /**弹出更换设备支付的选择框**/
+    /**
+     * 弹出更换设备支付的选择框
+     **/
     private void showCodeDialog() {
         PointChangeDeviceDialog pointChangeDeviceDialog = new PointChangeDeviceDialog(GivenPointAmountActivity.this);
         pointChangeDeviceDialog.show();
     }
 
-    /**输入短信验证码**/
+    /**
+     * 输入短信验证码
+     **/
     private void showPayDialog() {
         PopEnterPassword popEnterPassword = new PopEnterPassword(this);
         // 显示窗口

@@ -2,22 +2,16 @@ package com.point.activity;
 
 import android.app.Activity;
 import android.app.Dialog;
-import android.content.Intent;
-import android.os.Handler;
 import android.os.Message;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.external.eventbus.EventBus;
-import com.external.gridpasswordview.GridPasswordView;
 
 import cn.csh.colourful.life.utils.KeyBoardUtils;
 import cn.net.cyberway.R;
 
-import static com.user.UserMessageConstant.POINT_GET_CODE;
-import static com.user.UserMessageConstant.POINT_INPUT_PAYPAWD;
 import static com.user.UserMessageConstant.POINT_SHOW_CODE;
 
 /**

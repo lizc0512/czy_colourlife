@@ -8,7 +8,6 @@ import com.BeeFramework.model.BaseModel;
 import com.BeeFramework.model.NewHttpResponse;
 import com.nohttp.utils.HttpListener;
 import com.nohttp.utils.RequestEncryptionUtils;
-import com.user.Utils.TokenUtils;
 import com.yanzhenjie.nohttp.NoHttp;
 import com.yanzhenjie.nohttp.RequestMethod;
 import com.yanzhenjie.nohttp.rest.Request;
@@ -66,7 +65,7 @@ public class PointModel extends BaseModel {
         }, true, false);
     }
 
-    public void getAccountFlowList(int what, int page,String pano, long time_start, long time_stop, boolean isLoading, final NewHttpResponse newHttpResponse) {
+    public void getAccountFlowList(int what, int page, String pano, long time_start, long time_stop, boolean isLoading, final NewHttpResponse newHttpResponse) {
         Map<String, Object> params = new HashMap<String, Object>();
         params.put("type", 0);
         params.put("page", page);
@@ -87,25 +86,25 @@ public class PointModel extends BaseModel {
                     int resultCode = showSuccesResultMessage(result);
                     if (resultCode == 0) {
                         newHttpResponse.OnHttpResponse(what, result);
-                    }else{
+                    } else {
                         newHttpResponse.OnHttpResponse(what, "");
                     }
-                }else{
-                    showErrorCodeMessage(responseCode,response);
+                } else {
+                    showErrorCodeMessage(responseCode, response);
                     newHttpResponse.OnHttpResponse(what, "");
                 }
             }
 
             @Override
             public void onFailed(int what, Response<String> response) {
-                 showExceptionMessage(what,response);
+                showExceptionMessage(what, response);
                 newHttpResponse.OnHttpResponse(what, "");
             }
         }, true, isLoading);
     }
 
 
-    public void getAccountList(int what,boolean isLoading, final NewHttpResponse newHttpResponse) {
+    public void getAccountList(int what, boolean isLoading, final NewHttpResponse newHttpResponse) {
         final Request<String> request = NoHttp.createStringRequest(RequestEncryptionUtils.getCombileMD5(mContext, 15, accountListUrl, null), RequestMethod.GET);
         request(what, request, null, new HttpListener<String>() {
             @Override
@@ -128,9 +127,9 @@ public class PointModel extends BaseModel {
         }, true, isLoading);
     }
 
-    public void getTransferList(int what,String pano, int page,boolean isLoading, final NewHttpResponse newHttpResponse) {
+    public void getTransferList(int what, String pano, int page, boolean isLoading, final NewHttpResponse newHttpResponse) {
         Map<String, Object> params = new HashMap<String, Object>();
-        params.put("pano",pano);
+        params.put("pano", pano);
         params.put("page", page);
         params.put("page_size", 20);
         final Request<String> request = NoHttp.createStringRequest(RequestEncryptionUtils.getCombileMD5(mContext, 15, transferListUrl, params), RequestMethod.GET);
@@ -143,27 +142,27 @@ public class PointModel extends BaseModel {
                     int resultCode = showSuccesResultMessage(result);
                     if (resultCode == 0) {
                         newHttpResponse.OnHttpResponse(what, result);
-                    }else{
+                    } else {
                         newHttpResponse.OnHttpResponse(what, "");
                     }
-                }else{
-                    showErrorCodeMessage(responseCode,response);
+                } else {
+                    showErrorCodeMessage(responseCode, response);
                     newHttpResponse.OnHttpResponse(what, "");
                 }
             }
 
             @Override
             public void onFailed(int what, Response<String> response) {
-                showExceptionMessage(what,response);
+                showExceptionMessage(what, response);
                 newHttpResponse.OnHttpResponse(what, "");
             }
 
         }, true, isLoading);
     }
 
-    public void getAccountLimit(int what,String pano,  final NewHttpResponse newHttpResponse) {
+    public void getAccountLimit(int what, String pano, final NewHttpResponse newHttpResponse) {
         Map<String, Object> params = new HashMap<String, Object>();
-        params.put("pano",pano);
+        params.put("pano", pano);
         final Request<String> request = NoHttp.createStringRequest(RequestEncryptionUtils.getCombileMD5(mContext, 15, accountLimitUrl, params), RequestMethod.GET);
         request(what, request, params, new HttpListener<String>() {
             @Override
@@ -175,21 +174,21 @@ public class PointModel extends BaseModel {
                     if (resultCode == 0) {
                         newHttpResponse.OnHttpResponse(what, result);
                     }
-                }else{
-                    showErrorCodeMessage(responseCode,response);
+                } else {
+                    showErrorCodeMessage(responseCode, response);
                 }
             }
 
             @Override
             public void onFailed(int what, Response<String> response) {
-                showExceptionMessage(what,response);
+                showExceptionMessage(what, response);
             }
         }, true, true);
     }
 
-    public void getUserInfor(int what,String mobile,  final NewHttpResponse newHttpResponse) {
+    public void getUserInfor(int what, String mobile, final NewHttpResponse newHttpResponse) {
         Map<String, Object> params = new HashMap<String, Object>();
-        params.put("mobile",mobile);
+        params.put("mobile", mobile);
         final Request<String> request = NoHttp.createStringRequest(RequestEncryptionUtils.getCombileMD5(mContext, 15, userInfoByMobileUrl, params), RequestMethod.GET);
         request(what, request, params, new HttpListener<String>() {
             @Override
@@ -201,21 +200,21 @@ public class PointModel extends BaseModel {
                     if (resultCode == 0) {
                         newHttpResponse.OnHttpResponse(what, result);
                     }
-                }else{
-                    showErrorCodeMessage(responseCode,response);
+                } else {
+                    showErrorCodeMessage(responseCode, response);
                 }
             }
 
             @Override
             public void onFailed(int what, Response<String> response) {
-                showExceptionMessage(what,response);
+                showExceptionMessage(what, response);
             }
         }, true, true);
     }
 
-    public void getAccountBalance(int what,String pano,  final NewHttpResponse newHttpResponse) {
+    public void getAccountBalance(int what, String pano, final NewHttpResponse newHttpResponse) {
         Map<String, Object> params = new HashMap<String, Object>();
-        params.put("pano",pano);
+        params.put("pano", pano);
         final Request<String> request = NoHttp.createStringRequest(RequestEncryptionUtils.getCombileMD5(mContext, 15, accountBalanceUrl, params), RequestMethod.GET);
         request(what, request, params, new HttpListener<String>() {
             @Override
@@ -227,22 +226,22 @@ public class PointModel extends BaseModel {
                     if (resultCode == 0) {
                         newHttpResponse.OnHttpResponse(what, result);
                     }
-                }else{
-                    showErrorCodeMessage(responseCode,response);
+                } else {
+                    showErrorCodeMessage(responseCode, response);
                 }
             }
 
             @Override
             public void onFailed(int what, Response<String> response) {
-                showExceptionMessage(what,response);
+                showExceptionMessage(what, response);
             }
         }, true, true);
     }
 
     public void getTransactionToken(int what, final NewHttpResponse newHttpResponse) {
         Map<String, Object> params = new HashMap<String, Object>();
-        params.put("transfer_type",1);
-        params.put("timestamp",System.currentTimeMillis()/1000);
+        params.put("transfer_type", 1);
+        params.put("timestamp", System.currentTimeMillis() / 1000);
         final Request<String> request = NoHttp.createStringRequest(RequestEncryptionUtils.getCombileMD5(mContext, 15, transactionTokenUrl, params), RequestMethod.GET);
         request(what, request, params, new HttpListener<String>() {
             @Override
@@ -254,28 +253,28 @@ public class PointModel extends BaseModel {
                     if (resultCode == 0) {
                         newHttpResponse.OnHttpResponse(what, result);
                     }
-                }else{
-                    showErrorCodeMessage(responseCode,response);
+                } else {
+                    showErrorCodeMessage(responseCode, response);
                 }
             }
 
             @Override
             public void onFailed(int what, Response<String> response) {
-                showExceptionMessage(what,response);
+                showExceptionMessage(what, response);
             }
         }, true, true);
     }
 
-    public void transferTransaction(int what,int transfer_fee,String password,String token,String order_no,String dest_account,String pano,String detail, final NewHttpResponse newHttpResponse) {
+    public void transferTransaction(int what, int transfer_fee, String password, String token, String order_no, String dest_account, String pano, String detail, final NewHttpResponse newHttpResponse) {
         Map<String, Object> params = new HashMap<String, Object>();
-        params.put("transfer_type",1);
-        params.put("transfer_fee",transfer_fee);
-        params.put("token",token);
-        params.put("order_no",order_no);
-        params.put("dest_account",dest_account);
-        params.put("pano",pano);
-        if (!TextUtils.isEmpty(detail)){
-            params.put("detail",detail);
+        params.put("transfer_type", 1);
+        params.put("transfer_fee", transfer_fee);
+        params.put("token", token);
+        params.put("order_no", order_no);
+        params.put("dest_account", dest_account);
+        params.put("pano", pano);
+        if (!TextUtils.isEmpty(detail)) {
+            params.put("detail", detail);
         }
         params.put("password", PasswordRSAUtils.encryptByPublicKey(password));
         final Request<String> request = NoHttp.createStringRequest(RequestEncryptionUtils.postCombileMD5(mContext, 16, transactionTransferUrl), RequestMethod.POST);
@@ -289,23 +288,23 @@ public class PointModel extends BaseModel {
                     if (resultCode == 0) {
                         newHttpResponse.OnHttpResponse(what, result);
                     }
-                }else{
-                    showErrorCodeMessage(responseCode,response);
+                } else {
+                    showErrorCodeMessage(responseCode, response);
                 }
             }
 
             @Override
             public void onFailed(int what, Response<String> response) {
-                showExceptionMessage(what,response);
+                showExceptionMessage(what, response);
             }
         }, true, true);
     }
 
-    public void getTransactionPlan(int what,String pano,int page, final NewHttpResponse newHttpResponse) {
+    public void getTransactionPlan(int what, String pano, int page, final NewHttpResponse newHttpResponse) {
         Map<String, Object> params = new HashMap<String, Object>();
-        params.put("pano",pano);
-        params.put("page",page);
-        params.put("page_size",20);
+        params.put("pano", pano);
+        params.put("page", page);
+        params.put("page_size", 20);
         final Request<String> request = NoHttp.createStringRequest(RequestEncryptionUtils.getCombileMD5(mContext, 15, transactionReturnPlanUrl, params), RequestMethod.GET);
         request(what, request, params, new HttpListener<String>() {
             @Override
@@ -316,23 +315,20 @@ public class PointModel extends BaseModel {
                     int resultCode = showSuccesResultMessage(result);
                     if (resultCode == 0) {
                         newHttpResponse.OnHttpResponse(what, result);
-                    }else{
+                    } else {
                         newHttpResponse.OnHttpResponse(what, "");
                     }
-                }else{
-                    showErrorCodeMessage(responseCode,response);
+                } else {
+                    showErrorCodeMessage(responseCode, response);
                     newHttpResponse.OnHttpResponse(what, "");
                 }
             }
 
             @Override
             public void onFailed(int what, Response<String> response) {
-                showExceptionMessage(what,response);
+                showExceptionMessage(what, response);
                 newHttpResponse.OnHttpResponse(what, "");
             }
         }, true, true);
     }
-
-
-
 }

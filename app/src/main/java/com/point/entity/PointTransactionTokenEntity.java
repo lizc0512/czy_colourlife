@@ -63,6 +63,16 @@ public class PointTransactionTokenEntity extends BaseContentEntity {
         }
 
         private String state;
+
+        public String getDev_change() {
+            return dev_change;
+        }
+
+        public void setDev_change(String dev_change) {
+            this.dev_change = dev_change;
+        }
+
+        private String dev_change;
         private int expire_time;
 
         public String getOpen_id() {

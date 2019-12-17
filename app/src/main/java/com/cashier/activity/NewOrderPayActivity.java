@@ -42,7 +42,6 @@ import com.nohttp.utils.GlideImageLoader;
 import com.nohttp.utils.GsonUtils;
 import com.pay.Activity.AlixPayActivity;
 import com.point.activity.ChangePawdTwoStepActivity;
-import com.point.activity.GivenPointAmountActivity;
 import com.point.activity.PointChangeDeviceDialog;
 import com.point.entity.PointTransactionTokenEntity;
 import com.point.model.PointModel;
@@ -66,6 +65,7 @@ import com.user.model.NewUserModel;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.StringReader;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
@@ -132,6 +132,10 @@ public class NewOrderPayActivity extends BaseActivity implements View.OnClickLis
     private String encrypt;
     private String loginMobile;
     private PopInputCodeView popInputCodeView;
+    private EditDialog noticeDialog = null;
+    private NewUserModel newUserModel;
+    private String realName;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -146,6 +150,7 @@ public class NewOrderPayActivity extends BaseActivity implements View.OnClickLis
         sn = getIntent().getStringExtra(ORDER_SN);
         loginMobile = shared.getString(UserAppConst.Colour_login_mobile, "");
         newOrderPayModel = new NewOrderPayModel(NewOrderPayActivity.this);
+        newUserModel = new NewUserModel(NewOrderPayActivity.this);
         newOrderPayModel.getPayOrderDetails(0, sn, false, this);
         newOrderPayModel.getPayPopupDate(6, this);
     }
@@ -778,7 +783,7 @@ public class NewOrderPayActivity extends BaseActivity implements View.OnClickLis
                 if (null != popInputCodeView) {
                     popInputCodeView.dismiss();
                 }
-                newUserModel.checkSMSCode(10, loginMobile, code, "changedevice", NewOrderPayActivity.this);
+                newUserModel.checkSMSCode(10, loginMobile, code, "walletSet", NewOrderPayActivity.this);
                 break;
         }
     }
@@ -1068,18 +1073,23 @@ public class NewOrderPayActivity extends BaseActivity implements View.OnClickLis
                     PointTransactionTokenEntity.ContentBean contentBean = pointTransactionTokenEntity.getContent();
                     token = contentBean.getToken();
                     state = contentBean.getState();
-                    switch (state) {
-                        case "2"://已实名未设置支付密码
-                            Intent intent = new Intent(NewOrderPayActivity.this, ChangePawdTwoStepActivity.class);
-                            startActivity(intent);
-                            break;
-                        case "3"://未实名未设置支付密码
-                        case "4"://未实名已设置支付密码
-                            newUserModel.getRealNameToken(5, this, true);
-                            break;
-                        default://1已实名已设置支付密码
-                            showPayDialog();
-                            break;
+                    String dev_change = contentBean.getDev_change();
+                    if ("1".equals(dev_change)) {
+                        showCodeDialog();
+                    }else{
+                        switch (state) {
+                            case "2"://已实名未设置支付密码
+                                Intent intent = new Intent(NewOrderPayActivity.this, ChangePawdTwoStepActivity.class);
+                                startActivity(intent);
+                                break;
+                            case "3"://未实名未设置支付密码
+                            case "4"://未实名已设置支付密码
+                                newUserModel.getRealNameToken(4, this, true);
+                                break;
+                            default://1已实名已设置支付密码
+                                showPayDialog();
+                                break;
+                        }
                     }
                 } catch (Exception e) {
 
@@ -1140,10 +1150,6 @@ public class NewOrderPayActivity extends BaseActivity implements View.OnClickLis
     }
 
 
-    private EditDialog noticeDialog = null;
-    private NewUserModel newUserModel;
-    private String realName;
-
     private void showNoticeDialog(String notice) {
         if (noticeDialog == null) {
             noticeDialog = new EditDialog(NewOrderPayActivity.this);
@@ -1168,9 +1174,6 @@ public class NewOrderPayActivity extends BaseActivity implements View.OnClickLis
                 if (noticeDialog != null) {
                     noticeDialog.dismiss();
                 }
-                if (null == newUserModel) {
-                    newUserModel = new NewUserModel(NewOrderPayActivity.this);
-                }
                 newUserModel.getRealNameToken(4, NewOrderPayActivity.this, false);
             }
         });
@@ -1185,9 +1188,6 @@ public class NewOrderPayActivity extends BaseActivity implements View.OnClickLis
             IDCardInfo idCardInfo = data.getExtras().getParcelable(AuthSDKApi.EXTRA_IDCARD_INFO);
             if (idCardInfo != null) {//身份证信息   idCardInfo.getIDcard();//身份证号码
                 realName = idCardInfo.getName();//姓名
-                if (null == newUserModel) {
-                    newUserModel = new NewUserModel(NewOrderPayActivity.this);
-                }
                 newUserModel.submitRealName(5, idCardInfo.getIDcard(), realName, this);//提交实名认证
             }
         }
