@@ -9,6 +9,7 @@ import android.util.AttributeSet;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.GridView;
+import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -36,6 +37,8 @@ public class InputCodeView extends RelativeLayout {
 
     private GridView gridView;
     private TextView tv_get_code;
+    private TextView send_code_notice;
+    private ImageView iv_close_dialog;
 
     private ArrayList<Map<String, String>> valueList;
 
@@ -53,6 +56,8 @@ public class InputCodeView extends RelativeLayout {
 
         virtualKeyboardView =  view.findViewById(R.id.virtualKeyboardView);
         tv_get_code = view.findViewById(R.id.tv_get_code);
+        iv_close_dialog = view.findViewById(R.id.iv_close_dialog);
+        send_code_notice = view.findViewById(R.id.send_code_notice);
         gridView = virtualKeyboardView.getGridView();
 
         initValueList();
@@ -141,5 +146,12 @@ public class InputCodeView extends RelativeLayout {
 
     public TextView getCodeViewText() {
         return tv_get_code;
+    }
+
+    public TextView getCodeNoticeText() {
+        return send_code_notice;
+    }
+    public ImageView getCloseImage() {
+        return iv_close_dialog;
     }
 }

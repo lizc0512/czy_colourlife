@@ -18,10 +18,8 @@ import com.BeeFramework.Utils.ToastUtil;
 import com.BeeFramework.activity.BaseActivity;
 import com.BeeFramework.model.NewHttpResponse;
 import com.BeeFramework.view.ClearEditText;
-import com.cashier.activity.NewOrderPayActivity;
 import com.customerInfo.protocol.RealNameTokenEntity;
 import com.external.eventbus.EventBus;
-import com.nohttp.entity.BaseContentEntity;
 import com.nohttp.utils.CashierInputFilter;
 import com.nohttp.utils.GlideImageLoader;
 import com.nohttp.utils.GsonUtils;
@@ -192,7 +190,7 @@ public class GivenPointAmountActivity extends BaseActivity implements View.OnCli
                 if (null != popInputCodeView) {
                     popInputCodeView.dismiss();
                 }
-                newUserModel.checkSMSCode(8, loginMobile, code, "walletSet", GivenPointAmountActivity.this);
+                pointModel.pointCheckCode(8, loginMobile, code, GivenPointAmountActivity.this);
                 break;
         }
     }
@@ -340,10 +338,9 @@ public class GivenPointAmountActivity extends BaseActivity implements View.OnCli
                 if (null != popInputCodeView) {
                     popInputCodeView.getCodeSuccess();
                 }
-                ToastUtil.toastTime(GivenPointAmountActivity.this, "验证码已发送至手机号" + loginMobile, 3000);
                 break;
             case 8://短信验证码验证成功
-                pointModel.getTransactionToken(3, GivenPointAmountActivity.this);
+                showPayDialog();
                 break;
         }
     }

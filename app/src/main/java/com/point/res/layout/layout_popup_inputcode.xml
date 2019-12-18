@@ -2,6 +2,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
     android:background="#8C000000">
 
     <com.point.password.VirtualKeyboardView
@@ -23,21 +24,41 @@
         android:background="@drawable/about_corners4"
         android:orientation="vertical">
 
+        <ImageView
+            android:id="@+id/iv_close_dialog"
+            android:layout_width="wrap_content"
+            android:src="@drawable/point_close_dialog"
+            android:layout_gravity="right"
+            android:padding="10dp"
+            android:layout_height="wrap_content"/>
+
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
-            android:layout_marginTop="20dp"
+            android:layout_marginTop="10dp"
             android:text="请输入验证码"
             android:textColor="@color/color_000000"
             android:textSize="18sp" />
+
+        <TextView
+            android:id="@+id/send_code_notice"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:layout_gravity="center_horizontal"
+            tools:text="验证码已发送至手机号"
+            android:textColor="@color/color_666666"
+            android:textSize="11sp" />
+
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="40dp"
             android:layout_marginBottom="16dp"
             android:layout_marginLeft="30dp"
             android:layout_marginRight="30dp"
-            android:layout_marginTop="20dp"
+            android:layout_marginTop="10dp"
             android:orientation="horizontal">
 
             <RelativeLayout

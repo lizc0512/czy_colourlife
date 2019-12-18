@@ -232,20 +232,21 @@ public class HuxinService extends Service {
         filter.addAction(Intent.ACTION_SCREEN_OFF);
         mScreenReceiver = new ScreenReceiver();
         registerReceiver(mScreenReceiver, filter);
-
-        if (android.os.Build.VERSION.SDK_INT <= android.os.Build.VERSION_CODES.N) {
-            if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                startForegroundService(new Intent(this, ForegroundEnablingService.class));
-            } else {
-                if (startService(new Intent(this, ForegroundEnablingService.class)) == null) {
-                    throw new RuntimeException("Couldn't find " + ForegroundEnablingService.class.getSimpleName());
+        try {
+            if (android.os.Build.VERSION.SDK_INT <= android.os.Build.VERSION_CODES.N) {
+                if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                    startForegroundService(new Intent(this, ForegroundEnablingService.class));
+                } else {
+                    if (startService(new Intent(this, ForegroundEnablingService.class)) == null) {
+                        throw new RuntimeException("Couldn't find " + ForegroundEnablingService.class.getSimpleName());
+                    }
                 }
+
             }
+        }catch (Exception e){
 
         }
-
         createTcp();
-
         IMMsgManager.instance().addChatListener();
     }
 

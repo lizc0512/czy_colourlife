@@ -1072,10 +1072,13 @@ public class IMConnectionActivity extends SdkBaseActivity implements
     public void onBuddyMsgCallback(CacheMsgBean cacheMsgBean) {
         //刷新界面
         if (!isFinishing()) {
-            if (cacheMsgBean.getSenderUserId().equals(dstUuid)
-                    && cacheMsgBean.getGroupId() == 0) {
-                imListAdapter.refreshIncomingMsgUI(cacheMsgBean);
-                isMsgReceive = true;
+            if (null!=cacheMsgBean){
+             String senderUserId=   cacheMsgBean.getSenderUserId();
+                if (!TextUtils.isEmpty(senderUserId)&&senderUserId.equals(dstUuid)
+                        && cacheMsgBean.getGroupId() == 0) {
+                    imListAdapter.refreshIncomingMsgUI(cacheMsgBean);
+                    isMsgReceive = true;
+                }
             }
         }
     }

@@ -2,6 +2,7 @@ package com.point.password;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.graphics.drawable.ColorDrawable;
 import android.os.CountDownTimer;
 import android.os.Message;
@@ -25,22 +26,26 @@ import static com.user.UserMessageConstant.POINT_GET_CODE;
  * @author lining
  */
 public class PopInputCodeView extends PopupWindow {
-
+    private String loginMobile;
     private InputCodeView codeView;
 
     private View mMenuView;
 
     private Activity mContext;
     private TextView codeViewText;
+    private TextView send_code_notice;
 
     public PopInputCodeView(final Activity context) {
         super(context);
         this.mContext = context;
+        SharedPreferences shared = context.getSharedPreferences(UserAppConst.USERINFO, 0);
+        loginMobile = shared.getString(UserAppConst.Colour_login_mobile, "");
         LayoutInflater inflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         mMenuView = inflater.inflate(R.layout.pop_enter_inputcode, null);
         codeView = mMenuView.findViewById(R.id.code_view);
         // 监听键盘上方的返回
         codeViewText = codeView.getCodeViewText();
+        send_code_notice = codeView.getCodeNoticeText();
         codeView.getVirtualKeyboardView().getLayoutBack().setVisibility(View.GONE);
         codeViewText.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -48,6 +53,12 @@ public class PopInputCodeView extends PopupWindow {
                 Message message = Message.obtain();
                 message.what = POINT_GET_CODE;
                 EventBus.getDefault().post(message);
+            }
+        });
+        codeView.getCloseImage().setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dismiss();
             }
         });
         // 设置SelectPicPopupWindow的View
@@ -86,7 +97,7 @@ public class PopInputCodeView extends PopupWindow {
 
         @Override
         public void onFinish() {// 计时完毕时触发
-            codeViewText.setText(mContext.getResources().getString(R.string.user_again_getcode));
+            codeViewText.setText("重新发送");
             codeViewText.setClickable(true);
             codeViewText.requestFocus();
         }
@@ -95,6 +106,9 @@ public class PopInputCodeView extends PopupWindow {
         public void onTick(long millisUntilFinished) {// 计时过程显示
             long currentSecond = millisUntilFinished / UserAppConst.INTERVAL;
             codeViewText.setText(mContext.getResources().getString(R.string.user_already_send) + "(" + currentSecond + "S)");
+            if (currentSecond <= 57) {
+                send_code_notice.setVisibility(View.INVISIBLE);
+            }
         }
     }
 
@@ -108,5 +122,7 @@ public class PopInputCodeView extends PopupWindow {
         codeViewText.setClickable(false);
         myTimeCount = new MyTimeCount(60000, 1000);
         myTimeCount.start();
+        send_code_notice.setVisibility(View.VISIBLE);
+        send_code_notice.setText("验证码已发送至手机号" + loginMobile);
     }
 }

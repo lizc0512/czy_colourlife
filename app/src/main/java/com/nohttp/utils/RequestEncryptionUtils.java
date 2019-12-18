@@ -293,15 +293,9 @@ public class RequestEncryptionUtils {
         paramsMap.put("OsVersionCode", TokenUtils.getOsVersionCode());
         String buff = "";
         try {
-            List<Map.Entry<String, Object>> infoIds = new ArrayList<Map.Entry<String, Object>>(paramsMap.entrySet());
+            List<Map.Entry<String, Object>> infoIds = new ArrayList<>(paramsMap.entrySet());
             // 对所有传入参数按照字段名的 ASCII 码从小到大排序（字典序）
-            Collections.sort(infoIds, new Comparator<Map.Entry<String, Object>>() {
-
-                @Override
-                public int compare(Map.Entry<String, Object> o1, Map.Entry<String, Object> o2) {
-                    return (o1.getKey()).toString().compareTo((o2.getKey()).toString());
-                }
-            });
+            Collections.sort(infoIds, (o1, o2) -> (o1.getKey()).compareTo((o2.getKey())));
             // 构造URL 键值对的格式
             StringBuilder buf = new StringBuilder();
             for (Map.Entry<String, Object> item : infoIds) {

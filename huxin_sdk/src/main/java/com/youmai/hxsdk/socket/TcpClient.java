@@ -20,6 +20,7 @@ import java.nio.channels.AsynchronousCloseException;
 import java.nio.channels.SocketChannel;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.Executors;
 import java.util.concurrent.LinkedBlockingQueue;
@@ -141,9 +142,6 @@ public class TcpClient extends PduUtil implements Runnable {
                 if (callback != null) {
                     mCallBack = callback;
                 }
-                Thread thread = new Thread(this);
-                thread.setName("socket thread");
-                thread.start();
                 Log.v(TAG, "tcp is connecting");
                 LogFile.inStance().toFile("tcp is connecting");
             }

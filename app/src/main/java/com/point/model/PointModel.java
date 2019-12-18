@@ -37,6 +37,7 @@ public class PointModel extends BaseModel {
     private String transactionReturnPlanUrl = "app/wallet/returnPlan";//彩粮票返还计划
     private String transactionTokenUrl = "app/transaction/checkpwd";//获取彩之云交易令牌
     private String transactionTransferUrl = "app/transaction/transfer";//彩之云饭票转账交易
+    private String transactionCheckSmsCodeUrl = "app/wallet/checkSmsCode";//彩之云饭票转账交易
 
 
     public PointModel(Context context) {
@@ -328,6 +329,33 @@ public class PointModel extends BaseModel {
             public void onFailed(int what, Response<String> response) {
                 showExceptionMessage(what, response);
                 newHttpResponse.OnHttpResponse(what, "");
+            }
+        }, true, true);
+    }
+
+    public void pointCheckCode(int what, String mobile, String code, final NewHttpResponse newHttpResponse) {
+        Map<String, Object> params = new HashMap<String, Object>();
+        params.put("mobile", mobile);
+        params.put("code", code);
+        final Request<String> request = NoHttp.createStringRequest(RequestEncryptionUtils.postCombileMD5(mContext, 16, transactionCheckSmsCodeUrl), RequestMethod.POST);
+        request(what, request, params, new HttpListener<String>() {
+            @Override
+            public void onSucceed(int what, Response<String> response) {
+                int responseCode = response.getHeaders().getResponseCode();
+                String result = response.get();
+                if (responseCode == RequestEncryptionUtils.responseSuccess) {
+                    int resultCode = showSuccesResultMessage(result);
+                    if (resultCode == 0) {
+                        newHttpResponse.OnHttpResponse(what, result);
+                    }
+                } else {
+                    showErrorCodeMessage(responseCode, response);
+                }
+            }
+
+            @Override
+            public void onFailed(int what, Response<String> response) {
+                showExceptionMessage(what, response);
             }
         }, true, true);
     }

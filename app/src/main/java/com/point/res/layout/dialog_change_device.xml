@@ -18,7 +18,7 @@
             android:layout_marginTop="30dp"
             android:text="当前用户更换设备，请校验手机号"
             android:textColor="@color/color_333333"
-            android:textSize="14sp" />
+            android:textSize="16sp" />
 
           <LinearLayout
               android:id="@+id/bottom_layout"

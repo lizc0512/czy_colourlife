@@ -53,4 +53,12 @@ public class ToastUtil {
 			toast.show();
 		}
 	}
+	public static void toastBottomTime(Context context, String text,int duration) {
+		if(null!=context&& !TextUtils.isEmpty(text) && isToast==true) {
+			ToastView toast = new ToastView(context, text);
+			toast.setGravity(Gravity.BOTTOM, 0, 100);
+			toast.setDuration(duration);
+			toast.show();
+		}
+	}
 }

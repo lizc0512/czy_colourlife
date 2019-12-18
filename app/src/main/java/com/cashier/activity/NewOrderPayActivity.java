@@ -65,7 +65,6 @@ import com.user.model.NewUserModel;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.StringReader;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
@@ -782,7 +781,8 @@ public class NewOrderPayActivity extends BaseActivity implements View.OnClickLis
                 if (null != popInputCodeView) {
                     popInputCodeView.dismiss();
                 }
-                newUserModel.checkSMSCode(10, loginMobile, code, "walletSet", NewOrderPayActivity.this);
+                PointModel pointModel = new PointModel(NewOrderPayActivity.this);
+                pointModel.pointCheckCode(10, loginMobile, code, NewOrderPayActivity.this);
                 break;
         }
     }
@@ -1077,10 +1077,9 @@ public class NewOrderPayActivity extends BaseActivity implements View.OnClickLis
                 if (null != popInputCodeView) {
                     popInputCodeView.getCodeSuccess();
                 }
-                ToastUtil.toastTime(NewOrderPayActivity.this, "验证码已发送至手机号" + loginMobile, 3000);
                 break;
             case 10://短信验证码验证通过
-                pointPayOrder();
+                showPayDialog();
                 break;
         }
     }

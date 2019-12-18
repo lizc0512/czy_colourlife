@@ -272,7 +272,7 @@ public class IMApplyFriendRecordActivity extends BaseActivity implements View.On
                 } else if (ack.getResult() == YouMaiBuddy.ResultCode.CODE_BUDDY_READD) {
 
                 } else {
-                    ToastUtil.toastShow(getApplicationContext(), "出现错误");
+                    ToastUtil.toastShow(getApplicationContext(), "出现错误["+ack.getResult()+"]");
                 }
             }
         };

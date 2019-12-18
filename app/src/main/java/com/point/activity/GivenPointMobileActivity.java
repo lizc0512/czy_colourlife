@@ -45,7 +45,7 @@ public class GivenPointMobileActivity extends BaseActivity implements View.OnCli
     private String pano;//积分或饭票的类型
     private String keyword_sign; //积分或饭票的标识
     private PointModel pointModel;
-    private boolean canGiven = true;
+    private boolean canGiven = false;
     private int last_times;//剩余次数
     private int last_amount;//剩余金额
 
@@ -212,7 +212,6 @@ public class GivenPointMobileActivity extends BaseActivity implements View.OnCli
                 } catch (Exception e) {
 
                 }
-
                 break;
         }
     }
