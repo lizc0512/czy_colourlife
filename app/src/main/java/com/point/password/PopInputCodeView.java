@@ -18,6 +18,7 @@ import com.user.UserAppConst;
 import cn.net.cyberway.R;
 
 import static com.user.UserMessageConstant.POINT_GET_CODE;
+import static com.user.UserMessageConstant.POINT_INPUT_CODE;
 
 
 /**
@@ -59,6 +60,15 @@ public class PopInputCodeView extends PopupWindow {
             @Override
             public void onClick(View v) {
                 dismiss();
+            }
+        });
+        codeView.setOnFinishInput(new OnPasswordInputFinish() {
+            @Override
+            public void inputFinish(String password) {
+                Message message = Message.obtain();
+                message.what = POINT_INPUT_CODE;
+                message.obj = password;
+                EventBus.getDefault().post(message);
             }
         });
         // 设置SelectPicPopupWindow的View

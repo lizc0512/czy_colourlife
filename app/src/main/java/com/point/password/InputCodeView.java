@@ -86,7 +86,7 @@ public class InputCodeView extends RelativeLayout {
             if (i < 10) {
                 map.put("name", String.valueOf(i));
             } else if (i == 10) {
-                map.put("name", "10");
+                map.put("name", "");
             } else if (i == 11) {
                 map.put("name", String.valueOf(0));
             } else if (i == 12) {
@@ -118,6 +118,33 @@ public class InputCodeView extends RelativeLayout {
                     }else if (position==9){
                         setOnFinishInput();
                     }
+                }
+            }
+        });
+    }
+
+
+    //设置监听方法，在第6位输入完成后触发
+    public void setOnFinishInput(final OnPasswordInputFinish pass) {
+        tvList[3].addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                if (s.toString().length() == 1) {
+                    String strPassword = "";     //每次触发都要先将strPassword置空，再重新获取，避免由于输入删除再输入造成混乱
+                    for (int i = 0; i < 4; i++) {
+                        strPassword += tvList[i].getText().toString().trim();
+                    }
+                    pass.inputFinish(strPassword);    //接口中要实现的方法，完成密码输入完成后的响应逻辑
                 }
             }
         });
