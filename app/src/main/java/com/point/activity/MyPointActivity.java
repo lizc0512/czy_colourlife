@@ -1,5 +1,6 @@
 package com.point.activity;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
@@ -31,6 +32,7 @@ import cn.net.cyberway.R;
 
 import static com.point.activity.GivenPointAmountActivity.GIVENMOBILE;
 import static com.user.UserAppConst.COLOUR_OLD_WALLET_DIALOG;
+import static com.user.UserAppConst.COLOUR_POINT_PASSWORD_DIALOG;
 import static com.user.UserAppConst.COLOUR_WALLET_ACCOUNT_LIST;
 import static com.user.UserAppConst.COLOUR_WALLET_KEYWORD_SIGN;
 
@@ -125,6 +127,7 @@ public class MyPointActivity extends BaseActivity implements View.OnClickListene
                         user_top_view_right.setVisibility(View.VISIBLE);
                         showOldWalletDialog();
                     } else {
+                        showPassWordGuide();
                         user_top_view_right.setVisibility(View.GONE);
                     }
                 } catch (Exception e) {
@@ -143,6 +146,21 @@ public class MyPointActivity extends BaseActivity implements View.OnClickListene
             PointOldWalletDialog pointOldWalletDialog = new PointOldWalletDialog(MyPointActivity.this);
             pointOldWalletDialog.show();
             editor.putBoolean(COLOUR_OLD_WALLET_DIALOG, true).apply();
+            pointOldWalletDialog.mDialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
+                @Override
+                public void onDismiss(DialogInterface dialog) {
+                    showPassWordGuide();
+                }
+            });
+        }
+    }
+
+    private void showPassWordGuide() {
+        boolean passDialogShow = shared.getBoolean(COLOUR_POINT_PASSWORD_DIALOG, false);
+        if (!passDialogShow) {
+            PointPasswordDialog pointPasswordDialog = new PointPasswordDialog(MyPointActivity.this);
+            pointPasswordDialog.show();
+            editor.putBoolean(COLOUR_POINT_PASSWORD_DIALOG, true).apply();
         }
     }
 

@@ -1024,7 +1024,7 @@ public class NewUserModel extends BaseModel {
             public void onFailed(int what, Response<String> response) {
 
             }
-        }, true, true);
+        }, true, false);
     }
 
     /****绑定第三方登录**/

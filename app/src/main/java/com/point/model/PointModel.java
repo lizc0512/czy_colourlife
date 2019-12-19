@@ -239,6 +239,7 @@ public class PointModel extends BaseModel {
         }, true, true);
     }
 
+
     public void getTransactionToken(int what, final NewHttpResponse newHttpResponse) {
         Map<String, Object> params = new HashMap<String, Object>();
         params.put("transfer_type", 1);

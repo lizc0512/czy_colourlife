@@ -23,6 +23,7 @@ import com.mob.tools.utils.UIHandler;
 import com.nohttp.utils.GsonUtils;
 import com.point.activity.ChangePawdStyleActivity;
 import com.point.activity.ChangePawdTwoStepActivity;
+import com.point.activity.PointAccountPawdDialog;
 import com.point.entity.PointTransactionTokenEntity;
 import com.point.model.PointModel;
 import com.setting.switchButton.SwitchButton;
@@ -51,6 +52,7 @@ import cn.sharesdk.tencent.qq.QQ;
 import cn.sharesdk.wechat.friends.Wechat;
 
 import static com.setting.activity.VerifyLoginPwdActivity.PAWDTYPE;
+import static com.user.UserAppConst.COLOUR_POINT_ACCOUNT_DIALOG;
 
 /**
  * @name ${yuansk}
@@ -169,6 +171,17 @@ public class UserAccountSaftyActivity extends BaseActivity implements View.OnCli
         if (!EventBus.getDefault().isregister(this)) {
             EventBus.getDefault().register(this);
         }
+        showAccountDialog();
+    }
+
+
+    private void showAccountDialog() {
+        boolean accountDialogShow = shared.getBoolean(COLOUR_POINT_ACCOUNT_DIALOG, false);
+        if (!accountDialogShow) {
+            PointAccountPawdDialog pointAccountPawdDialog = new PointAccountPawdDialog(UserAccountSaftyActivity.this);
+            pointAccountPawdDialog.show();
+            editor.putBoolean(COLOUR_POINT_ACCOUNT_DIALOG, true).apply();
+        }
     }
 
     public void onEvent(Object event) {
@@ -217,10 +230,10 @@ public class UserAccountSaftyActivity extends BaseActivity implements View.OnCli
                 }
                 break;
             case R.id.change_paypawd_layout:
-                if (TextUtils.isEmpty(state)){
+                if (TextUtils.isEmpty(state)) {
                     intent = new Intent(this, ChangePawdStyleActivity.class);
                     startActivity(intent);
-                }else{
+                } else {
                     switch (state) {
                         case "2"://已实名未设置支付密码
                             Intent pay_intent = new Intent(UserAccountSaftyActivity.this, ChangePawdTwoStepActivity.class);
