@@ -170,8 +170,11 @@ public class GivenPointAmountActivity extends BaseActivity implements View.OnCli
             case UserMessageConstant.POINT_CONTINUE_GIVEN:
                 finish();
                 break;
-            case POINT_INPUT_PAYPAWD://密码框输入密码
             case POINT_SET_PAYPAWD: //设置支付密码成功 直接拿密码进行支付
+
+                break;
+            case POINT_INPUT_PAYPAWD://密码框输入密码
+
                 String password = message.obj.toString();
                 pointModel.transferTransaction(4, giveBalance, password, token, order_no, dest_account, pano,
                         ed_given_remark.getText().toString().trim(), GivenPointAmountActivity.this);

@@ -87,6 +87,7 @@ public class PopEnterPassword extends PopupWindow {
         pwdView.getForgetText().setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                dismiss();
                 Intent forget_intent = new Intent(mContext, ForgetPayPawdActivity.class);
                 mContext.startActivity(forget_intent);
             }

@@ -763,6 +763,8 @@ public class NewOrderPayActivity extends BaseActivity implements View.OnClickLis
                 }
                 break;
             case POINT_CHANGE_PAYPAWD://积分支付 设置密码成功后的回调
+
+                break;
             case POINT_INPUT_PAYPAWD://积分支付 设置密码成功后的回调
                 String password = (String) message.obj;
                 newOrderPayModel.goOrderPayByPoint(8, encrypt, password, token, NewOrderPayActivity.this);
@@ -999,7 +1001,7 @@ public class NewOrderPayActivity extends BaseActivity implements View.OnClickLis
                             if ("1".equals(content)) {
                                 ToastUtil.toastShow(this, "认证成功");
                                 editor.putString(UserAppConst.COLOUR_AUTH_REAL_NAME + shared.getInt(UserAppConst.Colour_User_id, 0), realName).commit();
-                                newUserModel.finishTask(10, "2", "task_web", this);//实名认证任务
+                                newUserModel.finishTask(11, "2", "task_web", this);//实名认证任务
                                 if ("3".equals(state)) {
                                     state = "2";
                                     Intent intent = new Intent(NewOrderPayActivity.this, ChangePawdTwoStepActivity.class);
@@ -1094,7 +1096,7 @@ public class NewOrderPayActivity extends BaseActivity implements View.OnClickLis
 
     /***支付密码的弹窗**/
     private void showPayDialog() {
-        PopEnterPassword popEnterPassword = new PopEnterPassword(this);
+        PopEnterPassword   popEnterPassword = new PopEnterPassword(this);
         // 显示窗口
         popEnterPassword.showAtLocation(this.findViewById(R.id.layoutContent),
                 Gravity.BOTTOM | Gravity.CENTER_HORIZONTAL, 0, 0); // 设置layout在PopupWindow中显示的位置

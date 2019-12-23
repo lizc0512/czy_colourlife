@@ -134,6 +134,7 @@ public class ChangePawdThreeStepActivity extends BaseActivity implements View.On
                     if (!"1000".equals(result)) { //密码过于简单
                         Message msg1 = Message.obtain();
                         msg1.what = POINT_CHANGE_PAYPAWD;
+                        msg1.obj = definePayPawd;
                         EventBus.getDefault().post(msg1);
                         if (!"1001".equals(result)) {
                             msg1.arg1=0;
