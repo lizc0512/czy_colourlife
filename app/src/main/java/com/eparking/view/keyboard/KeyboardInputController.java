@@ -7,7 +7,6 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 
-import com.eparking.activity.FastmovingCarActivity;
 import com.eparking.view.keyboard.engine.KeyboardEntry;
 import com.eparking.view.keyboard.engine.NumberType;
 import com.eparking.view.keyboard.view.InputView;

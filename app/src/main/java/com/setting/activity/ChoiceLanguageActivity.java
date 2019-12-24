@@ -13,7 +13,6 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.BeeFramework.activity.BaseActivity;
-import com.eparking.adapter.ChoiceParkingAddressAdapter;
 import com.external.eventbus.EventBus;
 import com.user.UserAppConst;
 import com.user.UserMessageConstant;
@@ -21,7 +20,6 @@ import com.user.UserMessageConstant;
 import java.util.ArrayList;
 import java.util.List;
 
-import cn.csh.colourful.life.listener.OnItemClickListener;
 import cn.net.cyberway.R;
 import cn.net.cyberway.utils.ChangeLanguageHelper;
 
@@ -43,7 +41,6 @@ public class ChoiceLanguageActivity extends BaseActivity implements View.OnClick
     private RecyclerView rv_community;
     private TextView tv_near_parking;
     private List<String> dataSource;
-    private ChoiceParkingAddressAdapter choiceParkingAddressAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -70,17 +67,6 @@ public class ChoiceLanguageActivity extends BaseActivity implements View.OnClick
         for (int j = 0; j < languageArr.length; j++) {
             dataSource.add(languageArr[j]);
         }
-        choiceParkingAddressAdapter = new ChoiceParkingAddressAdapter(ChoiceLanguageActivity.this, dataSource, 2);
-        rv_community.setAdapter(choiceParkingAddressAdapter);
-        int choiceLanguage = shared.getInt(UserAppConst.CURRENTLANGUAGE, 0);
-        choiceParkingAddressAdapter.setSelectPos(choiceLanguage - 1);
-        choiceParkingAddressAdapter.setOnItemClickListener(new OnItemClickListener() {
-            @Override
-            public void onItemClick(int i) {
-                choicePos = i + 1;
-                choiceParkingAddressAdapter.setSelectPos(i);
-            }
-        });
     }
 
     private int choicePos = 0;

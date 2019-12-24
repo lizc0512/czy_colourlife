@@ -62,8 +62,6 @@ import com.BeeFramework.Utils.ToastUtil;
 import com.BeeFramework.Utils.Utils;
 import com.BeeFramework.Utils.WebViewUploadImageHelper;
 import com.BeeFramework.model.Constants;
-import com.BeeFramework.model.HttpApi;
-import com.BeeFramework.model.HttpApiResponse;
 import com.BeeFramework.model.NewHttpResponse;
 import com.BeeFramework.protocol.JsAlertEntity;
 import com.BeeFramework.view.CustomDialog;
@@ -95,16 +93,11 @@ import com.im.entity.MobileBookEntity;
 import com.im.helper.CacheFriendInforHelper;
 import com.im.model.IMUploadPhoneModel;
 import com.insthub.Config;
-import com.message.model.MessageModel;
-import com.message.protocol.HomeconfigGetuserinfourlGetApi;
-import com.message.protocol.HomeconfigGetuserinfourlGetResponse;
-import com.message.protocol.INFOURL;
 import com.mob.MobSDK;
 import com.permission.AndPermission;
 import com.permission.PermissionListener;
 import com.scanCode.activity.CaptureActivity;
 import com.setting.activity.DeliveryOauthDialog;
-import com.setting.activity.UserAccountSaftyActivity;
 import com.tencent.authsdk.AuthConfig;
 import com.tencent.authsdk.AuthSDKApi;
 import com.tencent.authsdk.IDCardInfo;
@@ -118,7 +111,6 @@ import com.update.activity.UpdateVerSion;
 import com.user.UserAppConst;
 import com.user.UserMessageConstant;
 import com.user.Utils.TokenUtils;
-import com.user.entity.ThridBindStatusEntity;
 import com.user.model.NewUserModel;
 
 import org.json.JSONException;
@@ -166,7 +158,7 @@ import static cn.net.cyberway.utils.BuryingPointUtils.UPLOAD_DETAILS;
 import static com.BeeFramework.Utils.Utils.getAuthPublicParams;
 
 @SuppressLint("SetJavaScriptEnabled")
-public class WebViewActivity extends BaseActivity implements View.OnLongClickListener, OnClickListener, HttpApiResponse, NewHttpResponse, LekaiParkLockController.OnScanParkLockChangeListener {
+public class WebViewActivity extends BaseActivity implements View.OnLongClickListener, OnClickListener, NewHttpResponse, LekaiParkLockController.OnScanParkLockChangeListener {
     public static final String WEBURL = "weburl";
     public static final String JUSHURL = "jushurl"; //极光推送过来的url
     public static final String JUSHRESOURCEID = "jushjushresourceidurl"; //极光推送的resourceId
@@ -276,11 +268,6 @@ public class WebViewActivity extends BaseActivity implements View.OnLongClickLis
         }
         if (null == url && null != webData) {
             webView.loadData(webData, "text/html", "utf-8");
-        }
-        if (!TextUtils.isEmpty(pushUrl)) {
-            MessageModel messageModel = new MessageModel(WebViewActivity.this);
-            messageModel.getSystemMsgNew(WebViewActivity.this, resource_id, pushUrl, "1",
-                    String.valueOf(shared.getInt(UserAppConst.Colour_User_id, -1)), false);
         }
         CityManager.getInstance(this).initLocation();
         TCAgent.LOG_ON = true;
@@ -538,16 +525,6 @@ public class WebViewActivity extends BaseActivity implements View.OnLongClickLis
             }
         });
     }
-
-    @Override
-    public void OnHttpResponse(HttpApi api) {
-        if (api.getClass().equals(HomeconfigGetuserinfourlGetApi.class)) {
-            HomeconfigGetuserinfourlGetResponse response = ((HomeconfigGetuserinfourlGetApi) api).response;
-            INFOURL infourl = response.data;
-            webView.loadUrl(infourl.completeUrl);
-        }
-    }
-
 
     @Override
     public void OnHttpResponse(int what, String result) {

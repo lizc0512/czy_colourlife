@@ -9,7 +9,6 @@ import android.widget.Button;
 
 import com.BeeFramework.AppConst;
 import com.amap.api.maps2d.model.LatLng;
-import com.eparking.protocol.CityInforEntity;
 import com.eparking.view.keyboard.KeyboardInputController;
 import com.eparking.view.keyboard.OnInputChangedListener;
 import com.eparking.view.keyboard.PopupHelper;
@@ -191,24 +190,6 @@ public class MapNaviUtils {
         context.startActivity(intent);
     }
 
-    public static void setInputViewData(Context context, InputView inputView, boolean isShow) {
-        SharedPreferences sharedPreferences = context.getSharedPreferences(AppConst.USERINFO, 0);
-        String cityInfor = sharedPreferences.getString(EPARKINGCITYINFOR, "");
-        String fristLetter = "粤";
-        String secondLetter = "B";
-        try {
-            CityInforEntity cityInforEntity = GsonUtils.gsonToBean(cityInfor, CityInforEntity.class);
-            CityInforEntity.ContentBean contentBean = cityInforEntity.getContent();
-            fristLetter = contentBean.getAbbreviation();
-            secondLetter = contentBean.getLetter();
-        } catch (Exception e) {
-
-        }
-        inputView.updateNumber(fristLetter + secondLetter);
-        if (isShow) {
-            inputView.performPosFieldView(2);
-        }
-    }
 
     public static void initInputView(final Activity activity, InputView input_view, final Button tv_change_cartype, final InputViewInterface  inputViewInterface) {
         // 创建弹出键盘

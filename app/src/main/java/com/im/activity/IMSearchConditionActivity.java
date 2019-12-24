@@ -32,7 +32,6 @@ import com.user.UserAppConst;
 import java.util.List;
 
 import cn.net.cyberway.R;
-import cn.net.cyberway.activity.JoinCommunityActivity;
 
 /**
  * @name ${yuansk}

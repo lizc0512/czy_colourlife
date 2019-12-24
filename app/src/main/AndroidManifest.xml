@@ -77,9 +77,6 @@
             android:hardwareAccelerated="true"
             android:screenOrientation="portrait"
             android:theme="@style/Theme.AppCompat" />
-        <activity
-            android:name=".activity.JoinCommunityActivity"
-            android:screenOrientation="portrait" />
 
         <!--彩之云扫码-->
         <activity
@@ -148,24 +145,7 @@
             android:windowSoftInputMode="adjustResize" />
 
         <!-- 门禁授权-->
-        <activity
-            android:name="com.door.activity.DoorAuthorizationActivity"
-            android:screenOrientation="portrait" />
-        <activity
-            android:name="com.door.activity.DoorApplyDetailActivity"
-            android:screenOrientation="portrait" />
-        <activity
-            android:name="com.door.activity.DoorApplyActivity"
-            android:screenOrientation="portrait" />
 
-
-        <activity
-            android:name="com.door.activity.DoorAuthorizationApproveActivity"
-            android:screenOrientation="portrait" />
-
-        <activity
-            android:name="com.door.activity.DoorControlAuthorizationDetailActivity"
-            android:screenOrientation="portrait" />
         <!-- 门禁授权-->
         <activity
             android:name="com.cardcoupons.activity.CardCouponsActivity"
@@ -263,15 +243,6 @@
             android:screenOrientation="portrait" />
         <!-- 用户信息 -->
 
-
-        <!--旧消息通知-->
-        <activity
-            android:name="com.message.activity.MessageCenterActivity"
-            android:screenOrientation="portrait" />
-        <activity
-            android:name="com.message.activity.SystemMsgDetailActivity"
-            android:screenOrientation="portrait" />
-        <!--旧消息通知-->
         <activity
             android:name="com.mob.tools.MobUIShell"
             android:configChanges="keyboardHidden|orientation|screenSize"
@@ -402,9 +373,6 @@
             android:windowSoftInputMode="stateHidden|stateAlwaysHidden" />
 
 
-        <activity
-            android:name=".activity.FindPropertyActivity"
-            android:screenOrientation="portrait" />
         <!--微信支付-->
         <activity
             android:name=".wxapi.WXPayEntryActivity"
@@ -514,10 +482,6 @@
         <!--房产-->
 
         <!--门禁-->
-        <activity
-            android:name="com.door.activity.NewDoorActivity"
-            android:exported="true"
-            android:screenOrientation="portrait" />
         <!--智能门禁-->
         <activity
             android:name="com.door.activity.IntelligenceDoorActivity"
@@ -541,9 +505,7 @@
         <activity
             android:name="com.door.activity.NoRightDoorActivity"
             android:screenOrientation="portrait" />
-        <activity
-            android:name="com.door.activity.DoorLeadActivity"
-            android:screenOrientation="portrait" />
+
 
         <!--账号部分-->
 
@@ -650,134 +612,6 @@
             android:windowSoftInputMode="adjustPan" />
         <!--IM模块 添加好友 聊天等-->
 
-        <!--e停原生-->
-        <activity
-            android:name="com.eparking.activity.EParkingHomeActivity"
-            android:screenOrientation="portrait"
-            android:windowSoftInputMode="adjustPan" />
-        <activity
-            android:name="com.eparking.activity.EParkingCardHolderActivity"
-            android:screenOrientation="portrait"
-            android:theme="@style/Theme.AppCompat" />
-
-        <activity
-            android:name="com.eparking.activity.EParkingHistoryRecordActivity"
-            android:screenOrientation="portrait"
-            android:theme="@style/Theme.AppCompat" />
-        <activity
-            android:name="com.eparking.activity.TemporaryParkingOrderActivity"
-            android:screenOrientation="portrait" />
-        <activity
-            android:name="com.eparking.activity.MonthCardRenewalActivity"
-            android:screenOrientation="portrait" />
-        <activity
-            android:name="com.eparking.activity.EparkingCarDetailsActivity"
-            android:screenOrientation="portrait" />
-        <activity
-            android:name="com.eparking.activity.EparkingLockDetailsActivity"
-            android:screenOrientation="portrait" />
-        <activity
-            android:name="com.eparking.activity.EparkingMonthCardDetailsActivity"
-            android:screenOrientation="portrait" />
-        <activity
-            android:name="com.eparking.activity.ApplyOpenTicketActivity"
-            android:screenOrientation="portrait"
-            android:windowSoftInputMode="adjustPan" />
-
-        <activity
-            android:name="com.eparking.activity.ParkingOpenTicketDetailsActivity"
-            android:screenOrientation="portrait"
-            android:windowSoftInputMode="adjustPan" />
-        <activity
-            android:name="com.eparking.activity.PaymentTempDetailsActivity"
-            android:screenOrientation="portrait" />
-        <activity
-            android:name="com.eparking.activity.ParkingTempDetailsActivity"
-            android:screenOrientation="portrait" />
-        <activity
-            android:name="com.eparking.activity.SurrenderParkingFeeActivity"
-            android:screenOrientation="portrait" />
-        <activity
-            android:name="com.eparking.activity.AppointmentParkingActivity"
-            android:screenOrientation="portrait" />
-        <activity
-            android:name="com.eparking.activity.AppointmentRecordActivity"
-            android:screenOrientation="portrait" />
-        <activity
-            android:name="com.eparking.activity.CarsBindActivity"
-            android:screenOrientation="portrait" />
-        <activity
-            android:name="com.eparking.activity.CarsAuthorizationActivity"
-            android:screenOrientation="portrait" />
-        <activity
-            android:name="com.eparking.activity.CarsAuthorizeRecordActivity"
-            android:screenOrientation="portrait" />
-        <activity
-            android:name="com.eparking.activity.MonthCardApplyActivity"
-            android:screenOrientation="portrait" />
-        <activity
-            android:name="com.eparking.activity.MonthCardApplyRecordActivity"
-            android:screenOrientation="portrait" />
-        <activity
-            android:name="com.eparking.activity.FastmovingCarActivity"
-            android:screenOrientation="portrait" />
-        <activity
-            android:name="com.eparking.activity.EmergencySluiceActivity"
-            android:screenOrientation="portrait" />
-        <activity
-            android:name="com.eparking.activity.ShareParkingSpaceActivity"
-            android:screenOrientation="portrait" />
-        <activity
-            android:name="com.eparking.activity.ShareParkingSpaceRecoActivity"
-            android:screenOrientation="portrait" />
-        <activity
-            android:name="com.eparking.activity.EmergencyRealNameActivity"
-            android:screenOrientation="portrait" />
-
-
-        <activity
-            android:name="com.eparking.activity.SubmitIDCardInforActivity"
-            android:screenOrientation="portrait" />
-
-        <activity
-            android:name="com.eparking.activity.InputOpenCodeActivity"
-            android:screenOrientation="portrait" />
-        <activity
-            android:name="com.eparking.activity.ChoiceParkingCommunityActivity"
-            android:screenOrientation="portrait" />
-        <activity
-            android:name="com.eparking.activity.ChoiceParkingBuildActivity"
-            android:screenOrientation="portrait"
-            android:windowSoftInputMode="adjustPan" />
-        <activity
-            android:name="com.eparking.activity.ChoiceParkingRoomActivity"
-            android:screenOrientation="portrait"
-            android:windowSoftInputMode="adjustPan" />
-        <activity
-            android:name="com.eparking.activity.ChoiceParkingUserRoleActivity"
-            android:screenOrientation="portrait" />
-        <activity
-            android:name="com.eparking.activity.ChoiceParkingUserInforActivity"
-            android:screenOrientation="portrait" />
-        <activity
-            android:name="com.eparking.activity.CarsLicenseUploadActivity"
-            android:screenOrientation="portrait" />
-
-        <activity
-            android:name="com.eparking.activity.EparkingBusinessSectionActivity"
-            android:screenOrientation="portrait" />
-
-        <activity
-            android:name="com.eparking.activity.FindParkingSpaceActivity"
-            android:screenOrientation="portrait" />
-
-        <activity
-            android:name="com.eparking.activity.SearchParkingActivity"
-            android:screenOrientation="portrait" />
-
-        <activity
-            android:name="com.eparking.activity.EparkingLockStatusActivity"
-            android:screenOrientation="portrait" />
         <activity
             android:name=".home.activity.BannerVideoActivity"
             android:configChanges="orientation|screenSize|keyboardHidden"
@@ -851,11 +685,6 @@
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan" />
         <!--授权管理-->
-
-        <activity
-            android:name="cn.net.cyberway.home.activity.LekaiListActivity"
-            android:screenOrientation="portrait"
-            android:windowSoftInputMode="adjustPan" />
 
         <activity
             android:name="com.tencent.bugly.beta.ui.BetaActivity"

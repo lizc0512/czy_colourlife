@@ -21,16 +21,6 @@ import com.dashuview.library.keep.Cqb_PayUtil;
 import com.door.activity.IntelligenceDoorActivity;
 import com.door.activity.NewDoorAuthorizeActivity;
 import com.door.activity.NewDoorRenewalActivity;
-import com.eparking.activity.AppointmentParkingActivity;
-import com.eparking.activity.EParkingCardHolderActivity;
-import com.eparking.activity.EParkingHistoryRecordActivity;
-import com.eparking.activity.EParkingHomeActivity;
-import com.eparking.activity.EmergencySluiceActivity;
-import com.eparking.activity.EparkingBusinessSectionActivity;
-import com.eparking.activity.EparkingLockStatusActivity;
-import com.eparking.activity.FastmovingCarActivity;
-import com.eparking.activity.FindParkingSpaceActivity;
-import com.eparking.activity.MonthCardApplyActivity;
 import com.feed.activity.CreateNormalFeedActivity;
 import com.feed.activity.FeedOrActivityActivity;
 import com.feed.activity.LinLiActivity;
@@ -55,9 +45,7 @@ import org.json.JSONObject;
 import java.util.HashSet;
 
 import cn.net.cyberway.R;
-import cn.net.cyberway.activity.FindPropertyActivity;
 import cn.net.cyberway.activity.MainActivity;
-import cn.net.cyberway.home.activity.LekaiListActivity;
 
 /**
  * 所有link解析 解析文档 见 svn 彩之云linkprotocol
@@ -110,7 +98,6 @@ public class LinkParseUtil {
                         case "EntranceGuard":  //门禁colourlife://proto?type=EntranceGuard
                         case "BloothKeyList"://蓝牙钥匙  colourlife://proto?type=BloothKeyList
                         case "Guard":
-//                            intent = new Intent(context, NewDoorActivity.class);
                             intent = new Intent(context, IntelligenceDoorActivity.class);
                             ((Activity) context).startActivityForResult(intent, 2000);
                             ((Activity) context).overridePendingTransition(R.anim.push_up_in, R.anim.push_up_out);
@@ -202,10 +189,6 @@ public class LinkParseUtil {
                             }
                             context.startActivity(intent);
                             break;
-                        case "FindProperty"://找物业页面
-                            intent = new Intent(context, FindPropertyActivity.class);
-                            context.startActivity(intent);
-                            break;
                         case "orderList"://我的订单
                             intent = new Intent(context, OrderListActivity.class);
                             context.startActivity(intent);
@@ -223,48 +206,6 @@ public class LinkParseUtil {
                             intent = new Intent(context, DeliveryAddressListActivity.class);
                             context.startActivity(intent);
                             ((Activity) context).overridePendingTransition(R.anim.push_right_in, R.anim.push_right_out);
-                            break;
-                        case "emergency-sluice"://紧急开闸
-                            intent = new Intent(context, EmergencySluiceActivity.class);
-                            context.startActivity(intent);
-                            break;
-                        case "reserved-parking"://预约停车
-                            intent = new Intent(context, AppointmentParkingActivity.class);
-                            context.startActivity(intent);
-                            break;
-                        case "parking-business-block"://商家版块
-                            intent = new Intent(context, EparkingBusinessSectionActivity.class);
-                            context.startActivity(intent);
-                            break;
-                        case "apply-month-parking"://申请月卡
-                            intent = new Intent(context, MonthCardApplyActivity.class);
-                            context.startActivity(intent);
-                            break;
-                        case "no-feel-pay"://无感支付
-                            break;
-                        case "quick-move-car"://一键挪车
-                            intent = new Intent(context, FastmovingCarActivity.class);
-                            context.startActivity(intent);
-                            break;
-                        case "find-parking-lot"://找车位
-                            intent = new Intent(context, FindParkingSpaceActivity.class);
-                            context.startActivity(intent);
-                            break;
-                        case "parking-history"://历史记录
-                            intent = new Intent(context, EParkingHistoryRecordActivity.class);
-                            context.startActivity(intent);
-                            break;
-                        case "parking-lock-status"://当前车位状态
-                            intent = new Intent(context, EparkingLockStatusActivity.class);
-                            context.startActivity(intent);
-                            break;
-                        case "parking-home"://e停主页
-                            intent = new Intent(context, EParkingHomeActivity.class);
-                            context.startActivity(intent);
-                            break;
-                        case "parking-cardholder"://我的卡包
-                            intent = new Intent(context, EParkingCardHolderActivity.class);
-                            context.startActivity(intent);
                             break;
                         case "colourlifeAppMall"://全部应用
                             intent = new Intent(context, WholeApplicationActivity.class);

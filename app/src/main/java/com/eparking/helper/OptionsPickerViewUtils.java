@@ -8,12 +8,6 @@ import android.view.View;
 
 import com.BeeFramework.Utils.TimeUtil;
 import com.BeeFramework.Utils.ToastUtil;
-import com.eparking.protocol.CarStationListEntity;
-import com.eparking.protocol.CardpackStationEntity;
-import com.eparking.protocol.HistoryCarBrand;
-import com.eparking.protocol.HistoryStationEntity;
-import com.eparking.protocol.ParkingLockEntity;
-import com.eparking.protocol.ParkingTaxEntity;
 import com.nohttp.utils.GsonUtils;
 import com.user.UserAppConst;
 
@@ -46,34 +40,15 @@ public class OptionsPickerViewUtils {
             switch (type) {
                 case 0:  //车牌
                     historyCache = shared.getString(ConstantKey.EPARKINGCARHISTORYBRAND, "");
-                    try {
-                        HistoryCarBrand historyCarBrand = GsonUtils.gsonToBean(historyCache, HistoryCarBrand.class);
-                        lists.addAll(historyCarBrand.getContent());
-                    } catch (Exception e) {
 
-                    }
                     break;
                 case 1: //停车场
                     historyCache = shared.getString(ConstantKey.EPARKINGCARHISTORYSTATION, "");
-                    if (!TextUtils.isEmpty(historyCache)) {
-                        try {
-                            HistoryStationEntity historyStationEntity = GsonUtils.gsonToBean(historyCache, HistoryStationEntity.class);
-                            lists.addAll(historyStationEntity.getContent().getLists());
-                        } catch (Exception e) {
 
-                        }
-                    }
                     break;
                 case 2:  //车位
                     historyCache = shared.getString(ConstantKey.EPARKINGCARHISTORYLOCK, "");
-                    if (!TextUtils.isEmpty(historyCache)) {
-                        try {
-                            ParkingLockEntity parkingLockEntity = GsonUtils.gsonToBean(historyCache, ParkingLockEntity.class);
-                            lists.addAll(parkingLockEntity.getContent());
-                        } catch (Exception e) {
 
-                        }
-                    }
                     break;
             }
         }
@@ -83,30 +58,7 @@ public class OptionsPickerViewUtils {
             @Override
             public void onOptionsSelect(int options1, int options2, int options3, View v) {
                 Object object = finalLists.get(options1);
-                if (object instanceof CarStationListEntity.ContentBean) {
-                    CarStationListEntity.ContentBean contentBean = (CarStationListEntity.ContentBean) object;
-                    optionsPickerInterface.choicePickResult(type, contentBean.getPlate(), contentBean.getCar_id());
-                } else if (object instanceof CarStationListEntity.ContentBean.StationListBean) {
-                    CarStationListEntity.ContentBean.StationListBean stationListBean = (CarStationListEntity.ContentBean.StationListBean) object;
-                    optionsPickerInterface.choicePickResult(type, stationListBean.getStation_name(), stationListBean.getStation_id());
-                } else if (object instanceof ParkingTaxEntity.ContentBean.ListsBean) {
-                    ParkingTaxEntity.ContentBean.ListsBean listsBean = (ParkingTaxEntity.ContentBean.ListsBean) object;
-                    optionsPickerInterface.choicePickResult(type, listsBean.getGfmc(), listsBean.getGfnsrsbh());
-                } else if (object instanceof HistoryCarBrand.ContentBean) {
-                    HistoryCarBrand.ContentBean contentBean = (HistoryCarBrand.ContentBean) object;
-                    optionsPickerInterface.choicePickResult(type, contentBean.getPlate(), contentBean.getCar());
-                } else if (object instanceof HistoryStationEntity.ContentBean.ListsBean) {
-                    HistoryStationEntity.ContentBean.ListsBean listsBean = (HistoryStationEntity.ContentBean.ListsBean) object;
-                    optionsPickerInterface.choicePickResult(type, listsBean.getStation_name(), listsBean.getStation_id());
-                } else if (object instanceof CardpackStationEntity.ContentBean.ListsBean) {
-                    CardpackStationEntity.ContentBean.ListsBean listsBean = (CardpackStationEntity.ContentBean.ListsBean) object;
-                    optionsPickerInterface.choicePickResult(type, listsBean.getName(), listsBean.getId());
-                } else if (object instanceof ParkingLockEntity.ContentBean) {
-                    ParkingLockEntity.ContentBean contentBean = (ParkingLockEntity.ContentBean) object;
-                    optionsPickerInterface.choicePickResult(type, contentBean.getStation_name(), contentBean.getStation_id());
-                } else {
-                    optionsPickerInterface.choicePickResult(type, finalLists.get(options1).toString(), "");
-                }
+
             }
         })
                 .setTitleText(mContext.getResources().getString(titleId))

@@ -126,7 +126,11 @@
     <string name="ticket_enter_wallet">饭票奖励已存入彩钱包</string>
     <string name="neterror_tryagain_opendoor">网络不稳定，请尝试重新开门</string>
     <string name="opendoor_again">重新开门</string>
-
+    <string name="message_define">确定</string>
+    <string name="message_cancel">取消</string>
+    <string name="message_del">删除</string>
+    <string name="message_open">开启</string>
+    <string name="message_edit">编辑</string>
     <string-array name="app_quick_enter">
         <item>开门</item>
         <item>扫一扫</item>

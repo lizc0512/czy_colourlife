@@ -74,8 +74,7 @@ public class HomeDoorAdapter extends PagerAdapter {
                 if (isLogin) {
                     SingleCommunityEntity.ContentBean.CommonUseBean commonUseBean = commonUseBeansBeanList.get(position);
 
-                    if (TextUtils.isEmpty(doorId)) {  //申请门禁
-//                        Intent intent = new Intent(mContext, DoorApplyActivity.class);
+                    if (TextUtils.isEmpty(doorId)) {  //申请门禁s
                         Intent intent = new Intent(mContext, NewDoorIndetifyActivity.class);
                         mContext.startActivity(intent);
                     } else {
