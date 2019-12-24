@@ -228,7 +228,9 @@ public class UnlockGesturePasswordActivity extends BaseActivity implements NewHt
         //type:登录的类型 1=>传统登录方式，提交手机号和密码认证；2=>手势密码；3=>短信密码
         //username为手机号
         String username = mShared.getString(UserAppConst.Colour_login_mobile, "0");
-        mUserModel.getAuthToken(4, username, LockPatternUtils.convertToString(mChosenPattern), "2", true, this);
+        if (null!=mChosenPattern){
+            mUserModel.getAuthToken(4, username, LockPatternUtils.convertToString(mChosenPattern), "2", true, this);
+        }
     }
 
     @Override

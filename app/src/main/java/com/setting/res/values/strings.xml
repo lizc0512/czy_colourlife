@@ -38,6 +38,6 @@
         <item>Tiếng Việt</item>
     </string-array>
     <string name="clear_cache_success">消息缓存清除成功</string>
-    <string name="login_off_success">注销成功</string>
+    <string name="login_off_success">账号退出登录成功</string>
 
 </resources>

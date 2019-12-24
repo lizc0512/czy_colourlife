@@ -51,6 +51,7 @@ import com.external.eventbus.EventBus;
 import com.nohttp.utils.GlideImageLoader;
 import com.nohttp.utils.GridSpacingItemDecoration;
 import com.nohttp.utils.GsonUtils;
+import com.notification.activity.NotificationAllInfoActivity;
 import com.tencent.authsdk.AuthConfig;
 import com.tencent.authsdk.AuthSDKApi;
 import com.tencent.authsdk.IDCardInfo;
@@ -743,10 +744,13 @@ public class MainHomeFragmentNew extends Fragment implements NewHttpResponse, Vi
                     if (i >= 0) {
                         HomeCommunityMsgEntity.ContentBean.DataBean dataBean = msgDataBeanList.get(i);
                         String linkUrl = dataBean.getLink_url();
-                        if (TextUtils.isEmpty(linkUrl)) {
-                            LinkParseUtil.parse(getActivity(), "colourlife://proto?type=notificationList", "");
+                        if (linkUrl.contains("notificationList")) {
+                            Intent intent = new Intent(getActivity(), NotificationAllInfoActivity.class);
+                            intent.putExtra("app_id", dataBean.getApp_id());
+                            intent.putExtra("title", dataBean.getMsg_title());
+                            getActivity().startActivity(intent);
                         } else {
-                            LinkParseUtil.parse(getActivity(), linkUrl, dataBean.getMsg_title());
+                            LinkParseUtil.parse(getActivity(), linkUrl, "");
                         }
                         String is_read = dataBean.getIs_read();
                         if (!"1".equals(is_read)) {

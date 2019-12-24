@@ -108,6 +108,7 @@ public class LinkParseUtil {
                             }
                             break;
                         case "EntranceGuard":  //门禁colourlife://proto?type=EntranceGuard
+                        case "BloothKeyList"://蓝牙钥匙  colourlife://proto?type=BloothKeyList
                         case "Guard":
 //                            intent = new Intent(context, NewDoorActivity.class);
                             intent = new Intent(context, IntelligenceDoorActivity.class);
@@ -143,7 +144,6 @@ public class LinkParseUtil {
                         case "openZCB"://打开招财宝
                             Cqb_PayUtil.getInstance((Activity) context).openZCB(Utils.getPublicParams(context), Constants.CAIWALLET_ENVIRONMENT, "zhaocaibao");//进入招财宝
                             break;
-
                         case "Invite"://邀请好友
                             intent = new Intent(context, InviteActivity.class);
                             context.startActivity(intent);
@@ -295,10 +295,6 @@ public class LinkParseUtil {
                         case "Colorbean":
                             intent = new Intent(context, CustomerColourBeanActivity.class);
                             ((Activity) context).startActivityForResult(intent, 1);
-                            break;
-                        case "BloothKeyList"://蓝牙钥匙  colourlife://proto?type=BloothKeyList
-                            intent = new Intent(context, LekaiListActivity.class);
-                            context.startActivity(intent);
                             break;
                         case "colourlifeCaiHui"://彩惠  colourlife://proto?type=colourlifeCaiHui
                             intent = new Intent(context, MainActivity.class);
