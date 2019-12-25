@@ -31,7 +31,7 @@ public class InitializeService extends IntentService {
     protected void onHandleIntent(@Nullable Intent intent) {
         try {
             DPAPI.getInstance(getApplicationContext(), null);
-//            Stetho.initializeWithDefaults(getApplicationContext());  实时查看数据库
+//           Stetho.initializeWithDefaults(getApplicationContext());  实时查看数据库
             MobSDK.init(getApplicationContext());
             SobotApi.initSobotSDK(getApplicationContext(), Constants.SMART_SERVICE_KEY, "");
             JPushInterface.setDebugMode(false); // 设置开启日志,发布时请关闭日志
@@ -39,9 +39,7 @@ public class InitializeService extends IntentService {
             //开始定位
             CityManager.getInstance(getApplicationContext()).initLocation();
             QNRTCEnv.init(getApplicationContext());
-
 //        LeakCanary.install(this);
-//        initSWLocation();//数位
             initBugly();
         } catch (Exception e) {
 
