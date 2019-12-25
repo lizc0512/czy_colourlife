@@ -54,11 +54,14 @@
 -keep class com.tencent.** { *; }
 -keep class com.tencent.** { *; }
 
-
--keep class com.umeng.** { *; }
--keep class com.umeng.analytics.** { *; }
--keep class com.umeng.common.** { *; }
--keep class com.umeng.newxp.** { *; }
+-keep class com.umeng.** {*;}
+-keepclassmembers class * {
+  public <init> (org.json.JSONObject);
+}
+ -keepclassmembers enum * {
+  public static **[] values();
+  public static ** valueOf(java.lang.String);
+}
 
 -dontwarn android.support.v4.**
 -dontwarn org.apache.commons.net.**

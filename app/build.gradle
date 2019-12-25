@@ -244,6 +244,9 @@ dependencies {
     implementation 'cn.jiguang.sdk.plugin:vivo:3.4.1'
     implementation(name: 'HMSSdk-agent', ext: 'aar')
     implementation 'org.jetbrains:annotations:15.0'
+
+    implementation  'com.umeng.umsdk:analytics:8.0.0'
+    implementation  'com.umeng.umsdk:common:2.0.0'
 }
 
 project.afterEvaluate {
