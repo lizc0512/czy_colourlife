@@ -28,7 +28,6 @@ import com.invite.activity.ContactsActivity;
 import com.invite.activity.InviteActivity;
 import com.mycarinfo.activity.MyCarInfoActivity;
 import com.myproperty.activity.MyPropertyActivity;
-import com.notification.activity.ENotificationActivity;
 import com.notification.activity.NotificationActivity;
 import com.point.activity.MyPointActivity;
 import com.scanCode.activity.CaptureActivity;
@@ -106,11 +105,6 @@ public class LinkParseUtil {
                             intent = new Intent(context, NewDoorAuthorizeActivity.class);
                             context.startActivity(intent);
                             ((Activity) context).overridePendingTransition(R.anim.push_up_in, R.anim.push_up_out);
-                            break;
-                        case "AreaNotive": //旧的消息通知
-                            intent = new Intent(context, ENotificationActivity.class);
-                            context.startActivity(intent);
-                            ((Activity) context).overridePendingTransition(R.anim.push_right_in, R.anim.push_right_out);
                             break;
                         case "Card"://卡券
                             intent = new Intent(context, CardCouponsActivity.class);

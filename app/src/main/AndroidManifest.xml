@@ -139,12 +139,7 @@
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden|adjustResize" />
         <!--邻里发活动 动态-->
-        <activity
-            android:name="com.notification.activity.ENotificationActivity"
-            android:screenOrientation="portrait"
-            android:windowSoftInputMode="adjustResize" />
 
-        <!-- 门禁授权-->
 
         <!-- 门禁授权-->
         <activity
