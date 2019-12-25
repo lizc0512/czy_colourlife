@@ -831,37 +831,26 @@
         <meta-data
             android:name="com.baidu.lbsapi.API_KEY"
             android:value="B0433f7d882de0c20433e36fabe2269c" />
-        <!--极光推送-->
+
 
         <meta-data
             android:name="UMENG_APPKEY"
             android:value="569c7de167e58e572100176c" />
 
-
         <meta-data
             android:name="UMENG_CHANNEL"
             android:value="Colourlife" />
-        <!--高德sdk-->
+
         <meta-data
             android:name="JPUSH_CHANNEL"
             android:value="developer-default" />
 
-
-        <!--  <meta-data
-              android:name="com.shuwei.location.APP_KEY"
-              android:value="0a23a964-a973-40e1-b14d-249e72875e70" />
-
-
-          <meta-data
-              android:name="com.shuwei.location.APP_ID"
-              android:value="34826ee148f9" />-->
-
-
+        <!--极光推送-->
         <meta-data
             android:name="JPUSH_APPKEY"
             android:value="85850e81bcaba45af4f4b6a6" />
 
-
+        <!--高德sdk-->
         <meta-data
             android:name="com.amap.api.v2.apikey"
             android:value="bdb104e98dfa7e816b40c4148ea7b938"
