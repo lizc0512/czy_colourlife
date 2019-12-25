@@ -58,8 +58,6 @@ import com.im.entity.UserIdInforEntity;
 import com.im.helper.CacheFriendInforHelper;
 import com.im.model.IMUploadPhoneModel;
 import com.nohttp.utils.GsonUtils;
-import com.tendcloud.tenddata.TCAgent;
-import com.umeng.analytics.MobclickAgent;
 import com.user.UserAppConst;
 import com.user.UserMessageConstant;
 import com.user.protocol.USER;
@@ -259,8 +257,6 @@ public class CommunityFragment extends Fragment implements IXListViewListener, H
         if (!EventBus.getDefault().isregister(this)) {
             EventBus.getDefault().register(this);
         }
-        MobclickAgent.onPageStart("邻里");
-        TCAgent.onPageStart(getActivity(), "邻里");
         Glide.with(this).resumeRequests();
 
     }
@@ -268,8 +264,6 @@ public class CommunityFragment extends Fragment implements IXListViewListener, H
     @Override
     public void onPause() {
         super.onPause();
-        MobclickAgent.onPageEnd("邻里");
-        TCAgent.onPageEnd(getActivity(), "邻里");
         Glide.with(this).pauseRequests();
     }
 
@@ -510,7 +504,6 @@ public class CommunityFragment extends Fragment implements IXListViewListener, H
                 Map<String, String> paramsMap = new HashMap<>();
                 paramsMap.put("customer_id", userId + "");
                 paramsMap.put("community_id", mCommunityId);
-                TCAgent.onEvent(getActivity(), "207001", "", paramsMap);
                 mPosition = message.arg1;
                 mFeedModel.like(this, mFeedModel.feedList.get(mPosition).id);
             }
@@ -522,7 +515,6 @@ public class CommunityFragment extends Fragment implements IXListViewListener, H
                 Map<String, String> paramsMap = new HashMap<>();
                 paramsMap.put("customer_id", userId + "");
                 paramsMap.put("community_id", mCommunityId);
-                TCAgent.onEvent(getActivity(), "207001", "", paramsMap);
                 mPosition = message.arg1;
                 mFeedModel.unlike(this, mFeedModel.feedList.get(mPosition).id);
             }
@@ -634,7 +626,6 @@ public class CommunityFragment extends Fragment implements IXListViewListener, H
                     Map<String, String> paramsMap = new HashMap<>();
                     paramsMap.put("customer_id", userId + "");
                     paramsMap.put("community_id", mCommunityId);
-                    TCAgent.onEvent(getActivity(), "207002", "", paramsMap);
                     mFeedModel.reply(this, mFeedId, content, mToUserId);
                 } else {
                     ToastUtil.toastShow(getActivity(), "请输入内容");

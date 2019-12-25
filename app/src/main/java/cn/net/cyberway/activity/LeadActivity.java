@@ -6,7 +6,6 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.Environment;
 import android.support.v4.view.ViewPager;
 import android.view.View;
 import android.widget.TextView;
@@ -14,7 +13,6 @@ import android.widget.TextView;
 import com.BeeFramework.activity.BaseActivity;
 import com.external.viewpagerindicator.CirclePageIndicator;
 import com.permission.AndPermission;
-import com.tendcloud.tenddata.TCAgent;
 import com.user.UserAppConst;
 
 import java.util.ArrayList;
@@ -66,10 +64,6 @@ public class LeadActivity extends BaseActivity implements View.OnClickListener {
                     indicator.setVisibility(View.VISIBLE);
                     cancel.setVisibility(View.VISIBLE);
                 }
-                if (page > 0 && page < imageBg.length - 1) {
-                    TCAgent.onPageStart(getApplicationContext(), "引导页第" + page + "页");
-                    TCAgent.onPageEnd(getApplicationContext(), "引导页第" + (page - 1) + "页");
-                }
             }
 
             @Override
@@ -106,18 +100,6 @@ public class LeadActivity extends BaseActivity implements View.OnClickListener {
                 }
             }
         }
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-        TCAgent.onPageStart(getApplicationContext(), "引导页第" + page + "页");
-    }
-
-    @Override
-    protected void onPause() {
-        super.onPause();
-        TCAgent.onPageStart(getApplicationContext(), "引导页第" + page + "页");
     }
 
     @Override

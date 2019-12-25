@@ -21,7 +21,6 @@ import com.about.protocol.FeedBackRedirectEntity;
 import com.cardcoupons.fragment.CouponsFragment;
 import com.cashier.adapter.ViewPagerAdapter;
 import com.nohttp.utils.GsonUtils;
-import com.tendcloud.tenddata.TCAgent;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -104,18 +103,6 @@ public class FeedBackActivity extends BaseFragmentActivity implements View.OnCli
         }
     }
 
-    @Override
-    protected void onResume() {
-        super.onResume();
-        TCAgent.onPageStart(getApplicationContext(), "意见反馈");
-    }
-
-
-    @Override
-    protected void onPause() {
-        super.onPause();
-        TCAgent.onPageEnd(getApplicationContext(), "意见反馈");
-    }
 
     @Override
     public void onBackPressed() {

@@ -55,7 +55,6 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.BeeFramework.JavaScriptMetod;
-import com.BeeFramework.TalkingDataHTML;
 import com.BeeFramework.Utils.DecodeImage;
 import com.BeeFramework.Utils.ThemeStyleHelper;
 import com.BeeFramework.Utils.ToastUtil;
@@ -105,8 +104,6 @@ import com.tencent.authsdk.callback.IdentityCallback;
 import com.tencent.mm.opensdk.modelbiz.WXLaunchMiniProgram;
 import com.tencent.mm.opensdk.openapi.IWXAPI;
 import com.tencent.mm.opensdk.openapi.WXAPIFactory;
-import com.tendcloud.tenddata.TCAgent;
-import com.umeng.analytics.MobclickAgent;
 import com.update.activity.UpdateVerSion;
 import com.user.UserAppConst;
 import com.user.UserMessageConstant;
@@ -270,7 +267,6 @@ public class WebViewActivity extends BaseActivity implements View.OnLongClickLis
             webView.loadData(webData, "text/html", "utf-8");
         }
         CityManager.getInstance(this).initLocation();
-        TCAgent.LOG_ON = true;
         webView.setOnLongClickListener(this);
     }
 
@@ -1455,11 +1451,6 @@ public class WebViewActivity extends BaseActivity implements View.OnLongClickLis
     protected void onResume() {
         mAgentWeb.getWebLifeCycle().onResume();
         super.onResume();
-        if (!TextUtils.isEmpty(webTitle)) {
-            MobclickAgent.onPageStart(webTitle);
-            MobclickAgent.onResume(this);
-            TCAgent.onPageStart(WebViewActivity.this, webTitle);
-        }
         if (isJumpThrid) {
             ILoader iLoader = mAgentWeb.getLoader();
             iLoader.loadUrl(url);
@@ -1473,11 +1464,6 @@ public class WebViewActivity extends BaseActivity implements View.OnLongClickLis
     protected void onPause() {
         mAgentWeb.getWebLifeCycle().onPause();
         super.onPause();
-        if (!TextUtils.isEmpty(webTitle)) {
-            MobclickAgent.onPageEnd(webTitle);
-            MobclickAgent.onPause(this);
-            TCAgent.onPageEnd(WebViewActivity.this, webTitle);
-        }
         Message message = Message.obtain();
         message.what = UserMessageConstant.UPLOAD_PAGE_TIME;
         Bundle bundle = new Bundle();
@@ -1556,12 +1542,6 @@ public class WebViewActivity extends BaseActivity implements View.OnLongClickLis
         @Override
         public boolean shouldOverrideUrlLoading(WebView view, String urls) {
             WebView.HitTestResult hitTestResult = view.getHitTestResult();
-            try {
-                String decodedURL = java.net.URLDecoder.decode(urls, "UTF-8");
-                TalkingDataHTML.GetInstance().execute(WebViewActivity.this, decodedURL, view);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
             if (urls.startsWith("tel:")) {
                 Intent intent = new Intent(Intent.ACTION_DIAL, Uri.parse(urls));
                 startActivity(intent);

@@ -23,7 +23,6 @@ import com.BeeFramework.model.NewHttpResponse;
 import com.external.eventbus.EventBus;
 import com.jpush.Constant;
 import com.nohttp.utils.GsonUtils;
-import com.tendcloud.tenddata.TCAgent;
 import com.user.UserAppConst;
 import com.user.UserMessageConstant;
 import com.user.entity.SendCodeEntity;
@@ -184,7 +183,6 @@ public class UserThridRegisterActivity extends BaseActivity implements View.OnCl
                     } else {
                         Map<String, String> stringMap = new HashMap<>();
                         stringMap.put("mobile", mobile);
-                        TCAgent.onEvent(getApplicationContext(), "202006", "", stringMap);
                         newUserModel.getSmsCode(0, mobile, 0, 1, this);//找回密码获取短信验证码
                     }
                 }
@@ -197,7 +195,6 @@ public class UserThridRegisterActivity extends BaseActivity implements View.OnCl
                     } else {
                         Map<String, String> stringMap = new HashMap<>();
                         stringMap.put("mobile", mobile);
-                        TCAgent.onEvent(getApplicationContext(), "202008", "", stringMap);
                         newUserModel.getSmsCode(1, mobile, 0, 2, this);//找回密码获取语音验证码
                     }
                 }
@@ -265,7 +262,6 @@ public class UserThridRegisterActivity extends BaseActivity implements View.OnCl
                 } else {
                     Map<String, String> loginMap = new HashMap<String, String>();
                     loginMap.put("mobile", mobile);
-                    TCAgent.onEvent(getApplicationContext(), "201006", "", loginMap);
                     Message msg = new Message();
                     msg.what = UserMessageConstant.SIGN_IN_FAIL;//登录成功之后，刷新各种数据
                     EventBus.getDefault().post(msg);
@@ -276,7 +272,6 @@ public class UserThridRegisterActivity extends BaseActivity implements View.OnCl
                 Map<String, String> mainParams = new HashMap<String, String>();
                 mainParams.put("customer_id", shared.getInt(UserAppConst.Colour_User_id, 0) + "");
                 mainParams.put("mobile", mobile);
-                TCAgent.onEvent(getApplicationContext(), "200007", "", mainParams);
                 ToastUtil.toastShow(this, getResources().getString(R.string.user_login_success));
                 Message msg = new Message();
                 msg.what = UserMessageConstant.SIGN_IN_SUCCESS;//登录成功之后，刷新各种数据

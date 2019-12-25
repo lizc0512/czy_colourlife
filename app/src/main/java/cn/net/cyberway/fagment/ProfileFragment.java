@@ -17,7 +17,6 @@ import android.view.ViewGroup;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.BeeFramework.Utils.ToastUtil;
 import com.BeeFramework.model.Constants;
 import com.BeeFramework.model.NewHttpResponse;
 import com.customerInfo.activity.CustomerInfoActivity;
@@ -26,8 +25,6 @@ import com.external.eventbus.EventBus;
 import com.external.maxwin.view.XListView;
 import com.nohttp.utils.GlideImageLoader;
 import com.nohttp.utils.GsonUtils;
-import com.tendcloud.tenddata.TCAgent;
-import com.umeng.analytics.MobclickAgent;
 import com.user.UserAppConst;
 import com.user.UserMessageConstant;
 
@@ -218,7 +215,6 @@ public class ProfileFragment extends Fragment implements View.OnClickListener, N
         rl_profile_info = myView.findViewById(R.id.rl_profile_info);
         rl_profile_info.setOnClickListener(this);
         qr_code_layout.setOnClickListener(this);
-        TCAgent.onEvent(getActivity(), "203001");
         refresh_layout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
@@ -246,35 +242,17 @@ public class ProfileFragment extends Fragment implements View.OnClickListener, N
             mCommunity.setText(mShared.getString(UserAppConst.Colour_login_community_name, ""));
             String headImgUrl = mShared.getString(UserAppConst.Colour_head_img, "");
             GlideImageLoader.loadImageDefaultDisplay(getActivity(), headImgUrl, mHeadImg, R.drawable.icon_my_tx, R.drawable.icon_my_tx);
-            MobclickAgent.onPageStart("我的");
-            TCAgent.onPageStart(getActivity(), "我的");
             boolean isLogin = mShared.getBoolean(UserAppConst.IS_LOGIN, false);
-            if (isLogin) {
-//                ((MainActivity) getActivity()).changeStyle();
-            }
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
     @Override
-    public void onHiddenChanged(boolean hidden) {
-        super.onHiddenChanged(hidden);
-        if (!isHidden()) {
-            boolean isLogin = mShared.getBoolean(UserAppConst.IS_LOGIN, false);
-            if (isLogin) {
-//                ((MainActivity) getActivity()).changeStyle();
-            }
-        }
-    }
-
-
-    @Override
     public void onClick(View v) {
         Intent intent;
         switch (v.getId()) {
             case R.id.rl_profile_info:
-                TCAgent.onEvent(getActivity(), "203002");
                 intent = new Intent(getActivity(), CustomerInfoActivity.class);
                 startActivityForResult(intent, 6);
                 break;
@@ -327,8 +305,6 @@ public class ProfileFragment extends Fragment implements View.OnClickListener, N
     public void onPause() {
         super.onPause();
         beanPoint = mShared.getBoolean(UserAppConst.COLOUR_BEAN_SIGN_POINT + customer_id, false);//防止切换用户没变化状态
-        MobclickAgent.onPageEnd("我的");
-        TCAgent.onPageEnd(getActivity(), "我的");
     }
 
 

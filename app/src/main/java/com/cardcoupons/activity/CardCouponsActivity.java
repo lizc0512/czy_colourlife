@@ -20,8 +20,6 @@ import com.cardcoupons.adapter.FragmentAdapter;
 import com.cardcoupons.fragment.CouponsFragment;
 import com.cardcoupons.model.CouponsModel;
 import com.cardcoupons.protocol.coupons.CouponGettApi;
-import com.tendcloud.tenddata.TCAgent;
-
 import java.util.ArrayList;
 
 import cn.net.cyberway.R;
@@ -224,17 +222,5 @@ public class CardCouponsActivity extends BaseFragmentActivity implements View.On
             }
         }
         return true;
-    }
-
-    @Override
-    protected void onPause() {
-        super.onPause();
-        TCAgent.onPageEnd(getApplicationContext(), "我的卡券");
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-        TCAgent.onPageStart(getApplicationContext(), "我的卡券");
     }
 }

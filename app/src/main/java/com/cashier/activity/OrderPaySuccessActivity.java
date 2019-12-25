@@ -63,8 +63,6 @@ import cn.net.cyberway.activity.BroadcastReceiverActivity;
 import cn.net.cyberway.home.adapter.UltraPagerAdapter;
 import cn.net.cyberway.utils.LinkParseUtil;
 
-import static com.tendcloud.tenddata.ab.mContext;
-
 /**
  * @name ${yuansk}
  * @class name：com.cashier.activity
@@ -173,7 +171,7 @@ public class OrderPaySuccessActivity extends BaseActivity implements View.OnClic
                 ClipData mClipData = ClipData.newPlainText("Label", colorSn);
                 // 将ClipData内容放到系统剪贴板里。
                 cm.setPrimaryClip(mClipData);
-                ToastUtils.showMessage(mContext, "订单编号已复制到剪贴板");
+                ToastUtils.showMessage(OrderPaySuccessActivity.this, "订单编号已复制到剪贴板");
                 return false;
             }
         });

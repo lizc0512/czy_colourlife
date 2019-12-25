@@ -50,7 +50,6 @@ import com.popupScreen.model.PopupModel;
 import com.scanCode.activity.CaptureActivity;
 import com.sobot.chat.SobotApi;
 import com.sobot.chat.utils.ScreenUtils;
-import com.umeng.analytics.MobclickAgent;
 import com.update.activity.UpdateVerSion;
 import com.update.service.UpdateService;
 import com.user.UserAppConst;
@@ -216,14 +215,12 @@ public class MainActivity extends BaseFragmentActivity implements View.OnClickLi
         if (!EventBus.getDefault().isregister(MainActivity.this)) {
             EventBus.getDefault().register(MainActivity.this);
         }
-        MobclickAgent.onResume(this);
     }
 
     @Override
     public void onPause() {
         super.onPause();
         JPushInterface.onPause(this);
-        MobclickAgent.onPause(this);
     }
 
     @Override

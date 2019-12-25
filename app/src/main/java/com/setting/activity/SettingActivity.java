@@ -25,7 +25,6 @@ import com.about.activity.AboutActivity;
 import com.external.eventbus.EventBus;
 import com.mob.MobSDK;
 import com.setting.switchButton.SwitchButton;
-import com.tendcloud.tenddata.TCAgent;
 import com.update.activity.UpdateVerSion;
 import com.user.UserAppConst;
 import com.user.UserMessageConstant;
@@ -285,7 +284,6 @@ public class SettingActivity extends BaseActivity implements HttpApiResponse, Vi
         IntentFilter intentFilter = new IntentFilter(BroadcastReceiverActivity.GESTURE);
         registerReceiver(broadcast, intentFilter);
         super.onResume();
-        TCAgent.onPageStart(getApplicationContext(), "设置");
     }
 
     @Override
@@ -312,12 +310,6 @@ public class SettingActivity extends BaseActivity implements HttpApiResponse, Vi
         if (wechat.isAuthValid()) {
             wechat.removeAccount(true);
         }
-    }
-
-    @Override
-    protected void onPause() {
-        super.onPause();
-        TCAgent.onPageEnd(getApplicationContext(), "设置");
     }
 
     @Override

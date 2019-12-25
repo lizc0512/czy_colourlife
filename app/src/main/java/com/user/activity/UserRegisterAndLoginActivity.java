@@ -39,9 +39,7 @@ import com.mob.tools.utils.UIHandler;
 import com.nohttp.utils.GsonUtils;
 import com.permission.AndPermission;
 import com.permission.PermissionListener;
-import com.point.activity.GivenPointAmountActivity;
 import com.smileback.bankcommunicationsstyle.BCSIJMInputEditText;
-import com.tendcloud.tenddata.TCAgent;
 import com.user.UserAppConst;
 import com.user.UserMessageConstant;
 import com.user.entity.CheckAuthRegisterEntity;
@@ -244,11 +242,6 @@ public class UserRegisterAndLoginActivity extends BaseActivity implements OnClic
 
             @Override
             public void afterTextChanged(Editable s) {
-                if (isWhite == 0) {
-                    TCAgent.onEvent(getApplicationContext(), "200003");
-                } else {
-                    TCAgent.onEvent(getApplicationContext(), "201003");
-                }
                 changeLoginBtnStatus();
             }
         });
@@ -518,7 +511,6 @@ public class UserRegisterAndLoginActivity extends BaseActivity implements OnClic
                 }
                 Map<String, String> stringMap = new HashMap<String, String>();
                 stringMap.put("mobile", mobile);
-                TCAgent.onEvent(getApplicationContext(), label, "", stringMap);
                 showRegisterOrLoginLayout();
                 break;
             case 1:  //是否设置手势密码
@@ -613,7 +605,6 @@ public class UserRegisterAndLoginActivity extends BaseActivity implements OnClic
                 } else {
                     Map<String, String> loginMap = new HashMap<String, String>();
                     loginMap.put("mobile", mobile);
-                    TCAgent.onEvent(getApplicationContext(), "201006", "", loginMap);
                 }
                 break;
             case 6://单设备登录
@@ -631,7 +622,6 @@ public class UserRegisterAndLoginActivity extends BaseActivity implements OnClic
                 mainParams.put("customer_id", shared.getInt(UserAppConst.Colour_User_id, 0) + "");
                 mainParams.put("mobile", mobile);
                 if (isRegister == 0) {
-                    TCAgent.onEvent(getApplicationContext(), "200007", "", mainParams);
                 } else {
                     if (loginType == 4) {
                         mainParams.put("login_type", "WEIXIN");
@@ -640,7 +630,6 @@ public class UserRegisterAndLoginActivity extends BaseActivity implements OnClic
                     } else {
                         mainParams.put("login_type", "REGISTERED");
                     }
-                    TCAgent.onEvent(getApplicationContext(), "201005", "", mainParams);
                 }
                 editor.putBoolean(UserAppConst.Colour_user_login, true);
                 editor.commit();
@@ -699,7 +688,6 @@ public class UserRegisterAndLoginActivity extends BaseActivity implements OnClic
                 } else {
                     Map<String, String> paramsMap = new HashMap<String, String>();
                     paramsMap.put("mobile", mobile);
-                    TCAgent.onEvent(getApplicationContext(), "200008", "", paramsMap);
                 }
                 break;
         }

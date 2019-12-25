@@ -33,7 +33,6 @@ import com.tencent.authsdk.AuthConfig;
 import com.tencent.authsdk.AuthSDKApi;
 import com.tencent.authsdk.IDCardInfo;
 import com.tencent.authsdk.callback.IdentityCallback;
-import com.tendcloud.tenddata.TCAgent;
 import com.user.UserAppConst;
 import com.user.entity.PortraitEntity;
 import com.user.model.NewUserModel;
@@ -112,7 +111,6 @@ public class CustomerInfoActivity extends BaseActivity implements View.OnClickLi
         initView();
         initPhoto();
         initData();
-        TCAgent.onEvent(getApplicationContext(), "203003");
         String mobile = shared.getString(UserAppConst.Colour_login_mobile, "");
         nickname_tv.setText(shared.getString(UserAppConst.Colour_NIACKNAME, ""));
         name_tv.setText(shared.getString(UserAppConst.Colour_NAME, ""));
@@ -277,7 +275,6 @@ public class CustomerInfoActivity extends BaseActivity implements View.OnClickLi
                 }
                 break;
             case R.id.photo_ll:
-                TCAgent.onEvent(getApplicationContext(), "203002");
                 choosePicture();
                 break;
             case R.id.twoD_code_ll:
@@ -285,18 +282,15 @@ public class CustomerInfoActivity extends BaseActivity implements View.OnClickLi
                 startActivity(intent);
                 break;
             case R.id.nickname_ll:
-                TCAgent.onEvent(getApplicationContext(), "203004");
                 CustomerNameActivity.startCustomerNameActivityForResult(this, nickname_tv.getText().toString(), "nikeName");
                 break;
             case R.id.name_ll:
-                TCAgent.onEvent(getApplicationContext(), "203008");
                 CustomerNameActivity.startCustomerNameActivityForResult(this, name_tv.getText().toString(), "name");
                 break;
             case R.id.email_ll:
                 CustomerNameActivity.startCustomerNameActivityForResult(this, email_tv.getText().toString(), "email");
                 break;
             case R.id.address_ll:
-                TCAgent.onEvent(getApplicationContext(), "203016");
                 intent = new Intent(this, MyPropertyActivity.class);
                 intent.putExtra(MyPropertyActivity.FROM_CUSTOMER_INFO, true);
                 startActivityForResult(intent, 1);
@@ -307,7 +301,6 @@ public class CustomerInfoActivity extends BaseActivity implements View.OnClickLi
                 genderList.add(getResources().getString(R.string.customer_man));
                 genderList.add(getResources().getString(R.string.customer_femal));
                 showSexPickerView(genderList);
-                TCAgent.onEvent(getApplicationContext(), "203012");
                 break;
             case R.id.ll_real_name://实名认证
                 if (TextUtils.isEmpty(tv_real_name.getText().toString().trim())) {
@@ -327,7 +320,6 @@ public class CustomerInfoActivity extends BaseActivity implements View.OnClickLi
             @Override
             public void onOptionsSelect(int options1, int options2, int options3, View v) {
                 //返回的分别是三个级别的选中位置
-                TCAgent.onEvent(getApplicationContext(), "203014");
                 isChangeUserInfo = true;
                 tv_gender.setText(genderList.get(options1));
             }
@@ -371,7 +363,6 @@ public class CustomerInfoActivity extends BaseActivity implements View.OnClickLi
                 finish();
             }
         }
-        TCAgent.onEvent(getApplicationContext(), "203022");
     }
 
     private void choosePicture() {

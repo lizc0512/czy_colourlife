@@ -29,7 +29,6 @@ import com.feed.protocol.VerFeedPublishNormalApi;
 import com.feed.utils.CompressHelper;
 import com.feed.view.UploadImageView;
 import com.permission.AndPermission;
-import com.tendcloud.tenddata.TCAgent;
 import com.user.UserAppConst;
 import com.user.UserMessageConstant;
 
@@ -194,7 +193,6 @@ public class CreateNormalFeedActivity extends BaseActivity implements View.OnCli
             Map<String, String> paramsMap = new HashMap<>();
             paramsMap.put("customer_id", userId + "");
             paramsMap.put("community_id", mCommunityId);
-            TCAgent.onEvent(getApplicationContext(), "207003", "", paramsMap);
             ArrayList<String> uploadImage = new ArrayList<String>();
             for (int i = 0; i < mUploadImageViews.size(); i++) {
                 UploadImageView uploadImageView = mUploadImageViews.get(i);

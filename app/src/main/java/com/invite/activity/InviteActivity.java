@@ -29,8 +29,6 @@ import com.gem.GemConstant;
 import com.gem.util.GemDialogUtil;
 import com.mob.MobSDK;
 import com.nohttp.utils.GsonUtils;
-import com.tendcloud.tenddata.TCAgent;
-import com.umeng.analytics.MobclickAgent;
 import com.user.UserAppConst;
 import com.user.UserMessageConstant;
 import com.user.entity.InviteCodeEntity;
@@ -168,19 +166,9 @@ public class InviteActivity extends BaseActivity implements View.OnClickListener
 
     public void onResume() {
         super.onResume();
-        MobclickAgent.onPageStart("邀请好友");
-        MobclickAgent.onResume(this);
-        TCAgent.onPageStart(this, "邀请好友");
         if (!EventBus.getDefault().isregister(this)) {
             EventBus.getDefault().register(this);
         }
-    }
-
-    public void onPause() {
-        super.onPause();
-        MobclickAgent.onPageEnd("邀请好友");
-        MobclickAgent.onPause(this);
-        TCAgent.onPageEnd(this, "邀请好友");
     }
 
     @Override

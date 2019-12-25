@@ -14,7 +14,6 @@ import java.util.List;
 import cn.csh.colourful.life.utils.ToastUtils;
 import cn.net.cyberway.R;
 
-import static com.tendcloud.tenddata.ab.mContext;
 
 /**
  * @name ${yuansk}
@@ -58,7 +57,7 @@ public class OrderDetailsAdapter extends RecyclerView.Adapter<OrderDetailsAdapte
                     ClipData mClipData = ClipData.newPlainText("Label", content);
                     // 将ClipData内容放到系统剪贴板里。
                     cm.setPrimaryClip(mClipData);
-                    ToastUtils.showMessage(mContext, "订单编号已复制到剪贴板");
+                    ToastUtils.showMessage(holder.itemView.getContext(), "订单编号已复制到剪贴板");
                 }
                 return false;
             }

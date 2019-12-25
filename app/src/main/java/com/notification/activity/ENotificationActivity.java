@@ -34,7 +34,6 @@ import com.notification.protocol.NotifyGetApi;
 import com.notification.protocol.NotifyGetResponse;
 import com.notification.protocol.NotifycategoryGetApi;
 import com.notification.protocol.NotifycategoryGetResponse;
-import com.umeng.analytics.MobclickAgent;
 import com.user.UserAppConst;
 
 import java.text.SimpleDateFormat;
@@ -521,15 +520,4 @@ public class ENotificationActivity extends BaseActivity implements HttpApiRespon
         ThemeStyleHelper.onlyFrameTitileBar(getApplicationContext(), czy_title_layout, imgBack, tvTitle);
     }
 
-    public void onResume() {
-        super.onResume();
-        MobclickAgent.onPageStart("E通知");
-        MobclickAgent.onResume(this);
-    }
-
-    public void onPause() {
-        super.onPause();
-        MobclickAgent.onPageEnd("E通知");
-        MobclickAgent.onPause(this);
-    }
 }

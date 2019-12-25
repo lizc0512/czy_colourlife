@@ -18,7 +18,6 @@ import com.BeeFramework.Utils.ThemeStyleHelper;
 import com.BeeFramework.Utils.ToastUtil;
 import com.BeeFramework.Utils.Utils;
 import com.BeeFramework.activity.BaseActivity;
-import com.tendcloud.tenddata.TCAgent;
 
 import cn.net.cyberway.R;
 
@@ -70,27 +69,13 @@ public class CustomerNameActivity extends BaseActivity implements View.OnClickLi
         if (type.equals("name")) {
             mTitle.setText("名字");
             name_et.setHint("请输入名字");
-            TCAgent.onEvent(getApplicationContext(), "203009");
         } else if (type.equals("nikeName")) {
             mTitle.setText("昵称");
             name_et.setHint("请输入昵称");
-            TCAgent.onEvent(getApplicationContext(), "203005");
         }  else if (type.equals("email")) {
             mTitle.setText("邮箱");
             name_et.setHint("请输入邮箱");
         }
-        name_et.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-            @Override
-            public void onFocusChange(View v, boolean hasFocus) {
-                if (!TextUtils.isEmpty(name_et.getText().toString())) {
-                    if (type.equals("name")) {
-                        TCAgent.onEvent(getApplicationContext(), "203010");
-                    } else if (type.equals("nikeName")) {
-                        TCAgent.onEvent(getApplicationContext(), "203006");
-                    }
-                }
-            }
-        });
         name_et.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -138,10 +123,8 @@ public class CustomerNameActivity extends BaseActivity implements View.OnClickLi
                     Intent intent = new Intent();
                     intent.putExtra("name", name);
                     if (type.equals("name")) {
-                        TCAgent.onEvent(getApplicationContext(), "203011");
                         setResult(2, intent);
                     } else if (type.equals("nikeName")) {
-                        TCAgent.onEvent(getApplicationContext(), "203007");
                         setResult(3, intent);
                     }else if (type.equals("email")) {
                         if (!Utils.checkEmail(name)) {

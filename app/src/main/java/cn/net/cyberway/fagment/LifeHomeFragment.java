@@ -34,7 +34,6 @@ import com.tencent.authsdk.AuthConfig;
 import com.tencent.authsdk.AuthSDKApi;
 import com.tencent.authsdk.IDCardInfo;
 import com.tencent.authsdk.callback.IdentityCallback;
-import com.tendcloud.tenddata.TCAgent;
 import com.user.UserAppConst;
 import com.user.UserMessageConstant;
 import com.user.model.NewUserModel;
@@ -439,20 +438,16 @@ public class LifeHomeFragment extends Fragment implements NewHttpResponse {
         if (!EventBus.getDefault().isregister(this)) {
             EventBus.getDefault().register(this);
         }
-        TCAgent.onPageStart(getActivity(), "更多");
         String url = shared.getString("CurrentLinkUrl", "");
         if (url.endsWith("NewEReduceList")) {
-            TCAgent.onPageEnd(getActivity(), "新彩富人生");
             editor.putString("CurrentLinkUrl", "").commit();
         }
-//        ((MainActivity) getActivity()).changeStyle();
     }
 
     @Override
     public void onHiddenChanged(boolean hidden) {
         super.onHiddenChanged(hidden);
         if (!hidden) {
-//            ((MainActivity) getActivity()).changeStyle();
         } else {
             saveRecentlyCache();
         }
@@ -477,11 +472,6 @@ public class LifeHomeFragment extends Fragment implements NewHttpResponse {
             }
         }
         editor.putString(UserAppConst.COLOUR_LIFEUSERECORD, jsonArray.toString()).commit();
-    }
-
-    public void onPause() {
-        super.onPause();
-        TCAgent.onPageEnd(getActivity(), "生活");
     }
 
     @Override

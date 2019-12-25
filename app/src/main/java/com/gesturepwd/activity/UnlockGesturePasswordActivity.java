@@ -30,7 +30,6 @@ import com.BeeFramework.Utils.Utils;
 import com.BeeFramework.activity.BaseActivity;
 import com.BeeFramework.model.NewHttpResponse;
 import com.BeeFramework.view.CircleImageView;
-import com.chuanglan.shanyan_sdk.OneKeyLoginManager;
 import com.eparking.helper.CustomDialog;
 import com.external.eventbus.EventBus;
 import com.gesturepwd.utils.LockPatternUtils;
@@ -41,7 +40,6 @@ import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.permission.AndPermission;
 import com.permission.PermissionListener;
-import com.tendcloud.tenddata.TCAgent;
 import com.user.UserAppConst;
 import com.user.UserMessageConstant;
 import com.user.activity.UserRegisterAndLoginActivity;
@@ -57,7 +55,6 @@ import java.util.List;
 import java.util.Map;
 
 import cn.net.cyberway.R;
-import cn.net.cyberway.home.model.NewHomeModel;
 
 import static cn.net.cyberway.utils.IMFriendDataUtils.userInitImData;
 import static com.BeeFramework.model.Constants.GESTURE_PWD_SET_FIVE_ERROR;
@@ -339,9 +336,6 @@ public class UnlockGesturePasswordActivity extends BaseActivity implements NewHt
                     } else {
                         mLockPatternView.postDelayed(mClearPatternRunnable, 2000);
                     }
-                    Map<String, String> loginMap = new HashMap<String, String>();
-                    loginMap.put("mobile", mobile);
-                    TCAgent.onEvent(getApplicationContext(), "201006", "", loginMap);
                 }
                 break;
             case 5:

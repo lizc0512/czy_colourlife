@@ -26,7 +26,6 @@ import com.mycarinfo.model.MyCarInfoModel;
 import com.mycarinfo.protocol.COLOURTICKETMYCARINFOLIST;
 import com.mycarinfo.protocol.VehicleDeletevehiclePostApi;
 import com.mycarinfo.protocol.VehicleGetmyvehicleGetApi;
-import com.tendcloud.tenddata.TCAgent;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -204,18 +203,5 @@ public class MyCarInfoActivity extends BaseActivity implements View.OnClickListe
             }
 
         }
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-        TCAgent.onPageStart(getApplicationContext(), "我的车辆");
-    }
-
-
-    @Override
-    protected void onPause() {
-        super.onPause();
-        TCAgent.onPageEnd(getApplicationContext(), "我的车辆");
     }
 }

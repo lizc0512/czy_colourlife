@@ -20,7 +20,6 @@ import com.BeeFramework.Utils.ToastUtil;
 import com.BeeFramework.activity.BaseActivity;
 import com.BeeFramework.model.NewHttpResponse;
 import com.nohttp.utils.GsonUtils;
-import com.tendcloud.tenddata.TCAgent;
 import com.user.UserAppConst;
 import com.user.entity.SendCodeEntity;
 import com.user.model.NewUserModel;
@@ -132,7 +131,6 @@ public class UserSmsCodeActivity extends BaseActivity implements View.OnClickLis
                 if (fastClick()) {
                     Map<String, String> stringMap = new HashMap<>();
                     stringMap.put("mobile", mobile);
-                    TCAgent.onEvent(getApplicationContext(), "202006", "", stringMap);
                     if (smsType == 4) {
                         newUserModel.getSmsCode(0, mobile, smsType, 2, this);//找回密码获取短信验证码
                     } else {
@@ -144,7 +142,6 @@ public class UserSmsCodeActivity extends BaseActivity implements View.OnClickLis
                 if (fastClick()) {
                     Map<String, String> stringMap = new HashMap<>();
                     stringMap.put("mobile", mobile);
-                    TCAgent.onEvent(getApplicationContext(), "202008", "", stringMap);
                     newUserModel.getSmsCode(1, mobile, smsType, 2, this);//找回密码获取语音验证码
                 }
                 break;

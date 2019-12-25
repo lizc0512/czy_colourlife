@@ -16,7 +16,6 @@ import com.BeeFramework.Utils.ToastUtil;
 import com.BeeFramework.activity.BaseActivity;
 import com.BeeFramework.model.NewHttpResponse;
 import com.smileback.bankcommunicationsstyle.BCSIJMInputEditText;
-import com.tendcloud.tenddata.TCAgent;
 import com.user.UserAppConst;
 import com.user.model.NewUserModel;
 
@@ -61,7 +60,6 @@ public class UserForgetPasswordActivity extends BaseActivity implements View.OnC
         tv_forget_number.setText(mobile);
         tv_forget_number.setVisibility(View.GONE);
         newUserModel = new NewUserModel(this);
-        TCAgent.onEvent(getApplicationContext(), "202011");
     }
 
     private void initView() {
@@ -100,7 +98,6 @@ public class UserForgetPasswordActivity extends BaseActivity implements View.OnC
                     btn_finish.setEnabled(false);
                     btn_finish.setBackgroundResource(R.drawable.onekey_login_default_bg);
                 } else {
-                    TCAgent.onEvent(getApplicationContext(), "202012");
                     btn_finish.setEnabled(true);
                     btn_finish.setBackgroundResource(R.drawable.onekey_login_bg);
                 }
@@ -118,7 +115,6 @@ public class UserForgetPasswordActivity extends BaseActivity implements View.OnC
                 break;
             case R.id.btn_finish:
                 if (fastClick()) {
-                    TCAgent.onEvent(getApplicationContext(), "202013");
                     if (TextUtils.isEmpty(password)) {
                         password = ed_new_pawd.getNKeyboardText();
                     }
@@ -138,9 +134,6 @@ public class UserForgetPasswordActivity extends BaseActivity implements View.OnC
         switch (what) {
             case 0://密码成功跳转到登录页面
                 ToastUtil.toastShow(this, getResources().getString(R.string.user_pswd_resetsuccess));
-                Map<String, String> stringMap = new HashMap<>();
-                stringMap.put("mobile", mobile);
-                TCAgent.onEvent(getApplicationContext(), "202014", "", stringMap);
                 Intent intent = new Intent(UserForgetPasswordActivity.this, UserRegisterAndLoginActivity.class);
                 startActivity(intent);
                 finish();

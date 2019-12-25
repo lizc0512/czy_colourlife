@@ -56,9 +56,7 @@ import com.tencent.authsdk.AuthConfig;
 import com.tencent.authsdk.AuthSDKApi;
 import com.tencent.authsdk.IDCardInfo;
 import com.tencent.authsdk.callback.IdentityCallback;
-import com.tendcloud.tenddata.TCAgent;
 import com.tmall.ultraviewpager.UltraViewPager;
-import com.umeng.analytics.MobclickAgent;
 import com.user.UserAppConst;
 import com.user.UserMessageConstant;
 import com.user.model.NewUserModel;
@@ -170,8 +168,6 @@ public class MainHomeFragmentNew extends Fragment implements NewHttpResponse, Vi
     @Override
     public void onResume() {
         super.onResume();
-        MobclickAgent.onPageStart("首页");
-        TCAgent.onPageStart(getActivity(), "首页");
         if (isClick) {
             if (!TextUtils.isEmpty(linkUrl) && !linkUrl.startsWith("http")) {
                 isClick = false;
@@ -181,12 +177,6 @@ public class MainHomeFragmentNew extends Fragment implements NewHttpResponse, Vi
         }
         HuxinSdkManager.instance().setImMsgCallback(this);
         showUnReadMsg(HuxinSdkManager.instance().unreadServiceManagerMessage());
-    }
-
-    public void onPause() {
-        super.onPause();
-        MobclickAgent.onPageEnd("首页");
-        TCAgent.onPageEnd(getActivity(), "首页");
     }
 
     @Override

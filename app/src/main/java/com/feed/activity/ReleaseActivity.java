@@ -28,7 +28,6 @@ import com.gem.GemConstant;
 import com.gem.util.GemDialogUtil;
 import com.nohttp.utils.GlideImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoader;
-import com.tendcloud.tenddata.TCAgent;
 import com.user.UserAppConst;
 import com.user.UserMessageConstant;
 
@@ -151,7 +150,6 @@ public class ReleaseActivity extends BaseActivity implements View.OnClickListene
                                     Map<String, String> paramsMap = new HashMap<>();
                                     paramsMap.put("customer_id", userId + "");
                                     paramsMap.put("community_id", mCommunityId);
-                                    TCAgent.onEvent(getApplicationContext(), "207004", "", paramsMap);
                                     activityPublishModel.publish(this, mCurrentCommunityId, mActivityCategory.id, mStartTime + "", content, location);
                                 }
                             } else {
@@ -160,7 +158,6 @@ public class ReleaseActivity extends BaseActivity implements View.OnClickListene
                                 Map<String, String> paramsMap = new HashMap<>();
                                 paramsMap.put("customer_id", userId + "");
                                 paramsMap.put("community_id", mCommunityId);
-                                TCAgent.onEvent(getApplicationContext(), "207004", "", paramsMap);
                                 activityPublishModel.publish(this, mCurrentCommunityId, mActivityCategory.id, mStartTime + "", content, location);
                             }
 
