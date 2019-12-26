@@ -19,6 +19,8 @@ import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
+
+import com.BeeFramework.view.Util;
 import com.ScreenManager;
 import com.debug.model.ActivityManagerModel;
 import com.popupScreen.activity.PopupActivity;
@@ -84,7 +86,6 @@ public class BaseActivity extends Activity {
         Window window = getWindow();
         window.addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
         ViewGroup mContentView = (ViewGroup) findViewById(Window.ID_ANDROID_CONTENT);
-
         View mTopView = mContentView.getChildAt(0);
         if (mTopView != null && mTopView.getLayoutParams() != null &&
                 mTopView.getLayoutParams().height == statusBarHeight) {
@@ -136,7 +137,7 @@ public class BaseActivity extends Activity {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
             if (MIUISetStatusBarLightMode(activity.getWindow(), true)) {//MIUI
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {//5.0
-                    tintManager.setStatusBarTintColor(Color.parseColor("#ffffff"));  //设置上方状态栏的颜色
+                    tintManager.setStatusBarTintResource(Color.parseColor("#ffffff"));  //设置上方状态栏的颜色
                     setAndroidM(activity);
                 } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {//4.4
                     activity.getWindow().setFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS,
