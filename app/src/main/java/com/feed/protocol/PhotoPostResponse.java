@@ -1,5 +1,5 @@
 
-package com.repair.protocol;
+package com.feed.protocol;
 
 import org.json.JSONException;
 import org.json.JSONObject;

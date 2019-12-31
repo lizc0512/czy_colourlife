@@ -16,8 +16,9 @@ import com.BeeFramework.Utils.ImageUtil;
 import com.BeeFramework.model.HttpApi;
 import com.BeeFramework.model.HttpApiResponse;
 import com.feed.model.UploadImageModel;
-import com.repair.protocol.PhotoPostApi;
-import com.repair.protocol.PhotoPostResponse;
+import com.feed.protocol.PhotoPostApi;
+import com.feed.protocol.PhotoPostResponse;
+
 
 import cn.net.cyberway.R;
 

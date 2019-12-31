@@ -4,9 +4,9 @@ import android.content.Context;
 
 import com.BeeFramework.model.BaseModel;
 import com.BeeFramework.model.HttpApiResponse;
+import com.feed.protocol.PhotoPostApi;
 import com.nohttp.utils.HttpListener;
 import com.nohttp.utils.RequestEncryptionUtils;
-import com.repair.protocol.PhotoPostApi;
 import com.yanzhenjie.nohttp.BasicBinary;
 import com.yanzhenjie.nohttp.FileBinary;
 import com.yanzhenjie.nohttp.NoHttp;
@@ -18,8 +18,6 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.File;
-import java.util.HashMap;
-import java.util.Map;
 
 
 public class UploadImageModel extends BaseModel {

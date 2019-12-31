@@ -1,5 +1,5 @@
 
-package com.repair.protocol;
+package com.feed.protocol;
 
 import com.BeeFramework.model.HttpApi;
 

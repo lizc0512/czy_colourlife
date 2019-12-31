@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:background="@color/white"
+    android:fitsSystemWindows="true"
+    android:layout_height="match_parent">
+
+    <include layout="@layout/top_view" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:background="@drawable/real_nameinfor_bg"
+        android:layout_margin="16dp"
+        android:layout_height="150dp">
+
+        <com.BeeFramework.view.CircleImageView
+            android:id="@+id/iv_user_photo"
+            android:layout_width="64dp"
+            android:layout_height="64dp"
+            android:layout_margin="16dp" />
+
+
+        <TextView
+            android:id="@+id/tv_user_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="30dp"
+            android:layout_toRightOf="@id/iv_user_photo"
+            tools:text="李丽"
+            android:textColor="@color/white"
+            android:textSize="26sp" />
+
+
+        <TextView
+            android:id="@+id/tv_user_number"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="15dp"
+            tools:text="@string/real_text_idcard"
+            android:layout_marginBottom="20dp"
+            android:layout_alignParentBottom="true"
+            android:textColor="@color/white"
+            android:textSize="12sp" />
+
+        <TextView
+            android:id="@+id/tv_user_status"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="12dp"
+            android:layout_marginTop="12dp"
+            android:gravity="center"
+            android:layout_alignParentRight="true"
+            tools:text="@string/real_idcard_status"
+            android:background="@drawable/real_check_status"
+            android:textColor="@color/color_b2932f"
+            android:textSize="10sp" />
+
+
+    </RelativeLayout>
+
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="30dp"
+        android:text="@string/real_change_notice"
+        android:layout_marginLeft="30dp"
+        android:layout_marginRight="30dp"
+        android:lineSpacingExtra="2dp"
+        android:gravity="center"
+        android:textColor="@color/color_999999"
+        android:textSize="10sp" />
+
+    <Button
+        android:id="@+id/btn_apply"
+        android:layout_width="match_parent"
+        android:layout_height="44dp"
+        android:layout_marginTop="100dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        android:background="@drawable/point_password_click_bg"
+        android:text="@string/real_text_apply"
+        android:textColor="@color/white"
+        android:textSize="16sp" />
+
+    <TextView
+        android:id="@+id/tv_contact_service"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:gravity="center"
+        android:layout_marginTop="120dp"
+        android:padding="5dp"
+        android:text="@string/real_contact_service"
+        android:textColor="@color/color_3282fa"
+        android:textSize="14sp"  />
+
+</LinearLayout>
