@@ -104,6 +104,8 @@ android {
                            "src/main/java/com/imagepicker/res",
                            "src/main/java/com/update/res",
                            "src/main/java/com/banner/res",
+                           "src/main/java/com/repair/res",
+                           "src/main/java/com/wheel/res",
                            "src/main/java/com/feed/res",
                            "src/main/java/com/notification/res",
                            "src/main/java/com/eparking/res",
@@ -112,9 +114,11 @@ android {
                            'src/main/java/com/door/res',
                            "src/main/java/com/cardcoupons/res",
                            "src/main/java/com/about/res",
+                           "src/main/java/com/equipment/res",
                            "src/main/java/com/setting/res",
                            "src/main/java/com/invite/res",
                            "src/main/java/com/customerInfo/res",
+                           "src/main/java/com/message/res",
                            "src/main/java/com/cashier/res",
                            "src/main/java/com/gesturepwd/res",
                            'src/main/java/com/jpush/res',
@@ -227,8 +231,6 @@ dependencies {
     implementation 'com.tencent.mm.opensdk:wechat-sdk-android-without-mta:5.3.1'
     //乐开
     implementation(name: 'lekai-open-sdk-v3.0.9', ext: 'aar')
-    //数位场景识别 保留
-//    implementation files('libs/alipaySdk-20180601.jar')
     implementation(name: 'mylibrary-release', ext: 'aar')
     compileOnly files('sdknec/classes123.jar')
     implementation 'com.flyco.banner:FlycoBanner_Lib:2.0.2@aar'
@@ -241,9 +243,6 @@ dependencies {
     implementation 'cn.jiguang.sdk.plugin:vivo:3.4.1'
     implementation(name: 'HMSSdk-agent', ext: 'aar')
     implementation 'org.jetbrains:annotations:15.0'
-
-    implementation  'com.umeng.umsdk:analytics:8.0.0'
-    implementation  'com.umeng.umsdk:common:2.0.0'
 }
 
 project.afterEvaluate {
