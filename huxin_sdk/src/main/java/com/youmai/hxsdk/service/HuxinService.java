@@ -312,7 +312,6 @@ public class HuxinService extends Service {
         } else {
             cancelJob();
         }
-
     }
 
     @Override
@@ -370,18 +369,23 @@ public class HuxinService extends Service {
      */
     private void jobStartService(long mill) {
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.LOLLIPOP) {
-            Log.v(TAG, "jobStartService");
-
             JobScheduler scheduler = (JobScheduler) getSystemService(Context.JOB_SCHEDULER_SERVICE);
-            JobInfo.Builder builder = new JobInfo.Builder(JobId++, new ComponentName(mContext,
-                    HuxinStartJobService.class));
-            builder.setPersisted(true);
-            builder.setPeriodic(mill);
-            //builder.setMinimumLatency(mill); // 设置JobService执行的最小延时时间
-            //builder.setOverrideDeadline(mill * 2); // 设置JobService执行的最晚时间
-            builder.setRequiredNetworkType(JobInfo.NETWORK_TYPE_ANY); //任何可用网络
+            int a=JobId++;
+            Log.v(TAG, "jobStartService");
+            try {
+                JobInfo.Builder builder = new JobInfo.Builder(a, new ComponentName(mContext,
+                        HuxinStartJobService.class));
+                builder.setPersisted(true);
+                builder.setPeriodic(mill);
+                //builder.setMinimumLatency(mill); // 设置JobService执行的最小延时时间
+                //builder.setOverrideDeadline(mill * 2); // 设置JobService执行的最晚时间
+                builder.setRequiredNetworkType(JobInfo.NETWORK_TYPE_ANY); //任何可用网络
+                scheduler.schedule(builder.build());
+            }catch (IllegalArgumentException e){
+                cancelJob();
+            }catch (NullPointerException e){
 
-            scheduler.schedule(builder.build());
+            }
         } else {
             Log.v(TAG, "setNotifyWatchdog");
             AlarmManager alarmManager = (AlarmManager) mContext.getSystemService(Context.ALARM_SERVICE);

@@ -142,6 +142,9 @@ public class TcpClient extends PduUtil implements Runnable {
                 if (callback != null) {
                     mCallBack = callback;
                 }
+                Thread thread = new Thread(this);
+                thread.setName("socket thread");
+                thread.start();
                 Log.v(TAG, "tcp is connecting");
                 LogFile.inStance().toFile("tcp is connecting");
             }
