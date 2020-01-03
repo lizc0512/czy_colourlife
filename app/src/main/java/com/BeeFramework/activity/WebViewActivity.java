@@ -205,6 +205,8 @@ public class WebViewActivity extends BaseActivity implements View.OnLongClickLis
     private String awardState = "";
     private String finishStatus = "1";
     private String photoType = "imagepath";
+    private String otherMobile;
+    private String otherUserId;
 
     @SuppressLint("AddJavascriptInterface")
     protected void onCreate(Bundle savedInstanceState) {
@@ -225,8 +227,6 @@ public class WebViewActivity extends BaseActivity implements View.OnLongClickLis
         shareUrl = url;
         webTitle = intent.getStringExtra(WEBTITLE);
         String webData = intent.getStringExtra(WEBDATA);
-        String resource_id = intent.getStringExtra(WebViewActivity.JUSHRESOURCEID);
-        String pushUrl = intent.getStringExtra(WebViewActivity.JUSHURL);
         initView();
         htmlWebViewClient = new HtmlWebViewClient();
         htmlWebChromeClient = new HtmlWebChromeClient();
@@ -804,6 +804,22 @@ public class WebViewActivity extends BaseActivity implements View.OnLongClickLis
         }
 
         /**
+         * 帮助他人实名认证
+         */
+        @JavascriptInterface
+        public void CLColourlifeIdentifyAuth(String jsonStr) {
+
+            try {
+                JSONObject jsonObject = new JSONObject(jsonStr);
+                otherMobile = jsonObject.getString("user_mobile");
+                otherUserId = jsonObject.getString("user_id");
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+            toRealName();
+        }
+
+        /**
          * 获取当前应用版本名
          */
         @JavascriptInterface
@@ -1253,6 +1269,7 @@ public class WebViewActivity extends BaseActivity implements View.OnLongClickLis
         public void ColourlifeWalletAuth(String authJson) {//彩钱包实名认证
 
         }
+
 
         @JavascriptInterface
         public void ColourlifeSmartService(String goodsJson) {
@@ -2012,7 +2029,7 @@ public class WebViewActivity extends BaseActivity implements View.OnLongClickLis
                 if (null == newUserModel) {
                     newUserModel = new NewUserModel(WebViewActivity.this);
                 }
-                newUserModel.submitRealName(3, idCardInfo.getIDcard(), realName, this);
+                newUserModel.submitRealName(3, idCardInfo.getIDcard(), realName, otherMobile, otherUserId, this);
             }
         }
     };

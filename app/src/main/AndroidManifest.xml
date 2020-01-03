@@ -9,7 +9,7 @@
         android:configChanges="locale"
         android:hardwareAccelerated="true"
         android:icon="@drawable/icon"
-        android:label="@string/app_name"
+        android:label="@string/app_name_test"
         android:largeHeap="true"
         android:resizeableActivity="false"
         android:screenOrientation="portrait"
@@ -798,7 +798,34 @@
 
         <!--新钱包 积分-->
 
-        <!--百度sdk-->
+        <!--实名认证信息修改-->
+
+        <activity
+            android:name="com.realaudit.activity.RealNameInforActivity"
+            android:screenOrientation="portrait" />
+
+        <activity
+            android:name="com.realaudit.activity.RealOriginUploadActivity"
+            android:screenOrientation="portrait" />
+
+
+        <activity
+            android:name="com.realaudit.activity.RealNewUploadActivity"
+            android:screenOrientation="portrait" />
+
+
+        <activity
+            android:name="com.realaudit.activity.RealCheckResultActivity"
+            android:screenOrientation="portrait" />
+
+        <activity
+            android:name="com.realaudit.activity.RealCheckWaitingActivity"
+            android:screenOrientation="portrait" />
+
+
+        <!--实名认证信息修改-->
+
+        <!--极光推送-->
         <activity
             android:name="cn.jpush.android.ui.PopWinActivity"
             android:exported="true"
@@ -811,7 +838,7 @@
                 <category android:name="${applicationId}" />
             </intent-filter>
         </activity>
-        <!--友盟sdk-->
+
         <activity
             android:name="cn.jpush.android.ui.PushActivity"
             android:configChanges="orientation|keyboardHidden"
@@ -827,7 +854,7 @@
             </intent-filter>
         </activity>
 
-
+        <!--极光推送-->
         <meta-data
             android:name="com.baidu.lbsapi.API_KEY"
             android:value="B0433f7d882de0c20433e36fabe2269c" />
@@ -845,7 +872,7 @@
             android:name="JPUSH_CHANNEL"
             android:value="developer-default" />
 
-        <!--极光推送-->
+
         <meta-data
             android:name="JPUSH_APPKEY"
             android:value="85850e81bcaba45af4f4b6a6" />

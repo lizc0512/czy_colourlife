@@ -84,7 +84,13 @@ public class FileUpLoadChooserImpl implements IFileUploadChooser {
                         cameraState = true;
                         onVideoAction();
                     } else {
-                        openFileChooserInternal();
+                        boolean captureEnable = mFileChooserParams.isCaptureEnabled();
+                        if (captureEnable) {
+                            cameraState = true;
+                            onCameraAction();
+                        } else {
+                            openFileChooserInternal();
+                        }
                     }
                 } else {
                     openFileChooserInternal();

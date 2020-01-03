@@ -7,53 +7,33 @@
 </head>
 
 <body>
-<p>
-    <xmp id="show">
-    </xmp>
-</p>
-<p>
-    <img src="?" id="imgInit">
-</p>
 
-<p>
-    <xmp id="init">
-    </xmp>
-</p>
 <p>
     <input type="text" id="text1" value="用户名(username)"/>
 </p>
+
 <p>
-    <input type="text" id="text2" value="password"/>
-</p>
-<p>
-    <input type="button" id="scan_code" value="退出登录" style="font-size: 24px"
-           onclick="window.jsObject.colourlifeWebLogout();"
-    />
-</p>
-<p>
-    <input type="button" id="user" value="点击跳转到智能客服" style="font-size: 24px"
-           onclick="getUserInfo(this);"
-    />
+    <input type="file" value="打开文件" style="font-size: 24px"  accept="image/*">
 </p>
 
 <p>
-    <input type="button" id="photo_album" value="点击去彩住宅小程序" style="font-size: 24px"
-           onclick="chooseImage();"
-    />
+    <input type="button" id="scan_code" value="退出登录" style="font-size: 24px" onclick="window.jsObject.colourlifeWebLogout();">
+</p>
+<p>
+    <input type="button" id="user" value="点击跳转到智能客服" style="font-size: 24px" onclick="getUserInfo(this);">
 </p>
 
 <p>
-    <input type="button" id="enter1" value="实名认证不带用户信息" style="font-size: 24px"
-           onclick="testClick();"
-    />
+    <input type="button" id="photo_album" value="点击去彩住宅小程序" style="font-size: 24px" onclick="chooseImage();">
+</p>
+
+<p>
+    <input type="button" id="enter1" value="实名认证不带用户信息" style="font-size: 24px" onclick="testClick();">
 </p>
 <p>
-    <input type="button" id="enter2" value="实名认证携带用户信息" style="font-size: 24px"
-           onclick="testDiv();"/>
+    <input type="button" id="enter2" value="实名认证携带用户信息" style="font-size: 24px" onclick="testDiv();">
 </p>
-<p>
-    <input type="file" value="打开文件" style="font-size: 24px"/>
-</p>
+
 </body>
 <script>
         function testDiv() {
@@ -75,8 +55,6 @@
 
 
         function scanCode() {
-
-            //call native method
             window.WebViewJavascriptBridge.callHandler(
                     'scanCode'
                     , {needResult: 1}
@@ -117,14 +95,12 @@ function  colourlifeDeliveryAddressHandler(obj){
 
 
         function testClick() {
-
           var name ={
   'name': '',
   'mobile': '',
  'IDNum': '',
 };
                window.jsObject.ColourlifeWalletAuth(JSON.stringify(name));
-
         }
 
      function   galleryActivityHandler(obj){
@@ -135,8 +111,6 @@ function  colourlifeDeliveryAddressHandler(obj){
         function testClick1() {
             var str1 = document.getElementById("text1").value;
             var str2 = document.getElementById("text2").value;
-
-            //call native method
             window.WebViewJavascriptBridge.callHandler(
                 'submitFromWeb'
                 , {'param': str1}
@@ -180,19 +154,6 @@ function  colourlifeDeliveryAddressHandler(obj){
                 responseCallback(responseData);
             });
         })
-
-
-
-
-
-
-
-
-
-
-
-
-
 </script>
 
 </html>

@@ -1507,6 +1507,37 @@ public class NewUserModel extends BaseModel {
         }, true, true);
     }
 
+    public void submitRealName(int what, String identity_val, String identity_name,String mobile,String user_id, final NewHttpResponse newHttpResponse) {
+        Map<String, Object> params = new HashMap<>();
+        params.put("identity_val", identity_val);
+        params.put("identity_name", identity_name);
+        if (!TextUtils.isEmpty(mobile)){
+            params.put("mobile", mobile);
+            params.put("user_id", user_id);
+        }
+        final Request<String> request = NoHttp.createStringRequest(RequestEncryptionUtils.getCombileMD5(mContext, 3, submitRealUrl, params), RequestMethod.POST);
+        request(what, request, params, new HttpListener<String>() {
+            @Override
+            public void onSucceed(int what, Response<String> response) {
+                int responseCode = response.getHeaders().getResponseCode();
+                String result = response.get();
+                if (responseCode == RequestEncryptionUtils.responseSuccess) {
+                    int resultCode = showSuccesResultMessageTheme(result);
+                    if (resultCode == 0) {
+                        newHttpResponse.OnHttpResponse(what, result);
+                    } else {
+                        newHttpResponse.OnHttpResponse(what, result);
+                    }
+                }
+            }
+
+            @Override
+            public void onFailed(int what, Response<String> response) {
+                showExceptionMessage(what, response);
+            }
+        }, true, true);
+    }
+
     /**
      * 是否新用户
      */

@@ -64,7 +64,7 @@ public class LinkParseUtil {
             if (!TextUtils.isEmpty(link)) {
                 if (link.trim().startsWith("http://") || link.trim().startsWith("https://")) {
 //                  link="http://h5test.elab-plus.com/H5/index.html";
-//                  link = "file:///android_asset/index.html";
+//                     link = "file:///android_asset/demo.html";
                     Intent intent = new Intent(context, WebViewActivity.class);
                     intent.putExtra(WebViewActivity.WEBURL, link);
                     intent.putExtra(WebViewActivity.WEBTITLE, title);
