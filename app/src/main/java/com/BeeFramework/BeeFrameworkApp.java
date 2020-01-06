@@ -21,6 +21,7 @@ import android.text.TextUtils;
 import android.view.Display;
 import android.view.WindowManager;
 
+import com.appsafekb.safekeyboard.NKeyBoardTextField;
 import com.chuanglan.shanyan_sdk.OneKeyLoginManager;
 import com.chuanglan.shanyan_sdk.listener.InitListener;
 import com.external.eventbus.EventBus;
@@ -64,6 +65,7 @@ public class BeeFrameworkApp extends MultiDexApplication {
         try {
             CrashHandler crashHandler = CrashHandler.getInstance();
             crashHandler.init(getApplicationContext());
+            NKeyBoardTextField.setNlicenseKey(UserAppConst.IJIAMINLICENSEKEY);
             Intent initialIntent = new Intent(this, InitializeService.class);
             startService(initialIntent);
             HuxinSdkManager.instance().init(getApplicationContext());

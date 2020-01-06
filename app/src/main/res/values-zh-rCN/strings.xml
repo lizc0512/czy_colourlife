@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <resources>
-    <string name="bcs_safename">彩之云安全键盘</string>
+    <string name="bcs_string_appname">彩之云安全键盘</string>
     <string name="label_done">完成</string>
     <string name="app_name">彩之云</string>
     <string name="app_name_beta">彩之云(预发)</string>

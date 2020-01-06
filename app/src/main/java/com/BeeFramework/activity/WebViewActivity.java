@@ -207,6 +207,7 @@ public class WebViewActivity extends BaseActivity implements View.OnLongClickLis
     private String photoType = "imagepath";
     private String otherMobile;
     private String otherUserId;
+    private String biz_token;
 
     @SuppressLint("AddJavascriptInterface")
     protected void onCreate(Bundle savedInstanceState) {
@@ -559,7 +560,8 @@ public class WebViewActivity extends BaseActivity implements View.OnLongClickLis
                 try {
                     RealNameTokenEntity entity = com.nohttp.utils.GsonUtils.gsonToBean(result, RealNameTokenEntity.class);
                     RealNameTokenEntity.ContentBean bean = entity.getContent();
-                    AuthConfig.Builder configBuilder = new AuthConfig.Builder(bean.getBizToken(), R.class.getPackage().getName());
+                    biz_token = bean.getBizToken();
+                    AuthConfig.Builder configBuilder = new AuthConfig.Builder(biz_token, R.class.getPackage().getName());
                     AuthSDKApi.startMainPage(this, configBuilder.build(), mListener);
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -2005,6 +2007,7 @@ public class WebViewActivity extends BaseActivity implements View.OnLongClickLis
 
     @Override
     public void onScanParkLockChanged(String mac) {
+
     }
 
     private NewUserModel newUserModel;
@@ -2029,8 +2032,10 @@ public class WebViewActivity extends BaseActivity implements View.OnLongClickLis
                 if (null == newUserModel) {
                     newUserModel = new NewUserModel(WebViewActivity.this);
                 }
-                newUserModel.submitRealName(3, idCardInfo.getIDcard(), realName, otherMobile, otherUserId, this);
+                newUserModel.submitRealName(3, biz_token, otherMobile, otherUserId, this);
             }
+        } else {
+            finish();
         }
     };
 

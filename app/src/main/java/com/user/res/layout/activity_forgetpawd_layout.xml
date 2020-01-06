@@ -29,7 +29,7 @@
         android:textSize="21sp" />
 
 
-    <com.smileback.bankcommunicationsstyle.BCSIJMInputEditText
+    <com.appsafekb.safekeyboard.NKeyBoardTextField
         android:id="@+id/ed_new_pawd"
         android:layout_width="fill_parent"
         android:layout_height="45dp"

@@ -8,11 +8,13 @@ import android.view.inputmethod.InputConnection;
 import android.view.inputmethod.InputConnectionWrapper;
 import android.widget.EditText;
 
+import com.appsafekb.safekeyboard.NKeyBoardTextField;
+
 /**
  * @see <a href="http://stackoverflow.com/questions/4886858/android-edittext-deletebackspace-key-event">Stack
  * Overflow</a>
  */
-public class ImeDelBugFixedEditText extends EditText {
+public class ImeDelBugFixedEditText extends NKeyBoardTextField {
 
     private OnDelKeyEventListener delKeyEventListener;
 

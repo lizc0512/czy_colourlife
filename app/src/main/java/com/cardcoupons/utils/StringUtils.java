@@ -26,7 +26,7 @@ public class StringUtils {
      * @return Integer
      */
     public static Integer toInt(String data) {
-        Integer result = 0;
+        Integer result = -1;
 
         try {
             result = Integer.valueOf(data);

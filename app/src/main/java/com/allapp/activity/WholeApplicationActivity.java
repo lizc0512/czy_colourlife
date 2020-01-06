@@ -70,7 +70,7 @@ public class WholeApplicationActivity extends BaseActivity implements NewHttpRes
     private String realName = "";
     private SharedPreferences mShared;
     private int customer_id;//用户的id
-
+    private String biz_token;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -137,7 +137,8 @@ public class WholeApplicationActivity extends BaseActivity implements NewHttpRes
                     try {
                         RealNameTokenEntity entity = cn.csh.colourful.life.utils.GsonUtils.gsonToBean(result, RealNameTokenEntity.class);
                         RealNameTokenEntity.ContentBean bean = entity.getContent();
-                        startAuthenticate(bean.getBizToken());
+                        biz_token=bean.getBizToken();
+                        startAuthenticate(biz_token);
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
@@ -417,7 +418,7 @@ public class WholeApplicationActivity extends BaseActivity implements NewHttpRes
             IDCardInfo idCardInfo = data.getExtras().getParcelable(AuthSDKApi.EXTRA_IDCARD_INFO);
             if (idCardInfo != null) {//身份证信息   idCardInfo.getIDcard();//身份证号码
                 realName = idCardInfo.getName();//姓名
-                newUserModel.submitRealName(3, idCardInfo.getIDcard(), realName, this);//提交实名认证
+                newUserModel.submitRealName(3, biz_token, this);//提交实名认证
             }
         }
     };

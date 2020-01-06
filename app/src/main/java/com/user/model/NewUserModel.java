@@ -88,7 +88,8 @@ public class NewUserModel extends BaseModel {
     private String signInUrl = "integral/user/setSignIn";
     private String getRealTokenUrl = "user/bizToken";
     private String getIsRealUrl = "user/checkIdentity";
-    private String submitRealUrl = "user/identity";
+    //    private String submitRealUrl = "user/identity";
+    private String submitRealUrl = "user/getDetectInfo";
     private String isNewUrl = "user/isNew";
     private String getDoorUrl = "app/door/getToken";
     private String regetDoorUrl = "app/door/refreshToken";
@@ -544,7 +545,7 @@ public class NewUserModel extends BaseModel {
                             UserInformationEntity.ContentBean contentBean = userInformationEntity.getContent();
                             editor.putString(UserAppConst.Colour_login_community_uuid, contentBean.getCommunity_uuid());
                             editor.putString(UserAppConst.Colour_login_community_name, contentBean.getCommunity_name());
-                            editor.putString(UserAppConst.Colour_login_mobile,contentBean.getMobile());
+                            editor.putString(UserAppConst.Colour_login_mobile, contentBean.getMobile());
                             editor.putString(UserAppConst.Colour_GENDER, String.valueOf(contentBean.getGender()));
                             editor.putString(UserAppConst.Colour_NAME, contentBean.getName());
                             editor.putString(UserAppConst.COLOUR_EMAIL, contentBean.getEmail());
@@ -1480,10 +1481,9 @@ public class NewUserModel extends BaseModel {
     /**
      * 提交实名认证
      */
-    public void submitRealName(int what, String identity_val, String identity_name, final NewHttpResponse newHttpResponse) {
+    public void submitRealName(int what, String biz_token, final NewHttpResponse newHttpResponse) {
         Map<String, Object> params = new HashMap<>();
-        params.put("identity_val", identity_val);
-        params.put("identity_name", identity_name);
+        params.put("biz_token", biz_token);
         final Request<String> request = NoHttp.createStringRequest(RequestEncryptionUtils.getCombileMD5(mContext, 3, submitRealUrl, params), RequestMethod.POST);
         request(what, request, params, new HttpListener<String>() {
             @Override
@@ -1507,11 +1507,10 @@ public class NewUserModel extends BaseModel {
         }, true, true);
     }
 
-    public void submitRealName(int what, String identity_val, String identity_name,String mobile,String user_id, final NewHttpResponse newHttpResponse) {
+    public void submitRealName(int what, String biz_token, String mobile, String user_id, final NewHttpResponse newHttpResponse) {
         Map<String, Object> params = new HashMap<>();
-        params.put("identity_val", identity_val);
-        params.put("identity_name", identity_name);
-        if (!TextUtils.isEmpty(mobile)){
+        params.put("biz_token", biz_token);
+        if (!TextUtils.isEmpty(mobile)) {
             params.put("mobile", mobile);
             params.put("user_id", user_id);
         }

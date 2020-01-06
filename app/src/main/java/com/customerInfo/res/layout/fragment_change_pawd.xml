@@ -7,7 +7,7 @@
 
 
 
-    <com.smileback.bankcommunicationsstyle.BCSIJMInputEditText
+    <com.appsafekb.safekeyboard.NKeyBoardTextField
         android:id="@+id/ed_old_pawd"
         android:layout_width="fill_parent"
         android:layout_height="45dp"
@@ -30,7 +30,7 @@
         android:layout_marginRight="15dp"
         android:background="@color/line_color" />
 
-    <com.smileback.bankcommunicationsstyle.BCSIJMInputEditText
+    <com.appsafekb.safekeyboard.NKeyBoardTextField
         android:id="@+id/ed_new_pawd"
         android:layout_width="fill_parent"
         android:layout_height="45dp"

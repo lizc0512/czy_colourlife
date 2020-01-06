@@ -8,6 +8,20 @@
         <item name="android:windowContentOverlay">@null</item>
     </style>
 
+    <style name="mykeyboard_dialogtheme" parent="android:style/Theme.Dialog">
+        <item name="android:background">#00000000</item>
+        <item name="android:windowFrame">@null</item>
+        <item name="android:windowActionBar">false</item>
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:title"></item>
+        <item name="android:windowIsFloating">false</item>
+        <item name="android:windowContentOverlay">@null</item>
+        <item name="android:windowAnimationStyle">@android:style/Animation.Translucent</item>
+        <item name="android:windowCloseOnTouchOutside">true</item>
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="android:windowIsTranslucent">true</item>
+    </style>
+
     <style name="dividerlineStyle">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">1px</item>

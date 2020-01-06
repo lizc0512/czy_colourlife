@@ -95,6 +95,7 @@ public class LifeHomeFragment extends Fragment implements NewHttpResponse {
     private String realName = "";
     private int customer_id;//用户的id
     private String type = "";//用户的id
+    private String biz_token;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -502,7 +503,8 @@ public class LifeHomeFragment extends Fragment implements NewHttpResponse {
                     try {
                         RealNameTokenEntity entity = GsonUtils.gsonToBean(result, RealNameTokenEntity.class);
                         RealNameTokenEntity.ContentBean bean = entity.getContent();
-                        startAuthenticate(bean.getBizToken());
+                        biz_token=bean.getBizToken();
+                        startAuthenticate(biz_token);
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
@@ -614,7 +616,7 @@ public class LifeHomeFragment extends Fragment implements NewHttpResponse {
             IDCardInfo idCardInfo = data.getExtras().getParcelable(AuthSDKApi.EXTRA_IDCARD_INFO);
             if (idCardInfo != null) {
                 realName = idCardInfo.getName();
-                newUserModel.submitRealName(3, idCardInfo.getIDcard(), realName, this);//提交实名认证
+                newUserModel.submitRealName(3,biz_token, this);//提交实名认证
             }
         }
     };

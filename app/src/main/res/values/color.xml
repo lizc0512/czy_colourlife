@@ -5,6 +5,7 @@
     <drawable name="bg_selected">#22AAAAAA</drawable>
     <drawable name="bg_default">#FFFFFF</drawable>
     <color name="bg_color">#f2f3f4</color>
+    <color name="grey">#a7a7a7</color>
     <color name="black_text_color">#333b46</color>
     <color name="black_title">#FF242A33</color>
     <color name="top_bg_color">#333b46</color>

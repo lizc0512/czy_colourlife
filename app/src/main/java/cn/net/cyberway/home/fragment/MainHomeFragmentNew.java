@@ -141,6 +141,7 @@ public class MainHomeFragmentNew extends Fragment implements NewHttpResponse, Vi
     private int height = 120;
     private String realName = "";
     private MyHandler handler;
+    private String biz_token;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -737,7 +738,7 @@ public class MainHomeFragmentNew extends Fragment implements NewHttpResponse, Vi
                         if (linkUrl.contains("notificationList")) {
                             Intent intent = new Intent(getActivity(), NotificationAllInfoActivity.class);
                             intent.putExtra("app_id", dataBean.getApp_id());
-                            intent.putExtra("title", dataBean.getMsg_title());
+                            intent.putExtra("title", dataBean.getApp_name());
                             getActivity().startActivity(intent);
                         } else {
                             LinkParseUtil.parse(getActivity(), linkUrl, "");
@@ -1637,7 +1638,8 @@ public class MainHomeFragmentNew extends Fragment implements NewHttpResponse, Vi
                     try {
                         RealNameTokenEntity entity = cn.csh.colourful.life.utils.GsonUtils.gsonToBean(result, RealNameTokenEntity.class);
                         RealNameTokenEntity.ContentBean bean = entity.getContent();
-                        startAuthenticate(bean.getBizToken());
+                        biz_token=bean.getBizToken();
+                        startAuthenticate(biz_token);
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
@@ -1820,7 +1822,7 @@ public class MainHomeFragmentNew extends Fragment implements NewHttpResponse, Vi
             IDCardInfo idCardInfo = data.getExtras().getParcelable(AuthSDKApi.EXTRA_IDCARD_INFO);
             if (idCardInfo != null) {//身份证信息   idCardInfo.getIDcard();//身份证号码
                 realName = idCardInfo.getName();//姓名
-                newUserModel.submitRealName(11, idCardInfo.getIDcard(), realName, this);//提交实名认证
+                newUserModel.submitRealName(11, biz_token, this);//提交实名认证
             }
         }
     };

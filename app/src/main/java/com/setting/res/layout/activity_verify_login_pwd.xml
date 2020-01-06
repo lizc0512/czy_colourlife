@@ -18,7 +18,7 @@
         android:src="@drawable/icon_czy_logo" />
 
 
-    <com.smileback.bankcommunicationsstyle.BCSIJMInputEditText
+    <com.appsafekb.safekeyboard.NKeyBoardTextField
         android:id="@+id/edt_pwd"
         android:layout_width="match_parent"
         android:layout_height="50dp"

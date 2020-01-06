@@ -41,7 +41,6 @@ public class ChangePawdOneStepActivity extends BaseActivity implements View.OnCl
         mBack = findViewById(R.id.user_top_view_back);
         mTitle = findViewById(R.id.user_top_view_title);
         gridPasswordView_cqb = findViewById(R.id.grid_pawd_view);
-        gridPasswordView_cqb.setPasswordType(PasswordType.NUMBER);
         gridPasswordView_cqb.setOnPasswordChangedListener(new GridPasswordView.OnPasswordChangedListener() {
             @Override
             public void onTextChanged(String psw) {

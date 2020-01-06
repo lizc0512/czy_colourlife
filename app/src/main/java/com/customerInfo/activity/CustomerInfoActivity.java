@@ -639,7 +639,7 @@ public class CustomerInfoActivity extends BaseActivity implements View.OnClickLi
             IDCardInfo idCardInfo = data.getExtras().getParcelable(AuthSDKApi.EXTRA_IDCARD_INFO);
             if (idCardInfo != null) {//身份证信息   idCardInfo.getIDcard();//身份证号码
                 realName = idCardInfo.getName();//姓名
-                newUserModel.submitRealName(4, idCardInfo.getIDcard(), realName, this);//提交实名认证
+                newUserModel.submitRealName(4, realToken, this);//提交实名认证
             }
         }
     };

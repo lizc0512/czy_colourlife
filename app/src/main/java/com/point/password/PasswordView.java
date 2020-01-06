@@ -1,19 +1,19 @@
 package com.point.password;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.text.Editable;
+import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.util.AttributeSet;
 import android.view.View;
-import android.widget.AdapterView;
-import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
+import com.appsafekb.safekeyboard.NKeyBoardTextField;
+import com.appsafekb.safekeyboard.interfaces.KeyBoardListener;
+import com.appsafekb.safekeyboard.values.ValueFactory;
 
 import cn.net.cyberway.R;
 
@@ -24,20 +24,15 @@ public class PasswordView extends RelativeLayout {
 
     Context mContext;
 
-    private VirtualKeyboardView virtualKeyboardView;
-
     private TextView[] tvList;      //用数组保存6个TextView，为什么用数组？
 
     private ImageView[] imgList;      //用数组保存6个TextView，为什么用数组？
 
-    private GridView gridView;
+    private NKeyBoardTextField mInputView;
 
     private ImageView imgCancel;
     private TextView tv_forget_pawd;
 
-    private ArrayList<Map<String, String>> valueList;
-
-    private int currentIndex = -1;    //用于记录当前输入密码格位置
 
     public PasswordView(Context context) {
         this(context, null);
@@ -46,22 +41,85 @@ public class PasswordView extends RelativeLayout {
     public PasswordView(Context context, AttributeSet attrs) {
         super(context, attrs);
         this.mContext = context;
-
         View view = View.inflate(context, R.layout.layout_popup_bottom, null);
-
-        virtualKeyboardView =  view.findViewById(R.id.virtualKeyboardView);
         imgCancel =view.findViewById(R.id.iv_close_dialog);
         tv_forget_pawd = view.findViewById(R.id.tv_forget_pawd);
-        gridView = virtualKeyboardView.getGridView();
-
-        initValueList();
-
         initView(view);
+        mInputView = new NKeyBoardTextField(context);
+        mInputView.setNkeyboardType(3);
+        mInputView.setNKeyboardRandom(ValueFactory.buildAllTrue());
+        mInputView.setEditClearIcon(false);
+        mInputView.setNKeyboardKeyEncryption(false);
+        mInputView.clearNkeyboard();
+        mInputView.showNKeyboard();
+        mInputView.setNKeyboardMaxInputLength(6);
+        mInputView.addTextChangedListener(textWatcher);
+        mInputView.setKeyBoardListener(new KeyBoardListener() {
+            @Override
+            public void onKey(int j) {
+                if (j == 5) {
+                    for (int i = tvList.length - 1; i >= 0; i--) {
+                        String content= tvList[i].getText().toString().trim();
+                        if (!TextUtils.isEmpty(content)) {
+                            tvList[i].setText("");
+                            tvList[i].setVisibility(View.VISIBLE);
+                            imgList[i].setVisibility(View.INVISIBLE);
+                            break;
+                        } else {
+                            tvList[i].setText("");
+                        }
+                    }
+                }
+            }
 
-        setupView();
+            @Override
+            public void onDismiss(DialogInterface dialogInterface) {
+                mInputView.hideNKeyboard();
+            }
 
+            @Override
+            public void onShow(DialogInterface dialogInterface) {
+
+            }
+
+            @Override
+            public void onConfigLoadSucc() {
+
+            }
+
+            @Override
+            public boolean onCompleteKeyboardKeepShow() {
+                return false;
+            }
+        });
         addView(view);
     }
+
+    private TextWatcher textWatcher = new TextWatcher() {
+        @Override
+        public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+        }
+
+        @Override
+        public void onTextChanged(CharSequence s, int start, int before, int count) {
+            String newStr = mInputView.getNKeyboardText();
+            for (int i = 0; i < newStr.length(); i++) {
+               String content=  tvList[i].getText().toString().trim();
+               if (TextUtils.isEmpty(content)){
+                   String newNum = newStr.substring(i, i + 1);
+                   tvList[i].setText(newNum);
+                   tvList[i].setVisibility(View.INVISIBLE);
+                   imgList[i].setVisibility(View.VISIBLE);
+               }
+            }
+        }
+
+        @Override
+        public void afterTextChanged(Editable s) {
+
+        }
+    };
 
     private void initView(View view) {
 
@@ -87,66 +145,9 @@ public class PasswordView extends RelativeLayout {
 
     }
 
-    // 这里，我们没有使用默认的数字键盘，因为第10个数字不显示.而是空白
-    private void initValueList() {
-
-        valueList = new ArrayList<>();
-
-        // 初始化按钮上应该显示的数字
-        for (int i = 1; i < 13; i++) {
-            Map<String, String> map = new HashMap<String, String>();
-            if (i < 10) {
-                map.put("name", String.valueOf(i));
-            } else if (i == 10) {
-                map.put("name", "");
-            } else if (i == 11) {
-                map.put("name", String.valueOf(0));
-            } else if (i == 12) {
-                map.put("name", "12");
-            }
-            valueList.add(map);
-        }
-    }
-
-    private void setupView() {
-
-        // 这里、重新为数字键盘gridView设置了Adapter
-        KeyBoardAdapter keyBoardAdapter = new KeyBoardAdapter(mContext, valueList);
-        gridView.setAdapter(keyBoardAdapter);
-
-        gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                if (position < 11 && position != 9) {    //点击0~9按钮
-
-                    if (currentIndex >= -1 && currentIndex < 5) {      //判断输入位置————要小心数组越界
-                        ++currentIndex;
-                        tvList[currentIndex].setText(valueList.get(position).get("name"));
-
-                        tvList[currentIndex].setVisibility(View.INVISIBLE);
-                        imgList[currentIndex].setVisibility(View.VISIBLE);
-                    }
-                } else {
-                    if (position == 11) {      //点击退格键
-                        if (currentIndex - 1 >= -1) {      //判断是否删除完毕————要小心数组越界
-
-                            tvList[currentIndex].setText("");
-
-                            tvList[currentIndex].setVisibility(View.VISIBLE);
-                            imgList[currentIndex].setVisibility(View.INVISIBLE);
-
-                            currentIndex--;
-                        }
-                    }
-                }
-            }
-        });
-    }
 
     //设置监听方法，在第6位输入完成后触发
     public void setOnFinishInput(final OnPasswordInputFinish pass) {
-
-
         tvList[5].addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -170,12 +171,6 @@ public class PasswordView extends RelativeLayout {
             }
         });
     }
-
-    public VirtualKeyboardView getVirtualKeyboardView() {
-
-        return virtualKeyboardView;
-    }
-
     public ImageView getImgCancel() {
         return imgCancel;
     }

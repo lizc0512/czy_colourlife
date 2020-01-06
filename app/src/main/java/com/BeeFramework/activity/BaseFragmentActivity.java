@@ -2,6 +2,7 @@ package com.BeeFramework.activity;
 
 import android.annotation.TargetApi;
 import android.app.Activity;
+import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.content.res.Resources;
@@ -10,6 +11,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.view.ViewCompat;
+import android.util.DisplayMetrics;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
@@ -109,16 +111,25 @@ public class BaseFragmentActivity extends FragmentActivity {
 
 
     protected void setAndroidM(Activity activity) {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            Window win = activity.getWindow();
-            win.addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);//透明状态栏
-            // 状态栏字体设置为深色，SYSTEM_UI_FLAG_LIGHT_STATUS_BAR 为SDK23增加
-            win.getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN | View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
-
-            // 部分机型的statusbar会有半透明的黑色背景
-            win.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
-            win.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
-            win.setStatusBarColor(Color.TRANSPARENT);// SDK21
+        WindowManager wm = (WindowManager) getSystemService(Context.WINDOW_SERVICE);
+        DisplayMetrics dm = new DisplayMetrics();
+        wm.getDefaultDisplay().getMetrics(dm);
+        int width = dm.widthPixels;       // 屏幕高度（像素）
+        int height = dm.heightPixels;
+        if (width >= 1440 && height >= 3120) {
+            setStatusBarUpperAPI19();
+        } else {
+            tintManager.setStatusBarTintColor(Color.parseColor("#ffffff"));  //设置上方状态栏的颜色
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                Window win = activity.getWindow();
+                win.addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);//透明状态栏
+                // 状态栏字体设置为深色，SYSTEM_UI_FLAG_LIGHT_STATUS_BAR 为SDK23增加
+                win.getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN | View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
+                // 部分机型的statusbar会有半透明的黑色背景
+                win.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+                win.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+                win.setStatusBarColor(Color.TRANSPARENT);// SDK21
+            }
         }
     }
 
@@ -128,7 +139,6 @@ public class BaseFragmentActivity extends FragmentActivity {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
             if (MIUISetStatusBarLightMode(activity.getWindow(), true)) {//MIUI
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {//5.0
-                    tintManager.setStatusBarTintColor(Color.parseColor("#ffffff"));  //设置上方状态栏的颜色
                     setAndroidM(activity);
                 } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {//4.4
                     activity.getWindow().setFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS,
@@ -138,7 +148,6 @@ public class BaseFragmentActivity extends FragmentActivity {
                 }
             } else if (FlymeSetStatusBarLightMode(activity.getWindow(), true)) {//Flyme
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {//5.0
-                    tintManager.setStatusBarTintColor(Color.parseColor("#ffffff"));  //设置上方状态栏的颜色
                     setAndroidM(activity);
                 } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {//4.4
                     activity.getWindow().setFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS,
@@ -147,7 +156,6 @@ public class BaseFragmentActivity extends FragmentActivity {
                     tintManager.setStatusBarTintResource(android.R.color.white);
                 }
             } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {//6.0
-                tintManager.setStatusBarTintColor(Color.parseColor("#ffffff"));  //设置上方状态栏的颜色
                 setAndroidM(activity);
             } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {//5.几的系统
                 setStatusBarUpperAPI19();

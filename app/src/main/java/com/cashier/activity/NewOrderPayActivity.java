@@ -40,6 +40,7 @@ import com.lhqpay.ewallet.keepIntact.WXPayEntryActivity;
 import com.nohttp.entity.BaseContentEntity;
 import com.nohttp.utils.GlideImageLoader;
 import com.nohttp.utils.GsonUtils;
+import com.nohttp.utils.RequestEncryptionUtils;
 import com.pay.Activity.AlixPayActivity;
 import com.point.activity.ChangePawdTwoStepActivity;
 import com.point.activity.PointChangeDeviceDialog;
@@ -60,7 +61,9 @@ import com.tencent.mm.opensdk.openapi.IWXAPI;
 import com.tencent.mm.opensdk.openapi.WXAPIFactory;
 import com.user.UserAppConst;
 import com.user.UserMessageConstant;
+import com.user.Utils.TokenUtils;
 import com.user.model.NewUserModel;
+import com.user.model.RequestFailModel;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -134,6 +137,8 @@ public class NewOrderPayActivity extends BaseActivity implements View.OnClickLis
     private EditDialog noticeDialog = null;
     private NewUserModel newUserModel;
     private String realName;
+    private String payListResult;
+    private String biz_token;
 
 
     @Override
@@ -601,8 +606,13 @@ public class NewOrderPayActivity extends BaseActivity implements View.OnClickLis
 
 
     private void createCzyOrder() {
-        if (TextUtils.isEmpty(payChannelId)) {
+        if (TextUtils.isEmpty(payChannelId)) { //未返回支付方式用户点击上传日记
             ToastUtil.toastShow(NewOrderPayActivity.this, "请选择一种支付方式");
+            RequestFailModel failModel = new RequestFailModel(NewOrderPayActivity.this);
+            Map<String, Object> params = new HashMap<>();
+            params.put("sn", sn);
+            params.put("response", payListResult);
+            failModel.uploadRequestFailLogs(11, RequestEncryptionUtils.getMapToString(params));
         } else {
             if (is_native == 1) {
                 int index = payChannelId.indexOf(",");
@@ -907,6 +917,7 @@ public class NewOrderPayActivity extends BaseActivity implements View.OnClickLis
             case 0:
                 if (!TextUtils.isEmpty(result)) {
                     try {
+                        payListResult = result;
                         addPayTypeView(result);
                     } catch (Exception e) {
                         BaseContentEntity baseEntity = GsonUtils.gsonToBean(result, BaseContentEntity.class);
@@ -981,7 +992,8 @@ public class NewOrderPayActivity extends BaseActivity implements View.OnClickLis
                     try {
                         RealNameTokenEntity entity = GsonUtils.gsonToBean(result, RealNameTokenEntity.class);
                         RealNameTokenEntity.ContentBean bean = entity.getContent();
-                        AuthConfig.Builder configBuilder = new AuthConfig.Builder(bean.getBizToken(), R.class.getPackage().getName());
+                        biz_token=bean.getBizToken();
+                        AuthConfig.Builder configBuilder = new AuthConfig.Builder(biz_token, R.class.getPackage().getName());
                         AuthSDKApi.startMainPage(this, configBuilder.build(), mListener);
                     } catch (Exception e) {
                         e.printStackTrace();
@@ -1096,10 +1108,8 @@ public class NewOrderPayActivity extends BaseActivity implements View.OnClickLis
 
     /***支付密码的弹窗**/
     private void showPayDialog() {
-        PopEnterPassword   popEnterPassword = new PopEnterPassword(this);
-        // 显示窗口
-        popEnterPassword.showAtLocation(this.findViewById(R.id.layoutContent),
-                Gravity.BOTTOM | Gravity.CENTER_HORIZONTAL, 0, 0); // 设置layout在PopupWindow中显示的位置
+        PopEnterPassword popEnterPassword = new PopEnterPassword(this);
+        popEnterPassword.show();
     }
 
     /***实名认证的弹窗**/
@@ -1164,7 +1174,7 @@ public class NewOrderPayActivity extends BaseActivity implements View.OnClickLis
             IDCardInfo idCardInfo = data.getExtras().getParcelable(AuthSDKApi.EXTRA_IDCARD_INFO);
             if (idCardInfo != null) {//身份证信息   idCardInfo.getIDcard();//身份证号码
                 realName = idCardInfo.getName();//姓名
-                newUserModel.submitRealName(5, idCardInfo.getIDcard(), realName, this);//提交实名认证
+                newUserModel.submitRealName(5, biz_token, this);//提交实名认证
             }
         }
     };

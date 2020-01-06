@@ -28,6 +28,12 @@ import com.BeeFramework.activity.BaseActivity;
 import com.BeeFramework.model.Constants;
 import com.BeeFramework.model.NewHttpResponse;
 import com.BeeFramework.view.ClearEditText;
+import com.appsafekb.safekeyboard.AppSafekbConfig;
+import com.appsafekb.safekeyboard.NKeyBoardTextField;
+import com.appsafekb.safekeyboard.encrypt.EncryptTypeFactory;
+import com.appsafekb.safekeyboard.interfaces.encrypttype.BaseEncryptionType;
+import com.appsafekb.safekeyboard.interfaces.encrypttype.XYEncryptionType;
+import com.appsafekb.safekeyboard.values.ValueFactory;
 import com.chuanglan.shanyan_sdk.OneKeyLoginManager;
 import com.chuanglan.shanyan_sdk.listener.GetPhoneInfoListener;
 import com.eparking.helper.CustomDialog;
@@ -39,7 +45,6 @@ import com.mob.tools.utils.UIHandler;
 import com.nohttp.utils.GsonUtils;
 import com.permission.AndPermission;
 import com.permission.PermissionListener;
-import com.smileback.bankcommunicationsstyle.BCSIJMInputEditText;
 import com.user.UserAppConst;
 import com.user.UserMessageConstant;
 import com.user.entity.CheckAuthRegisterEntity;
@@ -103,7 +108,7 @@ public class UserRegisterAndLoginActivity extends BaseActivity implements OnClic
     private TextView user_top_view_right;
     private ClearEditText user_login_phone;
     private ImageView img_gesture_pwd;
-    private BCSIJMInputEditText user_login_password;
+    private NKeyBoardTextField user_login_password;
     private TextView user_login_find_password;
     private Button user_login_btn;
     private LinearLayout thridLoginlayout;
@@ -178,7 +183,7 @@ public class UserRegisterAndLoginActivity extends BaseActivity implements OnClic
         user_top_view_right = (TextView) findViewById(R.id.user_top_view_right);
         user_login_phone = (ClearEditText) findViewById(R.id.user_login_phone);
         img_gesture_pwd = (ImageView) findViewById(R.id.img_gesture_pwd);
-        user_login_password = (BCSIJMInputEditText) findViewById(R.id.user_login_password);
+        user_login_password = findViewById(R.id.user_login_password);
         user_login_find_password = (TextView) findViewById(R.id.user_login_find_password);
         user_login_btn = (Button) findViewById(R.id.user_login_btn);
         thridLoginlayout = (LinearLayout) findViewById(R.id.thridLoginlayout);
@@ -196,14 +201,14 @@ public class UserRegisterAndLoginActivity extends BaseActivity implements OnClic
         wechat_layout.setOnClickListener(this);
         qq_layout.setOnClickListener(this);
         tv_contact_service.setOnClickListener(this);
-        user_login_password.setNlicenseKey(UserAppConst.IJIAMINLICENSEKEY);
-        user_login_password.setKeyboardNoRandom(true);
-        user_login_password.setNKeyboardKeyBg(true);
-        user_login_password.clearKeyboard();
+        user_login_password.setNkeyboardType(0);
+        user_login_password.setNKeyboardRandom(ValueFactory.buildAllTrue());
+        user_login_password.setEditClearIcon(true);
+        user_login_password.setNKeyboardKeyEncryption(false);
+        user_login_password.clearNkeyboard();
         ThemeStyleHelper.onlyFrameTitileBar(getApplicationContext(), czy_title_layout, user_top_view_back, user_top_view_title);
         addTextChangeLister();
-
-//        tv_explain.setText(getResources().getString(R.string.user_bind_phone_explain));
+//      tv_explain.setText(getResources().getString(R.string.user_bind_phone_explain));
     }
 
 

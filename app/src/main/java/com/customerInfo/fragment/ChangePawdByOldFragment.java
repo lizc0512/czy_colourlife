@@ -9,7 +9,8 @@ import android.widget.Button;
 import com.BeeFramework.Utils.ToastUtil;
 import com.BeeFramework.activity.BaseFragment;
 import com.BeeFramework.model.NewHttpResponse;
-import com.smileback.bankcommunicationsstyle.BCSIJMInputEditText;
+import com.appsafekb.safekeyboard.NKeyBoardTextField;
+import com.appsafekb.safekeyboard.values.ValueFactory;
 import com.user.UserAppConst;
 import com.user.model.NewUserModel;
 
@@ -29,8 +30,8 @@ public class ChangePawdByOldFragment extends BaseFragment implements View.OnClic
 
     private Button complete_btn;
     private NewUserModel newUserModel;
-    private BCSIJMInputEditText password_et;
-    private BCSIJMInputEditText new_password_et;
+    private NKeyBoardTextField password_et;
+    private NKeyBoardTextField new_password_et;
     private String oldPawd;
     private String newPawd;
     private String savePawd;
@@ -46,13 +47,22 @@ public class ChangePawdByOldFragment extends BaseFragment implements View.OnClic
         new_password_et = rootView.findViewById(R.id.ed_new_pawd);
         complete_btn = rootView.findViewById(R.id.btn_finish);
         complete_btn.setOnClickListener(this);
-        password_et.setKeyboardNoRandom(true);
-        password_et.setNKeyboardKeyBg(true);
-        password_et.setNlicenseKey(UserAppConst.IJIAMINLICENSEKEY);
-        new_password_et.setKeyboardNoRandom(true);
-        new_password_et.setNKeyboardKeyBg(true);
-        new_password_et.setNlicenseKey(UserAppConst.IJIAMINLICENSEKEY);
-        password_et.setNkeyboardEject(true);
+
+
+        password_et.setNkeyboardType(0);
+        password_et.setNKeyboardRandom(ValueFactory.buildAllTrue());
+        password_et.setEditClearIcon(true);
+        password_et.setNKeyboardKeyEncryption(false);
+        password_et.clearNkeyboard();
+        password_et.showNKeyboard();
+
+
+
+        new_password_et.setNkeyboardType(0);
+        new_password_et.setNKeyboardRandom(ValueFactory.buildAllTrue());
+        new_password_et.setEditClearIcon(true);
+        new_password_et.setNKeyboardKeyEncryption(false);
+
 
         password_et.addTextChangedListener(new TextWatcher() {
             @Override

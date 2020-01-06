@@ -12,8 +12,10 @@ import android.widget.TextView;
 import com.BeeFramework.Utils.ToastUtil;
 import com.BeeFramework.activity.BaseFragment;
 import com.BeeFramework.model.NewHttpResponse;
+import com.appsafekb.safekeyboard.NKeyBoardTextField;
+import com.appsafekb.safekeyboard.values.ArrayValues;
+import com.appsafekb.safekeyboard.values.ValueFactory;
 import com.nohttp.utils.GsonUtils;
-import com.smileback.bankcommunicationsstyle.BCSIJMInputEditText;
 import com.user.UserAppConst;
 import com.user.entity.SendCodeEntity;
 import com.user.model.NewUserModel;
@@ -33,7 +35,7 @@ import cn.net.cyberway.R;
 public class ChangePawdByCoderagment extends BaseFragment implements View.OnClickListener, NewHttpResponse {
 
     private TextView user_set_phone;
-    private BCSIJMInputEditText ed_new_pawd;
+    private NKeyBoardTextField ed_new_pawd;
     private EditText ed_sms;
     private TextView tv_get_sms;
     private TextView tv_voice_code;
@@ -52,10 +54,12 @@ public class ChangePawdByCoderagment extends BaseFragment implements View.OnClic
     protected void initView(View rootView) {
         user_set_phone = rootView.findViewById(R.id.user_set_phone);
         ed_new_pawd = rootView.findViewById(R.id.ed_new_pawd);
-        ed_new_pawd.setNlicenseKey(UserAppConst.IJIAMINLICENSEKEY);
-        ed_new_pawd.setKeyboardNoRandom(true);
-        ed_new_pawd.setNKeyboardKeyBg(true);
-        ed_new_pawd.clearKeyboard();
+        ed_new_pawd.setNkeyboardType(0);
+        ed_new_pawd.setNKeyboardRandom(ValueFactory.buildAllTrue());
+        ed_new_pawd.setEditClearIcon(true);
+        ed_new_pawd.setNKeyboardKeyEncryption(false);
+        ed_new_pawd.clearNkeyboard();
+        ed_new_pawd.showNKeyboard();
         ed_sms = rootView.findViewById(R.id.ed_sms);
         tv_get_sms = rootView.findViewById(R.id.tv_get_sms);
         tv_voice_code = rootView.findViewById(R.id.tv_voice_code);

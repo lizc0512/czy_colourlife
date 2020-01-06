@@ -39,7 +39,6 @@ public class ChangePawdTwoStepActivity extends BaseActivity implements View.OnCl
         mTitle = findViewById(R.id.user_top_view_title);
         tv_tips_content = findViewById(R.id.tv_tips_content);
         gridPasswordView_cqb = findViewById(R.id.grid_pawd_view);
-        gridPasswordView_cqb.setPasswordType(PasswordType.NUMBER);
         Intent intent = getIntent();
         passwordType = intent.getIntExtra(PAWDTYPE, 0);
         passordToken = intent.getStringExtra(PAWDTOEKN);

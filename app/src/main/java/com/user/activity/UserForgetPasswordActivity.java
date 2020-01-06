@@ -15,12 +15,10 @@ import com.BeeFramework.Utils.ThemeStyleHelper;
 import com.BeeFramework.Utils.ToastUtil;
 import com.BeeFramework.activity.BaseActivity;
 import com.BeeFramework.model.NewHttpResponse;
-import com.smileback.bankcommunicationsstyle.BCSIJMInputEditText;
+import com.appsafekb.safekeyboard.NKeyBoardTextField;
+import com.appsafekb.safekeyboard.values.ValueFactory;
 import com.user.UserAppConst;
 import com.user.model.NewUserModel;
-
-import java.util.HashMap;
-import java.util.Map;
 
 import cn.net.cyberway.R;
 import cn.net.cyberway.utils.ConfigUtils;
@@ -41,7 +39,7 @@ public class UserForgetPasswordActivity extends BaseActivity implements View.OnC
     private TextView user_top_view_title;
     private TextView tv_forget_number;
     private TextView tv_contact_service;
-    private BCSIJMInputEditText ed_new_pawd;
+    private NKeyBoardTextField ed_new_pawd;
     private Button btn_finish;
     private NewUserModel newUserModel;
     private String mobile;
@@ -67,7 +65,7 @@ public class UserForgetPasswordActivity extends BaseActivity implements View.OnC
         user_top_view_back = (ImageView) findViewById(R.id.user_top_view_back);
         user_top_view_title = (TextView) findViewById(R.id.user_top_view_title);
         tv_forget_number = (TextView) findViewById(R.id.tv_forget_number);
-        ed_new_pawd = (BCSIJMInputEditText) findViewById(R.id.ed_new_pawd);
+        ed_new_pawd =  findViewById(R.id.ed_new_pawd);
         tv_contact_service = findViewById(R.id.tv_contact_service);
         btn_finish = (Button) findViewById(R.id.btn_finish);
         findViewById(R.id.line).setVisibility(View.GONE);
@@ -75,10 +73,14 @@ public class UserForgetPasswordActivity extends BaseActivity implements View.OnC
         user_top_view_back.setOnClickListener(this);
         btn_finish.setOnClickListener(this);
         tv_contact_service.setOnClickListener(this);
-        ed_new_pawd.setKeyboardNoRandom(true);
-        ed_new_pawd.setNlicenseKey(UserAppConst.IJIAMINLICENSEKEY);
-        ed_new_pawd.setNKeyboardKeyBg(true);
-        ed_new_pawd.setNkeyboardEject(true);
+
+        ed_new_pawd.setNkeyboardType(0);
+        ed_new_pawd.setNKeyboardRandom(ValueFactory.buildAllTrue());
+        ed_new_pawd.setEditClearIcon(true);
+        ed_new_pawd.setNKeyboardKeyEncryption(false);
+        ed_new_pawd.clearNkeyboard();
+        ed_new_pawd.showNKeyboard();
+
         ThemeStyleHelper.onlyFrameTitileBar(getApplicationContext(), czy_title_layout, user_top_view_back, user_top_view_title);
         ed_new_pawd.addTextChangedListener(new TextWatcher() {
             @Override

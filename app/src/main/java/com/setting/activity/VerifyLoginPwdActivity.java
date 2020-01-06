@@ -16,8 +16,9 @@ import com.BeeFramework.Utils.ThemeStyleHelper;
 import com.BeeFramework.Utils.ToastUtil;
 import com.BeeFramework.activity.BaseActivity;
 import com.BeeFramework.model.NewHttpResponse;
+import com.appsafekb.safekeyboard.NKeyBoardTextField;
+import com.appsafekb.safekeyboard.values.ValueFactory;
 import com.gesturepwd.activity.CreateGesturePasswordActivity;
-import com.smileback.bankcommunicationsstyle.BCSIJMInputEditText;
 import com.user.UserAppConst;
 import com.user.model.NewUserModel;
 
@@ -30,7 +31,7 @@ import cn.net.cyberway.activity.BroadcastReceiverActivity;
  */
 public class VerifyLoginPwdActivity extends BaseActivity implements View.OnClickListener, NewHttpResponse {
     public static final String PAWDTYPE = "pawdtype";
-    private BCSIJMInputEditText edt_pwd;// 密码输入框
+    private NKeyBoardTextField edt_pwd;// 密码输入框
     private NewUserModel newUserModel;
     private Button btn_verify;
     private BroadcastReceiverActivity broadcast;
@@ -56,11 +57,17 @@ public class VerifyLoginPwdActivity extends BaseActivity implements View.OnClick
         ImageView mBack = (ImageView) findViewById(R.id.user_top_view_back);
         TextView mTitle = (TextView) findViewById(R.id.user_top_view_title);
         btn_verify = (Button) findViewById(R.id.btn_verify);
-        edt_pwd = (BCSIJMInputEditText) findViewById(R.id.edt_pwd);
-        edt_pwd.setKeyboardNoRandom(true);
-        edt_pwd.setNKeyboardKeyBg(true);
-        edt_pwd.setNkeyboardEject(true);
-        edt_pwd.setNlicenseKey(UserAppConst.IJIAMINLICENSEKEY);
+        edt_pwd =  findViewById(R.id.edt_pwd);
+
+
+
+        edt_pwd.setNkeyboardType(0);
+        edt_pwd.setNKeyboardRandom(ValueFactory.buildAllTrue());
+        edt_pwd.setEditClearIcon(true);
+        edt_pwd.setNKeyboardKeyEncryption(false);
+        edt_pwd.clearNkeyboard();
+        edt_pwd.showNKeyboard();
+
         passwordType = getIntent().getIntExtra(PAWDTYPE, 0);
         if (passwordType == 0) {
             edt_pwd.setHint(getResources().getString(R.string.user_set_pawd));

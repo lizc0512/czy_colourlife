@@ -91,6 +91,7 @@ public class UserAccountSaftyActivity extends BaseActivity implements View.OnCli
     private PointModel pointModel;
     private String state;
     private String realName;
+    private String biz_token;
     private BroadcastReceiverActivity broadcast;
 
     @Override
@@ -337,7 +338,8 @@ public class UserAccountSaftyActivity extends BaseActivity implements View.OnCli
                     try {
                         RealNameTokenEntity entity = cn.csh.colourful.life.utils.GsonUtils.gsonToBean(result, RealNameTokenEntity.class);
                         RealNameTokenEntity.ContentBean bean = entity.getContent();
-                        AuthConfig.Builder configBuilder = new AuthConfig.Builder(bean.getBizToken(), R.class.getPackage().getName());
+                        biz_token=bean.getBizToken();
+                        AuthConfig.Builder configBuilder = new AuthConfig.Builder(biz_token, R.class.getPackage().getName());
                         AuthSDKApi.startMainPage(this, configBuilder.build(), mListener);
                     } catch (Exception e) {
                         e.printStackTrace();
@@ -385,7 +387,7 @@ public class UserAccountSaftyActivity extends BaseActivity implements View.OnCli
             IDCardInfo idCardInfo = data.getExtras().getParcelable(AuthSDKApi.EXTRA_IDCARD_INFO);
             if (idCardInfo != null) {//身份证信息   idCardInfo.getIDcard();//身份证号码
                 realName = idCardInfo.getName();//姓名
-                newUserModel.submitRealName(7, idCardInfo.getIDcard(), realName, this);//提交实名认证
+                newUserModel.submitRealName(7, biz_token, this);//提交实名认证
             }
         }
     };

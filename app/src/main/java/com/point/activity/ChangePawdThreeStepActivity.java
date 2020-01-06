@@ -50,7 +50,6 @@ public class ChangePawdThreeStepActivity extends BaseActivity implements View.On
         tv_tips_content = findViewById(R.id.tv_tips_content);
         btn_define = findViewById(R.id.btn_define);
         gridPasswordView_cqb = findViewById(R.id.grid_pawd_view);
-        gridPasswordView_cqb.setPasswordType(PasswordType.NUMBER);
         mBack.setOnClickListener(this);
         btn_define.setVisibility(View.VISIBLE);
         btn_define.setEnabled(false);

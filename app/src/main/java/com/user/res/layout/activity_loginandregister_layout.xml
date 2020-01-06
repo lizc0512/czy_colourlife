@@ -75,7 +75,7 @@
                     android:paddingBottom="5dp"
                     android:src="@drawable/icon_signin_code" />
 
-                <com.smileback.bankcommunicationsstyle.BCSIJMInputEditText
+                <com.appsafekb.safekeyboard.NKeyBoardTextField
                     android:id="@+id/user_login_password"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
