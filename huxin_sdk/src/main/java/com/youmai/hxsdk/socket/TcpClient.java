@@ -446,6 +446,9 @@ public class TcpClient extends PduUtil implements Runnable {
             if (mCallBack != null) {
                 mCallBack.connectSuccess();//socket连接成功回调
             }
+            Thread thread = new Thread(this);
+            thread.setName("socket thread");
+            thread.start();
 
             Log.v(TAG, "tcp is connect success");
             LogFile.inStance().toFile("tcp is connect success");
