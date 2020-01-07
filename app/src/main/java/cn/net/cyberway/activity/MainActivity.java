@@ -180,7 +180,6 @@ public class MainActivity extends BaseFragmentActivity implements View.OnClickLi
         fragmentManager = getSupportFragmentManager();
         onTabSelected(FLAG_TAB_ONE);
         if (mShared.getBoolean(UserAppConst.IS_CHECK_UPDATE, false)) {//为TURE，说明第二次进入才检测更新
-//            mUpdateVerSion.getNewVerSion("1", true, MainActivity.this);
             mUpdateVerSion.getNewVerSion(MainActivity.this, true, false);
         }
         mEditor.putInt(UpdateVerSion.SAVEVERSIONCODE, UpdateVerSion.getVersionCode(MainActivity.this));//保存版本号
@@ -314,21 +313,21 @@ public class MainActivity extends BaseFragmentActivity implements View.OnClickLi
             openDoor(doorId);
         }
         String linkURl = intent.getStringExtra(JUMPOTHERURL);//通知栏推送的url
-        Bundle bundle=intent.getExtras();
-        String messageExtra=null;
-        if (null!=bundle){
-             messageExtra = bundle.getString("JMessageExtra");//oppo和fcm的处理
+        Bundle bundle = intent.getExtras();
+        String messageExtra = null;
+        if (null != bundle) {
+            messageExtra = bundle.getString("JMessageExtra");//oppo和fcm的处理
         }
-        if (TextUtils.isEmpty(messageExtra)){
-            messageExtra=intent.getDataString(); //处理小米和华为
+        if (TextUtils.isEmpty(messageExtra)) {
+            messageExtra = intent.getDataString(); //处理小米和华为
         }
-        if (!TextUtils.isEmpty(messageExtra)){
-            int whichPushSDK=0;
+        if (!TextUtils.isEmpty(messageExtra)) {
+            int whichPushSDK = 0;
             if (!TextUtils.isEmpty(messageExtra)) {
                 try {
                     JSONObject jsonObject = new JSONObject(messageExtra);
                     //byte类型的整数，0为极光，1为小米，2为华为，3为魅族，4为OPPO，8为FCM。
-                    whichPushSDK= jsonObject.optInt("rom_type");
+                    whichPushSDK = jsonObject.optInt("rom_type");
 //                    通知附加字段
                     JSONObject extrasJson = jsonObject.optJSONObject("n_extras");
                     linkURl = extrasJson.optString("url");
@@ -630,6 +629,8 @@ public class MainActivity extends BaseFragmentActivity implements View.OnClickLi
                     transaction.show(mHomeFragment);
                 }
             } else {
+                mToolBar.setVisibility(View.GONE);
+                circle_scanner_image.setVisibility(View.GONE);
                 if (null == nologinHomeFragment) {
                     nologinHomeFragment = new NologinHomeFragment();
                     transaction.add(R.id.main_fragment_container, nologinHomeFragment);
@@ -809,6 +810,8 @@ public class MainActivity extends BaseFragmentActivity implements View.OnClickLi
                 onTabSelected(FLAG_TAB_ONE);
                 break;
             case UserMessageConstant.SIGN_IN_SUCCESS:
+                mToolBar.setVisibility(View.VISIBLE);
+                circle_scanner_image.setVisibility(View.VISIBLE);
                 onTabSelected(FLAG_TAB_ONE);
                 getContactList();
                 break;

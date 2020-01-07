@@ -826,8 +826,6 @@ public class HuxinSdkManager {
             } else {
                 waitBindingNotify(listener);
             }
-        } else {
-            throw new IllegalStateException("huxin sdk no init");
         }
 
     }
@@ -2415,11 +2413,15 @@ public class HuxinSdkManager {
                                   List<YouMaiGroup.GroupMemberItem> list,
                                   int groupId, int groupType, ReceiveListener callback) {
         YouMaiGroup.GroupMemberChangeReq.Builder builder = YouMaiGroup.GroupMemberChangeReq.newBuilder();
-
         builder.setType(type);
         builder.setUserId(getUuid());
         builder.setGroupId(groupId);
-        builder.setGroupType(YouMaiBasic.GroupType.valueOf(groupType));
+        if (YouMaiBasic.GroupType.valueOf(groupType)==null){
+            builder.setGroupType(YouMaiBasic.GroupType.GROUP_TYPE_MULTICHAT);
+        }else{
+            builder.setGroupType(YouMaiBasic.GroupType.valueOf(groupType));
+        }
+
         builder.addAllMemberList(list);
         YouMaiGroup.GroupMemberChangeReq group = builder.build();
 

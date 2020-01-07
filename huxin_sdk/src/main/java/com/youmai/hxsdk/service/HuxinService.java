@@ -434,7 +434,10 @@ public class HuxinService extends Service {
                     YouMaiLogin.User_Login_Ack ack = YouMaiLogin.User_Login_Ack.parseFrom(pduBase.body);
                     if (ack.getErrerNo() == YouMaiBasic.ERRNO_CODE.ERRNO_CODE_OK) {
                         //Toast.makeText(mContext, "socket登录成功", Toast.LENGTH_SHORT).show();
-                        mClient.setLogin(true);
+                        if (null!=mClient){
+                            mClient.setLogin(true);
+                        }
+
 
                         HuxinSdkManager.LoginStatusListener listener = HuxinSdkManager.instance().getLoginStatusListener();
                         if (listener != null) {
@@ -442,7 +445,9 @@ public class HuxinService extends Service {
                         }
                     } else {
                         //Toast.makeText(mContext, "socket登录失败", Toast.LENGTH_SHORT).show();
-                        mClient.setLogin(false);
+                        if (null!=mClient){
+                            mClient.setLogin(false);
+                        }
                     }
 
                     if (ack.getUpload()) {

@@ -1334,6 +1334,9 @@ public class IMMsgManager {
 
 
     public int getAllBadgeBubbyCount() {
+        if (mContext==null){
+            return  0;
+        }
         if (badgeCount.isEmpty()) {
             String badge = AppUtils.getStringSharedPreferences(mContext, getBadgeSharedPreferenceKey(), "");
             if (!TextUtils.isEmpty(badge)) {
@@ -1388,6 +1391,9 @@ public class IMMsgManager {
 
 
     public int getAllBadgeCommCount() {
+        if (mContext==null){
+            return  0;
+        }
         if (badgeCountComm.isEmpty()) {
             String badge = AppUtils.getStringSharedPreferences(mContext, getBadgeCommSharedPreferenceKey(), "");
             if (!TextUtils.isEmpty(badge)) {

@@ -11,39 +11,29 @@ package cn.net.cyberway.home.adapter;
  * @class describe
  */
 
-import android.content.Context;
 import android.support.v4.view.PagerAdapter;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-
-import com.nohttp.utils.GlideImageLoader;
-
-import java.util.List;
+import android.widget.TextView;
 
 import cn.net.cyberway.R;
-import cn.net.cyberway.home.entity.HomeFuncEntity;
 import cn.net.cyberway.utils.LinkParseUtil;
 
 /**
  * 未登录时的banner图
  */
 public class NoLoginPagerAdapter extends PagerAdapter {
-    private boolean isMultiScr;
-    private Context mContext;
-    private List<HomeFuncEntity.ContentBean> bannerDataBeanList;
 
-    public NoLoginPagerAdapter(Context mContext, boolean isMultiScr,List<HomeFuncEntity.ContentBean> bannerDataBeanList) {
-        this.isMultiScr = isMultiScr;
-        this.mContext = mContext;
-        this.bannerDataBeanList = bannerDataBeanList;
-    }
+    private int[] imagArr = {R.drawable.no_login_payfee, R.drawable.no_login_smartdoor, R.drawable.no_login_complain, R.drawable.no_login_shopping};
+    private String[] titleArr = {"线上缴费", "智能门禁", "投诉", "周边优惠"};
+    private String[] descArr = {"买 单 就 送 抵 扣 金", "手 机 开 门 超 方 便", "对 物 业 吐 个 槽", "方 圆 好 物 我 门 清"};
 
 
     @Override
     public int getCount() {
-        return bannerDataBeanList == null ? 0 : bannerDataBeanList.size();
+        return imagArr.length;
     }
 
     @Override
@@ -53,14 +43,17 @@ public class NoLoginPagerAdapter extends PagerAdapter {
 
     @Override
     public Object instantiateItem(final ViewGroup container, int position) {
-        final HomeFuncEntity.ContentBean contentBean = bannerDataBeanList.get(position);
         View bannerView = LayoutInflater.from(container.getContext()).inflate(R.layout.adapter_nologin_item, null);
-        ImageView iv_activity = bannerView.findViewById(R.id.iv_activity);
-        GlideImageLoader.loadImageDefaultDisplay(mContext, contentBean.getImg(), iv_activity, R.drawable.icon_style_one, R.drawable.icon_style_one);
+        ImageView no_login_iv = bannerView.findViewById(R.id.no_login_iv);
+        TextView no_login_desc = bannerView.findViewById(R.id.no_login_desc);
+        TextView no_login_title = bannerView.findViewById(R.id.no_login_title);
+        no_login_iv.setImageResource(imagArr[position]);
+        no_login_title.setText(titleArr[position]);
+        no_login_desc.setText(descArr[position]);
         bannerView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                LinkParseUtil.parse(mContext, contentBean.getRedirect_uri(), contentBean.getName());
+                LinkParseUtil.parse(container.getContext(), "", "");
             }
         });
         container.addView(bannerView);
