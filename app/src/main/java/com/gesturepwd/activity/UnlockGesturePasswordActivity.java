@@ -35,6 +35,7 @@ import com.external.eventbus.EventBus;
 import com.gesturepwd.utils.LockPatternUtils;
 import com.gesturepwd.view.LockPatternView;
 import com.jpush.Constant;
+import com.nohttp.utils.GlideImageLoader;
 import com.nohttp.utils.GsonUtils;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
@@ -138,6 +139,9 @@ public class UnlockGesturePasswordActivity extends BaseActivity implements NewHt
                     .cacheOnDisk(true)                            // 设置下载的图片是否缓存在SD卡中
                     .bitmapConfig(Bitmap.Config.RGB_565)
                     .build();
+            if (!ImageLoader.getInstance().isInited()) {
+                GlideImageLoader.initImageLoader(UnlockGesturePasswordActivity.this);
+            }
             ImageLoader.getInstance().displayImage(url, img_head, displayImageOptions);
         }
         ThemeStyleHelper.onlyFrameTitileBar(getApplicationContext(), czy_title_layout, back, tv_title);
@@ -225,7 +229,7 @@ public class UnlockGesturePasswordActivity extends BaseActivity implements NewHt
         //type:登录的类型 1=>传统登录方式，提交手机号和密码认证；2=>手势密码；3=>短信密码
         //username为手机号
         String username = mShared.getString(UserAppConst.Colour_login_mobile, "0");
-        if (null!=mChosenPattern){
+        if (null != mChosenPattern) {
             mUserModel.getAuthToken(4, username, LockPatternUtils.convertToString(mChosenPattern), "2", true, this);
         }
     }

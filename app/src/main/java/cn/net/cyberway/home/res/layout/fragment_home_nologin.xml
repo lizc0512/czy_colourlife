@@ -1,31 +1,38 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/white"
     android:orientation="vertical">
 
-    <View
-        android:id="@+id/nologin_tabbar_view"
+    <com.tmall.ultraviewpager.UltraViewPager
+        android:id="@+id/no_login_viewpager"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="0dp"
+        android:layout_weight="1" />
 
-    <TextView
-        android:id="@+id/tv_register_login"
+    <Button
+        android:id="@+id/btn_register_login"
         android:layout_width="match_parent"
         android:layout_height="44dp"
-        android:background="@color/textcolor_ffffff"
-        android:gravity="center_vertical"
-        android:paddingLeft="15dp"
-        android:text="登录/注册"
-        android:textColor="@color/color_333333"
-        android:textSize="18sp" />
+        android:layout_marginLeft="50dp"
+        android:layout_marginTop="50dp"
+        android:layout_marginRight="50dp"
+        android:background="@drawable/onekey_login_bg"
+        android:text="注册登录"
+        android:textColor="@color/white"
+        android:textSize="16sp" />
 
-    <com.jcodecraeer.xrecyclerview.XRecyclerView
-        android:id="@+id/home_rv"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior" />
+    <TextView
+        android:id="@+id/tv_user_agreement"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginBottom="30dp"
+        android:layout_marginTop="50dp"
+        android:text="继续及表示你同意隐私条款和用户协议"
+        android:textColor="@color/color_b5b5b5"
+        android:textSize="12sp" />
+
 
 </LinearLayout>

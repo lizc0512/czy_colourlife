@@ -208,6 +208,9 @@ public class WebViewActivity extends BaseActivity implements View.OnLongClickLis
     private String otherMobile;
     private String otherUserId;
     private String biz_token;
+    private int identitySource = 0;
+    private int isClose = 0;
+
 
     @SuppressLint("AddJavascriptInterface")
     protected void onCreate(Bundle savedInstanceState) {
@@ -577,8 +580,12 @@ public class WebViewActivity extends BaseActivity implements View.OnLongClickLis
                         if ("1".equals(content)) {
                             state = "1";
                             ToastUtil.toastShow(this, "认证成功");
-                            editor.putString(UserAppConst.COLOUR_AUTH_REAL_NAME + shared.getInt(UserAppConst.Colour_User_id, 0), realName).commit();
-                            newUserModel.finishTask(4, "2", "task_web", this);
+                            if (identitySource == 1 || identitySource == 0) {
+                                editor.putString(UserAppConst.COLOUR_AUTH_REAL_NAME + shared.getInt(UserAppConst.Colour_User_id, 0), realName).commit();
+                                newUserModel.finishTask(4, "2", "task_web", this);
+                            } else if (identitySource == 2) {
+                                finish();
+                            }
                         } else {
                             ToastUtil.toastShow(this, "认证失败");
                         }
@@ -589,13 +596,15 @@ public class WebViewActivity extends BaseActivity implements View.OnLongClickLis
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
-                JSONObject jsonObject = new JSONObject();
-                try {
-                    jsonObject.put("state", state);
-                } catch (JSONException e) {
-                    e.printStackTrace();
+                if (identitySource == 0) {
+                    JSONObject jsonObject = new JSONObject();
+                    try {
+                        jsonObject.put("state", state);
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                    webView.loadUrl("javascript:window.CLColourlifeIdentifyAuthHandler('" + jsonObject.toString() + "')");
                 }
-                webView.loadUrl("javascript:window.CLColourlifeIdentifyAuthHandler('" + jsonObject.toString() + "')");
                 break;
             case 4://实名认成功刷新
                 webView.reload();
@@ -802,6 +811,7 @@ public class WebViewActivity extends BaseActivity implements View.OnLongClickLis
          */
         @JavascriptInterface
         public void CLColourlifeIdentifyAuth() {
+            identitySource = 0;
             toRealName();
         }
 
@@ -810,11 +820,12 @@ public class WebViewActivity extends BaseActivity implements View.OnLongClickLis
          */
         @JavascriptInterface
         public void CLColourlifeIdentifyAuth(String jsonStr) {
-
             try {
                 JSONObject jsonObject = new JSONObject(jsonStr);
-                otherMobile = jsonObject.getString("user_mobile");
-                otherUserId = jsonObject.getString("user_id");
+                otherMobile = jsonObject.optString("user_mobile");//他人的手机号码(帮助他人传就行)
+                identitySource = jsonObject.optInt("user_type"); //1表示自己实名 2表示帮他们实名(必传)
+                otherUserId = jsonObject.optString("user_id");//他人的用户id(帮助他人传就行)
+                isClose = jsonObject.optInt("is_close");//用户进入实名后点击返回是否关闭h5页面
             } catch (JSONException e) {
                 e.printStackTrace();
             }
@@ -2035,7 +2046,9 @@ public class WebViewActivity extends BaseActivity implements View.OnLongClickLis
                 newUserModel.submitRealName(3, biz_token, otherMobile, otherUserId, this);
             }
         } else {
-            finish();
+            if (isClose==1){
+                finish();
+            }
         }
     };
 

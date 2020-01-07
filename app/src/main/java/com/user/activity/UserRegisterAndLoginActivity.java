@@ -602,7 +602,9 @@ public class UserRegisterAndLoginActivity extends BaseActivity implements OnClic
                         }
                     }
                 }
-                user_login_password.hideNKeyboard();
+                if (user_login_password.keyboardIsShow()){
+                    user_login_password.hideNKeyboard();
+                }
                 break;
             case 4://获取用户的信息 ,跳转到主页
                 if (!TextUtils.isEmpty(result)) {

@@ -9,7 +9,7 @@
         android:configChanges="locale"
         android:hardwareAccelerated="true"
         android:icon="@drawable/icon"
-        android:label="@string/app_name"
+        android:label="@string/app_name_test"
         android:largeHeap="true"
         android:resizeableActivity="false"
         android:screenOrientation="portrait"
@@ -28,6 +28,7 @@
             <intent-filter>
                 <action android:name="cn.net.cyberway.jpush.openactivity" />
                 <action android:name="android.intent.action.VIEW" />
+
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
@@ -854,20 +855,13 @@
             </intent-filter>
         </activity>
 
-        <!--极光推送-->
+
         <meta-data
             android:name="com.baidu.lbsapi.API_KEY"
             android:value="B0433f7d882de0c20433e36fabe2269c" />
 
 
-        <meta-data
-            android:name="UMENG_APPKEY"
-            android:value="569c7de167e58e572100176c" />
-
-        <meta-data
-            android:name="UMENG_CHANNEL"
-            android:value="Colourlife" />
-
+        <!--极光推送-->
         <meta-data
             android:name="JPUSH_CHANNEL"
             android:value="developer-default" />
@@ -902,6 +896,7 @@
             android:authorities="cn.net.cyberway.hms.update.provider"
             android:exported="false"
             android:grantUriPermissions="true"></provider>
+
         <receiver
             android:name="com.pay.Activity.AppRegister"
             android:permission="com.tencent.mm.plugin.permission.SEND">
