@@ -202,7 +202,6 @@ public class UserAccountSaftyActivity extends BaseActivity implements View.OnCli
                 finish();
                 break;
             case R.id.set_pwd_layout:
-                String isSetPawd = shared.getString(UserAppConst.Colour_set_password, "1");
                 if ("1".equals(isSetPawd)) {
                     intent = new Intent(this, CustomerPwdActivity.class);
                     startActivity(intent);
