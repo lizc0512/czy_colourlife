@@ -1,7 +1,9 @@
 package com.realaudit.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -31,6 +33,8 @@ public class RealOriginUploadActivity extends BaseActivity implements View.OnCli
     private ImageView iv_idcard_hand;
     private ImageView iv_del_hand;
 
+    private Button btn_define_upload;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,6 +48,7 @@ public class RealOriginUploadActivity extends BaseActivity implements View.OnCli
         iv_del_front = findViewById(R.id.iv_del_front);
         iv_idcard_hand = findViewById(R.id.iv_idcard_hand);
         iv_del_hand = findViewById(R.id.iv_del_hand);
+        btn_define_upload = findViewById(R.id.btn_define_upload);
 
         imageView_back.setOnClickListener(this::onClick);
         iv_idcard_back.setOnClickListener(this::onClick);
@@ -52,6 +57,9 @@ public class RealOriginUploadActivity extends BaseActivity implements View.OnCli
         iv_del_front.setOnClickListener(this::onClick);
         iv_idcard_hand.setOnClickListener(this::onClick);
         iv_del_hand.setOnClickListener(this::onClick);
+        btn_define_upload.setOnClickListener(this::onClick);
+
+        tv_title.setText(getResources().getString(R.string.real_title_change_realname));
     }
 
     @Override
@@ -85,6 +93,10 @@ public class RealOriginUploadActivity extends BaseActivity implements View.OnCli
             case R.id.iv_del_hand:
 
 
+                break;
+            case R.id.btn_define_upload:
+                Intent intent = new Intent(RealOriginUploadActivity.this, RealNewUploadActivity.class);
+                startActivity(intent);
                 break;
         }
 

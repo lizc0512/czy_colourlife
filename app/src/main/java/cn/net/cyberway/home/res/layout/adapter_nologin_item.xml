@@ -4,28 +4,12 @@
     android:layout_height="wrap_content"
     android:orientation="vertical">
 
-    <TextView
-        android:id="@+id/no_login_title"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="50dp"
-        android:layout_gravity="center_horizontal"
-        android:textColor="@color/color_25282e"
-        android:textSize="28sp" />
-
-    <TextView
-        android:id="@+id/no_login_desc"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:textColor="@color/color_8d9299"
-        android:textSize="14sp" />
-
     <ImageView
         android:id="@+id/no_login_iv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="50dp"
+        android:layout_marginBottom="10dp"
         android:layout_gravity="center_horizontal" />
 
 </LinearLayout>

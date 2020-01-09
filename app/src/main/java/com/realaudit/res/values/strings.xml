@@ -4,6 +4,7 @@
 <string name="real_change_notice">如实名信息有误需要更改实名信息的用户，可先向 平台申请，通过人工审核后即可进行新的实名认证。 每个用户仅可更改一次</string>
 <string name="real_define_upload">确认上传</string>
 <string name="real_orgin_idcard">原身份证信息上传</string>
+<string name="real_new_idcard">新身份证信息上传</string>
 <string name="real_text_idcard">身份证号</string>
 <string name="real_idcard_status">已实名</string>
 <string name="real_text_apply">申请</string>
@@ -15,5 +16,7 @@
 <string name="real_check_fail">由于xxxx原因，您的更换实名信息申请 审核失败，请按照规则重新上传申请</string>
 <string name="real_check_wait">实名信息修改已提交，正在审核中</string>
 <string name="real_upload_again">重新上传</string>
+<string name="real_title_change_realname">更改实名信息</string>
+<string name="real_title_real_identify">身份认证</string>
 
 </resources>

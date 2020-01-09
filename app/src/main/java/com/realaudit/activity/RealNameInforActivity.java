@@ -1,5 +1,6 @@
 package com.realaudit.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
@@ -18,7 +19,7 @@ import cn.net.cyberway.R;
  * 创建日期:
  * 描述:
  **/
-public class RealNameInforActivity extends BaseActivity implements View.OnClickListener{
+public class RealNameInforActivity extends BaseActivity implements View.OnClickListener {
     private TextView tv_title;   //标题
     private ImageView imageView_back;//返回
     private CircleImageView iv_user_photo;
@@ -35,20 +36,21 @@ public class RealNameInforActivity extends BaseActivity implements View.OnClickL
         setContentView(R.layout.activity_realname_infor);
         tv_title = findViewById(R.id.user_top_view_title);
         imageView_back = findViewById(R.id.user_top_view_back);
-        iv_user_photo=findViewById(R.id.iv_user_photo);
-        tv_user_number=findViewById(R.id.tv_user_number);
-        tv_user_status=findViewById(R.id.tv_user_status);
-        btn_apply=findViewById(R.id.btn_apply);
-        tv_contact_service=findViewById(R.id.tv_contact_service);
+        iv_user_photo = findViewById(R.id.iv_user_photo);
+        tv_user_number = findViewById(R.id.tv_user_number);
+        tv_user_status = findViewById(R.id.tv_user_status);
+        btn_apply = findViewById(R.id.btn_apply);
+        tv_contact_service = findViewById(R.id.tv_contact_service);
 
         imageView_back.setOnClickListener(this::onClick);
         btn_apply.setOnClickListener(this::onClick);
         tv_contact_service.setOnClickListener(this::onClick);
+        tv_title.setText(getResources().getString(R.string.real_title_real_identify));
     }
 
     @Override
     public void onClick(View v) {
-        switch (v.getId()){
+        switch (v.getId()) {
             case R.id.user_top_view_back:
                 finish();
                 break;
@@ -57,8 +59,8 @@ public class RealNameInforActivity extends BaseActivity implements View.OnClickL
 
                 break;
             case R.id.btn_apply:
-
-
+                Intent intent = new Intent(RealNameInforActivity.this, RealOriginUploadActivity.class);
+                startActivity(intent);
                 break;
         }
 

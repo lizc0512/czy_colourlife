@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
     android:orientation="vertical"
     android:background="@color/bg_color"
     android:fitsSystemWindows="true"
@@ -8,91 +9,12 @@
 
     <include layout="@layout/top_view" />
 
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:gravity="center"
-        android:layout_marginTop="10dp"
-        android:layout_marginBottom="10dp"
-        android:text="@string/real_orgin_idcard"
-        android:textColor="@color/color_333333"
-        android:textSize="13sp"  />
-
-
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_marginLeft="60dp"
-        android:layout_marginRight="60dp"
-        android:layout_height="140dp">
-
-        <ImageView
-            android:id="@+id/iv_idcard_back"
-            android:layout_width="match_parent"
-            android:src="@drawable/real_idcard_back"
-            android:layout_height="match_parent" />
-
-        <ImageView
-            android:id="@+id/iv_del_back"
-            android:layout_width="wrap_content"
-            android:layout_alignParentRight="true"
-            android:src="@drawable/real_del_img"
-            android:layout_height="wrap_content" />
-    </RelativeLayout>
-
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_marginLeft="60dp"
-        android:layout_marginRight="60dp"
-        android:layout_marginTop="20dp"
-        android:layout_height="140dp">
-
-        <ImageView
-            android:id="@+id/iv_idcard_front"
-            android:layout_width="match_parent"
-            android:src="@drawable/real_idcard_front"
-            android:layout_height="match_parent" />
-
-        <ImageView
-            android:id="@+id/iv_del_front"
-            android:layout_width="wrap_content"
-            android:layout_alignParentRight="true"
-            android:src="@drawable/real_del_img"
-            android:layout_height="wrap_content" />
-    </RelativeLayout>
-
-
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_marginLeft="60dp"
-        android:layout_marginRight="60dp"
-        android:layout_marginTop="20dp"
-        android:layout_height="140dp">
-
-        <ImageView
-            android:id="@+id/iv_idcard_hand"
-            android:layout_width="match_parent"
-            android:src="@drawable/real_idcard_hand"
-            android:layout_height="match_parent" />
-
-        <ImageView
-            android:id="@+id/iv_del_hand"
-            android:layout_width="wrap_content"
-            android:layout_alignParentRight="true"
-            android:src="@drawable/real_del_img"
-            android:layout_height="wrap_content" />
-    </RelativeLayout>
-
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
-        />
 
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:background="@color/white"
+        android:layout_alignParentBottom="true"
         android:layout_height="80dp">
 
         <Button
@@ -108,4 +30,99 @@
             android:textSize="16sp" />
     </RelativeLayout>
 
-</LinearLayout>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_marginTop="45dp"
+        android:layout_marginBottom="80dp"
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+            <TextView
+                android:id="@+id/tv_cardinfor_tips"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:gravity="center"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="10dp"
+                android:text="@string/real_orgin_idcard"
+                android:textColor="@color/color_333333"
+                android:textSize="13sp"  />
+
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_marginLeft="60dp"
+                android:layout_marginRight="60dp"
+                android:layout_height="140dp">
+
+                <ImageView
+                    android:id="@+id/iv_idcard_back"
+                    android:layout_width="match_parent"
+                    android:src="@drawable/real_idcard_back"
+                    android:layout_height="match_parent" />
+
+                <ImageView
+                    android:id="@+id/iv_del_back"
+                    android:layout_width="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:src="@drawable/real_del_img"
+                    android:layout_height="wrap_content" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_marginLeft="60dp"
+                android:layout_marginRight="60dp"
+                android:layout_marginTop="20dp"
+                android:layout_height="140dp">
+
+                <ImageView
+                    android:id="@+id/iv_idcard_front"
+                    android:layout_width="match_parent"
+                    android:src="@drawable/real_idcard_front"
+                    android:layout_height="match_parent" />
+
+                <ImageView
+                    android:id="@+id/iv_del_front"
+                    android:layout_width="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:src="@drawable/real_del_img"
+                    android:layout_height="wrap_content" />
+            </RelativeLayout>
+
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_marginLeft="60dp"
+                android:layout_marginRight="60dp"
+                android:layout_marginTop="20dp"
+                android:layout_height="140dp">
+
+                <ImageView
+                    android:id="@+id/iv_idcard_hand"
+                    android:layout_width="match_parent"
+                    android:src="@drawable/real_idcard_hand"
+                    android:layout_height="match_parent" />
+
+                <ImageView
+                    android:id="@+id/iv_del_hand"
+                    android:layout_width="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:src="@drawable/real_del_img"
+                    android:layout_height="wrap_content" />
+            </RelativeLayout>
+
+
+        </LinearLayout>
+
+
+    </ScrollView>
+
+
+
+</RelativeLayout>

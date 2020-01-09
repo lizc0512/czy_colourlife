@@ -33,6 +33,7 @@ public class RealCheckResultActivity extends BaseActivity implements View.OnClic
         tv_contact_service = findViewById(R.id.tv_contact_service);
         imageView_back.setOnClickListener(this::onClick);
         tv_contact_service.setOnClickListener(this::onClick);
+        tv_title.setText(getResources().getString(R.string.real_title_change_realname));
 
     }
 

@@ -24,7 +24,6 @@ public class RealCheckWaitingActivity extends BaseActivity implements View.OnCli
     private ImageView iv_check_result;
     private TextView tv_check_result;
     private TextView tv_check_reason;
-    private Button btn_apply;
     private TextView tv_contact_service;
 
     @Override
@@ -37,11 +36,11 @@ public class RealCheckWaitingActivity extends BaseActivity implements View.OnCli
         iv_check_result = findViewById(R.id.iv_check_result);
         tv_check_result = findViewById(R.id.tv_check_result);
         tv_check_reason = findViewById(R.id.tv_check_reason);
-        btn_apply = findViewById(R.id.btn_apply);
         tv_contact_service = findViewById(R.id.tv_contact_service);
         imageView_back.setOnClickListener(this::onClick);
-        btn_apply.setOnClickListener(this::onClick);
         tv_contact_service.setOnClickListener(this::onClick);
+        tv_title.setText(getResources().getString(R.string.real_title_change_realname));
+
 
     }
 

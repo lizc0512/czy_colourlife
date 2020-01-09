@@ -27,8 +27,6 @@ import cn.net.cyberway.utils.LinkParseUtil;
 public class NoLoginPagerAdapter extends PagerAdapter {
 
     private int[] imagArr = {R.drawable.no_login_payfee, R.drawable.no_login_smartdoor, R.drawable.no_login_complain, R.drawable.no_login_shopping};
-    private String[] titleArr = {"线上缴费", "智能门禁", "投诉", "周边优惠"};
-    private String[] descArr = {"买 单 就 送 抵 扣 金", "手 机 开 门 超 方 便", "对 物 业 吐 个 槽", "方 圆 好 物 我 门 清"};
 
 
     @Override
@@ -45,11 +43,7 @@ public class NoLoginPagerAdapter extends PagerAdapter {
     public Object instantiateItem(final ViewGroup container, int position) {
         View bannerView = LayoutInflater.from(container.getContext()).inflate(R.layout.adapter_nologin_item, null);
         ImageView no_login_iv = bannerView.findViewById(R.id.no_login_iv);
-        TextView no_login_desc = bannerView.findViewById(R.id.no_login_desc);
-        TextView no_login_title = bannerView.findViewById(R.id.no_login_title);
         no_login_iv.setImageResource(imagArr[position]);
-        no_login_title.setText(titleArr[position]);
-        no_login_desc.setText(descArr[position]);
         bannerView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
