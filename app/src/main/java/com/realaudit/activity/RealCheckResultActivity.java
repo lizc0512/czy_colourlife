@@ -9,6 +9,8 @@ import com.BeeFramework.activity.BaseActivity;
 
 import cn.net.cyberway.R;
 
+import static cn.net.cyberway.utils.ConfigUtils.jumpContactService;
+
 /**
  * 文件名:实名信息审核结果页面
  * 创建者:yuansongkai
@@ -44,8 +46,7 @@ public class RealCheckResultActivity extends BaseActivity implements View.OnClic
                 finish();
                 break;
             case R.id.tv_contact_service:
-
-
+                jumpContactService(RealCheckResultActivity.this);
                 break;
         }
 

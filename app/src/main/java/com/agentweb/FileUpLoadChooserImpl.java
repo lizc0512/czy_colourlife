@@ -132,7 +132,9 @@ public class FileUpLoadChooserImpl implements IFileUploadChooser {
             public void onFileDataResult(int requestCode, int resultCode, Intent data) {
 
                 LogUtils.i(TAG, "request:" + requestCode + "  resultCode:" + resultCode);
-                fetchFilePathFromIntent(requestCode, resultCode, data);
+                if (null!=data){
+                    fetchFilePathFromIntent(requestCode, resultCode, data);
+                }
             }
         };
     }

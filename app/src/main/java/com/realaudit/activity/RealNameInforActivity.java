@@ -2,7 +2,6 @@ package com.realaudit.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.text.TextUtils;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -11,6 +10,8 @@ import com.BeeFramework.activity.BaseActivity;
 import com.BeeFramework.view.CircleImageView;
 
 import cn.net.cyberway.R;
+
+import static cn.net.cyberway.utils.ConfigUtils.jumpContactService;
 
 /**
  * 文件名:当前用户实名认证相关信息
@@ -55,8 +56,7 @@ public class RealNameInforActivity extends BaseActivity implements View.OnClickL
                 finish();
                 break;
             case R.id.tv_contact_service:
-
-
+                jumpContactService(RealNameInforActivity.this);
                 break;
             case R.id.btn_apply:
                 Intent intent = new Intent(RealNameInforActivity.this, RealOriginUploadActivity.class);

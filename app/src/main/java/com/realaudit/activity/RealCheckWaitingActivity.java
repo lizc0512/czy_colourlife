@@ -2,13 +2,14 @@ package com.realaudit.activity;
 
 import android.os.Bundle;
 import android.view.View;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.BeeFramework.activity.BaseActivity;
 
 import cn.net.cyberway.R;
+
+import static cn.net.cyberway.utils.ConfigUtils.jumpContactService;
 
 /**
  * 文件名:实名信息待审核页面
@@ -54,7 +55,7 @@ public class RealCheckWaitingActivity extends BaseActivity implements View.OnCli
 
                 break;
             case R.id.tv_contact_service:
-
+                jumpContactService(RealCheckWaitingActivity.this);
 
                 break;
         }

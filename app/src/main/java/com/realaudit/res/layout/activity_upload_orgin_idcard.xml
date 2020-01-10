@@ -63,6 +63,7 @@
                 <ImageView
                     android:id="@+id/iv_idcard_back"
                     android:layout_width="match_parent"
+                    android:scaleType="fitXY"
                     android:src="@drawable/real_idcard_back"
                     android:layout_height="match_parent" />
 
@@ -84,6 +85,7 @@
                 <ImageView
                     android:id="@+id/iv_idcard_front"
                     android:layout_width="match_parent"
+                    android:scaleType="fitXY"
                     android:src="@drawable/real_idcard_front"
                     android:layout_height="match_parent" />
 
@@ -101,11 +103,13 @@
                 android:layout_marginLeft="60dp"
                 android:layout_marginRight="60dp"
                 android:layout_marginTop="20dp"
+                android:layout_marginBottom="20dp"
                 android:layout_height="140dp">
 
                 <ImageView
                     android:id="@+id/iv_idcard_hand"
                     android:layout_width="match_parent"
+                    android:scaleType="fitXY"
                     android:src="@drawable/real_idcard_hand"
                     android:layout_height="match_parent" />
 
