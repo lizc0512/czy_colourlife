@@ -642,7 +642,6 @@ public class CustomerInfoActivity extends BaseActivity implements View.OnClickLi
                     IdentityStateEntity.ContentBean contentBean = identityStateEntity.getContent();
                     String checkStatus = contentBean.getStatus();
                     Intent intent = null;
-                    checkStatus="3";
                     switch (checkStatus) {
                         case "1":
                             intent = new Intent(CustomerInfoActivity.this, RealCheckWaitingActivity.class);

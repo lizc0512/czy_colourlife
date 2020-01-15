@@ -99,7 +99,7 @@ public class RealNewUploadActivity extends BaseActivity implements View.OnClickL
         iv_idcard_hand.setOnClickListener(this::onClick);
         iv_del_hand.setOnClickListener(this::onClick);
         btn_define_upload.setOnClickListener(this::onClick);
-        tv_title.setText(getResources().getString(R.string.real_title_change_realname));
+        tv_title.setText(getResources().getString(R.string.real_title_idcard_pic));
         tv_cardinfor_tips.setText(getResources().getString(R.string.real_new_idcard));
         initImagePicker();
         Intent intent = getIntent();
@@ -210,8 +210,7 @@ public class RealNewUploadActivity extends BaseActivity implements View.OnClickL
                 break;
             case R.id.iv_idcard_hand:
                 if (TextUtils.isEmpty(new_hold_img)){
-                    Intent hand_intent = new Intent(RealNewUploadActivity.this, ImageGridActivity.class);
-                    startActivityForResult(hand_intent, 3000);
+                    choosePicture(3000);
                 }
                 break;
             case R.id.iv_del_hand:
@@ -231,7 +230,7 @@ public class RealNewUploadActivity extends BaseActivity implements View.OnClickL
                     ToastUtil.toastShow(RealNewUploadActivity.this, "请上传手持身份证照");
                     return;
                 }
-                identityNameModel.submitIdentifyData(1, origin_front_img, origin_back_img, origin_hold_img,
+                identityNameModel.submitIdentifyData(3, origin_front_img, origin_back_img, origin_hold_img,
                         new_front_img, new_back_img, new_hold_img, RealNewUploadActivity.this);
                 break;
         }

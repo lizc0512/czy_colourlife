@@ -125,7 +125,7 @@
             android:layout_below="@id/iv_waiting_desc"
             android:gravity="center"
             android:layout_marginLeft="30dp"
-            tools:text="预计需要3天"
+            android:text="预计需要3天"
             android:textColor="@color/color_999999"
             android:textSize="14sp"  />
     </RelativeLayout>

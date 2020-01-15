@@ -19,5 +19,6 @@
 <string name="real_upload_again">重新上传</string>
 <string name="real_title_change_realname">更改实名信息</string>
 <string name="real_title_real_identify">身份认证</string>
+<string name="real_title_idcard_pic">证件照片</string>
 
 </resources>

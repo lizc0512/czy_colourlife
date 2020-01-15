@@ -90,7 +90,7 @@ public class RealOriginUploadActivity extends BaseActivity implements View.OnCli
         iv_del_hand.setOnClickListener(this::onClick);
         btn_define_upload.setOnClickListener(this::onClick);
 
-        tv_title.setText(getResources().getString(R.string.real_title_change_realname));
+        tv_title.setText(getResources().getString(R.string.real_title_idcard_pic));
         initImagePicker();
         identityNameModel = new IdentityNameModel(RealOriginUploadActivity.this);
         if (!EventBus.getDefault().isregister(RealOriginUploadActivity.this)) {
@@ -216,8 +216,7 @@ public class RealOriginUploadActivity extends BaseActivity implements View.OnCli
                 break;
             case R.id.iv_idcard_hand:
                 if (TextUtils.isEmpty(origin_hold_img)){
-                    Intent hand_intent = new Intent(RealOriginUploadActivity.this, ImageGridActivity.class);
-                    startActivityForResult(hand_intent, 3000);
+                    choosePicture(3000);
                 }
                 break;
             case R.id.iv_del_hand:
