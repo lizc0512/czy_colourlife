@@ -1225,7 +1225,7 @@ public class MainHomeFragmentNew extends Fragment implements NewHttpResponse, Vi
                         break;
                     case 12:
                         //用户是否实名
-                        newUserModel.getIsRealName(12, MainHomeFragmentNew.this);
+                        newUserModel.getIsRealName(12, false, MainHomeFragmentNew.this);
                         break;
                     case 14:
                         //获取乐开的信息
@@ -1638,7 +1638,7 @@ public class MainHomeFragmentNew extends Fragment implements NewHttpResponse, Vi
                     try {
                         RealNameTokenEntity entity = cn.csh.colourful.life.utils.GsonUtils.gsonToBean(result, RealNameTokenEntity.class);
                         RealNameTokenEntity.ContentBean bean = entity.getContent();
-                        biz_token=bean.getBizToken();
+                        biz_token = bean.getBizToken();
                         startAuthenticate(biz_token);
                     } catch (Exception e) {
                         e.printStackTrace();

@@ -1454,7 +1454,7 @@ public class NewUserModel extends BaseModel {
     /**
      * 获取是否实名认证
      */
-    public void getIsRealName(int what, final NewHttpResponse newHttpResponse) {
+    public void getIsRealName(int what, boolean isLoading,final NewHttpResponse newHttpResponse) {
         final Request<String> request = NoHttp.createStringRequest(RequestEncryptionUtils.getCombileMD5(mContext, 3, getIsRealUrl, null), RequestMethod.GET);
         request(what, request, null, new HttpListener<String>() {
             @Override
@@ -1475,7 +1475,7 @@ public class NewUserModel extends BaseModel {
             public void onFailed(int what, Response<String> response) {
                 newHttpResponse.OnHttpResponse(what, "");
             }
-        }, true, false);
+        }, true, isLoading);
     }
 
     /**

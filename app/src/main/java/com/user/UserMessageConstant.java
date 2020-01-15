@@ -38,5 +38,6 @@ public class UserMessageConstant {
     public static final int POINT_INPUT_CODE= USER_MESSAGE_BASE + 89;//更换设备输入短信验证码
     public static final int POINT_GET_CODE= USER_MESSAGE_BASE + 90;//更换设备重新获取验证码
     public static final int POINT_SHOW_CODE= USER_MESSAGE_BASE + 91;//更换设备的显示框
+    public static final int REAL_CHANGE_STATE= USER_MESSAGE_BASE + 92;//重新实名提交审核
 
 }

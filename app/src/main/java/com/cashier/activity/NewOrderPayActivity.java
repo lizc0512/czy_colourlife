@@ -61,7 +61,6 @@ import com.tencent.mm.opensdk.openapi.IWXAPI;
 import com.tencent.mm.opensdk.openapi.WXAPIFactory;
 import com.user.UserAppConst;
 import com.user.UserMessageConstant;
-import com.user.Utils.TokenUtils;
 import com.user.model.NewUserModel;
 import com.user.model.RequestFailModel;
 
@@ -79,10 +78,7 @@ import cn.net.cyberway.activity.BroadcastReceiverActivity;
 import cn.net.cyberway.home.entity.PushNotificationEntity;
 import cn.net.cyberway.utils.LinkParseUtil;
 
-import static com.pay.Activity.AlixPayActivity.ALIPAY_BODY;
-import static com.pay.Activity.AlixPayActivity.ALIPAY_OUT_TRADE_NO;
-import static com.pay.Activity.AlixPayActivity.ALIPAY_SUBJECT;
-import static com.pay.Activity.AlixPayActivity.ALIPAY_TOTAL_FEE;
+import static com.pay.Activity.AlixPayActivity.ALIPAY_ORDER_INFOR;
 import static com.user.UserMessageConstant.POINT_CHANGE_PAYPAWD;
 import static com.user.UserMessageConstant.POINT_GET_CODE;
 import static com.user.UserMessageConstant.POINT_INPUT_CODE;
@@ -899,10 +895,7 @@ public class NewOrderPayActivity extends BaseActivity implements View.OnClickLis
     //支付宝支付
     private void alipayPayOrder(Map<String, String> resultMap) {
         Intent intent = new Intent(NewOrderPayActivity.this, AlixPayActivity.class);
-        intent.putExtra(ALIPAY_OUT_TRADE_NO, resultMap.get("out_trade_no"));
-        intent.putExtra(ALIPAY_SUBJECT, resultMap.get("subject"));
-        intent.putExtra(ALIPAY_BODY, resultMap.get("body"));
-        intent.putExtra(ALIPAY_TOTAL_FEE, resultMap.get("total_fee"));
+        intent.putExtra(ALIPAY_ORDER_INFOR, resultMap.get("out_trade_infor"));
         startActivityForResult(intent, 10000);
     }
 
@@ -992,7 +985,7 @@ public class NewOrderPayActivity extends BaseActivity implements View.OnClickLis
                     try {
                         RealNameTokenEntity entity = GsonUtils.gsonToBean(result, RealNameTokenEntity.class);
                         RealNameTokenEntity.ContentBean bean = entity.getContent();
-                        biz_token=bean.getBizToken();
+                        biz_token = bean.getBizToken();
                         AuthConfig.Builder configBuilder = new AuthConfig.Builder(biz_token, R.class.getPackage().getName());
                         AuthSDKApi.startMainPage(this, configBuilder.build(), mListener);
                     } catch (Exception e) {

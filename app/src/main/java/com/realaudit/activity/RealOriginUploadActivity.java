@@ -6,6 +6,8 @@ import android.content.Intent;
 import android.graphics.BitmapFactory;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Message;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
@@ -14,8 +16,18 @@ import android.widget.TextView;
 
 import com.BeeFramework.Utils.ToastUtil;
 import com.BeeFramework.activity.BaseActivity;
+import com.BeeFramework.model.NewHttpResponse;
+import com.external.eventbus.EventBus;
+import com.feed.utils.CompressHelper;
+import com.nohttp.utils.GsonUtils;
 import com.permission.AndPermission;
+import com.realaudit.entity.RealNameImgEntity;
+import com.realaudit.model.IdentityNameModel;
+import com.user.UserMessageConstant;
+import com.user.model.NewUserModel;
+import com.youmai.hxsdk.utils.GsonUtil;
 
+import java.io.File;
 import java.util.ArrayList;
 
 import cn.csh.colourful.life.utils.GlideImageLoader;
@@ -31,7 +43,7 @@ import cn.net.cyberway.R;
  * 创建日期:
  * 描述:
  **/
-public class RealOriginUploadActivity extends BaseActivity implements View.OnClickListener {
+public class RealOriginUploadActivity extends BaseActivity implements View.OnClickListener, NewHttpResponse {
 
     private TextView tv_title;   //标题
     private ImageView imageView_back;//返回
@@ -47,6 +59,12 @@ public class RealOriginUploadActivity extends BaseActivity implements View.OnCli
     private ImageView iv_del_hand;
 
     private Button btn_define_upload;
+
+    private IdentityNameModel identityNameModel;
+
+    private String origin_front_img;
+    private String origin_back_img;
+    private String origin_hold_img;
 
 
     @Override
@@ -74,6 +92,27 @@ public class RealOriginUploadActivity extends BaseActivity implements View.OnCli
 
         tv_title.setText(getResources().getString(R.string.real_title_change_realname));
         initImagePicker();
+        identityNameModel = new IdentityNameModel(RealOriginUploadActivity.this);
+        if (!EventBus.getDefault().isregister(RealOriginUploadActivity.this)) {
+        EventBus.getDefault().register(RealOriginUploadActivity.this);
+    }
+}
+
+    public void onEvent(Object event) {
+        final Message message = (Message) event;
+        switch (message.what) {
+            case UserMessageConstant.REAL_CHANGE_STATE:
+                finish();
+                break;
+        }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if (EventBus.getDefault().isregister(RealOriginUploadActivity.this)) {
+            EventBus.getDefault().unregister(RealOriginUploadActivity.this);
+        }
     }
 
     private void initImagePicker() {
@@ -158,26 +197,50 @@ public class RealOriginUploadActivity extends BaseActivity implements View.OnCli
                 finish();
                 break;
             case R.id.iv_idcard_back:
-                choosePicture(1000);
+                if (TextUtils.isEmpty(origin_front_img)){
+                    choosePicture(1000);
+                }
                 break;
             case R.id.iv_del_back:
-                iv_idcard_back.setImageBitmap(BitmapFactory.decodeResource(getResources(),R.drawable.real_idcard_back));
+                origin_front_img = "";
+                iv_idcard_back.setImageBitmap(BitmapFactory.decodeResource(getResources(), R.drawable.real_idcard_back));
                 break;
             case R.id.iv_idcard_front:
-                choosePicture(2000);
+                if (TextUtils.isEmpty(origin_back_img)){
+                    choosePicture(2000);
+                }
                 break;
             case R.id.iv_del_front:
-                iv_idcard_front.setImageBitmap(BitmapFactory.decodeResource(getResources(),R.drawable.real_idcard_front));
+                origin_back_img = "";
+                iv_idcard_front.setImageBitmap(BitmapFactory.decodeResource(getResources(), R.drawable.real_idcard_front));
                 break;
             case R.id.iv_idcard_hand:
-                Intent hand_intent = new Intent(RealOriginUploadActivity.this, ImageGridActivity.class);
-                startActivityForResult(hand_intent, 3000);
+                if (TextUtils.isEmpty(origin_hold_img)){
+                    Intent hand_intent = new Intent(RealOriginUploadActivity.this, ImageGridActivity.class);
+                    startActivityForResult(hand_intent, 3000);
+                }
                 break;
             case R.id.iv_del_hand:
-                iv_idcard_hand.setImageBitmap(BitmapFactory.decodeResource(getResources(),R.drawable.real_idcard_hand));
+                origin_hold_img = "";
+                iv_idcard_hand.setImageBitmap(BitmapFactory.decodeResource(getResources(), R.drawable.real_idcard_hand));
                 break;
             case R.id.btn_define_upload:
+                if (TextUtils.isEmpty(origin_front_img)) {
+                    ToastUtil.toastShow(RealOriginUploadActivity.this, "请上传人像面");
+                    return;
+                }
+                if (TextUtils.isEmpty(origin_back_img)) {
+                    ToastUtil.toastShow(RealOriginUploadActivity.this, "请上传国徽面");
+                    return;
+                }
+                if (TextUtils.isEmpty(origin_hold_img)) {
+                    ToastUtil.toastShow(RealOriginUploadActivity.this, "请上传手持身份证照");
+                    return;
+                }
                 Intent intent = new Intent(RealOriginUploadActivity.this, RealNewUploadActivity.class);
+                intent.putExtra(RealNewUploadActivity.ORIGINFRONTIMG,origin_front_img);
+                intent.putExtra(RealNewUploadActivity.ORIGINBACKIMG,origin_back_img);
+                intent.putExtra(RealNewUploadActivity.ORIGINHOLDIMG,origin_hold_img);
                 startActivity(intent);
                 break;
         }
@@ -193,18 +256,39 @@ public class RealOriginUploadActivity extends BaseActivity implements View.OnCli
                 return;
             }
             String filePath = images.get(0).path;
+            File newFile = CompressHelper.getDefault(this).compressToFile(new File(filePath));
+            String compressPath=newFile.getPath();
             switch (requestCode) {
                 case 1000:
                     iv_idcard_back.setImageBitmap(BitmapFactory.decodeFile(filePath));
+                    identityNameModel.uploadImageFile(0, compressPath, RealOriginUploadActivity.this);
                     break;
                 case 2000:
                     iv_idcard_front.setImageBitmap(BitmapFactory.decodeFile(filePath));
+                    identityNameModel.uploadImageFile(1, compressPath, RealOriginUploadActivity.this);
                     break;
                 case 3000:
                     iv_idcard_hand.setImageBitmap(BitmapFactory.decodeFile(filePath));
+                    identityNameModel.uploadImageFile(2, compressPath, RealOriginUploadActivity.this);
                     break;
             }
+        }
+    }
 
+    @Override
+    public void OnHttpResponse(int what, String result) {
+        RealNameImgEntity realNameImgEntity = GsonUtils.gsonToBean(result, RealNameImgEntity.class);
+        RealNameImgEntity.ContentBean contentBean = realNameImgEntity.getContent();
+        switch (what) {
+            case 0:
+                origin_front_img = contentBean.getImg();
+                break;
+            case 1:
+                origin_back_img = contentBean.getImg();
+                break;
+            case 2:
+                origin_hold_img = contentBean.getImg();
+                break;
         }
     }
 }

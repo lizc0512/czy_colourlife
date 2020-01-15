@@ -2,12 +2,19 @@ package com.realaudit.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Message;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.BeeFramework.activity.BaseActivity;
 import com.BeeFramework.view.CircleImageView;
+import com.external.eventbus.EventBus;
+import com.nohttp.utils.GlideImageLoader;
+import com.nostra13.universalimageloader.core.ImageLoader;
+import com.point.activity.ChangePawdOneStepActivity;
+import com.user.UserAppConst;
+import com.user.UserMessageConstant;
 
 import cn.net.cyberway.R;
 
@@ -21,12 +28,13 @@ import static cn.net.cyberway.utils.ConfigUtils.jumpContactService;
  * 描述:
  **/
 public class RealNameInforActivity extends BaseActivity implements View.OnClickListener {
+    public static final String REALNAME = "realname";
+    public static final String REALNUMBER = "realnumber";
     private TextView tv_title;   //标题
     private ImageView imageView_back;//返回
     private CircleImageView iv_user_photo;
     private TextView tv_user_name;
     private TextView tv_user_number;
-    private TextView tv_user_status;
     private TextView btn_apply;
     private TextView tv_contact_service;
 
@@ -38,15 +46,41 @@ public class RealNameInforActivity extends BaseActivity implements View.OnClickL
         tv_title = findViewById(R.id.user_top_view_title);
         imageView_back = findViewById(R.id.user_top_view_back);
         iv_user_photo = findViewById(R.id.iv_user_photo);
+        tv_user_name = findViewById(R.id.tv_user_name);
         tv_user_number = findViewById(R.id.tv_user_number);
-        tv_user_status = findViewById(R.id.tv_user_status);
         btn_apply = findViewById(R.id.btn_apply);
         tv_contact_service = findViewById(R.id.tv_contact_service);
-
         imageView_back.setOnClickListener(this::onClick);
         btn_apply.setOnClickListener(this::onClick);
         tv_contact_service.setOnClickListener(this::onClick);
         tv_title.setText(getResources().getString(R.string.real_title_real_identify));
+        String headImgUrl = shared.getString(UserAppConst.Colour_head_img, "");
+        ImageLoader.getInstance().displayImage(headImgUrl, iv_user_photo, GlideImageLoader.optionsImage);
+        Intent intent = getIntent();
+        String realName = intent.getStringExtra(REALNAME);
+        String realNumber = intent.getStringExtra(REALNUMBER);
+        tv_user_name.setText(realName);
+        tv_user_number.setText(getResources().getString(R.string.real_text_idcard)+realNumber.substring(0, 1) + "*** **** **** **** *" + realNumber.substring(realNumber.length() - 1));
+        if (!EventBus.getDefault().isregister(RealNameInforActivity.this)) {
+            EventBus.getDefault().register(RealNameInforActivity.this);
+        }
+    }
+
+    public void onEvent(Object event) {
+        final Message message = (Message) event;
+        switch (message.what) {
+            case UserMessageConstant.REAL_CHANGE_STATE:
+                finish();
+                break;
+        }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if (EventBus.getDefault().isregister(RealNameInforActivity.this)) {
+            EventBus.getDefault().unregister(RealNameInforActivity.this);
+        }
     }
 
     @Override

@@ -10,6 +10,7 @@ import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Message;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.FrameLayout;
@@ -22,20 +23,27 @@ import com.BeeFramework.Utils.ToastUtil;
 import com.BeeFramework.activity.BaseActivity;
 import com.BeeFramework.model.NewHttpResponse;
 import com.BeeFramework.view.CircleImageView;
+import com.customerInfo.protocol.IdentityStateEntity;
 import com.customerInfo.protocol.RealNameTokenEntity;
 import com.customerInfo.view.CustomerInfoDialog;
+import com.external.eventbus.EventBus;
 import com.gem.GemConstant;
 import com.gem.util.GemDialogUtil;
 import com.myproperty.activity.MyPropertyActivity;
 import com.nohttp.utils.GlideImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.permission.AndPermission;
+import com.realaudit.activity.RealCheckResultActivity;
+import com.realaudit.activity.RealCheckWaitingActivity;
 import com.realaudit.activity.RealNameInforActivity;
+import com.realaudit.activity.RealOriginUploadActivity;
+import com.realaudit.model.IdentityNameModel;
 import com.tencent.authsdk.AuthConfig;
 import com.tencent.authsdk.AuthSDKApi;
 import com.tencent.authsdk.IDCardInfo;
 import com.tencent.authsdk.callback.IdentityCallback;
 import com.user.UserAppConst;
+import com.user.UserMessageConstant;
 import com.user.entity.PortraitEntity;
 import com.user.model.NewUserModel;
 import com.youmai.hxsdk.HuxinSdkManager;
@@ -52,6 +60,9 @@ import cn.csh.colourful.life.view.imagepicker.ui.ImageGridActivity;
 import cn.csh.colourful.life.view.imagepicker.view.CropImageView;
 import cn.csh.colourful.life.view.pickview.OptionsPickerView;
 import cn.net.cyberway.R;
+
+import static com.realaudit.activity.RealCheckResultActivity.CHECKSTATE;
+import static com.realaudit.activity.RealCheckWaitingActivity.CHECKTIME;
 
 /**
  * 个人信息
@@ -103,6 +114,8 @@ public class CustomerInfoActivity extends BaseActivity implements View.OnClickLi
     private int customer_id;
     private boolean fromWeb;
     private boolean noRealToken = false;
+    private String identifyState;
+    private String idCardNumber;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -155,6 +168,9 @@ public class CustomerInfoActivity extends BaseActivity implements View.OnClickLi
         mBack.setOnClickListener(this);
         mRightText.setOnClickListener(this);
         ThemeStyleHelper.rightTexteFrameLayout(getApplicationContext(), czyTitleLayout, mBack, mTitle, mRightText);
+        if (!EventBus.getDefault().isregister(CustomerInfoActivity.this)) {
+            EventBus.getDefault().register(CustomerInfoActivity.this);
+        }
     }
 
     private void initView() {
@@ -202,11 +218,11 @@ public class CustomerInfoActivity extends BaseActivity implements View.OnClickLi
         customer_id = mShared.getInt(UserAppConst.Colour_User_id, 0);
 
         newUserModel = new NewUserModel(this);
-        String realName = mShared.getString(UserAppConst.COLOUR_AUTH_REAL_NAME + customer_id, "");
+        realName = mShared.getString(UserAppConst.COLOUR_AUTH_REAL_NAME + customer_id, "");
         if (!TextUtils.isEmpty(realName) || "dismiss".equals(realName)) {
             realNameFormat(realName);
         }
-        newUserModel.getIsRealName(2, this);//是否实名认证
+        newUserModel.getIsRealName(2, false,this);//是否实名认证
     }
 
     private CustomerInfoDialog dialog;
@@ -313,8 +329,15 @@ public class CustomerInfoActivity extends BaseActivity implements View.OnClickLi
                         getRealToken(true);
                     }
                 } else {
-                    Intent real_intent = new Intent(CustomerInfoActivity.this, RealNameInforActivity.class);
-                    startActivity(real_intent);
+                    if ("1".equals(identifyState)) { //可进没申请过
+                        Intent real_intent = new Intent(CustomerInfoActivity.this, RealNameInforActivity.class);
+                        real_intent.putExtra(RealNameInforActivity.REALNAME, realName);
+                        real_intent.putExtra(RealNameInforActivity.REALNUMBER, idCardNumber);
+                        startActivity(real_intent);
+                    } else if ("2".equals(identifyState)) {
+                        IdentityNameModel identityNameModel = new IdentityNameModel(CustomerInfoActivity.this);
+                        identityNameModel.getApplyStatus(7, CustomerInfoActivity.this);
+                    }
                 }
                 break;
         }
@@ -540,10 +563,11 @@ public class CustomerInfoActivity extends BaseActivity implements View.OnClickLi
                             String content = jsonObject.getString("content");
                             JSONObject data = new JSONObject(content);
                             int isIdentity = data.getInt("is_identity");
-                            String real = data.getString("real_name");
+                            realName = data.getString("real_name");
+                            idCardNumber = data.getString("number");
                             if (1 == isIdentity) {
-                                mEditor.putString(UserAppConst.COLOUR_AUTH_REAL_NAME + customer_id, real).commit();
-                                realNameFormat(real);
+                                mEditor.putString(UserAppConst.COLOUR_AUTH_REAL_NAME + customer_id, realName).commit();
+                                realNameFormat(realName);
                             } else {
                                 realName = "";
                                 tv_real_name.setText("");
@@ -603,6 +627,38 @@ public class CustomerInfoActivity extends BaseActivity implements View.OnClickLi
                     setResult(200, new Intent());
                 }
                 break;
+            case 6:
+                try {
+                    IdentityStateEntity identityStateEntity = GsonUtils.gsonToBean(result, IdentityStateEntity.class);
+                    IdentityStateEntity.ContentBean contentBean = identityStateEntity.getContent();
+                    identifyState = contentBean.getState();
+                } catch (Exception e) {
+
+                }
+                break;
+            case 7:
+                try {
+                    IdentityStateEntity identityStateEntity = GsonUtils.gsonToBean(result, IdentityStateEntity.class);
+                    IdentityStateEntity.ContentBean contentBean = identityStateEntity.getContent();
+                    String checkStatus = contentBean.getStatus();
+                    Intent intent = null;
+                    checkStatus="3";
+                    switch (checkStatus) {
+                        case "1":
+                            intent = new Intent(CustomerInfoActivity.this, RealCheckWaitingActivity.class);
+                            intent.putExtra(CHECKTIME, contentBean.getCreated_at());
+                            break;
+                        case "2":
+                        case "3":
+                            intent = new Intent(CustomerInfoActivity.this, RealCheckResultActivity.class);
+                            break;
+                    }
+                    intent.putExtra(CHECKSTATE, checkStatus);
+                    startActivity(intent);
+                } catch (Exception e) {
+
+                }
+                break;
         }
     }
 
@@ -618,6 +674,8 @@ public class CustomerInfoActivity extends BaseActivity implements View.OnClickLi
         tv_real_name.setText(realName);
         tv_is_real.setText(getResources().getString(R.string.customer_real_already));
         iv_real_name.setVisibility(View.GONE);
+        IdentityNameModel identityNameModel = new IdentityNameModel(CustomerInfoActivity.this);
+        identityNameModel.getIdentityState(6, CustomerInfoActivity.this);
     }
 
     /**
@@ -648,4 +706,22 @@ public class CustomerInfoActivity extends BaseActivity implements View.OnClickLi
             }
         }
     };
+
+
+    public void onEvent(Object event) {
+        final Message message = (Message) event;
+        switch (message.what) {
+            case UserMessageConstant.REAL_CHANGE_STATE:
+                newUserModel.getIsRealName(2, true,this);//是否实名认证
+                break;
+        }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if (EventBus.getDefault().isregister(CustomerInfoActivity.this)) {
+            EventBus.getDefault().unregister(CustomerInfoActivity.this);
+        }
+    }
 }

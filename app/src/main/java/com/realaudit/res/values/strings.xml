@@ -5,12 +5,13 @@
 <string name="real_define_upload">确认上传</string>
 <string name="real_orgin_idcard">原身份证信息上传</string>
 <string name="real_new_idcard">新身份证信息上传</string>
-<string name="real_text_idcard">身份证号</string>
+<string name="real_text_idcard">身份证号:  </string>
 <string name="real_idcard_status">已实名</string>
 <string name="real_text_apply">申请</string>
 <string name="real_contact_service">联系客服</string>
 <string name="real_status_success">审核通过</string>
 <string name="real_status_fail">审核失败</string>
+<string name="real_start_check">开始审核</string>
 <string name="real_status_wait">审核中</string>
 <string name="real_check_success">实名信息修改已通过审核，请重新进行实名认证</string>
 <string name="real_check_fail">由于xxxx原因，您的更换实名信息申请 审核失败，请按照规则重新上传申请</string>

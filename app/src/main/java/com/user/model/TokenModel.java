@@ -24,8 +24,6 @@ import org.json.JSONObject;
 import java.util.HashMap;
 import java.util.Map;
 
-import cn.net.cyberway.activity.MainActivity;
-
 public class TokenModel extends BaseModel {
 
     public TokenModel(Context context) {

@@ -1267,8 +1267,7 @@ public class WebViewActivity extends BaseActivity implements View.OnLongClickLis
                         IWXAPI api = WXAPIFactory.createWXAPI(WebViewActivity.this, Config.WEIXIN_APP_ID);//微信APPID
                         WXLaunchMiniProgram.Req req = new WXLaunchMiniProgram.Req();
                         req.userName = appid; // 小程序原始id
-                        req.path = URLEncoder.encode(path);
-                        ;//拉起小程序页面的可带参路径，不填默认拉起小程序首页
+                        req.path = URLEncoder.encode(path);;//拉起小程序页面的可带参路径，不填默认拉起小程序首页
                         req.miniprogramType = WXLaunchMiniProgram.Req.MINIPTOGRAM_TYPE_RELEASE;// 可选打开 开发版，体验版和正式版
                         api.sendReq(req);
                     }
