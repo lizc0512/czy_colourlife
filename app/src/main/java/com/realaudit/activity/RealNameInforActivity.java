@@ -33,9 +33,9 @@ public class RealNameInforActivity extends BaseActivity implements View.OnClickL
     private TextView tv_title;   //标题
     private ImageView imageView_back;//返回
     private CircleImageView iv_user_photo;
-    private TextView tv_user_name;
-    private TextView tv_user_number;
-    private TextView btn_apply;
+    private TextView tv_user_name;//用户的姓名
+    private TextView tv_user_number;//用户的身份证号
+    private TextView btn_apply;//重新更换
     private TextView tv_contact_service;
 
 

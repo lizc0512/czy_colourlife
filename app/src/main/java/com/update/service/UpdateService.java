@@ -60,9 +60,6 @@ public class UpdateService extends Service {
     @Override
     public void onStart(Intent intent, int startId) {
         super.onStart(intent, startId);
-        if ("".equals(intent.getStringExtra(DOWNLOAD_URL))) {
-            return;
-        }
         url = intent.getStringExtra(DOWNLOAD_URL);
         version = intent.getStringExtra(VERSIONNAME);
         Date currentTime = new Date();

@@ -44,10 +44,10 @@ public class RealCheckResultActivity extends BaseActivity implements View.OnClic
     private ImageView imageView_back;//返回
 
 
-    private ImageView iv_check_result;
+    private ImageView iv_check_result;//认证的结果
     private TextView tv_contact_service;
-    private Button btn_apply;
-    private String checkState;
+    private Button btn_apply;//重新实名
+    private String checkState;//实名认证的状态
     private String realToken = "";
 
     @Override

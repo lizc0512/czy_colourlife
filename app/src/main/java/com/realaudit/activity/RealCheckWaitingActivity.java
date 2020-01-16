@@ -1,7 +1,6 @@
 package com.realaudit.activity;
 
 import android.os.Bundle;
-import android.text.TextUtils;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -21,12 +20,9 @@ import static cn.net.cyberway.utils.ConfigUtils.jumpContactService;
  * 描述:
  **/
 public class RealCheckWaitingActivity extends BaseActivity implements View.OnClickListener {
-    public static final String CHECKTIME="checktime";
+    public static final String CHECKTIME = "checktime";
     private TextView tv_title;   //标题
     private ImageView imageView_back;//返回
-    private ImageView iv_check_result;
-    private TextView tv_check_result;
-    private TextView tv_check_reason;
     private TextView tv_contact_service;
 
     @Override
@@ -35,23 +31,18 @@ public class RealCheckWaitingActivity extends BaseActivity implements View.OnCli
         setContentView(R.layout.activity_realname_check_waiting);
         tv_title = findViewById(R.id.user_top_view_title);
         imageView_back = findViewById(R.id.user_top_view_back);
-        iv_check_result = findViewById(R.id.iv_check_result);
-        tv_check_result = findViewById(R.id.tv_check_result);
-        tv_check_reason = findViewById(R.id.tv_check_reason);
         TextView tv_check_time = findViewById(R.id.tv_check_time);
-        long time=getIntent().getLongExtra(CHECKTIME,System.currentTimeMillis()/1000);
+        long time = getIntent().getLongExtra(CHECKTIME, System.currentTimeMillis() / 1000);
         tv_check_time.setText(TimeUtil.getDateToString(time));
         tv_contact_service = findViewById(R.id.tv_contact_service);
         imageView_back.setOnClickListener(this::onClick);
         tv_contact_service.setOnClickListener(this::onClick);
         tv_title.setText(getResources().getString(R.string.real_title_change_realname));
-
-
     }
 
     @Override
     public void onClick(View v) {
-        switch (v.getId()){
+        switch (v.getId()) {
             case R.id.user_top_view_back:
                 finish();
                 break;

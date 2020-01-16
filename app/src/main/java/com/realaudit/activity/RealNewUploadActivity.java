@@ -54,14 +54,14 @@ public class RealNewUploadActivity extends BaseActivity implements View.OnClickL
 
     private TextView tv_cardinfor_tips;
 
-    private ImageView iv_idcard_back;
+    private ImageView iv_idcard_back;//人脸面
     private ImageView iv_del_back;
 
-    private ImageView iv_idcard_front;
+    private ImageView iv_idcard_front;//国徽面
     private ImageView iv_del_front;
 
 
-    private ImageView iv_idcard_hand;
+    private ImageView iv_idcard_hand;//手拿身份证
     private ImageView iv_del_hand;
 
 

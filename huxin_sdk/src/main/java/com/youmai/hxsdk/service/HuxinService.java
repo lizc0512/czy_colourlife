@@ -381,7 +381,7 @@ public class HuxinService extends Service {
                 //builder.setOverrideDeadline(mill * 2); // 设置JobService执行的最晚时间
                 builder.setRequiredNetworkType(JobInfo.NETWORK_TYPE_ANY); //任何可用网络
                 scheduler.schedule(builder.build());
-            }catch (IllegalArgumentException e){
+            }catch (IllegalStateException e){
                 cancelJob();
             }catch (NullPointerException e){
 
