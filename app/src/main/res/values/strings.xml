@@ -119,6 +119,7 @@
     <string name="user_callpermission_notice">拨号权限被禁止，请去开启该权限</string>
     <string name="user_camerapermission_notice">相机权限被禁止，请去开启该权限</string>
     <string name="user_readcontacts_notice">通讯录权限被禁止，请去开启该权限</string>
+    <string name="user_writestorage_notice">彩之云存储权限被禁止，请去开启该权限</string>
 
     <string name="opendoor_success">开门成功 </string>
     <string name="continue_next">下次继续 </string>

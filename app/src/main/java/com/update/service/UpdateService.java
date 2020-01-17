@@ -6,8 +6,6 @@ import android.app.Activity;
 import android.app.DownloadManager;
 import android.app.Service;
 import android.content.BroadcastReceiver;
-import android.content.ContentResolver;
-import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
@@ -18,20 +16,22 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Environment;
 import android.os.IBinder;
-import android.provider.MediaStore;
 import android.provider.Settings;
+import android.support.annotation.NonNull;
 import android.support.v4.content.FileProvider;
 
 import com.BeeFramework.Utils.ToastUtil;
 import com.permission.AndPermission;
+import com.permission.PermissionListener;
 import com.user.UserAppConst;
 import com.user.Utils.TokenUtils;
 
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.InputStream;
-import java.io.OutputStream;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
+
+import cn.net.cyberway.R;
 
 
 @SuppressLint("NewApi")
@@ -78,9 +78,22 @@ public class UpdateService extends Service {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             if (!AndPermission.hasPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
                 //申请WRITE_EXTERNAL_STORAGE权限
-                AndPermission.with(this).permission(Manifest.permission.WRITE_EXTERNAL_STORAGE).start();
+                AndPermission.with(this).permission(Manifest.permission.WRITE_EXTERNAL_STORAGE).requestCode(10000).callback(permissionListener).start();
+            } else {
+                ArrayList<String> permission = new ArrayList<>();
+                permission.add(Manifest.permission.WRITE_EXTERNAL_STORAGE);
+                if (AndPermission.hasAlwaysDeniedPermission(this,permission)) {
+                    ToastUtil.toastShow(getApplicationContext(), getResources().getString(R.string.user_writestorage_notice));
+                }else{
+                    startDownLoadOperate();
+                }
             }
+        } else {
+            startDownLoadOperate();
         }
+    }
+
+    private void startDownLoadOperate() {
         if (canDownloadState()) {
             downloadApk();
         } else {
@@ -94,7 +107,7 @@ public class UpdateService extends Service {
 
     private void downloadApk() {
         if (Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED)) {
-            File apkFile= new File(Environment.DIRECTORY_DOWNLOADS + "/" + apk_name);
+            File apkFile = new File(Environment.DIRECTORY_DOWNLOADS + "/" + apk_name);
             if (apkFile.exists()) {
                 apkFile.delete();
             }
@@ -271,4 +284,24 @@ public class UpdateService extends Service {
         unregisterReceiver(receiver);
         super.onDestroy();
     }
+
+    private PermissionListener permissionListener = new PermissionListener() {
+        @Override
+        public void onSucceed(int requestCode, List<String> grantPermissions) {
+            switch (requestCode) {
+                case 10000: {
+                    startDownLoadOperate();
+                    break;
+                }
+            }
+        }
+
+        @Override
+        public void onFailed(int requestCode, @NonNull List<String> deniedPermissions) {
+            if (AndPermission.hasAlwaysDeniedPermission(UpdateService.this, deniedPermissions)) {
+                // 第一种：用默认的提示语。
+                ToastUtil.toastShow(getApplicationContext(), getResources().getString(R.string.user_writestorage_notice));
+            }
+        }
+    };
 }
