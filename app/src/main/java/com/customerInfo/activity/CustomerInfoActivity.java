@@ -36,7 +36,6 @@ import com.permission.AndPermission;
 import com.realaudit.activity.RealCheckResultActivity;
 import com.realaudit.activity.RealCheckWaitingActivity;
 import com.realaudit.activity.RealNameInforActivity;
-import com.realaudit.activity.RealOriginUploadActivity;
 import com.realaudit.model.IdentityNameModel;
 import com.tencent.authsdk.AuthConfig;
 import com.tencent.authsdk.AuthSDKApi;
@@ -61,6 +60,7 @@ import cn.csh.colourful.life.view.imagepicker.view.CropImageView;
 import cn.csh.colourful.life.view.pickview.OptionsPickerView;
 import cn.net.cyberway.R;
 
+import static com.realaudit.activity.RealCheckResultActivity.CHECKREASON;
 import static com.realaudit.activity.RealCheckResultActivity.CHECKSTATE;
 import static com.realaudit.activity.RealCheckWaitingActivity.CHECKTIME;
 
@@ -222,7 +222,7 @@ public class CustomerInfoActivity extends BaseActivity implements View.OnClickLi
         if (!TextUtils.isEmpty(realName) || "dismiss".equals(realName)) {
             realNameFormat(realName);
         }
-        newUserModel.getIsRealName(2, false,this);//是否实名认证
+        newUserModel.getIsRealName(2, false, this);//是否实名认证
     }
 
     private CustomerInfoDialog dialog;
@@ -329,14 +329,14 @@ public class CustomerInfoActivity extends BaseActivity implements View.OnClickLi
                         getRealToken(true);
                     }
                 } else {
-                    if ("1".equals(identifyState)) { //可进没申请过
+                    if ("2".equals(identifyState)) {
+                        IdentityNameModel identityNameModel = new IdentityNameModel(CustomerInfoActivity.this);
+                        identityNameModel.getApplyStatus(7, CustomerInfoActivity.this);
+                    } else {
                         Intent real_intent = new Intent(CustomerInfoActivity.this, RealNameInforActivity.class);
                         real_intent.putExtra(RealNameInforActivity.REALNAME, realName);
                         real_intent.putExtra(RealNameInforActivity.REALNUMBER, idCardNumber);
                         startActivity(real_intent);
-                    } else if ("2".equals(identifyState)) {
-                        IdentityNameModel identityNameModel = new IdentityNameModel(CustomerInfoActivity.this);
-                        identityNameModel.getApplyStatus(7, CustomerInfoActivity.this);
                     }
                 }
                 break;
@@ -650,6 +650,7 @@ public class CustomerInfoActivity extends BaseActivity implements View.OnClickLi
                         case "2":
                         case "3":
                             intent = new Intent(CustomerInfoActivity.this, RealCheckResultActivity.class);
+                           intent.putExtra(CHECKREASON, contentBean.getRemark());
                             break;
                     }
                     intent.putExtra(CHECKSTATE, checkStatus);
@@ -711,7 +712,7 @@ public class CustomerInfoActivity extends BaseActivity implements View.OnClickLi
         final Message message = (Message) event;
         switch (message.what) {
             case UserMessageConstant.REAL_CHANGE_STATE:
-                newUserModel.getIsRealName(2, true,this);//是否实名认证
+                newUserModel.getIsRealName(2, true, this);//是否实名认证
                 break;
         }
     }

@@ -56,7 +56,7 @@ public class IdentityNameModel extends BaseModel {
             public void onFailed(int what, Response<String> response) {
                 showExceptionMessage(what, response);
             }
-        }, true, false);
+        }, true, true);
     }
 
     public void uploadImageFile(int what, String img,  final NewHttpResponse newHttpResponse) {
