@@ -86,14 +86,14 @@ public class IdentityNameModel extends BaseModel {
     }
 
     public void submitIdentifyData(int what, String origin_front_img,String origin_back_img,String origin_hold_img,
-                                  String new_front_img,String new_back_img,String new_hold_img, final NewHttpResponse newHttpResponse) {
+                                  String fresh_front_img,String fresh_back_img,String fresh_hold_img, final NewHttpResponse newHttpResponse) {
         Map<String, Object> params = new HashMap<String, Object>();
         params.put("origin_front_img", origin_front_img);
         params.put("origin_back_img", origin_back_img);
         params.put("origin_hold_img", origin_hold_img);
-        params.put("new_front_img", new_front_img);
-        params.put("new_back_img", new_back_img);
-        params.put("new_hold_img", new_hold_img);
+        params.put("fresh_front_img", fresh_front_img);
+        params.put("fresh_back_img", fresh_back_img);
+        params.put("fresh_hold_img", fresh_hold_img);
         final Request<String> request = NoHttp.createStringRequest(RequestEncryptionUtils.postCombileMD5(mContext, 6, submitApplyDataUrl), RequestMethod.POST);
         request(what, request, params, new HttpListener<String>() {
             @Override
