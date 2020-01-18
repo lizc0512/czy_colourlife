@@ -3,6 +3,7 @@ package com.realaudit.activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Message;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -30,6 +31,7 @@ import static cn.net.cyberway.utils.ConfigUtils.jumpContactService;
 public class RealNameInforActivity extends BaseActivity implements View.OnClickListener {
     public static final String REALNAME = "realname";
     public static final String REALNUMBER = "realnumber";
+    public static final String REALFACEIMAGE = "realfaceimage";
     private TextView tv_title;   //标题
     private ImageView imageView_back;//返回
     private CircleImageView iv_user_photo;
@@ -54,11 +56,14 @@ public class RealNameInforActivity extends BaseActivity implements View.OnClickL
         btn_apply.setOnClickListener(this::onClick);
         tv_contact_service.setOnClickListener(this::onClick);
         tv_title.setText(getResources().getString(R.string.real_title_real_identify));
-        String headImgUrl = shared.getString(UserAppConst.Colour_head_img, "");
-        ImageLoader.getInstance().displayImage(headImgUrl, iv_user_photo, GlideImageLoader.optionsImage);
         Intent intent = getIntent();
         String realName = intent.getStringExtra(REALNAME);
         String realNumber = intent.getStringExtra(REALNUMBER);
+        String headImgUrl = intent.getStringExtra(REALFACEIMAGE);
+        if (TextUtils.isEmpty(headImgUrl)){
+            headImgUrl= shared.getString(UserAppConst.Colour_head_img, "");
+        }
+        ImageLoader.getInstance().displayImage(headImgUrl, iv_user_photo, GlideImageLoader.optionsImage);
         tv_user_name.setText(realName);
         tv_user_number.setText(getResources().getString(R.string.real_text_idcard)+realNumber.substring(0, 1) + "*** **** **** **** *" + realNumber.substring(realNumber.length() - 1));
         if (!EventBus.getDefault().isregister(RealNameInforActivity.this)) {

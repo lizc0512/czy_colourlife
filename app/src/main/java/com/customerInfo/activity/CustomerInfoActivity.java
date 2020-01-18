@@ -116,6 +116,7 @@ public class CustomerInfoActivity extends BaseActivity implements View.OnClickLi
     private boolean noRealToken = false;
     private String identifyState;
     private String idCardNumber;
+    private String faceImage;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -336,6 +337,7 @@ public class CustomerInfoActivity extends BaseActivity implements View.OnClickLi
                         Intent real_intent = new Intent(CustomerInfoActivity.this, RealNameInforActivity.class);
                         real_intent.putExtra(RealNameInforActivity.REALNAME, realName);
                         real_intent.putExtra(RealNameInforActivity.REALNUMBER, idCardNumber);
+                        real_intent.putExtra(RealNameInforActivity.REALFACEIMAGE, faceImage);
                         startActivity(real_intent);
                     }
                 }
@@ -558,13 +560,14 @@ public class CustomerInfoActivity extends BaseActivity implements View.OnClickLi
                 if (!TextUtils.isEmpty(result)) {
                     try {
                         JSONObject jsonObject = new JSONObject(result);
-                        String code = jsonObject.getString("code");
+                        String code = jsonObject.optString("code");
                         if ("0".equals(code)) {
-                            String content = jsonObject.getString("content");
+                            String content = jsonObject.optString("content");
                             JSONObject data = new JSONObject(content);
-                            int isIdentity = data.getInt("is_identity");
-                            realName = data.getString("real_name");
-                            idCardNumber = data.getString("number");
+                            int isIdentity = data.optInt("is_identity");
+                            realName = data.optString("real_name");
+                            idCardNumber = data.optString("number");
+                            faceImage=data.optString("face_img");
                             if (1 == isIdentity) {
                                 mEditor.putString(UserAppConst.COLOUR_AUTH_REAL_NAME + customer_id, realName).commit();
                                 realNameFormat(realName);
