@@ -37,6 +37,8 @@ import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.WindowManager;
+import android.webkit.CookieManager;
+import android.webkit.CookieSyncManager;
 import android.webkit.GeolocationPermissions;
 import android.webkit.JavascriptInterface;
 import android.webkit.SslErrorHandler;
@@ -177,8 +179,7 @@ public class WebViewActivity extends BaseActivity implements View.OnLongClickLis
     public static final int REQUEST_CALLPHONE = 2000;
     public static final int GUANGCAIPAY = 3000;
     public static final int DELIVERYADDRESS = 4000;
-    public static final int BINDWECHAT = 5000;
-    public static final int REFRESH = 6000;
+    public static final int REFRESH = 5000;
     private String webTitle = ""; // 传入的标题字符串
     private String appSectionCode = ""; // 传入的标题字符串
     private String url = "";
@@ -1267,7 +1268,8 @@ public class WebViewActivity extends BaseActivity implements View.OnLongClickLis
                         IWXAPI api = WXAPIFactory.createWXAPI(WebViewActivity.this, Config.WEIXIN_APP_ID);//微信APPID
                         WXLaunchMiniProgram.Req req = new WXLaunchMiniProgram.Req();
                         req.userName = appid; // 小程序原始id
-                        req.path = URLEncoder.encode(path);;//拉起小程序页面的可带参路径，不填默认拉起小程序首页
+                        req.path = URLEncoder.encode(path);
+                        ;//拉起小程序页面的可带参路径，不填默认拉起小程序首页
                         req.miniprogramType = WXLaunchMiniProgram.Req.MINIPTOGRAM_TYPE_RELEASE;// 可选打开 开发版，体验版和正式版
                         api.sendReq(req);
                     }
@@ -1349,8 +1351,6 @@ public class WebViewActivity extends BaseActivity implements View.OnLongClickLis
         });
     }
 
-    @TargetApi(Build.VERSION_CODES.KITKAT)
-    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -1361,6 +1361,11 @@ public class WebViewActivity extends BaseActivity implements View.OnLongClickLis
                     // 不是在收银台界面直接点击返回的，就调用回调链接
                     if (Constants.payResultUrl.startsWith("http")) {
                         String url = Constants.payResultUrl + "?sn=" + sn;
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP_MR1) {
+                            CookieManager.getInstance().flush();
+                        } else {
+                            CookieSyncManager.getInstance().sync();
+                        }
                         webView.loadUrl(url);
                         Constants.isFromHtml = false; // 恢复默认值
                     } else {
@@ -1461,9 +1466,6 @@ public class WebViewActivity extends BaseActivity implements View.OnLongClickLis
                     }
                     webView.loadUrl("javascript:window.colourlifeDeliveryAddressHandler('" + jsonObject.toString() + "')");
                 }
-                break;
-            case BINDWECHAT: //wechat绑定成功后的回调  直接跳转到对应的小程序
-
                 break;
             case REFRESH: //回调刷新h5
                 if (resultCode == 200) {
@@ -2045,7 +2047,7 @@ public class WebViewActivity extends BaseActivity implements View.OnLongClickLis
                 newUserModel.submitRealName(3, biz_token, otherMobile, otherUserId, this);
             }
         } else {
-            if (isClose==1){
+            if (isClose == 1) {
                 finish();
             }
         }

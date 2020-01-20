@@ -63,7 +63,7 @@ public class RealNameInforActivity extends BaseActivity implements View.OnClickL
         if (TextUtils.isEmpty(headImgUrl)){
             headImgUrl= shared.getString(UserAppConst.Colour_head_img, "");
         }
-        ImageLoader.getInstance().displayImage(headImgUrl, iv_user_photo, GlideImageLoader.optionsImage);
+        GlideImageLoader.loadImageDisplay(RealNameInforActivity.this,headImgUrl,iv_user_photo);
         tv_user_name.setText(realName);
         tv_user_number.setText(getResources().getString(R.string.real_text_idcard)+realNumber.substring(0, 1) + "*** **** **** **** *" + realNumber.substring(realNumber.length() - 1));
         if (!EventBus.getDefault().isregister(RealNameInforActivity.this)) {

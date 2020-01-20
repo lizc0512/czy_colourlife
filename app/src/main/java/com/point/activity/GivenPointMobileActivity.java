@@ -172,13 +172,17 @@ public class GivenPointMobileActivity extends BaseActivity implements View.OnCli
                     PointAccountLimitEntity.ContentBean contentBean = pointAccountLimitEntity.getContent();
                     last_times = contentBean.getLast_times();
                     last_amount = contentBean.getLast_amount();
-                    if (last_amount > 0 && last_times > 0) {
+                    if (last_amount==-1||last_times==-1){//积分白名单
                         canGiven = true;
-                    } else {
-                        canGiven = false;
+                    }else {
+                        if (last_amount > 0 && last_times > 0) {
+                            canGiven = true;
+                        } else {
+                            canGiven = false;
+                        }
+                        setBtnClick();
+                        tv_remain_notice.setText("今天可赠送" + last_times + "次，剩余额度" + last_amount * 1.0f / 100 + keyword_sign);
                     }
-                    setBtnClick();
-                    tv_remain_notice.setText("今天可赠送" + last_times + "次，剩余额度" + last_amount * 1.0f / 100 + keyword_sign);
                 } catch (Exception e) {
 
                 }

@@ -119,7 +119,9 @@ public class GivenPointAmountActivity extends BaseActivity implements View.OnCli
         pointModel = new PointModel(GivenPointAmountActivity.this);
         newUserModel = new NewUserModel(GivenPointAmountActivity.this);
         pointModel.getAccountBalance(1, pano, GivenPointAmountActivity.this);
-        tv_remain_notice.setText("今日可赠送" + last_time + "次，剩余额度" + last_amount + keyword_sign);
+        if (last_time!=-1&&last_amount!=-1){ //积分白名单
+            tv_remain_notice.setText("今日可赠送" + last_time + "次，剩余额度" + last_amount + keyword_sign);
+        }
         if (!EventBus.getDefault().isregister(GivenPointAmountActivity.this)) {
             EventBus.getDefault().register(GivenPointAmountActivity.this);
         }
@@ -152,9 +154,11 @@ public class GivenPointAmountActivity extends BaseActivity implements View.OnCli
                         ToastUtil.toastShow(GivenPointAmountActivity.this, "赠送金额不能超过可用余额");
                         return;
                     }
-                    if (give_Amount > last_amount) {
-                        ToastUtil.toastShow(GivenPointAmountActivity.this, "赠送金额不能超过剩余额度");
-                        return;
+                    if (last_amount!=-1){
+                        if (give_Amount > last_amount) {
+                            ToastUtil.toastShow(GivenPointAmountActivity.this, "赠送金额不能超过剩余额度");
+                            return;
+                        }
                     }
                     giveBalance = (int) (give_Amount * 100);
                     pointModel.getTransactionToken(3, GivenPointAmountActivity.this);

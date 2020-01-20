@@ -768,9 +768,6 @@ public class NewOrderPayActivity extends BaseActivity implements View.OnClickLis
                     ToastUtil.toastShow(NewOrderPayActivity.this, "用户取消支付");
                 }
                 break;
-            case POINT_CHANGE_PAYPAWD://积分支付 设置密码成功后的回调
-
-                break;
             case POINT_INPUT_PAYPAWD://积分支付 设置密码成功后的回调
                 String password = (String) message.obj;
                 newOrderPayModel.goOrderPayByPoint(8, encrypt, password, token, NewOrderPayActivity.this);

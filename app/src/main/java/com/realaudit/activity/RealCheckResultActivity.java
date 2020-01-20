@@ -66,7 +66,7 @@ public class RealCheckResultActivity extends BaseActivity implements View.OnClic
         TextView tv_check_reason = findViewById(R.id.tv_check_reason);
         TextView tv_check_result = findViewById(R.id.tv_check_result);
         if ("2".equals(checkState)) {
-            tv_check_reason.setText(getResources().getString(R.string.real_status_success));
+            tv_check_reason.setText(getResources().getString(R.string.real_check_success));
         } else {
             btn_apply.setText(getResources().getString(R.string.real_upload_again));
             iv_check_result.setImageResource(R.drawable.real_check_fail);
@@ -77,7 +77,6 @@ public class RealCheckResultActivity extends BaseActivity implements View.OnClic
                 tv_check_reason.setText("");
             }
         }
-
         imageView_back.setOnClickListener(this::onClick);
         tv_contact_service.setOnClickListener(this::onClick);
         btn_apply.setOnClickListener(this::onClick);
