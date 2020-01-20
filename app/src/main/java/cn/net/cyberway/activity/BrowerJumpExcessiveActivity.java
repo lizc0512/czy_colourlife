@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.os.Message;
 import android.text.TextUtils;
 
+import com.BeeFramework.activity.AdsWebViewActivity;
 import com.BeeFramework.activity.BaseActivity;
 import com.BeeFramework.activity.WebViewActivity;
 import com.BeeFramework.model.NewHttpResponse;
@@ -94,7 +95,15 @@ public class BrowerJumpExcessiveActivity extends BaseActivity implements NewHttp
                         if (!TextUtils.isEmpty(domain)) {
                             LinkParseUtil.jumpHtmlPay(BrowerJumpExcessiveActivity.this, linkUrl, domain);
                         } else {
-                            LinkParseUtil.parse(BrowerJumpExcessiveActivity.this, linkUrl, title);
+                            if (linkUrl.startsWith("https://qr.alipay.com")){
+                                Intent alipayIntent = new Intent(BrowerJumpExcessiveActivity.this, AdsWebViewActivity.class);
+                                alipayIntent.putExtra(WebViewActivity.WEBURL, linkUrl);
+                                alipayIntent.putExtra(WebViewActivity.WEBTITLE, title);
+                                startActivity(alipayIntent);
+                                overridePendingTransition(R.anim.push_right_in, R.anim.push_right_out);
+                            }else{
+                                LinkParseUtil.parse(BrowerJumpExcessiveActivity.this, linkUrl, title);
+                            }
                         }
                     }
                 }

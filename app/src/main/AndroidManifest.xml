@@ -259,11 +259,10 @@
             </intent-filter>
         </activity>
 
-
         <activity
             android:name="com.BeeFramework.activity.AdsWebViewActivity"
             android:screenOrientation="portrait"
-            android:theme="@android:style/Theme.Translucent" />
+            android:theme="@android:style/Theme.Translucent.NoTitleBar" />
         <!--手势密码相关-->
         <activity
             android:name="com.setting.activity.GesturePwdMainActivity"

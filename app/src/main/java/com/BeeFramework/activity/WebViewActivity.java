@@ -204,7 +204,7 @@ public class WebViewActivity extends BaseActivity implements View.OnLongClickLis
     private String betaOauthUrl = "https://oauth2czy-czybeta.colourlife.com";
     private String officialOauthUrl = "https://oauth2czy.colourlife.com";
     private String awardState = "";
-    private String finishStatus = "1";
+    public static String finishStatus = "1";
     private String photoType = "imagepath";
     private String otherMobile;
     private String otherUserId;
@@ -273,6 +273,9 @@ public class WebViewActivity extends BaseActivity implements View.OnLongClickLis
         }
         CityManager.getInstance(this).initLocation();
         webView.setOnLongClickListener(this);
+        if (!EventBus.getDefault().isregister(WebViewActivity.this)) {
+            EventBus.getDefault().register(WebViewActivity.this);
+        }
     }
 
     private PermissionInterceptor permissionInterceptor = new PermissionInterceptor() {
@@ -1510,6 +1513,9 @@ public class WebViewActivity extends BaseActivity implements View.OnLongClickLis
     protected void onDestroy() {
         mAgentWeb.clearWebCache();
         mAgentWeb.getWebLifeCycle().onDestroy();
+        if (EventBus.getDefault().isregister(WebViewActivity.this)) {
+            EventBus.getDefault().unregister(WebViewActivity.this);
+        }
         super.onDestroy();
     }
 
@@ -2052,5 +2058,14 @@ public class WebViewActivity extends BaseActivity implements View.OnLongClickLis
             }
         }
     };
+
+    public void onEvent(Object event) {
+        final Message message = (Message) event;
+        switch (message.what) {
+            case 101010:
+                webView.reload();
+                break;
+        }
+    }
 
 }
