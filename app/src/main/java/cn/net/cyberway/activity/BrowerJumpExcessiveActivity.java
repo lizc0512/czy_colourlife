@@ -178,6 +178,7 @@ public class BrowerJumpExcessiveActivity extends BaseActivity implements NewHttp
 
                 }
                 break;
+
         }
     }
 }

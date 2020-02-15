@@ -57,7 +57,7 @@ public class AdvisementBannerAdapter extends PagerAdapter {
         ImageView image = (ImageView) view.findViewById(R.id.no_loimg);
         final OpenDoorResultEntity.ContentBean.AdBean adBean = adBeanList.get(position);
         GlideImageLoader.loadImageDefaultDisplay(container.getContext(), adBean.getImg(), image, R.drawable.icon_style_three, R.drawable.icon_style_three);
-     LinearLayout.LayoutParams layoutParams = (LinearLayout.LayoutParams) image.getLayoutParams();
+        LinearLayout.LayoutParams layoutParams = (LinearLayout.LayoutParams) image.getLayoutParams();
         layoutParams.width = LinearLayout.LayoutParams.MATCH_PARENT;
         layoutParams.height = Util.DensityUtil.dip2px(mContext, 120);
         image.setLayoutParams(layoutParams);

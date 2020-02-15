@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="44dp">
+
+        <com.BeeFramework.view.CircleImageView
+            android:id="@+id/iv_dynamics_user_pics"
+            android:layout_centerVertical="true"
+            android:layout_width="32dp"
+            android:layout_marginLeft="16dp"
+            android:layout_height="32dp"/>
+
+        <TextView
+            android:id="@+id/tv_dynamics_user_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="8dp"
+            android:layout_alignTop="@id/iv_dynamics_user_pics"
+            android:layout_toRightOf="@id/iv_dynamics_user_pics"
+            android:text="我的神啊"
+            android:textColor="@color/color_25282e"
+            android:textSize="12sp" />
+
+
+        <TextView
+            android:id="@+id/tv_dynamics_user_community"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/tv_dynamics_user_name"
+            android:layout_alignLeft="@id/tv_dynamics_user_name"
+            android:text="彩生活社区"
+            android:textColor="@color/color_8d9299"
+            android:textSize="10sp" />
+
+
+        <ImageView
+            android:id="@+id/iv_dynamics_user_operate"
+            android:layout_centerVertical="true"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="16dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+    </RelativeLayout>
+
+    <TextView
+        android:id="@+id/tv_dynamics_text_content"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:layout_marginRight="16dp"
+        android:layout_marginLeft="16dp"
+        android:text="这周日晚上7点小区正门广场舞-这期的主题是迪斯科大 家赶紧来参加吧。"
+        android:textColor="@color/color_25282e"
+        android:textSize="14sp" />
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/rv_dynamics_images"
+        android:layout_width="match_parent"
+        android:layout_marginTop="8dp"
+        android:layout_height="wrap_content"
+        />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_marginTop="15dp"
+        android:layout_height="20dp">
+
+        <TextView
+        android:id="@+id/tv_dynamics_publish_time"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="25dp"
+        android:text="2小时前"
+        android:textColor="@color/color_25282e"
+        android:textSize="12sp" />
+
+        <TextView
+        android:id="@+id/tv_dynamics_comment"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="25dp"
+        android:drawablePadding="5dp"
+        android:gravity="center"
+        android:drawableLeft="@drawable/ic_benefit_ticket"
+        android:text="3"
+        android:textColor="@color/color_25282e"
+        android:textSize="12sp" />
+
+
+        <TextView
+            android:id="@+id/tv_dynamics_like"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toLeftOf="@id/tv_dynamics_comment"
+            android:layout_marginRight="10dp"
+            android:drawablePadding="5dp"
+            android:gravity="center"
+            android:drawableLeft="@drawable/ic_benefit_ticket"
+            android:text="8"
+            android:textColor="@color/color_25282e"
+            android:textSize="12sp" />
+    </RelativeLayout>
+
+</LinearLayout>

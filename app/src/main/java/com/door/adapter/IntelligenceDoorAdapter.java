@@ -128,7 +128,7 @@ public class IntelligenceDoorAdapter extends RecyclerView.Adapter<IntelligenceDo
                         }
                     }
                     //远程开门
-                    holder.rl_key.setOnClickListener(v -> ((IntelligenceDoorActivity) mContext).remoteDoor(item.getQr_code()));
+                    holder.rl_key.setOnClickListener(v -> ((IntelligenceDoorActivity) mContext).remoteDoor(item.getQr_code(),item.getCommunity_uuid()));
 
                     holder.iv_handle.setOnClickListener(v -> {
                         try {

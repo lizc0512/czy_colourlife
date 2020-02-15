@@ -115,7 +115,7 @@
             android:layout_height="wrap_content"
             android:gravity="center"
             android:layout_marginLeft="30dp"
-            android:text="人工审核中"
+            android:text="人工审核"
             android:textColor="@color/color_333333"
             android:textSize="17sp"  />
 
@@ -125,7 +125,7 @@
             android:layout_below="@id/iv_waiting_desc"
             android:gravity="center"
             android:layout_marginLeft="30dp"
-            android:text="预计需要3天"
+            android:text="预计3天左右"
             android:textColor="@color/color_999999"
             android:textSize="14sp"  />
     </RelativeLayout>

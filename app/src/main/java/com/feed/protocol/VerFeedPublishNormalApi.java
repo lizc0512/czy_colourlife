@@ -8,7 +8,7 @@ public class VerFeedPublishNormalApi extends HttpApi
   public VerFeedPublishNormalRequest request;
   public VerFeedPublishNormalResponse response;
   public static String apiURI="app/linli/publishNormal";
-  public VerFeedPublishNormalApi()
+  public  VerFeedPublishNormalApi()
   {
      request=new VerFeedPublishNormalRequest();
      response=new VerFeedPublishNormalResponse();

@@ -122,6 +122,7 @@
     <string name="user_writestorage_notice">彩之云存储权限被禁止，请去开启该权限</string>
 
     <string name="opendoor_success">开门成功 </string>
+    <string name="opendoor_fail">开门失败</string>
     <string name="continue_next">下次继续 </string>
     <string name="no_get_ticket">很遗憾，未抢到饭票奖励</string>
     <string name="ticket_enter_wallet">饭票奖励已存入彩钱包</string>

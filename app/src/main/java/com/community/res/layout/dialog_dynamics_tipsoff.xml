@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="horizontal" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:background="@drawable/dynamics_topsoff_bg"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        android:orientation="vertical">
+
+
+        <TextView
+            android:id="@+id/tv_dynamics_tipoffs"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:gravity="center"
+            android:text="@string/community_dynamics_tipsoff"
+            android:textColor="@color/color_25282e"
+            android:textSize="15sp" />
+
+        <TextView
+            android:id="@+id/tv_dynamics_comment"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:gravity="center"
+            android:text="@string/community_comment"
+            android:textColor="@color/color_25282e"
+            android:textSize="15sp" />
+
+        <View
+            android:id="@+id/line_dynamics"
+            android:layout_width="match_parent"
+            android:background="@color/color_ebedf0"
+            android:layout_height="10dp"/>
+
+        <TextView
+            android:id="@+id/tv_dynamics_cancel"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:gravity="center"
+            android:text="@string/message_cancel"
+            android:textColor="@color/color_25282e"
+            android:textSize="15sp" />
+    </LinearLayout>
+
+</LinearLayout>

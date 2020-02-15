@@ -11,7 +11,7 @@ android {
         minSdkVersion MIN_SDK_VERSION as int
         targetSdkVersion TARGET_SDK_VERSION as int
         versionCode 96
-        versionName "6.6.21"
+        versionName "6.6.22"
         multiDexEnabled true
         javaCompileOptions {
             annotationProcessorOptions {
@@ -131,6 +131,7 @@ android {
                            "src/main/java/com/audio/res",
                            "src/main/java/com/point/res",
                            "src/main/java/com/realaudit/res",
+                           "src/main/java/com/community/res",
 
             ]
             jniLibs.srcDirs = ["src/main/java/com/jpush/jniLibs", "src/main/jniLibs", "src/main/java/com/audio/jniLibs"]

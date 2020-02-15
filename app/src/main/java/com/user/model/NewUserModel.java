@@ -98,6 +98,7 @@ public class NewUserModel extends BaseModel {
     private String unbindAuth = "app/auth/application/removal";
     private String oneKeyLoginUrl = "user/onekey/login";
     private String openRecordUrl = "app/door/openRocord";
+    private String getReportUrl = "app/door/health/getReport";
     private String finishTask = "user/finishTask";
 
 
@@ -1454,7 +1455,7 @@ public class NewUserModel extends BaseModel {
     /**
      * 获取是否实名认证
      */
-    public void getIsRealName(int what, boolean isLoading,final NewHttpResponse newHttpResponse) {
+    public void getIsRealName(int what, boolean isLoading, final NewHttpResponse newHttpResponse) {
         final Request<String> request = NoHttp.createStringRequest(RequestEncryptionUtils.getCombileMD5(mContext, 3, getIsRealUrl, null), RequestMethod.GET);
         request(what, request, null, new HttpListener<String>() {
             @Override
@@ -1776,6 +1777,7 @@ public class NewUserModel extends BaseModel {
         request(what, request, params, new HttpListener<String>() {
             @Override
             public void onSucceed(int what, Response<String> response) {
+
             }
 
             @Override
@@ -1783,6 +1785,48 @@ public class NewUserModel extends BaseModel {
             }
         }, true, false);
     }
+
+    /***
+     * 用户是否上传健康安全报告
+     */
+    public void getReportDate(int what,String community_uuid,String qrcode,String  cipher_id,boolean isLoading, final NewHttpResponse newHttpResponse) {
+        Map<String, Object> params = new HashMap<>();
+        if (!TextUtils.isEmpty(community_uuid)){
+            params.put("community_uuid", community_uuid);
+        }
+        if (!TextUtils.isEmpty(qrcode)){
+            params.put("qrcode", qrcode);
+        }
+        if (!TextUtils.isEmpty(cipher_id)){
+            params.put("cipher_id", cipher_id);
+        }
+        final Request<String> request = NoHttp.createStringRequest(RequestEncryptionUtils.getCombileMD5(mContext, 11, getReportUrl, params), RequestMethod.GET);
+        request.setConnectTimeout(10000);
+        request.setReadTimeout(10000);
+        request(what, request, params, new HttpListener<String>() {
+            @Override
+            public void onSucceed(int what, Response<String> response) {
+                int responseCode = response.getHeaders().getResponseCode();
+                String result = response.get();
+                if (responseCode == RequestEncryptionUtils.responseSuccess) {
+                    int resultCode = showSuccesResultMessageTheme(result);
+                    if (resultCode == 0) {
+                        newHttpResponse.OnHttpResponse(what, result);
+                    } else {
+                        newHttpResponse.OnHttpResponse(what, "");
+                    }
+                }else{
+                    newHttpResponse.OnHttpResponse(what, "");
+                }
+            }
+
+            @Override
+            public void onFailed(int what, Response<String> response) {
+                newHttpResponse.OnHttpResponse(what, "");
+            }
+        }, true, isLoading);
+    }
+
 
     /**
      * 获取授权管理详情

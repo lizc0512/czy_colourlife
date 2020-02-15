@@ -14,6 +14,7 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.text.TextUtils;
 
+import com.BeeFramework.Utils.ToastUtil;
 import com.intelspace.library.api.OnSyncUserKeysCallback;
 import com.intelspace.library.api.OnUserOptParkLockCallback;
 import com.intelspace.library.module.Device;
@@ -144,6 +145,7 @@ public class LekaiHelper {
 
                 @Override
                 public void syncFailed(Throwable throwable) {
+                    ToastUtil.toastShow(activity,throwable.getMessage());
                 }
             }, accid, token);
         }

@@ -35,10 +35,12 @@ import com.audio.activity.RoomActivity;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.RequestOptions;
+import com.door.activity.IntelligenceDoorActivity;
 import com.door.activity.NoRightDoorActivity;
 import com.door.entity.OpenDoorResultEntity;
 import com.door.model.NewDoorModel;
 import com.door.view.ShowOpenDoorDialog;
+import com.door.view.ShowReportHealthyDialog;
 import com.external.eventbus.EventBus;
 import com.feed.FeedConstant;
 import com.im.model.IMUploadPhoneModel;
@@ -75,6 +77,7 @@ import cn.net.cyberway.R;
 import cn.net.cyberway.fagment.BenefitFragment;
 import cn.net.cyberway.fagment.InstantMessageFragment;
 import cn.net.cyberway.fagment.ProfileFragment;
+import cn.net.cyberway.home.entity.HomeHealthReportEntity;
 import cn.net.cyberway.home.entity.PushNotificationEntity;
 import cn.net.cyberway.home.fragment.MainHomeFragmentNew;
 import cn.net.cyberway.home.fragment.NologinHomeFragment;
@@ -96,6 +99,7 @@ import static cn.net.cyberway.utils.TableLayoutUtils.addTVSeletor;
 import static cn.net.cyberway.utils.TableLayoutUtils.jumpLoginPage;
 import static cn.net.cyberway.utils.TableLayoutUtils.shortEnter;
 import static cn.net.cyberway.utils.TableLayoutUtils.showOpenDoorResultDialog;
+import static cn.net.cyberway.utils.TableLayoutUtils.showReportHealthyDialog;
 import static com.user.Utils.TokenUtils.clearUserCache;
 
 
@@ -298,7 +302,7 @@ public class MainActivity extends BaseFragmentActivity implements View.OnClickLi
                 String doorid = intent.getStringExtra("shortcut");
                 String qrcode = intent.getStringExtra("qrcode");
                 if (!TextUtils.isEmpty(qrcode)) {
-                    openModel.openDoor(2, qrcode, true, MainActivity.this);
+                    openDoor(qrcode);
                 }
                 if (!TextUtils.isEmpty(doorid)) {
                     openDoor(doorid);
@@ -359,6 +363,36 @@ public class MainActivity extends BaseFragmentActivity implements View.OnClickLi
     }
 
     public void openDoor(String door_id) {
+        NewUserModel newUserMode = new NewUserModel(MainActivity.this);
+        newUserMode.getReportDate(1100,"",door_id,"",true, new NewHttpResponse() {
+            @Override
+            public void OnHttpResponse(int what, String result) {
+                if (TextUtils.isEmpty(result)) {
+                    qrCodeDoorOpern(door_id);
+                } else {
+                    try {
+                        HomeHealthReportEntity homeHealthReportEntity = GsonUtils.gsonToBean(result, HomeHealthReportEntity.class);
+                        if (homeHealthReportEntity.getCode() == 0) {
+                            HomeHealthReportEntity.ContentBean contentBean = homeHealthReportEntity.getContent();
+                            String is_report = contentBean.getIs_report();
+                            //0表示未录入，1表示已经录入
+                            if ("1".equals(is_report)) {
+                                qrCodeDoorOpern(door_id);
+                            } else {
+                                showReportHealthyDialog(MainActivity.this, contentBean.getImg(), contentBean.getUrl());
+                            }
+                        } else {
+                            qrCodeDoorOpern(door_id);
+                        }
+                    } catch (Exception e) {
+                        qrCodeDoorOpern(door_id);
+                    }
+                }
+            }
+        });
+    }
+
+    private void qrCodeDoorOpern(String door_id) {
         openModel.openDoor(2, door_id, true, MainActivity.this);
     }
 
@@ -849,7 +883,32 @@ public class MainActivity extends BaseFragmentActivity implements View.OnClickLi
                 intent.putExtra(RoomActivity.EXTRA_USER_ID, mUserName);
                 startActivity(intent);
                 break;
+            case UserMessageConstant.BLUETOOTH_REPORT_HEALTHY:
+                Bundle reportBundle = message.getData();
+                String img = reportBundle.getString("img");
+                String url = reportBundle.getString("url");
+                showReportNoticeDialog(img,url);
+                break;
         }
+    }
+
+    private ShowReportHealthyDialog showReportHealthyDialog;
+    private void showReportNoticeDialog(String img, String url) {
+        if (null == showReportHealthyDialog) {
+            showReportHealthyDialog = new ShowReportHealthyDialog(this, R.style.opendoor_dialog_theme);
+        }
+        if (showReportHealthyDialog.isShowing()) {
+            showReportHealthyDialog.dismiss();
+        }
+        showReportHealthyDialog.show();
+        GlideImageLoader.loadImageDisplay(this, img, showReportHealthyDialog.iv_report_healthy);
+        showReportHealthyDialog.iv_report_healthy.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                LinkParseUtil.parse(MainActivity.this, url, "");
+                showReportHealthyDialog.dismiss();
+            }
+        });
     }
 
     public void uploadPageStayTime(long startTime, long leaveTime, String functionSectionId) {

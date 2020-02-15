@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<resources>
+    <string name="community_circle">邻里圈</string>
+    <string name="community_dynamics">新动态</string>
+    <string name="community_dynamics_notice">动态提醒</string>
+    <string name="community_dynamics_details">动态详情</string>
+    <string name="community_dynamics_tipsoff">举报</string>
+    <string name="community_dynamics_tipsoff_type">请选择举报类型</string>
+    <string name="community_publish">发布</string>
+    <string name="community_like">点赞</string>
+    <string name="community_comment">评论</string>
+    <string name="community_hint_notice">和邻居们说点什么…</string>
+    <string name="community_empty_notice">快来当第一个说话的人吧～</string>
+    <string name="community_empty_publish">发布动态</string>
+</resources>

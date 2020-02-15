@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="horizontal">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        android:background="@drawable/dynamics_topsoff_bg"
+        android:orientation="vertical">
+
+
+        <TextView
+            android:id="@+id/tv_dynamics_tipoffs"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:gravity="center"
+            android:text="@string/community_dynamics_tipsoff_type"
+            android:textColor="@color/color_25282e"
+            android:textSize="15sp" />
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/rv_tipoffs_type"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="10dp"
+            android:background="@color/color_ebedf0" />
+
+        <TextView
+            android:id="@+id/tv_dynamics_cancel"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:gravity="center"
+            android:text="@string/message_cancel"
+            android:textColor="@color/color_25282e"
+            android:textSize="15sp" />
+    </LinearLayout>
+
+</LinearLayout>
