@@ -19,6 +19,7 @@ import com.BeeFramework.AppConst;
 import com.BeeFramework.Utils.ToastUtil;
 import com.BeeFramework.model.NewHttpResponse;
 import com.external.eventbus.EventBus;
+import com.google.android.exoplayer2.C;
 import com.intelspace.library.EdenApi;
 import com.intelspace.library.ErrorConstants;
 import com.intelspace.library.api.OnConnectCallback;
@@ -175,9 +176,9 @@ public class LekaiService extends Service {
         }
     }
 
-    private void getHealthData(String deviceCipherId) {
+    private void getHealthData(String cipherId) {
         NewUserModel newUserModel = new NewUserModel(this);
-        newUserModel.getReportDate(1100,"","",deviceCipherId, false, new NewHttpResponse() {
+        newUserModel.getReportDate(1100, "", "", cipherId, false, new NewHttpResponse() {
             @Override
             public void OnHttpResponse(int what, String result) {
                 if (TextUtils.isEmpty(result)) {
@@ -203,24 +204,29 @@ public class LekaiService extends Service {
 
     private CountDownTimer countDownTimer;
 
-    private void startScannerReport(String deviceCipherId) {
-        if (countDownTimer != null) {
-            countDownTimer.cancel();
+    private void startScannerReport(String cipherId) {
+        if (!cipherId.equals(deviceCipherId)){//扫描的设备id和上次开门成功是否一致
+            if (null!=countDownTimer) {
+                countDownTimer.cancel();
+                countDownTimer = null;
+            }
         }
-        countDownTimer = new CountDownTimer(180000, 20000) {
-            @Override
-            public void onTick(long millisUntilFinished) {
-                dialogShow = 1; ///重新继续执行了一次
-                getHealthData(deviceCipherId);
-            }
+        if (null ==countDownTimer ) {
+            countDownTimer = new CountDownTimer(180000, 20000) {
+                @Override
+                public void onTick(long millisUntilFinished) {
+                    dialogShow = 1; ///重新继续执行了一次
+                    getHealthData(cipherId);
+                }
 
-            @Override
-            public void onFinish() {
-                dialogShow = 1; ///重新继续执行了一次
-                getHealthData(deviceCipherId);
-            }
-        };
-        countDownTimer.start();
+                @Override
+                public void onFinish() {
+                    dialogShow = 1; ///重新继续执行了一次
+                    getHealthData(cipherId);
+                }
+            };
+            countDownTimer.start();
+        }
     }
 
 

@@ -35,7 +35,6 @@ import com.audio.activity.RoomActivity;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.RequestOptions;
-import com.door.activity.IntelligenceDoorActivity;
 import com.door.activity.NoRightDoorActivity;
 import com.door.entity.OpenDoorResultEntity;
 import com.door.model.NewDoorModel;
@@ -302,10 +301,10 @@ public class MainActivity extends BaseFragmentActivity implements View.OnClickLi
                 String doorid = intent.getStringExtra("shortcut");
                 String qrcode = intent.getStringExtra("qrcode");
                 if (!TextUtils.isEmpty(qrcode)) {
-                    openDoor(qrcode);
+                    openDoor(1, qrcode);
                 }
                 if (!TextUtils.isEmpty(doorid)) {
-                    openDoor(doorid);
+                    openDoor(1, doorid);
                 }
             }
         }
@@ -314,7 +313,7 @@ public class MainActivity extends BaseFragmentActivity implements View.OnClickLi
     private void jpushJumpPage(Intent intent) {
         String doorId = intent.getStringExtra("shortcut");
         if (!TextUtils.isEmpty(doorId)) {//快捷开门的
-            openDoor(doorId);
+            openDoor(0, doorId);
         }
         String linkURl = intent.getStringExtra(JUMPOTHERURL);//通知栏推送的url
         Bundle bundle = intent.getExtras();
@@ -362,9 +361,13 @@ public class MainActivity extends BaseFragmentActivity implements View.OnClickLi
         jpushJumpPage(intent);
     }
 
-    public void openDoor(String door_id) {
+    public void openDoor(int type, String door_id) {
+        String community_uuid = "";
+        if (type == 0) {
+            community_uuid = shared.getString(UserAppConst.Colour_login_community_uuid, "");
+        }
         NewUserModel newUserMode = new NewUserModel(MainActivity.this);
-        newUserMode.getReportDate(1100,"",door_id,"",true, new NewHttpResponse() {
+        newUserMode.getReportDate(1100, community_uuid, door_id, "", true, new NewHttpResponse() {
             @Override
             public void OnHttpResponse(int what, String result) {
                 if (TextUtils.isEmpty(result)) {
@@ -887,12 +890,13 @@ public class MainActivity extends BaseFragmentActivity implements View.OnClickLi
                 Bundle reportBundle = message.getData();
                 String img = reportBundle.getString("img");
                 String url = reportBundle.getString("url");
-                showReportNoticeDialog(img,url);
+                showReportNoticeDialog(img, url);
                 break;
         }
     }
 
     private ShowReportHealthyDialog showReportHealthyDialog;
+
     private void showReportNoticeDialog(String img, String url) {
         if (null == showReportHealthyDialog) {
             showReportHealthyDialog = new ShowReportHealthyDialog(this, R.style.opendoor_dialog_theme);
