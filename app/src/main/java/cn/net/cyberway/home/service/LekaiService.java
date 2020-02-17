@@ -19,7 +19,6 @@ import com.BeeFramework.AppConst;
 import com.BeeFramework.Utils.ToastUtil;
 import com.BeeFramework.model.NewHttpResponse;
 import com.external.eventbus.EventBus;
-import com.google.android.exoplayer2.C;
 import com.intelspace.library.EdenApi;
 import com.intelspace.library.ErrorConstants;
 import com.intelspace.library.api.OnConnectCallback;
@@ -126,6 +125,7 @@ public class LekaiService extends Service {
         // 手机蓝牙状态的监听
         mEdenApi.setOnBluetoothStateCallback((i, s) -> {
             try {
+                scannerDeviceCipherId = "";
                 if (i == BluetoothAdapter.STATE_ON) {
                     if (null != mBluetoothStateCallback) {
                         mBluetoothStateCallback.onBluetoothStateOn();
@@ -203,15 +203,18 @@ public class LekaiService extends Service {
     }
 
     private CountDownTimer countDownTimer;
+    private  String  scannerDeviceCipherId;
 
     private void startScannerReport(String cipherId) {
-        if (!cipherId.equals(deviceCipherId)){//扫描的设备id和上次开门成功是否一致
-            if (null!=countDownTimer) {
+        if (!cipherId.equals(scannerDeviceCipherId)) {//扫描的设备id和上次开门成功是否一致
+            scannerDeviceCipherId=cipherId;
+            is_report = "";
+            if (null != countDownTimer) {
                 countDownTimer.cancel();
                 countDownTimer = null;
             }
         }
-        if (null ==countDownTimer ) {
+        if (null == countDownTimer) {
             countDownTimer = new CountDownTimer(180000, 20000) {
                 @Override
                 public void onTick(long millisUntilFinished) {
