@@ -18,7 +18,6 @@ import com.BeeFramework.Utils.ToastUtil;
 import com.BeeFramework.activity.BaseActivity;
 import com.BeeFramework.model.NewHttpResponse;
 import com.BeeFramework.view.ClearEditText;
-import com.customerInfo.protocol.RealNameTokenEntity;
 import com.external.eventbus.EventBus;
 import com.nohttp.utils.CashierInputFilter;
 import com.nohttp.utils.GlideImageLoader;
@@ -28,22 +27,16 @@ import com.point.entity.PointTransactionTokenEntity;
 import com.point.model.PointModel;
 import com.point.password.PopEnterPassword;
 import com.point.password.PopInputCodeView;
-import com.tencent.authsdk.AuthConfig;
-import com.tencent.authsdk.AuthSDKApi;
-import com.tencent.authsdk.IDCardInfo;
-import com.tencent.authsdk.callback.IdentityCallback;
+import com.realaudit.activity.RealCommonSubmitActivity;
 import com.user.UserAppConst;
 import com.user.UserMessageConstant;
 import com.user.model.NewUserModel;
-
-import org.json.JSONObject;
 
 import cn.net.cyberway.R;
 
 import static com.user.UserMessageConstant.POINT_GET_CODE;
 import static com.user.UserMessageConstant.POINT_INPUT_CODE;
 import static com.user.UserMessageConstant.POINT_INPUT_PAYPAWD;
-import static com.user.UserMessageConstant.POINT_SET_PAYPAWD;
 import static com.user.UserMessageConstant.POINT_SHOW_CODE;
 
 /***
@@ -81,10 +74,8 @@ public class GivenPointAmountActivity extends BaseActivity implements View.OnCli
     private int last_time; //剩余次数
     private float last_amount;//剩余金额
     private float balanceAmount = 0.01f;//账户余额
-    private String realName;//用户实名的
     private int giveBalance;//赠送的金额(单位分)
     private String loginMobile;
-    private String biz_token;
     private PopInputCodeView popInputCodeView;
 
     @Override
@@ -175,11 +166,7 @@ public class GivenPointAmountActivity extends BaseActivity implements View.OnCli
             case UserMessageConstant.POINT_CONTINUE_GIVEN:
                 finish();
                 break;
-            case POINT_SET_PAYPAWD: //设置支付密码成功 直接拿密码进行支付
-
-                break;
             case POINT_INPUT_PAYPAWD://密码框输入密码
-
                 String password = message.obj.toString();
                 pointModel.transferTransaction(4, giveBalance, password, token, order_no, dest_account, pano,
                         ed_given_remark.getText().toString().trim(), GivenPointAmountActivity.this);
@@ -199,6 +186,15 @@ public class GivenPointAmountActivity extends BaseActivity implements View.OnCli
                     popInputCodeView.dismiss();
                 }
                 pointModel.pointCheckCode(8, loginMobile, code, GivenPointAmountActivity.this);
+                break;
+            case UserMessageConstant.REAL_SUCCESS_STATE:
+                if ("3".equals(state)) {
+                    state = "2";
+                    Intent pawd_intent = new Intent(GivenPointAmountActivity.this, ChangePawdTwoStepActivity.class);
+                    startActivity(pawd_intent);
+                } else {
+                    showPayDialog();
+                }
                 break;
         }
     }
@@ -279,7 +275,8 @@ public class GivenPointAmountActivity extends BaseActivity implements View.OnCli
                             break;
                         case "3"://未实名未设置支付密码
                         case "4"://未实名已设置支付密码
-                            newUserModel.getRealNameToken(5, this, true);
+                            Intent realIntent=new Intent(GivenPointAmountActivity.this, RealCommonSubmitActivity.class);
+                            startActivity(realIntent);
                             break;
                         default://1已实名已设置支付密码
                             if ("1".equals(dev_change)) {
@@ -301,47 +298,6 @@ public class GivenPointAmountActivity extends BaseActivity implements View.OnCli
                 intent.putExtra(GIVENMOBILE, givenMobile);
                 intent.putExtra(GIVENAMOUNT, giveAmount);
                 startActivityForResult(intent, 2000);
-                break;
-            case 5:
-                if (!TextUtils.isEmpty(result)) {
-                    try {
-                        RealNameTokenEntity entity = cn.csh.colourful.life.utils.GsonUtils.gsonToBean(result, RealNameTokenEntity.class);
-                        RealNameTokenEntity.ContentBean bean = entity.getContent();
-                        biz_token=bean.getBizToken();
-                        AuthConfig.Builder configBuilder = new AuthConfig.Builder(biz_token, R.class.getPackage().getName());
-                        AuthSDKApi.startMainPage(this, configBuilder.build(), mListener);
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-                }
-                break;
-            case 6:
-                if (!TextUtils.isEmpty(result)) {
-                    try {
-                        JSONObject jsonObject = new JSONObject(result);
-                        String code = jsonObject.getString("code");
-                        if ("0".equals(code)) {
-                            String content = jsonObject.getString("content");
-                            if ("1".equals(content)) {
-                                ToastUtil.toastShow(this, "认证成功");
-                                editor.putString(UserAppConst.COLOUR_AUTH_REAL_NAME + shared.getInt(UserAppConst.Colour_User_id, 0), realName).commit();
-                                newUserModel.finishTask(10, "2", "task_web", this);//实名认证任务s
-                                if ("3".equals(state)) {
-                                    state = "2";
-                                    Intent pawd_intent = new Intent(GivenPointAmountActivity.this, ChangePawdTwoStepActivity.class);
-                                    startActivity(pawd_intent);
-                                } else {
-                                    showPayDialog();
-                                }
-                            }
-                        } else {
-                            String noticeMsg = jsonObject.getString("message");
-                            ToastUtil.toastShow(this, noticeMsg);
-                        }
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-                }
                 break;
             case 7://短信验证码发送成功
                 if (null != popInputCodeView) {
@@ -371,18 +327,4 @@ public class GivenPointAmountActivity extends BaseActivity implements View.OnCli
         // 显示窗口
         popEnterPassword.show();
     }
-
-    /**
-     * 监听实名认证返回
-     */
-    private IdentityCallback mListener = data -> {
-        boolean identityStatus = data.getBooleanExtra(AuthSDKApi.EXTRA_IDENTITY_STATUS, false);
-        if (identityStatus) {//identityStatus true 已实名
-            IDCardInfo idCardInfo = data.getExtras().getParcelable(AuthSDKApi.EXTRA_IDCARD_INFO);
-            if (idCardInfo != null) {//身份证信息   idCardInfo.getIDcard();//身份证号码
-                realName = idCardInfo.getName();//姓名
-                newUserModel.submitRealName(6, biz_token, this);//提交实名认证
-            }
-        }
-    };
 }

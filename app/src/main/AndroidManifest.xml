@@ -9,7 +9,7 @@
         android:configChanges="locale"
         android:hardwareAccelerated="true"
         android:icon="@drawable/icon"
-        android:label="@string/app_name"
+        android:label="@string/app_name_test"
         android:largeHeap="true"
         android:resizeableActivity="false"
         android:screenOrientation="portrait"
@@ -829,9 +829,28 @@
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:launchMode="singleTask"
             android:screenOrientation="portrait"
-            android:theme="@style/shareDialog" />
+            android:theme="@style/activityTheme" />
 
         <!--实名认证信息修改-->
+
+        <!--社区邻里-->
+        <activity
+            android:name="com.community.activity.DynamicNoticeActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name="com.community.activity.CommunityMessageListActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name="com.community.activity.DynamicsDetailsActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name="com.community.activity.PublishDynamicsActivity"
+            android:screenOrientation="portrait" />
+
+        <!--社区邻里-->
+
+
+
 
         <!--极光推送-->
         <activity
@@ -865,6 +884,7 @@
 
         <meta-data
             android:name="com.baidu.lbsapi.API_KEY"
+            tools:replace="android:value"
             android:value="B0433f7d882de0c20433e36fabe2269c" />
 
 

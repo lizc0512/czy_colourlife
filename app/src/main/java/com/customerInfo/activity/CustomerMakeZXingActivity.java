@@ -23,6 +23,7 @@ import com.BeeFramework.Utils.Utils;
 import com.BeeFramework.activity.BaseActivity;
 import com.BeeFramework.model.NewHttpResponse;
 import com.BeeFramework.view.CircleImageView;
+import com.BeeFramework.view.Util;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.bumptech.glide.request.target.ImageViewTarget;
@@ -94,7 +95,7 @@ public class CustomerMakeZXingActivity extends BaseActivity implements NewHttpRe
         }
         tvCommunity.setText(mShared.getString(UserAppConst.Colour_login_community_name, ""));
         String headImgUrl = mShared.getString(UserAppConst.Colour_head_img, "");
-        ImageLoader.getInstance().displayImage(headImgUrl, imgAvatar, GlideImageLoader.optionsImage );
+        ImageLoader.getInstance().displayImage(headImgUrl, imgAvatar, GlideImageLoader.optionsImage);
     }
 
     private void initXView() {
@@ -125,58 +126,33 @@ public class CustomerMakeZXingActivity extends BaseActivity implements NewHttpRe
         userTopViewTitle.setText(getResources().getString(R.string.title_my_qrcode));
     }
 
-    boolean success = false;
-
     public void initQRcode(final String url) {
-        final String filePath = getFileRoot(CustomerMakeZXingActivity.this) + File.separator
-                + "qr_" + System.currentTimeMillis() + ".jpg";
         String headImgUrl = shared.getString(UserAppConst.Colour_head_img, "");
+        int size = Util.DensityUtil.dip2px(CustomerMakeZXingActivity.this, 200);
+        Bitmap qrBitMap = QRCodeUtil.generateBitmap(url, size,size);
+        if (null == qrBitMap||TextUtils.isEmpty(headImgUrl)) {
+            ivQrCode.setImageResource(R.drawable.colourlife_download);
+        } else {
+            Glide.with(CustomerMakeZXingActivity.this).load(headImgUrl).apply(new RequestOptions().placeholder(R.drawable.colourlife_download).error(R.drawable.colourlife_download))
+                    .into(new ImageViewTarget<Drawable>(ivQrCode) {
 
-        Glide.with(CustomerMakeZXingActivity.this).load(headImgUrl).apply(new RequestOptions().placeholder(R.drawable.logo3x).error(R.drawable.logo3x))
-                .into(new ImageViewTarget<Drawable>(ivQrCode) {
-
-                    @Override
-                    protected void setResource(@Nullable Drawable resource) {
-                        try {
-                            BitmapDrawable bitmapDrawable = (BitmapDrawable) resource;
-                            Bitmap bitmap = bitmapDrawable.getBitmap();
-                            success = QRCodeUtil.createQRImage(url,
-                                    Utils.dip2px(CustomerMakeZXingActivity.this, 250),
-                                    Utils.dip2px(CustomerMakeZXingActivity.this, 250),
-                                    bitmap, filePath
-                            );
-                        } catch (Exception e) {
-                            e.printStackTrace();
-                        } finally {
-                            if (!success) {
-                                try {
-                                    QRCodeUtil.createQRImage(url,
-                                            Utils.dip2px(CustomerMakeZXingActivity.this, 250),
-                                            Utils.dip2px(CustomerMakeZXingActivity.this, 250),
-                                            BitmapFactory.decodeResource(getResources(), R.drawable.logo3x), filePath);
-                                } catch (Exception e) {
-                                    e.printStackTrace();
+                        @Override
+                        protected void setResource(@Nullable Drawable resource) {
+                            try {
+                                BitmapDrawable bitmapDrawable = (BitmapDrawable) resource;
+                                Bitmap headBitmap = bitmapDrawable.getBitmap();
+                                if (headBitmap != null) {
+                                    Bitmap showQrBitmap = QRCodeUtil.addLogo(qrBitMap, headBitmap);
+                                    ivQrCode.setImageBitmap(showQrBitmap);
+                                } else {
+                                    ivQrCode.setImageBitmap(qrBitMap);
                                 }
+                            } catch (Exception e) {
+                                e.printStackTrace();
                             }
-                            ivQrCode.setImageBitmap(BitmapFactory.decodeFile(filePath));
                         }
-                    }
-                });
-    }
-
-    private String getFileRoot(Context context) {
-        if (Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED)) {
-            File external = null;
-            if (Build.VERSION.SDK_INT >= 29) {
-                external = context.getExternalFilesDir(Environment.DIRECTORY_PICTURES);
-            } else {
-                external = context.getExternalFilesDir(null);
-            }
-            if (external != null) {
-                return external.getAbsolutePath();
-            }
+                    });
         }
-        return context.getFilesDir().getAbsolutePath();
     }
 
 

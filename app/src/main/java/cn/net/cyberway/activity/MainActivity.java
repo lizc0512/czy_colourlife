@@ -5,7 +5,6 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
@@ -35,13 +34,16 @@ import com.audio.activity.RoomActivity;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.RequestOptions;
+import com.community.entity.CommunityDynamicRemindEntity;
+import com.community.fragment.CommunityDynamicsFragment;
+import com.community.model.CommunityDynamicsModel;
 import com.door.activity.NoRightDoorActivity;
 import com.door.entity.OpenDoorResultEntity;
 import com.door.model.NewDoorModel;
 import com.door.view.ShowOpenDoorDialog;
 import com.door.view.ShowReportHealthyDialog;
 import com.external.eventbus.EventBus;
-import com.feed.FeedConstant;
+import com.im.helper.CacheApplyRecorderHelper;
 import com.im.model.IMUploadPhoneModel;
 import com.jpush.Constant;
 import com.nohttp.utils.GlideImageLoader;
@@ -74,9 +76,7 @@ import java.util.Set;
 import cn.jpush.android.api.JPushInterface;
 import cn.net.cyberway.R;
 import cn.net.cyberway.fagment.BenefitFragment;
-import cn.net.cyberway.fagment.InstantMessageFragment;
 import cn.net.cyberway.fagment.ProfileFragment;
-import cn.net.cyberway.home.entity.HomeHealthReportEntity;
 import cn.net.cyberway.home.entity.PushNotificationEntity;
 import cn.net.cyberway.home.fragment.MainHomeFragmentNew;
 import cn.net.cyberway.home.fragment.NologinHomeFragment;
@@ -98,7 +98,8 @@ import static cn.net.cyberway.utils.TableLayoutUtils.addTVSeletor;
 import static cn.net.cyberway.utils.TableLayoutUtils.jumpLoginPage;
 import static cn.net.cyberway.utils.TableLayoutUtils.shortEnter;
 import static cn.net.cyberway.utils.TableLayoutUtils.showOpenDoorResultDialog;
-import static cn.net.cyberway.utils.TableLayoutUtils.showReportHealthyDialog;
+import static com.community.fragment.CommunityDynamicsFragment.UPDATE_DYNAMIC_REMINDCOUNT;
+import static com.user.UserAppConst.COLOUR_DYNAMICS_NOTICE_NUMBER;
 import static com.user.Utils.TokenUtils.clearUserCache;
 
 
@@ -115,7 +116,7 @@ public class MainActivity extends BaseFragmentActivity implements View.OnClickLi
     public static final String JUMPOTHERURL = "jumpotherurl";
     private MainHomeFragmentNew mHomeFragment;
     private NologinHomeFragment nologinHomeFragment;
-    private InstantMessageFragment instantMessageFragment;//消息
+    private CommunityDynamicsFragment communityDynamicsFragment;//社区邻里
     private BenefitFragment benefitFragment;
     private ProfileFragment profileFragment;
     private LinearLayout mHome;
@@ -130,16 +131,14 @@ public class MainActivity extends BaseFragmentActivity implements View.OnClickLi
     private TokenModel mTokenModel;
     private UpdateVerSion mUpdateVerSion;
     private boolean mIsExit = false;
-    private SharedPreferences mShared;
-    private SharedPreferences.Editor mEditor;
     private int userId;//用户的ID
     // app内通知
     private LocalBroadcastManager mLocalBroadcastManager;
     private BroadcastReceiver mReceiver;
     private String mPhoneStr;
     private PopupModel popupModel;
-    public static NotificationManager myManager = null;
-    public static final int NOTIFICATION_ID_1 = 1;
+    public NotificationManager myManager = null;
+    public final int NOTIFICATION_ID_1 = 1;
     private boolean slienceLogin = true;
     public int choiceType = 0;  //判断是否在我的页面
     private ImageView home_btn;
@@ -166,8 +165,6 @@ public class MainActivity extends BaseFragmentActivity implements View.OnClickLi
         myManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
         ScreenManager.getScreenManager().pushActivity(this);
         registerNotice();
-        mShared = getSharedPreferences(UserAppConst.USERINFO, 0);
-        mEditor = mShared.edit();
         mUpdateVerSion = new UpdateVerSion();
         openModel = new NewDoorModel(this);
         Intent intentMessage = getIntent();
@@ -175,22 +172,25 @@ public class MainActivity extends BaseFragmentActivity implements View.OnClickLi
             jpushJumpPage(intentMessage);
         }
         initView();
-        userId = mShared.getInt(UserAppConst.Colour_User_id, 0);
-        mPhoneStr = mShared.getString(UserAppConst.Colour_login_mobile, "");
+        userId = shared.getInt(UserAppConst.Colour_User_id, 0);
+        mPhoneStr = shared.getString(UserAppConst.Colour_login_mobile, "");
         themeModel = new ThemeModel(this);
-        String themeCache = mShared.getString(UserAppConst.THEME, "");
+        String themeCache = shared.getString(UserAppConst.THEME, "");
         themeAdapter(themeCache);
         fragmentManager = getSupportFragmentManager();
         onTabSelected(FLAG_TAB_ONE);
-        if (mShared.getBoolean(UserAppConst.IS_CHECK_UPDATE, false)) {//为TURE，说明第二次进入才检测更新
+        if (shared.getBoolean(UserAppConst.IS_CHECK_UPDATE, false)) {//为TURE，说明第二次进入才检测更新
             mUpdateVerSion.getNewVerSion(MainActivity.this, true, false);
         }
-        mEditor.putInt(UpdateVerSion.SAVEVERSIONCODE, UpdateVerSion.getVersionCode(MainActivity.this));//保存版本号
-        mEditor.putBoolean(UserAppConst.IS_CHECK_UPDATE, true);
-        mEditor.apply();
-        shortEnter(MainActivity.this, getIntent(), mShared);
-        int totalUnRead = HuxinSdkManager.instance().unreadBuddyAndCommMessage();
-        showUnReadMsg(totalUnRead);
+        editor.putInt(UpdateVerSion.SAVEVERSIONCODE, UpdateVerSion.getVersionCode(MainActivity.this));//保存版本号
+        editor.putBoolean(UserAppConst.IS_CHECK_UPDATE, true);
+        editor.apply();
+        shortEnter(MainActivity.this, getIntent(), shared);
+        boolean isLogin = shared.getBoolean(UserAppConst.IS_LOGIN, false);
+        if (isLogin) {
+            int unReadNoticeCount = shared.getInt(COLOUR_DYNAMICS_NOTICE_NUMBER, 0);
+            showUnReadMsg(unReadNoticeCount);
+        }
         HuxinSdkManager.instance().getStackAct().addActivity(this);
         newUserModel = new NewUserModel(MainActivity.this);
         tintManager.setStatusBarTintColor(Color.TRANSPARENT);
@@ -242,22 +242,22 @@ public class MainActivity extends BaseFragmentActivity implements View.OnClickLi
 
     private QBadgeView badgeView;
 
-    public void showUnReadMsg(int totalUnRead) {
-        if (mShared.getBoolean(UserAppConst.IS_LOGIN, false)) {
-            if (null == badgeView) {
-                badgeView = new QBadgeView(MainActivity.this);
-                badgeView.bindTarget(mDiscovery);
-                badgeView.setBadgeGravity(Gravity.TOP | Gravity.END);
-                badgeView.setGravityOffset(12f, -2.5f, true);
-                badgeView.setBadgeTextSize(10f, true);
-                badgeView.setBadgeBackgroundColor(ContextCompat.getColor(MainActivity.this, R.color.hx_color_red_tag));
-                badgeView.setShowShadow(false);
-            }
-            badgeView.setBadgeNumber(totalUnRead);
+    public void showUnReadMsg(int unReadNoticeMsg) {
+        int totalUnReadMsgCount = HuxinSdkManager.instance().unreadBuddyAndCommMessage();
+        int newFriendApplyCount = CacheApplyRecorderHelper.instance().toQueryApplyRecordSize(MainActivity.this, "0");
+        int totalCount = totalUnReadMsgCount + newFriendApplyCount + unReadNoticeMsg;
+        if (null == badgeView) {
+            badgeView = new QBadgeView(MainActivity.this);
+            badgeView.bindTarget(linli_btn);
+            badgeView.setBadgeGravity(Gravity.TOP | Gravity.END);
+            badgeView.setBadgeTextSize(10f, true);
+            badgeView.setBadgeBackgroundColor(ContextCompat.getColor(MainActivity.this, R.color.hx_color_red_tag));
+            badgeView.setShowShadow(false);
+        }
+        if (totalCount > 0) {
+            badgeView.setBadgeText("");
         } else {
-            if (null != badgeView) {
-                badgeView.setBadgeNumber(0);
-            }
+            badgeView.hide(false);
         }
     }
 
@@ -301,10 +301,10 @@ public class MainActivity extends BaseFragmentActivity implements View.OnClickLi
                 String doorid = intent.getStringExtra("shortcut");
                 String qrcode = intent.getStringExtra("qrcode");
                 if (!TextUtils.isEmpty(qrcode)) {
-                    openDoor(1, qrcode);
+                    qrCodeDoorOpern(qrcode);
                 }
                 if (!TextUtils.isEmpty(doorid)) {
-                    openDoor(1, doorid);
+                    qrCodeDoorOpern(doorid);
                 }
             }
         }
@@ -313,7 +313,7 @@ public class MainActivity extends BaseFragmentActivity implements View.OnClickLi
     private void jpushJumpPage(Intent intent) {
         String doorId = intent.getStringExtra("shortcut");
         if (!TextUtils.isEmpty(doorId)) {//快捷开门的
-            openDoor(0, doorId);
+            qrCodeDoorOpern(doorId);
         }
         String linkURl = intent.getStringExtra(JUMPOTHERURL);//通知栏推送的url
         Bundle bundle = intent.getExtras();
@@ -357,45 +357,11 @@ public class MainActivity extends BaseFragmentActivity implements View.OnClickLi
     @Override
     protected void onNewIntent(Intent intent) {
         super.onNewIntent(intent);
-        shortEnter(MainActivity.this, intent, mShared);
+        shortEnter(MainActivity.this, intent, shared);
         jpushJumpPage(intent);
     }
 
-    public void openDoor(int type, String door_id) {
-        String community_uuid = "";
-        if (type == 0) {
-            community_uuid = shared.getString(UserAppConst.Colour_login_community_uuid, "");
-        }
-        NewUserModel newUserMode = new NewUserModel(MainActivity.this);
-        newUserMode.getReportDate(1100, community_uuid, door_id, "", true, new NewHttpResponse() {
-            @Override
-            public void OnHttpResponse(int what, String result) {
-                if (TextUtils.isEmpty(result)) {
-                    qrCodeDoorOpern(door_id);
-                } else {
-                    try {
-                        HomeHealthReportEntity homeHealthReportEntity = GsonUtils.gsonToBean(result, HomeHealthReportEntity.class);
-                        if (homeHealthReportEntity.getCode() == 0) {
-                            HomeHealthReportEntity.ContentBean contentBean = homeHealthReportEntity.getContent();
-                            String is_report = contentBean.getIs_report();
-                            //0表示未录入，1表示已经录入
-                            if ("1".equals(is_report)) {
-                                qrCodeDoorOpern(door_id);
-                            } else {
-                                showReportHealthyDialog(MainActivity.this, contentBean.getImg(), contentBean.getUrl());
-                            }
-                        } else {
-                            qrCodeDoorOpern(door_id);
-                        }
-                    } catch (Exception e) {
-                        qrCodeDoorOpern(door_id);
-                    }
-                }
-            }
-        });
-    }
-
-    private void qrCodeDoorOpern(String door_id) {
+    public void qrCodeDoorOpern(String door_id) {
         openModel.openDoor(2, door_id, true, MainActivity.this);
     }
 
@@ -403,7 +369,7 @@ public class MainActivity extends BaseFragmentActivity implements View.OnClickLi
      * APP从后台进入前台，进行账号验证和同步数据
      */
     public void backendBecomeActive() {
-        if (mShared.getBoolean(UserAppConst.IS_LOGIN, false)) { //未登录
+        if (shared.getBoolean(UserAppConst.IS_LOGIN, false)) { //未登录
             if (null == mTokenModel) {
                 mTokenModel = new TokenModel(MainActivity.this);
             }
@@ -468,11 +434,9 @@ public class MainActivity extends BaseFragmentActivity implements View.OnClickLi
      */
     public void clearUserData(String notice) {
         SobotApi.exitSobotChat(MainActivity.this);//退出智齿客服
-        showUnReadMsg(0);
         onTabSelected(FLAG_TAB_ONE);
         clearUserCache(MainActivity.this);
         myManager.cancel(NOTIFICATION_ID_1);
-        Constants.NOTIFICATION_BTN = false;
         JPushInterface.stopPush(getApplicationContext());
         JPushInterface.setAlias(getApplicationContext(), userId, "");
         JPushInterface.cleanTags(getApplicationContext(), userId);
@@ -489,14 +453,14 @@ public class MainActivity extends BaseFragmentActivity implements View.OnClickLi
         if (JPushInterface.isPushStopped(MainActivity.this)) {
             JPushInterface.resumePush(MainActivity.this);
         }
-        mPhoneStr = mShared.getString(UserAppConst.Colour_login_mobile, "");
-        String community_uuid = mShared.getString(UserAppConst.Colour_login_community_uuid, "03b98def-b5bd-400b-995f-a9af82be01da");
+        mPhoneStr = shared.getString(UserAppConst.Colour_login_mobile, "");
+        String community_uuid = shared.getString(UserAppConst.Colour_login_community_uuid, "03b98def-b5bd-400b-995f-a9af82be01da");
         Set<String> tags = new HashSet<>();
         if (community_uuid.contains("-")) {
             tags.add(community_uuid.replace("-", "_"));
         }
-        tags.add(mShared.getString(UserAppConst.Colour_User_uuid, "03b98def-b5bd-400b-995f-a9af82be01da"));
-        userId = mShared.getInt(UserAppConst.Colour_User_id, 0);
+        tags.add(shared.getString(UserAppConst.Colour_User_uuid, "03b98def-b5bd-400b-995f-a9af82be01da"));
+        userId = shared.getInt(UserAppConst.Colour_User_id, 0);
         JPushInterface.setAlias(getApplicationContext(), userId, mPhoneStr);
         JPushInterface.setTags(getApplicationContext(), userId, tags);
         JPushInterface.setMobileNumber(getApplicationContext(), userId, mPhoneStr);
@@ -528,8 +492,6 @@ public class MainActivity extends BaseFragmentActivity implements View.OnClickLi
                     ToastUtil.toastShow(MainActivity.this, "未知应用程序安装权限未开启");
                 }
             }
-        } else if (requestCode == 4000) {
-            intoPopup();
         }
     }
 
@@ -610,7 +572,7 @@ public class MainActivity extends BaseFragmentActivity implements View.OnClickLi
                 break;
             case R.id.main_tool_scan:
             case R.id.circle_scanner_image:
-                if (mShared.getBoolean(UserAppConst.IS_LOGIN, false)) {
+                if (shared.getBoolean(UserAppConst.IS_LOGIN, false)) {
                     Intent intent = new Intent(MainActivity.this, CaptureActivity.class);
                     intent.putExtra(CaptureActivity.QRCODE_SOURCE, "default");
                     startActivity(intent);
@@ -657,7 +619,7 @@ public class MainActivity extends BaseFragmentActivity implements View.OnClickLi
             choiceType = 0;
             transaction = fragmentManager.beginTransaction();
             hideFragments(transaction);
-            boolean isLogin = mShared.getBoolean(UserAppConst.IS_LOGIN, false);
+            boolean isLogin = shared.getBoolean(UserAppConst.IS_LOGIN, false);
             if (isLogin) {
                 if (mHomeFragment == null) {
                     mHomeFragment = new MainHomeFragmentNew();
@@ -683,7 +645,7 @@ public class MainActivity extends BaseFragmentActivity implements View.OnClickLi
             showPopupScreen();
             dismissBenefitDialog();
         } else if (flagTab == FLAG_TAB_TWO) { //彩惠人生
-            if (mShared.getBoolean(UserAppConst.IS_LOGIN, false)) {
+            if (shared.getBoolean(UserAppConst.IS_LOGIN, false)) {
                 choiceType = 1;
                 transaction = fragmentManager.beginTransaction();
                 hideFragments(transaction);
@@ -702,15 +664,15 @@ public class MainActivity extends BaseFragmentActivity implements View.OnClickLi
                 LinkParseUtil.parse(MainActivity.this, "", "");
             }
         } else if (flagTab == FLAG_TAB_THREE) {//邻里
-            if (mShared.getBoolean(UserAppConst.IS_LOGIN, false)) {
+            if (shared.getBoolean(UserAppConst.IS_LOGIN, false)) {
                 choiceType = 1;
                 transaction = fragmentManager.beginTransaction();
                 hideFragments(transaction);
-                if (instantMessageFragment == null) {
-                    instantMessageFragment = new InstantMessageFragment();
-                    transaction.add(R.id.main_fragment_container, instantMessageFragment);
+                if (communityDynamicsFragment == null) {
+                    communityDynamicsFragment = new CommunityDynamicsFragment();
+                    transaction.add(R.id.main_fragment_container, communityDynamicsFragment);
                 } else {
-                    transaction.show(instantMessageFragment);
+                    transaction.show(communityDynamicsFragment);
                 }
                 transaction.commitAllowingStateLoss();
                 mHome.setSelected(false);
@@ -722,7 +684,7 @@ public class MainActivity extends BaseFragmentActivity implements View.OnClickLi
             }
             dismissBenefitDialog();
         } else if (flagTab == FLAG_TAB_FOUR) {
-            if (mShared.getBoolean(UserAppConst.IS_LOGIN, false)) {
+            if (shared.getBoolean(UserAppConst.IS_LOGIN, false)) {
                 choiceType = 2;
                 transaction = fragmentManager.beginTransaction();
                 hideFragments(transaction);
@@ -754,8 +716,8 @@ public class MainActivity extends BaseFragmentActivity implements View.OnClickLi
         if (nologinHomeFragment != null) {
             transaction.hide(nologinHomeFragment);
         }
-        if (instantMessageFragment != null) {
-            transaction.hide(instantMessageFragment);
+        if (communityDynamicsFragment != null) {
+            transaction.hide(communityDynamicsFragment);
         }
         if (benefitFragment != null) {
             transaction.hide(benefitFragment);
@@ -772,7 +734,7 @@ public class MainActivity extends BaseFragmentActivity implements View.OnClickLi
     }
 
     private void checkMobileStatus() {
-        String mobile = mShared.getString(UserAppConst.Colour_login_mobile, "");
+        String mobile = shared.getString(UserAppConst.Colour_login_mobile, "");
         newUserModel.getCheckRegister(20, mobile, this);
         updateAccessToken();
     }
@@ -789,14 +751,14 @@ public class MainActivity extends BaseFragmentActivity implements View.OnClickLi
                 message.obj = getResources().getString(R.string.account_extrude_login);
                 EventBus.getDefault().post(message);
             } else {
-                boolean isLoin = mShared.getBoolean(UserAppConst.IS_LOGIN, false);
-                boolean userLogin = mShared.getBoolean(UserAppConst.Colour_user_login, false);
+                boolean isLoin = shared.getBoolean(UserAppConst.IS_LOGIN, false);
+                boolean userLogin = shared.getBoolean(UserAppConst.Colour_user_login, false);
                 if (isLoin) { //用户是登录状态
                     if (!userLogin) {  //如果用户是自己登录
                         checkMobileStatus();
                     } else { //改为用户静默登录
-                        mEditor.putBoolean(UserAppConst.Colour_user_login, false);
-                        mEditor.commit();
+                        editor.putBoolean(UserAppConst.Colour_user_login, false);
+                        editor.commit();
                     }
                 }
             }
@@ -818,38 +780,21 @@ public class MainActivity extends BaseFragmentActivity implements View.OnClickLi
             urlList.add(contentBean.getLink_url());
             descList.add(contentBean.getMsg_title());
         }
-        intoPopup();
-    }
-
-
-    public void intoPopup() {
-        try {
-            PopupScUtils.getInstance().jump(this, urlList, imageList, descList);
-        } catch (Exception e) {
-
-        }
+        PopupScUtils.getInstance().jump(this, urlList, imageList, descList);
     }
 
 
     public void onEvent(Object event) {
         Message message = (Message) event;
         switch (message.what) {
-            case FeedConstant.FEED_SHOW_INPUT:
-                mToolBar.setVisibility(View.GONE);
-                circle_scanner_image.setVisibility(View.GONE);
-                break;
-            case FeedConstant.FEED_CLOSE_INPUT:
-                mToolBar.setVisibility(View.VISIBLE);
-                circle_scanner_image.setVisibility(View.VISIBLE);
-                break;
             case UserMessageConstant.LOGOUT:
-                myManager.cancel(NOTIFICATION_ID_1);
                 onTabSelected(FLAG_TAB_ONE);
                 break;
             case UserMessageConstant.SIGN_IN_SUCCESS:
                 mToolBar.setVisibility(View.VISIBLE);
                 circle_scanner_image.setVisibility(View.VISIBLE);
                 onTabSelected(FLAG_TAB_ONE);
+                getNoticeUnReadCount();
                 getContactList();
                 break;
             case UserMessageConstant.CHANGE_COMMUNITY:
@@ -886,11 +831,8 @@ public class MainActivity extends BaseFragmentActivity implements View.OnClickLi
                 intent.putExtra(RoomActivity.EXTRA_USER_ID, mUserName);
                 startActivity(intent);
                 break;
-            case UserMessageConstant.BLUETOOTH_REPORT_HEALTHY:
-                Bundle reportBundle = message.getData();
-                String img = reportBundle.getString("img");
-                String url = reportBundle.getString("url");
-                showReportNoticeDialog(img, url);
+            case UPDATE_DYNAMIC_REMINDCOUNT:
+                getNoticeUnReadCount();
                 break;
         }
     }
@@ -937,12 +879,12 @@ public class MainActivity extends BaseFragmentActivity implements View.OnClickLi
     private boolean isPopupRequest = true;
 
     private void showPopupScreen() {
-        if (mShared.getBoolean(UserAppConst.IS_LOGIN, false) && isPopupRequest) {
+        if (shared.getBoolean(UserAppConst.IS_LOGIN, false) && isPopupRequest) {
             isPopupRequest = false;
             if (null == popupModel) {
                 popupModel = new PopupModel(this);
             }
-            userId = mShared.getInt(UserAppConst.Colour_User_id, 0);
+            userId = shared.getInt(UserAppConst.Colour_User_id, 0);
             popupModel.getNewHomePopupMsg(11, this);
         }
     }
@@ -953,6 +895,12 @@ public class MainActivity extends BaseFragmentActivity implements View.OnClickLi
     private void setLayoutPramas(View view, int value) {
         LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(Utils.getDeviceWith(this) / value, Utils.getDeviceWith(this) / value);
         view.setLayoutParams(layoutParams);
+    }
+
+    /*获取动态提醒数量*/
+    private void getNoticeUnReadCount() {
+        CommunityDynamicsModel communityDynamicsModel = new CommunityDynamicsModel(MainActivity.this);
+        communityDynamicsModel.getDynamicRemindCount(60, MainActivity.this);
     }
 
     /**
@@ -968,7 +916,7 @@ public class MainActivity extends BaseFragmentActivity implements View.OnClickLi
                 if (!TextUtils.isEmpty(result)) {
                     try {
                         themeEntity = GsonUtils.gsonToBean(result, ThemeEntity.class);
-                        long oldUpdateTime = Long.valueOf(mShared.getString(UserAppConst.THEMEUPDATETIME, "0"));
+                        long oldUpdateTime = Long.valueOf(shared.getString(UserAppConst.THEMEUPDATETIME, "0"));
                         long nowUpdateTime = themeEntity.getContent().getDefault_theme().getTabbar().getUpdated_at();
                         if (nowUpdateTime >= oldUpdateTime) {//当前接口为最新主题，使用该接口数据
                             themeAdapter(result);
@@ -978,10 +926,16 @@ public class MainActivity extends BaseFragmentActivity implements View.OnClickLi
                     }
                 }
                 break;
+            case 2:
+                if (!TextUtils.isEmpty(result)) {
+                    initDealDoorReault(result);
+                }
+                break;
             case 5:
                 if (!TextUtils.isEmpty(result)) {
-                    userInitImData(MainActivity.this, mShared);
+                    userInitImData(MainActivity.this, shared);
                     getContactList();
+                    getNoticeUnReadCount();
                     if (null == mTokenModel) {
                         mTokenModel = new TokenModel(MainActivity.this);
                     }
@@ -1012,7 +966,7 @@ public class MainActivity extends BaseFragmentActivity implements View.OnClickLi
                     if (isRegister == 0) {
                         clearUserData("");
                         ToastUtil.toastTime(getApplicationContext(), getResources().getString(R.string.use_newaccount__login), 5000);
-                        jumpLoginPage(MainActivity.this, mShared, 3000);
+                        jumpLoginPage(MainActivity.this, shared, 3000);
                     }
                 }
                 break;
@@ -1026,13 +980,18 @@ public class MainActivity extends BaseFragmentActivity implements View.OnClickLi
                     newUserModel.getUserInformation(5, false, this);
                 }
                 break;
-            case 2:
-                if (!TextUtils.isEmpty(result)) {
-                    initDealDoorReault(result);
-                }
-                break;
             case 50://刷新乐开token
                 LekaiHelper.startService(this, result);
+                break;
+            case 60://未读动态提醒数量
+                try {
+                    CommunityDynamicRemindEntity communityDynamicRemindEntity = GsonUtils.gsonToBean(result, CommunityDynamicRemindEntity.class);
+                    int unReadNoticeCount = communityDynamicRemindEntity.getContent().getCount();
+                    editor.putInt(COLOUR_DYNAMICS_NOTICE_NUMBER, unReadNoticeCount).apply();
+                    showUnReadMsg(unReadNoticeCount);
+                } catch (Exception e) {
+
+                }
                 break;
         }
     }
@@ -1158,5 +1117,4 @@ public class MainActivity extends BaseFragmentActivity implements View.OnClickLi
             }
         }
     }
-
 }

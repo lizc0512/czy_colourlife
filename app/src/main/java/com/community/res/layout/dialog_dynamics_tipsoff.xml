@@ -10,6 +10,19 @@
         android:layout_gravity="bottom"
         android:orientation="vertical">
 
+        <TextView
+            android:id="@+id/tv_dynamics_comment"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:gravity="center"
+            android:text="@string/community_comment"
+            android:textColor="@color/color_25282e"
+            android:textSize="15sp" />
+
+        <View
+            android:layout_width="match_parent"
+            android:background="@color/line_color"
+            android:layout_height="1px"/>
 
         <TextView
             android:id="@+id/tv_dynamics_tipoffs"
@@ -17,15 +30,6 @@
             android:layout_height="60dp"
             android:gravity="center"
             android:text="@string/community_dynamics_tipsoff"
-            android:textColor="@color/color_25282e"
-            android:textSize="15sp" />
-
-        <TextView
-            android:id="@+id/tv_dynamics_comment"
-            android:layout_width="match_parent"
-            android:layout_height="60dp"
-            android:gravity="center"
-            android:text="@string/community_comment"
             android:textColor="@color/color_25282e"
             android:textSize="15sp" />
 

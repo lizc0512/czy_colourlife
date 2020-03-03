@@ -144,6 +144,9 @@ public class RequestEncryptionUtils {
             case 15:
                 finalUrl=Constants.ACCOUNT_ADDRESS+urlString;//新彩钱包
                 break;
+            case 16:
+                finalUrl=Constants.NEIGHBOUR_ADDRESS+urlString;//比邻社区
+                break;
             default:
                 finalUrl = urlString;
         }
@@ -222,6 +225,9 @@ public class RequestEncryptionUtils {
                 break;
             case 16:
                 finalUrl= Constants.ACCOUNT_ADDRESS + urlString;  //新彩钱包
+                break;
+            case 17:
+                finalUrl=Constants.NEIGHBOUR_ADDRESS+urlString;//比邻社区
                 break;
             default:
                 finalUrl = urlString;

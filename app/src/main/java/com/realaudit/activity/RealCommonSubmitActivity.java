@@ -13,6 +13,7 @@ import com.tencent.authsdk.AuthConfig;
 import com.tencent.authsdk.AuthSDKApi;
 import com.tencent.authsdk.IDCardInfo;
 import com.tencent.authsdk.callback.IdentityCallback;
+import com.user.UserAppConst;
 import com.user.model.NewUserModel;
 
 import org.json.JSONObject;
@@ -20,7 +21,8 @@ import org.json.JSONObject;
 import cn.csh.colourful.life.utils.GsonUtils;
 import cn.net.cyberway.R;
 
-import static com.user.UserMessageConstant.REAL_CHANGE_STATE;
+import static com.user.UserMessageConstant.REAL_FAIL_STATE;
+import static com.user.UserMessageConstant.REAL_SUCCESS_STATE;
 
 /**
  * 文件名:通用的实名信息提交页面
@@ -30,14 +32,21 @@ import static com.user.UserMessageConstant.REAL_CHANGE_STATE;
  * 描述:
  **/
 public class RealCommonSubmitActivity extends BaseActivity implements NewHttpResponse {
+    public static final String SHOWFAILDIALOG = "showfaildialog";
 
-    private String  realToken;
+    private String realToken;
+    private String realName;
+    private int customer_id;//用户的id
+    private NewUserModel newUserModel;
+    private int showDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        NewUserModel newUserModel = new NewUserModel(RealCommonSubmitActivity.this);
-        newUserModel.getRealNameToken(1, this, true);
+        customer_id = shared.getInt(UserAppConst.Colour_User_id, 0);
+        showDialog = getIntent().getIntExtra(SHOWFAILDIALOG, 0);
+        newUserModel = new NewUserModel(RealCommonSubmitActivity.this);
+        newUserModel.getRealNameToken(1, this, false);
     }
 
     /**
@@ -56,14 +65,24 @@ public class RealCommonSubmitActivity extends BaseActivity implements NewHttpRes
         if (identityStatus) {//identityStatus true 已实名
             IDCardInfo idCardInfo = data.getExtras().getParcelable(AuthSDKApi.EXTRA_IDCARD_INFO);
             if (idCardInfo != null) {//身份证信息   idCardInfo.getIDcard();//身份证号码
-                NewUserModel newUserModel = new NewUserModel(RealCommonSubmitActivity.this);
-                newUserModel.submitRealName(2, realToken, this);//提交实名认证
+                realName = idCardInfo.getName();//姓名
+                newUserModel.submitRealName(2, realToken, "", "", this);//提交实名认证
             }
-        }else {
+        } else {
             finish();
         }
     };
 
+    private void authenticateFail(String errorMsg) {
+        if (showDialog == 0) {
+            ToastUtil.toastShow(this, errorMsg);
+        } else {
+            Message message = Message.obtain();
+            message.what = REAL_FAIL_STATE;
+            EventBus.getDefault().post(message);
+        }
+        finish();
+    }
 
     @Override
     public void OnHttpResponse(int what, String result) {
@@ -77,7 +96,10 @@ public class RealCommonSubmitActivity extends BaseActivity implements NewHttpRes
                         startAuthenticate(realToken);
                     } catch (Exception e) {
                         e.printStackTrace();
+                        authenticateFail("");
                     }
+                } else {
+                    authenticateFail("");
                 }
                 break;
             case 2://认证
@@ -88,20 +110,34 @@ public class RealCommonSubmitActivity extends BaseActivity implements NewHttpRes
                         if ("0".equals(code)) {
                             String content = jsonObject.getString("content");
                             if ("1".equals(content)) {
-                                Message message=Message.obtain();
-                                message.what=REAL_CHANGE_STATE;
-                                EventBus.getDefault().post(message);
-                                ToastUtil.toastShow(this, "认证成功");
-                                finish();
+                                editor.putString(UserAppConst.COLOUR_AUTH_REAL_NAME + customer_id, realName);
+                                editor.putString(UserAppConst.COLOUR_DYNAMICS_REAL_IDENTITY, "1");
+                                editor.apply();
+                                newUserModel.finishTask(3, "2", "task_native", this);//实名认证任务
                             }
                         } else {
-                            String message = jsonObject.getString("message");
-                            ToastUtil.toastShow(this, message);
+                            if (showDialog == 0) {
+                                String message = jsonObject.getString("message");
+                                authenticateFail(message);
+                            } else {
+                                authenticateFail("");
+                            }
                         }
                     } catch (Exception e) {
                         e.printStackTrace();
+                        authenticateFail("");
                     }
+                } else {
+                    authenticateFail("");
                 }
+                break;
+            case 3:
+                ToastUtil.toastShow(this, "认证成功");
+                Message message = Message.obtain();
+                message.what = REAL_SUCCESS_STATE;
+                message.obj = realName;
+                EventBus.getDefault().post(message);
+                finish();
                 break;
         }
     }

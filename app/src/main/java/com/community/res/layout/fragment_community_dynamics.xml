@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <View
+        android:id="@+id/community_tabbar_view"
+        android:layout_width="match_parent"
+        android:layout_height="30dp" />
+
+    <RelativeLayout
+        android:id="@+id/top_layout"
+        android:layout_width="match_parent"
+        android:layout_height="44dp"
+        android:background="@color/white"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:gravity="center"
+            android:text="@string/community_circle"
+            android:textColor="@color/color_25282e"
+            android:textSize="16sp" />
+
+        <ImageView
+            android:id="@+id/iv_unRead_message"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="15dp"
+            android:padding="5dp"
+            android:src="@drawable/community_dynamics_unread" />
+    </RelativeLayout>
+
+
+    <include layout="@layout/community_dynamics_empty" />
+
+    <android.support.v4.widget.SwipeRefreshLayout
+        android:id="@+id/dynamics_refresh_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <include layout="@layout/community_dynamics_data" />
+
+
+    </android.support.v4.widget.SwipeRefreshLayout>
+
+</LinearLayout>

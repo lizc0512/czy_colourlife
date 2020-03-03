@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/dynamics_empty_layout"
+    android:layout_width="match_parent"
+    android:visibility="gone"
+    android:layout_height="match_parent">
+
+
+    <ImageView
+        android:id="@+id/iv_empty_message"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="140dp"
+        android:src="@drawable/community_dynamics_empty"
+        android:layout_centerHorizontal="true"
+        />
+
+
+    <TextView
+        android:id="@+id/tv_empty_dynamics"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:text="@string/community_empty_notice"
+        android:layout_marginTop="50dp"
+        android:textColor="@color/color_bfc7cc"
+        android:textSize="14sp"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@id/iv_empty_message" />
+
+
+    <TextView
+        android:id="@+id/tv_send_dynamics"
+        android:layout_width="150dp"
+        android:layout_height="44dp"
+        android:gravity="center"
+        android:text="@string/community_empty_publish"
+        android:background="@drawable/dynamics_list_empty_btn"
+        android:layout_marginTop="35dp"
+        android:textColor="@color/white"
+        android:textSize="16sp"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@id/tv_empty_dynamics" />
+
+
+
+</RelativeLayout>

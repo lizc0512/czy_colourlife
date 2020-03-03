@@ -436,7 +436,9 @@ public class CreateGesturePasswordActivity extends BaseActivity implements
                 num--;
                 mHeaderText.setText(getResources().getString(R.string.lockpattern_error_input) + num + getResources().getString(R.string.lockpattern_remain_number));
                 if (num == 0) {//验证手势密码错误超过5次，强制退出登录
-                    editor.putString(UserAppConst.Colour_login_mobile + UserAppConst.GESTURE_OPENED, GESTURE_PWD_SET_FIVE_ERROR).commit();
+                    editor.putBoolean(UserAppConst.IS_LOGIN, false);
+                    editor.putString(UserAppConst.Colour_login_mobile + UserAppConst.GESTURE_OPENED, GESTURE_PWD_SET_FIVE_ERROR);
+                    editor.apply();
                     sendBroadCast();
                     Message msg = new Message();
                     msg.what = UserMessageConstant.LOGOUT;//退出登录之后，

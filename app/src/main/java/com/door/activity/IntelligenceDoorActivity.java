@@ -224,10 +224,9 @@ public class IntelligenceDoorActivity extends BaseFragmentActivity implements Ne
     /**
      * 远程开门
      */
-    public void remoteDoor(String qrcode,String community_uuid) {
+    public void remoteDoor(String qrcode, String community_uuid) {
         door_code = qrcode;
-        NewUserModel newUserModel = new NewUserModel(IntelligenceDoorActivity.this);
-        newUserModel.getReportDate(10, community_uuid,"","",true, IntelligenceDoorActivity.this);
+        newDoorModel.openDoor(2, door_code, true, IntelligenceDoorActivity.this);
     }
 
     @Override
@@ -549,34 +548,7 @@ public class IntelligenceDoorActivity extends BaseFragmentActivity implements Ne
                     changeCommunityUuid = "";
                 }
                 break;
-            case 10:
-                if (TextUtils.isEmpty(result)) {
-                    doorCodeOpen();
-                } else {
-                    try {
-                        HomeHealthReportEntity homeHealthReportEntity = GsonUtils.gsonToBean(result, HomeHealthReportEntity.class);
-                        if (homeHealthReportEntity.getCode() == 0) {
-                            HomeHealthReportEntity.ContentBean contentBean = homeHealthReportEntity.getContent();
-                            String is_report = contentBean.getIs_report();
-                            //0表示未录入，1表示已经录入
-                            if ("1".equals(is_report)) {
-                                doorCodeOpen();
-                            } else {
-                                showReportHealthyDialog(IntelligenceDoorActivity.this, contentBean.getImg(), contentBean.getUrl());
-                            }
-                        } else {
-                            doorCodeOpen();
-                        }
-                    } catch (Exception e) {
-                        doorCodeOpen();
-                    }
-                }
-                break;
         }
-    }
-
-    private void doorCodeOpen() {
-        newDoorModel.openDoor(2, door_code, true, IntelligenceDoorActivity.this);
     }
 
     private void setData(boolean isCache, String result) {
@@ -762,12 +734,6 @@ public class IntelligenceDoorActivity extends BaseFragmentActivity implements Ne
                     showOpenDoorDialog(result);
                 }
                 break;
-            case UserMessageConstant.BLUETOOTH_REPORT_HEALTHY:
-                Bundle bundle = message.getData();
-                String img = bundle.getString("img");
-                String url = bundle.getString("url");
-                showReportNoticeDialog(img,url);
-                break;
         }
     }
 
@@ -804,24 +770,5 @@ public class IntelligenceDoorActivity extends BaseFragmentActivity implements Ne
         } catch (Exception e) {
 
         }
-    }
-
-    private ShowReportHealthyDialog showReportHealthyDialog;
-    private void showReportNoticeDialog(String img, String url) {
-        if (null == showReportHealthyDialog) {
-            showReportHealthyDialog = new ShowReportHealthyDialog(this, R.style.opendoor_dialog_theme);
-        }
-        if (showReportHealthyDialog.isShowing()) {
-            showReportHealthyDialog.dismiss();
-        }
-        showReportHealthyDialog.show();
-        GlideImageLoader.loadImageDisplay(this, img, showReportHealthyDialog.iv_report_healthy);
-        showReportHealthyDialog.iv_report_healthy.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                LinkParseUtil.parse(IntelligenceDoorActivity.this, url, "");
-                showReportHealthyDialog.dismiss();
-            }
-        });
     }
 }

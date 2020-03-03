@@ -97,7 +97,7 @@
                 android:id="@+id/tex_3"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="消息"
+                android:text="邻里圈"
                 android:textSize="12dp" />
         </LinearLayout>
 

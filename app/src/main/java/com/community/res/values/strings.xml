@@ -9,7 +9,13 @@
     <string name="community_publish">发布</string>
     <string name="community_like">点赞</string>
     <string name="community_comment">评论</string>
+    <string name="community_comment_send">发送</string>
+    <string name="community_comment_hint">评论...</string>
     <string name="community_hint_notice">和邻居们说点什么…</string>
     <string name="community_empty_notice">快来当第一个说话的人吧～</string>
     <string name="community_empty_publish">发布动态</string>
+    <string name="community_group_list">群聊列表</string>
+    <string name="community_message_list">消息</string>
+    <string name="community_upload_most">最多9张照片</string>
+    <string name="community_no_data">还没有内容呢～</string>
 </resources>

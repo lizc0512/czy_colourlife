@@ -1,5 +1,6 @@
 package com.allapp.activity;
 
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Message;
@@ -26,19 +27,13 @@ import com.allapp.entity.HomeAllLifeEntity;
 import com.allapp.entity.WholeAppSectionEntity;
 import com.allapp.model.AllAppModel;
 import com.chad.library.adapter.base.BaseQuickAdapter;
-import com.customerInfo.protocol.RealNameTokenEntity;
 import com.external.eventbus.EventBus;
 import com.nohttp.utils.GridSpacingItemDecoration;
 import com.nohttp.utils.GsonUtils;
-import com.tencent.authsdk.AuthConfig;
-import com.tencent.authsdk.AuthSDKApi;
-import com.tencent.authsdk.IDCardInfo;
-import com.tencent.authsdk.callback.IdentityCallback;
+import com.realaudit.activity.RealCommonSubmitActivity;
 import com.user.UserAppConst;
 import com.user.UserMessageConstant;
 import com.user.model.NewUserModel;
-
-import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -66,17 +61,17 @@ public class WholeApplicationActivity extends BaseActivity implements NewHttpRes
     private WholeAppAdapter wholeAdapter;
     private List<WholeAppSectionEntity> wholeAppList = new ArrayList<>();
     private AllAppModel allAppModel;
-    private NewUserModel newUserModel;
-    private String realName = "";
-    private SharedPreferences mShared;
     private int customer_id;//用户的id
-    private String biz_token;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_whole_application);
         initView();
         initData();
+        if (!EventBus.getDefault().isregister(WholeApplicationActivity.this)) {
+            EventBus.getDefault().register(WholeApplicationActivity.this);
+        }
     }
 
     private void initView() {
@@ -91,9 +86,7 @@ public class WholeApplicationActivity extends BaseActivity implements NewHttpRes
 
     private void initData() {
         allAppModel = new AllAppModel(WholeApplicationActivity.this);
-        newUserModel = new NewUserModel(WholeApplicationActivity.this);
-        mShared = this.getSharedPreferences(UserAppConst.USERINFO, 0);
-        customer_id = mShared.getInt(UserAppConst.Colour_User_id, 0);
+        customer_id = shared.getInt(UserAppConst.Colour_User_id, 0);
         allAppModel.getAllApplicationData(0, this);
     }
 
@@ -131,43 +124,6 @@ public class WholeApplicationActivity extends BaseActivity implements NewHttpRes
                 Message msg = new Message();
                 msg.what = UserMessageConstant.UPDATE_APP_CLICK;
                 EventBus.getDefault().post(msg);
-                break;
-            case 2:
-                if (!TextUtils.isEmpty(result)) {
-                    try {
-                        RealNameTokenEntity entity = cn.csh.colourful.life.utils.GsonUtils.gsonToBean(result, RealNameTokenEntity.class);
-                        RealNameTokenEntity.ContentBean bean = entity.getContent();
-                        biz_token=bean.getBizToken();
-                        startAuthenticate(biz_token);
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-                }
-                break;
-            case 3:
-                if (!TextUtils.isEmpty(result)) {
-                    try {
-                        JSONObject jsonObject = new JSONObject(result);
-                        String code = jsonObject.getString("code");
-                        if ("0".equals(code)) {
-                            String content = jsonObject.getString("content");
-                            if ("1".equals(content)) {
-                                ToastUtil.toastShow(this, "认证成功");
-                                editor.putString(UserAppConst.COLOUR_AUTH_REAL_NAME + customer_id, realName).commit();
-                                newUserModel.finishTask(4, "2", "task_native", this);//实名认证任务
-                            }
-                        } else {
-                            String message = jsonObject.getString("message");
-                            ToastUtil.toastShow(this, message);
-                        }
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-                }
-                break;
-            case 4://实名认证任务
-                //跳转
-                authItemClick();
                 break;
         }
     }
@@ -383,7 +339,8 @@ public class WholeApplicationActivity extends BaseActivity implements NewHttpRes
                 authDialog.dismiss();
             }
             editor.putString(UserAppConst.COLOUR_AUTH_REAL_NAME + customer_id, "dismiss").commit();//出现过一次
-            newUserModel.getRealNameToken(2, WholeApplicationActivity.this, true);
+            Intent intent = new Intent(WholeApplicationActivity.this, RealCommonSubmitActivity.class);
+            startActivity(intent);
         });
     }
 
@@ -401,34 +358,30 @@ public class WholeApplicationActivity extends BaseActivity implements NewHttpRes
         }
     }
 
-    /**
-     * 实名认证
-     */
-    private void startAuthenticate(String realToken) {
-        AuthConfig.Builder configBuilder = new AuthConfig.Builder(realToken, R.class.getPackage().getName());
-        AuthSDKApi.startMainPage(this, configBuilder.build(), mListener);
-    }
-
-    /**
-     * 监听实名认证返回
-     */
-    private IdentityCallback mListener = data -> {
-        boolean identityStatus = data.getBooleanExtra(AuthSDKApi.EXTRA_IDENTITY_STATUS, false);
-        if (identityStatus) {//identityStatus true 已实名
-            IDCardInfo idCardInfo = data.getExtras().getParcelable(AuthSDKApi.EXTRA_IDCARD_INFO);
-            if (idCardInfo != null) {//身份证信息   idCardInfo.getIDcard();//身份证号码
-                realName = idCardInfo.getName();//姓名
-                newUserModel.submitRealName(3, biz_token, this);//提交实名认证
-            }
-        }
-    };
-
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.user_top_view_back:
                 finish();
                 break;
+        }
+    }
+
+
+    public void onEvent(Object event) {
+        final Message message = (Message) event;
+        switch (message.what) {
+            case UserMessageConstant.REAL_SUCCESS_STATE:
+                authItemClick();
+                break;
+        }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if (EventBus.getDefault().isregister(WholeApplicationActivity.this)) {
+            EventBus.getDefault().unregister(WholeApplicationActivity.this);
         }
     }
 }

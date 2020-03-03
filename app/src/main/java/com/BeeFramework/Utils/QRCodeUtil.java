@@ -83,7 +83,7 @@ public class QRCodeUtil
     /**
      * 在二维码中间添加Logo图案
      */
-    private static Bitmap addLogo(Bitmap src, Bitmap logo) {
+    public static Bitmap addLogo(Bitmap src, Bitmap logo) {
         if (src == null) {
             return null;
         }
@@ -124,4 +124,26 @@ public class QRCodeUtil
         return bitmap;
     }
 
+    public static Bitmap generateBitmap(String content, int width, int height) {
+        QRCodeWriter qrCodeWriter = new QRCodeWriter();
+        Map<EncodeHintType, String> hints = new HashMap<>();
+        hints.put(EncodeHintType.CHARACTER_SET, "utf-8");
+        try {
+            BitMatrix encode = qrCodeWriter.encode(content, BarcodeFormat.QR_CODE, width, height, hints);
+            int[] pixels = new int[width * height];
+            for (int i = 0; i < height; i++) {
+                for (int j = 0; j < width; j++) {
+                    if (encode.get(j, i)) {
+                        pixels[i * width + j] = 0x00000000;
+                    } else {
+                        pixels[i * width + j] = 0xffffffff;
+                    }
+                }
+            }
+            return Bitmap.createBitmap(pixels, 0, width, width, height, Bitmap.Config.RGB_565);
+        } catch (WriterException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
 }

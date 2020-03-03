@@ -8,6 +8,7 @@
     <include layout="@layout/dynamics_details_content"/>
 
     <View
+        android:id="@+id/dynamic_divider_view"
         android:layout_width="match_parent"
         android:background="@color/color_cccccc"
         android:layout_marginLeft="15dp"
@@ -17,7 +18,10 @@
         android:layout_height="1px"/>
 
     <android.support.v7.widget.RecyclerView
-        android:id="@+id/rv_dynamics_user_commets"
+        android:id="@+id/rv_dynamics_user_comments"
+        android:layout_marginRight="16dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginBottom="5dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"/>
 

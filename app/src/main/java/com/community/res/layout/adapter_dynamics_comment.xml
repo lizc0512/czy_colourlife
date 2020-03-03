@@ -6,10 +6,11 @@
         android:id="@+id/iv_dynamics_comment_pics"
         android:layout_width="32dp"
         android:layout_marginTop="5dp"
+        android:layout_marginLeft="10dp"
         android:layout_height="32dp" />
 
     <TextView
-        android:id="@+id/iv_dynamics_comment_names"
+        android:id="@+id/tv_dynamics_comment_names"
         android:layout_toRightOf="@id/iv_dynamics_comment_pics"
         android:layout_width="wrap_content"
         android:layout_marginLeft="5dp"
@@ -21,9 +22,9 @@
         />
 
     <TextView
-        android:id="@+id/iv_dynamics_comment_content"
-        android:layout_alignLeft="@id/iv_dynamics_comment_names"
-        android:layout_below="@id/iv_dynamics_comment_names"
+        android:id="@+id/tv_dynamics_comment_content"
+        android:layout_alignLeft="@id/tv_dynamics_comment_names"
+        android:layout_below="@id/tv_dynamics_comment_names"
         android:layout_width="wrap_content"
         android:textSize="14sp"
         android:layout_height="wrap_content"

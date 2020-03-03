@@ -29,7 +29,9 @@ import com.cashier.modelnew.NewOrderPayModel;
 import com.cashier.protocolchang.PayEntity;
 import com.cashier.protocolchang.PayResultEntity;
 import com.cashier.protocolchang.PayStatusEntity;
-import com.customerInfo.protocol.RealNameTokenEntity;
+import com.chinaums.pppay.unify.UnifyPayListener;
+import com.chinaums.pppay.unify.UnifyPayPlugin;
+import com.chinaums.pppay.unify.UnifyPayRequest;
 import com.external.eventbus.EventBus;
 import com.jdpaysdk.author.JDPayAuthor;
 import com.lhqpay.ewallet.keepIntact.Listener;
@@ -49,13 +51,10 @@ import com.point.model.PointModel;
 import com.point.password.PopEnterPassword;
 import com.point.password.PopInputCodeView;
 import com.popupScreen.PopupScUtils;
+import com.realaudit.activity.RealCommonSubmitActivity;
 import com.setting.activity.CertificateResultDialog;
 import com.setting.activity.EditDialog;
 import com.setting.activity.HtmlPayDialog;
-import com.tencent.authsdk.AuthConfig;
-import com.tencent.authsdk.AuthSDKApi;
-import com.tencent.authsdk.IDCardInfo;
-import com.tencent.authsdk.callback.IdentityCallback;
 import com.tencent.mm.opensdk.modelpay.PayReq;
 import com.tencent.mm.opensdk.openapi.IWXAPI;
 import com.tencent.mm.opensdk.openapi.WXAPIFactory;
@@ -79,11 +78,11 @@ import cn.net.cyberway.home.entity.PushNotificationEntity;
 import cn.net.cyberway.utils.LinkParseUtil;
 
 import static com.pay.Activity.AlixPayActivity.ALIPAY_ORDER_INFOR;
-import static com.user.UserMessageConstant.POINT_CHANGE_PAYPAWD;
 import static com.user.UserMessageConstant.POINT_GET_CODE;
 import static com.user.UserMessageConstant.POINT_INPUT_CODE;
 import static com.user.UserMessageConstant.POINT_INPUT_PAYPAWD;
 import static com.user.UserMessageConstant.POINT_SHOW_CODE;
+import static com.user.UserMessageConstant.REAL_FAIL_STATE;
 import static com.user.UserMessageConstant.WEIXIN_PAY_MSG;
 
 
@@ -98,7 +97,7 @@ import static com.user.UserMessageConstant.WEIXIN_PAY_MSG;
  * @class describe   新的订单支付页面
  */
 
-public class NewOrderPayActivity extends BaseActivity implements View.OnClickListener, NewHttpResponse, Listener, MyListener {
+public class NewOrderPayActivity extends BaseActivity implements View.OnClickListener, NewHttpResponse, Listener, MyListener, UnifyPayListener {
 
     public static final String ORDER_SN = "ORDER_SN";
     public static final String PAY_CHANNEL = "PAY_CHANNEL";
@@ -789,6 +788,18 @@ public class NewOrderPayActivity extends BaseActivity implements View.OnClickLis
                 PointModel pointModel = new PointModel(NewOrderPayActivity.this);
                 pointModel.pointCheckCode(10, loginMobile, code, NewOrderPayActivity.this);
                 break;
+            case UserMessageConstant.REAL_SUCCESS_STATE:
+                if ("3".equals(state)) {
+                    state = "2";
+                    Intent pawd_intent = new Intent(NewOrderPayActivity.this, ChangePawdTwoStepActivity.class);
+                    startActivity(pawd_intent);
+                } else {
+                    showPayDialog();
+                }
+                break;
+            case REAL_FAIL_STATE:
+                showCertificateFail();
+                break;
         }
     }
 
@@ -891,9 +902,17 @@ public class NewOrderPayActivity extends BaseActivity implements View.OnClickLis
 
     //支付宝支付
     private void alipayPayOrder(Map<String, String> resultMap) {
-        Intent intent = new Intent(NewOrderPayActivity.this, AlixPayActivity.class);
-        intent.putExtra(ALIPAY_ORDER_INFOR, resultMap.get("out_trade_infor"));
-        startActivityForResult(intent, 10000);
+        UnifyPayRequest msg = new UnifyPayRequest();
+        msg.payChannel = UnifyPayRequest.CHANNEL_ALIPAY;
+        if (!resultMap.containsKey("appPayRequest")) {
+            ToastUtil.toastShow(NewOrderPayActivity.this,"服务器返回数据格式有问题，缺少“appPayRequest”字段");
+            return;
+        } else {
+            msg.payData = resultMap.get("appPayRequest");
+            UnifyPayPlugin unifyPayPlugin = UnifyPayPlugin.getInstance(this);
+            unifyPayPlugin.setListener(this);
+            unifyPayPlugin.sendPayRequest(msg);
+        }
     }
 
     private void pointPayOrder() { //判断用户是否实名设置支付密码
@@ -943,6 +962,8 @@ public class NewOrderPayActivity extends BaseActivity implements View.OnClickLis
                                     encrypt = resultMap.get("encrypt");
                                 }
                                 pointPayOrder();
+                            } else if (payChannelId.endsWith("9")) {
+                                alipayPayOrder(resultMap);
                             } else {
                                 //彩钱包支付
                                 LinkedHashMap<String, Object> publicParams = new LinkedHashMap<String, Object>();
@@ -975,54 +996,6 @@ public class NewOrderPayActivity extends BaseActivity implements View.OnClickLis
                     }
                 } catch (Exception e) {
                     createCzyOrder();
-                }
-                break;
-            case 4://实名认证sdk的调起
-                if (!TextUtils.isEmpty(result)) {
-                    try {
-                        RealNameTokenEntity entity = GsonUtils.gsonToBean(result, RealNameTokenEntity.class);
-                        RealNameTokenEntity.ContentBean bean = entity.getContent();
-                        biz_token = bean.getBizToken();
-                        AuthConfig.Builder configBuilder = new AuthConfig.Builder(biz_token, R.class.getPackage().getName());
-                        AuthSDKApi.startMainPage(this, configBuilder.build(), mListener);
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                        showCertificateFail();
-                    }
-                } else {
-                    showCertificateFail();
-                }
-                break;
-            case 5://提交实名认证信息
-                if (!TextUtils.isEmpty(result)) {
-                    try {
-                        JSONObject jsonObject = new JSONObject(result);
-                        String resultCode = jsonObject.getString("code");
-                        if ("0".equals(resultCode)) {
-                            String content = jsonObject.getString("content");
-                            if ("1".equals(content)) {
-                                ToastUtil.toastShow(this, "认证成功");
-                                editor.putString(UserAppConst.COLOUR_AUTH_REAL_NAME + shared.getInt(UserAppConst.Colour_User_id, 0), realName).commit();
-                                newUserModel.finishTask(11, "2", "task_web", this);//实名认证任务
-                                if ("3".equals(state)) {
-                                    state = "2";
-                                    Intent intent = new Intent(NewOrderPayActivity.this, ChangePawdTwoStepActivity.class);
-                                    startActivity(intent);
-                                } else {
-                                    createCzyOrder();
-                                }
-                            } else {
-                                showCertificateFail();
-                            }
-                        } else {
-                            showCertificateFail();
-                        }
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                        showCertificateFail();
-                    }
-                } else {
-                    showCertificateFail();
                 }
                 break;
             case 6:
@@ -1150,22 +1123,23 @@ public class NewOrderPayActivity extends BaseActivity implements View.OnClickLis
                 if (noticeDialog != null) {
                     noticeDialog.dismiss();
                 }
-                newUserModel.getRealNameToken(4, NewOrderPayActivity.this, false);
+                Intent intent = new Intent(NewOrderPayActivity.this, RealCommonSubmitActivity.class);
+                intent.putExtra(RealCommonSubmitActivity.SHOWFAILDIALOG, 1);
+                startActivity(intent);
             }
         });
     }
 
-    /**
-     * 监听实名认证返回
-     */
-    private IdentityCallback mListener = data -> {
-        boolean identityStatus = data.getBooleanExtra(AuthSDKApi.EXTRA_IDENTITY_STATUS, false);
-        if (identityStatus) {//identityStatus true 已实名
-            IDCardInfo idCardInfo = data.getExtras().getParcelable(AuthSDKApi.EXTRA_IDCARD_INFO);
-            if (idCardInfo != null) {//身份证信息   idCardInfo.getIDcard();//身份证号码
-                realName = idCardInfo.getName();//姓名
-                newUserModel.submitRealName(5, biz_token, this);//提交实名认证
-            }
+    /*
+     * 银联支付回调
+     * */
+    @Override
+    public void onResult(String s, String s1) {
+        if (s.equals("0000")) {
+            payResultQuery();
+        } else {
+            //其他
+            ToastUtil.toastShow(NewOrderPayActivity.this, s1);
         }
-    };
+    }
 }

@@ -1,38 +1,18 @@
 package cn.net.cyberway.home.view;
 
-import android.app.Activity;
 import android.content.Context;
-import android.content.DialogInterface;
-import android.content.Intent;
-import android.content.SharedPreferences;
-import android.graphics.Bitmap;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.text.TextUtils;
 import android.view.Gravity;
 import android.view.View;
 
-import com.BeeFramework.Utils.ImageUtil;
-import com.BeeFramework.view.MyDialog;
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.request.target.SimpleTarget;
-import com.bumptech.glide.request.transition.Transition;
 import com.door.entity.SingleCommunityEntity;
-import com.myproperty.activity.MyPropertyActivity;
-import com.setting.activity.GesturePwdMainActivity;
-import com.user.UserAppConst;
 
-import org.json.JSONObject;
-
-import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
 import cn.net.cyberway.R;
-import cn.net.cyberway.activity.MainActivity;
 import q.rorbin.badgeview.QBadgeView;
 
 /**
@@ -46,58 +26,6 @@ import q.rorbin.badgeview.QBadgeView;
  * @class describe
  */
 public class HomeViewUtils {
-
-    public static void showChangeCommunityDialog(final Activity activity) {
-//        ((MainActivity) activity).delayIntoPoup(true);
-        final MyDialog dialog = new MyDialog(activity, activity.getResources().getString(R.string.home_change_community));
-        dialog.positive.setText(activity.getResources().getString(R.string.home_change));
-        dialog.positive.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                dialog.dismiss();
-                Intent intent = new Intent(activity, MyPropertyActivity.class);
-                activity.startActivityForResult(intent, 4000);
-            }
-        });
-        dialog.negative.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                dialog.dismiss();
-//                ((MainActivity) activity).delayIntoPoup(false);
-//                ((MainActivity) activity).laterIntoPopup();
-            }
-        });
-        dialog.show();
-    }
-
-    public static void showSetGestureDialog(final Activity activity) {
-        final LeadGestureDialog leadGestureDialog = new LeadGestureDialog(activity, R.style.custom_dialog_theme);
-        leadGestureDialog.show();
-        leadGestureDialog.setCancelable(false);
-        leadGestureDialog.setCanceledOnTouchOutside(false);
-        leadGestureDialog.btn_open.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                leadGestureDialog.dismiss();
-                Intent intent = new Intent(activity, GesturePwdMainActivity.class);
-                activity.startActivity(intent);
-                activity.overridePendingTransition(R.anim.push_right_in, R.anim.push_right_out);
-            }
-        });
-        leadGestureDialog.btn_cancel.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-//                ((MainActivity) activity).delayIntoPoup(false);
-                leadGestureDialog.dismiss();
-            }
-        });
-        leadGestureDialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
-            @Override
-            public void onDismiss(DialogInterface dialog) {
-                ((MainActivity) activity).intoPopup();
-            }
-        });
-    }
 
     public static void smoothScrollTop(RecyclerView home_rv) {
         if (!home_rv.canScrollVertically(-1)) { //不在顶部滑动到顶部
@@ -139,7 +67,7 @@ public class HomeViewUtils {
     /***用户没有常用门禁 但是有非常用门禁**/
     public static ArrayList<SingleCommunityEntity.ContentBean.CommonUseBean> addCommmonDoorList(SingleCommunityEntity.ContentBean contentBean) {
         ArrayList<SingleCommunityEntity.ContentBean.CommonUseBean> commonUseBeanList = new ArrayList<>();
-        if (contentBean.getNot_common_use()!=null){
+        if (contentBean.getNot_common_use() != null) {
             List<SingleCommunityEntity.ContentBean.NotCommonUseBean> notCommonUseBeanList = contentBean.getNot_common_use();
             for (SingleCommunityEntity.ContentBean.NotCommonUseBean notCommonUseBean : notCommonUseBeanList) {
                 SingleCommunityEntity.ContentBean.CommonUseBean singleCommonUse = new SingleCommunityEntity.ContentBean.CommonUseBean();

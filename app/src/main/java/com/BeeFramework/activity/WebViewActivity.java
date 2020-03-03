@@ -228,6 +228,7 @@ public class WebViewActivity extends BaseActivity implements View.OnLongClickLis
         frame_share = (FrameLayout) findViewById(R.id.webview_frame_share);
         Intent intent = getIntent();
         url = intent.getStringExtra(WEBURL);
+        url="https://qr.alipay.com/bax06463vrzqezwry6ae80e2";
         domainName = intent.getStringExtra(WEBDOMAIN);
         shareUrl = url;
         webTitle = intent.getStringExtra(WEBTITLE);
@@ -1661,6 +1662,7 @@ public class WebViewActivity extends BaseActivity implements View.OnLongClickLis
     }
 
     private void jumpByUrls(String urls) {
+        urls+="&fromAppUrlScheme=colourlifePay";
         try {
             Intent intent = Intent.parseUri(urls, Intent.URI_INTENT_SCHEME);
             intent.addCategory("android.intent.category.BROWSABLE");

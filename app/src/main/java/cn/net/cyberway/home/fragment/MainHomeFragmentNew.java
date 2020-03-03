@@ -42,7 +42,6 @@ import com.alibaba.android.vlayout.VirtualLayoutManager;
 import com.alibaba.android.vlayout.layout.GridLayoutHelper;
 import com.alibaba.android.vlayout.layout.OnePlusNLayoutHelper;
 import com.allapp.model.AllAppModel;
-import com.customerInfo.protocol.RealNameTokenEntity;
 import com.door.activity.NewDoorIndetifyActivity;
 import com.door.entity.SingleCommunityEntity;
 import com.door.model.NewDoorModel;
@@ -52,10 +51,7 @@ import com.nohttp.utils.GlideImageLoader;
 import com.nohttp.utils.GridSpacingItemDecoration;
 import com.nohttp.utils.GsonUtils;
 import com.notification.activity.NotificationAllInfoActivity;
-import com.tencent.authsdk.AuthConfig;
-import com.tencent.authsdk.AuthSDKApi;
-import com.tencent.authsdk.IDCardInfo;
-import com.tencent.authsdk.callback.IdentityCallback;
+import com.realaudit.activity.RealCommonSubmitActivity;
 import com.tmall.ultraviewpager.UltraViewPager;
 import com.user.UserAppConst;
 import com.user.UserMessageConstant;
@@ -65,6 +61,7 @@ import com.youmai.hxsdk.HuxinSdkManager;
 import com.youmai.hxsdk.ServiceInfo;
 import com.youmai.hxsdk.db.bean.CacheMsgBean;
 import com.youmai.hxsdk.im.IMMsgCallback;
+import com.youmai.hxsdk.im.IMMsgManager;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -1337,6 +1334,10 @@ public class MainHomeFragmentNew extends Fragment implements NewHttpResponse, Vi
                 ((MainActivity) getActivity()).getChangeCommunityTheme();
                 break;
             case UserMessageConstant.LOGOUT:
+                if (HuxinSdkManager.instance().isLogin()) {
+                    HuxinSdkManager.instance().loginOut();
+                    IMMsgManager.instance().cancelPushMsg();
+                }
                 LekaiHelper.clearLocalKey();
                 ((MainActivity) getActivity()).clearUserData("");
                 smoothScrollTop(home_rv);
@@ -1344,6 +1345,10 @@ public class MainHomeFragmentNew extends Fragment implements NewHttpResponse, Vi
             case UserMessageConstant.SQUEEZE_OUT:
             case UserMessageConstant.AUDIT_PASS_OUT:
             case UserMessageConstant.WEB_OUT:
+                if (HuxinSdkManager.instance().isLogin()) {
+                    HuxinSdkManager.instance().loginOut();
+                    IMMsgManager.instance().cancelPushMsg();
+                }
                 editor.putBoolean(UserAppConst.IS_LOGIN, false).apply();
                 ScreenManager.getScreenManager().popAllActivityExceptOne(MainActivity.class);
                 smoothScrollTop(home_rv);
@@ -1370,6 +1375,9 @@ public class MainHomeFragmentNew extends Fragment implements NewHttpResponse, Vi
                 break;
             case UserMessageConstant.UPDATE_DOOR:
                 getCommonDoorData();
+                break;
+            case UserMessageConstant.REAL_SUCCESS_STATE:
+                authItemClick(fromFunc, fromFunc ? homeFuncBean : appBean); //跳转
                 break;
         }
     }
@@ -1632,42 +1640,6 @@ public class MainHomeFragmentNew extends Fragment implements NewHttpResponse, Vi
                     themeSuccess = 0;
                 }
                 break;
-            case 10://获取实名token
-                if (!TextUtils.isEmpty(result)) {
-                    try {
-                        RealNameTokenEntity entity = cn.csh.colourful.life.utils.GsonUtils.gsonToBean(result, RealNameTokenEntity.class);
-                        RealNameTokenEntity.ContentBean bean = entity.getContent();
-                        biz_token = bean.getBizToken();
-                        startAuthenticate(biz_token);
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-                }
-                break;
-            case 11://提交认证
-                if (!TextUtils.isEmpty(result)) {
-                    try {
-                        JSONObject jsonObject = new JSONObject(result);
-                        String code = jsonObject.getString("code");
-                        if ("0".equals(code)) {
-                            String content = jsonObject.getString("content");
-                            if ("1".equals(content)) {
-                                ToastUtil.toastShow(getActivity(), "认证成功");
-                                editor.putString(UserAppConst.COLOUR_AUTH_REAL_NAME + customer_id, realName).commit();
-                                authItemClick(fromFunc, fromFunc ? homeFuncBean : appBean); //跳转
-                                newUserModel.finishTask(15, "2", "task_native", this);//实名认证任务
-                            } else {
-                                editor.putString(UserAppConst.COLOUR_AUTH_REAL_NAME + customer_id, "").commit();
-                            }
-                        } else {
-                            String message = jsonObject.getString("message");
-                            ToastUtil.toastShow(getActivity(), message);
-                        }
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-                }
-                break;
             case 12://获取认证
                 if (!TextUtils.isEmpty(result)) {
                     try {
@@ -1691,8 +1663,6 @@ public class MainHomeFragmentNew extends Fragment implements NewHttpResponse, Vi
                 break;
             case 14:
                 LekaiHelper.startService(getActivity(), result);
-                break;
-            case 15://实名认证任务
                 break;
         }
         questReturnNumber++;
@@ -1800,31 +1770,11 @@ public class MainHomeFragmentNew extends Fragment implements NewHttpResponse, Vi
                 authDialog.dismiss();
             }
             editor.putString(UserAppConst.COLOUR_AUTH_REAL_NAME + customer_id, "dismiss").commit();//出现过一次
-            newUserModel.getRealNameToken(10, MainHomeFragmentNew.this, true);
+            Intent intent = new Intent(getActivity(), RealCommonSubmitActivity.class);
+            startActivity(intent);
         });
     }
 
-    /**
-     * 实名认证
-     */
-    private void startAuthenticate(String realToken) {
-        AuthConfig.Builder configBuilder = new AuthConfig.Builder(realToken, R.class.getPackage().getName());
-        AuthSDKApi.startMainPage(getActivity(), configBuilder.build(), mListener);
-    }
-
-    /**
-     * 监听实名认证返回
-     */
-    private IdentityCallback mListener = data -> {
-        boolean identityStatus = data.getBooleanExtra(AuthSDKApi.EXTRA_IDENTITY_STATUS, false);
-        if (identityStatus) {//true 已实名
-            IDCardInfo idCardInfo = data.getExtras().getParcelable(AuthSDKApi.EXTRA_IDCARD_INFO);
-            if (idCardInfo != null) {//身份证信息   idCardInfo.getIDcard();//身份证号码
-                realName = idCardInfo.getName();//姓名
-                newUserModel.submitRealName(11, biz_token, this);//提交实名认证
-            }
-        }
-    };
 
     private void initHomeClick() {
         refresh_layout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {

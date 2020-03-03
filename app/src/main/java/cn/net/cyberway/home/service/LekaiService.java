@@ -5,8 +5,6 @@ import android.bluetooth.BluetoothAdapter;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Binder;
-import android.os.Bundle;
-import android.os.CountDownTimer;
 import android.os.Handler;
 import android.os.IBinder;
 import android.os.Looper;
@@ -17,7 +15,6 @@ import android.util.Log;
 
 import com.BeeFramework.AppConst;
 import com.BeeFramework.Utils.ToastUtil;
-import com.BeeFramework.model.NewHttpResponse;
 import com.external.eventbus.EventBus;
 import com.intelspace.library.EdenApi;
 import com.intelspace.library.ErrorConstants;
@@ -27,7 +24,6 @@ import com.intelspace.library.api.OnSyncUserKeysCallback;
 import com.intelspace.library.api.OnUserOptParkLockCallback;
 import com.intelspace.library.module.Device;
 import com.intelspace.library.module.LocalKey;
-import com.nohttp.utils.GsonUtils;
 import com.user.UserAppConst;
 import com.user.UserMessageConstant;
 import com.user.model.NewUserModel;
@@ -35,7 +31,6 @@ import com.user.model.NewUserModel;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import cn.net.cyberway.home.entity.HomeHealthReportEntity;
 import cn.net.cyberway.utils.ActivityLifecycleListener;
 import cn.net.cyberway.utils.LekaiHelper;
 
@@ -62,11 +57,6 @@ public class LekaiService extends Service {
     private static final int connect_time = 8000;
     private String deviceCipherId;
 
-    private int dialogShow = 1;
-    private int blutoothON = 0;
-    private String is_report;
-    private String url;
-    private String img;
 
     @Nullable
     @Override
@@ -101,9 +91,6 @@ public class LekaiService extends Service {
             if (null != mEdenApi) {
                 mEdenApi.unBindBleService();
             }
-            if (countDownTimer != null) {
-                countDownTimer.cancel();
-            }
         } catch (IllegalArgumentException e) {
 
         }
@@ -125,7 +112,6 @@ public class LekaiService extends Service {
         // 手机蓝牙状态的监听
         mEdenApi.setOnBluetoothStateCallback((i, s) -> {
             try {
-                scannerDeviceCipherId = "";
                 if (i == BluetoothAdapter.STATE_ON) {
                     if (null != mBluetoothStateCallback) {
                         mBluetoothStateCallback.onBluetoothStateOn();
@@ -134,12 +120,10 @@ public class LekaiService extends Service {
                         ToastUtil.toastShow(getApplicationContext(), "蓝牙已开启");
                         mEdenApi.startScanDevice();  // 重启扫描
                     }
-                    blutoothON = 1;
                 } else if (i == BluetoothAdapter.STATE_OFF) {
                     if (null != mBluetoothStateCallback) {
                         mBluetoothStateCallback.onBluetoothStateOff();
                     }
-                    blutoothON = 0;
                 }
             } catch (Exception e) {
                 e.printStackTrace();
@@ -168,7 +152,6 @@ public class LekaiService extends Service {
                     if (Device.LOCK_VERSION_PARK_LOCK.equals(device.getLockVersion())) {
                         mParkLockController.putParkDevice(device);
                     } else {
-                        startScannerReport(device.getCipherId());
                         unlockDevice(device);
                     }
                 }
@@ -176,120 +159,50 @@ public class LekaiService extends Service {
         }
     }
 
-    private void getHealthData(String cipherId) {
-        NewUserModel newUserModel = new NewUserModel(this);
-        newUserModel.getReportDate(1100, "", "", cipherId, false, new NewHttpResponse() {
-            @Override
-            public void OnHttpResponse(int what, String result) {
-                if (TextUtils.isEmpty(result)) {
-                    is_report = "1";
-                } else {
-                    try {
-                        HomeHealthReportEntity homeHealthReportEntity = GsonUtils.gsonToBean(result, HomeHealthReportEntity.class);
-                        if (homeHealthReportEntity.getCode() == 0) {
-                            HomeHealthReportEntity.ContentBean contentBean = homeHealthReportEntity.getContent();
-                            is_report = contentBean.getIs_report();
-                            img = contentBean.getImg();
-                            url = contentBean.getUrl();
-                        } else {
-                            is_report = "1";
-                        }
-                    } catch (Exception e) {
-                        is_report = "1";
-                    }
-                }
-            }
-        });
-    }
-
-    private CountDownTimer countDownTimer;
-    private  String  scannerDeviceCipherId;
-
-    private void startScannerReport(String cipherId) {
-        if (!cipherId.equals(scannerDeviceCipherId)) {//扫描的设备id和上次开门成功是否一致
-            scannerDeviceCipherId=cipherId;
-            is_report = "";
-            if (null != countDownTimer) {
-                countDownTimer.cancel();
-                countDownTimer = null;
-            }
-        }
-        if (null == countDownTimer) {
-            countDownTimer = new CountDownTimer(180000, 20000) {
-                @Override
-                public void onTick(long millisUntilFinished) {
-                    dialogShow = 1; ///重新继续执行了一次
-                    getHealthData(cipherId);
-                }
-
-                @Override
-                public void onFinish() {
-                    dialogShow = 1; ///重新继续执行了一次
-                    getHealthData(cipherId);
-                }
-            };
-            countDownTimer.start();
-        }
-    }
-
-
     /**
      * 开门禁锁
      */
     public void unlockDevice(Device device) {
-        if ("0".equals(is_report)) {
-            if (dialogShow == 1 && blutoothON == 1) {
-                dialogShow = 0;
-                Message msg = Message.obtain();
-                msg.what = UserMessageConstant.BLUETOOTH_REPORT_HEALTHY;
-                Bundle bundle = new Bundle();
-                bundle.putString("img", img);
-                bundle.putString("url", url);
-                msg.setData(bundle);
-                EventBus.getDefault().post(msg);
-            }
-        } else if ("1".equals(is_report)) {
-            if (null != mEdenApi) {
-                mEdenApi.unlock(device, ACC, TOK, AppConst.CONNECT_TIME_OUT, (code, message, battery) -> {
-                    if (null == mHandler) {
-                        mHandler = new Handler(Looper.getMainLooper());
-                    }
-                    mHandler.post(() -> {
-                        String openCipherId = device.getCipherId();
-                        if (0 == code) {
-                            long currentTimeMillis = System.currentTimeMillis();
-                            if (!openCipherId.equals(deviceCipherId)) {
-                                deviceCipherId = openCipherId;
+        if (null != mEdenApi) {
+            mEdenApi.unlock(device, ACC, TOK, AppConst.CONNECT_TIME_OUT, (code, message, battery) -> {
+                if (null == mHandler) {
+                    mHandler = new Handler(Looper.getMainLooper());
+                }
+                mHandler.post(() -> {
+                    String openCipherId = device.getCipherId();
+                    if (0 == code) {
+                        long currentTimeMillis = System.currentTimeMillis();
+                        if (!openCipherId.equals(deviceCipherId)) {
+                            deviceCipherId = openCipherId;
+                            Message msg = Message.obtain();
+                            msg.what = UserMessageConstant.BLUETOOTH_OPEN_DOOR;
+                            mEditor.putLong("saveTime", currentTimeMillis).apply();
+                            EventBus.getDefault().post(msg);
+                            uploadOpenDoor(openCipherId, "door", code, message);
+                        } else {//开门成功一次后 20s再弹出
+                            long saveTime = mShared.getLong("saveTime", currentTimeMillis - 20000);
+                            long distanceTime = currentTimeMillis - saveTime;
+                            if (distanceTime >= 20000) {
+                                mEditor.putLong("saveTime", currentTimeMillis).apply();
                                 Message msg = Message.obtain();
                                 msg.what = UserMessageConstant.BLUETOOTH_OPEN_DOOR;
-                                mEditor.putLong("saveTime", currentTimeMillis).apply();
                                 EventBus.getDefault().post(msg);
                                 uploadOpenDoor(openCipherId, "door", code, message);
-                            } else {//开门成功一次后 20s再弹出
-                                long saveTime = mShared.getLong("saveTime", currentTimeMillis - 20000);
-                                long distanceTime = currentTimeMillis - saveTime;
-                                if (distanceTime >= 20000) {
-                                    mEditor.putLong("saveTime", currentTimeMillis).apply();
-                                    Message msg = Message.obtain();
-                                    msg.what = UserMessageConstant.BLUETOOTH_OPEN_DOOR;
-                                    EventBus.getDefault().post(msg);
-                                    uploadOpenDoor(openCipherId, "door", code, message);
-                                }
                             }
-                        } else if (ErrorConstants.IS_OPERATION_ERROR_TYPE_WRONG_TIME == code) {
-                            ToastUtil.toastShow(getApplicationContext(), "钥匙过期，请联系管理员");
-                            uploadOpenDoor(openCipherId, "door", code, message);
-                        } else {
-                            if (code == -87) {
-                                ToastUtil.toastShow(getApplicationContext(), message + ",请重启一下手机蓝牙重试");
-                            } else {
-                                ToastUtil.toastShow(getApplicationContext(), "开门失败");
-                            }
-                            uploadOpenDoor(openCipherId, "door", code, message);
                         }
-                    });
+                    } else if (ErrorConstants.IS_OPERATION_ERROR_TYPE_WRONG_TIME == code) {
+                        ToastUtil.toastShow(getApplicationContext(), "钥匙过期，请联系管理员");
+                        uploadOpenDoor(openCipherId, "door", code, message);
+                    } else {
+                        if (code == -87) {
+                            ToastUtil.toastShow(getApplicationContext(), message + ",请重启一下手机蓝牙重试");
+                        } else {
+                            ToastUtil.toastShow(getApplicationContext(), "开门失败");
+                        }
+                        uploadOpenDoor(openCipherId, "door", code, message);
+                    }
                 });
-            }
+            });
         }
     }
 

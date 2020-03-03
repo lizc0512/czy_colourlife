@@ -46,12 +46,10 @@ public class GroupListAdapter extends RecyclerView.Adapter {
     }
 
     public void setGroupList(@NonNull List<GroupInfoBean> list) {
+        //过滤群聊和社群的数据源
         for (GroupInfoBean item : list) {
-            if (item.getGroupType() == groupType) {
-                mGroupList.add(item);
-            }
+            mGroupList.add(item);
         }
-
         notifyDataSetChanged();
     }
 
@@ -137,8 +135,10 @@ public class GroupListAdapter extends RecyclerView.Adapter {
             String displayName = ben.getGroup_name();
             int groupType = ben.getGroupType();
             if (1 == groupType) {
+                itemView.message_groupType.setVisibility(View.INVISIBLE);
                 itemView.message_icon.setImageResource(R.drawable.contacts_communitychat);
             } else {
+                itemView.message_groupType.setVisibility(View.VISIBLE);
                 itemView.message_icon.setImageResource(R.drawable.contacts_groupchat);
             }
             boolean contains = displayName.contains(ColorsConfig.GROUP_DEFAULT_NAME);
@@ -202,6 +202,7 @@ public class GroupListAdapter extends RecyclerView.Adapter {
     protected class GroupViewHolder extends RecyclerView.ViewHolder {
         TeamHeadView message_icon;
         ImageView message_callBtn;
+        ImageView message_groupType;
         TextView message_name, message_time;
         RelativeLayout message_item;
 
@@ -209,6 +210,7 @@ public class GroupListAdapter extends RecyclerView.Adapter {
             super(itemView);
             message_item = (RelativeLayout) itemView.findViewById(R.id.message_itme);
             message_icon = (TeamHeadView) itemView.findViewById(R.id.message_icon);
+            message_groupType = (ImageView) itemView.findViewById(R.id.message_groupType);
             message_callBtn = (ImageView) itemView.findViewById(R.id.message_call_btn);
             message_name = (TextView) itemView.findViewById(R.id.message_name);
             message_time = (TextView) itemView.findViewById(R.id.message_time);

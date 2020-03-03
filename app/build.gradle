@@ -10,8 +10,8 @@ android {
         applicationId "cn.net.cyberway"
         minSdkVersion MIN_SDK_VERSION as int
         targetSdkVersion TARGET_SDK_VERSION as int
-        versionCode 96
-        versionName "6.6.22"
+        versionCode 99
+        versionName "6.6.24"
         multiDexEnabled true
         javaCompileOptions {
             annotationProcessorOptions {
@@ -233,15 +233,16 @@ dependencies {
     implementation(name: 'mylibrary-release', ext: 'aar')
     compileOnly files('sdknec/classes123.jar')
     implementation 'com.flyco.banner:FlycoBanner_Lib:2.0.2@aar'
-
     implementation 'cn.jiguang.sdk:jpush:3.4.1'
     implementation 'cn.jiguang.sdk:jcore:2.2.4'
     implementation 'cn.jiguang.sdk.plugin:xiaomi:3.4.1'
-    implementation'cn.jiguang.sdk.plugin:huawei:3.4.1'
-    implementation'cn.jiguang.sdk.plugin:oppo:3.4.1'
+    implementation 'cn.jiguang.sdk.plugin:huawei:3.4.1'
+    implementation 'cn.jiguang.sdk.plugin:oppo:3.4.1'
     implementation 'cn.jiguang.sdk.plugin:vivo:3.4.1'
     implementation(name: 'HMSSdk-agent', ext: 'aar')
     implementation 'org.jetbrains:annotations:15.0'
+    implementation(name: 'qmf-ppplugin-android-3.0.6', ext: 'aar')
+    implementation files('libs/UPPayAssistEx.jar')
 }
 
 project.afterEvaluate {

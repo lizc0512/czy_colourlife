@@ -428,17 +428,9 @@ public class InstantMessageFragment extends Fragment implements View.OnClickList
         HuxinSdkManager.instance().removeImMsgCallback(this);
     }
 
-    @Override
-    public void onHiddenChanged(boolean hidden) {
-        super.onHiddenChanged(hidden);
-        if (!hidden) {
-//            ((MainActivity) getActivity()).changeStyle();
-        }
-    }
 
     private void initUnreadList() {
         int totalUnRead = HuxinSdkManager.instance().unreadBuddyAndCommMessage();
-        ((MainActivity) getActivity()).showUnReadMsg(totalUnRead);
     }
 
     @Override

@@ -213,11 +213,8 @@ public class TimeUtil {
                         case 1:
                             result = "昨天";
                             break;
-                        case 2:
-                            result = "前天";
-                            break;
                         default:
-                            result = dateformatTime2(date);
+                            result = temp + "天前";
                             break;
                     }
                 }
