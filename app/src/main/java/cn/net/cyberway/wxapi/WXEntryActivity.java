@@ -1,15 +1,10 @@
 
 package cn.net.cyberway.wxapi;
 
-import android.content.Intent;
 import android.os.Message;
 import android.widget.Toast;
 
-import com.BeeFramework.Utils.ToastUtil;
 import com.external.eventbus.EventBus;
-import com.tencent.mm.opensdk.modelbase.BaseReq;
-import com.tencent.mm.opensdk.modelbase.BaseResp;
-import com.tencent.mm.opensdk.openapi.IWXAPIEventHandler;
 import com.user.UserMessageConstant;
 
 import cn.sharesdk.wechat.utils.WXAppExtendObject;

@@ -11,10 +11,6 @@ public class Constant {
     // 重复登录
     public static final String ACTION_C6 = "com.magicsoft.weitown.notice.ACTION_C6";
 
-    // 申请的推送指令
-    public static final String ACTION_W90 = "com.magicsoft.weitown.notice.ACTION_W90";
-    // 授权的推送指令
-    public static final String ACTION_W91 = "com.magicsoft.weitown.notice.ACTION_W91";
     //我里面退出登录
     public static final String ACTION_OUT = "com.magicsoft.weitown.notice.ACTION_OUT";
     // 推送通知栏信息的ID

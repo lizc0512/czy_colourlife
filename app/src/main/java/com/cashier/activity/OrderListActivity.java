@@ -34,8 +34,6 @@ import java.util.List;
 import cn.csh.colourful.life.view.pickview.TimePickerView;
 import cn.net.cyberway.R;
 
-import static cn.net.cyberway.utils.TableLayoutUtils.reflex;
-
 /**
  * @name ${yuansk}
  * @class name：com.cashier.activity

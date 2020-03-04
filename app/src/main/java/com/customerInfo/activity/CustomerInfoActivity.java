@@ -26,8 +26,6 @@ import com.BeeFramework.view.CircleImageView;
 import com.customerInfo.protocol.IdentityStateEntity;
 import com.customerInfo.view.CustomerInfoDialog;
 import com.external.eventbus.EventBus;
-import com.gem.GemConstant;
-import com.gem.util.GemDialogUtil;
 import com.myproperty.activity.MyPropertyActivity;
 import com.nohttp.utils.GlideImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoader;
@@ -69,7 +67,6 @@ public class CustomerInfoActivity extends BaseActivity implements View.OnClickLi
     public static String FROM_WEB = "from_web";
 
     private FrameLayout czyTitleLayout;
-    private ImageView ivGem;
     private ImageView mBack;
     private TextView mTitle;
     private TextView mRightText;
@@ -194,8 +191,6 @@ public class CustomerInfoActivity extends BaseActivity implements View.OnClickLi
         address_ll.setOnClickListener(this);
         ll_gender.setOnClickListener(this);
         ll_real_name.setOnClickListener(this);
-        ivGem = (ImageView) findViewById(R.id.iv_gem);
-        GemDialogUtil.showGemDialog(ivGem, this, GemConstant.mineInformation, "");
     }
 
     private void initPhoto() {

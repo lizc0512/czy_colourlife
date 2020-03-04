@@ -11,11 +11,11 @@ import android.widget.TextView;
 import com.BeeFramework.Utils.ThemeStyleHelper;
 import com.BeeFramework.activity.BaseActivity;
 import com.BeeFramework.model.NewHttpResponse;
+import com.BeeFramework.view.NoScrollGridView;
+import com.about.adapter.FeedGirdViewImageAdapter;
 import com.about.model.FeedbackModel;
 import com.about.protocol.FeedBackDetailsEntity;
 import com.about.protocol.FeedBackListEntity;
-import com.feed.adapter.FeedGirdViewImageAdapter;
-import com.feed.view.NoScrollGridView;
 import com.nohttp.utils.GsonUtils;
 
 import org.json.JSONObject;

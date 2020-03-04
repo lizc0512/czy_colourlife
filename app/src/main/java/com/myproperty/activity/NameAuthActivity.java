@@ -14,13 +14,13 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.BeeFramework.Utils.CompressHelper;
 import com.BeeFramework.Utils.ThemeStyleHelper;
 import com.BeeFramework.Utils.ToastUtil;
 import com.BeeFramework.Utils.Utils;
 import com.BeeFramework.activity.BaseActivity;
 import com.BeeFramework.model.HttpApi;
 import com.BeeFramework.model.HttpApiResponse;
-import com.feed.utils.CompressHelper;
 import com.myproperty.model.PropertyInfoModel;
 import com.myproperty.protocol.HouseaddressPropretyifyPostApi;
 import com.myproperty.protocol.ImageuploadPostApi;

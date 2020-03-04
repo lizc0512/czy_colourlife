@@ -8,11 +8,9 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-
 import com.BeeFramework.activity.BaseActivity;
 import com.BeeFramework.model.NewHttpResponse;
 import com.alibaba.android.arouter.facade.annotation.Route;
-import com.feed.activity.PersonalFeedActivity;
 import com.im.entity.MobileBookEntity;
 import com.im.model.IMUploadPhoneModel;
 import com.nohttp.utils.GlideImageLoader;
@@ -98,12 +96,6 @@ public class IMUserSelfInforActivity extends BaseActivity implements View.OnClic
             case R.id.user_top_view_back:
                 finish();
                 break;
-            case R.id.details_community_layout:
-                Intent LiLinIntent = new Intent(this, PersonalFeedActivity.class);
-                LiLinIntent.putExtra(PersonalFeedActivity.USERID, userId);
-                LiLinIntent.putExtra(IMInviteRegisterActivity.USERNAME, username);
-                startActivity(LiLinIntent);
-                break;
             case R.id.btn_send_msg:  //发送消息
                 HuxinSdkManager.instance().entryChatSingle(IMUserSelfInforActivity.this, useruuid, nickname, portrait, username, mobilePhone);
                 break;
@@ -118,7 +110,6 @@ public class IMUserSelfInforActivity extends BaseActivity implements View.OnClic
                     try {
                         MobileBookEntity mobileBookEntity = GsonUtils.gsonToBean(result, MobileBookEntity.class);
                         if (mobileBookEntity.getCode() == 0) {
-                            details_community_layout.setVisibility(View.VISIBLE);
                             MobileBookEntity.ContentBean contentBean = mobileBookEntity.getContent().get(0);
                             mobilePhone = contentBean.getMobile();
                             communityname = contentBean.getCommunity_name();

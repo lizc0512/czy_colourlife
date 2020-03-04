@@ -10,7 +10,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 
 import com.BeeFramework.view.Util;
-import com.feed.activity.ImagesDetailActivity;
+import com.community.activity.ImagesDetailActivity;
 import com.nohttp.utils.GlideImageLoader;
 
 import java.util.ArrayList;

@@ -13,7 +13,6 @@ import com.BeeFramework.Utils.ToastUtil;
 import com.BeeFramework.activity.BaseActivity;
 import com.BeeFramework.model.NewHttpResponse;
 import com.alibaba.android.arouter.facade.annotation.Route;
-import com.feed.activity.PersonalFeedActivity;
 import com.im.entity.MobileBookEntity;
 import com.im.model.IMUploadPhoneModel;
 import com.nohttp.utils.GlideImageLoader;
@@ -106,12 +105,6 @@ public class IMCustomerInforActivity extends BaseActivity implements View.OnClic
             case R.id.user_top_view_back:
                 finish();
                 break;
-            case R.id.details_community_layout:
-                Intent LiLinIntent = new Intent(this, PersonalFeedActivity.class);
-                LiLinIntent.putExtra(PersonalFeedActivity.USERID, userId);
-                LiLinIntent.putExtra(IMInviteRegisterActivity.USERNAME, username);
-                startActivity(LiLinIntent);
-                break;
             case R.id.btn_add_friend:  //调用IM的接口
                 Intent intent = new Intent(IMCustomerInforActivity.this, IMApplyFriendActivity.class);
                 intent.putExtra(IMInviteRegisterActivity.USERPHONE, mobilePhone);
@@ -143,7 +136,6 @@ public class IMCustomerInforActivity extends BaseActivity implements View.OnClic
                     try {
                         MobileBookEntity mobileBookEntity = GsonUtils.gsonToBean(result, MobileBookEntity.class);
                         if (mobileBookEntity.getCode() == 0) {
-                            details_community_layout.setVisibility(View.VISIBLE);
                             MobileBookEntity.ContentBean contentBean = mobileBookEntity.getContent().get(0);
                             mobilePhone = contentBean.getMobile();
                             userId = contentBean.getUser_id();

@@ -46,6 +46,7 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.BeeFramework.Utils.CompressHelper;
 import com.BeeFramework.Utils.DecodeImage;
 import com.BeeFramework.Utils.ThemeStyleHelper;
 import com.BeeFramework.Utils.ToastUtil;
@@ -53,7 +54,6 @@ import com.BeeFramework.Utils.Utils;
 import com.BeeFramework.activity.BaseActivity;
 import com.BeeFramework.model.NewHttpResponse;
 import com.BeeFramework.view.Util;
-import com.feed.utils.CompressHelper;
 import com.google.zxing.BarcodeFormat;
 import com.google.zxing.Result;
 import com.google.zxing.ResultPoint;

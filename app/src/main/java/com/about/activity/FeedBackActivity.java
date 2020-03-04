@@ -18,7 +18,6 @@ import com.BeeFramework.activity.BaseFragmentActivity;
 import com.BeeFramework.model.NewHttpResponse;
 import com.about.model.FeedbackModel;
 import com.about.protocol.FeedBackRedirectEntity;
-import com.cardcoupons.fragment.CouponsFragment;
 import com.cashier.adapter.ViewPagerAdapter;
 import com.nohttp.utils.GsonUtils;
 

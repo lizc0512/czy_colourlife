@@ -31,7 +31,6 @@ public class UpdateVerSion implements NewHttpResponse {
     private String newversion;
     private String downurl;
     private UpdateVerSionDialog updateDialog;
-    public String mMintype;//判断是从首页检查更新还是关于页面检查更新
     private UpdateAdapter updateAdapter;
     private List<String> updateList;
     private Context contexts;
@@ -126,77 +125,12 @@ public class UpdateVerSion implements NewHttpResponse {
         return result;
     }
 
-    /**
-     * 获取软件最新版本
-     *
-     * @param minType 首页传1，检查大版本，关于页面传2 检查小版本更新
-     */
-    public void getNewVerSion(String minType, boolean showDialog, Activity context) {
-        if (minType.equals("1")) {
-            mMintype = minType;
-            contexts = context;
-            isShowDialog = showDialog;
-            UpdateModel updateModel = new UpdateModel(context);
-            updateModel.chekOldVersion(getVersionName(context), minType, false, this);
-        } else if ("2".equals(minType)) {
-            UpdateVerSionHelp updateVerSionHelp = new UpdateVerSionHelp();
-            updateVerSionHelp.getNewVerSion(context, minType, showDialog);
-        }
-    }
 
-    public void getNewVerSion(Activity context, boolean showDialog,boolean slient) {
+    public void getNewVerSion(Activity context, boolean showDialog, boolean slient) {
         isShowDialog = showDialog;
         contexts = context;
         UpdateModel updateModel = new UpdateModel(context);
-        updateModel.checkVersion(getVersionName(context), !showDialog,slient, this);
-    }
-
-
-    /**
-     * 版本更新弹窗
-     */
-    public void showUpdateDialog() {
-        updateDialog = new UpdateVerSionDialog(contexts);
-        switch (code) {
-            case 1://最新版本
-                ToastUtil.toastShow(contexts, "彩之云已经是最新版本！");
-                break;
-            case 0://可选更新
-                updateDialog.ok.setText("更新至V" + UpdateVerSion.handleVersionName(newversion) + "版本");
-                updateDialog.cancel.setVisibility(View.VISIBLE);
-                updateAdapter = new UpdateAdapter(contexts, updateList);
-                updateDialog.listView.setAdapter(updateAdapter);
-                updateDialog.show();
-                break;
-            case -1://强制更新  cwy控制平台
-                updateDialog.cancel.setVisibility(View.GONE);
-                updateDialog.ok.setText("更新至V" + UpdateVerSion.handleVersionName(newversion) + "版本");
-                updateAdapter = new UpdateAdapter(contexts, updateList);
-                updateDialog.listView.setAdapter(updateAdapter);
-                updateDialog.mDialog.setCancelable(false);
-                updateDialog.show();
-                break;
-        }
-        updateDialog.ok.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (code != 1) {
-                    //用户点击更新，跳转到下载更新页面
-                    Intent intent = new Intent(contexts, UpdateService.class);
-                    intent.putExtra(UpdateService.DOWNLOAD_URL, downurl);
-                    intent.putExtra(UpdateService.VERSIONNAME, newversion);
-                    contexts.startService(intent);
-                    ToastUtil.toastShow(contexts, "彩之云已开始下载更新,详细信息可在通知栏查看哟!");
-                }
-                updateDialog.dismiss();
-            }
-        });
-        updateDialog.cancel.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                updateDialog.dismiss();
-            }
-        });
+        updateModel.checkVersion(getVersionName(context), !showDialog, slient, this);
     }
 
 
@@ -209,7 +143,7 @@ public class UpdateVerSion implements NewHttpResponse {
                 }
                 break;
             case 2://可选更新  新的版本控制平台
-                updateDialog.ok.setText("更新至V" + newversion+ "版本");
+                updateDialog.ok.setText("更新至V" + newversion + "版本");
                 updateDialog.cancel.setVisibility(View.VISIBLE);
                 updateAdapter = new UpdateAdapter(contexts, updateList);
                 updateDialog.listView.setAdapter(updateAdapter);
@@ -217,7 +151,7 @@ public class UpdateVerSion implements NewHttpResponse {
                 break;
             case 3://新的版本控制平台
                 updateDialog.cancel.setVisibility(View.GONE);
-                updateDialog.ok.setText("更新至V" + newversion+ "版本");
+                updateDialog.ok.setText("更新至V" + newversion + "版本");
                 updateAdapter = new UpdateAdapter(contexts, updateList);
                 updateDialog.listView.setAdapter(updateAdapter);
                 updateDialog.mDialog.setCancelable(false);
@@ -248,25 +182,6 @@ public class UpdateVerSion implements NewHttpResponse {
 
     @Override
     public void OnHttpResponse(int what, String result) {
-//        if (isShowDialog) {//isShowDialog 为false的时候不做处理，大版本检测更新
-//            if (!TextUtils.isEmpty(result)) {
-//                try {
-//                    UpdateContentEntity updateContentEntity = GsonUtils.gsonToBean(result, UpdateContentEntity.class);
-//                    code = updateContentEntity.getResult();////1：最新版本，2：介于最新和最低版本之间，3：低于支持的最低版本
-//                    List<UpdateContentEntity.InfoBean> infoBeanList = updateContentEntity.getInfo();
-//                    UpdateContentEntity.InfoBean infoBean = infoBeanList.get(0);
-//                    newversion = infoBean.getVersion();
-//                    updateList = infoBean.getFunc();
-//                    downurl = infoBean.getUrl();
-//                    if (!TextUtils.isEmpty(downurl)) {
-//                        showUpdateDialog();
-//                    }
-//                } catch (Exception e) {
-//
-//                }
-//            }
-//        }
-
         if (!TextUtils.isEmpty(result)) {
             try {
                 UpdateVersionEntity updateVersionEntity = GsonUtils.gsonToBean(result, UpdateVersionEntity.class);
@@ -291,7 +206,7 @@ public class UpdateVerSion implements NewHttpResponse {
             } catch (Exception e) {
 
             }
-        }else{
+        } else {
             if (!isShowDialog) {
                 ToastUtil.toastShow(contexts, "彩之云已经是最新版本！");
             }

@@ -29,7 +29,6 @@ public class NewHomeModel extends BaseModel {
     private String homeModelMsgUrl = "app/home/v5/getInstantMsg";
     private String homeMsgReadgUrl = "app/home/msg/setMsgRead";
     private String homeModuleBannerUrl = "app/home/v5/getBanner";
-    private String homeModelActivityUrl = "app/home/v5/getAdMsgByView";
     private String homeModelNewAdMsgUrl = "app/home/v5/getNewAdMsg";
     private String homeBeanSignIn = "integral/user/getPopup";
     private String homeBeanSignUrl = "integral/user/getSignIn";
@@ -334,34 +333,6 @@ public class NewHomeModel extends BaseModel {
         }, true, false);
     }
 
-    /***首页活动***/
-    public void getHomeModelActivity(int what, final NewHttpResponse newHttpResponse) {
-        final Request<String> request = NoHttp.createStringRequest(
-                RequestEncryptionUtils.getCombileMD5(mContext, 1, homeModelActivityUrl, null), RequestMethod.GET);
-        request(what, request, null, new HttpListener<String>() {
-            @Override
-            public void onSucceed(int what, Response<String> response) {
-                int responseCode = response.getHeaders().getResponseCode();
-                String result = response.get();
-                if (responseCode == RequestEncryptionUtils.responseSuccess) {
-                    int code = showSuccesResultMessageTheme(result);
-                    if (code == 0) {
-                        newHttpResponse.OnHttpResponse(what, result);
-                        editor.putString(UserAppConst.COLOR_HOME_ACTIVITY, result).apply();
-                    } else {
-                        newHttpResponse.OnHttpResponse(what, "");
-                    }
-                } else {
-                    newHttpResponse.OnHttpResponse(what, "");
-                }
-            }
-
-            @Override
-            public void onFailed(int what, Response<String> response) {
-                newHttpResponse.OnHttpResponse(what, "");
-            }
-        }, true, false);
-    }
 
     public void getHomeNewAdMsgActivity(int what, final NewHttpResponse newHttpResponse) {
         if (!isLogin) {
@@ -441,41 +412,6 @@ public class NewHomeModel extends BaseModel {
                         editor.putString(UserAppConst.BEAN_SIGN, result);
                         editor.commit();
                         newHttpResponse.OnHttpResponse(what, result);
-                    } else {
-                        newHttpResponse.OnHttpResponse(what, "");
-                    }
-                } else {
-                    newHttpResponse.OnHttpResponse(what, "");
-                }
-            }
-
-            @Override
-            public void onFailed(int what, Response<String> response) {
-                newHttpResponse.OnHttpResponse(what, "");
-            }
-        }, true, false);
-    }
-
-
-    /*
-     * 生活页面统一接口
-     *
-     * @param newHttpResponse
-     * @param isFresh         是否显示dialog
-     */
-    public void getlifeInfo(int what, final NewHttpResponse newHttpResponse) {
-        final Request<String> request = NoHttp.createStringRequest(
-                RequestEncryptionUtils.getCombileMD5(mContext, 1, homeLifeUrl, null), RequestMethod.GET);
-        request(what, request, null, new HttpListener<String>() {
-            @Override
-            public void onSucceed(int what, Response<String> response) {
-                int responseCode = response.getHeaders().getResponseCode();
-                String result = response.get();
-                if (responseCode == RequestEncryptionUtils.responseSuccess) {
-                    int resultCode = showSuccesResultMessage(result);
-                    if (resultCode == 0) {
-                        newHttpResponse.OnHttpResponse(what, result);
-                        saveCache(UserAppConst.LIFECATEGORY, result);
                     } else {
                         newHttpResponse.OnHttpResponse(what, "");
                     }

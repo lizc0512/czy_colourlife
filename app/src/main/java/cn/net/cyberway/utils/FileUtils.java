@@ -41,15 +41,6 @@ import static com.huawei.android.hms.agent.common.IOUtils.close;
  */
 public class FileUtils {
 
-
-    /**
-     * 产生图片的路径，带文件夹和文件名，文件名为当前毫秒数
-     */
-    public static String generateImgePath() {
-        return Environment.getExternalStorageDirectory().getPath()
-                + "/ColourLife/temp/" + (System.currentTimeMillis() + ".jpg");
-    }
-
     /**
      * 按质量压缩bm
      *

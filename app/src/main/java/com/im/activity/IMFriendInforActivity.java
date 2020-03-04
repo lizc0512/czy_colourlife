@@ -19,7 +19,6 @@ import com.BeeFramework.activity.BaseActivity;
 import com.BeeFramework.model.NewHttpResponse;
 import com.BeeFramework.view.Util;
 import com.alibaba.android.arouter.facade.annotation.Route;
-import com.feed.activity.PersonalFeedActivity;
 import com.im.entity.FriendInforEntity;
 import com.im.entity.MobileBookEntity;
 import com.im.helper.CacheApplyRecorderHelper;
@@ -222,12 +221,6 @@ public class IMFriendInforActivity extends BaseActivity implements View.OnClickL
             case R.id.img_right:
                 delBottomDialog();
                 break;
-            case R.id.details_community_layout:
-                Intent LiLinIntent = new Intent(this, PersonalFeedActivity.class);
-                LiLinIntent.putExtra(PersonalFeedActivity.USERID, userId);
-                LiLinIntent.putExtra(IMInviteRegisterActivity.USERNAME, username);
-                startActivity(LiLinIntent);
-                break;
             case R.id.tv_cancel:
                 if (null != communityOperationDialog) {
                     communityOperationDialog.dismiss();
@@ -374,7 +367,6 @@ public class IMFriendInforActivity extends BaseActivity implements View.OnClickL
                     try {
                         MobileBookEntity mobileBookEntity = GsonUtils.gsonToBean(result, MobileBookEntity.class);
                         if (mobileBookEntity.getCode() == 0) {
-                            details_community_layout.setVisibility(View.VISIBLE);
                             MobileBookEntity.ContentBean contentBean = mobileBookEntity.getContent().get(0);
                             mobilePhone = contentBean.getMobile();
                             communityname = contentBean.getCommunity_name();

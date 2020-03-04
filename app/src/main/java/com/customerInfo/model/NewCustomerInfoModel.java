@@ -76,39 +76,6 @@ public class NewCustomerInfoModel extends BaseModel {
         }, true, true);
     }
 
-    /**
-     * 获取小区的信息
-     */
-    public void getCommunityData(int what, String province_name, String city_name, String region_name, int page, int pageSize, boolean isLoading, final NewHttpResponse newHttpResponse) {
-        Map<String, Object> params = new HashMap<String, Object>();
-        params.put("province_name", province_name);
-        params.put("city_name", city_name);
-        params.put("region_name", region_name);
-        params.put("page", page);
-        params.put("page_size", pageSize);
-        final Request<String> request = NoHttp.createStringRequest(RequestEncryptionUtils.getCombileMD5(mContext, 3, communityUrl, params), RequestMethod.GET);
-        request(what, request, params, new HttpListener<String>() {
-
-            @Override
-            public void onSucceed(int what, Response<String> response) {
-                int responseCode = response.getHeaders().getResponseCode();
-                String result = response.get();
-                if (responseCode == RequestEncryptionUtils.responseSuccess) {
-                    int resultCode = showSuccesResultMessage(result);
-                    if (resultCode == 0) {
-                        newHttpResponse.OnHttpResponse(what, result);
-                    }
-                } else {
-                    showErrorCodeMessage(responseCode, response);
-                }
-            }
-
-            @Override
-            public void onFailed(int what, Response<String> response) {
-                showExceptionMessage(what, response);
-            }
-        }, true, isLoading);
-    }
 
 
     /**

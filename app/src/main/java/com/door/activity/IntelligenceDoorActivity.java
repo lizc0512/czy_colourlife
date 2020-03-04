@@ -42,13 +42,10 @@ import com.door.model.NewDoorAuthorModel;
 import com.door.model.NewDoorModel;
 import com.door.view.DoorRenameDialog;
 import com.door.view.ShowOpenDoorDialog;
-import com.door.view.ShowReportHealthyDialog;
 import com.external.eventbus.EventBus;
-import com.nohttp.utils.GlideImageLoader;
 import com.nohttp.utils.GsonUtils;
 import com.user.UserAppConst;
 import com.user.UserMessageConstant;
-import com.user.model.NewUserModel;
 import com.youmai.hxsdk.utils.DisplayUtil;
 
 import org.json.JSONObject;
@@ -57,14 +54,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 import cn.net.cyberway.R;
-import cn.net.cyberway.home.entity.HomeHealthReportEntity;
 import cn.net.cyberway.home.service.LekaiParkLockController;
-import cn.net.cyberway.home.service.LekaiService;
 import cn.net.cyberway.utils.LekaiHelper;
-import cn.net.cyberway.utils.LinkParseUtil;
 
 import static cn.net.cyberway.utils.TableLayoutUtils.showOpenDoorResultDialog;
-import static cn.net.cyberway.utils.TableLayoutUtils.showReportHealthyDialog;
 import static com.BeeFramework.Utils.Utils.dip2px;
 import static com.customerInfo.activity.CustomerAddPropertyActivity.COMMUNITY_NAME;
 import static com.customerInfo.activity.CustomerAddPropertyActivity.COMMUNITY_UUID;

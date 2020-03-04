@@ -2,10 +2,10 @@ package com.imagepicker.activity;
 
 import android.os.Bundle;
 
+import com.BeeFramework.Utils.Utils;
 import com.BeeFramework.activity.BaseActivity;
 import com.BeeFramework.view.TouchImageView;
 import com.imagepicker.utils.SDCardImageLoader;
-import com.imagepicker.utils.ScreenUtils;
 
 import cn.net.cyberway.R;
 
@@ -22,7 +22,7 @@ public class ReviewImageActivity extends BaseActivity {
         mPath = getIntent().getStringExtra(IMAGE_PATH);
         mImage.setTag(mPath);
         mImage.isClickBack(true);
-        mLoader = new SDCardImageLoader(ScreenUtils.getScreenW(), ScreenUtils.getScreenH());
+        mLoader = new SDCardImageLoader(Utils.getDeviceWith(this),Utils.getDeviceHeight(this));
         mLoader.loadImage2(2, mPath, mImage);
     }
 

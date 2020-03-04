@@ -47,8 +47,6 @@ public class CreateGesturePasswordActivity extends BaseActivity implements
     private static final String KEY_PATTERN_CHOICE = "chosenPattern";
     private LockPatternView mLockPatternView;
     private FrameLayout czy_title_layout;
-    private Button mFooterRightButton;
-    private Button mFooterLeftButton;
     protected TextView mHeaderText;
     protected List<Cell> mChosenPattern = null;
     private CreateGesturePasswordActivity.Stage mUiStage = CreateGesturePasswordActivity.Stage.Introduction;
@@ -237,11 +235,6 @@ public class CreateGesturePasswordActivity extends BaseActivity implements
         mHeaderText = (TextView) findViewById(R.id.gesturepwd_create_text);
         mLockPatternView.setOnPatternListener(mChooseNewLockPatternListener);
         mLockPatternView.setTactileFeedbackEnabled(true);
-
-        mFooterRightButton = (Button) this.findViewById(R.id.right_btn);
-        mFooterLeftButton = (Button) this.findViewById(R.id.reset_btn);
-        mFooterRightButton.setOnClickListener(this);
-        mFooterLeftButton.setOnClickListener(this);
         int height = Utils.getDeviceHeight(this);
         if (height < 850) {//适配超低分辨率屏幕
             ViewGroup.LayoutParams layoutParams = (ViewGroup.LayoutParams) mLockPatternView.getLayoutParams();
@@ -370,8 +363,6 @@ public class CreateGesturePasswordActivity extends BaseActivity implements
         private void patternInProgress() {
             mHeaderText.setText(R.string.lockpattern_recording_inprogress);
             mHeaderText.setTextColor(getResources().getColor(R.color.black_text_color));
-            mFooterLeftButton.setEnabled(false);
-            mFooterRightButton.setEnabled(false);
         }
     };
 

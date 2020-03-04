@@ -43,7 +43,6 @@ import com.nohttp.entity.BaseContentEntity;
 import com.nohttp.utils.GlideImageLoader;
 import com.nohttp.utils.GsonUtils;
 import com.nohttp.utils.RequestEncryptionUtils;
-import com.pay.Activity.AlixPayActivity;
 import com.point.activity.ChangePawdTwoStepActivity;
 import com.point.activity.PointChangeDeviceDialog;
 import com.point.entity.PointTransactionTokenEntity;
@@ -77,7 +76,6 @@ import cn.net.cyberway.activity.BroadcastReceiverActivity;
 import cn.net.cyberway.home.entity.PushNotificationEntity;
 import cn.net.cyberway.utils.LinkParseUtil;
 
-import static com.pay.Activity.AlixPayActivity.ALIPAY_ORDER_INFOR;
 import static com.user.UserMessageConstant.POINT_GET_CODE;
 import static com.user.UserMessageConstant.POINT_INPUT_CODE;
 import static com.user.UserMessageConstant.POINT_INPUT_PAYPAWD;

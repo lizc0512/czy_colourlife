@@ -14,6 +14,7 @@ import android.widget.GridLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.BeeFramework.Utils.CompressHelper;
 import com.BeeFramework.Utils.ImageUtil;
 import com.BeeFramework.Utils.ToastUtil;
 import com.BeeFramework.activity.BaseFragment;
@@ -23,7 +24,6 @@ import com.about.adapter.FeedBackAdapter;
 import com.about.model.FeedbackModel;
 import com.about.protocol.FeedBackTypeEntity;
 import com.about.view.FeedBackImageView;
-import com.feed.utils.CompressHelper;
 import com.nohttp.utils.GsonUtils;
 import com.permission.AndPermission;
 import com.user.model.NewUserModel;

@@ -13,8 +13,6 @@ import android.view.animation.TranslateAnimation;
 import android.widget.PopupWindow;
 import android.widget.TextView;
 
-import com.feed.activity.CreateNormalFeedActivity;
-
 import java.util.ArrayList;
 import java.util.List;
 

@@ -16,6 +16,7 @@ import android.widget.GridLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.BeeFramework.Utils.CompressHelper;
 import com.BeeFramework.Utils.ImageUtil;
 import com.BeeFramework.Utils.ToastUtil;
 import com.BeeFramework.activity.BaseActivity;
@@ -24,7 +25,6 @@ import com.community.model.CommunityDynamicsModel;
 import com.community.utils.RealIdentifyDialogUtil;
 import com.community.view.CommunityImageView;
 import com.community.view.DeleteNoticeDialog;
-import com.feed.utils.CompressHelper;
 import com.nohttp.utils.GsonUtils;
 import com.permission.AndPermission;
 import com.user.UserAppConst;
@@ -90,7 +90,7 @@ public class PublishDynamicsActivity extends BaseActivity implements View.OnClic
     private void initGridLayout() {
         create_dynamics_photo.removeAllViews();
         add_ImageView = new ImageView(this);
-        add_ImageView.setImageResource(R.drawable.f0_add_photo);
+        add_ImageView.setImageResource(R.drawable.community_dynamics_addpics);
         GridLayout.LayoutParams layoutParams = new GridLayout.LayoutParams();
         int marginPx = ImageUtil.Dp2Px(this, 5);
         layoutParams.setMargins(marginPx, marginPx, marginPx, marginPx);

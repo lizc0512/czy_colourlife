@@ -3,7 +3,6 @@ package com.BeeFramework.activity;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
-import android.annotation.TargetApi;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.bluetooth.BluetoothAdapter;
@@ -30,7 +29,6 @@ import android.os.Message;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.annotation.RequiresApi;
 import android.support.v4.content.FileProvider;
 import android.text.TextUtils;
 import android.view.KeyEvent;
@@ -57,6 +55,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.BeeFramework.JavaScriptMetod;
+import com.BeeFramework.Utils.CompressHelper;
 import com.BeeFramework.Utils.DecodeImage;
 import com.BeeFramework.Utils.ThemeStyleHelper;
 import com.BeeFramework.Utils.ToastUtil;
@@ -81,11 +80,6 @@ import com.customerInfo.activity.DeliveryAddressListActivity;
 import com.customerInfo.protocol.RealNameTokenEntity;
 import com.dashuview.library.keep.Cqb_PayUtil;
 import com.external.eventbus.EventBus;
-import com.feed.activity.CreateNormalFeedActivity;
-import com.feed.activity.FeedOrActivityActivity;
-import com.feed.activity.LinLiActivity;
-import com.feed.activity.ShareFeedActivity;
-import com.feed.utils.CompressHelper;
 import com.google.zxing.Result;
 import com.im.activity.IMCustomerInforActivity;
 import com.im.activity.IMFriendInforActivity;
@@ -391,21 +385,6 @@ public class WebViewActivity extends BaseActivity implements View.OnLongClickLis
                 break;
             case R.id.rl_sx:
                 webView.reload();
-                closeShareLayout();
-                break;
-            case R.id.rl_llq:
-                final Intent intent = new Intent(this, ShareFeedActivity.class);
-                if (!isHfiveShare) {
-                    intent.putExtra("Content", "");
-                    intent.putExtra("Title", webTitle);
-                    intent.putExtra("ImgUrl", "https://cc.colourlife.com/common/v30/logo/app_logo_v30.png");
-                } else {
-                    intent.putExtra("Content", shareContent);
-                    intent.putExtra("Title", shareTitle);
-                    intent.putExtra("ImgUrl", shareImg);
-                }
-                intent.putExtra("Url", shareUrl);
-                startActivityForResult(intent, SHARELINLI);
                 closeShareLayout();
                 break;
             case R.id.rl_wechat:
@@ -914,34 +893,6 @@ public class WebViewActivity extends BaseActivity implements View.OnLongClickLis
             isHfiveShare = true;
             showShareLayou(true);
         }
-
-        /**
-         * h5调邻里首页
-         */
-        @JavascriptInterface
-        public void Neighborhood() {
-            Intent intent = new Intent(WebViewActivity.this, LinLiActivity.class);
-            startActivity(intent);
-        }
-
-        /**
-         * h5调发动态页面
-         */
-        @JavascriptInterface
-        public void Dynamic() {
-            Intent intent = new Intent(WebViewActivity.this, CreateNormalFeedActivity.class);
-            startActivity(intent);
-        }
-
-        /**
-         * h5调发活动页面
-         */
-        @JavascriptInterface
-        public void LaunchEvent() {
-            Intent intent = new Intent(WebViewActivity.this, FeedOrActivityActivity.class);
-            startActivity(intent);
-        }
-
 
         /**
          * h5调用手机号码的功能

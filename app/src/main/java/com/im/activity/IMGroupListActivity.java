@@ -17,7 +17,6 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.BeeFramework.activity.BaseFragmentActivity;
-import com.feed.activity.LinLiActivity;
 import com.im.adapter.IMPopAdapter;
 import com.youmai.hxsdk.fragment.GroupListFragment;
 import com.youmai.hxsdk.proto.YouMaiBasic;

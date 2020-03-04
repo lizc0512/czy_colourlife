@@ -18,12 +18,12 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.BeeFramework.Utils.CompressHelper;
 import com.BeeFramework.Utils.ThemeStyleHelper;
 import com.BeeFramework.Utils.ToastUtil;
 import com.BeeFramework.activity.BaseActivity;
 import com.BeeFramework.model.HttpApi;
 import com.BeeFramework.model.HttpApiResponse;
-import com.feed.utils.CompressHelper;
 import com.mycarinfo.model.MyCarInfoModel;
 import com.mycarinfo.protocol.COLOURTICKETPROVINCEINFOLIST;
 import com.mycarinfo.protocol.VehicleAddvehiclePostApi;

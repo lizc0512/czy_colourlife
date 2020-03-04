@@ -14,18 +14,16 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.BeeFramework.Utils.CompressHelper;
 import com.BeeFramework.Utils.ToastUtil;
 import com.BeeFramework.activity.BaseActivity;
 import com.BeeFramework.model.NewHttpResponse;
 import com.external.eventbus.EventBus;
-import com.feed.utils.CompressHelper;
 import com.nohttp.utils.GsonUtils;
 import com.permission.AndPermission;
 import com.realaudit.entity.RealNameImgEntity;
 import com.realaudit.model.IdentityNameModel;
 import com.user.UserMessageConstant;
-import com.user.model.NewUserModel;
-import com.youmai.hxsdk.utils.GsonUtil;
 
 import java.io.File;
 import java.util.ArrayList;
