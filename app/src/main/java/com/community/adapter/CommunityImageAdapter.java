@@ -51,7 +51,7 @@ public class CommunityImageAdapter extends RecyclerView.Adapter<CommunityImageAd
     @Override
     public void onBindViewHolder(CommunityImageAdapter.DefaultViewHolder holder, int position) {
         String imageUrl = dynamicImagesList.get(position);
-        GlideImageLoader.loadImageDisplay(mContext, imageUrl, holder.iv_dynamic_publish);
+        GlideImageLoader.loadImageDefaultDisplay(mContext, imageUrl, holder.iv_dynamic_publish,R.drawable.default_image,R.drawable.default_image);
         holder.iv_dynamic_publish.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

@@ -22,6 +22,7 @@ import com.im.activity.IMGroupListActivity;
 import com.im.adapter.InStantMessageAdapter;
 import com.im.helper.CacheApplyRecorderHelper;
 import com.im.view.DeleteMsgDialog;
+import com.user.UserAppConst;
 import com.yanzhenjie.recyclerview.swipe.SwipeMenu;
 import com.yanzhenjie.recyclerview.swipe.SwipeMenuBridge;
 import com.yanzhenjie.recyclerview.swipe.SwipeMenuCreator;
@@ -82,9 +83,13 @@ public class CommunityMessageListActivity extends BaseActivity implements View.O
 
     private void showUnReadCount() {
         int newFriendApplyCount = CacheApplyRecorderHelper.instance().toQueryApplyRecordSize(CommunityMessageListActivity.this, "0");
-        newApplyNoticeBg.setBadgeNumber(newFriendApplyCount);
+        if (shared.getBoolean(UserAppConst.IM_APPLY_FRIEND, false)) {
+            newApplyNoticeBg.setBadgeNumber(newFriendApplyCount);
+        } else {
+            newApplyNoticeBg.setBadgeNumber(0);
+        }
         int unReadNoticeCount = shared.getInt(COLOUR_DYNAMICS_NOTICE_NUMBER, 0);
-        newApplyNoticeBg.setBadgeNumber(unReadNoticeCount);
+        unReadNoticeBg.setBadgeNumber(unReadNoticeCount);
     }
 
     @Override
@@ -152,14 +157,16 @@ public class CommunityMessageListActivity extends BaseActivity implements View.O
         community_group_layout.setOnClickListener(this::onClick);
         dynamics_notice_layout.setOnClickListener(this::onClick);
         unReadNoticeBg = new QBadgeView(CommunityMessageListActivity.this);
-        unReadNoticeBg.bindTarget(iv_new_friend);
+        unReadNoticeBg.bindTarget(iv_dynamic_notice);
         unReadNoticeBg.setBadgeGravity(Gravity.END | Gravity.TOP);
+        unReadNoticeBg.setGravityOffset(-2,-2,true);
         unReadNoticeBg.setBadgeTextSize(8f, true);
         unReadNoticeBg.setBadgeBackgroundColor(ContextCompat.getColor(CommunityMessageListActivity.this, R.color.hx_color_red_tag));
         unReadNoticeBg.setShowShadow(false);
 
         newApplyNoticeBg = new QBadgeView(CommunityMessageListActivity.this);
-        newApplyNoticeBg.bindTarget(iv_dynamic_notice);
+        newApplyNoticeBg.bindTarget(iv_new_friend);
+        newApplyNoticeBg.setGravityOffset(-2,-2,true);
         newApplyNoticeBg.setBadgeGravity(Gravity.END | Gravity.TOP);
         newApplyNoticeBg.setBadgeTextSize(8f, true);
         newApplyNoticeBg.setBadgeBackgroundColor(ContextCompat.getColor(CommunityMessageListActivity.this, R.color.hx_color_red_tag));

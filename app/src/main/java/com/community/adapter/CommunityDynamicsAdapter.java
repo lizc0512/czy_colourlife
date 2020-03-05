@@ -88,7 +88,7 @@ public class CommunityDynamicsAdapter extends RecyclerView.Adapter<CommunityDyna
         String source_id = dataBean.getSource_id();
         String is_zan = dataBean.getIs_zan();
 
-        GlideImageLoader.loadImageDisplay(mContext, avatar, holder.iv_dynamics_user_pics);
+        GlideImageLoader.loadImageDefaultDisplay(mContext, avatar, holder.iv_dynamics_user_pics, R.drawable.icon_my_tx, R.drawable.icon_my_tx);
         holder.tv_dynamics_user_name.setText(nick_name);
         holder.tv_dynamics_user_community.setText(community_name);
         if (!TextUtils.isEmpty(content)) {
@@ -99,8 +99,16 @@ public class CommunityDynamicsAdapter extends RecyclerView.Adapter<CommunityDyna
         ViewGroup.LayoutParams params = holder.tv_dynamics_text_content.getLayoutParams();
         params.height = ViewGroup.LayoutParams.WRAP_CONTENT;
         holder.tv_dynamics_text_content.setLayoutParams(params);
-        holder.tv_dynamics_like.setText(String.valueOf(zan_count));
-        holder.tv_dynamics_comment.setText(String.valueOf(comment_count));
+        if (zan_count == 0) {
+            holder.tv_dynamics_like.setText("");
+        } else {
+            holder.tv_dynamics_like.setText(String.valueOf(zan_count));
+        }
+        if (comment_count == 0) {
+            holder.tv_dynamics_comment.setText("");
+        } else {
+            holder.tv_dynamics_comment.setText(String.valueOf(comment_count));
+        }
         holder.tv_dynamics_publish_time.setText(TimeUtil.formatHomeTime(create_time));
         if (current_user_uuid.equals(publish_uuid)) {
             holder.tv_del_owner_dynamics.setVisibility(View.VISIBLE);

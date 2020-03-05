@@ -133,7 +133,7 @@ public class BeeFrameworkApp extends MultiDexApplication {
                 }
                 CacheApplyRecorderHelper.instance().insertOrUpdate(this, recordEntity);
                 SharedPreferences sharedPreferences = getSharedPreferences(UserAppConst.USERINFO, 0);
-                sharedPreferences.edit().putBoolean(UserAppConst.IM_APPLY_FRIEND, true).commit();
+                sharedPreferences.edit().putBoolean(UserAppConst.IM_APPLY_FRIEND, true).apply();
                 Message msg = new Message();
                 msg.what = UserMessageConstant.GET_APPLY_NUMBER;
                 EventBus.getDefault().post(msg);

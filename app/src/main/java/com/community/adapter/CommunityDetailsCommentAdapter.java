@@ -52,7 +52,7 @@ public class CommunityDetailsCommentAdapter extends RecyclerView.Adapter<Communi
     @Override
     public void onBindViewHolder(CommunityDetailsCommentAdapter.DefaultViewHolder holder, int position) {
         CommunityDynamicsListEntity.ContentBean.DataBean.CommentBean commentBean = commentBeanList.get(position);
-        GlideImageLoader.loadImageDisplay(activity, commentBean.getFrom_avatar(), holder.iv_dynamics_comment_pics);
+        GlideImageLoader.loadImageDefaultDisplay(activity, commentBean.getFrom_avatar(), holder.iv_dynamics_comment_pics,R.drawable.icon_my_tx,R.drawable.icon_my_tx);
         holder.tv_dynamics_comment_names.setText(commentBean.getFrom_nickname());
         StringBuffer stringBuffer = new StringBuffer();
         String to_nickname = commentBean.getTo_nickname();

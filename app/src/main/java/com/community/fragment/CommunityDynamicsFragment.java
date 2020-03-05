@@ -657,7 +657,10 @@ public class CommunityDynamicsFragment extends BaseFragment implements View.OnCl
 
     private void showTotalUnReadCount() {
         int totalUnReadMsgCount = HuxinSdkManager.instance().unreadBuddyAndCommMessage();
-        int newFriendApplyCount = CacheApplyRecorderHelper.instance().toQueryApplyRecordSize(getActivity(), "0");
+        int newFriendApplyCount=0;
+        if (shared.getBoolean(UserAppConst.IM_APPLY_FRIEND, false)) {
+            newFriendApplyCount = CacheApplyRecorderHelper.instance().toQueryApplyRecordSize(getActivity(), "0");
+        }
         int unReadNoticeCount = shared.getInt(COLOUR_DYNAMICS_NOTICE_NUMBER, 0);
         unReadBadgeView.setBadgeNumber(totalUnReadMsgCount + newFriendApplyCount + unReadNoticeCount);
         ((MainActivity) getActivity()).showUnReadMsg(unReadNoticeCount);

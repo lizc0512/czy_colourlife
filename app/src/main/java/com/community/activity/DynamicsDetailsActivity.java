@@ -203,7 +203,7 @@ public class DynamicsDetailsActivity extends BaseFragmentActivity implements Vie
         String content = dataBean.getContent();
         source_id = dataBean.getSource_id();
         is_zan = dataBean.getIs_zan();
-        GlideImageLoader.loadImageDisplay(DynamicsDetailsActivity.this, avatar, iv_dynamics_user_pics);
+        GlideImageLoader.loadImageDefaultDisplay(DynamicsDetailsActivity.this, avatar, iv_dynamics_user_pics, R.drawable.icon_my_tx, R.drawable.icon_my_tx);
         tv_dynamics_user_name.setText(nick_name);
         tv_dynamics_user_community.setText(community_name);
         tv_dynamics_text_content.setVisibility(GONE);
@@ -213,7 +213,6 @@ public class DynamicsDetailsActivity extends BaseFragmentActivity implements Vie
         } else {
             tv_dynamics_content_details.setVisibility(GONE);
         }
-        tv_dynamics_comment.setText(String.valueOf(comment_count));
         tv_dynamics_publish_time.setText(TimeUtil.formatHomeTime(create_time));
         if (current_user_uuid.equals(publish_uuid)) {
             tv_del_owner_dynamics.setVisibility(View.VISIBLE);
@@ -242,6 +241,7 @@ public class DynamicsDetailsActivity extends BaseFragmentActivity implements Vie
             rv_dynamics_images.setAdapter(communityImageAdapter);
         }
         setZanStatus();
+        setCommentCount();
         communityLikeListFragment.showLikeList(zanBeanList);
         communityCommentListFragment.showCommentList(commentBeanList);
         KeyBoardUtils.closeKeybord(feed_comment_edittext, DynamicsDetailsActivity.this);
@@ -263,7 +263,19 @@ public class DynamicsDetailsActivity extends BaseFragmentActivity implements Vie
         }
         dra.setBounds(0, 0, dra.getMinimumWidth(), dra.getMinimumHeight());
         tv_dynamics_like.setCompoundDrawables(dra, null, null, null);
-        tv_dynamics_like.setText(String.valueOf(zan_count));
+        if (zan_count == 0) {
+            tv_dynamics_like.setText("");
+        } else {
+            tv_dynamics_like.setText(String.valueOf(zan_count));
+        }
+    }
+
+    private void setCommentCount() {
+        if (comment_count == 0) {
+            tv_dynamics_comment.setText("");
+        } else {
+            tv_dynamics_comment.setText(String.valueOf(comment_count));
+        }
     }
 
     @Override
@@ -420,7 +432,7 @@ public class DynamicsDetailsActivity extends BaseFragmentActivity implements Vie
                 commentBeanList.remove(commentPosition);
                 dataBean.setComment_count(--comment_count);
                 communityCommentListFragment.delComment(commentPosition);
-                tv_dynamics_comment.setText(String.valueOf(comment_count));
+                setCommentCount();
                 callBackDynamicList(2);
                 break;
             case 5://评论 回复
@@ -462,8 +474,8 @@ public class DynamicsDetailsActivity extends BaseFragmentActivity implements Vie
                         commentBeanList.add(insertPos, commentBean);
                     }
                 }
-                tv_dynamics_comment.setText(String.valueOf(comment_count));
                 dataBean.setComment(commentBeanList);
+                setCommentCount();
                 communityCommentListFragment.addDelRelay(commentBean);
                 callBackDynamicList(2);
                 break;

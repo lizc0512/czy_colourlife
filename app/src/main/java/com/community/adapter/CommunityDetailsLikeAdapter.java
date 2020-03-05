@@ -46,7 +46,7 @@ public class CommunityDetailsLikeAdapter extends RecyclerView.Adapter<CommunityD
     @Override
     public void onBindViewHolder(CommunityDetailsLikeAdapter.DefaultViewHolder holder, int position) {
         CommunityDynamicsListEntity.ContentBean.DataBean.ZanBean zanBean = zanBeanList.get(position);
-        GlideImageLoader.loadImageDisplay(mContext, zanBean.getFrom_avatar(), holder.iv_dynamics_like_pics);
+        GlideImageLoader.loadImageDefaultDisplay(mContext, zanBean.getFrom_avatar(), holder.iv_dynamics_like_pics,R.drawable.icon_my_tx,R.drawable.icon_my_tx);
         holder.iv_dynamics_like_names.setText(zanBean.getFrom_nickname());
     }
 

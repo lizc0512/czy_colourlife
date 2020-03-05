@@ -244,7 +244,10 @@ public class MainActivity extends BaseFragmentActivity implements View.OnClickLi
 
     public void showUnReadMsg(int unReadNoticeMsg) {
         int totalUnReadMsgCount = HuxinSdkManager.instance().unreadBuddyAndCommMessage();
-        int newFriendApplyCount = CacheApplyRecorderHelper.instance().toQueryApplyRecordSize(MainActivity.this, "0");
+        int newFriendApplyCount = 0;
+        if (shared.getBoolean(UserAppConst.IM_APPLY_FRIEND, false)) {
+            newFriendApplyCount = CacheApplyRecorderHelper.instance().toQueryApplyRecordSize(MainActivity.this, "0");
+        }
         int totalCount = totalUnReadMsgCount + newFriendApplyCount + unReadNoticeMsg;
         if (null == badgeView) {
             badgeView = new QBadgeView(MainActivity.this);

@@ -47,6 +47,7 @@ import com.door.entity.SingleCommunityEntity;
 import com.door.model.NewDoorModel;
 import com.eparking.helper.PermissionUtils;
 import com.external.eventbus.EventBus;
+import com.myproperty.activity.MyPropertyActivity;
 import com.nohttp.utils.GlideImageLoader;
 import com.nohttp.utils.GridSpacingItemDecoration;
 import com.nohttp.utils.GsonUtils;
@@ -260,6 +261,7 @@ public class MainHomeFragmentNew extends Fragment implements NewHttpResponse, Vi
         alpha_community = mView.findViewById(R.id.alpha_community);
         iv_enter_chat = mView.findViewById(R.id.iv_enter_chat);
         iv_local_up = mView.findViewById(R.id.iv_local_up);
+        alpha_community.setOnClickListener(this);
         iv_enter_chat.setOnClickListener(this);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
         home_rv.setLayoutManager(linearLayoutManager);// 布局管理器。
@@ -367,6 +369,7 @@ public class MainHomeFragmentNew extends Fragment implements NewHttpResponse, Vi
         home_wallet_layout.setOnClickListener(this);
         home_period_layout.setOnClickListener(this);
         head_enter_chat.setOnClickListener(this);
+        tv_show_community.setOnClickListener(this);
     }
 
     private int themeSuccess = 0;
@@ -1284,24 +1287,9 @@ public class MainHomeFragmentNew extends Fragment implements NewHttpResponse, Vi
     }
 
     private void showBuildAndRoom() {
-        if (Util.isGps(Objects.requireNonNull(getActivity()))) {
-            community_name = mShared.getString(CityCustomConst.LOCATION_CITY, "");
-            String address_street = mShared.getString(CityCustomConst.LOCATION_HOME, "");
-            if (!TextUtils.isEmpty(address_street)) {
-                tv_show_community.setText(address_street);//显示定位 如龙华区民治路
-                alpha_community.setText(address_street);//显示定位
-            } else if (!TextUtils.isEmpty(community_name)) {
-                tv_show_community.setText(community_name);
-                alpha_community.setText(community_name);
-            } else {
-                tv_show_community.setText("无法获取当前位置");
-                alpha_community.setText("无法获取当前位置");
-                CityManager.getInstance(getActivity()).initLocation();
-            }
-        } else {
-            tv_show_community.setText("无法获取当前位置");
-            alpha_community.setText("无法获取当前位置");
-        }
+        community_name = mShared.getString(UserAppConst.Colour_login_community_name, "");
+        tv_show_community.setText(community_name);
+        alpha_community.setText(community_name);
     }
 
     private void showUserData() {
@@ -1739,6 +1727,11 @@ public class MainHomeFragmentNew extends Fragment implements NewHttpResponse, Vi
                 String content = "10502" + BuryingPointUtils.divisionSign + "消息通知" + BuryingPointUtils.divisionSign + BuryingPointUtils.homeNotificationCode;
                 LinkParseUtil.parse(getActivity(), "colourlife://proto?type=notificationList", content);
                 setMessageRead();
+                break;
+            case R.id.tv_show_community:
+            case R.id.alpha_community:
+                Intent intent = new Intent(getActivity(), MyPropertyActivity.class);
+                startActivity(intent);
                 break;
         }
     }
