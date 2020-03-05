@@ -1,16 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:ExpandableTextView="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="horizontal">
 
     <TextView
-        android:maxLines="4"
         android:id="@+id/tv_dynamics_comment"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="5dp"
+        android:ellipsize="end"
         android:lineSpacingExtra="2dp"
+        android:maxLines="4"
         android:textColor="@color/color_294166"
         android:textSize="14sp" />
 </LinearLayout>

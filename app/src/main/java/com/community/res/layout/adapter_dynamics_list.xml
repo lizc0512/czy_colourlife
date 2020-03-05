@@ -1,28 +1,30 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
     android:layout_margin="5dp"
+    android:descendantFocusability="blocksDescendants"
     android:background="@drawable/about_corners4"
-    android:layout_width="match_parent" android:layout_height="wrap_content">
+    android:orientation="vertical">
 
-    <include layout="@layout/dynamics_details_content"/>
+    <include layout="@layout/dynamics_details_content" />
 
     <View
         android:id="@+id/dynamic_divider_view"
         android:layout_width="match_parent"
-        android:background="@color/color_cccccc"
+        android:layout_height="1px"
         android:layout_marginLeft="15dp"
-        android:layout_marginRight="15dp"
         android:layout_marginTop="5dp"
+        android:layout_marginRight="15dp"
         android:layout_marginBottom="5dp"
-        android:layout_height="1px"/>
+        android:background="@color/color_cccccc" />
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/rv_dynamics_user_comments"
-        android:layout_marginRight="16dp"
-        android:layout_marginLeft="16dp"
-        android:layout_marginBottom="5dp"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        android:layout_marginBottom="5dp" />
 
 </LinearLayout>

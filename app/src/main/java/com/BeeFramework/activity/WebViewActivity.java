@@ -222,7 +222,6 @@ public class WebViewActivity extends BaseActivity implements View.OnLongClickLis
         frame_share = (FrameLayout) findViewById(R.id.webview_frame_share);
         Intent intent = getIntent();
         url = intent.getStringExtra(WEBURL);
-        url="https://qr.alipay.com/bax06463vrzqezwry6ae80e2";
         domainName = intent.getStringExtra(WEBDOMAIN);
         shareUrl = url;
         webTitle = intent.getStringExtra(WEBTITLE);

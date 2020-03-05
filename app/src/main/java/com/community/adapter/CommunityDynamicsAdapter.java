@@ -1,6 +1,7 @@
 package com.community.adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
@@ -20,9 +21,12 @@ import com.BeeFramework.view.CircleImageView;
 import com.community.entity.CommunityDynamicsListEntity;
 import com.community.view.MoreTextView;
 import com.external.eventbus.EventBus;
+import com.im.activity.IMCustomerInforActivity;
+import com.im.activity.IMFriendInforActivity;
+import com.im.activity.IMUserSelfInforActivity;
+import com.im.helper.CacheFriendInforHelper;
 import com.nohttp.utils.GlideImageLoader;
 import com.user.UserAppConst;
-
 
 import java.util.ArrayList;
 import java.util.List;
@@ -31,11 +35,11 @@ import cn.csh.colourful.life.listener.OnItemClickListener;
 import cn.net.cyberway.R;
 
 import static android.view.View.GONE;
-import static com.community.fragment.CommunityDynamicsFragment.DELETE_COMMENT_DYNAMIC;
 import static com.community.fragment.CommunityDynamicsFragment.DIRECT_COMMENT_DYNAMIC;
 import static com.community.fragment.CommunityDynamicsFragment.DIRECT_DELETE_DYNAMIC;
 import static com.community.fragment.CommunityDynamicsFragment.DIRECT_LIKE_DYNAMIC;
 import static com.community.fragment.CommunityDynamicsFragment.TIPOFF_COMMENT_DYNAMIC;
+import static com.im.activity.IMFriendInforActivity.USERIDTYPE;
 
 /**
  * @ProjectName:
@@ -92,6 +96,7 @@ public class CommunityDynamicsAdapter extends RecyclerView.Adapter<CommunityDyna
         holder.tv_dynamics_user_name.setText(nick_name);
         holder.tv_dynamics_user_community.setText(community_name);
         if (!TextUtils.isEmpty(content)) {
+            holder.tv_dynamics_text_content.setVisibility(View.VISIBLE);
             holder.tv_dynamics_text_content.setText(content);
         } else {
             holder.tv_dynamics_text_content.setVisibility(GONE);
@@ -125,7 +130,11 @@ public class CommunityDynamicsAdapter extends RecyclerView.Adapter<CommunityDyna
         }
         dra.setBounds(0, 0, dra.getMinimumWidth(), dra.getMinimumHeight());
         holder.tv_dynamics_like.setCompoundDrawables(dra, null, null, null);
-
+        if (current_user_uuid.equals(publish_uuid)) {
+            holder.iv_dynamics_user_operate.setVisibility(GONE);
+        }else{
+            holder.iv_dynamics_user_operate.setVisibility(View.VISIBLE);
+        }
         holder.iv_dynamics_user_operate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -135,13 +144,7 @@ public class CommunityDynamicsAdapter extends RecyclerView.Adapter<CommunityDyna
                 bundle.putInt("position", position);
                 Message message = Message.obtain();
                 message.obj = holder.itemView;
-                if (current_user_uuid.equals(publish_uuid)) {
-                    //用户对动态进行评论  comment_dynamic
-                    message.what = DELETE_COMMENT_DYNAMIC;
-                } else {
-                    //如果是其他访客 进行举报和评论操作  tipoff_dynamic
-                    message.what = TIPOFF_COMMENT_DYNAMIC;
-                }
+                message.what = TIPOFF_COMMENT_DYNAMIC;
                 message.setData(bundle);
                 EventBus.getDefault().post(message);
             }
@@ -218,6 +221,41 @@ public class CommunityDynamicsAdapter extends RecyclerView.Adapter<CommunityDyna
             holder.rv_dynamics_user_comments.setLayoutManager(linearLayoutManager);
             holder.rv_dynamics_user_comments.setAdapter(communityCommentAdapter);
         }
+        holder.iv_dynamics_user_pics.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                jumpUserInforPage(publish_uuid);
+            }
+        });
+        holder.tv_dynamics_user_name.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                jumpUserInforPage(publish_uuid);
+            }
+        });
+        holder.tv_dynamics_user_community.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                jumpUserInforPage(publish_uuid);
+            }
+        });
+    }
+
+    private void jumpUserInforPage( String from_uuid) {
+        Intent intent = null;
+        if (current_user_uuid.equals(from_uuid)) {
+            intent = new Intent(mContext, IMUserSelfInforActivity.class);
+        } else {
+            List<String> friendUserIdList = CacheFriendInforHelper.instance().toQueryFriendUUIdList(mContext);
+            if (friendUserIdList.contains(from_uuid)) {
+                intent = new Intent(mContext, IMFriendInforActivity.class);
+            } else {
+                intent = new Intent(mContext, IMCustomerInforActivity.class);
+            }
+        }
+        intent.putExtra(USERIDTYPE, 0);
+        intent.putExtra(IMFriendInforActivity.USERUUID, from_uuid);
+        mContext.startActivity(intent);
     }
 
 

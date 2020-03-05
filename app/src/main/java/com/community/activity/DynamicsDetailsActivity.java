@@ -41,6 +41,10 @@ import com.community.view.MoreTextView;
 import com.community.view.TipTypeListDialog;
 import com.community.view.TipoffsCommentDialog;
 import com.external.eventbus.EventBus;
+import com.im.activity.IMCustomerInforActivity;
+import com.im.activity.IMFriendInforActivity;
+import com.im.activity.IMUserSelfInforActivity;
+import com.im.helper.CacheFriendInforHelper;
 import com.nohttp.utils.GlideImageLoader;
 import com.nohttp.utils.GsonUtils;
 import com.user.UserAppConst;
@@ -54,6 +58,7 @@ import cn.net.cyberway.R;
 
 import static android.view.View.GONE;
 import static com.community.fragment.CommunityDynamicsFragment.CALLBACL_COMMENT_DYNAMIC;
+import static com.im.activity.IMFriendInforActivity.USERIDTYPE;
 
 /**
  * @name ${yuansk}
@@ -147,6 +152,8 @@ public class DynamicsDetailsActivity extends BaseFragmentActivity implements Vie
 
         user_top_view_back.setOnClickListener(this::onClick);
         iv_dynamics_user_pics.setOnClickListener(this::onClick);
+        tv_dynamics_user_name.setOnClickListener(this::onClick);
+        tv_dynamics_user_community.setOnClickListener(this::onClick);
         iv_dynamics_user_operate.setOnClickListener(this::onClick);
         tv_del_owner_dynamics.setOnClickListener(this::onClick);
         tv_dynamics_comment.setOnClickListener(this::onClick);
@@ -304,6 +311,9 @@ public class DynamicsDetailsActivity extends BaseFragmentActivity implements Vie
                 }
                 break;
             case R.id.tv_dynamics_comment://键盘弹出
+                feed_comment_edittext.setFocusable(true);
+                feed_comment_edittext.setFocusableInTouchMode(true);
+                feed_comment_edittext.requestFocus();
                 KeyBoardUtils.openKeybord(feed_comment_edittext, DynamicsDetailsActivity.this);
                 break;
             case R.id.tv_del_owner_dynamics://删除自己动态
@@ -332,7 +342,30 @@ public class DynamicsDetailsActivity extends BaseFragmentActivity implements Vie
                     RealIdentifyDialogUtil.showGoIdentifyDialog(DynamicsDetailsActivity.this);
                 }
                 break;
+            case R.id.iv_dynamics_user_pics:
+            case R.id.tv_dynamics_user_name:
+            case R.id.tv_dynamics_user_community:
+                jumpUserInforPage();
+                break;
         }
+    }
+
+    private void jumpUserInforPage() {
+        String from_uuid = dataBean.getUser_uuid();
+        Intent intent = null;
+        if (current_user_uuid.equals(from_uuid)) {
+            intent = new Intent(DynamicsDetailsActivity.this, IMUserSelfInforActivity.class);
+        } else {
+            List<String> friendUserIdList = CacheFriendInforHelper.instance().toQueryFriendUUIdList(DynamicsDetailsActivity.this);
+            if (friendUserIdList.contains(from_uuid)) {
+                intent = new Intent(DynamicsDetailsActivity.this, IMFriendInforActivity.class);
+            } else {
+                intent = new Intent(DynamicsDetailsActivity.this, IMCustomerInforActivity.class);
+            }
+        }
+        intent.putExtra(USERIDTYPE, 0);
+        intent.putExtra(IMFriendInforActivity.USERUUID, from_uuid);
+        startActivity(intent);
     }
 
 
@@ -362,6 +395,9 @@ public class DynamicsDetailsActivity extends BaseFragmentActivity implements Vie
     }
 
     public void setCommentReply(String to_userId, String from_nickename) {
+        feed_comment_edittext.setFocusable(true);
+        feed_comment_edittext.setFocusableInTouchMode(true);
+        feed_comment_edittext.requestFocus();
         KeyBoardUtils.openKeybord(feed_comment_edittext, DynamicsDetailsActivity.this);
         if (!TextUtils.isEmpty(from_nickename)) {
             feed_comment_edittext.setHint("回复" + from_nickename);
@@ -372,7 +408,6 @@ public class DynamicsDetailsActivity extends BaseFragmentActivity implements Vie
     public void showTipCommentDelDialog() {
         TipoffsCommentDialog tipoffsCommentDialog = new TipoffsCommentDialog(DynamicsDetailsActivity.this, R.style.custom_dialog_theme);
         tipoffsCommentDialog.show();
-        tipoffsCommentDialog.tv_dynamics_comment.setVisibility(GONE);
         tipoffsCommentDialog.tv_dynamics_tipoffs.setText("举报");
         tipoffsCommentDialog.tv_dynamics_tipoffs.setOnClickListener(new View.OnClickListener() {
             @Override

@@ -55,6 +55,15 @@ public class CacheFriendInforHelper {
         return uuidList;
     }
 
+    public List<String> toQueryFriendUserIdList(Context context) {
+        List<FriendInforEntity> friendInforEntityList = toQueryFriendList(context);
+        List<String> uuidList = new ArrayList<>();
+        for (FriendInforEntity friendInforEntity : friendInforEntityList) {
+            uuidList.add(String.valueOf(friendInforEntity.getId()));
+        }
+        return uuidList;
+    }
+
     /**
      * 清空当前的表记录
      */

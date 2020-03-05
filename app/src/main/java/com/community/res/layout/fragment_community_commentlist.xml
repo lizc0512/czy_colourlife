@@ -12,19 +12,34 @@
         android:id="@+id/rv_community_comment"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_marginTop="20dp"
         app:layout_behavior="@string/appbar_scrolling_view_behavior" />
 
 
+   <LinearLayout
+       android:id="@+id/no_data_layout"
+       android:layout_width="wrap_content"
+       android:orientation="vertical"
+       android:layout_centerHorizontal="true"
+       android:layout_marginTop="50dp"
+       android:layout_height="wrap_content">
 
-    <TextView
-        android:id="@+id/tv_no_data"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="50dp"
-        android:gravity="center"
-        android:layout_centerHorizontal="true"
-        android:text="@string/community_no_data"
-        android:textColor="@color/color_a9afb8"
-        android:textSize="14sp" />
+
+       <ImageView
+           android:layout_width="wrap_content"
+           android:src="@drawable/community_comment_empty"
+           android:layout_gravity="center_horizontal"
+           android:layout_height="wrap_content"/>
+
+       <TextView
+           android:layout_width="wrap_content"
+           android:layout_height="wrap_content"
+           android:layout_gravity="center_horizontal"
+           android:text="@string/community_no_data"
+           android:textColor="@color/color_a9afb8"
+           android:textSize="14sp" />
+   </LinearLayout>
+
+
 
 </RelativeLayout>

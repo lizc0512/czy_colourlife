@@ -1,15 +1,19 @@
 package com.community.adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Message;
+import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.text.SpannableString;
 import android.text.Spanned;
+import android.text.TextPaint;
 import android.text.TextUtils;
 import android.text.method.LinkMovementMethod;
+import android.text.style.ClickableSpan;
 import android.text.style.ForegroundColorSpan;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,7 +21,12 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.community.entity.CommunityDynamicsListEntity;
+import com.community.view.MoreTextView;
 import com.external.eventbus.EventBus;
+import com.im.activity.IMCustomerInforActivity;
+import com.im.activity.IMFriendInforActivity;
+import com.im.activity.IMUserSelfInforActivity;
+import com.im.helper.CacheFriendInforHelper;
 import com.user.UserAppConst;
 
 import java.util.List;
@@ -25,7 +34,9 @@ import java.util.List;
 import cn.net.cyberway.R;
 
 import static com.community.fragment.CommunityDynamicsFragment.DIRECT_DELETE_COMMENT;
-import static com.community.fragment.CommunityDynamicsFragment.REPLY_TIPOFF_COMMENT;
+import static com.community.fragment.CommunityDynamicsFragment.REPLY_OTHER_COMMENT;
+import static com.community.fragment.CommunityDynamicsFragment.TIPOFF_OTHER_COMMENT;
+import static com.im.activity.IMFriendInforActivity.USERIDTYPE;
 
 /**
  * @ProjectName:
@@ -79,16 +90,37 @@ public class CommunityCommentAdapter extends RecyclerView.Adapter<CommunityComme
         String showContent = stringBuffer.toString();
         int startLength = from_nickname.length();
         String from_uuid = commentBean.getFrom_id();
+        String sourceId = commentBean.getSource_id();
+        String commentId = commentBean.getId();
         SpannableString spannableString = new SpannableString(showContent);
         spannableString.setSpan(new ForegroundColorSpan(Color.parseColor("#25282E")), 0, startLength + 1, Spanned.SPAN_INCLUSIVE_EXCLUSIVE);
         spannableString.setSpan(new ForegroundColorSpan(Color.parseColor("#666666")), startLength + 1, showContent.length(), Spanned.SPAN_INCLUSIVE_EXCLUSIVE);
-        holder.tv_dynamics_comment.setMovementMethod(LinkMovementMethod.getInstance());
-        holder.tv_dynamics_comment.setText(spannableString);
-        holder.tv_dynamics_comment.setOnClickListener(new View.OnClickListener() {
+        spannableString.setSpan(new ClickableSpan() {
             @Override
-            public void onClick(View v) {
-                String sourceId = commentBean.getSource_id();
-                String commentId = commentBean.getId();
+            public void onClick(@NonNull View widget) {
+                Intent intent = null;
+                if (userId.equals(from_uuid)) {
+                    intent = new Intent(mContext, IMUserSelfInforActivity.class);
+                } else {
+                    List<String> friendUserIdList = CacheFriendInforHelper.instance().toQueryFriendUserIdList(mContext);
+                    if (friendUserIdList.contains(from_uuid)) {
+                        intent = new Intent(mContext, IMFriendInforActivity.class);
+                    } else {
+                        intent = new Intent(mContext, IMCustomerInforActivity.class);
+                    }
+                }
+                intent.putExtra(USERIDTYPE, 1);
+                intent.putExtra(IMFriendInforActivity.USERUUID, from_uuid);
+                mContext.startActivity(intent);
+            }
+
+            public void updateDrawState(@NonNull TextPaint ds) {
+                ds.setUnderlineText(false);
+            }
+        }, 0, startLength + 1, Spanned.SPAN_INCLUSIVE_EXCLUSIVE);
+        spannableString.setSpan(new ClickableSpan() {
+            @Override
+            public void onClick(@NonNull View widget) {
                 Bundle bundle = new Bundle();
                 bundle.putString("sourceId", sourceId);
                 bundle.putInt("position", dynaimcPos);
@@ -103,10 +135,33 @@ public class CommunityCommentAdapter extends RecyclerView.Adapter<CommunityComme
                     bundle.putString("fromNickName", from_nickname);
                     //点击别人的评论进行回复操作或举报  comment_dynamic
                     message.obj = holder.itemView;
-                    message.what = REPLY_TIPOFF_COMMENT;
+                    message.what = REPLY_OTHER_COMMENT;
                 }
                 message.setData(bundle);
                 EventBus.getDefault().post(message);
+            }
+
+            public void updateDrawState(@NonNull TextPaint ds) {
+                ds.setUnderlineText(false);
+            }
+        }, from_nickname.length() + 1, showContent.length(), Spanned.SPAN_INCLUSIVE_EXCLUSIVE);
+        holder.tv_dynamics_comment.setMovementMethod(LinkMovementMethod.getInstance());
+        holder.tv_dynamics_comment.setText(spannableString);
+        holder.tv_dynamics_comment.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                if (!userId.equals(from_uuid)) {
+                    Bundle bundle = new Bundle();
+                    bundle.putString("sourceId", sourceId);
+                    bundle.putInt("position", dynaimcPos);
+                    bundle.putString("commentId", commentId);
+                    Message message = Message.obtain();
+                    message.obj = holder.itemView;
+                    message.what = TIPOFF_OTHER_COMMENT;
+                    message.setData(bundle);
+                    EventBus.getDefault().post(message);
+                }
+                return false;
             }
         });
     }

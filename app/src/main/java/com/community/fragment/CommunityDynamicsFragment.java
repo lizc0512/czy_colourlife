@@ -77,16 +77,15 @@ import static com.youmai.hxsdk.utils.DisplayUtil.getStatusBarHeight;
  */
 public class CommunityDynamicsFragment extends BaseFragment implements View.OnClickListener, NewHttpResponse {
 
-    public static final int DIRECT_DELETE_DYNAMIC = 2000;//用户直接删除自己的动态
-    public static final int DIRECT_DELETE_COMMENT = 2001;//用户直接删除自己的评论
+    public static final int DIRECT_DELETE_DYNAMIC = 2000;//删除自己动态
+    public static final int DIRECT_DELETE_COMMENT = 2001;//删除自己的评论
     public static final int DIRECT_LIKE_DYNAMIC = 2002;//点赞或取消点赞
     public static final int DIRECT_COMMENT_DYNAMIC = 2003;//直接评论动态
-    public static final int TIPOFF_COMMENT_DYNAMIC = 2004;//举报动态或评论动态
-    public static final int REPLY_TIPOFF_COMMENT = 2005;//举报评论或回复评论
-    public static final int DELETE_COMMENT_DYNAMIC = 2006;//用户删除动态或自己评论
+    public static final int TIPOFF_COMMENT_DYNAMIC = 2004;//举报动态
+    public static final int REPLY_OTHER_COMMENT = 2005;//回复评论
     public static final int CALLBACL_COMMENT_DYNAMIC = 2007;//动态详情操作的回调
     public static final int UPDATE_DYNAMIC_REMINDCOUNT = 2008;//更新动态提醒的数目
-
+    public static final int TIPOFF_OTHER_COMMENT = 2009;//举报评论
 
     private SwipeRefreshLayout dynamics_refresh_layout;
     private ImageView iv_unRead_message;
@@ -422,29 +421,27 @@ public class CommunityDynamicsFragment extends BaseFragment implements View.OnCl
                     RealIdentifyDialogUtil.showGoIdentifyDialog(getActivity());
                 }
                 break;
-            case TIPOFF_COMMENT_DYNAMIC://举报动态或评论动态
+            case TIPOFF_COMMENT_DYNAMIC://举报动态
                 if ("1".equals(is_identity)) {
-                    View adapterView = (View) message.obj;
-                    showTipCommentDelDialog(sourceId, "", "", 1, adapterView);
+                    showTipCommentDelDialog(sourceId, "");
                 } else {
                     RealIdentifyDialogUtil.showGoIdentifyDialog(getActivity());
                 }
                 break;
-            case REPLY_TIPOFF_COMMENT://举报评论或回复评论
+            case REPLY_OTHER_COMMENT://回复评论
                 if ("1".equals(is_identity)) {
                     View adapterView = (View) message.obj;
                     fromUuid = bundle.getString("fromUuid");
                     fromNickName = bundle.getString("fromNickName");
-                    String tipOffCommentId = bundle.getString("commentId");
-                    showTipCommentDelDialog(sourceId, tipOffCommentId, fromUuid, 2, adapterView);
+                    showInputCommentDialog(adapterView, sourceId, fromUuid);
                 } else {
                     RealIdentifyDialogUtil.showGoIdentifyDialog(getActivity());
                 }
                 break;
-            case DELETE_COMMENT_DYNAMIC://删除动态或自己评论
+            case TIPOFF_OTHER_COMMENT:
                 if ("1".equals(is_identity)) {
-                    View adapterView = (View) message.obj;
-                    showTipCommentDelDialog(sourceId, "", "", 0, adapterView);
+                    String tipOffCommentId = bundle.getString("commentId");
+                    showTipCommentDelDialog(sourceId, tipOffCommentId);
                 } else {
                     RealIdentifyDialogUtil.showGoIdentifyDialog(getActivity());
                 }
@@ -525,6 +522,9 @@ public class CommunityDynamicsFragment extends BaseFragment implements View.OnCl
             }
         });
         EditText feed_comment_edittext = view.findViewById(R.id.feed_comment_edittext);
+        feed_comment_edittext.setFocusable(true);
+        feed_comment_edittext.setFocusableInTouchMode(true);
+        feed_comment_edittext.requestFocus();
         if (!TextUtils.isEmpty(fromNickName)) {
             feed_comment_edittext.setHint("回复" + fromNickName);
         }
@@ -570,37 +570,15 @@ public class CommunityDynamicsFragment extends BaseFragment implements View.OnCl
         return coordinate[1];
     }
 
-    private void showTipCommentDelDialog(String sourceId, String commentId, String user_id, int type, View adapterView) {
+    private void showTipCommentDelDialog(String sourceId, String commentId) {
         TipoffsCommentDialog tipoffsCommentDialog = new TipoffsCommentDialog(getActivity(), R.style.custom_dialog_theme);
         tipoffsCommentDialog.show();
-        tipoffsCommentDialog.tv_dynamics_comment.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                tipoffsCommentDialog.dismiss();
-                //显示评论输入的dialog  或回复的
-                showInputCommentDialog(adapterView, sourceId, user_id);
-            }
-        });
-        if (type == 0) {
-            tipoffsCommentDialog.tv_dynamics_comment.setText("评论");
-            tipoffsCommentDialog.tv_dynamics_tipoffs.setText("删除");
-        } else if (type == 1) {
-            tipoffsCommentDialog.tv_dynamics_comment.setText("评论");
-            tipoffsCommentDialog.tv_dynamics_tipoffs.setText("举报");
-        } else if (type == 2) {
-            tipoffsCommentDialog.tv_dynamics_comment.setText("回复");
-            tipoffsCommentDialog.tv_dynamics_tipoffs.setText("举报");
-        }
         tipoffsCommentDialog.tv_dynamics_tipoffs.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 //显示举报列表的dialog
                 tipoffsCommentDialog.dismiss();
-                if (type == 0 || type == 3) { //删除动态 或评论
-                    showDelDynamics(sourceId, commentId);
-                } else {//举报动态或评论
-                    showTipOffDialog(sourceId, commentId);
-                }
+                showTipOffDialog(sourceId, commentId);
             }
         });
     }
@@ -657,7 +635,7 @@ public class CommunityDynamicsFragment extends BaseFragment implements View.OnCl
 
     private void showTotalUnReadCount() {
         int totalUnReadMsgCount = HuxinSdkManager.instance().unreadBuddyAndCommMessage();
-        int newFriendApplyCount=0;
+        int newFriendApplyCount = 0;
         if (shared.getBoolean(UserAppConst.IM_APPLY_FRIEND, false)) {
             newFriendApplyCount = CacheApplyRecorderHelper.instance().toQueryApplyRecordSize(getActivity(), "0");
         }

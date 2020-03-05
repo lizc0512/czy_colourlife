@@ -1,6 +1,8 @@
 package com.community.adapter;
 
 import android.app.Activity;
+import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
@@ -12,12 +14,18 @@ import android.widget.TextView;
 
 import com.community.activity.DynamicsDetailsActivity;
 import com.community.entity.CommunityDynamicsListEntity;
+import com.im.activity.IMCustomerInforActivity;
+import com.im.activity.IMFriendInforActivity;
+import com.im.activity.IMUserSelfInforActivity;
+import com.im.helper.CacheFriendInforHelper;
 import com.nohttp.utils.GlideImageLoader;
 import com.user.UserAppConst;
 
 import java.util.List;
 
 import cn.net.cyberway.R;
+
+import static com.im.activity.IMFriendInforActivity.USERIDTYPE;
 
 /**
  * @ProjectName:
@@ -36,6 +44,7 @@ public class CommunityDetailsCommentAdapter extends RecyclerView.Adapter<Communi
     private List<CommunityDynamicsListEntity.ContentBean.DataBean.CommentBean> commentBeanList;
     private Activity activity;
     private String userId;
+
     public CommunityDetailsCommentAdapter(Activity activity, List<CommunityDynamicsListEntity.ContentBean.DataBean.CommentBean> commentBeanList) {
         this.activity = activity;
         this.commentBeanList = commentBeanList;
@@ -52,7 +61,7 @@ public class CommunityDetailsCommentAdapter extends RecyclerView.Adapter<Communi
     @Override
     public void onBindViewHolder(CommunityDetailsCommentAdapter.DefaultViewHolder holder, int position) {
         CommunityDynamicsListEntity.ContentBean.DataBean.CommentBean commentBean = commentBeanList.get(position);
-        GlideImageLoader.loadImageDefaultDisplay(activity, commentBean.getFrom_avatar(), holder.iv_dynamics_comment_pics,R.drawable.icon_my_tx,R.drawable.icon_my_tx);
+        GlideImageLoader.loadImageDefaultDisplay(activity, commentBean.getFrom_avatar(), holder.iv_dynamics_comment_pics, R.drawable.icon_my_tx, R.drawable.icon_my_tx);
         holder.tv_dynamics_comment_names.setText(commentBean.getFrom_nickname());
         StringBuffer stringBuffer = new StringBuffer();
         String to_nickname = commentBean.getTo_nickname();
@@ -67,8 +76,8 @@ public class CommunityDetailsCommentAdapter extends RecyclerView.Adapter<Communi
         holder.itemView.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View v) {
-                if (!userId.equals(commentBean.getFrom_id())){
-                    ((DynamicsDetailsActivity)activity).setTipsOffCommentId(commentBean.getId());
+                if (!userId.equals(commentBean.getFrom_id())) {
+                    ((DynamicsDetailsActivity) activity).setTipsOffCommentId(commentBean.getId());
                 }
                 return false;
             }
@@ -76,13 +85,42 @@ public class CommunityDetailsCommentAdapter extends RecyclerView.Adapter<Communi
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (userId.equals(commentBean.getFrom_id())){
-                    ((DynamicsDetailsActivity)activity).setDelCommentId(commentBean.getId());
-                }else{
-                    ((DynamicsDetailsActivity)activity).setCommentReply(commentBean.getFrom_id(),commentBean.getFrom_nickname());
+                if (userId.equals(commentBean.getFrom_id())) {
+                    ((DynamicsDetailsActivity) activity).setDelCommentId(commentBean.getId());
+                } else {
+                    ((DynamicsDetailsActivity) activity).setCommentReply(commentBean.getFrom_id(), commentBean.getFrom_nickname());
                 }
             }
         });
+        holder.iv_dynamics_comment_pics.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                jumpUserInforPage(holder.itemView.getContext(),commentBean.getFrom_id());
+            }
+        });
+        holder.tv_dynamics_comment_names.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                jumpUserInforPage(holder.itemView.getContext(),commentBean.getFrom_id());
+            }
+        });
+    }
+
+    private void jumpUserInforPage(Context mContext, String from_uuid) {
+        Intent intent = null;
+        if (userId.equals(from_uuid)) {
+            intent = new Intent(mContext, IMUserSelfInforActivity.class);
+        } else {
+            List<String> friendUserIdList = CacheFriendInforHelper.instance().toQueryFriendUserIdList(mContext);
+            if (friendUserIdList.contains(from_uuid)) {
+                intent = new Intent(mContext, IMFriendInforActivity.class);
+            } else {
+                intent = new Intent(mContext, IMCustomerInforActivity.class);
+            }
+        }
+        intent.putExtra(USERIDTYPE, 1);
+        intent.putExtra(IMFriendInforActivity.USERUUID, from_uuid);
+        mContext.startActivity(intent);
     }
 
 

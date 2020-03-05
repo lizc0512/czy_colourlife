@@ -24,8 +24,6 @@ import cn.net.cyberway.R;
 
 public class TipoffsCommentDialog extends Dialog {
     Context context;
-
-    public TextView tv_dynamics_comment;
     public TextView tv_dynamics_tipoffs;
     public TextView tv_dynamics_cancel;
 
@@ -38,7 +36,6 @@ public class TipoffsCommentDialog extends Dialog {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         this.setContentView(R.layout.dialog_dynamics_tipsoff);
-        tv_dynamics_comment = findViewById(R.id.tv_dynamics_comment);
         tv_dynamics_tipoffs = findViewById(R.id.tv_dynamics_tipoffs);
         tv_dynamics_cancel = findViewById(R.id.tv_dynamics_cancel);
         Window window = getWindow();

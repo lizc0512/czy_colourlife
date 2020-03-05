@@ -1,6 +1,8 @@
 package com.community.adapter;
 
 import android.content.Context;
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,11 +11,18 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.community.entity.CommunityDynamicsListEntity;
+import com.im.activity.IMCustomerInforActivity;
+import com.im.activity.IMFriendInforActivity;
+import com.im.activity.IMUserSelfInforActivity;
+import com.im.helper.CacheFriendInforHelper;
 import com.nohttp.utils.GlideImageLoader;
+import com.user.UserAppConst;
 
 import java.util.List;
 
 import cn.net.cyberway.R;
+
+import static com.im.activity.IMFriendInforActivity.USERIDTYPE;
 
 /**
  * @ProjectName:
@@ -31,10 +40,13 @@ public class CommunityDetailsLikeAdapter extends RecyclerView.Adapter<CommunityD
 
     private List<CommunityDynamicsListEntity.ContentBean.DataBean.ZanBean> zanBeanList;
     private Context mContext;
+    private String userId;
 
     public CommunityDetailsLikeAdapter(Context context, List<CommunityDynamicsListEntity.ContentBean.DataBean.ZanBean> zanBeanList) {
         this.mContext = context;
         this.zanBeanList = zanBeanList;
+        SharedPreferences sharedPreferences = context.getSharedPreferences(UserAppConst.USERINFO, 0);
+        userId = String.valueOf(sharedPreferences.getInt(UserAppConst.Colour_User_id, 0));
     }
 
     @Override
@@ -46,8 +58,28 @@ public class CommunityDetailsLikeAdapter extends RecyclerView.Adapter<CommunityD
     @Override
     public void onBindViewHolder(CommunityDetailsLikeAdapter.DefaultViewHolder holder, int position) {
         CommunityDynamicsListEntity.ContentBean.DataBean.ZanBean zanBean = zanBeanList.get(position);
-        GlideImageLoader.loadImageDefaultDisplay(mContext, zanBean.getFrom_avatar(), holder.iv_dynamics_like_pics,R.drawable.icon_my_tx,R.drawable.icon_my_tx);
+        GlideImageLoader.loadImageDefaultDisplay(mContext, zanBean.getFrom_avatar(), holder.iv_dynamics_like_pics, R.drawable.icon_my_tx, R.drawable.icon_my_tx);
         holder.iv_dynamics_like_names.setText(zanBean.getFrom_nickname());
+        String from_uuid = zanBean.getFrom_id();
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = null;
+                if (userId.equals(from_uuid)) {
+                    intent = new Intent(mContext, IMUserSelfInforActivity.class);
+                } else {
+                    List<String> friendUserIdList = CacheFriendInforHelper.instance().toQueryFriendUserIdList(mContext);
+                    if (friendUserIdList.contains(from_uuid)) {
+                        intent = new Intent(mContext, IMFriendInforActivity.class);
+                    } else {
+                        intent = new Intent(mContext, IMCustomerInforActivity.class);
+                    }
+                }
+                intent.putExtra(USERIDTYPE, 1);
+                intent.putExtra(IMFriendInforActivity.USERUUID, from_uuid);
+                mContext.startActivity(intent);
+            }
+        });
     }
 
 

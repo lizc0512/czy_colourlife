@@ -63,7 +63,7 @@ public class UserIdInforEntity extends BaseContentEntity {
         private String nick_name;
         private String name;
         private String portrait;
-        private int gender;
+        private String gender;
         private String real_name;
         private String community_uuid;
         private String community_name;
@@ -140,11 +140,11 @@ public class UserIdInforEntity extends BaseContentEntity {
             this.portrait = portrait;
         }
 
-        public int getGender() {
+        public String getGender() {
             return gender;
         }
 
-        public void setGender(int gender) {
+        public void setGender(String gender) {
             this.gender = gender;
         }
 

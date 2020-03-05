@@ -8,10 +8,12 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+
 import com.BeeFramework.activity.BaseActivity;
 import com.BeeFramework.model.NewHttpResponse;
 import com.alibaba.android.arouter.facade.annotation.Route;
 import com.im.entity.MobileBookEntity;
+import com.im.entity.UserIdInforEntity;
 import com.im.model.IMUploadPhoneModel;
 import com.nohttp.utils.GlideImageLoader;
 import com.nohttp.utils.GsonUtils;
@@ -43,6 +45,7 @@ public class IMUserSelfInforActivity extends BaseActivity implements View.OnClic
     private Button btn_send_msg;
     private String mobilePhone;
     private String useruuid;
+    private int userType;
     private String userId;
     private String username;
     private String nickname;
@@ -66,9 +69,16 @@ public class IMUserSelfInforActivity extends BaseActivity implements View.OnClic
         details_community_layout.setOnClickListener(this);
         btn_send_msg.setOnClickListener(this);
         user_top_view_title.setText("详细资料");
-        useruuid = getIntent().getStringExtra(IMFriendInforActivity.USERUUID);
+        Intent intent = getIntent();
+        useruuid = intent.getStringExtra(IMFriendInforActivity.USERUUID);
+        userType = intent.getIntExtra(IMFriendInforActivity.USERIDTYPE, 0);
         IMUploadPhoneModel imUploadPhoneModel = new IMUploadPhoneModel(IMUserSelfInforActivity.this);
-        imUploadPhoneModel.getUserInforByUuid(0, useruuid, true, this);
+        if (userType == 1) {
+            //为1时传递过来的为用户的id
+            imUploadPhoneModel.getUserInforByUserId(0, useruuid, this);
+        } else {
+            imUploadPhoneModel.getUserInforByUuid(0, useruuid, true, this);
+        }
     }
 
     private void setUserInfor() {
@@ -108,18 +118,34 @@ public class IMUserSelfInforActivity extends BaseActivity implements View.OnClic
             case 0:
                 if (!TextUtils.isEmpty(result)) {
                     try {
-                        MobileBookEntity mobileBookEntity = GsonUtils.gsonToBean(result, MobileBookEntity.class);
-                        if (mobileBookEntity.getCode() == 0) {
-                            MobileBookEntity.ContentBean contentBean = mobileBookEntity.getContent().get(0);
-                            mobilePhone = contentBean.getMobile();
-                            communityname = contentBean.getCommunity_name();
-                            username = contentBean.getName();
-                            userId = contentBean.getUser_id();
-                            nickname = contentBean.getNick_name();
-                            portrait = contentBean.getPortrait();
-                            gender = contentBean.getGender();
-                            setUserInfor();
+                        if (userType == 1) {
+                            UserIdInforEntity  userIdInforEntity=GsonUtils.gsonToBean(result,UserIdInforEntity.class);
+                            if (userIdInforEntity.getCode()==0){
+                                UserIdInforEntity.ContentBean   contentBean=userIdInforEntity.getContent();
+                                mobilePhone = contentBean.getMobile();
+                                communityname = contentBean.getCommunity_name();
+                                username = contentBean.getName();
+                                userId = contentBean.getId();
+                                useruuid = contentBean.getUuid();
+                                nickname = contentBean.getNick_name();
+                                portrait = contentBean.getPortrait();
+                                gender = contentBean.getGender();
+                            }
+                        } else {
+                            MobileBookEntity mobileBookEntity = GsonUtils.gsonToBean(result, MobileBookEntity.class);
+                            if (mobileBookEntity.getCode() == 0) {
+                                MobileBookEntity.ContentBean contentBean = mobileBookEntity.getContent().get(0);
+                                mobilePhone = contentBean.getMobile();
+                                communityname = contentBean.getCommunity_name();
+                                username = contentBean.getName();
+                                userId = contentBean.getUser_id();
+                                useruuid = contentBean.getUuid();
+                                nickname = contentBean.getNick_name();
+                                portrait = contentBean.getPortrait();
+                                gender = contentBean.getGender();
+                            }
                         }
+                        setUserInfor();
                     } catch (Exception e) {
 
                     }

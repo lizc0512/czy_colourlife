@@ -21,6 +21,7 @@ import com.BeeFramework.view.Util;
 import com.alibaba.android.arouter.facade.annotation.Route;
 import com.im.entity.FriendInforEntity;
 import com.im.entity.MobileBookEntity;
+import com.im.entity.UserIdInforEntity;
 import com.im.helper.CacheApplyRecorderHelper;
 import com.im.helper.CacheFriendInforHelper;
 import com.im.model.IMUploadPhoneModel;
@@ -63,6 +64,7 @@ import static com.youmai.hxsdk.proto.YouMaiBuddy.BuddyOptType.BUDDY_OPT_REMOVE_B
 @Route(path = APath.BUDDY_FRIEND)
 public class IMFriendInforActivity extends BaseActivity implements View.OnClickListener, NewHttpResponse {
     public static final String USERUUID = "useruuid";  //用户的uuid
+    public static final String USERIDTYPE = "useridtype";  //默认为用户的 uuid 传1为用户id
     private ImageView user_top_view_back;
     private TextView user_top_view_title;
     private ImageView img_right;
@@ -82,6 +84,7 @@ public class IMFriendInforActivity extends BaseActivity implements View.OnClickL
     private String userRemark;
     private String useruuid;
     private String userId;
+    private int userType;
     private String username;
     private String nickname;
     private String gender;
@@ -119,8 +122,14 @@ public class IMFriendInforActivity extends BaseActivity implements View.OnClickL
         user_top_view_title.setText(getResources().getString(R.string.instant_detail_infor));
         Intent intent = getIntent();
         useruuid = intent.getStringExtra(IMFriendInforActivity.USERUUID);
+        userType = intent.getIntExtra(IMFriendInforActivity.USERIDTYPE, 0);
         IMUploadPhoneModel imUploadPhoneModel = new IMUploadPhoneModel(IMFriendInforActivity.this);
-        imUploadPhoneModel.getUserInforByUuid(0, useruuid, true, this);
+        if (userType == 1) {
+            //为1时传递过来的为用户的id
+            imUploadPhoneModel.getUserInforByUserId(0, useruuid, this);
+        } else {
+            imUploadPhoneModel.getUserInforByUuid(0, useruuid, true, this);
+        }
         HuxinSdkManager.instance().getStackAct().addActivity(this);
     }
 
@@ -254,7 +263,7 @@ public class IMFriendInforActivity extends BaseActivity implements View.OnClickL
                 if (TextUtils.isEmpty(mobilePhone)) {
                     ToastUtil.toastShow(IMFriendInforActivity.this, "被转账人手机号码为空");
                 } else {
-                    Intent transfer_intent=new Intent(IMFriendInforActivity.this, MyPointActivity.class);
+                    Intent transfer_intent = new Intent(IMFriendInforActivity.this, MyPointActivity.class);
                     transfer_intent.putExtra(GivenPointAmountActivity.GIVENMOBILE, mobilePhone);
                     startActivity(transfer_intent);
                 }
@@ -365,24 +374,39 @@ public class IMFriendInforActivity extends BaseActivity implements View.OnClickL
             case 0:
                 if (!TextUtils.isEmpty(result)) {
                     try {
-                        MobileBookEntity mobileBookEntity = GsonUtils.gsonToBean(result, MobileBookEntity.class);
-                        if (mobileBookEntity.getCode() == 0) {
-                            MobileBookEntity.ContentBean contentBean = mobileBookEntity.getContent().get(0);
-                            mobilePhone = contentBean.getMobile();
-                            communityname = contentBean.getCommunity_name();
-                            String realName = contentBean.getReal_name();
-                            if (TextUtils.isEmpty(realName)) {
+                        if (userType == 1) {
+                            UserIdInforEntity userIdInforEntity = GsonUtils.gsonToBean(result, UserIdInforEntity.class);
+                            if (userIdInforEntity.getCode() == 0) {
+                                UserIdInforEntity.ContentBean contentBean = userIdInforEntity.getContent();
+                                mobilePhone = contentBean.getMobile();
+                                communityname = contentBean.getCommunity_name();
                                 username = contentBean.getName();
-                            } else {
-                                username = realName;
+                                userId = contentBean.getId();
+                                useruuid = contentBean.getUuid();
+                                nickname = contentBean.getNick_name();
+                                portrait = contentBean.getPortrait();
+                                gender = contentBean.getGender();
                             }
-                            nickname = contentBean.getNick_name();
-                            portrait = contentBean.getPortrait();
-                            gender = contentBean.getGender();
-                            userId = contentBean.getUser_id();
-
-                            setUserInfor();
+                        } else {
+                            MobileBookEntity mobileBookEntity = GsonUtils.gsonToBean(result, MobileBookEntity.class);
+                            if (mobileBookEntity.getCode() == 0) {
+                                MobileBookEntity.ContentBean contentBean = mobileBookEntity.getContent().get(0);
+                                mobilePhone = contentBean.getMobile();
+                                communityname = contentBean.getCommunity_name();
+                                String realName = contentBean.getReal_name();
+                                if (TextUtils.isEmpty(realName)) {
+                                    username = contentBean.getName();
+                                } else {
+                                    username = realName;
+                                }
+                                nickname = contentBean.getNick_name();
+                                portrait = contentBean.getPortrait();
+                                gender = contentBean.getGender();
+                                userId = contentBean.getUser_id();
+                                useruuid = contentBean.getUuid();
+                            }
                         }
+                        setUserInfor();
                     } catch (Exception e) {
                         getUserInfor();
                     }
@@ -397,6 +421,7 @@ public class IMFriendInforActivity extends BaseActivity implements View.OnClickL
         FriendInforEntity friendInforEntity = CacheFriendInforHelper.instance().toQueryFriendnforById(IMFriendInforActivity.this, useruuid);
         if (null != friendInforEntity) {
             mobilePhone = friendInforEntity.getMobile();
+            useruuid = friendInforEntity.getUuid();
             communityname = friendInforEntity.getCommunityName();
             username = friendInforEntity.getUsername();
             if (TextUtils.isEmpty(username)) {

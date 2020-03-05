@@ -30,7 +30,7 @@ public class IMUploadPhoneModel extends BaseModel {
     private final String userByMobileUrl = "/api/im/getUserByMobile";
     private final String userByUuidUrl = "/api/im/getUserByUuid"; //用户uuid获取用户信息
     private final String userByMobiledUrl = "/api/im/searchUserByMobile"; //用户手机号获取用户信息
-    private final String userInfoByIdUrl = "/user/userInfoById"; //根据用户的id获取用户信息
+    private final String userInfoByIdUrl = "user/userInfoById"; //根据用户的id获取用户信息
 
     public IMUploadPhoneModel(Context context) {
         super(context);
@@ -119,9 +119,9 @@ public class IMUploadPhoneModel extends BaseModel {
         }, true, true);
     }
 
-    public void getUserInforByUserId(int what, int userId, final NewHttpResponse newHttpResponse) {
+    public void getUserInforByUserId(int what, String userId, final NewHttpResponse newHttpResponse) {
         Map<String, Object> map = new HashMap<>();
-        map.put("id", String.valueOf(userId));
+        map.put("id", userId);
         final Request<String> request = NoHttp.createStringRequest(
                 RequestEncryptionUtils.getCombileMD5(mContext, 3, userInfoByIdUrl,map), RequestMethod.GET);
         request(what, request, map, new HttpListener<String>() {

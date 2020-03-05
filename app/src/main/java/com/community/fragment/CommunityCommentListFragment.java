@@ -2,6 +2,7 @@ package com.community.fragment;
 
 import android.support.v7.widget.LinearLayoutManager;
 import android.view.View;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.BeeFramework.activity.BaseFragment;
@@ -28,7 +29,7 @@ import cn.net.cyberway.R;
  */
 public class CommunityCommentListFragment extends BaseFragment {
     private SwipeMenuRecyclerView rv_community_comment;
-    private TextView tv_no_data;
+    private LinearLayout no_data_layout;
 
     private List<CommunityDynamicsListEntity.ContentBean.DataBean.CommentBean> allCommentBeanList = new ArrayList<>();
 
@@ -42,7 +43,7 @@ public class CommunityCommentListFragment extends BaseFragment {
     @Override
     protected void initView(View rootView) {
         rv_community_comment = rootView.findViewById(R.id.rv_community_comment);
-        tv_no_data = rootView.findViewById(R.id.tv_no_data);
+        no_data_layout = rootView.findViewById(R.id.no_data_layout);
         //进行点赞列表的显示
         communityDetailsCommentAdapter = new CommunityDetailsCommentAdapter(getActivity(), allCommentBeanList);
         rv_community_comment.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false));
@@ -52,9 +53,9 @@ public class CommunityCommentListFragment extends BaseFragment {
 
     private void showEmptyData() {
         if (allCommentBeanList == null || allCommentBeanList.size() == 0) {
-            tv_no_data.setVisibility(View.VISIBLE);
+            no_data_layout.setVisibility(View.VISIBLE);
         } else {
-            tv_no_data.setVisibility(View.GONE);
+            no_data_layout.setVisibility(View.GONE);
         }
     }
 

@@ -85,7 +85,9 @@
                 android:maxHeight="100dp"
                 android:minHeight="36dp"
                 android:paddingLeft="10dp"
+                android:textCursorDrawable="@drawable/dynamics_comment_cursor"
                 android:paddingRight="10dp"
+                android:textColorHint="@color/color_cccccc"
                 android:textColor="@color/color_25282e"
                 android:textSize="14sp" />
 

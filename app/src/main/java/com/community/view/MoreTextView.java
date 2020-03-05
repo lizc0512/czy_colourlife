@@ -19,6 +19,7 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.BeeFramework.Utils.ToastUtil;
 import com.BeeFramework.view.Util;
 
 import cn.net.cyberway.R;
@@ -181,7 +182,6 @@ public class MoreTextView extends LinearLayout implements View.OnClickListener {
                 .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         inflater.inflate(R.layout.item_expand_collapse, this);
         mTvContent = (TextView) findViewById(R.id.expandable_text);
-        mTvContent.setOnClickListener(this);
         mTvExpandCollapse = (TextView) findViewById(R.id.expand_collapse);
         setDrawbleAndText();
         mTvExpandCollapse.setOnClickListener(this);
@@ -205,64 +205,69 @@ public class MoreTextView extends LinearLayout implements View.OnClickListener {
      */
     @Override
     public void onClick(View view) {
-        if (mTvExpandCollapse.getVisibility() != View.VISIBLE) {
-            return;
-        }
-        mCollapsed = !mCollapsed;
-        //修改收起/展开图标、文字
-        setDrawbleAndText();
-        //保存位置状态
-        if (mCollapsedStatus != null) {
-            mCollapsedStatus.put(mPosition, mCollapsed);
-        }
-        // 执行展开/收起动画
-        mAnimating = true;
-        ValueAnimator valueAnimator;
-        if (mCollapsed) {
-//            mTvContent.setMaxLines(mMaxCollapsedLines);
-            valueAnimator = new ValueAnimator().ofInt(getHeight(), mCollapsedHeight);
-        } else {
-            valueAnimator = new ValueAnimator().ofInt(getHeight(), getHeight() +
-                    mTextHeightWithMaxLines - mTvContent.getHeight());
-        }
-        valueAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
-            @Override
-            public void onAnimationUpdate(ValueAnimator valueAnimator) {
-                int animatedValue = (int) valueAnimator.getAnimatedValue();
-                mTvContent.setMaxHeight(animatedValue - mMarginBetweenTxtAndBottom);
-                getLayoutParams().height = animatedValue;
-                requestLayout();
-            }
-        });
-        valueAnimator.addListener(new Animator.AnimatorListener() {
-            @Override
-            public void onAnimationStart(Animator animator) {
-
-            }
-
-            @Override
-            public void onAnimationEnd(Animator animator) {
-                // 动画结束后发送结束的信号
-                /// clear the animation flag
-                mAnimating = false;
-                // notify the listener
-                if (mListener != null) {
-                    mListener.onExpandStateChanged(mTvContent, !mCollapsed);
+        switch (view.getId()) {
+            case R.id.expand_collapse:
+                if (mTvExpandCollapse.getVisibility() != View.VISIBLE) {
+                    return;
                 }
-            }
+                mCollapsed = !mCollapsed;
+                //修改收起/展开图标、文字
+                setDrawbleAndText();
+                //保存位置状态
+                if (mCollapsedStatus != null) {
+                    mCollapsedStatus.put(mPosition, mCollapsed);
+                }
+                // 执行展开/收起动画
+                mAnimating = true;
+                ValueAnimator valueAnimator;
+                if (mCollapsed) {
+//            mTvContent.setMaxLines(mMaxCollapsedLines);
+                    valueAnimator = new ValueAnimator().ofInt(getHeight(), mCollapsedHeight);
+                } else {
+                    valueAnimator = new ValueAnimator().ofInt(getHeight(), getHeight() +
+                            mTextHeightWithMaxLines - mTvContent.getHeight());
+                }
+                valueAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+                    @Override
+                    public void onAnimationUpdate(ValueAnimator valueAnimator) {
+                        int animatedValue = (int) valueAnimator.getAnimatedValue();
+                        mTvContent.setMaxHeight(animatedValue - mMarginBetweenTxtAndBottom);
+                        getLayoutParams().height = animatedValue;
+                        requestLayout();
+                    }
+                });
+                valueAnimator.addListener(new Animator.AnimatorListener() {
+                    @Override
+                    public void onAnimationStart(Animator animator) {
 
-            @Override
-            public void onAnimationCancel(Animator animator) {
+                    }
 
-            }
+                    @Override
+                    public void onAnimationEnd(Animator animator) {
+                        // 动画结束后发送结束的信号
+                        /// clear the animation flag
+                        mAnimating = false;
+                        // notify the listener
+                        if (mListener != null) {
+                            mListener.onExpandStateChanged(mTvContent, !mCollapsed);
+                        }
+                    }
 
-            @Override
-            public void onAnimationRepeat(Animator animator) {
+                    @Override
+                    public void onAnimationCancel(Animator animator) {
 
-            }
-        });
-        valueAnimator.setDuration(mAnimationDuration);
-        valueAnimator.start();
+                    }
+
+                    @Override
+                    public void onAnimationRepeat(Animator animator) {
+
+                    }
+                });
+                valueAnimator.setDuration(mAnimationDuration);
+                valueAnimator.start();
+                break;
+        }
+
     }
 
     @Override
@@ -305,7 +310,12 @@ public class MoreTextView extends LinearLayout implements View.OnClickListener {
         if (mCollapsed) {
             mTvContent.setMaxLines(mMaxCollapsedLines);
         }
-        mTvExpandCollapse.setVisibility(View.VISIBLE);
+        if (mMaxCollapsedLines == 4) {
+            mTvExpandCollapse.setVisibility(View.GONE);
+        }else{
+            mTvExpandCollapse.setVisibility(View.VISIBLE);
+        }
+
 
         // Re-measure with new setup
         super.onMeasure(widthMeasureSpec, heightMeasureSpec);
@@ -339,11 +349,11 @@ public class MoreTextView extends LinearLayout implements View.OnClickListener {
      * 设置收起展开图标位置和文字
      */
     private void setDrawbleAndText() {
-//        if (Gravity.LEFT == drawableGrarity) {
-//            mTvExpandCollapse.setCompoundDrawablesWithIntrinsicBounds(mCollapsed ? mCollapseDrawable : mExpandDrawable, null, null, null);
-//        } else {
-//            mTvExpandCollapse.setCompoundDrawablesWithIntrinsicBounds(null, null, mCollapsed ? mCollapseDrawable : mExpandDrawable, null);
-//        }
+        if (mMaxCollapsedLines == 4) {
+            mTvExpandCollapse.setVisibility(View.GONE);
+        }else{
+            mTvExpandCollapse.setVisibility(View.VISIBLE);
+        }
         mTvExpandCollapse.setText(mCollapsed ? getResources().getString(R.string.expand) : getResources().getString(R.string.collapse));
     }
 
