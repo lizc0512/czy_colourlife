@@ -251,7 +251,7 @@ public class BeeFrameworkApp extends MultiDexApplication {
     }
 
     public void fixOppoAssetManager() {
-        String device= TokenUtils.getDeviceBrand().toLowerCase();
+        String device = TokenUtils.getDeviceBrand().toLowerCase();
         if (!TextUtils.isEmpty(device)) {
             if (device.contains("oppo")) {
                 try {
