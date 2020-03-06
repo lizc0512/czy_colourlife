@@ -21,7 +21,6 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.community.entity.CommunityDynamicsListEntity;
-import com.community.view.MoreTextView;
 import com.external.eventbus.EventBus;
 import com.im.activity.IMCustomerInforActivity;
 import com.im.activity.IMFriendInforActivity;
@@ -95,9 +94,11 @@ public class CommunityCommentAdapter extends RecyclerView.Adapter<CommunityComme
         SpannableString spannableString = new SpannableString(showContent);
         spannableString.setSpan(new ForegroundColorSpan(Color.parseColor("#25282E")), 0, startLength + 1, Spanned.SPAN_INCLUSIVE_EXCLUSIVE);
         spannableString.setSpan(new ForegroundColorSpan(Color.parseColor("#666666")), startLength + 1, showContent.length(), Spanned.SPAN_INCLUSIVE_EXCLUSIVE);
-        spannableString.setSpan(new ClickableSpan() {
+        holder.tv_dynamics_comment.setText(spannableString);
+        holder.tv_dynamics_name.setText(from_nickname + ":");
+        holder.tv_dynamics_name.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(@NonNull View widget) {
+            public void onClick(View v) {
                 Intent intent = null;
                 if (userId.equals(from_uuid)) {
                     intent = new Intent(mContext, IMUserSelfInforActivity.class);
@@ -113,14 +114,10 @@ public class CommunityCommentAdapter extends RecyclerView.Adapter<CommunityComme
                 intent.putExtra(IMFriendInforActivity.USERUUID, from_uuid);
                 mContext.startActivity(intent);
             }
-
-            public void updateDrawState(@NonNull TextPaint ds) {
-                ds.setUnderlineText(false);
-            }
-        }, 0, startLength + 1, Spanned.SPAN_INCLUSIVE_EXCLUSIVE);
-        spannableString.setSpan(new ClickableSpan() {
+        });
+        holder.tv_dynamics_comment.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(@NonNull View widget) {
+            public void onClick(View v) {
                 Bundle bundle = new Bundle();
                 bundle.putString("sourceId", sourceId);
                 bundle.putInt("position", dynaimcPos);
@@ -140,13 +137,7 @@ public class CommunityCommentAdapter extends RecyclerView.Adapter<CommunityComme
                 message.setData(bundle);
                 EventBus.getDefault().post(message);
             }
-
-            public void updateDrawState(@NonNull TextPaint ds) {
-                ds.setUnderlineText(false);
-            }
-        }, from_nickname.length() + 1, showContent.length(), Spanned.SPAN_INCLUSIVE_EXCLUSIVE);
-        holder.tv_dynamics_comment.setMovementMethod(LinkMovementMethod.getInstance());
-        holder.tv_dynamics_comment.setText(spannableString);
+        });
         holder.tv_dynamics_comment.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View v) {
@@ -179,10 +170,12 @@ public class CommunityCommentAdapter extends RecyclerView.Adapter<CommunityComme
 
     static class DefaultViewHolder extends RecyclerView.ViewHolder {
         TextView tv_dynamics_comment;
+        TextView tv_dynamics_name;
 
         public DefaultViewHolder(View itemView) {
             super(itemView);
             tv_dynamics_comment = itemView.findViewById(R.id.tv_dynamics_comment);
+            tv_dynamics_name = itemView.findViewById(R.id.tv_dynamics_name);
         }
     }
 }

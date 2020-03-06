@@ -359,6 +359,8 @@ public class CommunityDynamicsFragment extends BaseFragment implements View.OnCl
                     }
                     commentBean.setTo_nickname(fromNickName);
                     commentBean.setTo_id(fromUuid);
+                    long currentTime=System.currentTimeMillis()/1000;
+                    commentBean.setCreated_at(currentTime);
                     if (insertPos == commentSize - 1) {
                         commentDataList.add(commentBean);
                     } else {

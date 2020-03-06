@@ -391,7 +391,7 @@ public class CommunityDynamicsListEntity extends BaseContentEntity {
                 private String to_id;
                 private String content;
                 private int status;
-                private String created_at;
+                private long created_at;
                 private String updated_at;
                 private String from_nickname;
                 private String from_avatar;
@@ -450,11 +450,11 @@ public class CommunityDynamicsListEntity extends BaseContentEntity {
                     this.status = status;
                 }
 
-                public String getCreated_at() {
+                public long getCreated_at() {
                     return created_at;
                 }
 
-                public void setCreated_at(String created_at) {
+                public void setCreated_at(long created_at) {
                     this.created_at = created_at;
                 }
 

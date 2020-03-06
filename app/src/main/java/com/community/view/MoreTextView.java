@@ -19,7 +19,6 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.BeeFramework.Utils.ToastUtil;
 import com.BeeFramework.view.Util;
 
 import cn.net.cyberway.R;
@@ -312,7 +311,7 @@ public class MoreTextView extends LinearLayout implements View.OnClickListener {
         }
         if (mMaxCollapsedLines == 4) {
             mTvExpandCollapse.setVisibility(View.GONE);
-        }else{
+        } else {
             mTvExpandCollapse.setVisibility(View.VISIBLE);
         }
 
@@ -351,7 +350,7 @@ public class MoreTextView extends LinearLayout implements View.OnClickListener {
     private void setDrawbleAndText() {
         if (mMaxCollapsedLines == 4) {
             mTvExpandCollapse.setVisibility(View.GONE);
-        }else{
+        } else {
             mTvExpandCollapse.setVisibility(View.VISIBLE);
         }
         mTvExpandCollapse.setText(mCollapsed ? getResources().getString(R.string.expand) : getResources().getString(R.string.collapse));
@@ -378,6 +377,10 @@ public class MoreTextView extends LinearLayout implements View.OnClickListener {
         mRelayout = true;
         mTvContent.setText(text);
         setVisibility(TextUtils.isEmpty(text) ? View.GONE : View.VISIBLE);
+    }
+
+    public TextView getContentTextView() {
+        return mTvContent;
     }
 
     /**

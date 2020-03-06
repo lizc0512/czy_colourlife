@@ -76,42 +76,31 @@ public class CouponsFragment extends Fragment {
     }
 
     public void prepareData() {
-        if (!TextUtils.isEmpty(WEBURL)) {
-            mAgentWeb = AgentWeb.with(this)//传入Activity
-                    .setAgentWebParent((FrameLayout) rootView.findViewById(R.id.webview_layout), new RelativeLayout.LayoutParams(-1, -1))
-                    .setIndicatorColorWithHeight(Color.parseColor("#01A7FF"), 2)
-                    .setWebViewClient(htmlWebViewClient)
-                    .setWebChromeClient(htmlWebChromeClient)
-                    .setSecurityType(AgentWeb.SecurityType.strict)
-                    .setAgentWebWebSettings(getSettings())
-                    .createAgentWeb().ready().go(WEBURL);
-            mAgentWeb.getJsInterfaceHolder().addJavaObject("jsObject", new JSObject());
-            webView = mAgentWeb.getWebCreator().get();
-            webView.setWebChromeClient(htmlWebChromeClient);
-            webView.setWebViewClient(htmlWebViewClient);
-            webView.loadUrl(WEBURL);
-            String imei = TokenUtils.getImeiId(getActivity());
-            String imeis = Utils.setMD5(imei).toUpperCase();
-            WebSettings webSettings = webView.getSettings();
-            String ua = webSettings.getUserAgentString();
-            webSettings.setUserAgentString(ua + "/" + imeis + "/colourlifeApp");
-        }
-    }
-
-    public void goBack() {
-        if (webView != null) {
-            if (webView.canGoBack()) {
-                webView.goBack();
-            } else {
-                try {
-                    Objects.requireNonNull(getActivity()).setResult(200, new Intent());
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-                getActivity().finish();
+        if (null!=getActivity()){
+            if (!TextUtils.isEmpty(WEBURL)) {
+                mAgentWeb = AgentWeb.with(this)//传入Activity
+                        .setAgentWebParent((FrameLayout) rootView.findViewById(R.id.webview_layout), new RelativeLayout.LayoutParams(-1, -1))
+                        .setIndicatorColorWithHeight(Color.parseColor("#01A7FF"), 2)
+                        .setWebViewClient(htmlWebViewClient)
+                        .setWebChromeClient(htmlWebChromeClient)
+                        .setSecurityType(AgentWeb.SecurityType.strict)
+                        .setAgentWebWebSettings(getSettings())
+                        .createAgentWeb().ready().go(WEBURL);
+                mAgentWeb.getJsInterfaceHolder().addJavaObject("jsObject", new JSObject());
+                webView = mAgentWeb.getWebCreator().get();
+                webView.setWebChromeClient(htmlWebChromeClient);
+                webView.setWebViewClient(htmlWebViewClient);
+                webView.loadUrl(WEBURL);
+                String imei = TokenUtils.getImeiId(getActivity());
+                String imeis = Utils.setMD5(imei).toUpperCase();
+                WebSettings webSettings = webView.getSettings();
+                String ua = webSettings.getUserAgentString();
+                webSettings.setUserAgentString(ua + "/" + imeis + "/colourlifeApp");
             }
         }
     }
+
+
 
     public class JSObject {
         /**

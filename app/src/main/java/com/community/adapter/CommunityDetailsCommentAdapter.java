@@ -12,6 +12,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.BeeFramework.Utils.TimeUtil;
 import com.community.activity.DynamicsDetailsActivity;
 import com.community.entity.CommunityDynamicsListEntity;
 import com.im.activity.IMCustomerInforActivity;
@@ -73,6 +74,7 @@ public class CommunityDetailsCommentAdapter extends RecyclerView.Adapter<Communi
         }
         stringBuffer.append(commentBean.getContent());
         holder.tv_dynamics_comment_content.setText(stringBuffer.toString());
+        holder.tv_dynamics_comment_times.setText(TimeUtil.noticeTime(commentBean.getCreated_at()));
         holder.itemView.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View v) {
@@ -137,12 +139,14 @@ public class CommunityDetailsCommentAdapter extends RecyclerView.Adapter<Communi
     static class DefaultViewHolder extends RecyclerView.ViewHolder {
         ImageView iv_dynamics_comment_pics;
         TextView tv_dynamics_comment_names;
+        TextView tv_dynamics_comment_times;
         TextView tv_dynamics_comment_content;
 
         public DefaultViewHolder(View itemView) {
             super(itemView);
             iv_dynamics_comment_pics = itemView.findViewById(R.id.iv_dynamics_comment_pics);
             tv_dynamics_comment_names = itemView.findViewById(R.id.tv_dynamics_comment_names);
+            tv_dynamics_comment_times = itemView.findViewById(R.id.tv_dynamics_comment_times);
             tv_dynamics_comment_content = itemView.findViewById(R.id.tv_dynamics_comment_content);
         }
     }

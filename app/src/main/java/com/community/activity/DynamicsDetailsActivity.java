@@ -484,6 +484,8 @@ public class DynamicsDetailsActivity extends BaseFragmentActivity implements Vie
                 commentBean.setFrom_mobile(shared.getString(UserAppConst.Colour_login_mobile, ""));
                 commentBean.setFrom_id(current_user_id);
                 commentBean.setSource_id(source_id);
+                long currentTime=System.currentTimeMillis()/1000;
+                commentBean.setCreated_at(currentTime);
                 commentBean.setFrom_nickname(shared.getString(UserAppConst.Colour_NIACKNAME, ""));
                 dataBean.setComment_count(++comment_count);
                 if (TextUtils.isEmpty(to_userid)) {

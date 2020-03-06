@@ -79,9 +79,6 @@ public class TimeUtil {
     }
 
 
-    /**
-     * 邻里
-     ***/
     public static String timeAgoInt(int timeStr) {
         Date date = new Date((long) timeStr * 1000);
         long timeStamp = date.getTime();
