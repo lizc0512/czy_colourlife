@@ -169,6 +169,7 @@ public class UserAppConst {
     public static final String COLOUR_DYNAMICS_REAL_IDENTITY="colour_dynamics_real_identity";//用户是否实名的
     public static final String COLOUR_DYNAMICS_TIPOFF_LIST="colour_dynamics_tipoff_list";//举报列表
     public static final String COLOUR_DYNAMICS_NOTICE_NUMBER="colour_dynamics_notice_number";//消息提醒数量
+    public static final String COLOUR_DYNAMICS_NEWLIST_CACHE="colour_dynamics_newlist_cache";//动态提醒列表的首页缓存
 
     /**
      * 彩惠人生

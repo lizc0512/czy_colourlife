@@ -29,10 +29,14 @@ import com.im.activity.IMApplyFriendRecordActivity;
 import com.im.entity.ApplyRecordEntity;
 import com.im.greendao.IMGreenDaoManager;
 import com.im.helper.CacheApplyRecorderHelper;
+import com.nohttp.utils.SSLContextUtil;
 import com.shell.SdkManager;
 import com.user.UserAppConst;
 import com.user.UserMessageConstant;
 import com.user.Utils.TokenUtils;
+import com.yanzhenjie.nohttp.InitializationConfig;
+import com.yanzhenjie.nohttp.NoHttp;
+import com.yanzhenjie.nohttp.URLConnectionNetworkExecutor;
 import com.youmai.hxsdk.HuxinSdkManager;
 import com.youmai.hxsdk.ProtoCallback;
 import com.youmai.hxsdk.proto.YouMaiBuddy;
@@ -40,6 +44,8 @@ import com.youmai.hxsdk.proto.YouMaiBuddy;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
+
+import javax.net.ssl.SSLContext;
 
 import cn.csh.colourful.life.utils.ColourLifeSDK;
 import cn.net.cyberway.R;

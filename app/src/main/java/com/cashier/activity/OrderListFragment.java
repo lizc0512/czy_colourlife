@@ -141,7 +141,9 @@ public class OrderListFragment extends BaseFragment implements NewHttpResponse {
      * 取消订单当前的立即刷新
      **/
     public void cancelRefreshList() {
-        rv_orderlist.startHeaderRefresh();
+        if (null!=rv_orderlist){
+            rv_orderlist.startHeaderRefresh();
+        }
     }
 
     @Override

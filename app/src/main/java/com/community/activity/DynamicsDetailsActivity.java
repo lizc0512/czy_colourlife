@@ -114,7 +114,7 @@ public class DynamicsDetailsActivity extends BaseFragmentActivity implements Vie
     public String comment_id;
     public String to_userid;
     public String to_nickname;
-    public int commentPosition;
+    public int commentPosition = -1;
     private String content;
 
     @Override
@@ -333,6 +333,7 @@ public class DynamicsDetailsActivity extends BaseFragmentActivity implements Vie
                             KeyBoardUtils.closeKeybord(feed_comment_edittext, DynamicsDetailsActivity.this);
                             communityDynamicsModel.commentDynamic(5, content, source_id, to_userid, DynamicsDetailsActivity.this::OnHttpResponse);
                             to_userid = "";
+                            feed_comment_edittext.setHint(getResources().getString(R.string.community_comment_hint));
                             feed_comment_edittext.setText("");
                         }
                     } else {
@@ -376,7 +377,11 @@ public class DynamicsDetailsActivity extends BaseFragmentActivity implements Vie
             //删除动态  删除评论
             deleteNoticeDialog.dismiss();
             if (TextUtils.isEmpty(comment_id)) {
-                communityDynamicsModel.delUserDynamic(3, source_id, DynamicsDetailsActivity.this);
+                if (commentPosition == -1) {
+                    communityDynamicsModel.delUserDynamic(3, source_id, DynamicsDetailsActivity.this);
+                } else { //处理自评论 自删除时 评论的id没生成
+                    delDynamicCommentSuccess();
+                }
             } else {
                 communityDynamicsModel.delOwnerComment(4, source_id, comment_id, DynamicsDetailsActivity.this);
             }
@@ -395,12 +400,16 @@ public class DynamicsDetailsActivity extends BaseFragmentActivity implements Vie
     }
 
     public void setCommentReply(String to_userId, String from_nickename) {
+        to_nickname = from_nickename;
         feed_comment_edittext.setFocusable(true);
         feed_comment_edittext.setFocusableInTouchMode(true);
         feed_comment_edittext.requestFocus();
         KeyBoardUtils.openKeybord(feed_comment_edittext, DynamicsDetailsActivity.this);
+
         if (!TextUtils.isEmpty(from_nickename)) {
             feed_comment_edittext.setHint("回复" + from_nickename);
+        } else {
+            feed_comment_edittext.setHint("回复");
         }
         this.to_userid = to_userId;
     }
@@ -463,12 +472,7 @@ public class DynamicsDetailsActivity extends BaseFragmentActivity implements Vie
                 callBackDynamicList(1);
                 break;
             case 4://删除评论
-                ToastUtil.toastShow(DynamicsDetailsActivity.this, "评论删除成功");
-                commentBeanList.remove(commentPosition);
-                dataBean.setComment_count(--comment_count);
-                communityCommentListFragment.delComment(commentPosition);
-                setCommentCount();
-                callBackDynamicList(2);
+                delDynamicCommentSuccess();
                 break;
             case 5://评论 回复
                 String commentId = "";
@@ -484,33 +488,19 @@ public class DynamicsDetailsActivity extends BaseFragmentActivity implements Vie
                 commentBean.setFrom_mobile(shared.getString(UserAppConst.Colour_login_mobile, ""));
                 commentBean.setFrom_id(current_user_id);
                 commentBean.setSource_id(source_id);
-                long currentTime=System.currentTimeMillis()/1000;
+                long currentTime = System.currentTimeMillis() / 1000;
                 commentBean.setCreated_at(currentTime);
                 commentBean.setFrom_nickname(shared.getString(UserAppConst.Colour_NIACKNAME, ""));
                 dataBean.setComment_count(++comment_count);
                 if (TextUtils.isEmpty(to_userid)) {
-                    commentBeanList.add(commentBean);
                     ToastUtil.toastShow(DynamicsDetailsActivity.this, "评论成功");
                 } else {
                     //回复别人的评论
                     ToastUtil.toastShow(DynamicsDetailsActivity.this, "回复成功");
-                    int commentSize = commentBeanList.size();
-                    int insertPos = 0;
-                    for (int j = commentSize - 1; j >= 0; j--) {
-                        CommunityDynamicsListEntity.ContentBean.DataBean.CommentBean replyCommentBean = commentBeanList.get(j);
-                        if (replyCommentBean.getFrom_id().equals(current_user_id)) {
-                            insertPos = j;
-                            break;
-                        }
-                    }
                     commentBean.setTo_nickname(to_nickname);
                     commentBean.setTo_id(to_userid);
-                    if (insertPos == commentSize - 1) {
-                        commentBeanList.add(commentBean);
-                    } else {
-                        commentBeanList.add(insertPos, commentBean);
-                    }
                 }
+                commentBeanList.add(commentBean);
                 dataBean.setComment(commentBeanList);
                 setCommentCount();
                 communityCommentListFragment.addDelRelay(commentBean);
@@ -549,6 +539,16 @@ public class DynamicsDetailsActivity extends BaseFragmentActivity implements Vie
                 callBackDynamicList(2);
                 break;
         }
+    }
+
+    private void delDynamicCommentSuccess() {
+        ToastUtil.toastShow(DynamicsDetailsActivity.this, "评论删除成功");
+        commentBeanList.remove(commentPosition);
+        dataBean.setComment_count(--comment_count);
+        communityCommentListFragment.delComment(commentPosition);
+        setCommentCount();
+        callBackDynamicList(2);
+        commentPosition = -1;
     }
 
     private void callBackDynamicList(int type) {

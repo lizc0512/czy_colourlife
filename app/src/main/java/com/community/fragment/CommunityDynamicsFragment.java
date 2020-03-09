@@ -2,10 +2,14 @@ package com.community.fragment;
 
 import android.app.Dialog;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.Rect;
 import android.os.Bundle;
 import android.os.Message;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
+import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
@@ -16,6 +20,7 @@ import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -24,7 +29,6 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.BeeFramework.Utils.ToastUtil;
-import com.BeeFramework.activity.BaseFragment;
 import com.BeeFramework.model.NewHttpResponse;
 import com.community.activity.CommunityMessageListActivity;
 import com.community.activity.DynamicsDetailsActivity;
@@ -58,6 +62,7 @@ import cn.net.cyberway.activity.MainActivity;
 import q.rorbin.badgeview.QBadgeView;
 
 import static com.community.activity.DynamicsDetailsActivity.DYNAMICS_DETAILS;
+import static com.user.UserAppConst.COLOUR_DYNAMICS_NEWLIST_CACHE;
 import static com.user.UserAppConst.COLOUR_DYNAMICS_NOTICE_NUMBER;
 import static com.user.UserMessageConstant.CHANGE_COMMUNITY;
 import static com.user.UserMessageConstant.SIGN_IN_SUCCESS;
@@ -75,7 +80,7 @@ import static com.youmai.hxsdk.utils.DisplayUtil.getStatusBarHeight;
  * @UpdateRemark: 更新内容
  * @Version: 1.0
  */
-public class CommunityDynamicsFragment extends BaseFragment implements View.OnClickListener, NewHttpResponse {
+public class CommunityDynamicsFragment extends Fragment implements View.OnClickListener, NewHttpResponse {
 
     public static final int DIRECT_DELETE_DYNAMIC = 2000;//删除自己动态
     public static final int DIRECT_DELETE_COMMENT = 2001;//删除自己的评论
@@ -101,17 +106,23 @@ public class CommunityDynamicsFragment extends BaseFragment implements View.OnCl
     private int page = 1;
     private String year = "";
     private int total = 0;
+    private SharedPreferences mShared;
+    private SharedPreferences.Editor editor;
 
     private CommunityDynamicsAdapter communityDynamicsAdapter;
-
+    private boolean isFirst;
 
     @Override
-    protected int getLayoutResource() {
-        return R.layout.fragment_community_dynamics;
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        mShared = getActivity().getSharedPreferences(UserAppConst.USERINFO, 0);
+        editor = mShared.edit();
     }
 
+    @Nullable
     @Override
-    protected void initView(View rootView) {
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        View rootView = inflater.inflate(R.layout.fragment_community_dynamics, container, false);
         EventBus.getDefault().register(this);
         dynamics_refresh_layout = rootView.findViewById(R.id.dynamics_refresh_layout);
         community_tabbar_view = rootView.findViewById(R.id.community_tabbar_view);
@@ -168,17 +179,23 @@ public class CommunityDynamicsFragment extends BaseFragment implements View.OnCl
         unReadBadgeView.setBadgeTextSize(8f, true);
         unReadBadgeView.setBadgeBackgroundColor(ContextCompat.getColor(getActivity(), R.color.hx_color_red_tag));
         unReadBadgeView.setShowShadow(false);
-
         iv_unRead_message.setOnClickListener(this::onClick);
         iv_publish_dynamics.setOnClickListener(this::onClick);
         tv_send_dynamics.setOnClickListener(this::onClick);
         communityDynamicsModel = new CommunityDynamicsModel(getActivity());
         newUserModel = new NewUserModel(getActivity());
-        communityDynamicsModel.getCommunityDynamicList(0, page, year, true, this);
+        String dynamicCache = mShared.getString(COLOUR_DYNAMICS_NEWLIST_CACHE, "");
+        if (!TextUtils.isEmpty(dynamicCache)) {
+            dynamicContentList.clear();
+            showDynamicList(dynamicCache);
+            communityDynamicsModel.getCommunityDynamicList(0, page, year, false, this);
+        } else {
+            communityDynamicsModel.getCommunityDynamicList(0, page, year, true, this);
+        }
         newUserModel.getIsRealName(1, false, CommunityDynamicsFragment.this);
         communityDynamicsModel.getReportContent(2, CommunityDynamicsFragment.this);
+        return rootView;
     }
-
 
     private void setTabViewHeight(View tabBarView) {
         LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, getStatusBarHeight(getActivity()));
@@ -234,6 +251,61 @@ public class CommunityDynamicsFragment extends BaseFragment implements View.OnCl
 
     private List<CommunityDynamicsListEntity.ContentBean.DataBean> dynamicContentList = new ArrayList<>();
 
+    private void showDynamicList(String result) {
+        try {
+            boolean dataEmpty = false;
+            String resultYear = "";
+            int resultTotal = 0;
+            if (!TextUtils.isEmpty(result)) {
+                CommunityDynamicsListEntity communityDynamicsListEntity = GsonUtils.gsonToBean(result, CommunityDynamicsListEntity.class);
+                CommunityDynamicsListEntity.ContentBean contentBean = communityDynamicsListEntity.getContent();
+                resultTotal = contentBean.getTotal();
+                resultYear = contentBean.getYear();
+                List<CommunityDynamicsListEntity.ContentBean.DataBean> pageContentList = contentBean.getData();
+                dataEmpty = pageContentList == null || pageContentList.size() == 0;
+                dynamicContentList.addAll(pageContentList);
+            }
+            if (dynamicContentList.size() == 0) {
+                dynamics_data_layout.setVisibility(View.GONE);
+                dynamics_empty_layout.setVisibility(View.VISIBLE);
+                //用户没有动态
+            } else {
+                dynamics_data_layout.setVisibility(View.VISIBLE);
+                dynamics_empty_layout.setVisibility(View.GONE);
+                boolean hasMore = false;
+                if (!TextUtils.isEmpty(resultYear)) {
+                    if (year.equals(resultYear)) { //2次请求的时间一样
+                        total = resultTotal;
+                    } else {
+                        year = resultYear;
+                        total += resultTotal;
+                    }
+                } else {
+                    total = resultTotal;
+                }
+                if (total > dynamicContentList.size()) {
+                    hasMore = true;
+                } else {
+                    hasMore = false;
+                }
+                if (null == communityDynamicsAdapter) {
+                    communityDynamicsAdapter = new CommunityDynamicsAdapter(getActivity(), dynamicContentList);
+                    LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
+                    rv_community_dynamics.setLayoutManager(linearLayoutManager);
+                    ((SimpleItemAnimator) rv_community_dynamics.getItemAnimator()).setSupportsChangeAnimations(false);
+                    rv_community_dynamics.setAdapter(communityDynamicsAdapter);
+                } else {
+                    communityDynamicsAdapter.notifyDataSetChanged();
+                }
+                setDynamicsListener();
+                //进行数据适配器的展示
+                rv_community_dynamics.loadMoreFinish(dataEmpty, hasMore);
+            }
+        } catch (Exception e) {
+
+        }
+    }
+
     @Override
     public void OnHttpResponse(int what, String result) {
         switch (what) {
@@ -243,43 +315,10 @@ public class CommunityDynamicsFragment extends BaseFragment implements View.OnCl
                     dynamics_refresh_layout.setRefreshing(false);
                 }
                 if (TextUtils.isEmpty(year) && page == 1) {
+                    editor.putString(COLOUR_DYNAMICS_NEWLIST_CACHE, result).apply();
                     dynamicContentList.clear();
                 }
-                boolean dataEmpty = false;
-                if (!TextUtils.isEmpty(result)) {
-                    CommunityDynamicsListEntity communityDynamicsListEntity = GsonUtils.gsonToBean(result, CommunityDynamicsListEntity.class);
-                    CommunityDynamicsListEntity.ContentBean contentBean = communityDynamicsListEntity.getContent();
-                    total = contentBean.getTotal();
-                    year = contentBean.getYear();
-                    List<CommunityDynamicsListEntity.ContentBean.DataBean> pageContentList = contentBean.getData();
-                    dataEmpty = pageContentList == null || pageContentList.size() == 0;
-                    dynamicContentList.addAll(pageContentList);
-                }
-                if (dynamicContentList.size() == 0) {
-                    dynamics_data_layout.setVisibility(View.GONE);
-                    dynamics_empty_layout.setVisibility(View.VISIBLE);
-                    //用户没有动态
-                } else {
-                    dynamics_data_layout.setVisibility(View.VISIBLE);
-                    dynamics_empty_layout.setVisibility(View.GONE);
-                    boolean hasMore = true;
-                    if (TextUtils.isEmpty(year) && total < 10) {
-                        //不能进行分页 暂无更多动态
-                        hasMore = false;
-                    }
-                    if (null == communityDynamicsAdapter) {
-                        communityDynamicsAdapter = new CommunityDynamicsAdapter(getActivity(), dynamicContentList);
-                        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
-                        rv_community_dynamics.setLayoutManager(linearLayoutManager);
-                        ((SimpleItemAnimator) rv_community_dynamics.getItemAnimator()).setSupportsChangeAnimations(false);
-                        rv_community_dynamics.setAdapter(communityDynamicsAdapter);
-                    } else {
-                        communityDynamicsAdapter.notifyDataSetChanged();
-                    }
-                    setDynamicsListener();
-                    //进行数据适配器的展示
-                    rv_community_dynamics.loadMoreFinish(dataEmpty, hasMore);
-                }
+                showDynamicList(result);
                 break;
             case 3:
                 ToastUtil.toastShow(getActivity(), "动态举报成功");
@@ -299,12 +338,7 @@ public class CommunityDynamicsFragment extends BaseFragment implements View.OnCl
                 }
                 break;
             case 6:
-                ToastUtil.toastShow(getActivity(), "评论删除成功");
-                CommunityDynamicsListEntity.ContentBean.DataBean delDataBean = dynamicContentList.get(position);
-                delDataBean.getComment().remove(commentPosition);
-                int delComment_Count = delDataBean.getComment_count();
-                delDataBean.setComment_count(--delComment_Count);
-                communityDynamicsAdapter.notifyItemChanged(position);
+                delDynamicCommentSuccess();
                 break;
             case 7:
                 CommunityDynamicsListEntity.ContentBean.DataBean dataBean = dynamicContentList.get(position);
@@ -335,52 +369,37 @@ public class CommunityDynamicsFragment extends BaseFragment implements View.OnCl
                 commentBean.setContent(content);
                 commentBean.setId(commentId);
                 commentBean.setSource_id(commentDataBean.getSource_id());
-                commentBean.setFrom_mobile(shared.getString(UserAppConst.Colour_login_mobile, ""));
-                int userId = shared.getInt(UserAppConst.Colour_User_id, 0);
+                commentBean.setFrom_mobile(mShared.getString(UserAppConst.Colour_login_mobile, ""));
+                int userId = mShared.getInt(UserAppConst.Colour_User_id, 0);
                 String fromSourceId = String.valueOf(userId);
                 commentBean.setFrom_id(fromSourceId);
-                commentBean.setFrom_nickname(shared.getString(UserAppConst.Colour_NIACKNAME, ""));
+                commentBean.setFrom_nickname(mShared.getString(UserAppConst.Colour_NIACKNAME, ""));
                 int comment_count = commentDataBean.getComment_count();
                 commentDataBean.setComment_count(++comment_count);
+                long currentTime = System.currentTimeMillis() / 1000;
+                commentBean.setCreated_at(currentTime);
                 if (TextUtils.isEmpty(fromUuid)) {
-                    commentDataList.add(commentBean);
                     ToastUtil.toastShow(getActivity(), "评论成功");
                 } else {
                     //回复别人的评论
                     ToastUtil.toastShow(getActivity(), "回复成功");
-                    int commentSize = commentDataList.size();
-                    int insertPos = 0;
-                    for (int j = commentSize - 1; j >= 0; j--) {
-                        CommunityDynamicsListEntity.ContentBean.DataBean.CommentBean replyCommentBean = commentDataList.get(j);
-                        if (replyCommentBean.getFrom_id().equals(fromSourceId)) {
-                            insertPos = j;
-                            break;
-                        }
-                    }
                     commentBean.setTo_nickname(fromNickName);
                     commentBean.setTo_id(fromUuid);
-                    long currentTime=System.currentTimeMillis()/1000;
-                    commentBean.setCreated_at(currentTime);
-                    if (insertPos == commentSize - 1) {
-                        commentDataList.add(commentBean);
-                    } else {
-                        commentDataList.add(insertPos, commentBean);
-                    }
-
                 }
+                commentDataList.add(commentBean);
                 communityDynamicsAdapter.notifyItemChanged(position);
                 break;
         }
     }
 
     private int position = 0;//动态的itemPosition
-    private int commentPosition = 0;//评论的itemPosition
+    private int commentPosition = -1;//评论的itemPosition
     private String content;//评论的内容
     private String fromUuid;//回复评论人id
     private String fromNickName;//回复评论人昵称
 
     public void onEvent(Object event) {
-        String is_identity = shared.getString(UserAppConst.COLOUR_DYNAMICS_REAL_IDENTITY, "0");
+        String is_identity = mShared.getString(UserAppConst.COLOUR_DYNAMICS_REAL_IDENTITY, "0");
         final Message message = (Message) event;
         Bundle bundle = message.getData();
         String sourceId = bundle.getString("sourceId");
@@ -417,6 +436,7 @@ public class CommunityDynamicsFragment extends BaseFragment implements View.OnCl
             case DIRECT_COMMENT_DYNAMIC://直接评论动态
                 if ("1".equals(is_identity)) {
                     fromUuid = "";
+                    fromNickName = "";
                     View adapterView = (View) message.obj;
                     showInputCommentDialog(adapterView, sourceId, "");
                 } else {
@@ -451,12 +471,13 @@ public class CommunityDynamicsFragment extends BaseFragment implements View.OnCl
             case CHANGE_COMMUNITY:
                 year = "";
                 page = 1;
-                communityDynamicsModel.getCommunityDynamicList(0, page, year, true, CommunityDynamicsFragment.this);
+                communityDynamicsModel.getCommunityDynamicList(0, page, year, false, CommunityDynamicsFragment.this);
             case SIGN_IN_SUCCESS:
                 if (isFirst) {
                     year = "";
                     page = 1;
                     communityDynamicsModel.getCommunityDynamicList(0, page, year, true, CommunityDynamicsFragment.this);
+                    newUserModel.getIsRealName(1, false, CommunityDynamicsFragment.this);
                 }
                 break;
             case CALLBACL_COMMENT_DYNAMIC:
@@ -529,6 +550,8 @@ public class CommunityDynamicsFragment extends BaseFragment implements View.OnCl
         feed_comment_edittext.requestFocus();
         if (!TextUtils.isEmpty(fromNickName)) {
             feed_comment_edittext.setHint("回复" + fromNickName);
+        } else {
+            feed_comment_edittext.setHint(getResources().getString(R.string.community_comment_hint));
         }
         TextView feed_comment_submit = view.findViewById(R.id.feed_comment_submit);
         feed_comment_submit.setOnClickListener(new View.OnClickListener() {
@@ -585,6 +608,16 @@ public class CommunityDynamicsFragment extends BaseFragment implements View.OnCl
         });
     }
 
+    private void delDynamicCommentSuccess() {
+        ToastUtil.toastShow(getActivity(), "评论删除成功");
+        CommunityDynamicsListEntity.ContentBean.DataBean delDataBean = dynamicContentList.get(position);
+        delDataBean.getComment().remove(commentPosition);
+        int delComment_Count = delDataBean.getComment_count();
+        delDataBean.setComment_count(--delComment_Count);
+        communityDynamicsAdapter.notifyItemChanged(position);
+        commentPosition = -1;
+    }
+
     private void showDelDynamics(String sourceId, String commentId) {
         DeleteNoticeDialog deleteNoticeDialog = new DeleteNoticeDialog(getActivity(), R.style.custom_dialog_theme);
         deleteNoticeDialog.show();
@@ -592,7 +625,11 @@ public class CommunityDynamicsFragment extends BaseFragment implements View.OnCl
             //删除动态  删除评论
             deleteNoticeDialog.dismiss();
             if (TextUtils.isEmpty(commentId)) {
-                communityDynamicsModel.delUserDynamic(5, sourceId, CommunityDynamicsFragment.this);
+                if (commentPosition == -1) {
+                    communityDynamicsModel.delUserDynamic(5, sourceId, CommunityDynamicsFragment.this);
+                } else {
+                    delDynamicCommentSuccess();
+                }
             } else {
                 communityDynamicsModel.delOwnerComment(6, sourceId, commentId, CommunityDynamicsFragment.this);
             }
@@ -603,7 +640,7 @@ public class CommunityDynamicsFragment extends BaseFragment implements View.OnCl
     private void showTipOffDialog(String sourceId, String commentId) {
         TipTypeListDialog tipTypeListDialog = new TipTypeListDialog(getActivity(), R.style.custom_dialog_theme);
         tipTypeListDialog.show();
-        String tipOffListCache = shared.getString(UserAppConst.COLOUR_DYNAMICS_TIPOFF_LIST, "");
+        String tipOffListCache = mShared.getString(UserAppConst.COLOUR_DYNAMICS_TIPOFF_LIST, "");
         if (!TextUtils.isEmpty(tipOffListCache)) {
             try {
                 CommunityTipOffEntity communityTipOffEntity = GsonUtils.gsonToBean(tipOffListCache, CommunityTipOffEntity.class);
@@ -638,10 +675,10 @@ public class CommunityDynamicsFragment extends BaseFragment implements View.OnCl
     private void showTotalUnReadCount() {
         int totalUnReadMsgCount = HuxinSdkManager.instance().unreadBuddyAndCommMessage();
         int newFriendApplyCount = 0;
-        if (shared.getBoolean(UserAppConst.IM_APPLY_FRIEND, false)) {
+        if (mShared.getBoolean(UserAppConst.IM_APPLY_FRIEND, false)) {
             newFriendApplyCount = CacheApplyRecorderHelper.instance().toQueryApplyRecordSize(getActivity(), "0");
         }
-        int unReadNoticeCount = shared.getInt(COLOUR_DYNAMICS_NOTICE_NUMBER, 0);
+        int unReadNoticeCount = mShared.getInt(COLOUR_DYNAMICS_NOTICE_NUMBER, 0);
         unReadBadgeView.setBadgeNumber(totalUnReadMsgCount + newFriendApplyCount + unReadNoticeCount);
         ((MainActivity) getActivity()).showUnReadMsg(unReadNoticeCount);
     }

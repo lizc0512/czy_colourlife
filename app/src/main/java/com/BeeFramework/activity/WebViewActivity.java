@@ -681,6 +681,7 @@ public class WebViewActivity extends BaseActivity implements View.OnLongClickLis
             }
         }
 
+
         @JavascriptInterface
         public void ColourlifeTicket(String mobile) {
             // h5页面调通用赠送，勿动！！

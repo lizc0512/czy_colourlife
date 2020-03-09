@@ -691,7 +691,11 @@ public class NewOrderPayActivity extends BaseActivity implements View.OnClickLis
         int index = payChannelId.indexOf(",");
         Intent intent = new Intent(this, OrderWaitResultActivity.class);
         intent.putExtra(ORDER_SN, sn);
-        intent.putExtra(PAY_CHANNEL, payChannelId.substring(0, index));
+        if (index > 0) {
+            intent.putExtra(PAY_CHANNEL, payChannelId.substring(0, index));
+        } else {
+            intent.putExtra(PAY_CHANNEL, payChannelId);
+        }
         startActivityForResult(intent, 2000);
     }
 
@@ -903,7 +907,7 @@ public class NewOrderPayActivity extends BaseActivity implements View.OnClickLis
         UnifyPayRequest msg = new UnifyPayRequest();
         msg.payChannel = UnifyPayRequest.CHANNEL_ALIPAY;
         if (!resultMap.containsKey("appPayRequest")) {
-            ToastUtil.toastShow(NewOrderPayActivity.this,"服务器返回数据格式有问题，缺少“appPayRequest”字段");
+            ToastUtil.toastShow(NewOrderPayActivity.this, "服务器返回数据格式有问题，缺少“appPayRequest”字段");
             return;
         } else {
             msg.payData = resultMap.get("appPayRequest");

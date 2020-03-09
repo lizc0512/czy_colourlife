@@ -93,7 +93,8 @@ public class TokenUtils {
         mEditor.putString(UserAppConst.Colour_HOME_CACHE_NEW + userId + communityid, "");
         mEditor.putString(UserAppConst.COMMUNITYFRAGMENTLIST + userId + communityid, "");
         mEditor.putString(UserAppConst.COLOUR_BENEFIT_PROFILE, "");
-        mEditor.putLong("reportHealthyTime",System.currentTimeMillis()-15000);
+        mEditor.putString(UserAppConst.COLOUR_DYNAMICS_NEWLIST_CACHE, "");
+        mEditor.putLong("reportHealthyTime", System.currentTimeMillis() - 15000);
         mEditor.commit();
     }
 
@@ -590,7 +591,7 @@ public class TokenUtils {
                     // to handle the case where the user grants the permission. See the documentation
                     // for ActivityCompat#requestPermissions for more details.
 
-                }else{
+                } else {
                     serial = android.os.Build.getSerial();
                 }
             } else {

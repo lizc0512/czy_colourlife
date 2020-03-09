@@ -42,8 +42,11 @@ public class LekaiHelper {
 
         @Override
         public void onServiceConnected(ComponentName name, IBinder service) {
-            LekaiService.LocalBinder binder = (LekaiService.LocalBinder) service;
-            mLekaiService = binder.getService();
+            if (service instanceof LekaiService.LocalBinder) {
+                LekaiService.LocalBinder binder = (LekaiService.LocalBinder) service;
+                mLekaiService = binder.getService();
+            }
+
         }
 
         @Override
@@ -93,7 +96,7 @@ public class LekaiHelper {
             Intent intent = new Intent(activity, LekaiService.class);
             activity.startService(intent);
             activity.bindService(intent, mConn, Context.BIND_AUTO_CREATE);
-        }catch (Exception e){
+        } catch (Exception e) {
 
         }
     }
@@ -103,7 +106,7 @@ public class LekaiHelper {
      */
     public static void stop(Activity activity) {
         try {
-            if (null != mConn&&activity!=null) {
+            if (null != mConn && activity != null) {
                 activity.unbindService(mConn);
                 activity.stopService(new Intent(activity, LekaiService.class));
             }
@@ -137,7 +140,7 @@ public class LekaiHelper {
                 @Override
                 public void syncResponse(int code, String msg) {
                     if (403 == code) {
-                        if (null!=activity){
+                        if (null != activity) {
                             ((MainActivity) activity).regetLekaiToken();
                         }
                     }
@@ -145,7 +148,7 @@ public class LekaiHelper {
 
                 @Override
                 public void syncFailed(Throwable throwable) {
-                    ToastUtil.toastShow(activity,throwable.getMessage());
+                    ToastUtil.toastShow(activity, throwable.getMessage());
                 }
             }, accid, token);
         }

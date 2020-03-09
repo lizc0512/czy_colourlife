@@ -11,6 +11,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -30,7 +31,6 @@ import com.yanzhenjie.recyclerview.swipe.SwipeMenuItem;
 import com.yanzhenjie.recyclerview.swipe.SwipeMenuItemClickListener;
 import com.yanzhenjie.recyclerview.swipe.SwipeMenuRecyclerView;
 import com.youmai.hxsdk.HuxinSdkManager;
-import com.youmai.hxsdk.ProtoCallback;
 import com.youmai.hxsdk.chatgroup.IMGroupActivity;
 import com.youmai.hxsdk.chatsingle.IMConnectionActivity;
 import com.youmai.hxsdk.data.ExCacheMsgBean;
@@ -53,6 +53,7 @@ public class CommunityMessageListActivity extends BaseActivity implements View.O
     private ImageView user_top_view_back;
     private TextView user_top_view_title;
     private ImageView img_right;
+    private LinearLayout no_data_layout;
     private SwipeMenuRecyclerView message_rv;
     private InStantMessageAdapter mMessageAdapter;
 
@@ -63,7 +64,19 @@ public class CommunityMessageListActivity extends BaseActivity implements View.O
         initView();
         addTopView();
         HuxinSdkManager.instance().chatMsgFromCache(CommunityMessageListActivity.this,
-                data -> mMessageAdapter.changeMessageList(data));
+                data -> {
+                    showEmptyLayout();
+                    mMessageAdapter.changeMessageList(data);
+                });
+    }
+
+    private void showEmptyLayout() {
+        List<ExCacheMsgBean> data = mMessageAdapter.getMsgList();
+        if (data == null || data.size() == 0) {
+            no_data_layout.setVisibility(View.VISIBLE);
+        } else {
+            no_data_layout.setVisibility(View.GONE);
+        }
     }
 
 
@@ -77,6 +90,7 @@ public class CommunityMessageListActivity extends BaseActivity implements View.O
             }
             bean.setDisplayName(cacheMsgBean.getTargetName());
             mMessageAdapter.addTop(bean);
+            showEmptyLayout();
         }
     }
 
@@ -102,6 +116,7 @@ public class CommunityMessageListActivity extends BaseActivity implements View.O
         user_top_view_back = findViewById(R.id.user_top_view_back);
         user_top_view_title = findViewById(R.id.user_top_view_title);
         message_rv = findViewById(R.id.message_rv);
+        no_data_layout = findViewById(R.id.no_data_layout);
         img_right = findViewById(R.id.img_right);
         mMessageAdapter = new InStantMessageAdapter(CommunityMessageListActivity.this);
         message_rv.setLayoutManager(new LinearLayoutManager(CommunityMessageListActivity.this));// 布局管理器。
@@ -159,14 +174,14 @@ public class CommunityMessageListActivity extends BaseActivity implements View.O
         unReadNoticeBg = new QBadgeView(CommunityMessageListActivity.this);
         unReadNoticeBg.bindTarget(iv_dynamic_notice);
         unReadNoticeBg.setBadgeGravity(Gravity.END | Gravity.TOP);
-        unReadNoticeBg.setGravityOffset(-2,-2,true);
+        unReadNoticeBg.setGravityOffset(-2, -2, true);
         unReadNoticeBg.setBadgeTextSize(8f, true);
         unReadNoticeBg.setBadgeBackgroundColor(ContextCompat.getColor(CommunityMessageListActivity.this, R.color.hx_color_red_tag));
         unReadNoticeBg.setShowShadow(false);
 
         newApplyNoticeBg = new QBadgeView(CommunityMessageListActivity.this);
         newApplyNoticeBg.bindTarget(iv_new_friend);
-        newApplyNoticeBg.setGravityOffset(-2,-2,true);
+        newApplyNoticeBg.setGravityOffset(-2, -2, true);
         newApplyNoticeBg.setBadgeGravity(Gravity.END | Gravity.TOP);
         newApplyNoticeBg.setBadgeTextSize(8f, true);
         newApplyNoticeBg.setBadgeBackgroundColor(ContextCompat.getColor(CommunityMessageListActivity.this, R.color.hx_color_red_tag));

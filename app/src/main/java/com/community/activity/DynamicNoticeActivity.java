@@ -6,6 +6,7 @@ import android.os.Message;
 import android.support.v7.widget.LinearLayoutManager;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.BeeFramework.activity.BaseActivity;
@@ -46,6 +47,7 @@ public class DynamicNoticeActivity extends BaseActivity implements View.OnClickL
     private ImageView user_top_view_back;
     private TextView user_top_view_title;
     private SwipeMenuRecyclerView message_rv;
+    private LinearLayout no_data_layout;
     private CommunityDynamicsModel communityDynamicsModel;
 
     @Override
@@ -55,11 +57,12 @@ public class DynamicNoticeActivity extends BaseActivity implements View.OnClickL
         user_top_view_back = findViewById(R.id.user_top_view_back);
         user_top_view_title = findViewById(R.id.user_top_view_title);
         message_rv = findViewById(R.id.message_rv);
+        no_data_layout = findViewById(R.id.no_data_layout);
         user_top_view_back.setOnClickListener(this::onClick);
         user_top_view_title.setText(getResources().getString(R.string.community_dynamics_notice));
         message_rv.useDefaultLoadMore();
         communityDynamicsModel = new CommunityDynamicsModel(DynamicNoticeActivity.this);
-        communityDynamicsModel.getDynamicRemindList(0, true,DynamicNoticeActivity.this);
+        communityDynamicsModel.getDynamicRemindList(0, true, DynamicNoticeActivity.this);
     }
 
     @Override
@@ -81,20 +84,26 @@ public class DynamicNoticeActivity extends BaseActivity implements View.OnClickL
                     CommunityRemindListEntity communityRemindListEntity = GsonUtils.gsonToBean(result, CommunityRemindListEntity.class);
                     contentBeanList.clear();
                     contentBeanList.addAll(communityRemindListEntity.getContent());
-                    CommunityRemindAdapter communityRemindAdapter = new CommunityRemindAdapter(DynamicNoticeActivity.this, contentBeanList);
-                    LinearLayoutManager linearLayoutManager = new LinearLayoutManager(DynamicNoticeActivity.this, LinearLayoutManager.VERTICAL, false);
-                    message_rv.setLayoutManager(linearLayoutManager);
-                    message_rv.setAdapter(communityRemindAdapter);
-                    message_rv.loadMoreFinish(false, false);
-                    communityRemindAdapter.setOnItemClickListener(new OnItemClickListener() {
-                        @Override
-                        public void onItemClick(int i) {
-                            if (i >= 0) {
-                                getDynamicDetails(contentBeanList.get(i).getSource_id());
+                    if (contentBeanList.size() == 0) {
+                        no_data_layout.setVisibility(View.VISIBLE);
+                    } else {
+                        no_data_layout.setVisibility(View.GONE);
+                        CommunityRemindAdapter communityRemindAdapter = new CommunityRemindAdapter(DynamicNoticeActivity.this, contentBeanList);
+                        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(DynamicNoticeActivity.this, LinearLayoutManager.VERTICAL, false);
+                        message_rv.setLayoutManager(linearLayoutManager);
+                        message_rv.setAdapter(communityRemindAdapter);
+                        message_rv.loadMoreFinish(false, false);
+                        communityRemindAdapter.setOnItemClickListener(new OnItemClickListener() {
+                            @Override
+                            public void onItemClick(int i) {
+                                if (i >= 0) {
+                                    getDynamicDetails(contentBeanList.get(i).getSource_id());
+                                }
                             }
-                        }
-                    });
+                        });
+                    }
                 } catch (Exception e) {
+
 
                 }
                 break;
@@ -125,15 +134,15 @@ public class DynamicNoticeActivity extends BaseActivity implements View.OnClickL
                 break;
             case 2://标记为已读更改未读数量
                 Message message = Message.obtain();
-                message.what =UPDATE_DYNAMIC_REMINDCOUNT;
+                message.what = UPDATE_DYNAMIC_REMINDCOUNT;
                 EventBus.getDefault().post(message);
-                communityDynamicsModel.getDynamicRemindList(0, false,DynamicNoticeActivity.this);
+                communityDynamicsModel.getDynamicRemindList(0, false, DynamicNoticeActivity.this);
                 break;
         }
     }
 
     private void getDynamicDetails(String source_id) {
-        communityDynamicsModel.setDynamicRemindRead(2,source_id,DynamicNoticeActivity.this);
+        communityDynamicsModel.setDynamicRemindRead(2, source_id, DynamicNoticeActivity.this);
         communityDynamicsModel.getDynamicsDetails(1, source_id, DynamicNoticeActivity.this);
     }
 }
