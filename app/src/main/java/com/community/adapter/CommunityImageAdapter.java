@@ -51,7 +51,7 @@ public class CommunityImageAdapter extends RecyclerView.Adapter<CommunityImageAd
     @Override
     public void onBindViewHolder(CommunityImageAdapter.DefaultViewHolder holder, int position) {
         String imageUrl = dynamicImagesList.get(position);
-        GlideImageLoader.loadImageDefaultDisplay(mContext, imageUrl, holder.iv_dynamic_publish,R.drawable.default_image,R.drawable.default_image);
+        GlideImageLoader.loadImageDefaultDisplay(mContext, imageUrl, holder.iv_dynamic_publish, R.drawable.default_image, R.drawable.default_image);
         holder.iv_dynamic_publish.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -64,7 +64,7 @@ public class CommunityImageAdapter extends RecyclerView.Adapter<CommunityImageAd
         });
         int screenWidth = Util.DensityUtil.getScreenWidth(mContext, false);
         int itemWidth = (screenWidth - Util.DensityUtil.dip2px(mContext, 50)) / 3;
-        LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(itemWidth,itemWidth);
+        LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(itemWidth, itemWidth);
         int marginPx = Util.DensityUtil.dip2px(mContext, 5);
         layoutParams.setMargins(marginPx, marginPx, marginPx, marginPx);
         holder.iv_dynamic_publish.setLayoutParams(layoutParams);

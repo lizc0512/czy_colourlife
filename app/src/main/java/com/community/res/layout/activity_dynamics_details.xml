@@ -43,9 +43,9 @@
                 android:layout_height="40dp"
                 android:background="@color/white"
                 app:tabGravity="center"
-                app:tabPaddingEnd="16dp"
-                app:tabPaddingStart="16dp"
-                app:tabTextAppearance="@style/TabLayoutTextSizeStyle" />
+                app:tabPaddingEnd="21dp"
+                app:tabPaddingStart="21dp"
+                app:tabTextAppearance="@style/TabLayoutDynamicStyle" />
 
             <View
                 android:layout_width="match_parent"
@@ -103,7 +103,7 @@
                 android:paddingLeft="10dp"
                 android:paddingRight="10dp"
                 android:textColor="@color/color_25282e"
-                android:textColorHint="@color/color_cccccc"
+                android:textColorHint="@color/color_bcc2cc"
                 android:textCursorDrawable="@drawable/dynamics_comment_cursor"
                 android:textSize="14sp" />
 

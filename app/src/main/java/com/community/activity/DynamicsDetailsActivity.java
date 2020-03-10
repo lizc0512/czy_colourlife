@@ -3,6 +3,7 @@ package com.community.activity;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
+import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
 import android.os.Message;
 import android.support.annotation.NonNull;
@@ -57,6 +58,7 @@ import cn.csh.colourful.life.utils.KeyBoardUtils;
 import cn.net.cyberway.R;
 
 import static android.view.View.GONE;
+import static com.BeeFramework.Utils.Utils.dip2px;
 import static com.community.fragment.CommunityDynamicsFragment.CALLBACL_COMMENT_DYNAMIC;
 import static com.im.activity.IMFriendInforActivity.USERIDTYPE;
 
@@ -189,7 +191,7 @@ public class DynamicsDetailsActivity extends BaseFragmentActivity implements Vie
         dynamics_tabs.setSelectedTabIndicatorHeight(4);
         dynamics_tabs.setTabIndicatorFullWidth(false);
         dynamics_tabs.setSelectedTabIndicatorColor(Color.parseColor("#3385FF"));
-        dynamics_tabs.setTabTextColors(Color.parseColor("#25282E"), Color.parseColor("#3385FF"));
+        dynamics_tabs.setTabTextColors(Color.parseColor("#999999"), Color.parseColor("#3385FF"));
         dynamics_tabs.setTabGravity(TabLayout.GRAVITY_FILL);
         ViewPagerAdapter adapter = new ViewPagerAdapter(
                 getSupportFragmentManager(), this, fragmentList, tabTitleArray);

@@ -5,7 +5,7 @@
     <com.BeeFramework.view.CircleImageView
         android:id="@+id/iv_dynamics_like_pics"
         android:layout_width="32dp"
-        android:layout_marginLeft="15dp"
+        android:layout_marginLeft="24dp"
         android:layout_centerVertical="true"
         android:layout_height="32dp" />
 

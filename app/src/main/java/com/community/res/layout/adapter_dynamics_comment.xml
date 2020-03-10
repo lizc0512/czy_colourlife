@@ -6,7 +6,7 @@
         android:id="@+id/iv_dynamics_comment_pics"
         android:layout_width="32dp"
         android:layout_marginTop="15dp"
-        android:layout_marginLeft="15dp"
+        android:layout_marginLeft="24dp"
         android:layout_height="32dp" />
 
 
@@ -44,6 +44,6 @@
         android:layout_height="wrap_content"
         android:layout_marginRight="30dp"
         android:text="如果你们坚持要在正门广告跳舞的话，记要通知下物业相关人员，做好报备管理，也不要把声音放太大扰民，希望大家做到文明娱乐，多考虑小区内大家的感受啊，大家都不希望被打扰到"
-        android:textColor="@color/color_25282e"
+        android:textColor="@color/color_666666"
         />
 </RelativeLayout>
