@@ -314,6 +314,7 @@ public class DynamicsDetailsActivity extends BaseFragmentActivity implements Vie
                 feed_comment_edittext.setFocusable(true);
                 feed_comment_edittext.setFocusableInTouchMode(true);
                 feed_comment_edittext.requestFocus();
+                feed_comment_edittext.setHint(getResources().getString(R.string.community_comment_hint));
                 KeyBoardUtils.openKeybord(feed_comment_edittext, DynamicsDetailsActivity.this);
                 break;
             case R.id.tv_del_owner_dynamics://删除自己动态
@@ -395,8 +396,14 @@ public class DynamicsDetailsActivity extends BaseFragmentActivity implements Vie
     }
 
     public void setTipsOffCommentId(String comment_id) {
-        this.comment_id = comment_id;
-        showTipCommentDelDialog();
+        String is_identity = shared.getString(UserAppConst.COLOUR_DYNAMICS_REAL_IDENTITY, "0");
+        if ("1".equals(is_identity)) {
+            this.comment_id = comment_id;
+            showTipCommentDelDialog();
+        }else{
+            RealIdentifyDialogUtil.showGoIdentifyDialog(DynamicsDetailsActivity.this);
+        }
+
     }
 
     public void setCommentReply(String to_userId, String from_nickename) {
@@ -405,7 +412,6 @@ public class DynamicsDetailsActivity extends BaseFragmentActivity implements Vie
         feed_comment_edittext.setFocusableInTouchMode(true);
         feed_comment_edittext.requestFocus();
         KeyBoardUtils.openKeybord(feed_comment_edittext, DynamicsDetailsActivity.this);
-
         if (!TextUtils.isEmpty(from_nickename)) {
             feed_comment_edittext.setHint("回复" + from_nickename);
         } else {

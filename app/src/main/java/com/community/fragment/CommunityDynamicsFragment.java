@@ -345,6 +345,14 @@ public class CommunityDynamicsFragment extends Fragment implements View.OnClickL
                 int zanCount = dataBean.getZan_count();
                 dataBean.setZan_count(++zanCount);
                 dataBean.setIs_zan("1");
+                List<CommunityDynamicsListEntity.ContentBean.DataBean.ZanBean> zanBeanList = dataBean.getZan();
+                CommunityDynamicsListEntity.ContentBean.DataBean.ZanBean likeZanBean = new CommunityDynamicsListEntity.ContentBean.DataBean.ZanBean();
+                int zanUserId = mShared.getInt(UserAppConst.Colour_User_id, 0);
+                likeZanBean.setFrom_id(String.valueOf(zanUserId));
+                likeZanBean.setFrom_nickname(mShared.getString(UserAppConst.Colour_NIACKNAME, ""));
+                likeZanBean.setFrom_avatar(mShared.getString(UserAppConst.Colour_head_img, ""));
+                zanBeanList.add(likeZanBean);
+                dataBean.setZan(zanBeanList);
                 communityDynamicsAdapter.notifyItemChanged(position);
                 break;
             case 8:
@@ -352,6 +360,18 @@ public class CommunityDynamicsFragment extends Fragment implements View.OnClickL
                 int cancelCount = cancelDataBean.getZan_count();
                 cancelDataBean.setZan_count(--cancelCount);
                 cancelDataBean.setIs_zan("2");
+                int delPos = 0;
+                String cancelZanUserId = String.valueOf(mShared.getInt(UserAppConst.Colour_User_id, 0));
+                List<CommunityDynamicsListEntity.ContentBean.DataBean.ZanBean> cancelZanList = cancelDataBean.getZan();
+                for (int q = 0; q < cancelZanList.size(); q++) {
+                    CommunityDynamicsListEntity.ContentBean.DataBean.ZanBean zanBean = cancelZanList.get(q);
+                    if (cancelZanUserId.equals(zanBean.getFrom_id())) {
+                        delPos = q;
+                        break;
+                    }
+                }
+                cancelZanList.remove(delPos);
+                cancelDataBean.setZan(cancelZanList);
                 communityDynamicsAdapter.notifyItemChanged(position);
                 break;
             case 9://新增评论 或回复

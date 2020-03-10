@@ -65,8 +65,8 @@ public class CommunityMessageListActivity extends BaseActivity implements View.O
         addTopView();
         HuxinSdkManager.instance().chatMsgFromCache(CommunityMessageListActivity.this,
                 data -> {
-                    showEmptyLayout();
                     mMessageAdapter.changeMessageList(data);
+                    showEmptyLayout();
                 });
     }
 
@@ -321,6 +321,7 @@ public class CommunityMessageListActivity extends BaseActivity implements View.O
                 mMessageAdapter.deleteMessage(targetUuid);
                 HuxinSdkManager.instance().delMsgChat(targetUuid);
                 deleteMsgDialog.dismiss();
+                showEmptyLayout();
             }
         });
     }

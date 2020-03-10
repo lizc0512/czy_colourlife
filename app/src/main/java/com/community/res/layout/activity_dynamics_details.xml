@@ -10,8 +10,8 @@
 
     <android.support.design.widget.CoordinatorLayout
         android:layout_width="match_parent"
-        android:layout_weight="1"
-        android:layout_height="0dp">
+        android:layout_height="0dp"
+        android:layout_weight="1">
 
         <android.support.design.widget.AppBarLayout
             android:id="@+id/dynamics_appbar"
@@ -32,6 +32,11 @@
 
             </android.support.design.widget.CollapsingToolbarLayout>
 
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="10dp"
+                android:background="@color/color_fafafa" />
+
             <android.support.design.widget.TabLayout
                 android:id="@+id/dynamics_tabs"
                 android:layout_width="match_parent"
@@ -42,7 +47,13 @@
                 app:tabPaddingStart="16dp"
                 app:tabTextAppearance="@style/TabLayoutTextSizeStyle" />
 
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1px"
+                android:background="@color/color_ebedf0" />
+
         </android.support.design.widget.AppBarLayout>
+
 
 
         <android.support.v4.view.ViewPager
@@ -55,6 +66,11 @@
         </android.support.v4.view.ViewPager>
 
     </android.support.design.widget.CoordinatorLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1px"
+        android:background="@color/color_ebedf0" />
 
     <LinearLayout
         android:id="@+id/ll_comment_input"
@@ -85,10 +101,10 @@
                 android:maxHeight="100dp"
                 android:minHeight="36dp"
                 android:paddingLeft="10dp"
-                android:textCursorDrawable="@drawable/dynamics_comment_cursor"
                 android:paddingRight="10dp"
-                android:textColorHint="@color/color_cccccc"
                 android:textColor="@color/color_25282e"
+                android:textColorHint="@color/color_cccccc"
+                android:textCursorDrawable="@drawable/dynamics_comment_cursor"
                 android:textSize="14sp" />
 
             <TextView
