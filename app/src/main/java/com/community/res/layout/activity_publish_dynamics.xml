@@ -8,11 +8,14 @@
 
     <include layout="@layout/top_view" />
 
-
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="10dp"
+        android:background="@color/color_fafafa" />
     <EditText
         android:id="@+id/create_dynamics_content"
         android:layout_width="match_parent"
-        android:layout_height="180dp"
+        android:layout_height="210dp"
         android:background="@null"
         android:gravity="top"
         android:padding="16dp"
