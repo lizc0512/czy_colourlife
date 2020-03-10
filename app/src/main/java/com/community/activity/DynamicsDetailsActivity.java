@@ -210,7 +210,7 @@ public class DynamicsDetailsActivity extends BaseFragmentActivity implements Vie
         String content = dataBean.getContent();
         source_id = dataBean.getSource_id();
         is_zan = dataBean.getIs_zan();
-        GlideImageLoader.loadImageDefaultDisplay(DynamicsDetailsActivity.this, avatar, iv_dynamics_user_pics, R.drawable.icon_my_tx, R.drawable.icon_my_tx);
+        GlideImageLoader.loadImageDefaultDisplay(DynamicsDetailsActivity.this, avatar, iv_dynamics_user_pics, R.drawable.icon_default_portrait, R.drawable.icon_default_portrait);
         tv_dynamics_user_name.setText(nick_name);
         tv_dynamics_user_community.setText(community_name);
         tv_dynamics_text_content.setVisibility(GONE);

@@ -92,7 +92,7 @@ public class CommunityDynamicsAdapter extends RecyclerView.Adapter<CommunityDyna
         String source_id = dataBean.getSource_id();
         String is_zan = dataBean.getIs_zan();
 
-        GlideImageLoader.loadImageDefaultDisplay(mContext, avatar, holder.iv_dynamics_user_pics, R.drawable.icon_my_tx, R.drawable.icon_my_tx);
+        GlideImageLoader.loadImageDefaultDisplay(mContext, avatar, holder.iv_dynamics_user_pics, R.drawable.icon_default_portrait, R.drawable.icon_default_portrait);
         holder.tv_dynamics_user_name.setText(nick_name);
         holder.tv_dynamics_user_community.setText(community_name);
         if (!TextUtils.isEmpty(content)) {

@@ -17,12 +17,16 @@ import android.widget.TextView;
 
 import com.BeeFramework.Utils.ToastUtil;
 import com.BeeFramework.activity.BaseActivity;
+import com.BeeFramework.model.NewHttpResponse;
+import com.community.entity.CommunityDynamicRemindEntity;
+import com.community.model.CommunityDynamicsModel;
 import com.im.activity.IMApplyFriendRecordActivity;
 import com.im.activity.IMFriendAndGroupActivity;
 import com.im.activity.IMGroupListActivity;
 import com.im.adapter.InStantMessageAdapter;
 import com.im.helper.CacheApplyRecorderHelper;
 import com.im.view.DeleteMsgDialog;
+import com.nohttp.utils.GsonUtils;
 import com.user.UserAppConst;
 import com.yanzhenjie.recyclerview.swipe.SwipeMenu;
 import com.yanzhenjie.recyclerview.swipe.SwipeMenuBridge;
@@ -41,6 +45,7 @@ import com.youmai.hxsdk.utils.AppUtils;
 import java.util.List;
 
 import cn.net.cyberway.R;
+import cn.net.cyberway.activity.MainActivity;
 import q.rorbin.badgeview.QBadgeView;
 
 import static com.user.UserAppConst.COLOUR_DYNAMICS_NOTICE_NUMBER;
@@ -49,7 +54,7 @@ import static com.user.UserAppConst.COLOUR_DYNAMICS_NOTICE_NUMBER;
  *  社区消息列表的
  *
  * */
-public class CommunityMessageListActivity extends BaseActivity implements View.OnClickListener, IMMsgCallback {
+public class CommunityMessageListActivity extends BaseActivity implements View.OnClickListener, IMMsgCallback, NewHttpResponse {
     private ImageView user_top_view_back;
     private TextView user_top_view_title;
     private ImageView img_right;
@@ -68,6 +73,13 @@ public class CommunityMessageListActivity extends BaseActivity implements View.O
                     mMessageAdapter.changeMessageList(data);
                     showEmptyLayout();
                 });
+        getNoticeUnReadCount();
+
+    }
+
+    private void getNoticeUnReadCount() {
+        CommunityDynamicsModel communityDynamicsModel = new CommunityDynamicsModel(CommunityMessageListActivity.this);
+        communityDynamicsModel.getDynamicRemindCount(0, CommunityMessageListActivity.this);
     }
 
     private void showEmptyLayout() {
@@ -324,5 +336,20 @@ public class CommunityMessageListActivity extends BaseActivity implements View.O
                 showEmptyLayout();
             }
         });
+    }
+
+    @Override
+    public void OnHttpResponse(int what, String result) {
+        if (what == 0) {
+            try {
+                CommunityDynamicRemindEntity communityDynamicRemindEntity = GsonUtils.gsonToBean(result, CommunityDynamicRemindEntity.class);
+                int unReadNoticeCount = communityDynamicRemindEntity.getContent().getCount();
+                editor.putInt(COLOUR_DYNAMICS_NOTICE_NUMBER, unReadNoticeCount).apply();
+                unReadNoticeBg.setBadgeNumber(unReadNoticeCount);
+            } catch (Exception e) {
+
+            }
+        }
+
     }
 }

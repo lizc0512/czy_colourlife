@@ -88,7 +88,6 @@ public class NewUserModel extends BaseModel {
     private String signInUrl = "integral/user/setSignIn";
     private String getRealTokenUrl = "user/bizToken";
     private String getIsRealUrl = "user/checkIdentity";
-    //    private String submitRealUrl = "user/identity";
     private String submitRealUrl = "user/getDetectInfo";
     private String isNewUrl = "user/isNew";
     private String getDoorUrl = "app/door/getToken";
