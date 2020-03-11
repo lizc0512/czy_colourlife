@@ -626,7 +626,7 @@ public class MainActivity extends BaseFragmentActivity implements View.OnClickLi
             if (isLogin) {
                 if (mHomeFragment == null) {
                     mHomeFragment = new MainHomeFragmentNew();
-                    transaction.add(R.id.main_fragment_container, mHomeFragment);
+                    transaction.add(R.id.main_fragment_container, mHomeFragment, "homeFragment");
                 } else {
                     transaction.show(mHomeFragment);
                 }
@@ -635,7 +635,7 @@ public class MainActivity extends BaseFragmentActivity implements View.OnClickLi
                 circle_scanner_image.setVisibility(View.GONE);
                 if (null == nologinHomeFragment) {
                     nologinHomeFragment = new NologinHomeFragment();
-                    transaction.add(R.id.main_fragment_container, nologinHomeFragment);
+                    transaction.add(R.id.main_fragment_container, nologinHomeFragment, "noLoginFragment");
                 } else {
                     transaction.show(nologinHomeFragment);
                 }
@@ -654,7 +654,7 @@ public class MainActivity extends BaseFragmentActivity implements View.OnClickLi
                 hideFragments(transaction);
                 if (null == benefitFragment) {
                     benefitFragment = new BenefitFragment();
-                    transaction.add(R.id.main_fragment_container, benefitFragment);
+                    transaction.add(R.id.main_fragment_container, benefitFragment, "benefitFragment");
                 } else {
                     transaction.show(benefitFragment);
                 }
@@ -668,12 +668,12 @@ public class MainActivity extends BaseFragmentActivity implements View.OnClickLi
             }
         } else if (flagTab == FLAG_TAB_THREE) {//邻里
             if (shared.getBoolean(UserAppConst.IS_LOGIN, false)) {
-                choiceType = 1;
+                choiceType = 2;
                 transaction = fragmentManager.beginTransaction();
                 hideFragments(transaction);
                 if (communityDynamicsFragment == null) {
                     communityDynamicsFragment = new CommunityDynamicsFragment();
-                    transaction.add(R.id.main_fragment_container, communityDynamicsFragment);
+                    transaction.add(R.id.main_fragment_container, communityDynamicsFragment, "communityFragment");
                 } else {
                     transaction.show(communityDynamicsFragment);
                 }
@@ -688,12 +688,12 @@ public class MainActivity extends BaseFragmentActivity implements View.OnClickLi
             dismissBenefitDialog();
         } else if (flagTab == FLAG_TAB_FOUR) {
             if (shared.getBoolean(UserAppConst.IS_LOGIN, false)) {
-                choiceType = 2;
+                choiceType = 3;
                 transaction = fragmentManager.beginTransaction();
                 hideFragments(transaction);
                 if (profileFragment == null) {
                     profileFragment = new ProfileFragment();
-                    transaction.add(R.id.main_fragment_container, profileFragment);
+                    transaction.add(R.id.main_fragment_container, profileFragment, "profileFragment");
                 } else {
                     transaction.show(profileFragment);
                 }
@@ -706,6 +706,40 @@ public class MainActivity extends BaseFragmentActivity implements View.OnClickLi
                 LinkParseUtil.parse(MainActivity.this, "", "");
             }
             dismissBenefitDialog();
+        }
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putInt("currentPageFragment", choiceType);
+    }
+
+    @Override
+    protected void onRestoreInstanceState(Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
+        if (null == fragmentManager) {
+            fragmentManager = getSupportFragmentManager();
+        }
+        mHomeFragment = (MainHomeFragmentNew) fragmentManager.findFragmentByTag("homeFragment");
+        nologinHomeFragment = (NologinHomeFragment) fragmentManager.findFragmentByTag("noLoginFragment");
+        benefitFragment = (BenefitFragment) fragmentManager.findFragmentByTag("benefitFragment");
+        communityDynamicsFragment = (CommunityDynamicsFragment) fragmentManager.findFragmentByTag("communityFragment");
+        profileFragment = (ProfileFragment) fragmentManager.findFragmentByTag("profileFragment");
+        choiceType = savedInstanceState.getInt("currentPageFragment", 0);
+        switch (choiceType) {
+            case 0:
+                onTabSelected(FLAG_TAB_ONE);
+                break;
+            case 1:
+                onTabSelected(FLAG_TAB_TWO);
+                break;
+            case 2:
+                onTabSelected(FLAG_TAB_THREE);
+                break;
+            case 3:
+                onTabSelected(FLAG_TAB_FOUR);
+                break;
         }
     }
 
@@ -840,25 +874,6 @@ public class MainActivity extends BaseFragmentActivity implements View.OnClickLi
         }
     }
 
-    private ShowReportHealthyDialog showReportHealthyDialog;
-
-    private void showReportNoticeDialog(String img, String url) {
-        if (null == showReportHealthyDialog) {
-            showReportHealthyDialog = new ShowReportHealthyDialog(this, R.style.opendoor_dialog_theme);
-        }
-        if (showReportHealthyDialog.isShowing()) {
-            showReportHealthyDialog.dismiss();
-        }
-        showReportHealthyDialog.show();
-        GlideImageLoader.loadImageDisplay(this, img, showReportHealthyDialog.iv_report_healthy);
-        showReportHealthyDialog.iv_report_healthy.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                LinkParseUtil.parse(MainActivity.this, url, "");
-                showReportHealthyDialog.dismiss();
-            }
-        });
-    }
 
     public void uploadPageStayTime(long startTime, long leaveTime, String functionSectionId) {
         if (leaveTime - startTime >= 1) { //大于1s才上传

@@ -498,6 +498,9 @@ public class DynamicsDetailsActivity extends BaseFragmentActivity implements Vie
                 dataBean.setComment_count(++comment_count);
                 if (TextUtils.isEmpty(to_userid)) {
                     ToastUtil.toastShow(DynamicsDetailsActivity.this, "评论成功");
+                    if (dynamics_viewpager.getCurrentItem() == 0) {
+                        dynamics_viewpager.setCurrentItem(1, true);
+                    }
                 } else {
                     //回复别人的评论
                     ToastUtil.toastShow(DynamicsDetailsActivity.this, "回复成功");

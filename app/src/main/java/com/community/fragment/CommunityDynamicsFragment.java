@@ -62,6 +62,8 @@ import cn.net.cyberway.R;
 import cn.net.cyberway.activity.MainActivity;
 import q.rorbin.badgeview.QBadgeView;
 
+import static android.support.v7.widget.RecyclerView.SCROLL_STATE_IDLE;
+import static android.support.v7.widget.RecyclerView.SCROLL_STATE_SETTLING;
 import static com.community.activity.DynamicsDetailsActivity.DYNAMICS_DETAILS;
 import static com.user.UserAppConst.COLOUR_DYNAMICS_NEWLIST_CACHE;
 import static com.user.UserAppConst.COLOUR_DYNAMICS_NOTICE_NUMBER;
@@ -112,6 +114,7 @@ public class CommunityDynamicsFragment extends Fragment implements View.OnClickL
 
     private CommunityDynamicsAdapter communityDynamicsAdapter;
     private boolean isFirst;
+    private int recycleState = 0;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -171,6 +174,7 @@ public class CommunityDynamicsFragment extends Fragment implements View.OnClickL
             @Override
             public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
                 super.onScrollStateChanged(recyclerView, newState);
+                recycleState = newState;
             }
         });
 
@@ -241,10 +245,18 @@ public class CommunityDynamicsFragment extends Fragment implements View.OnClickL
             communityDynamicsAdapter.setOnItemClickListener(new OnItemClickListener() {
                 @Override
                 public void onItemClick(int i) {
-                    CommunityDynamicsListEntity.ContentBean.DataBean dataBean = dynamicContentList.get(i);
-                    Intent intent = new Intent(getActivity(), DynamicsDetailsActivity.class);
-                    intent.putExtra(DYNAMICS_DETAILS, dataBean);
-                    startActivity(intent);
+                    switch (recycleState) {
+                        case SCROLL_STATE_IDLE:
+                            CommunityDynamicsListEntity.ContentBean.DataBean dataBean = dynamicContentList.get(i);
+                            Intent intent = new Intent(getActivity(), DynamicsDetailsActivity.class);
+                            intent.putExtra(DYNAMICS_DETAILS, dataBean);
+                            startActivity(intent);
+                            break;
+                        case SCROLL_STATE_SETTLING:
+                            rv_community_dynamics.stopScroll();
+                            break;
+                    }
+
                 }
             });
         }
