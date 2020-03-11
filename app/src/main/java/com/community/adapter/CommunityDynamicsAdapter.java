@@ -197,7 +197,7 @@ public class CommunityDynamicsAdapter extends RecyclerView.Adapter<CommunityDyna
         } else {
             holder.rv_dynamics_images.setVisibility(View.VISIBLE);
             int extra_type = dataBean.getExtra_type();
-            CommunityImageAdapter communityImageAdapter = new CommunityImageAdapter(mContext, (ArrayList<String>) imgList, extra_type);
+            CommunityImageAdapter communityImageAdapter = new CommunityImageAdapter(mContext, (ArrayList<String>) imgList, extra_type,52);
             int row = imgSize == 4 ? 2 : 3;//如果4张图片显示2列
             if (row == 2) {
                 holder.view_dynamics_weight.setVisibility(View.VISIBLE);

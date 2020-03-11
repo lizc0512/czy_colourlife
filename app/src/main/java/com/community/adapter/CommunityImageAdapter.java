@@ -33,11 +33,13 @@ public class CommunityImageAdapter extends RecyclerView.Adapter<CommunityImageAd
 
     private ArrayList<String> dynamicImagesList;
     private int extra_type;
+    private int distance = 0;
     private Context mContext;
 
-    public CommunityImageAdapter(Context context, ArrayList<String> dynamicImagesList, int extra_type) {
+    public CommunityImageAdapter(Context context, ArrayList<String> dynamicImagesList, int extra_type, int distance) {
         this.mContext = context;
         this.dynamicImagesList = dynamicImagesList;
+        this.distance = distance;
         this.extra_type = extra_type;
     }
 
@@ -51,7 +53,7 @@ public class CommunityImageAdapter extends RecyclerView.Adapter<CommunityImageAd
     @Override
     public void onBindViewHolder(CommunityImageAdapter.DefaultViewHolder holder, int position) {
         String imageUrl = dynamicImagesList.get(position);
-        GlideImageLoader.loadImageDefaultDisplay(mContext, imageUrl, holder.iv_dynamic_publish, R.drawable.default_image, R.drawable.default_image);
+        GlideImageLoader.loadActiveImageDisplay(mContext, imageUrl, holder.iv_dynamic_publish, R.drawable.default_image, R.drawable.default_image, 2);
         holder.iv_dynamic_publish.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -63,10 +65,10 @@ public class CommunityImageAdapter extends RecyclerView.Adapter<CommunityImageAd
             }
         });
         int screenWidth = Util.DensityUtil.getScreenWidth(mContext, false);
-        int itemWidth = (screenWidth - Util.DensityUtil.dip2px(mContext, 50)) / 3;
+        int itemWidth = (screenWidth - Util.DensityUtil.dip2px(mContext, distance)) / 3;
         LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(itemWidth, itemWidth);
-        int marginPx = Util.DensityUtil.dip2px(mContext, 5);
-        layoutParams.setMargins(marginPx, marginPx, marginPx, marginPx);
+        int marginPx = Util.DensityUtil.dip2px(mContext, 6);
+        layoutParams.setMargins(0, 0, 0, marginPx);
         holder.iv_dynamic_publish.setLayoutParams(layoutParams);
     }
 

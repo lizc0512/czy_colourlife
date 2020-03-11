@@ -122,6 +122,7 @@ public class CommunityMessageListActivity extends BaseActivity implements View.O
     protected void onResume() {
         super.onResume();
         showUnReadCount();
+        HuxinSdkManager.instance().setImMsgCallback(this);
     }
 
     private void initView() {
@@ -162,6 +163,7 @@ public class CommunityMessageListActivity extends BaseActivity implements View.O
                 }
             }
         });
+        showEmptyLayout();
     }
 
     private RelativeLayout new_friend_layout;

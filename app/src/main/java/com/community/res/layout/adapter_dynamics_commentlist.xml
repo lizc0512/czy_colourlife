@@ -7,7 +7,7 @@
         android:id="@+id/tv_dynamics_comment"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="5dp"
+        android:layout_marginTop="16dp"
         android:ellipsize="end"
         android:lineSpacingExtra="2dp"
         android:maxLines="4"
@@ -20,7 +20,7 @@
         android:id="@+id/tv_dynamics_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="5dp"
+        android:layout_marginTop="16dp"
         android:textColor="@color/color_294166"
         android:textSize="14sp" />
 

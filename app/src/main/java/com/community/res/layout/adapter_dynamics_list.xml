@@ -2,21 +2,22 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_margin="5dp"
+    android:layout_marginTop="6dp"
+    android:layout_marginLeft="4dp"
+    android:layout_marginRight="4dp"
     android:descendantFocusability="blocksDescendants"
     android:background="@drawable/about_corners4"
     android:orientation="vertical">
 
-    <include layout="@layout/dynamics_details_content" />
+    <include layout="@layout/dynamics_list_content" />
 
     <View
         android:id="@+id/dynamic_divider_view"
         android:layout_width="match_parent"
         android:layout_height="1px"
-        android:layout_marginLeft="15dp"
-        android:layout_marginTop="5dp"
-        android:layout_marginRight="15dp"
-        android:layout_marginBottom="5dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        android:layout_marginBottom="4dp"
         android:background="@color/color_cccccc" />
 
     <android.support.v7.widget.RecyclerView
@@ -25,6 +26,6 @@
         android:layout_height="wrap_content"
         android:layout_marginLeft="16dp"
         android:layout_marginRight="16dp"
-        android:layout_marginBottom="5dp" />
+        android:layout_marginBottom="20dp" />
 
 </LinearLayout>

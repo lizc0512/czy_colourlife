@@ -3,7 +3,6 @@ package com.community.activity;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
-import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
 import android.os.Message;
 import android.support.annotation.NonNull;
@@ -27,6 +26,7 @@ import com.BeeFramework.Utils.ToastUtil;
 import com.BeeFramework.activity.BaseFragmentActivity;
 import com.BeeFramework.model.NewHttpResponse;
 import com.BeeFramework.view.CircleImageView;
+import com.BeeFramework.view.Util;
 import com.cashier.adapter.ViewPagerAdapter;
 import com.community.adapter.CommunityImageAdapter;
 import com.community.adapter.CommunityTipOffAdapter;
@@ -38,7 +38,6 @@ import com.community.fragment.CommunityLikeListFragment;
 import com.community.model.CommunityDynamicsModel;
 import com.community.utils.RealIdentifyDialogUtil;
 import com.community.view.DeleteNoticeDialog;
-import com.community.view.MoreTextView;
 import com.community.view.TipTypeListDialog;
 import com.community.view.TipoffsCommentDialog;
 import com.external.eventbus.EventBus;
@@ -47,6 +46,7 @@ import com.im.activity.IMFriendInforActivity;
 import com.im.activity.IMUserSelfInforActivity;
 import com.im.helper.CacheFriendInforHelper;
 import com.nohttp.utils.GlideImageLoader;
+import com.nohttp.utils.GridSpacingItemDecoration;
 import com.nohttp.utils.GsonUtils;
 import com.user.UserAppConst;
 
@@ -58,7 +58,6 @@ import cn.csh.colourful.life.utils.KeyBoardUtils;
 import cn.net.cyberway.R;
 
 import static android.view.View.GONE;
-import static com.BeeFramework.Utils.Utils.dip2px;
 import static com.community.fragment.CommunityDynamicsFragment.CALLBACL_COMMENT_DYNAMIC;
 import static com.im.activity.IMFriendInforActivity.USERIDTYPE;
 
@@ -88,7 +87,6 @@ public class DynamicsDetailsActivity extends BaseFragmentActivity implements Vie
     private TextView tv_dynamics_user_name;
     private TextView tv_dynamics_user_community;
     private ImageView iv_dynamics_user_operate;
-    private MoreTextView tv_dynamics_text_content;
     private TextView tv_dynamics_content_details;
     private TextView tv_del_owner_dynamics;
     private RecyclerView rv_dynamics_images;
@@ -139,7 +137,6 @@ public class DynamicsDetailsActivity extends BaseFragmentActivity implements Vie
         tv_dynamics_user_name = findViewById(R.id.tv_dynamics_user_name);
         tv_dynamics_user_community = findViewById(R.id.tv_dynamics_user_community);
         iv_dynamics_user_operate = findViewById(R.id.iv_dynamics_user_operate);
-        tv_dynamics_text_content = findViewById(R.id.tv_dynamics_text_content);
         tv_dynamics_content_details = findViewById(R.id.tv_dynamics_content_details);
         rv_dynamics_images = findViewById(R.id.rv_dynamics_images);
         view_dynamics_weight = findViewById(R.id.view_dynamics_weight);
@@ -215,7 +212,6 @@ public class DynamicsDetailsActivity extends BaseFragmentActivity implements Vie
         GlideImageLoader.loadImageDefaultDisplay(DynamicsDetailsActivity.this, avatar, iv_dynamics_user_pics, R.drawable.icon_default_portrait, R.drawable.icon_default_portrait);
         tv_dynamics_user_name.setText(nick_name);
         tv_dynamics_user_community.setText(community_name);
-        tv_dynamics_text_content.setVisibility(GONE);
         if (!TextUtils.isEmpty(content)) {
             tv_dynamics_content_details.setVisibility(View.VISIBLE);
             tv_dynamics_content_details.setText(content);
@@ -238,7 +234,7 @@ public class DynamicsDetailsActivity extends BaseFragmentActivity implements Vie
         } else {
             rv_dynamics_images.setVisibility(View.VISIBLE);
             int extra_type = dataBean.getExtra_type();
-            CommunityImageAdapter communityImageAdapter = new CommunityImageAdapter(DynamicsDetailsActivity.this, (ArrayList<String>) imgList, extra_type);
+            CommunityImageAdapter communityImageAdapter = new CommunityImageAdapter(DynamicsDetailsActivity.this, (ArrayList<String>) imgList, extra_type, 44);
             int row = imgSize == 4 ? 2 : 3;//如果4张图片显示2列
             if (row == 2) {
                 view_dynamics_weight.setVisibility(View.VISIBLE);
@@ -247,6 +243,7 @@ public class DynamicsDetailsActivity extends BaseFragmentActivity implements Vie
             }
             GridLayoutManager gridLayoutManager = new GridLayoutManager(DynamicsDetailsActivity.this, row);
             rv_dynamics_images.setLayoutManager(gridLayoutManager);
+            rv_dynamics_images.addItemDecoration(new GridSpacingItemDecoration(row, Util.DensityUtil.dip2px(DynamicsDetailsActivity.this, 3), false));
             rv_dynamics_images.setAdapter(communityImageAdapter);
         }
         setZanStatus();
@@ -402,7 +399,7 @@ public class DynamicsDetailsActivity extends BaseFragmentActivity implements Vie
         if ("1".equals(is_identity)) {
             this.comment_id = comment_id;
             showTipCommentDelDialog();
-        }else{
+        } else {
             RealIdentifyDialogUtil.showGoIdentifyDialog(DynamicsDetailsActivity.this);
         }
 

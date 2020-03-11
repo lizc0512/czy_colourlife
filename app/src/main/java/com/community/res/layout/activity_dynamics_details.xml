@@ -32,10 +32,7 @@
 
             </android.support.design.widget.CollapsingToolbarLayout>
 
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="10dp"
-                android:background="@color/color_fafafa" />
+
 
             <android.support.design.widget.TabLayout
                 android:id="@+id/dynamics_tabs"
