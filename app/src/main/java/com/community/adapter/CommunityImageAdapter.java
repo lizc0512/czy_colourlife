@@ -35,12 +35,17 @@ public class CommunityImageAdapter extends RecyclerView.Adapter<CommunityImageAd
     private int extra_type;
     private int distance = 0;
     private Context mContext;
+    private int itemWidth;
+    private int marginPx;
 
     public CommunityImageAdapter(Context context, ArrayList<String> dynamicImagesList, int extra_type, int distance) {
         this.mContext = context;
         this.dynamicImagesList = dynamicImagesList;
         this.distance = distance;
         this.extra_type = extra_type;
+        int screenWidth = Util.DensityUtil.getScreenWidth(mContext, false);
+        itemWidth = (screenWidth - Util.DensityUtil.dip2px(mContext, distance)) / 3;
+        marginPx = Util.DensityUtil.dip2px(mContext, 6);
     }
 
 
@@ -64,14 +69,10 @@ public class CommunityImageAdapter extends RecyclerView.Adapter<CommunityImageAd
 
             }
         });
-        int screenWidth = Util.DensityUtil.getScreenWidth(mContext, false);
-        int itemWidth = (screenWidth - Util.DensityUtil.dip2px(mContext, distance)) / 3;
         LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(itemWidth, itemWidth);
-        int marginPx = Util.DensityUtil.dip2px(mContext, 6);
         layoutParams.setMargins(0, 0, 0, marginPx);
         holder.iv_dynamic_publish.setLayoutParams(layoutParams);
     }
-
 
     @Override
     public long getItemId(int position) {

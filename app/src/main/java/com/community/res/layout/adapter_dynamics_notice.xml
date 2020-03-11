@@ -11,6 +11,7 @@
         android:layout_marginLeft="16dp"
         android:layout_marginTop="10dp"
         android:layout_marginRight="16dp"
+        android:ellipsize="end"
         android:maxLines="2"
         android:text="您的动态 【图片】我家小牛和小花最暴力啊啦啊 因涉及违规，已被管理员删除…"
         android:textColor="@color/color_25282e"

@@ -6,13 +6,13 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="34dp"
+        android:layout_height="40dp"
         android:layout_marginTop="22dp">
 
         <com.BeeFramework.view.CircleImageView
             android:id="@+id/iv_dynamics_user_pics"
-            android:layout_width="32dp"
-            android:layout_height="32dp"
+            android:layout_width="36dp"
+            android:layout_height="36dp"
             android:layout_centerVertical="true"
             android:layout_marginLeft="16dp" />
 
@@ -25,7 +25,8 @@
             android:layout_toRightOf="@id/iv_dynamics_user_pics"
             android:text="我的神啊"
             android:textColor="@color/color_25282e"
-            android:textSize="12sp" />
+            android:textSize="14sp"
+            android:textStyle="bold" />
 
 
         <TextView
@@ -38,7 +39,7 @@
             android:layout_toRightOf="@id/iv_dynamics_user_pics"
             android:text="彩生活社区"
             android:textColor="@color/color_8d9299"
-            android:textSize="9sp" />
+            android:textSize="12sp" />
 
 
         <ImageView

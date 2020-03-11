@@ -15,6 +15,7 @@ import android.text.TextUtils;
 import android.text.method.LinkMovementMethod;
 import android.text.style.ClickableSpan;
 import android.text.style.ForegroundColorSpan;
+import android.text.style.StyleSpan;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -93,6 +94,7 @@ public class CommunityCommentAdapter extends RecyclerView.Adapter<CommunityComme
         String commentId = commentBean.getId();
         SpannableString spannableString = new SpannableString(showContent);
         spannableString.setSpan(new ForegroundColorSpan(Color.parseColor("#25282E")), 0, startLength + 1, Spanned.SPAN_INCLUSIVE_EXCLUSIVE);
+        spannableString.setSpan(new StyleSpan(android.graphics.Typeface.BOLD), 0, startLength + 1, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
         spannableString.setSpan(new ForegroundColorSpan(Color.parseColor("#666666")), startLength + 1, showContent.length(), Spanned.SPAN_INCLUSIVE_EXCLUSIVE);
         holder.tv_dynamics_comment.setText(spannableString);
         holder.tv_dynamics_name.setText(from_nickname + ":");

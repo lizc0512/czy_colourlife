@@ -243,7 +243,6 @@ public class DynamicsDetailsActivity extends BaseFragmentActivity implements Vie
             }
             GridLayoutManager gridLayoutManager = new GridLayoutManager(DynamicsDetailsActivity.this, row);
             rv_dynamics_images.setLayoutManager(gridLayoutManager);
-            rv_dynamics_images.addItemDecoration(new GridSpacingItemDecoration(row, Util.DensityUtil.dip2px(DynamicsDetailsActivity.this, 3), false));
             rv_dynamics_images.setAdapter(communityImageAdapter);
         }
         setZanStatus();
