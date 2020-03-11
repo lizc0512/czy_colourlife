@@ -6,7 +6,7 @@
     android:layout_marginLeft="4dp"
     android:layout_marginRight="4dp"
     android:descendantFocusability="blocksDescendants"
-    android:background="@drawable/about_corners4"
+    android:background="@drawable/dynamics_list_bg"
     android:orientation="vertical">
 
     <include layout="@layout/dynamics_list_content" />
