@@ -30,7 +30,7 @@ public class AppConfig {
 
     private final static String SOCKET_URL[] = new String[]{"http://core.im.test.colourlife.com/", "http://core.im.beta.colourlife.com/", "http://imcore.czy.colourlife.com/"};
 
-    private final static String SOCKET_HOST[] = new String[]{"117.48.197.50", "39.108.74.138", "47.107.68.13"};
+    private final static String SOCKET_HOST[] = new String[]{"114.67.201.124", "39.108.74.138", "47.107.68.13"};
 
     private final static int SOCKET_PORT[] = new int[]{6681, 6681, 6681};
 
