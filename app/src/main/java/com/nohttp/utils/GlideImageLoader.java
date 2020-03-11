@@ -148,8 +148,8 @@ public class GlideImageLoader {
     public static void loadActiveImageDisplay(Context mContext, String path, ImageView mImageView, int lodingImage, int errorImageView, int radius) {
         try {
             Glide.with(mContext).load(path).apply(new RequestOptions().diskCacheStrategy(DiskCacheStrategy.ALL).error(errorImageView)
-                    .placeholder(lodingImage)
-                    .dontAnimate().transform(new GlideRoundTransform(mContext, radius))
+                    .placeholder(lodingImage).skipMemoryCache(false)
+                    .transform(new GlideRoundTransform(mContext, radius))
             ).into(mImageView);
         } catch (Exception e) {
 

@@ -9,6 +9,7 @@ import android.os.Message;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.SimpleItemAnimator;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -206,6 +207,7 @@ public class CommunityDynamicsAdapter extends RecyclerView.Adapter<CommunityDyna
             }
             GridLayoutManager gridLayoutManager = new GridLayoutManager(mContext, row);
             holder.rv_dynamics_images.setLayoutManager(gridLayoutManager);
+            ((SimpleItemAnimator)  holder.rv_dynamics_images.getItemAnimator()).setSupportsChangeAnimations(false);
             holder.rv_dynamics_images.setAdapter(communityImageAdapter);
         }
         List<CommunityDynamicsListEntity.ContentBean.DataBean.CommentBean> commentBeanList = dataBean.getComment();

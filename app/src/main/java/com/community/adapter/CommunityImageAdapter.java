@@ -58,7 +58,6 @@ public class CommunityImageAdapter extends RecyclerView.Adapter<CommunityImageAd
     @Override
     public void onBindViewHolder(CommunityImageAdapter.DefaultViewHolder holder, int position) {
         String imageUrl = dynamicImagesList.get(position);
-        GlideImageLoader.loadActiveImageDisplay(mContext, imageUrl, holder.iv_dynamic_publish, R.drawable.default_image, R.drawable.default_image, 2);
         holder.iv_dynamic_publish.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -72,6 +71,10 @@ public class CommunityImageAdapter extends RecyclerView.Adapter<CommunityImageAd
         LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(itemWidth, itemWidth);
         layoutParams.setMargins(0, 0, 0, marginPx);
         holder.iv_dynamic_publish.setLayoutParams(layoutParams);
+        if (!imageUrl.equals(holder.iv_dynamic_publish.getTag(R.id.iv_dynamic_publish))) {
+            GlideImageLoader.loadActiveImageDisplay(mContext, imageUrl, holder.iv_dynamic_publish, R.drawable.default_image, R.drawable.default_image, 2);
+            holder.iv_dynamic_publish.setTag(R.id.iv_dynamic_publish, imageUrl);
+        }
     }
 
     @Override

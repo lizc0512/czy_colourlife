@@ -12,6 +12,7 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.util.DiffUtil;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SimpleItemAnimator;
@@ -292,10 +293,9 @@ public class CommunityDynamicsFragment extends Fragment implements View.OnClickL
                     communityDynamicsAdapter = new CommunityDynamicsAdapter(getActivity(), dynamicContentList);
                     LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
                     rv_community_dynamics.setLayoutManager(linearLayoutManager);
-                    ((SimpleItemAnimator) rv_community_dynamics.getItemAnimator()).setSupportsChangeAnimations(false);
                     rv_community_dynamics.setAdapter(communityDynamicsAdapter);
                 } else {
-                    communityDynamicsAdapter.notifyDataSetChanged();
+                    communityDynamicsAdapter.notifyItemRangeChanged(0, dynamicContentList.size());
                 }
                 setDynamicsListener();
                 //进行数据适配器的展示
