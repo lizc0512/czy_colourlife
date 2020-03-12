@@ -12,6 +12,7 @@ import android.widget.TextView;
 import com.BeeFramework.Utils.ToastUtil;
 import com.BeeFramework.activity.BaseActivity;
 import com.BeeFramework.model.NewHttpResponse;
+import com.BeeFramework.view.CircleImageView;
 import com.alibaba.android.arouter.facade.annotation.Route;
 import com.im.entity.MobileBookEntity;
 import com.im.entity.UserIdInforEntity;
@@ -40,7 +41,7 @@ public class IMCustomerInforActivity extends BaseActivity implements View.OnClic
 
     private ImageView user_top_view_back;
     private TextView user_top_view_title;
-    private ImageView user_photo;
+    private CircleImageView user_photo;
     private TextView user_nickname;
     private ImageView user_sex;
     private TextView tv_community;
@@ -77,7 +78,7 @@ public class IMCustomerInforActivity extends BaseActivity implements View.OnClic
         user_top_view_title.setText(getResources().getString(R.string.instant_detail_infor));
         Intent intent = getIntent();
         useruuid = intent.getStringExtra(IMFriendInforActivity.USERUUID);
-         userType = intent.getIntExtra(IMFriendInforActivity.USERIDTYPE, 0);
+        userType = intent.getIntExtra(IMFriendInforActivity.USERIDTYPE, 0);
         IMUploadPhoneModel imUploadPhoneModel = new IMUploadPhoneModel(IMCustomerInforActivity.this);
         if (userType == 1) {
             //为1时传递过来的为用户的id
@@ -89,7 +90,7 @@ public class IMCustomerInforActivity extends BaseActivity implements View.OnClic
     }
 
     private void setUserInfor() {
-        GlideImageLoader.loadImageDefaultDisplay(IMCustomerInforActivity.this, portrait, user_photo, R.drawable.im_icon_default_head, R.drawable.im_icon_default_head);
+        GlideImageLoader.loadImageDefaultDisplay(IMCustomerInforActivity.this, portrait, user_photo, R.drawable.icon_default_portrait, R.drawable.icon_default_portrait);
         if (TextUtils.isEmpty(username)) {
             user_nickname.setText(nickname);
         } else {

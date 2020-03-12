@@ -17,6 +17,7 @@ import com.BeeFramework.Utils.ToastUtil;
 import com.BeeFramework.Utils.Utils;
 import com.BeeFramework.activity.BaseActivity;
 import com.BeeFramework.model.NewHttpResponse;
+import com.BeeFramework.view.CircleImageView;
 import com.BeeFramework.view.Util;
 import com.alibaba.android.arouter.facade.annotation.Route;
 import com.im.entity.FriendInforEntity;
@@ -68,7 +69,7 @@ public class IMFriendInforActivity extends BaseActivity implements View.OnClickL
     private ImageView user_top_view_back;
     private TextView user_top_view_title;
     private ImageView img_right;
-    private ImageView user_photo;
+    private CircleImageView user_photo;
     private TextView user_name;
     private TextView user_nickname;
     private ImageView user_sex;
@@ -140,7 +141,7 @@ public class IMFriendInforActivity extends BaseActivity implements View.OnClickL
             } else {
                 tv_name.setText(userRemark);
             }
-            GlideImageLoader.loadImageDefaultDisplay(IMFriendInforActivity.this, portrait, user_photo, R.drawable.im_icon_default_head, R.drawable.im_icon_default_head);
+            GlideImageLoader.loadImageDefaultDisplay(IMFriendInforActivity.this, portrait, user_photo, R.drawable.icon_default_portrait, R.drawable.icon_default_portrait);
             if (TextUtils.isEmpty(username)) {
                 user_nickname.setText(nickname);
             } else {

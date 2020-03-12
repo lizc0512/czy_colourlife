@@ -38,9 +38,13 @@ public class ForegroundEnablingService extends Service {
     private static final int NOTIFICATION_ID = 10;
 
     private static void startForeground(Service service) {
-        Notification.Builder builder = new Notification.Builder(service);
-        builder.setSmallIcon(R.drawable.img_msg);
-        service.startForeground(NOTIFICATION_ID, builder.build());
+        try {
+            Notification.Builder builder = new Notification.Builder(service);
+            builder.setSmallIcon(R.drawable.img_msg);
+            service.startForeground(NOTIFICATION_ID, builder.build());
+        }catch (Exception e){
+
+        }
     }
 
     @Override

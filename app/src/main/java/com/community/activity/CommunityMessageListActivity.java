@@ -65,7 +65,7 @@ public class CommunityMessageListActivity extends BaseActivity implements View.O
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_community_message);
+        setContentView(R.layout.activity_community_friendlist);
         initView();
         addTopView();
         HuxinSdkManager.instance().chatMsgFromCache(CommunityMessageListActivity.this,

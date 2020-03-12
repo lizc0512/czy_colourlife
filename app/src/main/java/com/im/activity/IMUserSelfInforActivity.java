@@ -11,6 +11,7 @@ import android.widget.TextView;
 
 import com.BeeFramework.activity.BaseActivity;
 import com.BeeFramework.model.NewHttpResponse;
+import com.BeeFramework.view.CircleImageView;
 import com.alibaba.android.arouter.facade.annotation.Route;
 import com.im.entity.MobileBookEntity;
 import com.im.entity.UserIdInforEntity;
@@ -37,7 +38,7 @@ public class IMUserSelfInforActivity extends BaseActivity implements View.OnClic
 
     private ImageView user_top_view_back;
     private TextView user_top_view_title;
-    private ImageView user_photo;
+    private CircleImageView user_photo;
     private TextView user_nickname;
     private ImageView user_sex;
     private TextView tv_community;
@@ -82,7 +83,7 @@ public class IMUserSelfInforActivity extends BaseActivity implements View.OnClic
     }
 
     private void setUserInfor() {
-        GlideImageLoader.loadImageDefaultDisplay(IMUserSelfInforActivity.this, portrait, user_photo, R.drawable.im_icon_default_head, R.drawable.im_icon_default_head);
+        GlideImageLoader.loadImageDefaultDisplay(IMUserSelfInforActivity.this, portrait, user_photo, R.drawable.icon_default_portrait, R.drawable.icon_default_portrait);
         if (TextUtils.isEmpty(username)) {
             user_nickname.setText(nickname);
         } else {

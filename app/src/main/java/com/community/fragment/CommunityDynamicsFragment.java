@@ -150,6 +150,7 @@ public class CommunityDynamicsFragment extends Fragment implements View.OnClickL
                 communityDynamicsModel.getCommunityDynamicList(0, page, year, false, CommunityDynamicsFragment.this);
             }
         });
+        rv_community_dynamics.setItemViewSwipeEnabled(false);
         rv_community_dynamics.useDefaultLoadMore();
         rv_community_dynamics.setLoadMoreListener(new SwipeMenuRecyclerView.LoadMoreListener() {
             @Override

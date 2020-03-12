@@ -331,9 +331,6 @@ public class DynamicsDetailsActivity extends BaseFragmentActivity implements Vie
                         } else {
                             KeyBoardUtils.closeKeybord(feed_comment_edittext, DynamicsDetailsActivity.this);
                             communityDynamicsModel.commentDynamic(5, content, source_id, to_userid, DynamicsDetailsActivity.this::OnHttpResponse);
-                            to_userid = "";
-                            feed_comment_edittext.setHint(getResources().getString(R.string.community_comment_hint));
-                            feed_comment_edittext.setText("");
                         }
                     } else {
                         ToastUtil.toastShow(DynamicsDetailsActivity.this, "输入的内容不能为空");
@@ -404,7 +401,8 @@ public class DynamicsDetailsActivity extends BaseFragmentActivity implements Vie
 
     }
 
-    public void setCommentReply(String to_userId, String from_nickename) {
+    public void setCommentReply(String user_id, String from_nickename) {
+        to_userid = user_id;
         to_nickname = from_nickename;
         feed_comment_edittext.setFocusable(true);
         feed_comment_edittext.setFocusableInTouchMode(true);
@@ -415,7 +413,6 @@ public class DynamicsDetailsActivity extends BaseFragmentActivity implements Vie
         } else {
             feed_comment_edittext.setHint("回复");
         }
-        this.to_userid = to_userId;
     }
 
     public void showTipCommentDelDialog() {
@@ -512,6 +509,9 @@ public class DynamicsDetailsActivity extends BaseFragmentActivity implements Vie
                 setCommentCount();
                 communityCommentListFragment.addDelRelay(commentBean);
                 callBackDynamicList(2);
+                to_userid = "";
+                feed_comment_edittext.setHint(getResources().getString(R.string.community_comment_hint));
+                feed_comment_edittext.setText("");
                 break;
             case 6://点赞
                 CommunityDynamicsListEntity.ContentBean.DataBean.ZanBean likeZanBean = new CommunityDynamicsListEntity.ContentBean.DataBean.ZanBean();
