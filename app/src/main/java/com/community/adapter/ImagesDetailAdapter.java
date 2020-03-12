@@ -21,52 +21,52 @@ import cn.net.cyberway.R;
  */
 public class ImagesDetailAdapter extends PagerAdapter {
 
-	private LayoutInflater mInflater;
-	public List<String> list;
+    private LayoutInflater mInflater;
+    public List<String> list;
 
-	public ImagesDetailAdapter(Context context, List<String> list) {
-		mInflater =  LayoutInflater.from(context);
-		this.list = list;
-	}
+    public ImagesDetailAdapter(Context context, List<String> list) {
+        mInflater = LayoutInflater.from(context);
+        this.list = list;
+    }
 
-	@Override
-	public int getCount() {
-		// TODO Auto-generated method stub
-		return list.size();
-	}
+    @Override
+    public int getCount() {
+        // TODO Auto-generated method stub
+        return list.size();
+    }
 
-	@Override
-	public void destroyItem(ViewGroup container, int position, Object object) {
-		((ViewPager) container).removeView((View) object);
-	}
+    @Override
+    public void destroyItem(ViewGroup container, int position, Object object) {
+        ((ViewPager) container).removeView((View) object);
+    }
 
-	@Override
-	public boolean isViewFromObject(View view, Object object) {
-		return view.equals(object);
-	}
+    @Override
+    public boolean isViewFromObject(View view, Object object) {
+        return view.equals(object);
+    }
 
 
-	@Override
-	public Object instantiateItem(ViewGroup view, int position) {
-		final ViewHolder holder;
+    @Override
+    public Object instantiateItem(ViewGroup view, int position) {
+        final ViewHolder holder;
 
-		holder = new ViewHolder();
-		View imageLayout = mInflater.inflate(R.layout.images_item, null);
-		holder.mImage = (TouchImageView) imageLayout.findViewById(R.id.images_item_image);
-		String attach = list.get(position);
-		if(attach != null && attach.length() > 0) {
-			holder.mImage.setImageLoadUrl(attach);
-			ImageLoader.getInstance().displayImage(attach, holder.mImage, GlideImageLoader.optionsImage );
-			holder.mImage.isDownload(true);
-			holder.mImage.isClickBack(true);
-		}
+        holder = new ViewHolder();
+        View imageLayout = mInflater.inflate(R.layout.images_item, null);
+        holder.mImage = (TouchImageView) imageLayout.findViewById(R.id.images_item_image);
+        String attach = list.get(position);
+        if (attach != null && attach.length() > 0) {
+            holder.mImage.setImageLoadUrl(attach);
+            GlideImageLoader.loadImageDefaultDisplay(view.getContext(), attach, holder.mImage, R.drawable.default_image, R.drawable.default_image);
+            holder.mImage.isDownload(true);
+            holder.mImage.isClickBack(true);
+        }
 
-		((ViewPager) view).addView(imageLayout, 0);
-		return imageLayout;
-	}
+        ((ViewPager) view).addView(imageLayout, 0);
+        return imageLayout;
+    }
 
-	class ViewHolder {
-		private TouchImageView mImage;
-	}
+    class ViewHolder {
+        private TouchImageView mImage;
+    }
 
 }

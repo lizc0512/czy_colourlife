@@ -44,8 +44,8 @@ public class CommunityImageAdapter extends RecyclerView.Adapter<CommunityImageAd
         this.distance = distance;
         this.extra_type = extra_type;
         int screenWidth = Util.DensityUtil.getScreenWidth(mContext, false);
-        itemWidth = (screenWidth - Util.DensityUtil.dip2px(mContext, distance)) / 3;
         marginPx = Util.DensityUtil.dip2px(mContext, 6);
+        itemWidth = (screenWidth - Util.DensityUtil.dip2px(mContext, distance)) / 3 - marginPx;
     }
 
 
@@ -72,6 +72,7 @@ public class CommunityImageAdapter extends RecyclerView.Adapter<CommunityImageAd
         layoutParams.setMargins(0, 0, 0, marginPx);
         holder.iv_dynamic_publish.setLayoutParams(layoutParams);
         if (!imageUrl.equals(holder.iv_dynamic_publish.getTag(R.id.iv_dynamic_publish))) {
+            holder.iv_dynamic_publish.setScaleType(ImageView.ScaleType.CENTER_CROP);
             GlideImageLoader.loadActiveImageDisplay(mContext, imageUrl, holder.iv_dynamic_publish, R.drawable.default_image, R.drawable.default_image, 2);
             holder.iv_dynamic_publish.setTag(R.id.iv_dynamic_publish, imageUrl);
         }

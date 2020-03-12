@@ -234,7 +234,7 @@ public class DynamicsDetailsActivity extends BaseFragmentActivity implements Vie
         } else {
             rv_dynamics_images.setVisibility(View.VISIBLE);
             int extra_type = dataBean.getExtra_type();
-            CommunityImageAdapter communityImageAdapter = new CommunityImageAdapter(DynamicsDetailsActivity.this, (ArrayList<String>) imgList, extra_type, 44);
+            CommunityImageAdapter communityImageAdapter = new CommunityImageAdapter(DynamicsDetailsActivity.this, (ArrayList<String>) imgList, extra_type, 32);
             int row = imgSize == 4 ? 2 : 3;//如果4张图片显示2列
             if (row == 2) {
                 view_dynamics_weight.setVisibility(View.VISIBLE);
@@ -269,7 +269,7 @@ public class DynamicsDetailsActivity extends BaseFragmentActivity implements Vie
         dra.setBounds(0, 0, dra.getMinimumWidth(), dra.getMinimumHeight());
         tv_dynamics_like.setCompoundDrawables(dra, null, null, null);
         if (zan_count == 0) {
-            tv_dynamics_like.setText("");
+            tv_dynamics_like.setText(getResources().getString(R.string.community_title_like));
         } else {
             tv_dynamics_like.setText(String.valueOf(zan_count));
         }
@@ -277,7 +277,7 @@ public class DynamicsDetailsActivity extends BaseFragmentActivity implements Vie
 
     private void setCommentCount() {
         if (comment_count == 0) {
-            tv_dynamics_comment.setText("");
+            tv_dynamics_comment.setText(getResources().getString(R.string.community_comment));
         } else {
             tv_dynamics_comment.setText(String.valueOf(comment_count));
         }

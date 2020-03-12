@@ -10,6 +10,7 @@ import android.widget.TextView;
 
 import com.BeeFramework.Utils.TimeUtil;
 import com.community.entity.CommunityRemindListEntity;
+import com.nohttp.utils.GlideImageLoader;
 
 import java.util.List;
 

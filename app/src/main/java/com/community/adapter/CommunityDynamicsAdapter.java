@@ -106,12 +106,12 @@ public class CommunityDynamicsAdapter extends RecyclerView.Adapter<CommunityDyna
         params.height = ViewGroup.LayoutParams.WRAP_CONTENT;
         holder.tv_dynamics_text_content.setLayoutParams(params);
         if (zan_count == 0) {
-            holder.tv_dynamics_like.setText("");
+            holder.tv_dynamics_like.setText(mContext.getResources().getString(R.string.community_title_like));
         } else {
             holder.tv_dynamics_like.setText(String.valueOf(zan_count));
         }
         if (comment_count == 0) {
-            holder.tv_dynamics_comment.setText("");
+            holder.tv_dynamics_comment.setText(mContext.getResources().getString(R.string.community_comment));
         } else {
             holder.tv_dynamics_comment.setText(String.valueOf(comment_count));
         }
@@ -198,7 +198,7 @@ public class CommunityDynamicsAdapter extends RecyclerView.Adapter<CommunityDyna
         } else {
             holder.rv_dynamics_images.setVisibility(View.VISIBLE);
             int extra_type = dataBean.getExtra_type();
-            CommunityImageAdapter communityImageAdapter = new CommunityImageAdapter(mContext, (ArrayList<String>) imgList, extra_type,52);
+            CommunityImageAdapter communityImageAdapter = new CommunityImageAdapter(mContext, (ArrayList<String>) imgList, extra_type,40);
             int row = imgSize == 4 ? 2 : 3;//如果4张图片显示2列
             if (row == 2) {
                 holder.view_dynamics_weight.setVisibility(View.VISIBLE);

@@ -8,6 +8,7 @@
     <string name="community_dynamics_tipsoff_type">请选择举报类型</string>
     <string name="community_publish">发布</string>
     <string name="community_like">点赞</string>
+    <string name="community_title_like">赞</string>
     <string name="community_comment">评论</string>
     <string name="community_comment_send">发送</string>
     <string name="community_comment_hint">评论...</string>

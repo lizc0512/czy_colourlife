@@ -292,7 +292,8 @@ public class PublishDynamicsActivity extends BaseActivity implements View.OnClic
         for (int i = 0; i < images.size(); i++) {
             ImageItem imageItem = images.get(i);
             String path = imageItem.path;
-            File newFile = CompressHelper.getDefault(this).compressToFile(new File(path));
+            CompressHelper compressHelper = new CompressHelper.Builder(this).setMaxWidth(1080).setMaxHeight(1920).setQuality(90).build();
+            File newFile = compressHelper.compressToFile(new File(path));
             compressPathList.add(newFile.getPath());
         }
         for (int j = 0; j < compressPathList.size(); j++) {
