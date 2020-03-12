@@ -48,6 +48,7 @@
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
+            android:visibility="gone"
             android:layout_marginRight="16dp"
             android:padding="4dp"
             android:src="@drawable/community_dynamics_tipoffs" />

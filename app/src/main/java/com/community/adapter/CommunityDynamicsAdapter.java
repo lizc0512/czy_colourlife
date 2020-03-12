@@ -64,8 +64,11 @@ public class CommunityDynamicsAdapter extends RecyclerView.Adapter<CommunityDyna
     public CommunityDynamicsAdapter(Context context, List<CommunityDynamicsListEntity.ContentBean.DataBean> dynamicContentList) {
         this.mContext = context;
         this.dynamicContentList = dynamicContentList;
-        SharedPreferences sharedPreferences = context.getSharedPreferences(UserAppConst.USERINFO, 0);
-        current_user_uuid = sharedPreferences.getString(UserAppConst.Colour_User_uuid, "");
+
+    }
+
+    public void setUserUUId(String userUUId) {
+        current_user_uuid = userUUId;
     }
 
     public void setOnItemClickListener(OnItemClickListener onClickListener) {
@@ -133,7 +136,7 @@ public class CommunityDynamicsAdapter extends RecyclerView.Adapter<CommunityDyna
         holder.tv_dynamics_like.setCompoundDrawables(dra, null, null, null);
         if (current_user_uuid.equals(publish_uuid)) {
             holder.iv_dynamics_user_operate.setVisibility(GONE);
-        }else{
+        } else {
             holder.iv_dynamics_user_operate.setVisibility(View.VISIBLE);
         }
         holder.iv_dynamics_user_operate.setOnClickListener(new View.OnClickListener() {
@@ -198,7 +201,7 @@ public class CommunityDynamicsAdapter extends RecyclerView.Adapter<CommunityDyna
         } else {
             holder.rv_dynamics_images.setVisibility(View.VISIBLE);
             int extra_type = dataBean.getExtra_type();
-            CommunityImageAdapter communityImageAdapter = new CommunityImageAdapter(mContext, (ArrayList<String>) imgList, extra_type,40);
+            CommunityImageAdapter communityImageAdapter = new CommunityImageAdapter(mContext, (ArrayList<String>) imgList, extra_type, 40);
             int row = imgSize == 4 ? 2 : 3;//如果4张图片显示2列
             if (row == 2) {
                 holder.view_dynamics_weight.setVisibility(View.VISIBLE);
@@ -207,7 +210,7 @@ public class CommunityDynamicsAdapter extends RecyclerView.Adapter<CommunityDyna
             }
             GridLayoutManager gridLayoutManager = new GridLayoutManager(mContext, row);
             holder.rv_dynamics_images.setLayoutManager(gridLayoutManager);
-            ((SimpleItemAnimator)  holder.rv_dynamics_images.getItemAnimator()).setSupportsChangeAnimations(false);
+            ((SimpleItemAnimator) holder.rv_dynamics_images.getItemAnimator()).setSupportsChangeAnimations(false);
             holder.rv_dynamics_images.setAdapter(communityImageAdapter);
         }
         List<CommunityDynamicsListEntity.ContentBean.DataBean.CommentBean> commentBeanList = dataBean.getComment();
@@ -243,7 +246,7 @@ public class CommunityDynamicsAdapter extends RecyclerView.Adapter<CommunityDyna
         });
     }
 
-    private void jumpUserInforPage( String from_uuid) {
+    private void jumpUserInforPage(String from_uuid) {
         Intent intent = null;
         if (current_user_uuid.equals(from_uuid)) {
             intent = new Intent(mContext, IMUserSelfInforActivity.class);

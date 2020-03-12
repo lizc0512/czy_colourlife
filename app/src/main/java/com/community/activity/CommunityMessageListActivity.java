@@ -65,13 +65,12 @@ public class CommunityMessageListActivity extends BaseActivity implements View.O
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_community_friendlist);
+        setContentView(R.layout.activity_community_message);
         initView();
         addTopView();
         HuxinSdkManager.instance().chatMsgFromCache(CommunityMessageListActivity.this,
                 data -> {
                     mMessageAdapter.changeMessageList(data);
-                    showEmptyLayout();
                 });
         getNoticeUnReadCount();
 
@@ -80,15 +79,6 @@ public class CommunityMessageListActivity extends BaseActivity implements View.O
     private void getNoticeUnReadCount() {
         CommunityDynamicsModel communityDynamicsModel = new CommunityDynamicsModel(CommunityMessageListActivity.this);
         communityDynamicsModel.getDynamicRemindCount(0, CommunityMessageListActivity.this);
-    }
-
-    private void showEmptyLayout() {
-        List<ExCacheMsgBean> data = mMessageAdapter.getMsgList();
-        if (data == null || data.size() == 0) {
-            no_data_layout.setVisibility(View.VISIBLE);
-        } else {
-            no_data_layout.setVisibility(View.GONE);
-        }
     }
 
 
@@ -102,7 +92,6 @@ public class CommunityMessageListActivity extends BaseActivity implements View.O
             }
             bean.setDisplayName(cacheMsgBean.getTargetName());
             mMessageAdapter.addTop(bean);
-            showEmptyLayout();
         }
     }
 
@@ -163,7 +152,6 @@ public class CommunityMessageListActivity extends BaseActivity implements View.O
                 }
             }
         });
-        showEmptyLayout();
     }
 
     private RelativeLayout new_friend_layout;
@@ -335,7 +323,6 @@ public class CommunityMessageListActivity extends BaseActivity implements View.O
                 mMessageAdapter.deleteMessage(targetUuid);
                 HuxinSdkManager.instance().delMsgChat(targetUuid);
                 deleteMsgDialog.dismiss();
-                showEmptyLayout();
             }
         });
     }

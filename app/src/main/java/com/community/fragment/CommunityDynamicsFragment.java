@@ -12,10 +12,8 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
-import android.support.v7.util.DiffUtil;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.SimpleItemAnimator;
 import android.text.TextUtils;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -63,7 +61,6 @@ import cn.net.cyberway.activity.MainActivity;
 import q.rorbin.badgeview.QBadgeView;
 
 import static android.support.v7.widget.RecyclerView.SCROLL_STATE_IDLE;
-import static android.support.v7.widget.RecyclerView.SCROLL_STATE_SETTLING;
 import static com.community.activity.DynamicsDetailsActivity.DYNAMICS_DETAILS;
 import static com.user.UserAppConst.COLOUR_DYNAMICS_NEWLIST_CACHE;
 import static com.user.UserAppConst.COLOUR_DYNAMICS_NOTICE_NUMBER;
@@ -164,12 +161,15 @@ public class CommunityDynamicsFragment extends Fragment implements View.OnClickL
             }
         });
         rv_community_dynamics.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            View firstChild;
             @Override
             public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
-                int topRowVerticalPosition =
-                        (recyclerView == null || recyclerView.getChildCount() == 0) ? 0 : recyclerView.getChildAt(0).getTop();
-                dynamics_refresh_layout.setEnabled(topRowVerticalPosition >= 0);
-
+                if (recyclerView != null && recyclerView.getChildCount() > 0) {
+                    firstChild = recyclerView.getChildAt(0);
+                }
+                int firstChildPosition = firstChild == null ? 0 : recyclerView.getChildLayoutPosition(firstChild);
+                //如果firstChild处于列表的第一个位置，且top>=0,则下拉刷新控件可用
+                dynamics_refresh_layout.setEnabled(firstChildPosition == 0 && firstChild.getTop() >= 0);
             }
 
             @Override
@@ -253,11 +253,7 @@ public class CommunityDynamicsFragment extends Fragment implements View.OnClickL
                             intent.putExtra(DYNAMICS_DETAILS, dataBean);
                             startActivity(intent);
                             break;
-                        case SCROLL_STATE_SETTLING:
-                            rv_community_dynamics.stopScroll();
-                            break;
                     }
-
                 }
             });
         }
@@ -302,12 +298,15 @@ public class CommunityDynamicsFragment extends Fragment implements View.OnClickL
                 } else {
                     hasMore = false;
                 }
+                String current_user_uuid = mShared.getString(UserAppConst.Colour_User_uuid, "");
                 if (null == communityDynamicsAdapter) {
                     communityDynamicsAdapter = new CommunityDynamicsAdapter(getActivity(), dynamicContentList);
                     LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
                     rv_community_dynamics.setLayoutManager(linearLayoutManager);
+                    communityDynamicsAdapter.setUserUUId(current_user_uuid);
                     rv_community_dynamics.setAdapter(communityDynamicsAdapter);
                 } else {
+                    communityDynamicsAdapter.setUserUUId(current_user_uuid);
                     communityDynamicsAdapter.notifyItemRangeChanged(0, dynamicContentList.size());
                 }
                 setDynamicsListener();

@@ -12,17 +12,18 @@
     <com.yanzhenjie.recyclerview.swipe.SwipeMenuRecyclerView
         android:id="@+id/message_rv"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginTop="50dp" />
+        android:layout_marginTop="50dp"
+        android:background="@color/bg_color"
+        android:layout_height="match_parent" />
 
     <LinearLayout
         android:id="@+id/no_data_layout"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
-        android:visibility="gone"
         android:layout_marginTop="200dp"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:visibility="gone">
 
 
         <ImageView
