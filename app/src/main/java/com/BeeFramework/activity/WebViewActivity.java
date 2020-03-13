@@ -89,6 +89,7 @@ import com.im.helper.CacheFriendInforHelper;
 import com.im.model.IMUploadPhoneModel;
 import com.insthub.Config;
 import com.mob.MobSDK;
+import com.nohttp.utils.GlideImageLoader;
 import com.permission.AndPermission;
 import com.permission.PermissionListener;
 import com.scanCode.activity.CaptureActivity;
@@ -122,7 +123,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import cn.csh.colourful.life.utils.GlideUtils;
 import cn.csh.colourful.life.utils.GsonUtils;
 import cn.csh.colourful.life.utils.JsonValidator;
 import cn.csh.colourful.life.view.imagepicker.ImagePicker;
@@ -1287,7 +1287,7 @@ public class WebViewActivity extends BaseActivity implements View.OnLongClickLis
             }
         });
         deliveryOauthDialog.tv_app_name.setText(appName + "申请获得以下权限:");
-        GlideUtils.loadImageView(WebViewActivity.this, appLogo, deliveryOauthDialog.iv_app_logo);
+        GlideImageLoader.loadImageDisplay(WebViewActivity.this, appLogo, deliveryOauthDialog.iv_app_logo);
 
     }
 

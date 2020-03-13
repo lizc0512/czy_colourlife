@@ -2,10 +2,10 @@ package com.community.adapter;
 
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.Message;
+import android.support.annotation.NonNull;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -27,7 +27,6 @@ import com.im.activity.IMFriendInforActivity;
 import com.im.activity.IMUserSelfInforActivity;
 import com.im.helper.CacheFriendInforHelper;
 import com.nohttp.utils.GlideImageLoader;
-import com.user.UserAppConst;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -77,13 +76,84 @@ public class CommunityDynamicsAdapter extends RecyclerView.Adapter<CommunityDyna
 
     @Override
     public CommunityDynamicsAdapter.DefaultViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        CommunityDynamicsAdapter.DefaultViewHolder viewHolder = new CommunityDynamicsAdapter.DefaultViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.adapter_dynamics_list, parent, false));
+        DefaultViewHolder viewHolder = new DefaultViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.adapter_dynamics_list, parent, false));
         viewHolder.onClickListener = onClickListener;
         return viewHolder;
+
     }
 
     @Override
-    public void onBindViewHolder(CommunityDynamicsAdapter.DefaultViewHolder holder, int position) {
+    public int getItemViewType(int position) {
+        return dynamicContentList.get(position).getIsEnd();
+    }
+
+    @Override
+    public void onBindViewHolder(@NonNull CommunityDynamicsAdapter.DefaultViewHolder holder, int position, @NonNull List<Object> payloads) {
+        if (payloads.isEmpty()) {
+            //payloads 为 空，说明是更新整个 ViewHolder
+            onBindViewHolder(holder, position);
+        } else {
+            String loadsValue = payloads.get(0).toString();
+            CommunityDynamicsListEntity.ContentBean.DataBean dataBean = dynamicContentList.get(position);
+            if ("like".equals(loadsValue)) {
+                String is_zan = dataBean.getIs_zan();
+                int zan_count = dataBean.getZan_count();
+                Drawable dra = null;
+                if ("1".equals(is_zan)) {
+                    //表示用户未点赞
+                    dra = mContext.getResources().getDrawable(R.drawable.community_dynamics_like);
+                } else {
+                    //用户已经点赞过
+                    dra = mContext.getResources().getDrawable(R.drawable.community_dynamics_unlike);
+                }
+                dra.setBounds(0, 0, dra.getMinimumWidth(), dra.getMinimumHeight());
+                holder.tv_dynamics_like.setCompoundDrawables(dra, null, null, null);
+                if (zan_count == 0) {
+                    holder.tv_dynamics_like.setText(mContext.getResources().getString(R.string.community_title_like));
+                } else {
+                    holder.tv_dynamics_like.setText(String.valueOf(zan_count));
+                }
+                holder.tv_dynamics_like.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        //用户点赞或取消点赞  like_dynamic
+                        Bundle bundle = new Bundle();
+                        bundle.putString("sourceId", dataBean.getSource_id());
+                        bundle.putString("isZan", is_zan);
+                        bundle.putInt("position", position);
+                        Message message = Message.obtain();
+                        message.what = DIRECT_LIKE_DYNAMIC;
+                        message.setData(bundle);
+                        EventBus.getDefault().post(message);
+                    }
+                });
+            } else if ("comment".equals(loadsValue)) {
+                int comment_count = dataBean.getComment_count();
+                if (comment_count == 0) {
+                    holder.tv_dynamics_comment.setText(mContext.getResources().getString(R.string.community_comment));
+                } else {
+                    holder.tv_dynamics_comment.setText(String.valueOf(comment_count));
+                }
+                List<CommunityDynamicsListEntity.ContentBean.DataBean.CommentBean> commentBeanList = dataBean.getComment();
+                int commentSize = commentBeanList == null ? 0 : commentBeanList.size();
+                if (commentSize == 0) {
+                    holder.rv_dynamics_user_comments.setVisibility(GONE);
+                    holder.dynamic_divider_view.setVisibility(GONE);
+                } else {
+                    holder.rv_dynamics_user_comments.setVisibility(View.VISIBLE);
+                    holder.dynamic_divider_view.setVisibility(View.VISIBLE);
+                    CommunityCommentAdapter communityCommentAdapter = new CommunityCommentAdapter(mContext, commentBeanList, position);
+                    LinearLayoutManager linearLayoutManager = new LinearLayoutManager(mContext, LinearLayoutManager.VERTICAL, false);
+                    ((SimpleItemAnimator) holder.rv_dynamics_user_comments.getItemAnimator()).setSupportsChangeAnimations(false);
+                    holder.rv_dynamics_user_comments.setLayoutManager(linearLayoutManager);
+                    holder.rv_dynamics_user_comments.setAdapter(communityCommentAdapter);
+                }
+            }
+        }
+    }
+
+    @Override
+    public void onBindViewHolder(@NonNull CommunityDynamicsAdapter.DefaultViewHolder holder, int position) {
         CommunityDynamicsListEntity.ContentBean.DataBean dataBean = dynamicContentList.get(position);
         String avatar = dataBean.getAvatar();
         String community_name = dataBean.getCommunity_name();
@@ -94,9 +164,8 @@ public class CommunityDynamicsAdapter extends RecyclerView.Adapter<CommunityDyna
         String publish_uuid = dataBean.getUser_uuid();
         String content = dataBean.getContent();
         String source_id = dataBean.getSource_id();
-        String is_zan = dataBean.getIs_zan();
-
         GlideImageLoader.loadImageDefaultDisplay(mContext, avatar, holder.iv_dynamics_user_pics, R.drawable.icon_default_portrait, R.drawable.icon_default_portrait);
+        String is_zan = dataBean.getIs_zan();
         holder.tv_dynamics_user_name.setText(nick_name);
         holder.tv_dynamics_user_community.setText(community_name);
         if (!TextUtils.isEmpty(content)) {
@@ -209,8 +278,8 @@ public class CommunityDynamicsAdapter extends RecyclerView.Adapter<CommunityDyna
                 holder.view_dynamics_weight.setVisibility(GONE);
             }
             GridLayoutManager gridLayoutManager = new GridLayoutManager(mContext, row);
-            holder.rv_dynamics_images.setLayoutManager(gridLayoutManager);
             ((SimpleItemAnimator) holder.rv_dynamics_images.getItemAnimator()).setSupportsChangeAnimations(false);
+            holder.rv_dynamics_images.setLayoutManager(gridLayoutManager);
             holder.rv_dynamics_images.setAdapter(communityImageAdapter);
         }
         List<CommunityDynamicsListEntity.ContentBean.DataBean.CommentBean> commentBeanList = dataBean.getComment();
@@ -223,6 +292,7 @@ public class CommunityDynamicsAdapter extends RecyclerView.Adapter<CommunityDyna
             holder.dynamic_divider_view.setVisibility(View.VISIBLE);
             CommunityCommentAdapter communityCommentAdapter = new CommunityCommentAdapter(mContext, commentBeanList, position);
             LinearLayoutManager linearLayoutManager = new LinearLayoutManager(mContext, LinearLayoutManager.VERTICAL, false);
+            ((SimpleItemAnimator) holder.rv_dynamics_user_comments.getItemAnimator()).setSupportsChangeAnimations(false);
             holder.rv_dynamics_user_comments.setLayoutManager(linearLayoutManager);
             holder.rv_dynamics_user_comments.setAdapter(communityCommentAdapter);
         }
@@ -244,6 +314,7 @@ public class CommunityDynamicsAdapter extends RecyclerView.Adapter<CommunityDyna
                 jumpUserInforPage(publish_uuid);
             }
         });
+
     }
 
     private void jumpUserInforPage(String from_uuid) {

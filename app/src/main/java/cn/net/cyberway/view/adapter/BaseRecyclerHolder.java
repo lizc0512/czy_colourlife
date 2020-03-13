@@ -8,7 +8,7 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import cn.csh.colourful.life.utils.GlideUtils;
+import com.nohttp.utils.GlideImageLoader;
 
 /**
  * 创建时间 : 2017/8/14.
@@ -89,7 +89,7 @@ public class BaseRecyclerHolder extends RecyclerView.ViewHolder {
      * 设置图片
      */
     public BaseRecyclerHolder setImageByUrl(int viewId,String url){
-        GlideUtils.loadImageView(context,url,(ImageView) getView(viewId));
+        GlideImageLoader.loadImageDisplay(context,url,(ImageView) getView(viewId));
         return this;
     }
 }

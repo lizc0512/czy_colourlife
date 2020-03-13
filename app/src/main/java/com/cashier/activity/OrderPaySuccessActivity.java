@@ -56,7 +56,6 @@ import com.user.UserMessageConstant;
 import java.util.ArrayList;
 import java.util.List;
 
-import cn.csh.colourful.life.utils.GlideUtils;
 import cn.csh.colourful.life.utils.ToastUtils;
 import cn.net.cyberway.R;
 import cn.net.cyberway.activity.BroadcastReceiverActivity;
@@ -385,7 +384,7 @@ public class OrderPaySuccessActivity extends BaseActivity implements View.OnClic
                 payActivityDialog.dismiss();
             }
         });
-        GlideUtils.loadImageView(OrderPaySuccessActivity.this, imageUrl, payActivityDialog.iv_wallet_activity);
+        GlideImageLoader.loadImageDisplay(OrderPaySuccessActivity.this, imageUrl, payActivityDialog.iv_wallet_activity);
         payActivityDialog.iv_wallet_close.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

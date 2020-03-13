@@ -7,6 +7,7 @@ import com.allapp.entity.HomeAllLifeEntity;
 import com.allapp.entity.WholeAppSectionEntity;
 import com.chad.library.adapter.base.BaseSectionQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
+import com.nohttp.utils.GlideImageLoader;
 
 import java.util.List;
 
@@ -51,7 +52,7 @@ public class WholeAppAdapter extends BaseSectionQuickAdapter<WholeAppSectionEnti
     protected void convert(BaseViewHolder helper, WholeAppSectionEntity item) {
         HomeAllLifeEntity.ContentBean.DataBean.ListBean listBean = item.t;
         helper.setText(R.id.tv_app_name, listBean.getName());
-        GlideUtils.loadImageView(context, listBean.getImg(), (ImageView) helper.getView(R.id.iv_app_logo));
+        GlideImageLoader.loadImageDisplay(context, listBean.getImg(), (ImageView) helper.getView(R.id.iv_app_logo));
         helper.itemView.setBackgroundResource(R.color.white);
         helper.setVisible(R.id.iv_app_operate, false);
     }

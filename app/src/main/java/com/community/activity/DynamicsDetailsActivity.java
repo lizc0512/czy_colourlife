@@ -515,21 +515,30 @@ public class DynamicsDetailsActivity extends BaseFragmentActivity implements Vie
                 feed_comment_edittext.setText("");
                 break;
             case 6://点赞
-                CommunityDynamicsListEntity.ContentBean.DataBean.ZanBean likeZanBean = new CommunityDynamicsListEntity.ContentBean.DataBean.ZanBean();
-                likeZanBean.setFrom_id(current_user_id);
-                likeZanBean.setFrom_nickname(shared.getString(UserAppConst.Colour_NIACKNAME, ""));
-                likeZanBean.setFrom_avatar(shared.getString(UserAppConst.Colour_head_img, ""));
-                zanBeanList.add(likeZanBean);
-                is_zan = "1";
-                dataBean.setIs_zan(is_zan);
-                dataBean.setZan(zanBeanList);
-                dataBean.setZan_count(++zan_count);
-                setZanStatus();
-                communityLikeListFragment.clickZan(likeZanBean);
-                callBackDynamicList(2);
+                int hasZan=0;
+                for (CommunityDynamicsListEntity.ContentBean.DataBean.ZanBean  zanBean:zanBeanList){
+                    if (current_user_id.equals(zanBean.getFrom_id())) {
+                        hasZan=1; //已经点赞过了不做处理
+                        break;
+                    }
+                }
+                if (hasZan==0){
+                    CommunityDynamicsListEntity.ContentBean.DataBean.ZanBean likeZanBean = new CommunityDynamicsListEntity.ContentBean.DataBean.ZanBean();
+                    likeZanBean.setFrom_id(current_user_id);
+                    likeZanBean.setFrom_nickname(shared.getString(UserAppConst.Colour_NIACKNAME, ""));
+                    likeZanBean.setFrom_avatar(shared.getString(UserAppConst.Colour_head_img, ""));
+                    zanBeanList.add(likeZanBean);
+                    is_zan = "1";
+                    dataBean.setIs_zan(is_zan);
+                    dataBean.setZan(zanBeanList);
+                    dataBean.setZan_count(++zan_count);
+                    setZanStatus();
+                    communityLikeListFragment.clickZan(likeZanBean);
+                    callBackDynamicList(2);
+                }
                 break;
             case 7://取消点赞
-                int delPos = 0;
+                int delPos = -1;
                 for (int q = 0; q < zanBeanList.size(); q++) {
                     CommunityDynamicsListEntity.ContentBean.DataBean.ZanBean zanBean = zanBeanList.get(q);
                     if (current_user_id.equals(zanBean.getFrom_id())) {
@@ -537,14 +546,16 @@ public class DynamicsDetailsActivity extends BaseFragmentActivity implements Vie
                         break;
                     }
                 }
-                zanBeanList.remove(delPos);
-                communityLikeListFragment.cancelLike(delPos);
-                is_zan = "2";
-                dataBean.setZan_count(--zan_count);
-                dataBean.setIs_zan(is_zan);
-                dataBean.setZan(zanBeanList);
-                setZanStatus();
-                callBackDynamicList(2);
+                if (delPos!=-1){
+                    zanBeanList.remove(delPos);
+                    communityLikeListFragment.cancelLike(delPos);
+                    is_zan = "2";
+                    dataBean.setZan_count(--zan_count);
+                    dataBean.setIs_zan(is_zan);
+                    dataBean.setZan(zanBeanList);
+                    setZanStatus();
+                    callBackDynamicList(2);
+                }
                 break;
         }
     }

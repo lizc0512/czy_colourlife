@@ -148,7 +148,13 @@ public class CommunityDynamicsFragment extends Fragment implements View.OnClickL
                 communityDynamicsModel.getCommunityDynamicList(0, page, year, false, CommunityDynamicsFragment.this);
             }
         });
+
+        SimpleItemAnimator simpleItemAnimator = ((SimpleItemAnimator) rv_community_dynamics.getItemAnimator());
+        simpleItemAnimator.setSupportsChangeAnimations(false);
+        simpleItemAnimator.setChangeDuration(0);
         rv_community_dynamics.setItemViewSwipeEnabled(false);
+        rv_community_dynamics.setLongPressDragEnabled(false);
+        rv_community_dynamics.setAutoLoadMore(false);
         rv_community_dynamics.useDefaultLoadMore();
         rv_community_dynamics.setLoadMoreListener(new SwipeMenuRecyclerView.LoadMoreListener() {
             @Override
@@ -265,7 +271,7 @@ public class CommunityDynamicsFragment extends Fragment implements View.OnClickL
 
     private void showDynamicList(String result) {
         try {
-            boolean dataEmpty = false;
+            boolean dataEmpty = true;
             String resultYear = "";
             int resultTotal = 0;
             if (!TextUtils.isEmpty(result)) {
@@ -358,7 +364,7 @@ public class CommunityDynamicsFragment extends Fragment implements View.OnClickL
             case 5:
                 dynamicContentList.remove(position);
                 communityDynamicsAdapter.notifyItemRemoved(position);
-                communityDynamicsAdapter.notifyItemChanged(position, dynamicContentList.size());
+                communityDynamicsAdapter.notifyItemChanged(position, "");
                 ToastUtil.toastShow(getActivity(), "动态删除成功");
                 if (dynamicContentList.size() == 0) {
                     dynamics_data_layout.setVisibility(View.GONE);
@@ -375,26 +381,35 @@ public class CommunityDynamicsFragment extends Fragment implements View.OnClickL
                 break;
             case 7:
                 CommunityDynamicsListEntity.ContentBean.DataBean dataBean = dynamicContentList.get(position);
-                int zanCount = dataBean.getZan_count();
-                dataBean.setZan_count(++zanCount);
-                dataBean.setIs_zan("1");
                 List<CommunityDynamicsListEntity.ContentBean.DataBean.ZanBean> zanBeanList = dataBean.getZan();
-                CommunityDynamicsListEntity.ContentBean.DataBean.ZanBean likeZanBean = new CommunityDynamicsListEntity.ContentBean.DataBean.ZanBean();
-                int zanUserId = mShared.getInt(UserAppConst.Colour_User_id, 0);
-                likeZanBean.setFrom_id(String.valueOf(zanUserId));
-                likeZanBean.setFrom_nickname(mShared.getString(UserAppConst.Colour_NIACKNAME, ""));
-                likeZanBean.setFrom_avatar(mShared.getString(UserAppConst.Colour_head_img, ""));
-                zanBeanList.add(likeZanBean);
-                dataBean.setZan(zanBeanList);
-                communityDynamicsAdapter.notifyItemChanged(position);
-                saveFristDynamicCache();
+                String zanUserId = String.valueOf(mShared.getInt(UserAppConst.Colour_User_id, 0));
+                int hasZan = 0;
+                for (CommunityDynamicsListEntity.ContentBean.DataBean.ZanBean zanBean : zanBeanList) {
+                    if (zanBean.getFrom_id().equals(zanUserId)) {
+                        hasZan = 1; //已经点赞过了不做处理
+                        break;
+                    }
+                }
+                if (hasZan == 0) { //防止多次点击问题
+                    int zanCount = dataBean.getZan_count();
+                    dataBean.setZan_count(++zanCount);
+                    dataBean.setIs_zan("1");
+                    CommunityDynamicsListEntity.ContentBean.DataBean.ZanBean likeZanBean = new CommunityDynamicsListEntity.ContentBean.DataBean.ZanBean();
+                    likeZanBean.setFrom_id(zanUserId);
+                    likeZanBean.setFrom_nickname(mShared.getString(UserAppConst.Colour_NIACKNAME, ""));
+                    likeZanBean.setFrom_avatar(mShared.getString(UserAppConst.Colour_head_img, ""));
+                    zanBeanList.add(likeZanBean);
+                    dataBean.setZan(zanBeanList);
+                    communityDynamicsAdapter.notifyItemChanged(position, "like");
+                    saveFristDynamicCache();
+                }
                 break;
             case 8:
                 CommunityDynamicsListEntity.ContentBean.DataBean cancelDataBean = dynamicContentList.get(position);
                 int cancelCount = cancelDataBean.getZan_count();
                 cancelDataBean.setZan_count(--cancelCount);
                 cancelDataBean.setIs_zan("2");
-                int delPos = 0;
+                int delPos = -1;
                 String cancelZanUserId = String.valueOf(mShared.getInt(UserAppConst.Colour_User_id, 0));
                 List<CommunityDynamicsListEntity.ContentBean.DataBean.ZanBean> cancelZanList = cancelDataBean.getZan();
                 for (int q = 0; q < cancelZanList.size(); q++) {
@@ -404,10 +419,12 @@ public class CommunityDynamicsFragment extends Fragment implements View.OnClickL
                         break;
                     }
                 }
-                cancelZanList.remove(delPos);
-                cancelDataBean.setZan(cancelZanList);
-                communityDynamicsAdapter.notifyItemChanged(position);
-                saveFristDynamicCache();
+                if (delPos != -1) {
+                    cancelZanList.remove(delPos);
+                    cancelDataBean.setZan(cancelZanList);
+                    communityDynamicsAdapter.notifyItemChanged(position, "like");
+                    saveFristDynamicCache();
+                }
                 break;
             case 9://新增评论 或回复
                 String commentId = "";
@@ -442,7 +459,7 @@ public class CommunityDynamicsFragment extends Fragment implements View.OnClickL
                     commentBean.setTo_id(fromUuid);
                 }
                 commentDataList.add(commentBean);
-                communityDynamicsAdapter.notifyItemChanged(position);
+                communityDynamicsAdapter.notifyItemChanged(position, "comment");
                 saveFristDynamicCache();
                 break;
         }
@@ -548,7 +565,7 @@ public class CommunityDynamicsFragment extends Fragment implements View.OnClickL
                     if (message.arg1 == 1) {
                         dynamicContentList.remove(position);
                         communityDynamicsAdapter.notifyItemRemoved(position);
-                        communityDynamicsAdapter.notifyItemChanged(position, dynamicContentList.size());
+                        communityDynamicsAdapter.notifyItemChanged(position, "");
                         if (dynamicContentList.size() == 0) {
                             dynamics_data_layout.setVisibility(View.GONE);
                             dynamics_empty_layout.setVisibility(View.VISIBLE);
@@ -674,7 +691,7 @@ public class CommunityDynamicsFragment extends Fragment implements View.OnClickL
         delDataBean.getComment().remove(commentPosition);
         int delComment_Count = delDataBean.getComment_count();
         delDataBean.setComment_count(--delComment_Count);
-        communityDynamicsAdapter.notifyItemChanged(position);
+        communityDynamicsAdapter.notifyItemChanged(position, "comment");
         commentPosition = -1;
     }
 

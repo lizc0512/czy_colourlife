@@ -65,17 +65,13 @@ public class CommunityImageAdapter extends RecyclerView.Adapter<CommunityImageAd
                 intent.putExtra(ImagesDetailActivity.POSITION, position);
                 intent.putExtra(ImagesDetailActivity.IMAGES, dynamicImagesList);
                 mContext.startActivity(intent);
-
             }
         });
         LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(itemWidth, itemWidth);
         layoutParams.setMargins(0, 0, 0, marginPx);
         holder.iv_dynamic_publish.setLayoutParams(layoutParams);
-        if (!imageUrl.equals(holder.iv_dynamic_publish.getTag(R.id.iv_dynamic_publish))) {
-            holder.iv_dynamic_publish.setScaleType(ImageView.ScaleType.CENTER_CROP);
-            GlideImageLoader.loadActiveImageDisplay(mContext, imageUrl, holder.iv_dynamic_publish, R.drawable.default_image, R.drawable.default_image);
-            holder.iv_dynamic_publish.setTag(R.id.iv_dynamic_publish, imageUrl);
-        }
+        holder.iv_dynamic_publish.setScaleType(ImageView.ScaleType.CENTER_CROP);
+        GlideImageLoader.loadActiveImageDisplay(mContext, imageUrl, holder.iv_dynamic_publish, R.drawable.default_image, R.drawable.default_image);
     }
 
     @Override
