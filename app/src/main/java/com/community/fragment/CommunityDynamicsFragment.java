@@ -14,6 +14,7 @@ import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.SimpleItemAnimator;
 import android.text.TextUtils;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -162,6 +163,7 @@ public class CommunityDynamicsFragment extends Fragment implements View.OnClickL
         });
         rv_community_dynamics.addOnScrollListener(new RecyclerView.OnScrollListener() {
             View firstChild;
+
             @Override
             public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
                 if (recyclerView != null && recyclerView.getChildCount() > 0) {
@@ -178,7 +180,6 @@ public class CommunityDynamicsFragment extends Fragment implements View.OnClickL
                 recycleState = newState;
             }
         });
-
         unReadBadgeView = new QBadgeView(getActivity());
         unReadBadgeView.bindTarget(iv_unRead_message);
         unReadBadgeView.setBadgeGravity(Gravity.END | Gravity.TOP);
@@ -193,7 +194,8 @@ public class CommunityDynamicsFragment extends Fragment implements View.OnClickL
         String dynamicCache = mShared.getString(COLOUR_DYNAMICS_NEWLIST_CACHE, "");
         if (!TextUtils.isEmpty(dynamicCache)) {
             dynamicContentList.clear();
-            showDynamicList(dynamicCache);
+            dynamicContentList = GsonUtils.jsonToList(dynamicCache, CommunityDynamicsListEntity.ContentBean.DataBean.class);
+            showDynamicData();
             communityDynamicsModel.getCommunityDynamicList(0, page, year, false, this);
         } else {
             communityDynamicsModel.getCommunityDynamicList(0, page, year, true, this);
@@ -298,20 +300,36 @@ public class CommunityDynamicsFragment extends Fragment implements View.OnClickL
                 } else {
                     hasMore = false;
                 }
-                String current_user_uuid = mShared.getString(UserAppConst.Colour_User_uuid, "");
-                if (null == communityDynamicsAdapter) {
-                    communityDynamicsAdapter = new CommunityDynamicsAdapter(getActivity(), dynamicContentList);
-                    LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
-                    rv_community_dynamics.setLayoutManager(linearLayoutManager);
-                    communityDynamicsAdapter.setUserUUId(current_user_uuid);
-                    rv_community_dynamics.setAdapter(communityDynamicsAdapter);
-                } else {
-                    communityDynamicsAdapter.setUserUUId(current_user_uuid);
-                    communityDynamicsAdapter.notifyItemRangeChanged(0, dynamicContentList.size());
-                }
-                setDynamicsListener();
+                showDynamicData();
                 //进行数据适配器的展示
                 rv_community_dynamics.loadMoreFinish(dataEmpty, hasMore);
+            }
+            saveFristDynamicCache();
+        } catch (Exception e) {
+
+        }
+    }
+
+    private void showDynamicData() {
+        String current_user_uuid = mShared.getString(UserAppConst.Colour_User_uuid, "");
+        if (null == communityDynamicsAdapter) {
+            communityDynamicsAdapter = new CommunityDynamicsAdapter(getActivity(), dynamicContentList);
+            LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
+            rv_community_dynamics.setLayoutManager(linearLayoutManager);
+            communityDynamicsAdapter.setUserUUId(current_user_uuid);
+            rv_community_dynamics.setAdapter(communityDynamicsAdapter);
+        } else {
+            communityDynamicsAdapter.setUserUUId(current_user_uuid);
+            communityDynamicsAdapter.notifyItemRangeChanged(0, dynamicContentList.size());
+        }
+        setDynamicsListener();
+    }
+
+    private void saveFristDynamicCache() {
+        try {
+            if (TextUtils.isEmpty(year) && page == 1) {  //值缓存第一页的数据
+                String fristPageCache = GsonUtils.gsonString(dynamicContentList);
+                editor.putString(COLOUR_DYNAMICS_NEWLIST_CACHE, fristPageCache).apply();
             }
         } catch (Exception e) {
 
@@ -327,7 +345,6 @@ public class CommunityDynamicsFragment extends Fragment implements View.OnClickL
                     dynamics_refresh_layout.setRefreshing(false);
                 }
                 if (TextUtils.isEmpty(year) && page == 1) {
-                    editor.putString(COLOUR_DYNAMICS_NEWLIST_CACHE, result).apply();
                     dynamicContentList.clear();
                 }
                 showDynamicList(result);
@@ -346,11 +363,15 @@ public class CommunityDynamicsFragment extends Fragment implements View.OnClickL
                 if (dynamicContentList.size() == 0) {
                     dynamics_data_layout.setVisibility(View.GONE);
                     dynamics_empty_layout.setVisibility(View.VISIBLE);
+                    editor.putString(COLOUR_DYNAMICS_NEWLIST_CACHE, "").apply();
                     //用户没有动态
+                } else {
+                    saveFristDynamicCache();
                 }
                 break;
             case 6:
                 delDynamicCommentSuccess();
+                saveFristDynamicCache();
                 break;
             case 7:
                 CommunityDynamicsListEntity.ContentBean.DataBean dataBean = dynamicContentList.get(position);
@@ -366,6 +387,7 @@ public class CommunityDynamicsFragment extends Fragment implements View.OnClickL
                 zanBeanList.add(likeZanBean);
                 dataBean.setZan(zanBeanList);
                 communityDynamicsAdapter.notifyItemChanged(position);
+                saveFristDynamicCache();
                 break;
             case 8:
                 CommunityDynamicsListEntity.ContentBean.DataBean cancelDataBean = dynamicContentList.get(position);
@@ -385,6 +407,7 @@ public class CommunityDynamicsFragment extends Fragment implements View.OnClickL
                 cancelZanList.remove(delPos);
                 cancelDataBean.setZan(cancelZanList);
                 communityDynamicsAdapter.notifyItemChanged(position);
+                saveFristDynamicCache();
                 break;
             case 9://新增评论 或回复
                 String commentId = "";
@@ -420,6 +443,7 @@ public class CommunityDynamicsFragment extends Fragment implements View.OnClickL
                 }
                 commentDataList.add(commentBean);
                 communityDynamicsAdapter.notifyItemChanged(position);
+                saveFristDynamicCache();
                 break;
         }
     }
@@ -528,11 +552,15 @@ public class CommunityDynamicsFragment extends Fragment implements View.OnClickL
                         if (dynamicContentList.size() == 0) {
                             dynamics_data_layout.setVisibility(View.GONE);
                             dynamics_empty_layout.setVisibility(View.VISIBLE);
+                            editor.putString(COLOUR_DYNAMICS_NEWLIST_CACHE, "").apply();
+                        } else {
+                            saveFristDynamicCache();
                         }
                     } else {
                         CommunityDynamicsListEntity.ContentBean.DataBean dataBean = (CommunityDynamicsListEntity.ContentBean.DataBean) message.obj;
                         dynamicContentList.set(position, dataBean);
                         communityDynamicsAdapter.notifyItemChanged(position);
+                        saveFristDynamicCache();
                     }
                 }
                 break;
@@ -713,5 +741,16 @@ public class CommunityDynamicsFragment extends Fragment implements View.OnClickL
         int unReadNoticeCount = mShared.getInt(COLOUR_DYNAMICS_NOTICE_NUMBER, 0);
         unReadBadgeView.setBadgeNumber(totalUnReadMsgCount + newFriendApplyCount + unReadNoticeCount);
         ((MainActivity) getActivity()).showUnReadMsg(unReadNoticeCount);
+    }
+
+    public void showNoticeMessageNumber(int unReadNoticeCount) {
+        int totalUnReadMsgCount = HuxinSdkManager.instance().unreadBuddyAndCommMessage();
+        int newFriendApplyCount = 0;
+        if (mShared.getBoolean(UserAppConst.IM_APPLY_FRIEND, false)) {
+            newFriendApplyCount = CacheApplyRecorderHelper.instance().toQueryApplyRecordSize(getActivity(), "0");
+        }
+        if (null != unReadBadgeView) {
+            unReadBadgeView.setBadgeNumber(totalUnReadMsgCount + newFriendApplyCount + unReadNoticeCount);
+        }
     }
 }

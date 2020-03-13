@@ -17,6 +17,9 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 
+import cn.net.cyberway.utils.FileUtils;
+
+
 /**
  * 图片处理工具类
  * <p>
@@ -32,7 +35,7 @@ public class BitmapUtil {
     }
 
     static Bitmap getScaledBitmap(Context context, Uri imageUri, float maxWidth, float maxHeight, Bitmap.Config bitmapConfig) {
-        String filePath = FileUtil.getRealPathFromURI(context, imageUri);
+        String filePath = FileUtils.getRealPathFromURI(context, imageUri);
         Bitmap scaledBitmap = null;
 
         BitmapFactory.Options options = new BitmapFactory.Options();
@@ -202,7 +205,7 @@ public class BitmapUtil {
         /** if prefix is null, set prefix "" */
         prefix = TextUtils.isEmpty(prefix) ? "" : prefix;
         /** reset fileName by prefix and custom file name */
-        fileName = TextUtils.isEmpty(fileName) ? prefix + FileUtil.splitFileName(FileUtil.getFileName(context, uri))[0] : fileName;
+        fileName = TextUtils.isEmpty(fileName) ? prefix + FileUtils.splitFileName(FileUtils.getFileName(context, uri))[0] : fileName;
         return file.getAbsolutePath() + File.separator + fileName + "." + extension;
     }
 

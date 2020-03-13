@@ -38,6 +38,9 @@ import cn.csh.colourful.life.view.imagepicker.ImagePicker;
 import cn.csh.colourful.life.view.imagepicker.bean.ImageItem;
 import cn.csh.colourful.life.view.imagepicker.ui.ImageGridActivity;
 import cn.net.cyberway.R;
+import cn.net.cyberway.utils.FileUtils;
+import top.zibin.luban.Luban;
+import top.zibin.luban.OnCompressListener;
 
 /**
  * @name ${yuansk}
@@ -59,10 +62,11 @@ public class PublishDynamicsActivity extends BaseActivity implements View.OnClic
     private GridLayout create_dynamics_photo;
     private ImageView add_ImageView;
     public static final int REQUEST_PHOTO = 5;
-    private ArrayList<ImageItem> allImages = new ArrayList<>();
     private ArrayList<CommunityImageView> mUploadImageViews = new ArrayList<CommunityImageView>();
     private String publishContent = "";
     private int picSize;
+    private CompressHelper compressHelper;
+    public Luban.Builder lubanBuilder;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -71,6 +75,8 @@ public class PublishDynamicsActivity extends BaseActivity implements View.OnClic
         initView();
         initImagePicker();
         initGridLayout();
+        compressHelper = new CompressHelper.Builder(this).setMaxWidth(720).setMaxHeight(1280).setQuality(80).build();
+        lubanBuilder = Luban.with(PublishDynamicsActivity.this);
     }
 
     private void initImagePicker() {
@@ -84,10 +90,7 @@ public class PublishDynamicsActivity extends BaseActivity implements View.OnClic
         imagePicker.setOutPutY(1000);//保存文件的高度。单位像素
     }
 
-    /**
-     * 初始化上传的图片的展示
-     */
-    private void initGridLayout() {
+    private void showAddPicView() {
         create_dynamics_photo.removeAllViews();
         add_ImageView = new ImageView(this);
         add_ImageView.setImageResource(R.drawable.community_dynamics_addpics);
@@ -107,7 +110,13 @@ public class PublishDynamicsActivity extends BaseActivity implements View.OnClic
             }
         });
         create_dynamics_photo.addView(add_ImageView);
+    }
 
+    /**
+     * 初始化上传的图片的展示
+     */
+    private void initGridLayout() {
+        showAddPicView();
         create_dynamics_content.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -168,7 +177,7 @@ public class PublishDynamicsActivity extends BaseActivity implements View.OnClic
 
             @Override
             public void onClick(View v) {
-                ImagePicker.getInstance().setSelectLimit(9 - allImages.size());
+                ImagePicker.getInstance().setSelectLimit(9 - mUploadImageViews.size());
                 Intent intent = new Intent(PublishDynamicsActivity.this, ImageGridActivity.class);
                 startActivityForResult(intent, REQUEST_PHOTO);
                 dialog.dismiss();
@@ -255,6 +264,7 @@ public class PublishDynamicsActivity extends BaseActivity implements View.OnClic
                     return;
                 }
             }
+            FileUtils.delDynamicPicFolder();
             CommunityDynamicsModel communityDynamicsModel = new CommunityDynamicsModel(PublishDynamicsActivity.this);
             communityDynamicsModel.publicUserDynamic(0, publishContent, "1", GsonUtils.gsonString(uploadObjList), PublishDynamicsActivity.this);
         } else {
@@ -278,7 +288,6 @@ public class PublishDynamicsActivity extends BaseActivity implements View.OnClic
         if (resultCode == ImagePicker.RESULT_CODE_ITEMS) {
             if (data != null && requestCode == REQUEST_PHOTO) {
                 ArrayList<ImageItem> images = (ArrayList<ImageItem>) data.getSerializableExtra(ImagePicker.EXTRA_RESULT_ITEMS);
-                allImages.addAll(images);
                 selectPicHandle(images);
             } else {
                 ToastUtil.toastShow(this, "没有数据");
@@ -292,14 +301,33 @@ public class PublishDynamicsActivity extends BaseActivity implements View.OnClic
         for (int i = 0; i < images.size(); i++) {
             ImageItem imageItem = images.get(i);
             String path = imageItem.path;
-            CompressHelper compressHelper = new CompressHelper.Builder(this).setMaxWidth(720).setMaxHeight(1280).setQuality(90).build();
-            File newFile = compressHelper.compressToFile(new File(path));
-            compressPathList.add(newFile.getPath());
+//            File newFile = compressHelper.compressToFile(new File(path));
+//            compressPathList.add(newFile.getPath());
+            compressPathList.add(path);
         }
-        for (int j = 0; j < compressPathList.size(); j++) {
-            CommunityImageView uploadImageView = new CommunityImageView(PublishDynamicsActivity.this);
-            addUploadImage(uploadImageView, compressPathList.get(j));
-        }
+//        for (int j = 0; j < compressPathList.size(); j++) {
+//            CommunityImageView uploadImageView = new CommunityImageView(PublishDynamicsActivity.this);
+//            addUploadImage(uploadImageView, compressPathList.get(j));
+//        }
+        lubanBuilder.load(compressPathList).ignoreBy(100).setTargetDir(FileUtils.getThumbImagePaths()).setCompressListener(new OnCompressListener() {
+            @Override
+            public void onStart() {
+
+            }
+
+            @Override
+            public void onSuccess(File file) {
+                CommunityImageView uploadImageView = new CommunityImageView(PublishDynamicsActivity.this);
+                addUploadImage(uploadImageView, file.getPath());
+            }
+
+            @Override
+            public void onError(Throwable e) {
+
+            }
+        }).launch();
+
+
     }
 
     private void addUploadImage(final CommunityImageView uploadImageView, String imagePath) {
@@ -314,7 +342,8 @@ public class PublishDynamicsActivity extends BaseActivity implements View.OnClic
         create_dynamics_photo.addView(uploadImageView, create_dynamics_photo.getChildCount() - 1);
         mUploadImageViews.add(uploadImageView);
         uploadImageView.setImageWithFilePath(imagePath, BitmapFactory.decodeFile(imagePath));
-        if (create_dynamics_photo.getChildCount() > 9 || create_dynamics_photo.getChildCount() == 0) {
+        picSize = create_dynamics_photo.getChildCount();
+        if (picSize > 9 || picSize == 0) {
             add_ImageView.setVisibility(View.GONE);
         } else {
             add_ImageView.setVisibility(View.VISIBLE);
@@ -334,6 +363,11 @@ public class PublishDynamicsActivity extends BaseActivity implements View.OnClic
         deleteNoticeDialog.btn_define.setOnClickListener(v -> {
             create_dynamics_photo.removeView(uploadImageView);
             mUploadImageViews.remove(uploadImageView);
+            if (mUploadImageViews.size() == 0) {//重新添加绑定
+                showAddPicView();
+            } else {
+                add_ImageView.setVisibility(View.VISIBLE);
+            }
             setPublishStatus();
             deleteNoticeDialog.dismiss();
         });

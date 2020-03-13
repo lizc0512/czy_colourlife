@@ -385,8 +385,9 @@ public class DynamicsDetailsActivity extends BaseFragmentActivity implements Vie
         });
     }
 
-    public void setDelCommentId(String comment_id) {
+    public void setDelCommentId(String comment_id, int position) {
         this.comment_id = comment_id;
+        commentPosition = position;
         showDelDynamics();
     }
 

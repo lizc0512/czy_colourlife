@@ -18,11 +18,15 @@ import android.os.Build;
 import android.os.Environment;
 import android.provider.DocumentsContract;
 import android.provider.MediaStore;
+import android.provider.OpenableColumns;
 import android.support.annotation.RequiresApi;
 import android.text.TextUtils;
+import android.util.Log;
 
 import com.BeeFramework.Utils.Base64Utils;
+import com.BeeFramework.Utils.StringUtil;
 import com.BeeFramework.Utils.TimeUtil;
+
 import java.io.BufferedOutputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -31,6 +35,7 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStream;
 import java.text.DecimalFormat;
 
 import static com.huawei.android.hms.agent.common.IOUtils.close;
@@ -40,79 +45,340 @@ import static com.huawei.android.hms.agent.common.IOUtils.close;
  * @author 写文件的工具类
  */
 public class FileUtils {
+    private static final String ThumbImagePaths = "/colourlife/ThumbImage";
+
+
+    public static final String FILES_PATH = "CompressHelper";
+    private static final int EOF = -1;
+    private static final int DEFAULT_BUFFER_SIZE = 1024 * 4;
+
+    private FileUtils() {
+        throw new UnsupportedOperationException("u can't instantiate me...");
+    }
 
     /**
-     * 按质量压缩bm
+     * 根据文件路径获取文件
      *
-     * @param bm
-     * @param quality 压缩率
-     * @return
+     * @param filePath 文件路径
+     * @return 文件
      */
-    public static String saveBitmap(Bitmap bm, int quality) {
-        String croppath = "";
-        try {
-            // 获取SDCard指定目录下
-            String sdCardDir = Environment.getExternalStorageDirectory() + "/colourlife/";
-            File dirFile = new File(sdCardDir);  //目录转化成文件夹
-            if (!dirFile.exists()) {              //如果不存在，那就建立这个文件夹
-                dirFile.mkdirs();
-            }
-            File file = new File(sdCardDir, System.currentTimeMillis() + ".jpg");// 在SDcard的目录下创建图片文,以当前时间为其命名
-            //得到相机图片存到本地的图片
-            croppath = file.getPath();
-            FileOutputStream out = new FileOutputStream(file);
-            bm.compress(Bitmap.CompressFormat.JPEG, quality, out);
-            out.flush();
-            out.close();
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }catch (NullPointerException e){
-            e.printStackTrace();
-        }
-        return croppath;
+    public static File getFileByPath(String filePath) {
+        return StringUtil.isSpace(filePath) ? null : new File(filePath);
+    }
+
+    /**
+     * 判断文件是否存在
+     *
+     * @param filePath 文件路径
+     * @return {@code true}: 存在<br>{@code false}: 不存在
+     */
+    public static boolean isFileExists(String filePath) {
+        return isFileExists(getFileByPath(filePath));
+    }
+
+    /**
+     * 判断文件是否存在
+     *
+     * @param file 文件
+     * @return {@code true}: 存在<br>{@code false}: 不存在
+     */
+    public static boolean isFileExists(File file) {
+        return file != null && file.exists();
     }
 
 
     /**
-     * 把图片压缩到200K
+     * 重命名文件
      *
-     * @param oldpath 压缩前的图片路径
-     * @param newPath 压缩后的图片路径
-     * @return
-     **/
-    public static File compressFile(String oldpath, String newPath) {
-        Bitmap compressBitmap = FileUtils.getImage(oldpath);
-        if (null == compressBitmap) {
-            return null;
-        } else {
-            Bitmap newBitmap = ratingImage(oldpath, compressBitmap);
-            ByteArrayOutputStream os = new ByteArrayOutputStream();
-            newBitmap.compress(Bitmap.CompressFormat.JPEG, 100, os);
-            byte[] bytes = os.toByteArray();
-            File file = null;
+     * @param filePath 文件路径
+     * @param newName  新名称
+     * @return {@code true}: 重命名成功<br>{@code false}: 重命名失败
+     */
+    public static boolean rename(String filePath, String newName) {
+        return rename(getFileByPath(filePath), newName);
+    }
+
+    /**
+     * 重命名文件
+     *
+     * @param file    文件
+     * @param newName 新名称
+     * @return {@code true}: 重命名成功<br>{@code false}: 重命名失败
+     */
+    public static boolean rename(File file, String newName) {
+        // 文件为空返回false
+        if (file == null) return false;
+        // 文件不存在返回false
+        if (!file.exists()) return false;
+        // 新的文件名为空返回false
+        if (StringUtil.isSpace(newName)) return false;
+        // 如果文件名没有改变返回true
+        if (newName.equals(file.getName())) return true;
+        File newFile = new File(file.getParent() + File.separator + newName);
+        // 如果重命名的文件已存在返回false
+        return !newFile.exists()
+                && file.renameTo(newFile);
+    }
+
+    /**
+     * 判断是否是目录
+     *
+     * @param dirPath 目录路径
+     * @return {@code true}: 是<br>{@code false}: 否
+     */
+    public static boolean isDir(String dirPath) {
+        return isDir(getFileByPath(dirPath));
+    }
+
+    /**
+     * 判断是否是目录
+     *
+     * @param file 文件
+     * @return {@code true}: 是<br>{@code false}: 否
+     */
+    public static boolean isDir(File file) {
+        return isFileExists(file) && file.isDirectory();
+    }
+
+    /**
+     * 判断是否是文件
+     *
+     * @param filePath 文件路径
+     * @return {@code true}: 是<br>{@code false}: 否
+     */
+    public static boolean isFile(String filePath) {
+        return isFile(getFileByPath(filePath));
+    }
+
+    /**
+     * 判断是否是文件
+     *
+     * @param file 文件
+     * @return {@code true}: 是<br>{@code false}: 否
+     */
+    public static boolean isFile(File file) {
+        return isFileExists(file) && file.isFile();
+    }
+
+
+    /**
+     * 重命名文件
+     *
+     * @param file    文件
+     * @param newName 新名字
+     * @return 新文件
+     */
+    public static File renameFile(File file, String newName) {
+        File newFile = new File(file.getParent(), newName);
+        if (!newFile.equals(file)) {
+            if (newFile.exists()) {
+                if (newFile.delete()) {
+                    Log.d("FileUtil", "Delete old " + newName + " file");
+                }
+            }
+            if (file.renameTo(newFile)) {
+                Log.d("FileUtil", "Rename file to " + newName);
+            }
+        }
+        return newFile;
+    }
+
+
+    /**
+     * 获取临时文件
+     *
+     * @param context 上下文
+     * @param uri     url
+     * @return 临时文件
+     * @throws IOException
+     */
+    public static File getTempFile(Context context, Uri uri) throws IOException {
+        InputStream inputStream = context.getContentResolver().openInputStream(uri);
+        String fileName = getFileName(context, uri);
+        String[] splitName = splitFileName(fileName);
+        File tempFile = File.createTempFile(splitName[0], splitName[1]);
+        tempFile = renameFile(tempFile, fileName);
+        tempFile.deleteOnExit();
+        FileOutputStream out = null;
+        try {
+            out = new FileOutputStream(tempFile);
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+        if (inputStream != null) {
+            copy(inputStream, out);
+            inputStream.close();
+        }
+
+        if (out != null) {
+            out.close();
+        }
+        return tempFile;
+    }
+
+    /**
+     * 截取文件名称
+     *
+     * @param fileName 文件名称
+     */
+    public static String[] splitFileName(String fileName) {
+        String name = fileName;
+        String extension = "";
+        int i = fileName.lastIndexOf(".");
+        if (i != -1) {
+            name = fileName.substring(0, i);
+            extension = fileName.substring(i);
+        }
+
+        return new String[]{name, extension};
+    }
+
+    /**
+     * 获取文件名称
+     *
+     * @param context 上下文
+     * @param uri     uri
+     * @return 文件名称
+     */
+    public static String getFileName(Context context, Uri uri) {
+        String result = null;
+        if (uri.getScheme().equals("content")) {
+            Cursor cursor = context.getContentResolver().query(uri, null, null, null, null);
             try {
-                file = FileUtils.getFileFromBytes(bytes, newPath);
+                if (cursor != null && cursor.moveToFirst()) {
+                    result = cursor.getString(cursor.getColumnIndex(OpenableColumns.DISPLAY_NAME));
+                }
             } catch (Exception e) {
                 e.printStackTrace();
             } finally {
-                if (newBitmap != null) {
-                    if (!newBitmap.isRecycled()) {
-                        newBitmap.recycle();
-                    }
-                    newBitmap = null;
-                }
-                if (compressBitmap != null) {
-                    if (!compressBitmap.isRecycled()) {
-                        compressBitmap.recycle();
-                    }
-                    compressBitmap = null;
+                if (cursor != null) {
+                    cursor.close();
                 }
             }
-            return file;
+        }
+        if (result == null) {
+            result = uri.getPath();
+            int cut = result.lastIndexOf(File.separator);
+            if (cut != -1) {
+                result = result.substring(cut + 1);
+            }
+        }
+        return result;
+    }
+
+    /**
+     * 获取真实的路径
+     *
+     * @param context 上下文
+     * @param uri     uri
+     * @return 文件路径
+     */
+    public static String getRealPathFromURI(Context context, Uri uri) {
+        Cursor cursor = context.getContentResolver().query(uri, null, null, null, null);
+        if (cursor == null) {
+            return uri.getPath();
+        } else {
+            cursor.moveToFirst();
+            int index = cursor.getColumnIndex(MediaStore.Images.ImageColumns.DATA);
+            String realPath = cursor.getString(index);
+            cursor.close();
+            return realPath;
         }
     }
+
+
+    public static int copy(InputStream input, OutputStream output) throws IOException {
+        long count = copyLarge(input, output);
+        if (count > Integer.MAX_VALUE) {
+            return -1;
+        }
+        return (int) count;
+    }
+
+    public static long copyLarge(InputStream input, OutputStream output)
+            throws IOException {
+        return copyLarge(input, output, new byte[DEFAULT_BUFFER_SIZE]);
+    }
+
+    public static long copyLarge(InputStream input, OutputStream output, byte[] buffer)
+            throws IOException {
+        long count = 0;
+        int n;
+        while (EOF != (n = input.read(buffer))) {
+            output.write(buffer, 0, n);
+            count += n;
+        }
+        return count;
+    }
+
+    /**
+     * 复制文件
+     *
+     * @param filename 文件名
+     * @param bytes    数据
+     */
+    public static void copy(String filename, byte[] bytes) {
+        try {
+            //如果手机已插入sd卡,且app具有读写sd卡的权限
+            if (Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED)) {
+                FileOutputStream output = null;
+                output = new FileOutputStream(filename);
+                output.write(bytes);
+                output.close();
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+
+    public static String getThumbImagePaths() {
+        String path = Environment.getExternalStorageDirectory().getPath() + ThumbImagePaths;
+        File fileDir = new File(path);
+        if (!fileDir.exists()) {
+            fileDir.mkdirs();
+        }
+        return fileDir.getAbsolutePath();
+    }
+
+
+    //folderPath为文件路径
+    public static void delDynamicPicFolder() {
+        String path = Environment.getExternalStorageDirectory().getPath() + ThumbImagePaths;
+        try {
+            delAllFile(path); //删除完里面所有内容
+            String filePath = path;
+            File myFilePath = new File(filePath);
+            myFilePath.delete(); //删除空文件夹
+        } catch (Exception e) {
+            System.out.println("删除文件夹操作出错");
+            e.printStackTrace();
+        }
+    }
+
+    public static void delAllFile(String path) {
+
+        File file = new File(path);
+        if (!file.exists()) {
+            return;
+        }
+        if (!file.isDirectory()) {
+            return;
+        }
+        String[] tempList = file.list();
+        File temp = null;
+        for (int i = 0; i < tempList.length; i++) {
+            if (path.endsWith(File.separator)) {
+                temp = new File(path + tempList[i]);
+            } else {
+                temp = new File(path + File.separator + tempList[i]);
+            }
+            if (temp.isFile()) {
+                temp.delete();
+            }
+        }
+    }
+
 
     private static Bitmap ratingImage(String filePath, Bitmap bitmap) {
         int degree = readPictureDegree(filePath);
@@ -166,122 +432,6 @@ public class FileUtils {
         return degree;
     }
 
-    /**
-     * 把字节数组保存为一个文件
-     *
-     * @param b
-     * @param outputFile
-     * @return
-     */
-    public static File getFileFromBytes(byte[] b, String outputFile) {
-        File ret = null;
-        BufferedOutputStream stream = null;
-        try {
-            ret = new File(outputFile);
-            FileOutputStream fstream = new FileOutputStream(ret);
-            stream = new BufferedOutputStream(fstream);
-            stream.write(b);
-        } catch (Exception e) {
-            // log.error("helper:get file from byte process error!");
-            e.printStackTrace();
-        } finally {
-            if (stream != null) {
-                try {
-                    stream.close();
-                } catch (IOException e) {
-                    // log.error("helper:get file from byte process error!");
-                    e.printStackTrace();
-                }
-            }
-        }
-        return ret;
-    }
-
-    /**
-     * 图片压缩
-     *
-     * @param fPath
-     * @return
-     */
-    public static Bitmap decodeFile(String fPath) {
-        BitmapFactory.Options opts = new BitmapFactory.Options();
-        opts.inJustDecodeBounds = true;
-        opts.inDither = false; // Disable Dithering mode
-        opts.inPurgeable = true; // Tell to gc that whether it needs free
-        opts.inInputShareable = true; // Which kind of reference will be used to
-        BitmapFactory.decodeFile(fPath, opts);
-        final int REQUIRED_SIZE = 1920;
-        int scale = 1;
-        if (opts.outHeight > REQUIRED_SIZE || opts.outWidth > REQUIRED_SIZE) {
-            final int heightRatio = Math.round((float) opts.outHeight
-                    / (float) REQUIRED_SIZE);
-            final int widthRatio = Math.round((float) opts.outWidth
-                    / (float) REQUIRED_SIZE);
-            scale = heightRatio < widthRatio ? heightRatio : widthRatio;//
-        }
-        opts.inJustDecodeBounds = false;
-        opts.inSampleSize = scale;
-        Bitmap bm = BitmapFactory.decodeFile(fPath, opts).copy(Bitmap.Config.ARGB_8888, false);
-        return bm;
-    }
-
-
-    /**
-     * 原图
-     ***/
-    private static Bitmap getImage(String srcPath) {
-        BitmapFactory.Options newOpts = new BitmapFactory.Options();
-        //开始读入图片，此时把options.inJustDecodeBounds 设回true了
-        newOpts.inJustDecodeBounds = true;
-        Bitmap bitmap = BitmapFactory.decodeFile(srcPath, newOpts);//此时返回bm为空
-        newOpts.inJustDecodeBounds = false;
-        int w = newOpts.outWidth;
-        int h = newOpts.outHeight;
-        //现在主流手机比较多是800*480分辨率，所以高和宽我们设置为
-        float hh = 1280f;
-        float ww = 720f;
-        //缩放比。由于是固定比例缩放，只用高或者宽其中一个数据进行计算即可
-        int be = 1;//be=1表示不缩放
-        if (w > h && w > ww) {//如果宽度大的话根据宽度固定大小缩放
-            be = (int) (newOpts.outWidth / ww);
-        } else if (w < h && h > hh) {//如果高度高的话根据宽度固定大小缩放
-            be = (int) (newOpts.outHeight / hh);
-        }
-        if (be <= 0)
-            be = 1;
-        newOpts.inSampleSize = be;//设置缩放比例
-        bitmap = BitmapFactory.decodeFile(srcPath, newOpts);
-        return bitmap;
-    }
-
-
-    /**
-     * 创建目录
-     *
-     * @param path
-     */
-    public static void setMkdir(String path) {
-        File file = new File(path);
-        if (!file.exists()) {
-            file.mkdirs();
-        } else {
-
-        }
-    }
-
-    /**
-     * 删除该目录下的文件
-     *
-     * @param path
-     */
-    public static void delFile(String path) {
-        if (!TextUtils.isEmpty(path)) {
-            File file = new File(path);
-            if (file.exists()) {
-                file.delete();
-            }
-        }
-    }
 
     // 以下是关键，原本uri返回的是file:///...来着的，android4.4返回的是content:///...
     @SuppressLint("NewApi")
@@ -387,20 +537,6 @@ public class FileUtils {
                 .getAuthority());
     }
 
-    public static String FormetFileSize(long fileS) {// 转换文件大小
-        DecimalFormat df = new DecimalFormat("#.00");
-        String fileSizeString = "";
-        if (fileS < 1024) {
-            fileSizeString = df.format((double) fileS) + "B";
-        } else if (fileS < 1048576) {
-            fileSizeString = df.format((double) fileS / 1024) + "K";
-        } else if (fileS < 1073741824) {
-            fileSizeString = df.format((double) fileS / 1048576) + "M";
-        } else {
-            fileSizeString = df.format((double) fileS / 1073741824) + "G";
-        }
-        return fileSizeString;
-    }
 
     /**
      * 根据地址压缩图片
@@ -442,62 +578,12 @@ public class FileUtils {
         }
         try {
             File dir = new File(SD_PATH);
-//            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-//                if (isAndroidQFileExists(context,dir.getPath())) {
-//                    dir.mkdirs();
-//                }
-//            }else{
-//                if (!dir.exists()){
-//                    dir.mkdirs();
-//                }
-//            }
-            if (!dir.exists()){
+            if (!dir.exists()) {
                 dir.mkdirs();
             }
             String dateTime = TimeUtil.getToday();
             File file = new File(dir, "log" + dateTime + ".txt");
             FileOutputStream fout = new FileOutputStream(file, true);
-            byte[] bytes = result.getBytes("UTF-8");
-            fout.write(bytes);
-            fout.close();
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
-    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
-    public static boolean isAndroidQFileExists(Context context, String path){
-        AssetFileDescriptor afd = null;
-        ContentResolver cr = context.getContentResolver();
-        try {
-            Uri uri = Uri.parse(path);
-            afd = cr.openAssetFileDescriptor(uri, "r");
-            if (afd == null) {
-                return false;
-            } else {
-                close(afd);
-            }
-        } catch (FileNotFoundException e) {
-            return false;
-        }finally {
-            close(afd);
-        }
-        return true;
-    }
-
-    public static void saveAccessToken(String fileName, String result) {
-        if (!isCanUse()) {
-            return;
-        }
-        try {
-            File dir = new File(SD_PATH);
-            if (!dir.exists()) {
-                dir.mkdirs();
-            }
-            File file = new File(dir, "log" + fileName + ".txt");
-            FileOutputStream fout = new FileOutputStream(file);
             byte[] bytes = result.getBytes("UTF-8");
             fout.write(bytes);
             fout.close();
@@ -517,53 +603,7 @@ public class FileUtils {
         }
     }
 
-    /****删除之前的请求日记文件***/
-    public static void deleteAgoRequestLog() {
-        if (!isCanUse()) {
-            return;
-        }
-        File dir = new File(SD_PATH);
-        if (!dir.exists()) {
-            dir.mkdirs();
-        }
-        File[] filesList = dir.listFiles();
-        String dateTime = TimeUtil.getToday();
-        for (int i = 0; i < filesList.length; i++) {
-            String fileName = filesList[i].getName();
-            String subSaveTime = fileName.substring(3, fileName.length());
-            if (dateTime.compareTo(subSaveTime) > 0) {
-                filesList[i].deleteOnExit();
-            } else {
-                continue;
-            }
-        }
-    }
-
-    /****获取上传的日记文件***/
-    private static File getSaveFile() {
-        if (!isCanUse()) {
-            return null;
-        }
-        File dir = new File(SD_PATH);
-        if (!dir.exists()) {
-            dir.mkdirs();
-        }
-        File[] filesList = dir.listFiles();
-        String dateTime = TimeUtil.getToday();
-        File file = null;
-        for (int i = 0; i < filesList.length; i++) {
-            String fileName = filesList[i].getName();
-            String subSaveTime = fileName.substring(3, fileName.length());
-            if (dateTime.equals(subSaveTime)) {
-                file = filesList[i];
-            }
-        }
-        return file;
-    }
-
-
     /**
-     *
      * @param path
      * @return String
      * @description 将文件转base64字符串
@@ -572,13 +612,13 @@ public class FileUtils {
      * File转成编码成BASE64
      */
 
-    public static  String fileToBase64(String path) {
+    public static String fileToBase64(String path) {
         String base64 = null;
         InputStream in = null;
         try {
             File file = new File(path);
             in = new FileInputStream(file);
-            byte[] bytes=new byte[(int)file.length()];
+            byte[] bytes = new byte[(int) file.length()];
             in.read(bytes);
             base64 = Base64Utils.encode(bytes);
         } catch (Exception e) {
@@ -604,21 +644,16 @@ public class FileUtils {
      */
     public static Bitmap bitmap2bitmap(Bitmap bitmap1, Bitmap bitmap2) {
         Bitmap newBitmap = null;
-
         newBitmap = Bitmap.createBitmap(bitmap1);
         Canvas canvas = new Canvas(newBitmap);
         Paint paint = new Paint();
-
         int w = bitmap1.getWidth();
         int h = bitmap1.getHeight();
-
         int w2 = bitmap2.getWidth();
         int h2 = bitmap2.getHeight();
-
         paint.setColor(Color.GRAY);
         paint.setAlpha(125);
         canvas.drawRect(0, 0, bitmap1.getWidth(), bitmap1.getHeight(), paint);
-
         paint = new Paint();
         //把播放logo放图片中间
         canvas.drawBitmap(bitmap2, Math.abs(w - w2) / 2, Math.abs(h - h2) / 2, paint);

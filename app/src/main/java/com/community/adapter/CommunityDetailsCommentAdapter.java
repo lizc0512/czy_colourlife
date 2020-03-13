@@ -88,7 +88,7 @@ public class CommunityDetailsCommentAdapter extends RecyclerView.Adapter<Communi
             @Override
             public void onClick(View v) {
                 if (userId.equals(commentBean.getFrom_id())) {
-                    ((DynamicsDetailsActivity) activity).setDelCommentId(commentBean.getId());
+                    ((DynamicsDetailsActivity) activity).setDelCommentId(commentBean.getId(),position);
                 } else {
                     ((DynamicsDetailsActivity) activity).setCommentReply(commentBean.getFrom_id(), commentBean.getFrom_nickname());
                 }

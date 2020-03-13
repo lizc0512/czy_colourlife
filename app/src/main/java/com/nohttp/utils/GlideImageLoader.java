@@ -145,10 +145,10 @@ public class GlideImageLoader {
     }
 
     //设置加载中图片
-    public static void loadActiveImageDisplay(Context mContext, String path, ImageView mImageView, int lodingImage, int errorImageView,int radius ) {
+    public static void loadActiveImageDisplay(Context mContext, String path, ImageView mImageView, int lodingImage, int errorImageView) {
         try {
             Glide.with(mContext).load(path).apply(new RequestOptions().diskCacheStrategy(DiskCacheStrategy.ALL).error(errorImageView)
-                    .placeholder(lodingImage).transform(new GlideRoundTransform(mContext, radius))
+                    .placeholder(lodingImage).skipMemoryCache(false).dontAnimate()
             ).into(mImageView);
         } catch (Exception e) {
 
@@ -156,7 +156,7 @@ public class GlideImageLoader {
     }
 
     //加载指定大小
-    public static void loadImageSizeDisplay(Context mContext, String path, int width, int height, int radius,ImageView mImageView,int lodingImage, int errorImageView) {
+    public static void loadImageSizeDisplay(Context mContext, String path, int width, int height, int radius, ImageView mImageView, int lodingImage, int errorImageView) {
         try {
             Glide.with(mContext).load(path).apply(new RequestOptions().override(width, height).diskCacheStrategy(DiskCacheStrategy.ALL).error(errorImageView)
                     .placeholder(lodingImage).transform(new GlideRoundTransform(mContext, radius))

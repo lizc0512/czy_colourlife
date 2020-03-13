@@ -1007,6 +1007,9 @@ public class MainActivity extends BaseFragmentActivity implements View.OnClickLi
                     int unReadNoticeCount = communityDynamicRemindEntity.getContent().getCount();
                     editor.putInt(COLOUR_DYNAMICS_NOTICE_NUMBER, unReadNoticeCount).apply();
                     showUnReadMsg(unReadNoticeCount);
+                    if (communityDynamicsFragment != null) {
+                        communityDynamicsFragment.showNoticeMessageNumber(unReadNoticeCount);
+                    }
                 } catch (Exception e) {
 
                 }

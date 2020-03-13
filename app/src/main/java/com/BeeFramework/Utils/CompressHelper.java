@@ -6,6 +6,8 @@ import android.net.Uri;
 
 import java.io.File;
 
+import cn.net.cyberway.utils.FileUtils;
+
 /**
  * 压缩方法工具类
  *
@@ -66,7 +68,7 @@ public class CompressHelper {
 
     private CompressHelper(Context context) {
         this.context = context;
-        destinationDirectoryPath = context.getCacheDir().getPath() + File.pathSeparator + FileUtil.FILES_PATH;
+        destinationDirectoryPath = context.getCacheDir().getPath() + File.pathSeparator + FileUtils.FILES_PATH;
     }
 
     /**
