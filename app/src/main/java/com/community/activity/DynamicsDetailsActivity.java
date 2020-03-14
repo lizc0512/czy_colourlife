@@ -490,6 +490,7 @@ public class DynamicsDetailsActivity extends BaseFragmentActivity implements Vie
                 commentBean.setFrom_mobile(shared.getString(UserAppConst.Colour_login_mobile, ""));
                 commentBean.setFrom_id(current_user_id);
                 commentBean.setSource_id(source_id);
+                commentBean.setFrom_avatar(shared.getString(UserAppConst.Colour_head_img,""));
                 long currentTime = System.currentTimeMillis() / 1000;
                 commentBean.setCreated_at(currentTime);
                 commentBean.setFrom_nickname(shared.getString(UserAppConst.Colour_NIACKNAME, ""));
@@ -563,8 +564,8 @@ public class DynamicsDetailsActivity extends BaseFragmentActivity implements Vie
     private void delDynamicCommentSuccess() {
         ToastUtil.toastShow(DynamicsDetailsActivity.this, "评论删除成功");
         commentBeanList.remove(commentPosition);
-        dataBean.setComment_count(--comment_count);
         communityCommentListFragment.delComment(commentPosition);
+        dataBean.setComment_count(--comment_count);
         setCommentCount();
         callBackDynamicList(2);
         commentPosition = -1;

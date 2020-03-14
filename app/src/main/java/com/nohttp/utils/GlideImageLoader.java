@@ -154,6 +154,15 @@ public class GlideImageLoader {
         }
     }
 
+    public static void loadCenterCropImageDisplay(Context mContext, String path, ImageView mImageView, int lodingImage, int errorImageView) {
+        try {
+            Glide.with(mContext).load(path).apply(new RequestOptions().diskCacheStrategy(DiskCacheStrategy.ALL).error(errorImageView)
+                    .placeholder(lodingImage).skipMemoryCache(false).dontAnimate().centerCrop()).into(mImageView);
+        } catch (Exception e) {
+
+        }
+    }
+
     //加载指定大小
     public static void loadImageSizeDisplay(Context mContext, String path, int width, int height, int radius, ImageView mImageView, int lodingImage, int errorImageView) {
         try {

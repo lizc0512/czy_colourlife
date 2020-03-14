@@ -53,6 +53,7 @@ import com.yanzhenjie.recyclerview.swipe.SwipeMenuRecyclerView;
 import com.youmai.hxsdk.HuxinSdkManager;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import cn.csh.colourful.life.listener.OnItemClickListener;
@@ -441,6 +442,7 @@ public class CommunityDynamicsFragment extends Fragment implements View.OnClickL
                 commentBean.setContent(content);
                 commentBean.setId(commentId);
                 commentBean.setSource_id(commentDataBean.getSource_id());
+                commentBean.setFrom_avatar(mShared.getString(UserAppConst.Colour_head_img,""));
                 commentBean.setFrom_mobile(mShared.getString(UserAppConst.Colour_login_mobile, ""));
                 int userId = mShared.getInt(UserAppConst.Colour_User_id, 0);
                 String fromSourceId = String.valueOf(userId);

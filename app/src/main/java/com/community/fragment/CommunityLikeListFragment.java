@@ -1,13 +1,14 @@
 package com.community.fragment;
 
 import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.LinearLayout;
 
 import com.BeeFramework.activity.BaseFragment;
 import com.community.adapter.CommunityDetailsLikeAdapter;
 import com.community.entity.CommunityDynamicsListEntity;
-import com.yanzhenjie.recyclerview.swipe.SwipeMenuRecyclerView;
+import com.community.utils.WrapContentLinearLayoutManager;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -28,7 +29,7 @@ import cn.net.cyberway.R;
  */
 public class CommunityLikeListFragment extends BaseFragment {
 
-    private SwipeMenuRecyclerView rv_community_comment;
+    private RecyclerView rv_community_comment;
     private LinearLayout no_data_layout;
 
     @Override
@@ -45,7 +46,7 @@ public class CommunityLikeListFragment extends BaseFragment {
         no_data_layout = rootView.findViewById(R.id.no_data_layout);
         //进行点赞列表的显示
         communityDetailsLikeAdapter = new CommunityDetailsLikeAdapter(getActivity(), allZanBeanList);
-        rv_community_comment.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false));
+        rv_community_comment.setLayoutManager(new WrapContentLinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false));
         rv_community_comment.setAdapter(communityDetailsLikeAdapter);
         showEmptyData();
     }
