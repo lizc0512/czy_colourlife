@@ -4,11 +4,13 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Message;
 import android.support.v7.widget.LinearLayoutManager;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.BeeFramework.Utils.ToastUtil;
 import com.BeeFramework.activity.BaseActivity;
 import com.BeeFramework.model.NewHttpResponse;
 import com.community.adapter.CommunityRemindAdapter;
@@ -111,21 +113,26 @@ public class DynamicNoticeActivity extends BaseActivity implements View.OnClickL
                 try {
                     JSONObject jsonObject = new JSONObject(result);
                     if (!jsonObject.isNull("content")) {
-                        JSONObject sonJsonObject = jsonObject.optJSONObject("content");
-                        JSONObject newResultObject = new JSONObject();
-                        JSONObject newContentObject = new JSONObject();
-                        JSONArray newJsonArray = new JSONArray();
-                        newJsonArray.put(sonJsonObject);
-                        newContentObject.put("data", newJsonArray);
-                        newResultObject.put("content", newContentObject);
-                        String newResult = newResultObject
-                                .toString();
-                        CommunityDynamicsListEntity communityDynamicsListEntity = GsonUtils.gsonToBean(newResult, CommunityDynamicsListEntity.class);
-                        List<CommunityDynamicsListEntity.ContentBean.DataBean> dataBeanList = communityDynamicsListEntity.getContent().getData();
-                        if (null != dataBeanList && dataBeanList.size() > 0) {
-                            Intent intent = new Intent(DynamicNoticeActivity.this, DynamicsDetailsActivity.class);
-                            intent.putExtra(DYNAMICS_DETAILS, dataBeanList.get(0));
-                            startActivity(intent);
+                        String contentValue = jsonObject.optString("content");
+                        if (!TextUtils.isEmpty(contentValue)) {
+                            JSONObject sonJsonObject = jsonObject.optJSONObject("content");
+                            JSONObject newResultObject = new JSONObject();
+                            JSONObject newContentObject = new JSONObject();
+                            JSONArray newJsonArray = new JSONArray();
+                            newJsonArray.put(sonJsonObject);
+                            newContentObject.put("data", newJsonArray);
+                            newResultObject.put("content", newContentObject);
+                            String newResult = newResultObject
+                                    .toString();
+                            CommunityDynamicsListEntity communityDynamicsListEntity = GsonUtils.gsonToBean(newResult, CommunityDynamicsListEntity.class);
+                            List<CommunityDynamicsListEntity.ContentBean.DataBean> dataBeanList = communityDynamicsListEntity.getContent().getData();
+                            if (null != dataBeanList && dataBeanList.size() > 0) {
+                                Intent intent = new Intent(DynamicNoticeActivity.this, DynamicsDetailsActivity.class);
+                                intent.putExtra(DYNAMICS_DETAILS, dataBeanList.get(0));
+                                startActivity(intent);
+                            }
+                        } else {
+                            ToastUtil.toastShow(DynamicNoticeActivity.this, jsonObject.optString("message"));
                         }
                     }
                 } catch (JSONException e) {

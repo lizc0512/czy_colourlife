@@ -563,8 +563,8 @@ public class DynamicsDetailsActivity extends BaseFragmentActivity implements Vie
 
     private void delDynamicCommentSuccess() {
         ToastUtil.toastShow(DynamicsDetailsActivity.this, "评论删除成功");
-        commentBeanList.remove(commentPosition);
         communityCommentListFragment.delComment(commentPosition);
+        commentBeanList.remove(commentPosition);
         dataBean.setComment_count(--comment_count);
         setCommentCount();
         callBackDynamicList(2);

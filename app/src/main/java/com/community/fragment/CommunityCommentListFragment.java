@@ -71,7 +71,7 @@ public class CommunityCommentListFragment extends BaseFragment {
     public void delComment(int position) {
         allCommentBeanList.remove(position);
         communityDetailsCommentAdapter.notifyItemRemoved(position);
-        communityDetailsCommentAdapter.notifyItemChanged(position);
+        communityDetailsCommentAdapter.notifyItemRangeChanged(position,allCommentBeanList.size());
         showEmptyData();
     }
 

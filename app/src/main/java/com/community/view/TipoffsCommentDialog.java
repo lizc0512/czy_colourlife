@@ -45,7 +45,7 @@ public class TipoffsCommentDialog extends Dialog {
         params.width = density - 40;
         params.gravity = Gravity.BOTTOM;
         window.setAttributes(params);
-        this.setCanceledOnTouchOutside(false);
+        this.setCanceledOnTouchOutside(true);
         tv_dynamics_cancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

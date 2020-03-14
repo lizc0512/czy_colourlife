@@ -327,7 +327,7 @@ public class CommunityDynamicsFragment extends Fragment implements View.OnClickL
             rv_community_dynamics.setAdapter(communityDynamicsAdapter);
         } else {
             communityDynamicsAdapter.setUserUUId(current_user_uuid);
-            communityDynamicsAdapter.notifyItemRangeChanged(0, dynamicContentList.size());
+            communityDynamicsAdapter.notifyDataSetChanged();
         }
         setDynamicsListener();
     }
@@ -365,7 +365,7 @@ public class CommunityDynamicsFragment extends Fragment implements View.OnClickL
             case 5:
                 dynamicContentList.remove(position);
                 communityDynamicsAdapter.notifyItemRemoved(position);
-                communityDynamicsAdapter.notifyItemChanged(position, "");
+                communityDynamicsAdapter.notifyItemRangeChanged(position, dynamicContentList.size());
                 ToastUtil.toastShow(getActivity(), "动态删除成功");
                 if (dynamicContentList.size() == 0) {
                     dynamics_data_layout.setVisibility(View.GONE);
@@ -442,7 +442,7 @@ public class CommunityDynamicsFragment extends Fragment implements View.OnClickL
                 commentBean.setContent(content);
                 commentBean.setId(commentId);
                 commentBean.setSource_id(commentDataBean.getSource_id());
-                commentBean.setFrom_avatar(mShared.getString(UserAppConst.Colour_head_img,""));
+                commentBean.setFrom_avatar(mShared.getString(UserAppConst.Colour_head_img, ""));
                 commentBean.setFrom_mobile(mShared.getString(UserAppConst.Colour_login_mobile, ""));
                 int userId = mShared.getInt(UserAppConst.Colour_User_id, 0);
                 String fromSourceId = String.valueOf(userId);
@@ -599,12 +599,23 @@ public class CommunityDynamicsFragment extends Fragment implements View.OnClickL
         inputDialog = new Dialog(getActivity(), android.R.style.Theme_Translucent_NoTitleBar);
         View view = LayoutInflater.from(getActivity()).inflate(R.layout.dynamic_comment_layout, null);
         inputDialog.setContentView(view);
+        EditText feed_comment_edittext = view.findViewById(R.id.feed_comment_edittext);
+        feed_comment_edittext.setFocusable(true);
+        feed_comment_edittext.setFocusableInTouchMode(true);
+        feed_comment_edittext.requestFocus();
+        if (!TextUtils.isEmpty(fromNickName)) {
+            feed_comment_edittext.setHint("回复" + fromNickName);
+        } else {
+            feed_comment_edittext.setHint(getResources().getString(R.string.community_comment_hint));
+        }
+        TextView feed_comment_submit = view.findViewById(R.id.feed_comment_submit);
         //scrollView 点击事件，点击时将 dialog dismiss，设置 onClick 监听无效
         inputDialog.findViewById(R.id.scrollView).setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
                 if (event.getAction() == MotionEvent.ACTION_UP)
                     inputDialog.dismiss();
+                   KeyBoardUtils.closeKeybord(feed_comment_edittext, getActivity());
                 return true;
             }
         });
@@ -623,16 +634,6 @@ public class CommunityDynamicsFragment extends Fragment implements View.OnClickL
                 handleWindowChange();
             }
         });
-        EditText feed_comment_edittext = view.findViewById(R.id.feed_comment_edittext);
-        feed_comment_edittext.setFocusable(true);
-        feed_comment_edittext.setFocusableInTouchMode(true);
-        feed_comment_edittext.requestFocus();
-        if (!TextUtils.isEmpty(fromNickName)) {
-            feed_comment_edittext.setHint("回复" + fromNickName);
-        } else {
-            feed_comment_edittext.setHint(getResources().getString(R.string.community_comment_hint));
-        }
-        TextView feed_comment_submit = view.findViewById(R.id.feed_comment_submit);
         feed_comment_submit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

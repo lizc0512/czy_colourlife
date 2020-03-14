@@ -368,17 +368,15 @@ public class CommunityDynamicsModel extends BaseModel {
                     int resultCode = showSuccesResultMessage(result);
                     if (resultCode == 0) {
                         newHttpResponse.OnHttpResponse(what, result);
-                    } else {
-                        newHttpResponse.OnHttpResponse(what, "");
                     }
                 } else {
-                    newHttpResponse.OnHttpResponse(what, "");
+                    showErrorCodeMessage(responseCode, response);
                 }
             }
 
             @Override
             public void onFailed(int what, Response<String> response) {
-                newHttpResponse.OnHttpResponse(what, "");
+                showExceptionMessage(what,response);
             }
         }, true, true);
     }
