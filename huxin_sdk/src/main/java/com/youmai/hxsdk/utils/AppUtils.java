@@ -275,10 +275,12 @@ public class AppUtils {
      */
     public static void setStringSharedPreferences(Context context, String key,
                                                   String value) {
-        SharedPreferences.Editor editor = context.getSharedPreferences(
-                AppConfig.SHARED_PREFERENCES, Context.MODE_PRIVATE).edit();
-        editor.putString(key, value);
-        editor.apply();
+        if (null!=context){
+            SharedPreferences.Editor editor = context.getSharedPreferences(
+                    AppConfig.SHARED_PREFERENCES, Context.MODE_PRIVATE).edit();
+            editor.putString(key, value);
+            editor.apply();
+        }
     }
 
     /**
@@ -288,9 +290,14 @@ public class AppUtils {
      */
     public static String getStringSharedPreferences(Context context,
                                                     String key, String defaultValue) {
-        SharedPreferences sharedPref = context.getSharedPreferences(
-                AppConfig.SHARED_PREFERENCES, Context.MODE_PRIVATE);
-        return sharedPref.getString(key, defaultValue);
+        if (null==context){
+            return  defaultValue;
+        }else{
+            SharedPreferences sharedPref = context.getSharedPreferences(
+                    AppConfig.SHARED_PREFERENCES, Context.MODE_PRIVATE);
+            return sharedPref.getString(key, defaultValue);
+        }
+
     }
 
     /**

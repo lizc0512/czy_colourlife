@@ -186,6 +186,7 @@ public class FeedBackFragment extends BaseFragment implements View.OnClickListen
             @Override
             public void onClick(View v) {
                 ImagePicker.getInstance().setSelectLimit(3 - allImages.size());//选中数量限制
+                ImagePicker.getInstance().clearSelectedImages();
                 Intent intent = new Intent(getActivity(), ImageGridActivity.class);
                 startActivityForResult(intent, REQUEST_ALBUM);
                 dialog.dismiss();
@@ -200,15 +201,16 @@ public class FeedBackFragment extends BaseFragment implements View.OnClickListen
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                     if (AndPermission.hasPermission(getActivity(), Manifest.permission.CAMERA)) {
                         ImagePicker.getInstance().setSelectLimit(3 - allImages.size());
+                        ImagePicker.getInstance().clearSelectedImages();
                         Intent intent = new Intent(getActivity(), ImageGridActivity.class);
                         intent.putExtra(ImageGridActivity.EXTRAS_TAKE_PICKERS, true); // 是否是直接打开相机
                         startActivityForResult(intent, REQUEST_ALBUM);
-
                     } else {
                         ToastUtil.toastShow(getActivity(), getResources().getString(R.string.user_camerapermission_notice));
                     }
                 } else {
                     ImagePicker.getInstance().setSelectLimit(3 - allImages.size());
+                    ImagePicker.getInstance().clearSelectedImages();
                     Intent intent = new Intent(getActivity(), ImageGridActivity.class);
                     intent.putExtra(ImageGridActivity.EXTRAS_TAKE_PICKERS, true); // 是否是直接打开相机
                     startActivityForResult(intent, REQUEST_ALBUM);
