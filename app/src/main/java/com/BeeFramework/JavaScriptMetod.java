@@ -5,7 +5,6 @@ import android.content.Context;
 import android.webkit.JavascriptInterface;
 import android.webkit.WebView;
 
-import com.BeeFramework.activity.WebViewActivity;
 import com.lhqpay.ewallet.keepIntact.PayUtil;
 
 /**

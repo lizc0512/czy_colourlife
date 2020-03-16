@@ -76,31 +76,6 @@ public class CustomerNameActivity extends BaseActivity implements View.OnClickLi
             mTitle.setText("邮箱");
             name_et.setHint("请输入邮箱");
         }
-        name_et.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-                if (TextUtils.isEmpty(s.toString().trim())) {
-                    iv_delete_name.setVisibility(View.GONE);
-                } else {
-                    iv_delete_name.setVisibility(View.VISIBLE);
-                }
-            }
-        });
-        if (!TextUtils.isEmpty(name)) {
-            iv_delete_name.setVisibility(View.VISIBLE);
-        } else {
-            iv_delete_name.setVisibility(View.GONE);
-        }
     }
 
     @Override

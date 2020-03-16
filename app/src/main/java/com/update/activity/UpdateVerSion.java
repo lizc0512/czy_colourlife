@@ -75,7 +75,7 @@ public class UpdateVerSion implements NewHttpResponse {
     }
 
     /**
-     * 获取要显示的软件版本名
+     *版本控制的版本号
      *
      * @return
      */

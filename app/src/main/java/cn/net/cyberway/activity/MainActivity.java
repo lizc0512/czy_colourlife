@@ -301,10 +301,10 @@ public class MainActivity extends BaseFragmentActivity implements View.OnClickLi
                 String doorid = intent.getStringExtra("shortcut");
                 String qrcode = intent.getStringExtra("qrcode");
                 if (!TextUtils.isEmpty(qrcode)) {
-                    openDoor(1, qrcode);
+                    qrCodeDoorOpern(qrcode);
                 }
                 if (!TextUtils.isEmpty(doorid)) {
-                    openDoor(1, doorid);
+                    qrCodeDoorOpern(doorid);
                 }
             }
         }
@@ -313,7 +313,7 @@ public class MainActivity extends BaseFragmentActivity implements View.OnClickLi
     private void jpushJumpPage(Intent intent) {
         String doorId = intent.getStringExtra("shortcut");
         if (!TextUtils.isEmpty(doorId)) {//快捷开门的
-            openDoor(0, doorId);
+            qrCodeDoorOpern(doorId);
         }
         String linkURl = intent.getStringExtra(JUMPOTHERURL);//通知栏推送的url
         Bundle bundle = intent.getExtras();
@@ -361,41 +361,8 @@ public class MainActivity extends BaseFragmentActivity implements View.OnClickLi
         jpushJumpPage(intent);
     }
 
-    public void openDoor(int type, String door_id) {
-        String community_uuid = "";
-        if (type == 0) {
-            community_uuid = shared.getString(UserAppConst.Colour_login_community_uuid, "");
-        }
-        NewUserModel newUserMode = new NewUserModel(MainActivity.this);
-        newUserMode.getReportDate(1100, community_uuid, door_id, "", true, new NewHttpResponse() {
-            @Override
-            public void OnHttpResponse(int what, String result) {
-                if (TextUtils.isEmpty(result)) {
-                    qrCodeDoorOpern(door_id);
-                } else {
-                    try {
-                        HomeHealthReportEntity homeHealthReportEntity = GsonUtils.gsonToBean(result, HomeHealthReportEntity.class);
-                        if (homeHealthReportEntity.getCode() == 0) {
-                            HomeHealthReportEntity.ContentBean contentBean = homeHealthReportEntity.getContent();
-                            String is_report = contentBean.getIs_report();
-                            //0表示未录入，1表示已经录入
-                            if ("1".equals(is_report)) {
-                                qrCodeDoorOpern(door_id);
-                            } else {
-                                showReportHealthyDialog(MainActivity.this, contentBean.getImg(), contentBean.getUrl());
-                            }
-                        } else {
-                            qrCodeDoorOpern(door_id);
-                        }
-                    } catch (Exception e) {
-                        qrCodeDoorOpern(door_id);
-                    }
-                }
-            }
-        });
-    }
 
-    private void qrCodeDoorOpern(String door_id) {
+    public void qrCodeDoorOpern(String door_id) {
         openModel.openDoor(2, door_id, true, MainActivity.this);
     }
 

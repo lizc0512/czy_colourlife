@@ -3,8 +3,6 @@ package com.BeeFramework.Utils;
 
 import android.util.Base64;
 
-import com.lhqpay.ewallet.keepIntact.Base64Util;
-
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 
@@ -65,7 +63,7 @@ public class EncryptUtil {
 
         public AesCypher(String secret) {
             try {
-                byte[] secrets = Base64Util.decode(secret);
+                byte[] secrets = Base64Utils.decode(secret);
                 // 转换为AES专用密钥
                 this.key = new SecretKeySpec(secrets, "AES");
                 // 创建密码器，算法/工作模式/补码方式 提供商
@@ -78,11 +76,11 @@ public class EncryptUtil {
         public synchronized String encrypt(String plainText) throws Exception {
             this.cipher.init(Cipher.ENCRYPT_MODE, this.key);
             byte[] cipherText = this.cipher.doFinal(plainText.getBytes());
-            return new String(Base64Util.encode(cipherText));
+            return new String(Base64Utils.encode(cipherText));
         }
 
         public synchronized String decrypt(String codedText) throws Exception {
-            byte[] encypted = Base64Util.decode(codedText);
+            byte[] encypted = Base64Utils.decode(codedText);
             this.cipher.init(Cipher.DECRYPT_MODE, this.key);
             byte[] decrypted = this.cipher.doFinal(encypted);
             return new String(decrypted, "UTF-8");

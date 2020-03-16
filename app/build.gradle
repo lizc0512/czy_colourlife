@@ -10,8 +10,9 @@ android {
         applicationId "cn.net.cyberway"
         minSdkVersion MIN_SDK_VERSION as int
         targetSdkVersion TARGET_SDK_VERSION as int
-        versionCode 96
-        versionName "6.6.22"
+        versionCode 98
+        versionName "6.6.23"
+//        versionName "5.1.5"
         multiDexEnabled true
         javaCompileOptions {
             annotationProcessorOptions {
@@ -191,8 +192,6 @@ dependencies {
     implementation(name: 'OldiJMSafeKeyboard', ext: 'aar')
     implementation(name: 'shanyan_sdk_v2.2.0.5', ext: 'aar')
     implementation(name: 'jdPaySDK_Android_JdMall', ext: 'aar')
-    implementation(name: 'PayChannel-release', ext: 'aar')
-    compileOnly files('sdknec/classes.jar')
     implementation 'com.navercorp.volleyextensions:volley-views:2.0.1'
     implementation(name: 'colourfullifesdk-2.0', ext: 'aar')
     implementation('com.alibaba.android:ultraviewpager:1.0.7.7@aar') {
@@ -227,21 +226,24 @@ dependencies {
     implementation 'com.tencent.bugly:nativecrashreport:3.3.1'
     //腾讯人脸识别
     implementation(name: 'AuthSdk', ext: 'aar')
+    implementation(name: 'qmf-ppplugin-android-3.0.6', ext: 'aar')
     implementation 'com.tencent.mm.opensdk:wechat-sdk-android-without-mta:5.3.1'
     //乐开
     implementation(name: 'lekai-open-sdk-v3.0.9', ext: 'aar')
     implementation(name: 'mylibrary-release', ext: 'aar')
     compileOnly files('sdknec/classes123.jar')
     implementation 'com.flyco.banner:FlycoBanner_Lib:2.0.2@aar'
-
     implementation 'cn.jiguang.sdk:jpush:3.4.1'
     implementation 'cn.jiguang.sdk:jcore:2.2.4'
     implementation 'cn.jiguang.sdk.plugin:xiaomi:3.4.1'
-    implementation'cn.jiguang.sdk.plugin:huawei:3.4.1'
-    implementation'cn.jiguang.sdk.plugin:oppo:3.4.1'
+    implementation 'cn.jiguang.sdk.plugin:huawei:3.4.1'
+    implementation 'cn.jiguang.sdk.plugin:oppo:3.4.1'
     implementation 'cn.jiguang.sdk.plugin:vivo:3.4.1'
     implementation(name: 'HMSSdk-agent', ext: 'aar')
     implementation 'org.jetbrains:annotations:15.0'
+    implementation files('libs/UPPayAssistEx.jar')
+    implementation(name: 'PayChannel-release', ext: 'aar')
+    compileOnly files('sdknec/classes.jar')
 }
 
 project.afterEvaluate {

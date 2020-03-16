@@ -7,8 +7,6 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.widget.Toast;
-
-import com.alipay.sdk.app.PayTask;
 import com.pay.alipay.PartnerConfig;
 import com.pay.alipay.Rsa;
 
@@ -79,13 +77,13 @@ public class AlixPayActivity extends Activity {
                 @Override
                 public void run() {
                     // 构造PayTask 对象
-                    PayTask alipay = new PayTask(AlixPayActivity.this);
-                    // 调用支付接口，获取支付结果
-                    String result = alipay.pay(info, true);
-                    Message msg = new Message();
-                    msg.what = ALIPAY_PAYRESULT;
-                    msg.obj = result;
-                    mHandler.sendMessage(msg);
+//                    PayTask alipay = new PayTask(AlixPayActivity.this);
+//                    // 调用支付接口，获取支付结果
+//                    String result = alipay.pay(info, true);
+//                    Message msg = new Message();
+//                    msg.what = ALIPAY_PAYRESULT;
+//                    msg.obj = result;
+//                    mHandler.sendMessage(msg);
                 }
             };
             // 必须异步调用

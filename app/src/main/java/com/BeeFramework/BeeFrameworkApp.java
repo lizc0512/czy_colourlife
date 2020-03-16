@@ -33,6 +33,7 @@ import com.shell.SdkManager;
 import com.user.UserAppConst;
 import com.user.UserMessageConstant;
 import com.user.Utils.TokenUtils;
+import com.yanzhenjie.nohttp.NoHttp;
 import com.youmai.hxsdk.HuxinSdkManager;
 import com.youmai.hxsdk.ProtoCallback;
 import com.youmai.hxsdk.proto.YouMaiBuddy;

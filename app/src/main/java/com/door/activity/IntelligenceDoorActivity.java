@@ -226,8 +226,7 @@ public class IntelligenceDoorActivity extends BaseFragmentActivity implements Ne
      */
     public void remoteDoor(String qrcode,String community_uuid) {
         door_code = qrcode;
-        NewUserModel newUserModel = new NewUserModel(IntelligenceDoorActivity.this);
-        newUserModel.getReportDate(10, community_uuid,"","",true, IntelligenceDoorActivity.this);
+        newDoorModel.openDoor(2, door_code, true, IntelligenceDoorActivity.this);
     }
 
     @Override
@@ -549,35 +548,10 @@ public class IntelligenceDoorActivity extends BaseFragmentActivity implements Ne
                     changeCommunityUuid = "";
                 }
                 break;
-            case 10:
-                if (TextUtils.isEmpty(result)) {
-                    doorCodeOpen();
-                } else {
-                    try {
-                        HomeHealthReportEntity homeHealthReportEntity = GsonUtils.gsonToBean(result, HomeHealthReportEntity.class);
-                        if (homeHealthReportEntity.getCode() == 0) {
-                            HomeHealthReportEntity.ContentBean contentBean = homeHealthReportEntity.getContent();
-                            String is_report = contentBean.getIs_report();
-                            //0表示未录入，1表示已经录入
-                            if ("1".equals(is_report)) {
-                                doorCodeOpen();
-                            } else {
-                                showReportHealthyDialog(IntelligenceDoorActivity.this, contentBean.getImg(), contentBean.getUrl());
-                            }
-                        } else {
-                            doorCodeOpen();
-                        }
-                    } catch (Exception e) {
-                        doorCodeOpen();
-                    }
-                }
-                break;
         }
     }
 
-    private void doorCodeOpen() {
-        newDoorModel.openDoor(2, door_code, true, IntelligenceDoorActivity.this);
-    }
+
 
     private void setData(boolean isCache, String result) {
         try {

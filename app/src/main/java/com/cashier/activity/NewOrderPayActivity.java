@@ -29,6 +29,9 @@ import com.cashier.modelnew.NewOrderPayModel;
 import com.cashier.protocolchang.PayEntity;
 import com.cashier.protocolchang.PayResultEntity;
 import com.cashier.protocolchang.PayStatusEntity;
+import com.chinaums.pppay.unify.UnifyPayListener;
+import com.chinaums.pppay.unify.UnifyPayPlugin;
+import com.chinaums.pppay.unify.UnifyPayRequest;
 import com.customerInfo.protocol.RealNameTokenEntity;
 import com.external.eventbus.EventBus;
 import com.jdpaysdk.author.JDPayAuthor;
@@ -98,7 +101,7 @@ import static com.user.UserMessageConstant.WEIXIN_PAY_MSG;
  * @class describe   新的订单支付页面
  */
 
-public class NewOrderPayActivity extends BaseActivity implements View.OnClickListener, NewHttpResponse, Listener, MyListener {
+public class NewOrderPayActivity extends BaseActivity implements View.OnClickListener, NewHttpResponse, Listener, MyListener, UnifyPayListener {
 
     public static final String ORDER_SN = "ORDER_SN";
     public static final String PAY_CHANNEL = "PAY_CHANNEL";
@@ -721,6 +724,7 @@ public class NewOrderPayActivity extends BaseActivity implements View.OnClickLis
 
 
     private BroadcastReceiverActivity broadcast;
+    private int showPayResultDialog = 0;
 
     @Override
     protected void onResume() {
@@ -731,6 +735,10 @@ public class NewOrderPayActivity extends BaseActivity implements View.OnClickLis
         registerReceiver(broadcast, intentFilter);
         if (!EventBus.getDefault().isregister(NewOrderPayActivity.this)) {
             EventBus.getDefault().register(NewOrderPayActivity.this);
+        }
+        if (showPayResultDialog == 1) {
+            showH5PayResultDialog();
+            showPayResultDialog = 0;
         }
     }
 
@@ -891,9 +899,18 @@ public class NewOrderPayActivity extends BaseActivity implements View.OnClickLis
 
     //支付宝支付
     private void alipayPayOrder(Map<String, String> resultMap) {
-        Intent intent = new Intent(NewOrderPayActivity.this, AlixPayActivity.class);
-        intent.putExtra(ALIPAY_ORDER_INFOR, resultMap.get("out_trade_infor"));
-        startActivityForResult(intent, 10000);
+        UnifyPayRequest msg = new UnifyPayRequest();
+        msg.payChannel = UnifyPayRequest.CHANNEL_ALIPAY;
+        if (!resultMap.containsKey("appPayRequest")) {
+            ToastUtil.toastShow(NewOrderPayActivity.this, "服务器返回数据格式有问题，缺少“appPayRequest”字段");
+            return;
+        } else {
+            showPayResultDialog = 1;
+            msg.payData = resultMap.get("appPayRequest");
+            UnifyPayPlugin unifyPayPlugin = UnifyPayPlugin.getInstance(this);
+            unifyPayPlugin.setListener(this);
+            unifyPayPlugin.sendPayRequest(msg);
+        }
     }
 
     private void pointPayOrder() { //判断用户是否实名设置支付密码
@@ -943,6 +960,9 @@ public class NewOrderPayActivity extends BaseActivity implements View.OnClickLis
                                     encrypt = resultMap.get("encrypt");
                                 }
                                 pointPayOrder();
+                            } else if (payChannelId.endsWith("9")) {
+                                //银联支付宝支付
+                                alipayPayOrder(resultMap);
                             } else {
                                 //彩钱包支付
                                 LinkedHashMap<String, Object> publicParams = new LinkedHashMap<String, Object>();
@@ -1168,4 +1188,18 @@ public class NewOrderPayActivity extends BaseActivity implements View.OnClickLis
             }
         }
     };
+
+
+    /*
+     * 银联支付回调
+     * */
+    @Override
+    public void onResult(String s, String s1) {
+        if (s.equals("0000")) {
+            payResultQuery();
+        } else {
+            //其他
+            ToastUtil.toastShow(NewOrderPayActivity.this, s1);
+        }
+    }
 }

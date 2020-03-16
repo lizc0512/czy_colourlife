@@ -408,7 +408,8 @@ public class AgentWebUtils {
         }
     }
 
-    static void clearWebViewAllCache(Context context, WebView webView) {
+    static void
+    clearWebViewAllCache(Context context, WebView webView) {
 
         try {
 

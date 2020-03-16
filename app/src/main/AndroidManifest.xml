@@ -865,6 +865,7 @@
 
         <meta-data
             android:name="com.baidu.lbsapi.API_KEY"
+            tools:replace="android:value"
             android:value="B0433f7d882de0c20433e36fabe2269c" />
 
 
@@ -883,6 +884,17 @@
             android:name="com.amap.api.v2.apikey"
             android:value="bdb104e98dfa7e816b40c4148ea7b938"
             tools:replace="android:value" />
+
+
+        <!--银联支付sdk-->
+
+        <meta-data
+            android:name="PPPaySDK"
+            android:value="true" />
+        <meta-data
+            android:name="CurrentEnvironment"
+            android:value="PROD" />
+        <!--银联支付sdk-->
 
 
         <provider

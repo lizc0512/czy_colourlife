@@ -62,11 +62,7 @@ public class LekaiService extends Service {
     private static final int connect_time = 8000;
     private String deviceCipherId;
 
-    private int dialogShow = 1;
-    private int blutoothON = 0;
-    private String is_report;
-    private String url;
-    private String img;
+
 
     @Nullable
     @Override
@@ -101,9 +97,6 @@ public class LekaiService extends Service {
             if (null != mEdenApi) {
                 mEdenApi.unBindBleService();
             }
-            if (countDownTimer != null) {
-                countDownTimer.cancel();
-            }
         } catch (IllegalArgumentException e) {
 
         }
@@ -125,7 +118,6 @@ public class LekaiService extends Service {
         // 手机蓝牙状态的监听
         mEdenApi.setOnBluetoothStateCallback((i, s) -> {
             try {
-                scannerDeviceCipherId = "";
                 if (i == BluetoothAdapter.STATE_ON) {
                     if (null != mBluetoothStateCallback) {
                         mBluetoothStateCallback.onBluetoothStateOn();
@@ -134,12 +126,10 @@ public class LekaiService extends Service {
                         ToastUtil.toastShow(getApplicationContext(), "蓝牙已开启");
                         mEdenApi.startScanDevice();  // 重启扫描
                     }
-                    blutoothON = 1;
                 } else if (i == BluetoothAdapter.STATE_OFF) {
                     if (null != mBluetoothStateCallback) {
                         mBluetoothStateCallback.onBluetoothStateOff();
                     }
-                    blutoothON = 0;
                 }
             } catch (Exception e) {
                 e.printStackTrace();
@@ -168,7 +158,6 @@ public class LekaiService extends Service {
                     if (Device.LOCK_VERSION_PARK_LOCK.equals(device.getLockVersion())) {
                         mParkLockController.putParkDevice(device);
                     } else {
-                        startScannerReport(device.getCipherId());
                         unlockDevice(device);
                     }
                 }
@@ -176,79 +165,14 @@ public class LekaiService extends Service {
         }
     }
 
-    private void getHealthData(String cipherId) {
-        NewUserModel newUserModel = new NewUserModel(this);
-        newUserModel.getReportDate(1100, "", "", cipherId, false, new NewHttpResponse() {
-            @Override
-            public void OnHttpResponse(int what, String result) {
-                if (TextUtils.isEmpty(result)) {
-                    is_report = "1";
-                } else {
-                    try {
-                        HomeHealthReportEntity homeHealthReportEntity = GsonUtils.gsonToBean(result, HomeHealthReportEntity.class);
-                        if (homeHealthReportEntity.getCode() == 0) {
-                            HomeHealthReportEntity.ContentBean contentBean = homeHealthReportEntity.getContent();
-                            is_report = contentBean.getIs_report();
-                            img = contentBean.getImg();
-                            url = contentBean.getUrl();
-                        } else {
-                            is_report = "1";
-                        }
-                    } catch (Exception e) {
-                        is_report = "1";
-                    }
-                }
-            }
-        });
-    }
 
-    private CountDownTimer countDownTimer;
-    private  String  scannerDeviceCipherId;
 
-    private void startScannerReport(String cipherId) {
-        if (!cipherId.equals(scannerDeviceCipherId)) {//扫描的设备id和上次开门成功是否一致
-            scannerDeviceCipherId=cipherId;
-            is_report = "";
-            if (null != countDownTimer) {
-                countDownTimer.cancel();
-                countDownTimer = null;
-            }
-        }
-        if (null == countDownTimer) {
-            countDownTimer = new CountDownTimer(180000, 20000) {
-                @Override
-                public void onTick(long millisUntilFinished) {
-                    dialogShow = 1; ///重新继续执行了一次
-                    getHealthData(cipherId);
-                }
-
-                @Override
-                public void onFinish() {
-                    dialogShow = 1; ///重新继续执行了一次
-                    getHealthData(cipherId);
-                }
-            };
-            countDownTimer.start();
-        }
-    }
 
 
     /**
      * 开门禁锁
      */
     public void unlockDevice(Device device) {
-        if ("0".equals(is_report)) {
-            if (dialogShow == 1 && blutoothON == 1) {
-                dialogShow = 0;
-                Message msg = Message.obtain();
-                msg.what = UserMessageConstant.BLUETOOTH_REPORT_HEALTHY;
-                Bundle bundle = new Bundle();
-                bundle.putString("img", img);
-                bundle.putString("url", url);
-                msg.setData(bundle);
-                EventBus.getDefault().post(msg);
-            }
-        } else if ("1".equals(is_report)) {
             if (null != mEdenApi) {
                 mEdenApi.unlock(device, ACC, TOK, AppConst.CONNECT_TIME_OUT, (code, message, battery) -> {
                     if (null == mHandler) {
@@ -290,7 +214,6 @@ public class LekaiService extends Service {
                     });
                 });
             }
-        }
     }
 
     /**
