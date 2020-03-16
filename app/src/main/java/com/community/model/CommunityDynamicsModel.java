@@ -77,7 +77,7 @@ public class CommunityDynamicsModel extends BaseModel {
 
     }
 
-    public void uploadDynamicFile(int what, String file, NewHttpResponse newHttpResponse) {
+    public void uploadDynamicFile(int what,boolean showNotice, String file, NewHttpResponse newHttpResponse) {
         BasicBinary binary = new FileBinary(new File(file));
         final Request<String> request = NoHttp.createStringRequest(RequestEncryptionUtils.postCombileMD5(mContext, 17, uploadFileUrl), RequestMethod.POST);
         request.add("file", binary);
@@ -92,13 +92,22 @@ public class CommunityDynamicsModel extends BaseModel {
                         newHttpResponse.OnHttpResponse(what, result);
                     }
                 } else {
-                    showErrorCodeMessage(responseCode, response);
+                    if (showNotice){
+                        showErrorCodeMessage(responseCode, response);
+                    }else{
+                        newHttpResponse.OnHttpResponse(what,"");
+                    }
                 }
             }
 
             @Override
             public void onFailed(int what, Response<String> response) {
-                showExceptionMessage(what, response);
+                if (showNotice){
+                    showExceptionMessage(what, response);
+                }else{
+                    newHttpResponse.OnHttpResponse(what,"");
+                }
+
             }
         }, true, false);
 
