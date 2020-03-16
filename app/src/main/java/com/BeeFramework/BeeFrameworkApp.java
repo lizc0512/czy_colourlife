@@ -29,11 +29,14 @@ import com.im.activity.IMApplyFriendRecordActivity;
 import com.im.entity.ApplyRecordEntity;
 import com.im.greendao.IMGreenDaoManager;
 import com.im.helper.CacheApplyRecorderHelper;
+import com.nohttp.utils.SSLContextUtil;
 import com.shell.SdkManager;
 import com.user.UserAppConst;
 import com.user.UserMessageConstant;
 import com.user.Utils.TokenUtils;
+import com.yanzhenjie.nohttp.InitializationConfig;
 import com.yanzhenjie.nohttp.NoHttp;
+import com.yanzhenjie.nohttp.URLConnectionNetworkExecutor;
 import com.youmai.hxsdk.HuxinSdkManager;
 import com.youmai.hxsdk.ProtoCallback;
 import com.youmai.hxsdk.proto.YouMaiBuddy;
@@ -41,6 +44,8 @@ import com.youmai.hxsdk.proto.YouMaiBuddy;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
+
+import javax.net.ssl.SSLContext;
 
 import cn.csh.colourful.life.utils.ColourLifeSDK;
 import cn.net.cyberway.R;
@@ -62,6 +67,17 @@ public class BeeFrameworkApp extends MultiDexApplication {
     public void onCreate() {
         super.onCreate();
         instance = this;
+        SSLContext sslContext = SSLContextUtil.getDefaultSLLContext();
+        InitializationConfig config = InitializationConfig.newBuilder(getApplicationContext())
+                // 全局连接服务器超时时间，单位毫秒，默认10s。
+                .connectionTimeout(20 * 1000)
+                // 全局等待服务器响应超时时间，单位毫秒，默认10s。
+                .readTimeout(15 * 1000)
+                .networkExecutor(new URLConnectionNetworkExecutor())
+                .sslSocketFactory(sslContext.getSocketFactory()) // 全局SSLSocketFactory。
+                .retry(1)
+                .build();
+        NoHttp.initialize(config);
         ColourLifeSDK.init(getApplicationContext());
         try {
             CrashHandler crashHandler = CrashHandler.getInstance();
@@ -134,7 +150,7 @@ public class BeeFrameworkApp extends MultiDexApplication {
                 }
                 CacheApplyRecorderHelper.instance().insertOrUpdate(this, recordEntity);
                 SharedPreferences sharedPreferences = getSharedPreferences(UserAppConst.USERINFO, 0);
-                sharedPreferences.edit().putBoolean(UserAppConst.IM_APPLY_FRIEND, true).commit();
+                sharedPreferences.edit().putBoolean(UserAppConst.IM_APPLY_FRIEND, true).apply();
                 Message msg = new Message();
                 msg.what = UserMessageConstant.GET_APPLY_NUMBER;
                 EventBus.getDefault().post(msg);
@@ -252,7 +268,7 @@ public class BeeFrameworkApp extends MultiDexApplication {
     }
 
     public void fixOppoAssetManager() {
-        String device= TokenUtils.getDeviceBrand().toLowerCase();
+        String device = TokenUtils.getDeviceBrand().toLowerCase();
         if (!TextUtils.isEmpty(device)) {
             if (device.contains("oppo")) {
                 try {

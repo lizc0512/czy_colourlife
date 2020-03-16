@@ -25,8 +25,6 @@ import com.BeeFramework.Utils.Utils;
 import com.BeeFramework.activity.BaseActivity;
 import com.BeeFramework.model.NewHttpResponse;
 import com.external.eventbus.EventBus;
-import com.gem.GemConstant;
-import com.gem.util.GemDialogUtil;
 import com.mob.MobSDK;
 import com.nohttp.utils.GsonUtils;
 import com.user.UserAppConst;
@@ -177,13 +175,6 @@ public class InviteActivity extends BaseActivity implements View.OnClickListener
         EventBus.getDefault().unregister(this);
     }
 
-    public void onEvent(Object event) {
-        Message message = (Message) event;
-        if (message.what == UserMessageConstant.SHAREDOKMESSAGE) {
-            GemDialogUtil.showGemDialog(ivGem, this, GemConstant.mineInvite, "");
-        }
-    }
-
     private void initPopup() {
         View contentview = LayoutInflater.from(this).inflate(R.layout.activity_invite_share, null);
         popupWindow = new PopupWindow(contentview,
@@ -322,7 +313,6 @@ public class InviteActivity extends BaseActivity implements View.OnClickListener
                 try {
                     InviteEntity inviteEntity = GsonUtils.gsonToBean(result, InviteEntity.class);
                     ToastUtil.toastShow(InviteActivity.this, inviteEntity.getContent().getInvite_message());
-                    GemDialogUtil.showGemDialog(ivGem, this, GemConstant.mineInvite, "");
                 } catch (Exception e) {
 
                 }

@@ -354,7 +354,11 @@ public class MyPropertyActivity extends BaseActivity implements View.OnClickList
         switch (requestCode) {
             case 1:
                 if (resultCode == 1) {
-                    refreshData();
+                    if (fromCustomerInfo) {
+                        refreshData();
+                    } else {
+                        finish();
+                    }
                 }
                 break;
             case 2:

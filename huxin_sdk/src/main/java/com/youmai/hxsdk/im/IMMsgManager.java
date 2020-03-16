@@ -1141,7 +1141,7 @@ public class IMMsgManager {
     }
 
     public void removeBadge(String targetId) {
-     mTargetId = targetId;
+        mTargetId = targetId;
         Integer value = badgeCount.get(targetId);
 
         if (value != null) {
@@ -1267,6 +1267,9 @@ public class IMMsgManager {
 
 
     public int getAllBadgeCount() {
+        if (null == mContext) {
+            return 0;
+        }
         int sum = 0;
 
         if (badgeCount.isEmpty()) {
@@ -1334,8 +1337,8 @@ public class IMMsgManager {
 
 
     public int getAllBadgeBubbyCount() {
-        if (mContext==null){
-            return  0;
+        if (mContext == null) {
+            return 0;
         }
         if (badgeCount.isEmpty()) {
             String badge = AppUtils.getStringSharedPreferences(mContext, getBadgeSharedPreferenceKey(), "");
@@ -1364,6 +1367,9 @@ public class IMMsgManager {
 
 
     public int getAllBadgeOwnerCount() {
+        if (mContext == null) {
+            return 0;
+        }
         if (badgeCountOwner.isEmpty()) {
             String badge = AppUtils.getStringSharedPreferences(mContext, getBadgeOwnerSharedPreferenceKey(), "");
             if (!TextUtils.isEmpty(badge)) {
@@ -1391,8 +1397,8 @@ public class IMMsgManager {
 
 
     public int getAllBadgeCommCount() {
-        if (mContext==null){
-            return  0;
+        if (mContext == null) {
+            return 0;
         }
         if (badgeCountComm.isEmpty()) {
             String badge = AppUtils.getStringSharedPreferences(mContext, getBadgeCommSharedPreferenceKey(), "");

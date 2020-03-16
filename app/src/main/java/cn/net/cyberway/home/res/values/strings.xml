@@ -24,9 +24,7 @@
 
     <string-array name="im_menu">
         <item>发起群聊</item>
-        <item>加好友</item>
         <item>创建社群</item>
-        <item>邻里圈</item>
         <item>社群助手</item>
     </string-array>
     <string name="exclusive_manager">专属客户经理</string>

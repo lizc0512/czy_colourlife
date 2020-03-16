@@ -1,16 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent" android:layout_height="75dp">
+    android:layout_width="match_parent"
+    android:layout_height="75dp"
+    android:background="@color/white">
 
     <TextView
         android:id="@+id/tv_dynamics_title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
         android:layout_marginLeft="16dp"
+        android:layout_marginTop="10dp"
         android:layout_marginRight="16dp"
-        android:text="您的动态 【图片】我家小牛和小花最暴力啊啦啊 因涉及违规，已被管理员删除…"
+        android:ellipsize="end"
         android:maxLines="2"
+        android:text="您的动态 【图片】我家小牛和小花最暴力啊啦啊 因涉及违规，已被管理员删除…"
         android:textColor="@color/color_25282e"
         android:textSize="15sp" />
 
@@ -18,12 +21,18 @@
         android:id="@+id/tv_dynamics_time"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
         android:layout_alignParentRight="true"
+        android:layout_alignParentBottom="true"
         android:layout_marginRight="16dp"
         android:layout_marginBottom="10dp"
         android:text="8月02日11:44"
         android:textColor="@color/color_a9afb8"
-        android:textSize="12sp"
-        />
+
+        android:textSize="12sp" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1px"
+        android:layout_alignParentBottom="true"
+        android:background="@color/color_cccccc" />
 </RelativeLayout>

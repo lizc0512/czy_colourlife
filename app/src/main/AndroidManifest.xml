@@ -111,41 +111,9 @@
             android:configChanges="orientation|keyboardHidden"
             android:theme="@android:style/Theme.Translucent.NoTitleBar" />
 
-        <!--邻里发活动 动态-->
-        <activity
-            android:name="com.feed.activity.LinLiActivity"
-            android:screenOrientation="portrait" />
-        <activity
-            android:name="com.feed.activity.ImagesDetailActivity"
-            android:screenOrientation="portrait"
-            android:theme="@android:style/Theme.NoTitleBar.Fullscreen" />
-        <activity
-            android:name="com.feed.activity.CreateNormalFeedActivity"
-            android:launchMode="singleTask"
-            android:screenOrientation="portrait" />
-
-        <activity
-            android:name="com.feed.activity.FeedOrActivityActivity"
-            android:screenOrientation="portrait"
-            android:theme="@style/translucent" />
-
-        <activity
-            android:name="com.feed.activity.ReleaseActivity"
-            android:screenOrientation="portrait" />
-        <activity
-            android:name="com.feed.activity.SelectTypeActivity"
-            android:screenOrientation="portrait" />
-        <activity
-            android:name="com.feed.activity.PersonalFeedActivity"
-            android:screenOrientation="portrait"
-            android:windowSoftInputMode="stateHidden|adjustResize" />
-        <!--邻里发活动 动态-->
 
 
         <!-- 门禁授权-->
-        <activity
-            android:name="com.cardcoupons.activity.CardCouponsActivity"
-            android:screenOrientation="portrait" />
         <activity
             android:name="com.setting.activity.SettingActivity"
             android:screenOrientation="portrait" />
@@ -280,25 +248,6 @@
             android:screenOrientation="portrait" />
         <!--手势密码相关-->
 
-        <activity
-            android:name="com.jsbridge.activity.BridgeWebViewActivity"
-            android:screenOrientation="portrait" />
-
-        <!--邻里-->
-        <activity
-            android:name="com.Neighborhood.Activity.ActiveListActivity"
-            android:screenOrientation="portrait" />
-
-
-        <activity
-            android:name="com.Neighborhood.Activity.ActiveDirectoryActivity"
-            android:screenOrientation="portrait" />
-
-
-        <activity
-            android:name="com.feed.activity.ShareFeedActivity"
-            android:screenOrientation="portrait" />
-        <!--邻里-->
         <!--意见反馈-->
         <activity
             android:name="com.about.activity.FeedBackDetailsActivity"
@@ -449,23 +398,7 @@
 
         <!--房产 收货地址-->
         <activity
-            android:name="com.customerInfo.activity.CustomerAddCommunityActivity"
-            android:screenOrientation="portrait"
-            android:windowSoftInputMode="adjustPan" />
-        <activity
             android:name="com.customerInfo.activity.CustomerAddPropertyActivity"
-            android:screenOrientation="portrait"
-            android:windowSoftInputMode="adjustPan" />
-        <activity
-            android:name="com.customerInfo.activity.CustomerChoiceCommunityActivity"
-            android:screenOrientation="portrait"
-            android:windowSoftInputMode="adjustPan" />
-        <activity
-            android:name="com.customerInfo.activity.CustomerChoiceRegionActivity"
-            android:screenOrientation="portrait"
-            android:windowSoftInputMode="adjustPan" />
-        <activity
-            android:name="com.customerInfo.activity.CustomerSwitchAddressActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan" />
         <activity
@@ -829,9 +762,35 @@
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:launchMode="singleTask"
             android:screenOrientation="portrait"
-            android:theme="@style/shareDialog" />
+            android:theme="@style/activityTheme" />
 
         <!--实名认证信息修改-->
+
+        <!--社区邻里-->
+        <activity
+            android:name="com.community.activity.DynamicNoticeActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name="com.community.activity.CommunityMessageListActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name="com.community.activity.DynamicsDetailsActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name="com.community.activity.PublishDynamicsActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name="com.lzy.imagepicker.ui.ImagePreviewDelActivity"
+            android:theme="@style/ImagePickerThemeFullScreen"/>
+
+        <activity
+            android:name="com.community.activity.ImagesDetailActivity"
+            android:screenOrientation="portrait"
+            android:theme="@android:style/Theme.NoTitleBar.Fullscreen" />
+        <!--社区邻里-->
+
+
+
 
         <!--极光推送-->
         <activity

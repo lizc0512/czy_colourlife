@@ -14,8 +14,6 @@ import android.widget.TextView;
 import java.util.ArrayList;
 import java.util.List;
 
-import cn.csh.colourful.life.utils.GlideImageLoader;
-import cn.csh.colourful.life.view.imagepicker.ImagePicker;
 import cn.net.cyberway.R;
 import cn.net.cyberway.protocol.ShareEntity;
 import cn.net.cyberway.view.adapter.BaseRecyclerAdapter;

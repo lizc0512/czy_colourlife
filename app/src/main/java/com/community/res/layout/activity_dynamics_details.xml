@@ -10,7 +10,8 @@
 
     <android.support.design.widget.CoordinatorLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="0dp"
+        android:layout_weight="1">
 
         <android.support.design.widget.AppBarLayout
             android:id="@+id/dynamics_appbar"
@@ -31,17 +32,26 @@
 
             </android.support.design.widget.CollapsingToolbarLayout>
 
+
+
             <android.support.design.widget.TabLayout
                 android:id="@+id/dynamics_tabs"
                 android:layout_width="match_parent"
+                android:layout_height="40dp"
                 android:background="@color/white"
-                app:tabPaddingStart="16dp"
-                app:tabPaddingEnd="16dp"
                 app:tabGravity="center"
-                app:tabTextAppearance="@style/TabLayoutTextSizeStyle"
-                android:layout_height="40dp" />
+                app:tabPaddingEnd="21dp"
+                app:tabPaddingStart="21dp"
+                app:tabTextAppearance="@style/TabLayoutDynamicStyle" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1px"
+                android:background="@color/color_ebedf0" />
 
         </android.support.design.widget.AppBarLayout>
+
+
 
         <android.support.v4.view.ViewPager
             android:id="@+id/dynamics_viewpager"
@@ -49,9 +59,62 @@
             android:layout_height="match_parent"
             app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
+
         </android.support.v4.view.ViewPager>
 
     </android.support.design.widget.CoordinatorLayout>
 
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1px"
+        android:background="@color/color_ebedf0" />
 
+    <LinearLayout
+        android:id="@+id/ll_comment_input"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+        android:minHeight="46dp"
+        android:orientation="horizontal">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_marginLeft="15dp"
+            android:layout_marginRight="15dp"
+            android:background="@drawable/dynamics_comment_input_bg"
+            android:orientation="horizontal">
+
+            <EditText
+                android:id="@+id/feed_comment_edittext"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_weight="1"
+                android:background="@null"
+                android:gravity="center_vertical"
+                android:hint="@string/community_comment_hint"
+                android:maxHeight="100dp"
+                android:minHeight="36dp"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp"
+                android:textColor="@color/color_25282e"
+                android:textColorHint="@color/color_bcc2cc"
+                android:textCursorDrawable="@drawable/dynamics_comment_cursor"
+                android:textSize="14sp" />
+
+            <TextView
+                android:id="@+id/feed_comment_submit"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:gravity="center"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp"
+                android:text="@string/community_comment_send"
+                android:textColor="@color/color_3282fa"
+                android:textSize="14sp" />
+        </LinearLayout>
+    </LinearLayout>
 </LinearLayout>

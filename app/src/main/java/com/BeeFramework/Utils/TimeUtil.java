@@ -79,9 +79,6 @@ public class TimeUtil {
     }
 
 
-    /**
-     * 邻里
-     ***/
     public static String timeAgoInt(int timeStr) {
         Date date = new Date((long) timeStr * 1000);
         long timeStamp = date.getTime();
@@ -213,11 +210,8 @@ public class TimeUtil {
                         case 1:
                             result = "昨天";
                             break;
-                        case 2:
-                            result = "前天";
-                            break;
                         default:
-                            result = dateformatTime2(date);
+                            result = temp + "天前";
                             break;
                     }
                 }

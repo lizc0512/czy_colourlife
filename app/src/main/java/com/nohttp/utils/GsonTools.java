@@ -2,7 +2,7 @@ package com.nohttp.utils;
 
 import android.os.Looper;
 
-import com.cardcoupons.utils.StringUtils;
+import com.BeeFramework.Utils.StringUtil;
 import com.google.gson.TypeAdapter;
 import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonToken;
@@ -123,31 +123,31 @@ class GsonTools {
                         case 0:
                             if (in.peek() == JsonToken.STRING) {
                                 //暂不做处理
-                                return StringUtils.toInt(in.nextString());
+                                return StringUtil.toInt(in.nextString());
                             }
                             return in.nextInt();
                         case 1:
                             if (in.peek() == JsonToken.STRING) {
                                 //暂不做处理
-                                return StringUtils.toInt(in.nextString()).shortValue();
+                                return StringUtil.toInt(in.nextString()).shortValue();
                             }
                             return (short) in.nextInt();
                         case 2:
                             if (in.peek() == JsonToken.STRING) {
                                 //暂不做处理
-                                return StringUtils.toLong(in.nextString()).longValue();
+                                return StringUtil.toLong(in.nextString()).longValue();
                             }
                             return in.nextLong();
                         case 3:
                             if (in.peek() == JsonToken.STRING) {
                                 //暂不做处理
-                                return StringUtils.toDouble(in.nextString()).doubleValue();
+                                return StringUtil.toDouble(in.nextString()).doubleValue();
                             }
                             return in.nextDouble();
                         case 4:
                             if (in.peek() == JsonToken.STRING) {
                                 //暂不做处理
-                                return StringUtils.toFloat(in.nextString()).floatValue();
+                                return StringUtil.toFloat(in.nextString()).floatValue();
                             }
                             return (float) in.nextDouble();
 

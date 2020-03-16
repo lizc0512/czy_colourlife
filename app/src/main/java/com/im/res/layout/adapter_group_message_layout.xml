@@ -55,7 +55,7 @@
                 android:layout_gravity="center_vertical"
                 android:layout_marginLeft="5dp"
                 android:layout_marginTop="6dp"
-                android:src="@drawable/im_icon_group_type"
+                android:src="@drawable/im_icon_group_message_type"
                 android:visibility="gone" />
         </LinearLayout>
 

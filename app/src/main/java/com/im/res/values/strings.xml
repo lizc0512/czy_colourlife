@@ -44,6 +44,7 @@
     <string name="instant_again_submit">再次提交</string>
     <string name="instant_revoke">撤销</string>
     <string name="instant_new_friend">新的朋友</string>
+    <string name="instant_friend_list">好友列表</string>
     <string name="instant_community">社群</string>
     <string name="instant_group">群聊</string>
     <string name="instant_upload_notice">彩之云不保存手机通讯录的任何资料，仅做匹配识别。</string>

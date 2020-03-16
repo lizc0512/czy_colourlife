@@ -37,6 +37,7 @@ public class EditDialog {
         tv.setText(content);
     }
 
+
     public void show() {
         mDialog.show();
     }

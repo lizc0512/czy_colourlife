@@ -31,14 +31,14 @@ public class UserMessageConstant {
     public static final int BLUETOOTH_CLOSE_DIALOG = USER_MESSAGE_BASE + 82;//蓝牙列表页开门成功关闭首页的
     public static final int UPDATE_DOOR = USER_MESSAGE_BASE + 83;//更新门禁
     public static final int POINT_SUCCESS_RETURN = USER_MESSAGE_BASE + 84;//积分或饭票赠送成功返回首页
-    public static final int POINT_CONTINUE_GIVEN= USER_MESSAGE_BASE + 85;//积分或饭票赠送成功返回首页
+    public static final int POINT_CONTINUE_GIVEN = USER_MESSAGE_BASE + 85;//积分或饭票赠送成功返回首页
     public static final int POINT_INPUT_PAYPAWD = USER_MESSAGE_BASE + 86;//输入支付密码
-    public static final int POINT_SET_PAYPAWD= USER_MESSAGE_BASE + 87;//设置支付密码成功
-    public static final int POINT_CHANGE_PAYPAWD= USER_MESSAGE_BASE + 88;//修改或忘记密码成功
-    public static final int POINT_INPUT_CODE= USER_MESSAGE_BASE + 89;//更换设备输入短信验证码
-    public static final int POINT_GET_CODE= USER_MESSAGE_BASE + 90;//更换设备重新获取验证码
-    public static final int POINT_SHOW_CODE= USER_MESSAGE_BASE + 91;//更换设备的显示框
-    public static final int REAL_CHANGE_STATE= USER_MESSAGE_BASE + 92;//重新实名提交审核
-    public static final int BLUETOOTH_REPORT_HEALTHY= USER_MESSAGE_BASE + 93;//上报健康记录
-
+    public static final int POINT_SET_PAYPAWD = USER_MESSAGE_BASE + 87;//设置支付密码成功
+    public static final int POINT_CHANGE_PAYPAWD = USER_MESSAGE_BASE + 88;//修改或忘记密码成功
+    public static final int POINT_INPUT_CODE = USER_MESSAGE_BASE + 89;//更换设备输入短信验证码
+    public static final int POINT_GET_CODE = USER_MESSAGE_BASE + 90;//更换设备重新获取验证码
+    public static final int POINT_SHOW_CODE = USER_MESSAGE_BASE + 91;//更换设备的显示框
+    public static final int REAL_CHANGE_STATE = USER_MESSAGE_BASE + 92;//重新实名提交审核
+    public static final int REAL_FAIL_STATE = USER_MESSAGE_BASE + 93;//实名认证失败
+    public static final int REAL_SUCCESS_STATE = USER_MESSAGE_BASE + 94;//实名认证失败
 }

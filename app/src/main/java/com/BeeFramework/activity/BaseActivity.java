@@ -21,7 +21,7 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 
-import com.BeeFramework.view.Util;
+import com.BeeFramework.Utils.SystemBarTintManager;
 import com.ScreenManager;
 import com.debug.model.ActivityManagerModel;
 import com.popupScreen.activity.PopupActivity;
@@ -31,11 +31,8 @@ import com.user.activity.UserRegisterAndLoginActivity;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
-
-import cn.csh.colourful.life.view.imagepicker.view.SystemBarTintManager;
 import cn.jpush.android.api.JPushInterface;
 import cn.net.cyberway.R;
-import cn.net.cyberway.utils.ChangeLanguageHelper;
 
 
 @SuppressLint("NewApi")

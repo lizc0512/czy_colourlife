@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:layout_marginTop="22dp">
+
+        <com.BeeFramework.view.CircleImageView
+            android:id="@+id/iv_dynamics_user_pics"
+            android:layout_width="36dp"
+            android:layout_height="36dp"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="16dp" />
+
+        <TextView
+            android:id="@+id/tv_dynamics_user_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignTop="@id/iv_dynamics_user_pics"
+            android:layout_marginLeft="8dp"
+            android:layout_toRightOf="@id/iv_dynamics_user_pics"
+            android:text="我的神啊"
+            android:textColor="@color/color_25282e"
+            android:textSize="14sp"
+            android:textStyle="bold" />
+
+
+        <TextView
+            android:id="@+id/tv_dynamics_user_community"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/tv_dynamics_user_name"
+            android:layout_marginLeft="8dp"
+            android:layout_marginTop="3dp"
+            android:layout_toRightOf="@id/iv_dynamics_user_pics"
+            android:text="彩生活社区"
+            android:textColor="@color/color_8d9299"
+            android:textSize="12sp" />
+
+
+        <ImageView
+            android:id="@+id/iv_dynamics_user_operate"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:visibility="gone"
+            android:layout_marginRight="16dp"
+            android:padding="4dp"
+            android:src="@drawable/community_dynamics_tipoffs" />
+
+    </RelativeLayout>
+
+    <com.community.view.MoreTextView
+        android:id="@+id/tv_dynamics_text_content"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="16dp"
+        android:layout_marginTop="12dp"
+        android:layout_marginRight="16dp"
+        android:text="这周日晚上7点小区正门广场舞-这期的主题是迪斯科大 家赶紧来参加吧。"
+        android:textColor="@color/color_25282e"
+        android:textSize="14sp" />
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="16dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginRight="16dp"
+        android:orientation="horizontal">
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/rv_dynamics_images"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="2" />
+
+        <View
+            android:id="@+id/view_dynamics_weight"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1" />
+
+    </LinearLayout>
+
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="25dp"
+        android:layout_marginTop="12dp"
+        android:layout_marginBottom="12dp">
+
+        <TextView
+            android:id="@+id/tv_dynamics_publish_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="25dp"
+            android:text="2小时前"
+            android:textColor="@color/color_8d9299"
+            android:textSize="12sp" />
+
+        <TextView
+            android:id="@+id/tv_del_owner_dynamics"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@id/tv_dynamics_publish_time"
+            android:paddingLeft="15dp"
+            android:paddingRight="15dp"
+            android:text="@string/message_del"
+            android:textColor="@color/color_3282fa"
+            android:textSize="12sp" />
+
+        <TextView
+            android:id="@+id/tv_dynamics_comment"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="40dp"
+            android:drawableLeft="@drawable/community_dynamics_commnet"
+            android:drawablePadding="5dp"
+            android:gravity="center"
+            android:padding="2dp"
+            android:text="3"
+            android:textColor="@color/color_8d9299"
+            android:textSize="12sp" />
+
+
+        <TextView
+            android:id="@+id/tv_dynamics_like"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="15dp"
+            android:layout_toLeftOf="@id/tv_dynamics_comment"
+            android:drawableLeft="@drawable/community_dynamics_unlike"
+            android:drawablePadding="5dp"
+            android:gravity="center"
+            android:padding="2dp"
+            android:text="8"
+            android:textColor="@color/color_8d9299"
+            android:textSize="12sp" />
+    </RelativeLayout>
+
+</LinearLayout>

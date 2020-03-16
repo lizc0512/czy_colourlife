@@ -1,17 +1,23 @@
 package com.im.activity;
 
+import android.content.Intent;
+import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.BeeFramework.activity.BaseFragmentActivity;
+import com.im.adapter.IMPopAdapter;
 import com.youmai.hxsdk.fragment.GroupListFragment;
 import com.youmai.hxsdk.proto.YouMaiBasic;
 
@@ -33,7 +39,7 @@ public class IMGroupListActivity extends BaseFragmentActivity implements View.On
     public static final String GROUPTYPE = "grouptype";
     private ImageView user_top_view_back;
     private TextView user_top_view_title;
-    private LinearLayout fragment_layout;
+    private ImageView img_right;
     private RelativeLayout search_layout;
     private ListView group_lv;
     private int groupType = 0; //0 群聊 1社群
@@ -49,43 +55,25 @@ public class IMGroupListActivity extends BaseFragmentActivity implements View.On
         user_top_view_title = findViewById(R.id.user_top_view_title);
         search_layout = findViewById(R.id.search_layout);
         group_lv = findViewById(R.id.group_lv);
+        search_layout.setVisibility(View.GONE);
+        group_lv.setVisibility(View.GONE);
+        img_right = findViewById(R.id.img_right);
         user_top_view_back.setOnClickListener(this);
-        search_layout.setOnClickListener(this);
+        img_right.setOnClickListener(this);
+        img_right.setVisibility(View.VISIBLE);
+        img_right.setImageResource(R.drawable.im_icon_add);
         groupType = getIntent().getIntExtra(GROUPTYPE, 0);
-        if (groupType == 0) {
-            user_top_view_title.setText("群聊");
-            search_layout.setVisibility(View.GONE);
-            group_lv.setVisibility(View.GONE);
-            fragmentManager = getSupportFragmentManager();
-            transaction = fragmentManager.beginTransaction();
-            if (groupListFragment == null) {
-                groupListFragment = GroupListFragment.newInstance(YouMaiBasic.GroupType.GROUP_TYPE_MULTICHAT);
-                transaction.add(R.id.fragment_layout, groupListFragment);
-            } else {
-                transaction.show(groupListFragment);
-            }
-            transaction.commitAllowingStateLoss();
-        } else {
-            user_top_view_title.setText("社群");
-//            findViewById(R.id.fragment_layout).setVisibility(View.GONE);
-            search_layout.setVisibility(View.GONE);
-            group_lv.setVisibility(View.GONE);
-            fragmentManager = getSupportFragmentManager();
-            transaction = fragmentManager.beginTransaction();
-            if (groupListFragment == null) {
-                groupListFragment = GroupListFragment.newInstance(YouMaiBasic.GroupType.GROUP_TYPE_COMMUNITY);
-                transaction.add(R.id.fragment_layout, groupListFragment);
-            } else {
-                transaction.show(groupListFragment);
-            }
-            transaction.commitAllowingStateLoss();
-        }
-        group_lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+        user_top_view_title.setText("群聊列表");
 
-            }
-        });
+        fragmentManager = getSupportFragmentManager();
+        transaction = fragmentManager.beginTransaction();
+        if (groupListFragment == null) {
+            groupListFragment = GroupListFragment.newInstance(YouMaiBasic.GroupType.GROUP_TYPE_MULTICHAT);
+            transaction.add(R.id.fragment_layout, groupListFragment);
+        } else {
+            transaction.show(groupListFragment);
+        }
+        transaction.commitAllowingStateLoss();
     }
 
     @Override
@@ -94,9 +82,47 @@ public class IMGroupListActivity extends BaseFragmentActivity implements View.On
             case R.id.user_top_view_back:
                 finish();
                 break;
-            case R.id.search_layout:
-
+            case R.id.img_right:
+                initPopup();
                 break;
         }
+    }
+
+    private PopupWindow popupWindow;
+
+    private void initPopup() {
+        View contentview = LayoutInflater.from(IMGroupListActivity.this).inflate(R.layout.pop_listview_layout, null);
+        popupWindow = new PopupWindow(contentview,
+                ViewGroup.LayoutParams.MATCH_PARENT,
+                ViewGroup.LayoutParams.WRAP_CONTENT,
+                true);
+        setBackgroundAlpha(0.8f);
+        popupWindow.setOutsideTouchable(true);
+        popupWindow.setBackgroundDrawable(new BitmapDrawable());
+        popupWindow.showAsDropDown(img_right, 0, 0);
+        popupWindow.setOnDismissListener(new PopupWindow.OnDismissListener() {
+            @Override
+            public void onDismiss() {
+                setBackgroundAlpha(1.0f);
+            }
+        });
+        ListView popLv = contentview.findViewById(R.id.pop_lv);
+        popLv.setAdapter(new IMPopAdapter(IMGroupListActivity.this));
+        popLv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                popupWindow.dismiss();
+                Intent intent = new Intent(IMGroupListActivity.this, classArr[position]);
+                startActivity(intent);
+            }
+        });
+    }
+
+    private Class[] classArr = {IMCreateGroupChatActivity.class, IMCreateCommunityActivity.class,IMCommunityListActivity.class};
+
+    private void setBackgroundAlpha(float bgAlpha) {
+        WindowManager.LayoutParams lp = getWindow().getAttributes();
+        lp.alpha = bgAlpha;
+        getWindow().setAttributes(lp);
     }
 }

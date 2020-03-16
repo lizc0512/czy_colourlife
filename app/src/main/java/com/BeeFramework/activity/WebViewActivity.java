@@ -3,7 +3,6 @@ package com.BeeFramework.activity;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
-import android.annotation.TargetApi;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.bluetooth.BluetoothAdapter;
@@ -30,7 +29,6 @@ import android.os.Message;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.annotation.RequiresApi;
 import android.support.v4.content.FileProvider;
 import android.text.TextUtils;
 import android.view.KeyEvent;
@@ -57,6 +55,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.BeeFramework.JavaScriptMetod;
+import com.BeeFramework.Utils.CompressHelper;
 import com.BeeFramework.Utils.DecodeImage;
 import com.BeeFramework.Utils.ThemeStyleHelper;
 import com.BeeFramework.Utils.ToastUtil;
@@ -81,11 +80,6 @@ import com.customerInfo.activity.DeliveryAddressListActivity;
 import com.customerInfo.protocol.RealNameTokenEntity;
 import com.dashuview.library.keep.Cqb_PayUtil;
 import com.external.eventbus.EventBus;
-import com.feed.activity.CreateNormalFeedActivity;
-import com.feed.activity.FeedOrActivityActivity;
-import com.feed.activity.LinLiActivity;
-import com.feed.activity.ShareFeedActivity;
-import com.feed.utils.CompressHelper;
 import com.google.zxing.Result;
 import com.im.activity.IMCustomerInforActivity;
 import com.im.activity.IMFriendInforActivity;
@@ -94,7 +88,11 @@ import com.im.entity.MobileBookEntity;
 import com.im.helper.CacheFriendInforHelper;
 import com.im.model.IMUploadPhoneModel;
 import com.insthub.Config;
+import com.lzy.imagepicker.ImagePicker;
+import com.lzy.imagepicker.bean.ImageItem;
 import com.mob.MobSDK;
+import com.nohttp.utils.GlideImageLoader;
+import com.nohttp.utils.GsonUtils;
 import com.permission.AndPermission;
 import com.permission.PermissionListener;
 import com.scanCode.activity.CaptureActivity;
@@ -128,11 +126,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import cn.csh.colourful.life.utils.GlideUtils;
-import cn.csh.colourful.life.utils.GsonUtils;
 import cn.csh.colourful.life.utils.JsonValidator;
-import cn.csh.colourful.life.view.imagepicker.ImagePicker;
-import cn.csh.colourful.life.view.imagepicker.bean.ImageItem;
 import cn.net.cyberway.R;
 import cn.net.cyberway.activity.MainActivity;
 import cn.net.cyberway.home.service.LekaiParkLockController;
@@ -390,21 +384,6 @@ public class WebViewActivity extends BaseActivity implements View.OnLongClickLis
                 break;
             case R.id.rl_sx:
                 webView.reload();
-                closeShareLayout();
-                break;
-            case R.id.rl_llq:
-                final Intent intent = new Intent(this, ShareFeedActivity.class);
-                if (!isHfiveShare) {
-                    intent.putExtra("Content", "");
-                    intent.putExtra("Title", webTitle);
-                    intent.putExtra("ImgUrl", "https://cc.colourlife.com/common/v30/logo/app_logo_v30.png");
-                } else {
-                    intent.putExtra("Content", shareContent);
-                    intent.putExtra("Title", shareTitle);
-                    intent.putExtra("ImgUrl", shareImg);
-                }
-                intent.putExtra("Url", shareUrl);
-                startActivityForResult(intent, SHARELINLI);
                 closeShareLayout();
                 break;
             case R.id.rl_wechat:
@@ -702,6 +681,7 @@ public class WebViewActivity extends BaseActivity implements View.OnLongClickLis
             }
         }
 
+
         @JavascriptInterface
         public void ColourlifeTicket(String mobile) {
             // h5页面调通用赠送，勿动！！
@@ -913,34 +893,6 @@ public class WebViewActivity extends BaseActivity implements View.OnLongClickLis
             isHfiveShare = true;
             showShareLayou(true);
         }
-
-        /**
-         * h5调邻里首页
-         */
-        @JavascriptInterface
-        public void Neighborhood() {
-            Intent intent = new Intent(WebViewActivity.this, LinLiActivity.class);
-            startActivity(intent);
-        }
-
-        /**
-         * h5调发动态页面
-         */
-        @JavascriptInterface
-        public void Dynamic() {
-            Intent intent = new Intent(WebViewActivity.this, CreateNormalFeedActivity.class);
-            startActivity(intent);
-        }
-
-        /**
-         * h5调发活动页面
-         */
-        @JavascriptInterface
-        public void LaunchEvent() {
-            Intent intent = new Intent(WebViewActivity.this, FeedOrActivityActivity.class);
-            startActivity(intent);
-        }
-
 
         /**
          * h5调用手机号码的功能
@@ -1335,7 +1287,7 @@ public class WebViewActivity extends BaseActivity implements View.OnLongClickLis
             }
         });
         deliveryOauthDialog.tv_app_name.setText(appName + "申请获得以下权限:");
-        GlideUtils.loadImageView(WebViewActivity.this, appLogo, deliveryOauthDialog.iv_app_logo);
+        GlideImageLoader.loadImageDisplay(WebViewActivity.this, appLogo, deliveryOauthDialog.iv_app_logo);
 
     }
 
@@ -1661,6 +1613,7 @@ public class WebViewActivity extends BaseActivity implements View.OnLongClickLis
     }
 
     private void jumpByUrls(String urls) {
+        urls+="&fromAppUrlScheme=colourlifePay";
         try {
             Intent intent = Intent.parseUri(urls, Intent.URI_INTENT_SCHEME);
             intent.addCategory("android.intent.category.BROWSABLE");

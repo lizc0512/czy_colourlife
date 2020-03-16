@@ -199,8 +199,8 @@ public class ChangePawdByCoderagment extends BaseFragment implements View.OnClic
 
         @Override
         public void onFinish() {// 计时完毕时触发
-            tv_get_sms.setText(getActivity().getResources().getString(R.string.user_again_getcode));
             if(getActivity()!=null){
+                tv_get_sms.setText(getActivity().getResources().getString(R.string.user_again_getcode));
                 tv_get_sms.setTextColor(getActivity().getResources().getColor(R.color.tv_blue_bg));
             }
             tv_get_sms.setClickable(true);

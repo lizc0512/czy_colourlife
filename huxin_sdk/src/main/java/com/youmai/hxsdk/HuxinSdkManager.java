@@ -1600,12 +1600,11 @@ public class HuxinSdkManager {
 
 
     /**
-     * 进入客户单聊页面
+     * 进入客户单聊页面   找客户经理
      *
      * @param context
      */
     public void entryChatService(Context context) {
-
         Intent intent = new Intent(context, IMOwnerActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
         intent.putExtra(IMOwnerActivity.DST_UUID, mServiceInfo.getUuid());
@@ -1619,7 +1618,7 @@ public class HuxinSdkManager {
 
 
     /**
-     * 进入客服经理消息列表页面
+     * 进入客服经理消息列表页面  客户经理接收消息
      *
      * @param context
      */

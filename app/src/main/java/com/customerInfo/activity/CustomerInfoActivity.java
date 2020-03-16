@@ -23,24 +23,24 @@ import com.BeeFramework.Utils.ToastUtil;
 import com.BeeFramework.activity.BaseActivity;
 import com.BeeFramework.model.NewHttpResponse;
 import com.BeeFramework.view.CircleImageView;
+import com.community.utils.ImagePickerLoader;
 import com.customerInfo.protocol.IdentityStateEntity;
-import com.customerInfo.protocol.RealNameTokenEntity;
 import com.customerInfo.view.CustomerInfoDialog;
 import com.external.eventbus.EventBus;
-import com.gem.GemConstant;
-import com.gem.util.GemDialogUtil;
+import com.lzy.imagepicker.ImagePicker;
+import com.lzy.imagepicker.bean.ImageItem;
+import com.lzy.imagepicker.ui.ImageGridActivity;
+import com.lzy.imagepicker.view.CropImageView;
 import com.myproperty.activity.MyPropertyActivity;
 import com.nohttp.utils.GlideImageLoader;
+import com.nohttp.utils.GsonUtils;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.permission.AndPermission;
 import com.realaudit.activity.RealCheckResultActivity;
 import com.realaudit.activity.RealCheckWaitingActivity;
+import com.realaudit.activity.RealCommonSubmitActivity;
 import com.realaudit.activity.RealNameInforActivity;
 import com.realaudit.model.IdentityNameModel;
-import com.tencent.authsdk.AuthConfig;
-import com.tencent.authsdk.AuthSDKApi;
-import com.tencent.authsdk.IDCardInfo;
-import com.tencent.authsdk.callback.IdentityCallback;
 import com.user.UserAppConst;
 import com.user.UserMessageConstant;
 import com.user.entity.PortraitEntity;
@@ -52,11 +52,6 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 
-import cn.csh.colourful.life.utils.GsonUtils;
-import cn.csh.colourful.life.view.imagepicker.ImagePicker;
-import cn.csh.colourful.life.view.imagepicker.bean.ImageItem;
-import cn.csh.colourful.life.view.imagepicker.ui.ImageGridActivity;
-import cn.csh.colourful.life.view.imagepicker.view.CropImageView;
 import cn.csh.colourful.life.view.pickview.OptionsPickerView;
 import cn.net.cyberway.R;
 
@@ -73,7 +68,6 @@ public class CustomerInfoActivity extends BaseActivity implements View.OnClickLi
     public static String FROM_WEB = "from_web";
 
     private FrameLayout czyTitleLayout;
-    private ImageView ivGem;
     private ImageView mBack;
     private TextView mTitle;
     private TextView mRightText;
@@ -107,13 +101,10 @@ public class CustomerInfoActivity extends BaseActivity implements View.OnClickLi
     private String nickName;
     private String email;
     private ImagePicker imagePicker;
-
     private boolean isShowNotice = false;
-    private String realToken;
     private String realName = "";
     private int customer_id;
     private boolean fromWeb;
-    private boolean noRealToken = false;
     private String identifyState;
     private String idCardNumber;
     private String faceImage;
@@ -145,7 +136,7 @@ public class CustomerInfoActivity extends BaseActivity implements View.OnClickLi
 
     private void initPicker() {
         imagePicker = ImagePicker.getInstance();
-        imagePicker.setImageLoader(new cn.csh.colourful.life.utils.GlideImageLoader());   //设置图片加载器
+        imagePicker.setImageLoader(new ImagePickerLoader());   //设置图片加载器
         imagePicker.setShowCamera(false);  //显示拍照按钮
         imagePicker.setMultiMode(false);
         imagePicker.setStyle(CropImageView.Style.RECTANGLE);
@@ -201,8 +192,6 @@ public class CustomerInfoActivity extends BaseActivity implements View.OnClickLi
         address_ll.setOnClickListener(this);
         ll_gender.setOnClickListener(this);
         ll_real_name.setOnClickListener(this);
-        ivGem = (ImageView) findViewById(R.id.iv_gem);
-        GemDialogUtil.showGemDialog(ivGem, this, GemConstant.mineInformation, "");
     }
 
     private void initPhoto() {
@@ -323,12 +312,8 @@ public class CustomerInfoActivity extends BaseActivity implements View.OnClickLi
                 break;
             case R.id.ll_real_name://实名认证
                 if (TextUtils.isEmpty(tv_real_name.getText().toString().trim())) {
-                    if (!TextUtils.isEmpty(realToken)) {
-                        startAuthenticate(realToken);
-                    } else {
-                        noRealToken = true;
-                        getRealToken(true);
-                    }
+                    intent = new Intent(CustomerInfoActivity.this, RealCommonSubmitActivity.class);
+                    startActivity(intent);
                 } else {
                     if ("2".equals(identifyState)) {
                         IdentityNameModel identityNameModel = new IdentityNameModel(CustomerInfoActivity.this);
@@ -567,7 +552,7 @@ public class CustomerInfoActivity extends BaseActivity implements View.OnClickLi
                             int isIdentity = data.optInt("is_identity");
                             realName = data.optString("real_name");
                             idCardNumber = data.optString("number");
-                            faceImage=data.optString("face_img");
+                            faceImage = data.optString("face_img");
                             if (1 == isIdentity) {
                                 mEditor.putString(UserAppConst.COLOUR_AUTH_REAL_NAME + customer_id, realName).commit();
                                 realNameFormat(realName);
@@ -577,7 +562,6 @@ public class CustomerInfoActivity extends BaseActivity implements View.OnClickLi
                                 tv_is_real.setText(getResources().getString(R.string.customer_real_no));
                                 iv_real_name.setVisibility(View.VISIBLE);
                                 mEditor.putString(UserAppConst.COLOUR_AUTH_REAL_NAME + customer_id, "").commit();
-                                getRealToken(false);
                             }
                         } else {
                             String message = jsonObject.getString("message");
@@ -586,48 +570,6 @@ public class CustomerInfoActivity extends BaseActivity implements View.OnClickLi
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
-                }
-                break;
-            case 3:
-                if (!TextUtils.isEmpty(result)) {
-                    try {
-                        RealNameTokenEntity entity = GsonUtils.gsonToBean(result, RealNameTokenEntity.class);
-                        RealNameTokenEntity.ContentBean bean = entity.getContent();
-                        realToken = bean.getBizToken();
-                        if (noRealToken) {
-                            noRealToken = false;
-                            startAuthenticate(realToken);
-                        }
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-                }
-                break;
-            case 4://认证
-                if (!TextUtils.isEmpty(result)) {
-                    try {
-                        JSONObject jsonObject = new JSONObject(result);
-                        String code = jsonObject.getString("code");
-                        if ("0".equals(code)) {
-                            String content = jsonObject.getString("content");
-                            if ("1".equals(content)) {
-                                ToastUtil.toastShow(this, "认证成功");
-                                mEditor.putString(UserAppConst.COLOUR_AUTH_REAL_NAME + customer_id, realName).commit();
-                                realNameFormat(realName);
-                                newUserModel.finishTask(5, "2", fromWeb ? "task_web" : "task_native", this);
-                            }
-                        } else {
-                            String message = jsonObject.getString("message");
-                            ToastUtil.toastShow(this, message);
-                        }
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-                }
-                break;
-            case 5://实名认证成功
-                if (!TextUtils.isEmpty(result)) {
-                    setResult(200, new Intent());
                 }
                 break;
             case 6:
@@ -653,7 +595,7 @@ public class CustomerInfoActivity extends BaseActivity implements View.OnClickLi
                         case "2":
                         case "3":
                             intent = new Intent(CustomerInfoActivity.this, RealCheckResultActivity.class);
-                           intent.putExtra(CHECKREASON, contentBean.getRemark());
+                            intent.putExtra(CHECKREASON, contentBean.getRemark());
                             break;
                     }
                     intent.putExtra(CHECKSTATE, checkStatus);
@@ -681,41 +623,15 @@ public class CustomerInfoActivity extends BaseActivity implements View.OnClickLi
         identityNameModel.getIdentityState(6, CustomerInfoActivity.this);
     }
 
-    /**
-     * 获取实名认证Token
-     */
-    private void getRealToken(boolean loading) {
-        newUserModel.getRealNameToken(3, this, loading);
-    }
-
-    /**
-     * 实名认证
-     */
-    private void startAuthenticate(String realToken) {
-        AuthConfig.Builder configBuilder = new AuthConfig.Builder(realToken, R.class.getPackage().getName());
-        AuthSDKApi.startMainPage(this, configBuilder.build(), mListener);
-    }
-
-    /**
-     * 监听实名认证返回
-     */
-    private IdentityCallback mListener = data -> {
-        boolean identityStatus = data.getBooleanExtra(AuthSDKApi.EXTRA_IDENTITY_STATUS, false);
-        if (identityStatus) {//identityStatus true 已实名
-            IDCardInfo idCardInfo = data.getExtras().getParcelable(AuthSDKApi.EXTRA_IDCARD_INFO);
-            if (idCardInfo != null) {//身份证信息   idCardInfo.getIDcard();//身份证号码
-                realName = idCardInfo.getName();//姓名
-                newUserModel.submitRealName(4, realToken, this);//提交实名认证
-            }
-        }
-    };
-
-
     public void onEvent(Object event) {
         final Message message = (Message) event;
         switch (message.what) {
             case UserMessageConstant.REAL_CHANGE_STATE:
                 newUserModel.getIsRealName(2, true, this);//是否实名认证
+                break;
+            case UserMessageConstant.REAL_SUCCESS_STATE:
+                realName = message.obj.toString();
+                realNameFormat(realName);
                 break;
         }
     }

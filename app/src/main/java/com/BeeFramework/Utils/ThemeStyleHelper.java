@@ -1,19 +1,9 @@
 package com.BeeFramework.Utils;
 
 import android.content.Context;
-import android.content.SharedPreferences;
-import android.graphics.Color;
-import android.text.TextUtils;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
-
-import com.nohttp.utils.GsonUtils;
-import com.user.UserAppConst;
-
-import cn.csh.colourful.life.utils.GlideUtils;
-import cn.net.cyberway.R;
-import cn.net.cyberway.protocol.ThemeEntity;
 
 /**
  * 创建时间 : 2017/8/10.

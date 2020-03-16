@@ -14,26 +14,24 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.BeeFramework.Utils.CompressHelper;
 import com.BeeFramework.Utils.ToastUtil;
 import com.BeeFramework.activity.BaseActivity;
 import com.BeeFramework.model.NewHttpResponse;
+import com.community.utils.ImagePickerLoader;
 import com.external.eventbus.EventBus;
-import com.feed.utils.CompressHelper;
+import com.lzy.imagepicker.ImagePicker;
+import com.lzy.imagepicker.bean.ImageItem;
+import com.lzy.imagepicker.ui.ImageGridActivity;
 import com.nohttp.utils.GsonUtils;
 import com.permission.AndPermission;
 import com.realaudit.entity.RealNameImgEntity;
 import com.realaudit.model.IdentityNameModel;
 import com.user.UserMessageConstant;
-import com.user.model.NewUserModel;
-import com.youmai.hxsdk.utils.GsonUtil;
 
 import java.io.File;
 import java.util.ArrayList;
 
-import cn.csh.colourful.life.utils.GlideImageLoader;
-import cn.csh.colourful.life.view.imagepicker.ImagePicker;
-import cn.csh.colourful.life.view.imagepicker.bean.ImageItem;
-import cn.csh.colourful.life.view.imagepicker.ui.ImageGridActivity;
 import cn.net.cyberway.R;
 
 /**
@@ -117,7 +115,7 @@ public class RealOriginUploadActivity extends BaseActivity implements View.OnCli
 
     private void initImagePicker() {
         final ImagePicker imagePicker = ImagePicker.getInstance();
-        imagePicker.setImageLoader(new GlideImageLoader());
+        imagePicker.setImageLoader(new ImagePickerLoader());
         imagePicker.setShowCamera(false);  //显示拍照按钮
         imagePicker.setCrop(false);
         imagePicker.setMultiMode(false);

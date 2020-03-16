@@ -22,8 +22,6 @@ import com.im.view.CommunityOperationDialog;
 import com.im.view.UploadPhoneDialog;
 import com.nohttp.entity.BaseContentEntity;
 import com.nohttp.utils.GsonUtils;
-
-import cn.csh.colourful.life.utils.ToastUtils;
 import cn.net.cyberway.R;
 
 /**
@@ -118,7 +116,7 @@ public class IMApplyProgressActivity extends BaseActivity implements View.OnClic
                 ClipData mClipData = ClipData.newPlainText("Label", tv_apply_number.getText().toString());
                 // 将ClipData内容放到系统剪贴板里。
                 cm.setPrimaryClip(mClipData);
-                ToastUtils.showMessage(IMApplyProgressActivity.this, "申请编号复制成功!");
+                ToastUtil.toastShow(IMApplyProgressActivity.this, "申请编号复制成功!");
                 break;
             case R.id.tv_cancel:
                 communityOperationDialog.dismiss();

@@ -236,9 +236,7 @@ public class GroupListFragment extends Fragment {
                     List<GroupInfoBean> list = new ArrayList<>();
                     if (!ListUtils.isEmpty(changeList)) {
                         for (YouMaiGroup.GroupInfo item : changeList) {
-                            if (item.getGroupType() == YouMaiBasic.GroupType.valueOf(groupType)) {
                                 GroupInfoBean bean = new GroupInfoBean();
-
                                 bean.setId(findEntityId(item.getGroupId(), cacheList));
                                 bean.setGroup_id(item.getGroupId());
                                 bean.setGroup_name(item.getGroupName());
@@ -249,7 +247,6 @@ public class GroupListFragment extends Fragment {
                                 bean.setGroup_member_count(item.getGroupMemberCount());
                                 bean.setGroupType(item.getGroupType().getNumber());
                                 list.add(bean);
-                            }
                         }
 
                         GroupInfoHelper.instance().insertOrUpdate(mContext, list);

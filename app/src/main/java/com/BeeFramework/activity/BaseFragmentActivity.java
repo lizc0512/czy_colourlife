@@ -17,6 +17,7 @@ import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
 
+import com.BeeFramework.Utils.SystemBarTintManager;
 import com.ScreenManager;
 import com.user.UserAppConst;
 import com.user.Utils.TokenUtils;
@@ -24,7 +25,7 @@ import com.user.Utils.TokenUtils;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 
-import cn.csh.colourful.life.view.imagepicker.view.SystemBarTintManager;
+
 import cn.jpush.android.api.JPushInterface;
 import cn.net.cyberway.R;
 

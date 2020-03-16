@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/bg_color"
+    android:orientation="vertical">
+
+    <RelativeLayout
+        android:id="@+id/new_friend_layout"
+        android:layout_width="match_parent"
+        android:background="@color/white"
+        android:layout_height="70dp">
+
+        <ImageView
+            android:id="@+id/iv_new_friend"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="8dp"
+            android:src="@drawable/im_icon_friend_list" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="64dp"
+            android:text="@string/instant_friend_list"
+            android:textColor="@color/color_333b46"
+            android:textSize="16sp" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0.5dp"
+            android:layout_alignParentBottom="true"
+            android:layout_marginLeft="8dp"
+            android:layout_marginRight="8dp"
+            android:background="@color/divider_color" />
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/community_group_layout"
+        android:layout_width="match_parent"
+        android:background="@color/white"
+        android:layout_height="70dp">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="8dp"
+            android:src="@drawable/im_icon_group_list" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="64dp"
+            android:text="@string/community_group_list"
+            android:textColor="@color/color_333b46"
+            android:textSize="16sp" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0.5dp"
+            android:layout_alignParentBottom="true"
+            android:layout_marginLeft="8dp"
+            android:layout_marginRight="8dp"
+            android:background="@color/divider_color" />
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/dynamics_notice_layout"
+        android:layout_width="match_parent"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="10dp"
+        android:background="@color/white"
+        android:layout_height="70dp">
+
+        <ImageView
+            android:id="@+id/iv_dynamic_notice"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="8dp"
+            android:src="@drawable/im_icon_new_message" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="64dp"
+            android:text="@string/community_dynamics_notice"
+            android:textColor="@color/color_333b46"
+            android:textSize="16sp" />
+
+    </RelativeLayout>
+
+</LinearLayout>

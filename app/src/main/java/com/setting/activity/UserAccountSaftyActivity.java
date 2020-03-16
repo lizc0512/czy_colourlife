@@ -16,7 +16,6 @@ import com.BeeFramework.Utils.ToastUtil;
 import com.BeeFramework.activity.BaseActivity;
 import com.BeeFramework.model.NewHttpResponse;
 import com.customerInfo.activity.CustomerPwdActivity;
-import com.customerInfo.protocol.RealNameTokenEntity;
 import com.external.eventbus.EventBus;
 import com.mob.MobSDK;
 import com.mob.tools.utils.UIHandler;
@@ -26,18 +25,13 @@ import com.point.activity.ChangePawdTwoStepActivity;
 import com.point.activity.PointAccountPawdDialog;
 import com.point.entity.PointTransactionTokenEntity;
 import com.point.model.PointModel;
+import com.realaudit.activity.RealCommonSubmitActivity;
 import com.setting.switchButton.SwitchButton;
-import com.tencent.authsdk.AuthConfig;
-import com.tencent.authsdk.AuthSDKApi;
-import com.tencent.authsdk.IDCardInfo;
-import com.tencent.authsdk.callback.IdentityCallback;
 import com.user.UserAppConst;
 import com.user.UserMessageConstant;
 import com.user.entity.ChangeMobileEntity;
 import com.user.entity.ThridBindStatusEntity;
 import com.user.model.NewUserModel;
-
-import org.json.JSONObject;
 
 import java.util.HashMap;
 
@@ -191,6 +185,14 @@ public class UserAccountSaftyActivity extends BaseActivity implements View.OnCli
             case UserMessageConstant.POINT_SET_PAYPAWD:
                 state = "1";
                 break;
+            case UserMessageConstant.REAL_SUCCESS_STATE:
+                if ("3".equals(state)) {
+                    state = "2";
+                    Intent pawd_intent = new Intent(UserAccountSaftyActivity.this, ChangePawdTwoStepActivity.class);
+                    startActivity(pawd_intent);
+                } else {
+                    state = "1";
+                }
         }
     }
 
@@ -236,13 +238,13 @@ public class UserAccountSaftyActivity extends BaseActivity implements View.OnCli
                 } else {
                     switch (state) {
                         case "2"://已实名未设置支付密码
-                            Intent pay_intent = new Intent(UserAccountSaftyActivity.this, ChangePawdTwoStepActivity.class);
-                            startActivity(pay_intent);
+                            intent = new Intent(UserAccountSaftyActivity.this, ChangePawdTwoStepActivity.class);
+                            startActivity(intent);
                             break;
                         case "3"://未实名未设置支付密码
                         case "4"://未实名已设置支付密码
-                            newUserModel = new NewUserModel(UserAccountSaftyActivity.this);
-                            newUserModel.getRealNameToken(6, this, true);
+                            intent = new Intent(UserAccountSaftyActivity.this, RealCommonSubmitActivity.class);
+                            startActivity(intent);
                             break;
                         default://1已实名已设置支付密码
                             intent = new Intent(this, ChangePawdStyleActivity.class);
@@ -332,64 +334,8 @@ public class UserAccountSaftyActivity extends BaseActivity implements View.OnCli
 
                 }
                 break;
-            case 6:
-                if (!TextUtils.isEmpty(result)) {
-                    try {
-                        RealNameTokenEntity entity = cn.csh.colourful.life.utils.GsonUtils.gsonToBean(result, RealNameTokenEntity.class);
-                        RealNameTokenEntity.ContentBean bean = entity.getContent();
-                        biz_token=bean.getBizToken();
-                        AuthConfig.Builder configBuilder = new AuthConfig.Builder(biz_token, R.class.getPackage().getName());
-                        AuthSDKApi.startMainPage(this, configBuilder.build(), mListener);
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-                }
-                break;
-            case 7:
-                if (!TextUtils.isEmpty(result)) {
-                    try {
-                        JSONObject jsonObject = new JSONObject(result);
-                        String code = jsonObject.getString("code");
-                        if ("0".equals(code)) {
-                            String content = jsonObject.getString("content");
-                            if ("1".equals(content)) {
-                                ToastUtil.toastShow(this, "认证成功");
-                                editor.putString(UserAppConst.COLOUR_AUTH_REAL_NAME + shared.getInt(UserAppConst.Colour_User_id, 0), realName).commit();
-                                newUserModel.finishTask(10, "2", "task_web", this);//实名认证任务
-                                if ("3".equals(state)) {
-                                    state = "2";
-                                    Intent pawd_intent = new Intent(UserAccountSaftyActivity.this, ChangePawdTwoStepActivity.class);
-                                    startActivity(pawd_intent);
-                                } else {
-                                    state = "1";
-                                }
-                            }
-                        } else {
-                            String message = jsonObject.getString("message");
-                            ToastUtil.toastShow(this, message);
-                        }
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-                }
-                break;
-
         }
     }
-
-    /**
-     * 监听实名认证返回
-     */
-    private IdentityCallback mListener = data -> {
-        boolean identityStatus = data.getBooleanExtra(AuthSDKApi.EXTRA_IDENTITY_STATUS, false);
-        if (identityStatus) {//identityStatus true 已实名
-            IDCardInfo idCardInfo = data.getExtras().getParcelable(AuthSDKApi.EXTRA_IDCARD_INFO);
-            if (idCardInfo != null) {//身份证信息   idCardInfo.getIDcard();//身份证号码
-                realName = idCardInfo.getName();//姓名
-                newUserModel.submitRealName(7, biz_token, this);//提交实名认证
-            }
-        }
-    };
 
 
     private void authorize(final Platform plat) {  //1是绑定qq 0是解绑

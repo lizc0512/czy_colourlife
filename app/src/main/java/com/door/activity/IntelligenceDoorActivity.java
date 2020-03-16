@@ -42,13 +42,10 @@ import com.door.model.NewDoorAuthorModel;
 import com.door.model.NewDoorModel;
 import com.door.view.DoorRenameDialog;
 import com.door.view.ShowOpenDoorDialog;
-import com.door.view.ShowReportHealthyDialog;
 import com.external.eventbus.EventBus;
-import com.nohttp.utils.GlideImageLoader;
 import com.nohttp.utils.GsonUtils;
 import com.user.UserAppConst;
 import com.user.UserMessageConstant;
-import com.user.model.NewUserModel;
 import com.youmai.hxsdk.utils.DisplayUtil;
 
 import org.json.JSONObject;
@@ -57,14 +54,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 import cn.net.cyberway.R;
-import cn.net.cyberway.home.entity.HomeHealthReportEntity;
 import cn.net.cyberway.home.service.LekaiParkLockController;
-import cn.net.cyberway.home.service.LekaiService;
 import cn.net.cyberway.utils.LekaiHelper;
-import cn.net.cyberway.utils.LinkParseUtil;
 
 import static cn.net.cyberway.utils.TableLayoutUtils.showOpenDoorResultDialog;
-import static cn.net.cyberway.utils.TableLayoutUtils.showReportHealthyDialog;
 import static com.BeeFramework.Utils.Utils.dip2px;
 import static com.customerInfo.activity.CustomerAddPropertyActivity.COMMUNITY_NAME;
 import static com.customerInfo.activity.CustomerAddPropertyActivity.COMMUNITY_UUID;
@@ -224,7 +217,7 @@ public class IntelligenceDoorActivity extends BaseFragmentActivity implements Ne
     /**
      * 远程开门
      */
-    public void remoteDoor(String qrcode,String community_uuid) {
+    public void remoteDoor(String qrcode, String community_uuid) {
         door_code = qrcode;
         newDoorModel.openDoor(2, door_code, true, IntelligenceDoorActivity.this);
     }
@@ -551,8 +544,6 @@ public class IntelligenceDoorActivity extends BaseFragmentActivity implements Ne
         }
     }
 
-
-
     private void setData(boolean isCache, String result) {
         try {
             if (!TextUtils.isEmpty(result)) {
@@ -736,12 +727,6 @@ public class IntelligenceDoorActivity extends BaseFragmentActivity implements Ne
                     showOpenDoorDialog(result);
                 }
                 break;
-            case UserMessageConstant.BLUETOOTH_REPORT_HEALTHY:
-                Bundle bundle = message.getData();
-                String img = bundle.getString("img");
-                String url = bundle.getString("url");
-                showReportNoticeDialog(img,url);
-                break;
         }
     }
 
@@ -778,24 +763,5 @@ public class IntelligenceDoorActivity extends BaseFragmentActivity implements Ne
         } catch (Exception e) {
 
         }
-    }
-
-    private ShowReportHealthyDialog showReportHealthyDialog;
-    private void showReportNoticeDialog(String img, String url) {
-        if (null == showReportHealthyDialog) {
-            showReportHealthyDialog = new ShowReportHealthyDialog(this, R.style.opendoor_dialog_theme);
-        }
-        if (showReportHealthyDialog.isShowing()) {
-            showReportHealthyDialog.dismiss();
-        }
-        showReportHealthyDialog.show();
-        GlideImageLoader.loadImageDisplay(this, img, showReportHealthyDialog.iv_report_healthy);
-        showReportHealthyDialog.iv_report_healthy.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                LinkParseUtil.parse(IntelligenceDoorActivity.this, url, "");
-                showReportHealthyDialog.dismiss();
-            }
-        });
     }
 }

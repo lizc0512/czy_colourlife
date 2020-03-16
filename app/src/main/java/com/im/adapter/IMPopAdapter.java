@@ -24,7 +24,7 @@ import cn.net.cyberway.R;
 
 public class IMPopAdapter extends BaseAdapter {
     private String[] contentArr;
-    private int[] imageArr = {R.drawable.im_icon_drop_groupchat, R.drawable.im_icon_drop_friends, R.drawable.im_icon_drop_community, R.drawable.im_icon_drop_neighborhood, R.drawable.im_icon_drop_community};
+    private int[] imageArr = {R.drawable.im_icon_drop_groupchat, R.drawable.im_icon_drop_community,  R.drawable.im_icon_drop_community};
     private Context mContext;
 
     public IMPopAdapter(Context context) {

@@ -88,7 +88,6 @@ public class NewUserModel extends BaseModel {
     private String signInUrl = "integral/user/setSignIn";
     private String getRealTokenUrl = "user/bizToken";
     private String getIsRealUrl = "user/checkIdentity";
-    //    private String submitRealUrl = "user/identity";
     private String submitRealUrl = "user/getDetectInfo";
     private String isNewUrl = "user/isNew";
     private String getDoorUrl = "app/door/getToken";
@@ -1465,6 +1464,12 @@ public class NewUserModel extends BaseModel {
                 if (responseCode == RequestEncryptionUtils.responseSuccess) {
                     int resultCode = showSuccesResultMessageTheme(result);
                     if (resultCode == 0) {
+                        try {
+                            JSONObject  contentJson=new JSONObject(result);
+                            editor.putString(UserAppConst.COLOUR_DYNAMICS_REAL_IDENTITY, contentJson.optJSONObject("content").optString("is_identity")).apply();
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
                         newHttpResponse.OnHttpResponse(what, result);
                     } else {
                         newHttpResponse.OnHttpResponse(what, "");
@@ -1477,35 +1482,6 @@ public class NewUserModel extends BaseModel {
                 newHttpResponse.OnHttpResponse(what, "");
             }
         }, true, isLoading);
-    }
-
-    /**
-     * 提交实名认证
-     */
-    public void submitRealName(int what, String biz_token, final NewHttpResponse newHttpResponse) {
-        Map<String, Object> params = new HashMap<>();
-        params.put("biz_token", biz_token);
-        final Request<String> request = NoHttp.createStringRequest(RequestEncryptionUtils.getCombileMD5(mContext, 3, submitRealUrl, params), RequestMethod.POST);
-        request(what, request, params, new HttpListener<String>() {
-            @Override
-            public void onSucceed(int what, Response<String> response) {
-                int responseCode = response.getHeaders().getResponseCode();
-                String result = response.get();
-                if (responseCode == RequestEncryptionUtils.responseSuccess) {
-                    int resultCode = showSuccesResultMessageTheme(result);
-                    if (resultCode == 0) {
-                        newHttpResponse.OnHttpResponse(what, result);
-                    } else {
-                        newHttpResponse.OnHttpResponse(what, result);
-                    }
-                }
-            }
-
-            @Override
-            public void onFailed(int what, Response<String> response) {
-                showExceptionMessage(what, response);
-            }
-        }, true, true);
     }
 
     public void submitRealName(int what, String biz_token, String mobile, String user_id, final NewHttpResponse newHttpResponse) {
@@ -1789,20 +1765,20 @@ public class NewUserModel extends BaseModel {
     /***
      * 用户是否上传健康安全报告
      */
-    public void getReportDate(int what,String community_uuid,String qrcode,String  cipher_id,boolean isLoading, final NewHttpResponse newHttpResponse) {
+    public void getReportDate(int what, String community_uuid, String qrcode, String cipher_id, boolean isLoading, final NewHttpResponse newHttpResponse) {
         Map<String, Object> params = new HashMap<>();
-        if (!TextUtils.isEmpty(community_uuid)){
+        if (!TextUtils.isEmpty(community_uuid)) {
             params.put("community_uuid", community_uuid);
         }
-        if (!TextUtils.isEmpty(qrcode)){
+        if (!TextUtils.isEmpty(qrcode)) {
             params.put("qrcode", qrcode);
         }
-        if (!TextUtils.isEmpty(cipher_id)){
+        if (!TextUtils.isEmpty(cipher_id)) {
             params.put("cipher_id", cipher_id);
         }
         final Request<String> request = NoHttp.createStringRequest(RequestEncryptionUtils.getCombileMD5(mContext, 11, getReportUrl, params), RequestMethod.GET);
-        request.setConnectTimeout(10000);
-        request.setReadTimeout(10000);
+        request.setConnectTimeout(5000);
+        request.setReadTimeout(5000);
         request(what, request, params, new HttpListener<String>() {
             @Override
             public void onSucceed(int what, Response<String> response) {
@@ -1815,7 +1791,7 @@ public class NewUserModel extends BaseModel {
                     } else {
                         newHttpResponse.OnHttpResponse(what, "");
                     }
-                }else{
+                } else {
                     newHttpResponse.OnHttpResponse(what, "");
                 }
             }
@@ -1845,13 +1821,17 @@ public class NewUserModel extends BaseModel {
                     int resultCode = showSuccesResultMessageTheme(result);
                     if (resultCode == 0) {
                         newHttpResponse.OnHttpResponse(what, result);
+                    } else {
+                        newHttpResponse.OnHttpResponse(what, "");
                     }
+                } else {
+                    newHttpResponse.OnHttpResponse(what, "");
                 }
             }
 
             @Override
             public void onFailed(int what, Response<String> response) {
-                showExceptionMessage(what, response);
+                newHttpResponse.OnHttpResponse(what, "");
             }
         }, true, true);
     }

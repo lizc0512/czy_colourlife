@@ -7,16 +7,14 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.BeeFramework.Utils.StringUtil;
 import com.customerInfo.activity.DeliveryAddressIncreaseActivity;
 import com.customerInfo.activity.DeliveryAddressListActivity;
 import com.customerInfo.protocol.DeliveryAddressListEnity;
 
 import java.util.List;
-
-import cn.csh.colourful.life.utils.StringUtils;
 import cn.net.cyberway.R;
 
 /**
@@ -51,7 +49,7 @@ public class DeliveryAddressListAdapter extends RecyclerView.Adapter<DeliveryAdd
     public void onBindViewHolder(DeliveryAddressListAdapter.AddressViewHolder holder, int position) {
         final DeliveryAddressListEnity.ContentBean contentBean = deliveryAddressList.get(position);
         holder.tv_delivery_name.setText(contentBean.getName());
-        holder.tv_delivery_phone.setText(StringUtils.getRecordPhone(contentBean.getMobile()));
+        holder.tv_delivery_phone.setText(StringUtil.getRecordPhone(contentBean.getMobile()));
         holder.tv_delivery_address.setText(contentBean.getProvince() + contentBean.getCity() + contentBean.getCounty()
                 + contentBean.getTown() + contentBean.getCommunity() + contentBean.getAddress());
         holder.delivery_address_layout.setOnClickListener(new View.OnClickListener() {

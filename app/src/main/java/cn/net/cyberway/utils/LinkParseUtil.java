@@ -12,7 +12,6 @@ import com.BeeFramework.model.Constants;
 import com.about.activity.AboutActivity;
 import com.about.activity.FeedBackActivity;
 import com.allapp.activity.WholeApplicationActivity;
-import com.cardcoupons.activity.CardCouponsActivity;
 import com.cashier.activity.OrderListActivity;
 import com.customerInfo.activity.CustomerColourBeanActivity;
 import com.customerInfo.activity.CustomerInfoActivity;
@@ -21,9 +20,6 @@ import com.dashuview.library.keep.Cqb_PayUtil;
 import com.door.activity.IntelligenceDoorActivity;
 import com.door.activity.NewDoorAuthorizeActivity;
 import com.door.activity.NewDoorRenewalActivity;
-import com.feed.activity.CreateNormalFeedActivity;
-import com.feed.activity.FeedOrActivityActivity;
-import com.feed.activity.LinLiActivity;
 import com.invite.activity.ContactsActivity;
 import com.invite.activity.InviteActivity;
 import com.mycarinfo.activity.MyCarInfoActivity;
@@ -106,18 +102,13 @@ public class LinkParseUtil {
                             context.startActivity(intent);
                             ((Activity) context).overridePendingTransition(R.anim.push_up_in, R.anim.push_up_out);
                             break;
-                        case "Card"://卡券
-                            intent = new Intent(context, CardCouponsActivity.class);
-                            context.startActivity(intent);
-                            ((Activity) context).overridePendingTransition(R.anim.push_right_in, R.anim.push_right_out);
-                            break;
                         case "Ticket":
                         case "NewTicket"://新彩钱包
-                            intent =new Intent(context, MyPointActivity.class);
+                            intent = new Intent(context, MyPointActivity.class);
                             context.startActivity(intent);
                             break;
                         case "OldColourlifeWallet"://我的积分
-                            Cqb_PayUtil.getInstance((Activity)context).createPay(Utils.getPublicParams(context), Constants.CAIWALLET_ENVIRONMENT);
+                            Cqb_PayUtil.getInstance((Activity) context).createPay(Utils.getPublicParams(context), Constants.CAIWALLET_ENVIRONMENT);
                             break;
                         case "OpenColourlifeWallet": // 开通彩钱包
                             Cqb_PayUtil.getInstance((Activity) context).openActivityUI(Utils.getPublicParams(context), Constants.CAIWALLET_ENVIRONMENT);//开通彩钱包
@@ -135,18 +126,6 @@ public class LinkParseUtil {
                             intent.putExtra(CaptureActivity.QRCODE_SOURCE, "default");
                             context.startActivity(intent);
                             ((Activity) context).overridePendingTransition(R.anim.push_right_in, R.anim.push_right_out);
-                            break;
-                        case "Neighborhood"://邻里首页  colourlife://proto?type=OpenColourlifeWallet
-                            intent = new Intent(context, LinLiActivity.class);
-                            context.startActivity(intent);
-                            break;
-                        case "Dynamic"://发动态
-                            intent = new Intent(context, CreateNormalFeedActivity.class);
-                            context.startActivity(intent);
-                            break;
-                        case "LaunchEvent"://发活动
-                            intent = new Intent(context, FeedOrActivityActivity.class);
-                            context.startActivity(intent);
                             break;
                         case "Information"://个人信息
                             intent = new Intent(context, CustomerInfoActivity.class);

@@ -58,7 +58,7 @@ public class ImagePagerAdapter extends PagerAdapter {
                 }
             }
         });
-        GlideImageLoader.loadActiveImageDisplay(context, imageList.get(position), imageView,R.drawable.default_image,R.drawable.default_image,R.drawable.default_image);
+        GlideImageLoader.loadActiveImageDisplay(context, imageList.get(position), imageView,R.drawable.default_image,R.drawable.default_image);
         container.addView(rootView);
         return rootView;
     }
