@@ -129,9 +129,7 @@ public class NewOrderPayActivity extends BaseActivity implements View.OnClickLis
     private PopInputCodeView popInputCodeView;
     private EditDialog noticeDialog = null;
     private NewUserModel newUserModel;
-    private String realName;
     private String payListResult;
-    private String biz_token;
 
 
     @Override
@@ -722,7 +720,7 @@ public class NewOrderPayActivity extends BaseActivity implements View.OnClickLis
 
 
     private BroadcastReceiverActivity broadcast;
-
+    private int showPayResultDialog = 0;
     @Override
     protected void onResume() {
         super.onResume();
@@ -732,6 +730,11 @@ public class NewOrderPayActivity extends BaseActivity implements View.OnClickLis
         registerReceiver(broadcast, intentFilter);
         if (!EventBus.getDefault().isregister(NewOrderPayActivity.this)) {
             EventBus.getDefault().register(NewOrderPayActivity.this);
+        }
+
+        if (showPayResultDialog == 1) {
+            showH5PayResultDialog();
+            showPayResultDialog = 0;
         }
     }
 
@@ -910,6 +913,7 @@ public class NewOrderPayActivity extends BaseActivity implements View.OnClickLis
             ToastUtil.toastShow(NewOrderPayActivity.this, "服务器返回数据格式有问题，缺少“appPayRequest”字段");
             return;
         } else {
+            showPayResultDialog = 1;
             msg.payData = resultMap.get("appPayRequest");
             UnifyPayPlugin unifyPayPlugin = UnifyPayPlugin.getInstance(this);
             unifyPayPlugin.setListener(this);
@@ -1035,7 +1039,9 @@ public class NewOrderPayActivity extends BaseActivity implements View.OnClickLis
                             break;
                         case "3"://未实名未设置支付密码
                         case "4"://未实名已设置支付密码
-                            newUserModel.getRealNameToken(4, this, true);
+                            Intent realIntent = new Intent(NewOrderPayActivity.this, RealCommonSubmitActivity.class);
+                            realIntent.putExtra(RealCommonSubmitActivity.SHOWFAILDIALOG, 1);
+                            startActivity(realIntent);
                             break;
                         default://1已实名已设置支付密码
                             if ("1".equals(dev_change)) {

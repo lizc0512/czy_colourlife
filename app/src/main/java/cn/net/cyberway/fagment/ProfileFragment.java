@@ -36,7 +36,6 @@ import java.util.List;
 import java.util.Objects;
 
 import cn.csh.colourful.life.listener.OnItemClickListener;
-import cn.csh.colourful.life.view.recycleview.WrapHeightLinearLayoutManager;
 import cn.net.cyberway.R;
 import cn.net.cyberway.activity.MainActivity;
 import cn.net.cyberway.home.adapter.MyPageItemListAdapter;
@@ -48,6 +47,7 @@ import cn.net.cyberway.home.protocol.OPTIONSDATA;
 import cn.net.cyberway.home.view.CircleImageView;
 import cn.net.cyberway.model.MyListModel;
 import cn.net.cyberway.utils.LinkParseUtil;
+import cn.net.cyberway.utils.WrapLinearLayoutManager;
 
 import static com.user.UserAppConst.MYPAGESUBMENU;
 
@@ -171,7 +171,7 @@ public class ProfileFragment extends Fragment implements View.OnClickListener, N
         try {
             if (myItemListAdapter == null) {
                 myItemListAdapter = new MyPageItemListAdapter(getActivity(), list);
-                lv_myprofile_info.setLayoutManager(new WrapHeightLinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false));
+                lv_myprofile_info.setLayoutManager(new WrapLinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false));
                 lv_myprofile_info.setNestedScrollingEnabled(false);
                 lv_myprofile_info.setAdapter(myItemListAdapter);
             } else {

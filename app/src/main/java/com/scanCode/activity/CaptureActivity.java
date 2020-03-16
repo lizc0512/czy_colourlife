@@ -54,10 +54,14 @@ import com.BeeFramework.Utils.Utils;
 import com.BeeFramework.activity.BaseActivity;
 import com.BeeFramework.model.NewHttpResponse;
 import com.BeeFramework.view.Util;
+import com.community.utils.ImagePickerLoader;
 import com.google.zxing.BarcodeFormat;
 import com.google.zxing.Result;
 import com.google.zxing.ResultPoint;
 import com.google.zxing.client.result.ResultParser;
+import com.lzy.imagepicker.ImagePicker;
+import com.lzy.imagepicker.bean.ImageItem;
+import com.lzy.imagepicker.ui.ImageGridActivity;
 import com.nohttp.utils.GsonUtils;
 import com.permission.AndPermission;
 import com.permission.PermissionListener;
@@ -80,10 +84,6 @@ import java.util.Date;
 import java.util.List;
 import java.util.regex.Pattern;
 
-import cn.csh.colourful.life.utils.GlideImageLoader;
-import cn.csh.colourful.life.view.imagepicker.ImagePicker;
-import cn.csh.colourful.life.view.imagepicker.bean.ImageItem;
-import cn.csh.colourful.life.view.imagepicker.ui.ImageGridActivity;
 import cn.net.cyberway.R;
 import cn.net.cyberway.activity.MainActivity;
 import cn.net.cyberway.utils.LinkParseUtil;
@@ -202,7 +202,7 @@ public final class CaptureActivity extends BaseActivity implements
 
     private void initImagePicker() {
         ImagePicker imagePicker = ImagePicker.getInstance();
-        imagePicker.setImageLoader(new GlideImageLoader());   //设置图片加载器
+        imagePicker.setImageLoader(new ImagePickerLoader());   //设置图片加载器
         imagePicker.setShowCamera(false);  //显示拍照按钮
         imagePicker.setCrop(false);
         imagePicker.setMultiMode(false);

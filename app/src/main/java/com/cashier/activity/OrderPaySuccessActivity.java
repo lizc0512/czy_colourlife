@@ -56,7 +56,6 @@ import com.user.UserMessageConstant;
 import java.util.ArrayList;
 import java.util.List;
 
-import cn.csh.colourful.life.utils.ToastUtils;
 import cn.net.cyberway.R;
 import cn.net.cyberway.activity.BroadcastReceiverActivity;
 import cn.net.cyberway.home.adapter.UltraPagerAdapter;
@@ -170,7 +169,7 @@ public class OrderPaySuccessActivity extends BaseActivity implements View.OnClic
                 ClipData mClipData = ClipData.newPlainText("Label", colorSn);
                 // 将ClipData内容放到系统剪贴板里。
                 cm.setPrimaryClip(mClipData);
-                ToastUtils.showMessage(OrderPaySuccessActivity.this, "订单编号已复制到剪贴板");
+                ToastUtil.toastShow(OrderPaySuccessActivity.this, "订单编号已复制到剪贴板");
                 return false;
             }
         });

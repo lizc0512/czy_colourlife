@@ -11,7 +11,6 @@ import com.nohttp.utils.GlideImageLoader;
 
 import java.util.List;
 
-import cn.csh.colourful.life.utils.GlideUtils;
 import cn.net.cyberway.R;
 
 /**

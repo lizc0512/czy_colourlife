@@ -40,6 +40,15 @@ public class StringUtil {
         return (s == null || s.trim().length() == 0);
     }
 
+
+    /***格式化手机号码**/
+    public  static  String  getRecordPhone(String phone){
+        int length=phone.length();
+        if (length==11){
+            return  phone.substring(0,3)+"****"+phone.substring(length-4,length);
+        }
+        return  phone;
+    }
     /**
      * 判断两字符串是否相等
      *

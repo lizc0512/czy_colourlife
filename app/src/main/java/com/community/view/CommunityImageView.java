@@ -25,7 +25,7 @@ public class CommunityImageView extends RelativeLayout implements NewHttpRespons
     public String mUploadPhotoUrl = null;
     public String mUploadPhotoId = null;
 
-    private ImageView iv_upload_image;
+    public ImageView iv_upload_image;
     private ImageView anim_view;
     public ImageView del_upload_image;
 

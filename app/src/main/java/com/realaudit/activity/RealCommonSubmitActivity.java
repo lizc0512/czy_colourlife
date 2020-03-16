@@ -9,6 +9,7 @@ import com.BeeFramework.activity.BaseActivity;
 import com.BeeFramework.model.NewHttpResponse;
 import com.customerInfo.protocol.RealNameTokenEntity;
 import com.external.eventbus.EventBus;
+import com.nohttp.utils.GsonUtils;
 import com.tencent.authsdk.AuthConfig;
 import com.tencent.authsdk.AuthSDKApi;
 import com.tencent.authsdk.IDCardInfo;
@@ -18,7 +19,6 @@ import com.user.model.NewUserModel;
 
 import org.json.JSONObject;
 
-import cn.csh.colourful.life.utils.GsonUtils;
 import cn.net.cyberway.R;
 
 import static com.user.UserMessageConstant.REAL_FAIL_STATE;

@@ -75,7 +75,6 @@ import java.util.Objects;
 
 import cn.bingoogolapple.bgabanner.BGABanner;
 import cn.csh.colourful.life.listener.OnItemClickListener;
-import cn.csh.colourful.life.view.recycleview.WrapHeightLinearLayoutManager;
 import cn.net.cyberway.R;
 import cn.net.cyberway.activity.MainActivity;
 import cn.net.cyberway.home.activity.BannerVideoActivity;
@@ -102,6 +101,7 @@ import cn.net.cyberway.utils.CityCustomConst;
 import cn.net.cyberway.utils.CityManager;
 import cn.net.cyberway.utils.LekaiHelper;
 import cn.net.cyberway.utils.LinkParseUtil;
+import cn.net.cyberway.utils.WrapLinearLayoutManager;
 import q.rorbin.badgeview.QBadgeView;
 
 import static cn.net.cyberway.home.view.HomeViewUtils.addCommmonDoorList;
@@ -723,7 +723,7 @@ public class MainHomeFragmentNew extends Fragment implements NewHttpResponse, Vi
             }
             if (null == homeCommunityMsgAdapter) {
                 homeCommunityMsgAdapter = new HomeCommunityMsgAdapter(getActivity(), msgDataBeanList);
-                rv_notification.setLayoutManager(new WrapHeightLinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false));
+                rv_notification.setLayoutManager(new WrapLinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false));
                 rv_notification.setNestedScrollingEnabled(false);
                 rv_notification.setAdapter(homeCommunityMsgAdapter);
             } else {

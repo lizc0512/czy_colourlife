@@ -16,15 +16,18 @@ import android.widget.GridLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.BeeFramework.Utils.CompressHelper;
 import com.BeeFramework.Utils.ImageUtil;
 import com.BeeFramework.Utils.ToastUtil;
 import com.BeeFramework.activity.BaseActivity;
 import com.BeeFramework.model.NewHttpResponse;
 import com.community.model.CommunityDynamicsModel;
+import com.community.utils.ImagePickerLoader;
 import com.community.utils.RealIdentifyDialogUtil;
 import com.community.view.CommunityImageView;
 import com.community.view.DeleteNoticeDialog;
+import com.lzy.imagepicker.ImagePicker;
+import com.lzy.imagepicker.bean.ImageItem;
+import com.lzy.imagepicker.ui.ImageGridActivity;
 import com.nohttp.utils.GsonUtils;
 import com.permission.AndPermission;
 import com.user.UserAppConst;
@@ -33,10 +36,6 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
-import cn.csh.colourful.life.utils.GlideImageLoader;
-import cn.csh.colourful.life.view.imagepicker.ImagePicker;
-import cn.csh.colourful.life.view.imagepicker.bean.ImageItem;
-import cn.csh.colourful.life.view.imagepicker.ui.ImageGridActivity;
 import cn.net.cyberway.R;
 import cn.net.cyberway.utils.FileUtils;
 import top.zibin.luban.Luban;
@@ -65,8 +64,8 @@ public class PublishDynamicsActivity extends BaseActivity implements View.OnClic
     private ArrayList<CommunityImageView> mUploadImageViews = new ArrayList<CommunityImageView>();
     private String publishContent = "";
     private int picSize;
-    private CompressHelper compressHelper;
     public Luban.Builder lubanBuilder;
+    private ImagePicker imagePicker;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -75,13 +74,12 @@ public class PublishDynamicsActivity extends BaseActivity implements View.OnClic
         initView();
         initImagePicker();
         initGridLayout();
-        compressHelper = new CompressHelper.Builder(this).setMaxWidth(720).setMaxHeight(1280).setQuality(80).build();
         lubanBuilder = Luban.with(PublishDynamicsActivity.this);
     }
 
     private void initImagePicker() {
-        final ImagePicker imagePicker = ImagePicker.getInstance();
-        imagePicker.setImageLoader(new GlideImageLoader());
+        imagePicker = ImagePicker.getInstance();
+        imagePicker.setImageLoader(new ImagePickerLoader());
         imagePicker.setShowCamera(false);  //显示拍照按钮
         imagePicker.setCrop(false);
         imagePicker.setMultiMode(true);
@@ -177,7 +175,8 @@ public class PublishDynamicsActivity extends BaseActivity implements View.OnClic
 
             @Override
             public void onClick(View v) {
-                ImagePicker.getInstance().setSelectLimit(9 - mUploadImageViews.size());
+                imagePicker.setSelectLimit(9 - mUploadImageViews.size());
+                imagePicker.clearSelectedImages();
                 Intent intent = new Intent(PublishDynamicsActivity.this, ImageGridActivity.class);
                 startActivityForResult(intent, REQUEST_PHOTO);
                 dialog.dismiss();
@@ -191,7 +190,8 @@ public class PublishDynamicsActivity extends BaseActivity implements View.OnClic
             public void onClick(View v) {
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                     if (AndPermission.hasPermission(getApplicationContext(), Manifest.permission.CAMERA)) {
-                        ImagePicker.getInstance().setSelectLimit(9 - mUploadImageViews.size());
+                        imagePicker.setSelectLimit(9 - mUploadImageViews.size());
+                        imagePicker.clearSelectedImages();
                         Intent intent = new Intent(PublishDynamicsActivity.this, ImageGridActivity.class);
                         intent.putExtra(ImageGridActivity.EXTRAS_TAKE_PICKERS, true); // 是否是直接打开相机
                         startActivityForResult(intent, REQUEST_PHOTO);
@@ -199,7 +199,8 @@ public class PublishDynamicsActivity extends BaseActivity implements View.OnClic
                         ToastUtil.toastShow(getApplicationContext(), "相机权限未开启，请去开启该权限");
                     }
                 } else {
-                    ImagePicker.getInstance().setSelectLimit(9 - mUploadImageViews.size());
+                    imagePicker.setSelectLimit(9 - mUploadImageViews.size());
+                    imagePicker.clearSelectedImages();
                     Intent intent = new Intent(PublishDynamicsActivity.this, ImageGridActivity.class);
                     intent.putExtra(ImageGridActivity.EXTRAS_TAKE_PICKERS, true); // 是否是直接打开相机
                     startActivityForResult(intent, REQUEST_PHOTO);
@@ -301,14 +302,8 @@ public class PublishDynamicsActivity extends BaseActivity implements View.OnClic
         for (int i = 0; i < images.size(); i++) {
             ImageItem imageItem = images.get(i);
             String path = imageItem.path;
-//            File newFile = compressHelper.compressToFile(new File(path));
-//            compressPathList.add(newFile.getPath());
             compressPathList.add(path);
         }
-//        for (int j = 0; j < compressPathList.size(); j++) {
-//            CommunityImageView uploadImageView = new CommunityImageView(PublishDynamicsActivity.this);
-//            addUploadImage(uploadImageView, compressPathList.get(j));
-//        }
         lubanBuilder.load(compressPathList).ignoreBy(100).setTargetDir(FileUtils.getThumbImagePaths()).setCompressListener(new OnCompressListener() {
             @Override
             public void onStart() {

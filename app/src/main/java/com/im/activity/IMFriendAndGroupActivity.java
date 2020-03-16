@@ -145,9 +145,7 @@ public class IMFriendAndGroupActivity extends BaseActivity implements View.OnCli
 
     private void initHeadView() {
         View headView = LayoutInflater.from(IMFriendAndGroupActivity.this).inflate(R.layout.headview_group_chat, null);
-        headView.findViewById(R.id.community_group_layout).setOnClickListener(this);
         headView.findViewById(R.id.new_friend_layout).setOnClickListener(this);
-        headView.findViewById(R.id.normal_group_layout).setOnClickListener(this);
         ImageView iv_new_friend = headView.findViewById(R.id.iv_new_friend);
         sortListView.addHeaderView(headView);
         badgeView = new QBadgeView(IMFriendAndGroupActivity.this);
@@ -166,23 +164,13 @@ public class IMFriendAndGroupActivity extends BaseActivity implements View.OnCli
             case R.id.user_top_view_back:
                 finish();
                 break;
-            case R.id.new_friend_layout://添加好友页面
+            case R.id.new_friend_layout://好友申请列表
                 Intent newFriendIntent = new Intent(IMFriendAndGroupActivity.this, IMApplyFriendRecordActivity.class);
                 startActivity(newFriendIntent);
                 break;
             case R.id.img_right://添加好友页面
                 Intent intent = new Intent(IMFriendAndGroupActivity.this, IMAddFriendActivity.class);
                 startActivity(intent);
-                break;
-            case R.id.community_group_layout: //去社群的列表
-                Intent communtiyIntent = new Intent(IMFriendAndGroupActivity.this, IMGroupListActivity.class);
-                communtiyIntent.putExtra(IMGroupListActivity.GROUPTYPE, 1);
-                startActivity(communtiyIntent);
-                break;
-            case R.id.normal_group_layout://去普通群组的列表
-                Intent groupIntent = new Intent(IMFriendAndGroupActivity.this, IMGroupListActivity.class);
-                groupIntent.putExtra(IMGroupListActivity.GROUPTYPE, 0);
-                startActivity(groupIntent);
                 break;
         }
     }

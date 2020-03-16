@@ -20,6 +20,7 @@ import com.BeeFramework.activity.BaseActivity;
 import com.BeeFramework.model.NewHttpResponse;
 import com.community.entity.CommunityDynamicRemindEntity;
 import com.community.model.CommunityDynamicsModel;
+import com.im.activity.IMAddFriendActivity;
 import com.im.activity.IMApplyFriendRecordActivity;
 import com.im.activity.IMFriendAndGroupActivity;
 import com.im.activity.IMGroupListActivity;
@@ -197,12 +198,12 @@ public class CommunityMessageListActivity extends BaseActivity implements View.O
                 finish();
                 break;
             case R.id.img_right:
-                Intent newFriendIntent = new Intent(CommunityMessageListActivity.this, IMApplyFriendRecordActivity.class);
-                startActivity(newFriendIntent);
+                Intent friendGroupIntent = new Intent(CommunityMessageListActivity.this, IMAddFriendActivity.class);
+                startActivity(friendGroupIntent);
                 break;
             case R.id.new_friend_layout:
-                Intent friendGroupIntent = new Intent(CommunityMessageListActivity.this, IMFriendAndGroupActivity.class);
-                startActivity(friendGroupIntent);
+                Intent newFriendIntent = new Intent(CommunityMessageListActivity.this, IMFriendAndGroupActivity.class);
+                startActivity(newFriendIntent);
                 break;
             case R.id.community_group_layout:
                 Intent communtiyIntent = new Intent(CommunityMessageListActivity.this, IMGroupListActivity.class);

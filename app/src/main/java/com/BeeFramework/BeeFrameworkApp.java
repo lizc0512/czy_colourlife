@@ -67,6 +67,17 @@ public class BeeFrameworkApp extends MultiDexApplication {
     public void onCreate() {
         super.onCreate();
         instance = this;
+        SSLContext sslContext = SSLContextUtil.getDefaultSLLContext();
+        InitializationConfig config = InitializationConfig.newBuilder(getApplicationContext())
+                // 全局连接服务器超时时间，单位毫秒，默认10s。
+                .connectionTimeout(20 * 1000)
+                // 全局等待服务器响应超时时间，单位毫秒，默认10s。
+                .readTimeout(15 * 1000)
+                .networkExecutor(new URLConnectionNetworkExecutor())
+                .sslSocketFactory(sslContext.getSocketFactory()) // 全局SSLSocketFactory。
+                .retry(1)
+                .build();
+        NoHttp.initialize(config);
         ColourLifeSDK.init(getApplicationContext());
         try {
             CrashHandler crashHandler = CrashHandler.getInstance();

@@ -23,11 +23,17 @@ import com.BeeFramework.Utils.ToastUtil;
 import com.BeeFramework.activity.BaseActivity;
 import com.BeeFramework.model.NewHttpResponse;
 import com.BeeFramework.view.CircleImageView;
+import com.community.utils.ImagePickerLoader;
 import com.customerInfo.protocol.IdentityStateEntity;
 import com.customerInfo.view.CustomerInfoDialog;
 import com.external.eventbus.EventBus;
+import com.lzy.imagepicker.ImagePicker;
+import com.lzy.imagepicker.bean.ImageItem;
+import com.lzy.imagepicker.ui.ImageGridActivity;
+import com.lzy.imagepicker.view.CropImageView;
 import com.myproperty.activity.MyPropertyActivity;
 import com.nohttp.utils.GlideImageLoader;
+import com.nohttp.utils.GsonUtils;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.permission.AndPermission;
 import com.realaudit.activity.RealCheckResultActivity;
@@ -46,11 +52,6 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 
-import cn.csh.colourful.life.utils.GsonUtils;
-import cn.csh.colourful.life.view.imagepicker.ImagePicker;
-import cn.csh.colourful.life.view.imagepicker.bean.ImageItem;
-import cn.csh.colourful.life.view.imagepicker.ui.ImageGridActivity;
-import cn.csh.colourful.life.view.imagepicker.view.CropImageView;
 import cn.csh.colourful.life.view.pickview.OptionsPickerView;
 import cn.net.cyberway.R;
 
@@ -135,7 +136,7 @@ public class CustomerInfoActivity extends BaseActivity implements View.OnClickLi
 
     private void initPicker() {
         imagePicker = ImagePicker.getInstance();
-        imagePicker.setImageLoader(new cn.csh.colourful.life.utils.GlideImageLoader());   //设置图片加载器
+        imagePicker.setImageLoader(new ImagePickerLoader());   //设置图片加载器
         imagePicker.setShowCamera(false);  //显示拍照按钮
         imagePicker.setMultiMode(false);
         imagePicker.setStyle(CropImageView.Style.RECTANGLE);

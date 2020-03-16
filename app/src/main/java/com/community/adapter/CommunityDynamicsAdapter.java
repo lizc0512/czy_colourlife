@@ -162,6 +162,7 @@ public class CommunityDynamicsAdapter extends RecyclerView.Adapter<CommunityDyna
         int zan_count = dataBean.getZan_count();
         long create_time = dataBean.getCreated_at();
         String publish_uuid = dataBean.getUser_uuid();
+        String publish_user_id = dataBean.getUser_id();
         String content = dataBean.getContent();
         String source_id = dataBean.getSource_id();
         GlideImageLoader.loadImageDefaultDisplay(mContext, avatar, holder.iv_dynamics_user_pics, R.drawable.icon_default_portrait, R.drawable.icon_default_portrait);
@@ -299,25 +300,26 @@ public class CommunityDynamicsAdapter extends RecyclerView.Adapter<CommunityDyna
         holder.iv_dynamics_user_pics.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                jumpUserInforPage(publish_uuid);
+                String user_id = dataBean.getUser_id();
+                jumpUserInforPage(publish_uuid, publish_user_id);
             }
         });
         holder.tv_dynamics_user_name.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                jumpUserInforPage(publish_uuid);
+                jumpUserInforPage(publish_uuid, publish_user_id);
             }
         });
         holder.tv_dynamics_user_community.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                jumpUserInforPage(publish_uuid);
+                jumpUserInforPage(publish_uuid, publish_user_id);
             }
         });
 
     }
 
-    private void jumpUserInforPage(String from_uuid) {
+    private void jumpUserInforPage(String from_uuid, String user_Id) {
         Intent intent = null;
         if (current_user_uuid.equals(from_uuid)) {
             intent = new Intent(mContext, IMUserSelfInforActivity.class);
@@ -329,8 +331,8 @@ public class CommunityDynamicsAdapter extends RecyclerView.Adapter<CommunityDyna
                 intent = new Intent(mContext, IMCustomerInforActivity.class);
             }
         }
-        intent.putExtra(USERIDTYPE, 0);
-        intent.putExtra(IMFriendInforActivity.USERUUID, from_uuid);
+        intent.putExtra(USERIDTYPE, 1);
+        intent.putExtra(IMFriendInforActivity.USERUUID, user_Id);
         mContext.startActivity(intent);
     }
 

@@ -46,7 +46,6 @@ import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 
-import cn.csh.colourful.life.utils.ToastUtils;
 import cn.net.cyberway.R;
 
 import static com.audio.utils.Config.DEFAULT_BITRATE;
@@ -434,7 +433,7 @@ public class RoomActivity extends AppCompatActivity implements QNRTCEngineEventL
 
     @Override
     public void onKickedOut(String userId) {
-        ToastUtils.showMessage(RoomActivity.this, getString(R.string.kicked_by_admin));
+        ToastUtil.toastShow(RoomActivity.this, getString(R.string.kicked_by_admin));
         finish();
     }
 

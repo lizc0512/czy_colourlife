@@ -13,12 +13,12 @@ import android.view.animation.TranslateAnimation;
 import android.widget.PopupWindow;
 import android.widget.TextView;
 
+import com.community.utils.ImagePickerLoader;
+import com.lzy.imagepicker.ImagePicker;
+
 import java.util.ArrayList;
 import java.util.List;
 
-import cn.csh.colourful.life.utils.GlideImageLoader;
-import cn.csh.colourful.life.view.imagepicker.ImagePicker;
-import cn.csh.colourful.life.view.imagepicker.ui.ImageGridActivity;
 import cn.net.cyberway.R;
 import cn.net.cyberway.protocol.ShareEntity;
 import cn.net.cyberway.view.adapter.BaseRecyclerAdapter;
@@ -49,7 +49,7 @@ public class BottomShareDialogFragment extends PopupWindow {
 
     private void initImagePicker() {
         ImagePicker imagePicker = ImagePicker.getInstance();
-        imagePicker.setImageLoader(new GlideImageLoader());   //设置图片加载器
+        imagePicker.setImageLoader(new ImagePickerLoader());   //设置图片加载器
         imagePicker.setShowCamera(false);  //显示拍照按钮
         imagePicker.setCrop(false);
         imagePicker.setMultiMode(false);

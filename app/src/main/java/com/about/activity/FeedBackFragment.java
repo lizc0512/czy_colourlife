@@ -24,6 +24,11 @@ import com.about.adapter.FeedBackAdapter;
 import com.about.model.FeedbackModel;
 import com.about.protocol.FeedBackTypeEntity;
 import com.about.view.FeedBackImageView;
+import com.community.utils.ImagePickerLoader;
+import com.lzy.imagepicker.ImagePicker;
+import com.lzy.imagepicker.bean.ImageItem;
+import com.lzy.imagepicker.ui.ImageGridActivity;
+import com.lzy.imagepicker.ui.ImagePreviewDelActivity;
 import com.nohttp.utils.GsonUtils;
 import com.permission.AndPermission;
 import com.user.model.NewUserModel;
@@ -35,12 +40,6 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
-
-import cn.csh.colourful.life.utils.GlideImageLoader;
-import cn.csh.colourful.life.view.imagepicker.ImagePicker;
-import cn.csh.colourful.life.view.imagepicker.bean.ImageItem;
-import cn.csh.colourful.life.view.imagepicker.ui.ImageGridActivity;
-import cn.csh.colourful.life.view.imagepicker.ui.ImagePreviewDelActivity;
 import cn.net.cyberway.R;
 
 /**
@@ -129,7 +128,7 @@ public class FeedBackFragment extends BaseFragment implements View.OnClickListen
 
     private void initImagePicker() {
         ImagePicker imagePicker = ImagePicker.getInstance();
-        imagePicker.setImageLoader(new GlideImageLoader());   //设置图片加载器
+        imagePicker.setImageLoader(new ImagePickerLoader());   //设置图片加载器
         imagePicker.setShowCamera(false);  //显示拍照按钮
         imagePicker.setCrop(false);
         imagePicker.setMultiMode(true);

@@ -9,9 +9,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import java.util.List;
+import com.BeeFramework.Utils.ToastUtil;
 
-import cn.csh.colourful.life.utils.ToastUtils;
+import java.util.List;
 import cn.net.cyberway.R;
 
 
@@ -57,7 +57,7 @@ public class OrderDetailsAdapter extends RecyclerView.Adapter<OrderDetailsAdapte
                     ClipData mClipData = ClipData.newPlainText("Label", content);
                     // 将ClipData内容放到系统剪贴板里。
                     cm.setPrimaryClip(mClipData);
-                    ToastUtils.showMessage(holder.itemView.getContext(), "订单编号已复制到剪贴板");
+                    ToastUtil.toastShow(holder.itemView.getContext(), "订单编号已复制到剪贴板");
                 }
                 return false;
             }
