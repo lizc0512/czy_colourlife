@@ -187,7 +187,6 @@ dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
     implementation project(':huxin_sdk')
     implementation project(':sobotsdk')
-    implementation project(':colourfullifesdk')
     implementation(name: 'iJMSafeKeyboard', ext: 'aar')
     implementation(name: 'OldiJMSafeKeyboard', ext: 'aar')
     implementation(name: 'shanyan_sdk_v2.2.0.5', ext: 'aar')
@@ -195,7 +194,7 @@ dependencies {
     implementation(name: 'PayChannel-release', ext: 'aar')
     compileOnly files('sdknec/classes.jar')
     implementation 'com.navercorp.volleyextensions:volley-views:2.0.1'
-//    implementation(name: 'colourfullifesdk-2.0', ext: 'aar')
+    implementation(name: 'colourfullifesdk-2.0', ext: 'aar')
     implementation('com.alibaba.android:ultraviewpager:1.0.7.7@aar') {
         transitive = true
     }
