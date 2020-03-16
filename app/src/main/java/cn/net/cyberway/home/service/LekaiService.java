@@ -5,8 +5,6 @@ import android.bluetooth.BluetoothAdapter;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Binder;
-import android.os.Bundle;
-import android.os.CountDownTimer;
 import android.os.Handler;
 import android.os.IBinder;
 import android.os.Looper;
@@ -17,7 +15,6 @@ import android.util.Log;
 
 import com.BeeFramework.AppConst;
 import com.BeeFramework.Utils.ToastUtil;
-import com.BeeFramework.model.NewHttpResponse;
 import com.external.eventbus.EventBus;
 import com.intelspace.library.EdenApi;
 import com.intelspace.library.ErrorConstants;
@@ -27,7 +24,6 @@ import com.intelspace.library.api.OnSyncUserKeysCallback;
 import com.intelspace.library.api.OnUserOptParkLockCallback;
 import com.intelspace.library.module.Device;
 import com.intelspace.library.module.LocalKey;
-import com.nohttp.utils.GsonUtils;
 import com.user.UserAppConst;
 import com.user.UserMessageConstant;
 import com.user.model.NewUserModel;
@@ -35,7 +31,6 @@ import com.user.model.NewUserModel;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import cn.net.cyberway.home.entity.HomeHealthReportEntity;
 import cn.net.cyberway.utils.ActivityLifecycleListener;
 import cn.net.cyberway.utils.LekaiHelper;
 
