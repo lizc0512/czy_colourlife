@@ -17,6 +17,8 @@ import android.webkit.ValueCallback;
 import android.webkit.WebChromeClient;
 import android.webkit.WebView;
 
+import com.BeeFramework.Utils.ToastUtil;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Queue;
@@ -134,6 +136,8 @@ public class FileUpLoadChooserImpl implements IFileUploadChooser {
                 LogUtils.i(TAG, "request:" + requestCode + "  resultCode:" + resultCode);
                 if (null!=data){
                     fetchFilePathFromIntent(requestCode, resultCode, data);
+                }else {
+                    cancel();
                 }
             }
         };

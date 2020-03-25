@@ -177,6 +177,16 @@ public class CommunityDynamicsListEntity extends BaseContentEntity {
             private String user_id;
             private String user_uuid;
 
+            public int getList_type() {
+                return list_type;
+            }
+
+            public void setList_type(int list_type) {
+                this.list_type = list_type;
+            }
+
+            private int list_type;
+
             public int getIsEnd() {
                 return isEnd;
             }

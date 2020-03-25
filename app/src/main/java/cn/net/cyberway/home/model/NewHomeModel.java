@@ -22,7 +22,6 @@ public class NewHomeModel extends BaseModel {
     private String homeLayoutUrl = "app/home/v5/layoutHome";
     private String homeTopThemeUrl = "app/home/v5/topTheme";
     private String homeHeadUrl = "app/home/v5/topBalance";
-    private String homeLifeUrl = "app/home/life/app";
     private String homeModuleFuncUrl = "app/home/v5/mainApp";
     private String homeModelAppUrl = "app/home/v5/recentApp";
     private String homeModelKeeperUrl = "app/home/v5/houseKeeper";

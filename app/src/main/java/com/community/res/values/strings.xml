@@ -19,4 +19,28 @@
     <string name="community_message_list">消息</string>
     <string name="community_upload_most">最多9张照片</string>
     <string name="community_no_data">还没有内容呢～</string>
+    <string name="community_activity_join">立即参与</string>
+    <string name="community_title_share">分享</string>
+    <string name="community_share_wechat">微信</string>
+    <string name="community_share_circle">朋友圈</string>
+    <string name="community_join_success">报名成功</string>
+    <string name="community_share_notice">参与此活动，请上传2张宠物照片</string>
+    <string name="community_activity_details">活动详情</string>
+    <string name="community_activity_starttime">活动时间</string>
+    <string name="community_activity_address">活动地点</string>
+    <string name="community_activity_endtime">报名截止</string>
+    <string name="community_activity_person">参与人数</string>
+    <string name="community_activity_contacts">活动联系人</string>
+    <string name="community_activity_message">活动留言</string>
+    <string name="community_send_message">留言</string>
+    <string name="community_content_details">详情</string>
+    <string name="community_leave_comments">我想说～</string>
+    <string name="community_reply_other">回复</string>
+
+    <string name="community_activity_numberfull">人数已满</string>
+    <string name="community_activity_finished">已结束</string>
+    <string name="community_activity_joined">已参与</string>
+    <string name="community_activity_joined_notice">您已经参与此活动啦～</string>
+
+
 </resources>

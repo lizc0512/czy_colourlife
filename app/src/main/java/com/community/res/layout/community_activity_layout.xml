@@ -1,0 +1,179 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_marginLeft="8dp"
+    android:layout_width="match_parent"
+    android:layout_marginTop="5dp"
+    android:layout_marginRight="8dp"
+    android:background="@drawable/shape_manager_border"
+    android:layout_height="252dp"
+    android:orientation="vertical">
+
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="110dp">
+
+        <ImageView
+            android:id="@+id/iv_activity_image"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scaleType="fitXY" />
+
+        <ImageView
+            android:id="@+id/iv_activity_sign"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="16dp"
+            android:scaleType="fitXY"
+            android:src="@drawable/community_sign" />
+
+        <TextView
+            android:id="@+id/iv_activity_type"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:textColor="@color/white"
+            android:layout_marginTop="2dp"
+            android:textSize="10sp"
+            tools:text="官方\n活动" />
+    </RelativeLayout>
+
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1">
+
+        <LinearLayout
+            android:id="@+id/title_activity_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="16dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginRight="16dp"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/tv_activity_fee"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/color_ff6d50"
+                android:textSize="16sp"
+                android:text="免费" />
+
+            <TextView
+                android:id="@+id/tv_activity_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="8dp"
+                android:layout_marginRight="16dp"
+                android:textColor="@color/color_000000"
+                android:textSize="16sp"
+                android:text="最美宠物摄影图片活动" />
+
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/tv_activity_address"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/title_activity_layout"
+            android:layout_marginLeft="16dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginRight="16dp"
+            android:textColor="@color/color_000000"
+            android:textSize="12sp"
+            android:text="地址：七星小区" />
+
+        <TextView
+            android:id="@+id/tv_activity_date"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/tv_activity_address"
+            android:layout_marginLeft="16dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginRight="16dp"
+            android:textColor="@color/color_000000"
+            android:textSize="12sp"
+            android:text="活动截止：2020年4月12日" />
+
+
+        <ImageView
+            android:id="@+id/iv_activity_status"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_marginTop="8dp"
+            android:layout_marginRight="32dp"
+            android:src="@drawable/community_number_full" />
+    </RelativeLayout>
+
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="52dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp">
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1px"
+            android:background="@color/line_color" />
+
+        <Button
+            android:id="@+id/tv_once_join"
+            android:layout_width="100dp"
+            android:layout_height="28dp"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:background="@drawable/commuity_activity_join"
+            android:text="@string/community_activity_join"
+            android:textColor="@color/color_ff6d50"
+            android:textSize="13sp" />
+
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginLeft="16dp"
+            android:layout_centerVertical="true"
+            android:layout_height="wrap_content">
+
+            <com.BeeFramework.view.CircleImageView
+                android:id="@+id/iv_first_photo"
+                android:layout_gravity="center_vertical"
+                android:layout_width="18dp"
+                tools:src="@drawable/icon_default"
+                android:layout_height="18dp"/>
+            <com.BeeFramework.view.CircleImageView
+                android:id="@+id/iv_second_photo"
+                android:layout_gravity="center_vertical"
+                android:layout_marginLeft="-9dp"
+                tools:src="@drawable/icon_default"
+                android:layout_width="18dp"
+                android:layout_height="18dp"/>
+            <com.BeeFramework.view.CircleImageView
+                android:id="@+id/iv_third_photo"
+                android:layout_gravity="center_vertical"
+                android:layout_marginLeft="-9dp"
+                tools:src="@drawable/icon_default"
+                android:layout_marginRight="8dp"
+                android:layout_width="18dp"
+                android:layout_height="18dp"/>
+            <TextView
+                android:id="@+id/tv_join_person"
+                android:layout_width="wrap_content"
+                tools:text="123个邻居参与"
+                android:layout_gravity="center_vertical"
+                android:textSize="11sp"
+                android:textColor="@color/color_666666"
+                android:layout_height="wrap_content"/>
+
+        </LinearLayout>
+
+
+    </RelativeLayout>
+
+
+</LinearLayout>

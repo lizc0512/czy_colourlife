@@ -905,10 +905,10 @@ public class NewOrderPayActivity extends BaseActivity implements View.OnClickLis
         jdPayAuthor.author(NewOrderPayActivity.this, orderId, merchant, appId, signData, extraInfo);
     }
 
-    //支付宝支付
-    private void alipayPayOrder(Map<String, String> resultMap) {
+    //银联聚合支付
+    private void unionPayOrder(Map<String, String> resultMap,String  payChannel) {
         UnifyPayRequest msg = new UnifyPayRequest();
-        msg.payChannel = UnifyPayRequest.CHANNEL_ALIPAY;
+        msg.payChannel = payChannel;
         if (!resultMap.containsKey("appPayRequest")) {
             ToastUtil.toastShow(NewOrderPayActivity.this, "服务器返回数据格式有问题，缺少“appPayRequest”字段");
             return;
@@ -920,6 +920,7 @@ public class NewOrderPayActivity extends BaseActivity implements View.OnClickLis
             unifyPayPlugin.sendPayRequest(msg);
         }
     }
+
 
     private void pointPayOrder() { //判断用户是否实名设置支付密码
         PointModel pointModel = new PointModel(NewOrderPayActivity.this);
@@ -969,8 +970,12 @@ public class NewOrderPayActivity extends BaseActivity implements View.OnClickLis
                                 }
                                 pointPayOrder();
                             } else if (payChannelId.endsWith("9")) {
-                                alipayPayOrder(resultMap);
-                            } else {
+                                //银联支付宝
+                                unionPayOrder(resultMap,UnifyPayRequest.CHANNEL_ALIPAY);
+                            } else if (payChannelId.endsWith("12")){
+                                //银联微信
+                                unionPayOrder(resultMap,UnifyPayRequest.CHANNEL_WEIXIN);
+                            }else {
                                 //彩钱包支付
                                 LinkedHashMap<String, Object> publicParams = new LinkedHashMap<String, Object>();
                                 publicParams.putAll(resultMap);

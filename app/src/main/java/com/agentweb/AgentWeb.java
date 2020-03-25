@@ -17,6 +17,8 @@ import android.webkit.WebChromeClient;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
+import com.BeeFramework.Utils.ToastUtil;
+
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.List;
@@ -392,8 +394,9 @@ public class AgentWeb {
             mIFileUploadChooser = mDefaultChromeClient.pop();
         }
 
-        if (mIFileUploadChooser == null)
+        if (mIFileUploadChooser == null){
             mIFileUploadChooser = mAgentWebJsInterfaceCompat.pop();
+        }
         LogUtils.i(TAG, "file upload:" + mIFileUploadChooser);
         if (mIFileUploadChooser != null)
             mIFileUploadChooser.fetchFilePathFromIntent(requestCode, resultCode, data);
