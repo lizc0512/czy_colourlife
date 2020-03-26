@@ -104,7 +104,6 @@ public class DynamicsDetailsActivity extends BaseFragmentActivity implements Vie
     private ImageView iv_share_logo;
     private TextView tv_share_title;
 
-    private LinearLayout ll_comment_input;
     private EditText feed_comment_edittext;
     private TextView feed_comment_submit;
 
@@ -148,13 +147,18 @@ public class DynamicsDetailsActivity extends BaseFragmentActivity implements Vie
         tv_dynamics_user_community = findViewById(R.id.tv_dynamics_user_community);
         iv_dynamics_user_operate = findViewById(R.id.iv_dynamics_user_operate);
         tv_dynamics_content_details = findViewById(R.id.tv_dynamics_content_details);
+        layout_dynamics_images = findViewById(R.id.layout_dynamics_images);
+        layout_share_dynamics = findViewById(R.id.layout_share_dynamics);
+        iv_share_logo = findViewById(R.id.iv_share_logo);
+        tv_share_title = findViewById(R.id.tv_share_title);
+
         rv_dynamics_images = findViewById(R.id.rv_dynamics_images);
         view_dynamics_weight = findViewById(R.id.view_dynamics_weight);
         tv_dynamics_publish_time = findViewById(R.id.tv_dynamics_publish_time);
         tv_del_owner_dynamics = findViewById(R.id.tv_del_owner_dynamics);
         tv_dynamics_comment = findViewById(R.id.tv_dynamics_comment);
         tv_dynamics_like = findViewById(R.id.tv_dynamics_like);
-        ll_comment_input = findViewById(R.id.ll_comment_input);
+
         feed_comment_edittext = findViewById(R.id.feed_comment_edittext);
         feed_comment_submit = findViewById(R.id.feed_comment_submit);
 
