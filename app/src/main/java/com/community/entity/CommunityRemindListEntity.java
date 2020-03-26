@@ -57,6 +57,16 @@ public class CommunityRemindListEntity extends BaseContentEntity {
         private String content;
         private String is_read;
         private int created_at;
+
+        public int getList_type() {
+            return list_type;
+        }
+
+        public void setList_type(int list_type) {
+            this.list_type = list_type;
+        }
+
+        private int list_type;
         private int updated_at;
         private String from_id;
         private String to_id;

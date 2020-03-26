@@ -31,17 +31,20 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.BeeFramework.Utils.TimeUtil;
 import com.BeeFramework.Utils.ToastUtil;
 import com.BeeFramework.Utils.Utils;
 import com.BeeFramework.model.Constants;
 import com.BeeFramework.model.NewHttpResponse;
+import com.BeeFramework.view.CircleImageView;
 import com.BeeFramework.view.Util;
 import com.ScreenManager;
 import com.alibaba.android.vlayout.DelegateAdapter;
 import com.alibaba.android.vlayout.VirtualLayoutManager;
-import com.alibaba.android.vlayout.layout.GridLayoutHelper;
-import com.alibaba.android.vlayout.layout.OnePlusNLayoutHelper;
 import com.allapp.model.AllAppModel;
+import com.community.activity.CommunityActivityDetailsActivity;
+import com.community.entity.CommunityActivityEntity;
+import com.community.model.CommunityDynamicsModel;
 import com.door.activity.NewDoorIndetifyActivity;
 import com.door.entity.SingleCommunityEntity;
 import com.door.model.NewDoorModel;
@@ -59,7 +62,6 @@ import com.user.UserMessageConstant;
 import com.user.model.NewUserModel;
 import com.yanzhenjie.recyclerview.swipe.SwipeMenuRecyclerView;
 import com.youmai.hxsdk.HuxinSdkManager;
-import com.youmai.hxsdk.ServiceInfo;
 import com.youmai.hxsdk.db.bean.CacheMsgBean;
 import com.youmai.hxsdk.im.IMMsgCallback;
 import com.youmai.hxsdk.im.IMMsgManager;
@@ -78,12 +80,10 @@ import cn.csh.colourful.life.listener.OnItemClickListener;
 import cn.net.cyberway.R;
 import cn.net.cyberway.activity.MainActivity;
 import cn.net.cyberway.home.activity.BannerVideoActivity;
-import cn.net.cyberway.home.adapter.GridLayoutAdapter;
 import cn.net.cyberway.home.adapter.HomeApplicationAdapter;
 import cn.net.cyberway.home.adapter.HomeCommunityMsgAdapter;
 import cn.net.cyberway.home.adapter.HomeDoorAdapter;
 import cn.net.cyberway.home.adapter.HomeFunctionAdapter;
-import cn.net.cyberway.home.adapter.OnePlusNLayoutAdapter;
 import cn.net.cyberway.home.entity.HomeBottomAdviseEntity;
 import cn.net.cyberway.home.entity.HomeCommunityMsgEntity;
 import cn.net.cyberway.home.entity.HomeFuncEntity;
@@ -97,17 +97,25 @@ import cn.net.cyberway.home.model.NewHomeModel;
 import cn.net.cyberway.home.view.AuthDialog;
 import cn.net.cyberway.home.view.TransparentDrawable;
 import cn.net.cyberway.utils.BuryingPointUtils;
-import cn.net.cyberway.utils.CityCustomConst;
 import cn.net.cyberway.utils.CityManager;
 import cn.net.cyberway.utils.LekaiHelper;
 import cn.net.cyberway.utils.LinkParseUtil;
 import cn.net.cyberway.utils.WrapLinearLayoutManager;
 import q.rorbin.badgeview.QBadgeView;
 
+import static cn.net.cyberway.home.view.HomeViewUtils.addBlueToothDoorList;
 import static cn.net.cyberway.home.view.HomeViewUtils.addCommmonDoorList;
 import static cn.net.cyberway.home.view.HomeViewUtils.getScollYDistance;
+import static cn.net.cyberway.home.view.HomeViewUtils.initLinerLayout;
+import static cn.net.cyberway.home.view.HomeViewUtils.initOnePlusNLayout;
 import static cn.net.cyberway.home.view.HomeViewUtils.setBadgeCommonPro;
+import static cn.net.cyberway.home.view.HomeViewUtils.setComunnityInfor;
+import static cn.net.cyberway.home.view.HomeViewUtils.setImageLogo;
+import static cn.net.cyberway.home.view.HomeViewUtils.setLinearTabViewHeight;
+import static cn.net.cyberway.home.view.HomeViewUtils.setTextColor;
+import static cn.net.cyberway.home.view.HomeViewUtils.showCommunityActivity;
 import static cn.net.cyberway.home.view.HomeViewUtils.smoothScrollTop;
+import static com.community.activity.CommunityActivityDetailsActivity.ACTIVITY_SOURCE_ID;
 import static com.user.UserAppConst.COLOR_HOME_USEDOOR;
 import static com.user.UserAppConst.COLOUR_BLUETOOTH_ADVISE;
 import static com.youmai.hxsdk.utils.DisplayUtil.getStatusBarHeight;
@@ -128,6 +136,7 @@ public class MainHomeFragmentNew extends Fragment implements NewHttpResponse, Vi
     private SharedPreferences mShared;
     private SharedPreferences.Editor editor;
     private NewHomeModel newHomeModel;
+    private CommunityDynamicsModel communityDynamicsModel;
     private NewDoorModel newDoorModel;
     private NewUserModel newUserModel;
     private String community_name = "";  //小区的名称
@@ -137,9 +146,8 @@ public class MainHomeFragmentNew extends Fragment implements NewHttpResponse, Vi
     private ConnectivityManager.NetworkCallback networkCallback;  //网络改变的监听
     private ConnectivityManager connectivityManager;
     private int height = 120;
-    private String realName = "";
     private MyHandler handler;
-    private String biz_token;
+
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -150,6 +158,7 @@ public class MainHomeFragmentNew extends Fragment implements NewHttpResponse, Vi
         newHomeModel = new NewHomeModel(getActivity());
         newDoorModel = new NewDoorModel(getActivity());
         newUserModel = new NewUserModel(getActivity());
+        communityDynamicsModel = new CommunityDynamicsModel(getActivity());
         initNetWorkListener();
         LekaiHelper.init(getActivity());
     }
@@ -246,6 +255,7 @@ public class MainHomeFragmentNew extends Fragment implements NewHttpResponse, Vi
     private View opendoor_view = null;
     private View notification_view = null;
     private View bga_view = null;
+    private View community_view = null;
     private ImageView iv_video = null;
     private View activity_view = null;
     private View footer_view = null;
@@ -256,7 +266,7 @@ public class MainHomeFragmentNew extends Fragment implements NewHttpResponse, Vi
         refresh_layout.setColorSchemeColors(Color.parseColor("#3290FF"), Color.parseColor("#6ABDF9"));
         home_rv = mView.findViewById(R.id.home_rv);
         View alpha_tabbar_view = mView.findViewById(R.id.alpha_tabbar_view);
-        setLinearTabViewHeight(alpha_tabbar_view);
+        setLinearTabViewHeight(getActivity(), alpha_tabbar_view);
         alpha_title_layout = mView.findViewById(R.id.alpha_title_layout);
         alpha_community = mView.findViewById(R.id.alpha_community);
         iv_enter_chat = mView.findViewById(R.id.iv_enter_chat);
@@ -299,6 +309,20 @@ public class MainHomeFragmentNew extends Fragment implements NewHttpResponse, Vi
     private TextView tv_show_community;
     private ImageView head_enter_chat;
     private BGABanner head_banner;
+
+    private LinearLayout community_activity_layout;
+    private ImageView iv_activity_image;
+    private TextView iv_activity_type;
+    private TextView tv_activity_fee;
+    private TextView tv_activity_title;
+    private TextView tv_activity_address;
+    private TextView tv_activity_date;
+    private CircleImageView iv_first_photo;
+    private CircleImageView iv_second_photo;
+    private CircleImageView iv_thrid_photo;
+    private TextView tv_join_person;
+
+
     /*有彩住宅的布局*/
     private LinearLayout home_parking_layout;
     private LinearLayout home_period_layout;
@@ -322,27 +346,11 @@ public class MainHomeFragmentNew extends Fragment implements NewHttpResponse, Vi
     private String colourWalletUrl = "";
     private String colourHomeUrl = "";
 
-    private void setImageLogo(String path, ImageView imageView, int defaultId) {
-        if (!TextUtils.isEmpty(path)) {
-            GlideImageLoader.loadImageDisplay(getActivity(), path, imageView);
-        } else {
-            imageView.setImageResource(defaultId);
-        }
-    }
-
-    private void setTextColor(String colorValue, TextView textView) {
-        textView.setTextColor(Color.parseColor(colorValue));
-    }
-
-    private void setLinearTabViewHeight(View tabBarView) {
-        LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, getStatusBarHeight(getActivity()));
-        tabBarView.setLayoutParams(layoutParams);
-    }
 
     private void initTopView() {
         head_layout = top_view.findViewById(R.id.head_layout);
         View head_tabbar_view = top_view.findViewById(R.id.head_tabbar_view);
-        setLinearTabViewHeight(head_tabbar_view);
+        setLinearTabViewHeight(getActivity(), head_tabbar_view);
         iv_local = top_view.findViewById(R.id.iv_local);
         tv_show_community = top_view.findViewById(R.id.tv_show_community);
         head_enter_chat = top_view.findViewById(R.id.head_enter_chat);
@@ -372,7 +380,6 @@ public class MainHomeFragmentNew extends Fragment implements NewHttpResponse, Vi
         tv_show_community.setOnClickListener(this);
     }
 
-    private int themeSuccess = 0;
     private int identity;
     private int protect;
     private String return_total_icon;
@@ -407,17 +414,16 @@ public class MainHomeFragmentNew extends Fragment implements NewHttpResponse, Vi
             protect = contentBean.getProtect();
             position_img = contentBean.getPosition_img();
             showHomeHeaderResource();
-            themeSuccess = 1;
         } catch (Exception e) {
-            themeSuccess = 0;
+
         }
     }
 
     private void showHomeHeaderResource() {
-        setImageLogo(return_total_icon, iv_frist_tag, R.drawable.home_icon_ccw);
-        setImageLogo(return_stage_icon, iv_second_tag, R.drawable.home_icon_czz);
-        setImageLogo(fp_balance_icon, iv_thrid_tag, R.drawable.home_icon_fp);
-        setImageLogo(lq_balance_icon, iv_forth_tag, R.drawable.home_icon_rmb);
+        setImageLogo(getActivity(), return_total_icon, iv_frist_tag, R.drawable.home_icon_ccw);
+        setImageLogo(getActivity(), return_stage_icon, iv_second_tag, R.drawable.home_icon_czz);
+        setImageLogo(getActivity(), fp_balance_icon, iv_thrid_tag, R.drawable.home_icon_fp);
+        setImageLogo(getActivity(), lq_balance_icon, iv_forth_tag, R.drawable.home_icon_rmb);
         if (TextUtils.isEmpty(tabColor)) {
             if (is_holiday == 1) {
                 tabColor = "#D94021";
@@ -500,25 +506,6 @@ public class MainHomeFragmentNew extends Fragment implements NewHttpResponse, Vi
         }
     }
 
-    private void homeHeaderOldResourceShow(String result) {
-        HomeHeaderEntity homeHeaderEntity = GsonUtils.gsonToBean(result, HomeHeaderEntity.class);
-        HomeHeaderEntity.ContentBean contentBean = homeHeaderEntity.getContent();
-        return_total_icon = contentBean.getReturn_total_icon();
-        return_stage_icon = contentBean.getReturn_stage_icon();
-        fp_balance_icon = contentBean.getFp_balance_icon();
-        lq_balance_icon = contentBean.getLq_balance_icon();
-        textColor = contentBean.getFont_color();
-        is_holiday = contentBean.getIs_holiday();
-        title_bg = contentBean.getBackground_img();
-        head_bg = contentBean.getBackground_img_3();
-        identity = contentBean.getIdentity_type();
-        tabColor = contentBean.getTab_color();
-        fp_icon = contentBean.getFp_icon();
-        if (themeSuccess == 0) {
-            showHomeHeaderResource();
-        }
-    }
-
     //显示头部彩钱包金额和彩车位等信息
     private void homeHeaderShow(String result) {
         try {
@@ -553,7 +540,6 @@ public class MainHomeFragmentNew extends Fragment implements NewHttpResponse, Vi
             tv_meal_amount.setText(contentBean.getFp_balance());
             tv_account_amount.setText(contentBean.getLq_balance());
             showBuildAndRoom();
-            homeHeaderOldResourceShow(result);
         } catch (Exception e) {
             editor.putString(UserAppConst.COLOR_HOME_HEADER, "").apply();
         }
@@ -969,9 +955,9 @@ public class MainHomeFragmentNew extends Fragment implements NewHttpResponse, Vi
             rv_activity.setRecycledViewPool(viewPool);
             viewPool.setMaxRecycledViews(0, 10);
             if (homeBottomList.size() == 3) {
-                adapters.add(initOnePlusNLayout(getActivity()));
+                adapters.add(initOnePlusNLayout(getActivity(), homeBottomList));
             } else {
-                adapters.add(initLinerLayout(getActivity()));
+                adapters.add(initLinerLayout(getActivity(), homeBottomList));
             }
             VirtualLayoutManager manager = new VirtualLayoutManager(getActivity());
             rv_activity.setLayoutManager(manager);
@@ -983,25 +969,6 @@ public class MainHomeFragmentNew extends Fragment implements NewHttpResponse, Vi
         }
     }
 
-
-    public GridLayoutAdapter initLinerLayout(Context context) {
-        GridLayoutHelper gridLayoutHelper = new GridLayoutHelper(2);
-        //设置间隔高度
-        gridLayoutHelper.setAutoExpand(true);
-        //设置布局底部与下个布局的间隔
-        //设置间距
-        gridLayoutHelper.setMargin(10, 10, 10, 10);// 设置LayoutHelper的子元素相对LayoutHelper边缘的距离
-        GridLayoutAdapter delegateRecyclerAdapter = new GridLayoutAdapter(context, gridLayoutHelper, homeBottomList);
-        return delegateRecyclerAdapter;
-    }
-
-    public OnePlusNLayoutAdapter initOnePlusNLayout(Context context) {
-        OnePlusNLayoutHelper onePlusNLayoutHelper = new OnePlusNLayoutHelper();
-        //设置布局底部与下个布局的间隔
-        onePlusNLayoutHelper.setMargin(10, 10, 10, 10);// 设置LayoutHelper的子元素相对LayoutHelper边缘的距离
-        OnePlusNLayoutAdapter onePlusNLayoutAdapter = new OnePlusNLayoutAdapter(context, onePlusNLayoutHelper, homeBottomList);
-        return onePlusNLayoutAdapter;
-    }
 
     private ArrayList<SingleCommunityEntity.ContentBean.CommonUseBean> commonUseBeanList = new ArrayList<>();
     private int useDoorSize = 0;
@@ -1029,7 +996,6 @@ public class MainHomeFragmentNew extends Fragment implements NewHttpResponse, Vi
             useDoorSize = commonUseBeanList.size();
             if (useDoorSize == 0) {
                 SingleCommunityEntity.ContentBean.CommonUseBean singleCommonUse = new SingleCommunityEntity.ContentBean.CommonUseBean();
-                useDoorSize = commonUseBeanList.size();
                 singleCommonUse.setDoor_name("申请门禁");
                 commonUseBeanList.add(singleCommonUse);
             }
@@ -1040,20 +1006,6 @@ public class MainHomeFragmentNew extends Fragment implements NewHttpResponse, Vi
         }
     }
 
-    private static ArrayList<SingleCommunityEntity.ContentBean.CommonUseBean> addBlueToothDoorList(SingleCommunityEntity.ContentBean contentBean) {
-        ArrayList<SingleCommunityEntity.ContentBean.CommonUseBean> commonUseBeanList = new ArrayList<>();
-        if (contentBean.getBluetooth() != null) {
-            List<SingleCommunityEntity.ContentBean.BluetoothBean> bluetoothBeanList = contentBean.getBluetooth();
-            for (SingleCommunityEntity.ContentBean.BluetoothBean bluetoothBean : bluetoothBeanList) {
-                SingleCommunityEntity.ContentBean.CommonUseBean singleCommonUse = new SingleCommunityEntity.ContentBean.CommonUseBean();
-                singleCommonUse.setDoor_name(bluetoothBean.getName());
-                singleCommonUse.setDoor_id(bluetoothBean.getId());
-                singleCommonUse.setQr_code("");
-                commonUseBeanList.add(singleCommonUse);
-            }
-        }
-        return commonUseBeanList;
-    }
 
     private void updateDoorView() {
         useDoorSize = commonUseBeanList.size();
@@ -1087,7 +1039,6 @@ public class MainHomeFragmentNew extends Fragment implements NewHttpResponse, Vi
     private int choiceIndex = 0;
 
     private String managerPhone;
-    private String managerLink;
     private int bindStatus;
 
     /****客户经理模块***/
@@ -1101,35 +1052,9 @@ public class MainHomeFragmentNew extends Fragment implements NewHttpResponse, Vi
                 bindStatus = contentBean.getBind_state();
                 int isShow = contentBean.getIs_show();
                 managerPhone = contentBean.getMobile();
-                managerLink = contentBean.getLink();
                 if (bindStatus == 1) {
                     bind_manager_layout.setVisibility(View.VISIBLE);
-                    String username = contentBean.getUsername();
-                    ServiceInfo serviceInfo = new ServiceInfo();
-                    if (TextUtils.isEmpty(avatar)) {
-                        serviceInfo.setAvatar(" https://cc.colourlife.com/common/v30/logo/app_logo_v30.png");
-                    } else {
-                        serviceInfo.setAvatar(avatar);
-                    }
-                    serviceInfo.setSex(contentBean.getSex());
-                    serviceInfo.setUuid(contentBean.getUuid());
-                    serviceInfo.setPhoneNum(managerPhone);
-                    String realName = contentBean.getRealname();
-                    String oa = contentBean.getOa();
-                    if (TextUtils.isEmpty(realName)) {
-                        serviceInfo.setRealName(username);
-                        tv_manager_name.setText(username);
-                    } else {
-                        serviceInfo.setRealName(realName);
-                        tv_manager_name.setText(realName);
-                    }
-                    serviceInfo.setNickName(contentBean.getNickname());
-                    if (TextUtils.isEmpty(oa)) {
-                        serviceInfo.setUserName(username);
-                    } else {
-                        serviceInfo.setUserName(oa);
-                    }
-                    HuxinSdkManager.instance().setServiceInfo(serviceInfo);
+                    setComunnityInfor(contentBean, tv_manager_name);
                 } else {
                     if (isShow == 1) {
                         bind_manager_layout.setVisibility(View.VISIBLE);
@@ -1156,10 +1081,6 @@ public class MainHomeFragmentNew extends Fragment implements NewHttpResponse, Vi
             if (identity == 3 && protect == 1) {
                 String homeBannerCache = mShared.getString(UserAppConst.COLOR_HOME_BANNER, "");
                 homeBannerShow(homeBannerCache);
-            }
-        } else {
-            if (!TextUtils.isEmpty(homeBalanceCache)) {
-                homeHeaderOldResourceShow(homeBalanceCache);
             }
         }
         if (!TextUtils.isEmpty(homeBalanceCache)) {
@@ -1221,6 +1142,9 @@ public class MainHomeFragmentNew extends Fragment implements NewHttpResponse, Vi
                         needRequestNumber++;
                         //底部的四宫格
                         newHomeModel.getHomeNewAdMsgActivity(7, MainHomeFragmentNew.this);
+                        break;
+                    case 8:
+                        communityDynamicsModel.getCommunityActivityInfor(9, MainHomeFragmentNew.this::OnHttpResponse);
                         break;
                     case 12:
                         //用户是否实名
@@ -1520,6 +1444,36 @@ public class MainHomeFragmentNew extends Fragment implements NewHttpResponse, Vi
                                 rl_banner.setVisibility(View.GONE);
                             }
                             break;
+                        case 1007:
+                            if (null == community_view) {
+                                community_view = LayoutInflater.from(getActivity()).inflate(R.layout.mhome_community_view, null);
+                                community_activity_layout = community_view.findViewById(R.id.community_activity_layout);
+                                iv_activity_image = community_view.findViewById(R.id.iv_activity_image);
+                                iv_activity_type = community_view.findViewById(R.id.iv_activity_type);
+                                tv_activity_fee = community_view.findViewById(R.id.tv_activity_fee);
+                                tv_activity_title = community_view.findViewById(R.id.tv_activity_title);
+                                tv_activity_address = community_view.findViewById(R.id.tv_activity_address);
+                                tv_activity_date = community_view.findViewById(R.id.tv_activity_date);
+                                iv_first_photo = community_view.findViewById(R.id.iv_first_photo);
+                                iv_second_photo = community_view.findViewById(R.id.iv_second_photo);
+                                iv_thrid_photo = community_view.findViewById(R.id.iv_thrid_photo);
+                                tv_join_person = community_view.findViewById(R.id.tv_join_person);
+                                home_rv.addHeaderView(community_view);
+                                community_activity_layout.setOnClickListener(this::onClick);
+                            }
+
+                            if (is_show == 1) {
+                                String homeManagerCache = mShared.getString(UserAppConst.COLOR_COMMUNITY_ACTIVITY, "");
+                                if (!TextUtils.isEmpty(homeManagerCache) && loadCacheData) {
+                                    homeCommunityActivityShow(homeManagerCache);
+                                }
+                                if (!loadCacheData) {
+                                    handler.sendEmptyMessageDelayed(5, 7000);
+                                }
+                            } else {
+                                community_activity_layout.setVisibility(View.GONE);
+                            }
+                            break;
                         case 1006://活动模块
                             if (null == activity_view) {
                                 activity_view = LayoutInflater.from(getActivity()).inflate(R.layout.mhome_activity_view, null);
@@ -1546,6 +1500,41 @@ public class MainHomeFragmentNew extends Fragment implements NewHttpResponse, Vi
                     home_rv.addHeaderView(footer_view);
                 }
             }
+        } catch (Exception e) {
+
+        }
+    }
+
+    private String source_id;
+
+    /***社区活动的显示****/
+    private void homeCommunityActivityShow(String homeCommunityActivity) {
+        try {
+            CommunityActivityEntity communityActivityEntity = GsonUtils.gsonToBean(homeCommunityActivity, CommunityActivityEntity.class);
+            CommunityActivityEntity.ContentBean contentBean = communityActivityEntity.getContent();
+            source_id = contentBean.getSource_id();
+            GlideImageLoader.loadImageDisplay(getActivity(), contentBean.getAc_banner(), iv_activity_image);
+            String oproperty = contentBean.getAc_oproperty();
+            if (oproperty.length() <= 4) {
+                iv_activity_type.setText(oproperty);
+            } else {
+                iv_activity_type.setText(oproperty.substring(4));
+            }
+            switch (contentBean.getAc_status()) {
+                case "1":
+                    community_activity_layout.setVisibility(View.VISIBLE);
+                    break;
+                default:
+                    community_activity_layout.setVisibility(View.GONE);
+                    break;
+            }
+            tv_activity_fee.setText(contentBean.getAc_tag());
+            tv_activity_title.setText(contentBean.getAc_title());
+            tv_activity_address.setText("地址:" + contentBean.getAc_address());
+            tv_activity_date.setText("活动截止:" + TimeUtil.getTime(contentBean.getStop_apply_time() * 1000, "yyyy年MM月dd日"));
+            int joinNumber = contentBean.getJoin_num();
+            List<String> join_user_pics = contentBean.getJoin_user();
+            showCommunityActivity(getActivity(), joinNumber, join_user_pics, iv_first_photo, iv_second_photo, iv_thrid_photo, tv_join_person);
         } catch (Exception e) {
 
         }
@@ -1624,8 +1613,11 @@ public class MainHomeFragmentNew extends Fragment implements NewHttpResponse, Vi
             case 8:
                 if (!TextUtils.isEmpty(result)) {
                     homeHeaderResourceShow(result);
-                } else {
-                    themeSuccess = 0;
+                }
+                break;
+            case 9://获取活动相关数据
+                if (!TextUtils.isEmpty(result)) {
+                    homeCommunityActivityShow(result);
                 }
                 break;
             case 12://获取认证
@@ -1672,19 +1664,10 @@ public class MainHomeFragmentNew extends Fragment implements NewHttpResponse, Vi
                     LinkParseUtil.parse(getActivity(), colourHomeUrl, content);
                 }
                 break;
-            case R.id.bind_manager_layout:
-                if (!TextUtils.isEmpty(managerLink)) {
-//                    LinkParseUtil.parse(getActivity(), managerLink, "");
-                }
-                break;
             case R.id.iv_call_phone:
                 if (bindStatus == 1) {
                     BuryingPointUtils.uploadClickMethod(getActivity(), BuryingPointUtils.homePageName, BuryingPointUtils.homeManagerCode, "拨号", "10601");
                     PermissionUtils.showPhonePermission(getActivity(), managerPhone);
-                } else {
-                    if (!TextUtils.isEmpty(managerLink)) {
-//                        LinkParseUtil.parse(getActivity(), managerLink, "");
-                    }
                 }
                 break;
             case R.id.iv_enter_chat:
@@ -1732,6 +1715,11 @@ public class MainHomeFragmentNew extends Fragment implements NewHttpResponse, Vi
             case R.id.alpha_community:
                 Intent intent = new Intent(getActivity(), MyPropertyActivity.class);
                 startActivity(intent);
+                break;
+            case R.id.community_activity_layout://社区活动 点击进入详情
+                Intent activityIntent = new Intent(getActivity(), CommunityActivityDetailsActivity.class);
+                activityIntent.putExtra(ACTIVITY_SOURCE_ID, source_id);
+                startActivity(activityIntent);
                 break;
         }
     }

@@ -55,6 +55,34 @@
 
     </RelativeLayout>
 
+
+    <RelativeLayout
+        android:id="@+id/share_activity_layout"
+        android:layout_width="match_parent"
+        android:layout_marginRight="16dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginTop="12dp"
+        android:background="@color/color_f6f7f8"
+        android:layout_height="56dp">
+
+        <ImageView
+            android:id="@+id/iv_share_logo"
+            android:layout_width="40dp"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="8dp"
+            android:layout_height="40dp"/>
+        <TextView
+            android:id="@+id/tv_share_title"
+            android:layout_width="wrap_content"
+            android:layout_marginLeft="12dp"
+            android:textColor="@color/color_25282e"
+            android:maxLines="2"
+            android:textSize="14sp"
+            android:ellipsize="end"
+            android:layout_marginRight="8dp"
+            android:layout_height="wrap_content"/>
+    </RelativeLayout>
+
     <com.community.view.MoreTextView
         android:id="@+id/tv_dynamics_text_content"
         android:layout_width="match_parent"
@@ -68,6 +96,7 @@
 
 
     <LinearLayout
+        android:id="@+id/dynamic_image_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginLeft="16dp"

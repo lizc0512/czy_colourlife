@@ -31,6 +31,7 @@ import java.util.List;
 import cn.csh.colourful.life.listener.OnItemClickListener;
 import cn.net.cyberway.R;
 
+import static com.community.activity.CommunityActivityDetailsActivity.ACTIVITY_SOURCE_ID;
 import static com.community.activity.DynamicsDetailsActivity.DYNAMICS_DETAILS;
 import static com.community.fragment.CommunityDynamicsFragment.UPDATE_DYNAMIC_REMINDCOUNT;
 
@@ -99,7 +100,16 @@ public class DynamicNoticeActivity extends BaseActivity implements View.OnClickL
                             @Override
                             public void onItemClick(int i) {
                                 if (i >= 0) {
-                                    getDynamicDetails(contentBeanList.get(i).getSource_id());
+                                    CommunityRemindListEntity.ContentBean contentBean = contentBeanList.get(i);
+                                    String source_id=contentBean.getSource_id();
+                                    if (2 == contentBean.getList_type()) {
+                                        Intent intent = new Intent(DynamicNoticeActivity.this, CommunityActivityDetailsActivity.class);
+                                        intent.putExtra(ACTIVITY_SOURCE_ID, source_id);
+                                        startActivity(intent);
+                                    } else {
+                                        getDynamicDetails(source_id);
+                                    }
+                                    communityDynamicsModel.setDynamicRemindRead(2, source_id, DynamicNoticeActivity.this);
                                 }
                             }
                         });
@@ -149,7 +159,6 @@ public class DynamicNoticeActivity extends BaseActivity implements View.OnClickL
     }
 
     private void getDynamicDetails(String source_id) {
-        communityDynamicsModel.setDynamicRemindRead(2, source_id, DynamicNoticeActivity.this);
         communityDynamicsModel.getDynamicsDetails(1, source_id, DynamicNoticeActivity.this);
     }
 }

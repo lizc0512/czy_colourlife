@@ -18,6 +18,7 @@ import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
 
+import static com.user.UserAppConst.COLOR_COMMUNITY_ACTIVITY;
 import static com.user.UserAppConst.COLOUR_DYNAMICS_TIPOFF_LIST;
 
 /**
@@ -41,13 +42,18 @@ public class CommunityDynamicsModel extends BaseModel {
     private String dynamicRemindCountUrl = "neighbour/remindCount"; //动态提醒未读数量
     private String dynamicRemindListUrl = "neighbour/remindList"; //获取未读消息列表
     private String dynamicRemindReadUrl = "neighbour/remindRead"; //设置动态提醒已读
-
+    private String homeCommunityActivityUrl = "neighbour/getCommunityActivity";//首页获取活动消息
+    private String homeActivityDetailUrl = "neighbour/getActivityDetail";//活动详情
+    private String activityCommentUrl = "neighbour/getActivityComment";//获取活动留言
+    private String joinActivityUrl = "neighbour/joinActivity";//参与活动接口
+    private String commentActivityUrl = "neighbour/commentActivity";//添加活动留言
+    private String delActivityCommentUrl = "neighbour/delActivityComment";//删除活动留言
 
     public CommunityDynamicsModel(Context context) {
         super(context);
     }
 
-    public void publicUserDynamic(int what, String content, String extra_type, String extra, NewHttpResponse newHttpResponse) {
+    public void publicUserDynamic(int what, String content, String extra_type, String extra,boolean isLoading, NewHttpResponse newHttpResponse) {
         Map<String, Object> params = new HashMap<String, Object>();
         params.put("content", content);
         params.put("extra_type", extra_type);
@@ -73,11 +79,11 @@ public class CommunityDynamicsModel extends BaseModel {
             public void onFailed(int what, Response<String> response) {
                 showExceptionMessage(what, response);
             }
-        }, true, true);
+        }, true, isLoading);
 
     }
 
-    public void uploadDynamicFile(int what,boolean showNotice, String file, NewHttpResponse newHttpResponse) {
+    public void uploadDynamicFile(int what, boolean showNotice, String file, NewHttpResponse newHttpResponse) {
         BasicBinary binary = new FileBinary(new File(file));
         final Request<String> request = NoHttp.createStringRequest(RequestEncryptionUtils.postCombileMD5(mContext, 17, uploadFileUrl), RequestMethod.POST);
         request.add("file", binary);
@@ -92,20 +98,20 @@ public class CommunityDynamicsModel extends BaseModel {
                         newHttpResponse.OnHttpResponse(what, result);
                     }
                 } else {
-                    if (showNotice){
+                    if (showNotice) {
                         showErrorCodeMessage(responseCode, response);
-                    }else{
-                        newHttpResponse.OnHttpResponse(what,"");
+                    } else {
+                        newHttpResponse.OnHttpResponse(what, "");
                     }
                 }
             }
 
             @Override
             public void onFailed(int what, Response<String> response) {
-                if (showNotice){
+                if (showNotice) {
                     showExceptionMessage(what, response);
-                }else{
-                    newHttpResponse.OnHttpResponse(what,"");
+                } else {
+                    newHttpResponse.OnHttpResponse(what, "");
                 }
 
             }
@@ -385,7 +391,7 @@ public class CommunityDynamicsModel extends BaseModel {
 
             @Override
             public void onFailed(int what, Response<String> response) {
-                showExceptionMessage(what,response);
+                showExceptionMessage(what, response);
             }
         }, true, true);
     }
@@ -408,12 +414,12 @@ public class CommunityDynamicsModel extends BaseModel {
             @Override
             public void onFailed(int what, Response<String> response) {
 
-                
+
             }
         }, true, false);
     }
 
-    public void getDynamicRemindList(int what,boolean isLoading, NewHttpResponse newHttpResponse) {
+    public void getDynamicRemindList(int what, boolean isLoading, NewHttpResponse newHttpResponse) {
         final Request<String> request = NoHttp.createStringRequest(RequestEncryptionUtils.getCombileMD5(mContext, 16, dynamicRemindListUrl, null), RequestMethod.GET);
         request(what, request, null, new HttpListener<String>() {
             @Override
@@ -435,10 +441,160 @@ public class CommunityDynamicsModel extends BaseModel {
         }, true, isLoading);
     }
 
-    public void setDynamicRemindRead(int what,String source_id, NewHttpResponse newHttpResponse) {
+    public void setDynamicRemindRead(int what, String source_id, NewHttpResponse newHttpResponse) {
         Map<String, Object> params = new HashMap<String, Object>();
         params.put("source_id", source_id);
         final Request<String> request = NoHttp.createStringRequest(RequestEncryptionUtils.postCombileMD5(mContext, 17, dynamicRemindReadUrl), RequestMethod.POST);
+        request(what, request, params, new HttpListener<String>() {
+            @Override
+            public void onSucceed(int what, Response<String> response) {
+                int responseCode = response.getHeaders().getResponseCode();
+                String result = response.get();
+                if (responseCode == RequestEncryptionUtils.responseSuccess) {
+                    int resultCode = showSuccesResultMessage(result);
+                    if (resultCode == 0) {
+                        newHttpResponse.OnHttpResponse(what, result);
+                    }
+                }
+            }
+
+            @Override
+            public void onFailed(int what, Response<String> response) {
+
+            }
+        }, true, true);
+    }
+
+    public void getCommunityActivityInfor(int what, NewHttpResponse newHttpResponse) {
+        final Request<String> request = NoHttp.createStringRequest(RequestEncryptionUtils.getCombileMD5(mContext, 16, homeCommunityActivityUrl,null), RequestMethod.GET);
+        request(what, request, null, new HttpListener<String>() {
+            @Override
+            public void onSucceed(int what, Response<String> response) {
+                int responseCode = response.getHeaders().getResponseCode();
+                String result = response.get();
+                if (responseCode == RequestEncryptionUtils.responseSuccess) {
+                    int resultCode = showSuccesResultMessage(result);
+                    if (resultCode == 0) {
+                        editor.putString(COLOR_COMMUNITY_ACTIVITY, result).apply();
+                        newHttpResponse.OnHttpResponse(what, result);
+                    }
+                }
+            }
+
+            @Override
+            public void onFailed(int what, Response<String> response) {
+
+            }
+        }, true, true);
+    }
+
+    public void getCommunityActivityDetails(int what,String source_id, NewHttpResponse newHttpResponse) {
+        Map<String, Object> params = new HashMap<String, Object>();
+        params.put("source_id", source_id);
+        final Request<String> request = NoHttp.createStringRequest(RequestEncryptionUtils.getCombileMD5(mContext, 16, homeActivityDetailUrl,params), RequestMethod.GET);
+        request(what, request, params, new HttpListener<String>() {
+            @Override
+            public void onSucceed(int what, Response<String> response) {
+                int responseCode = response.getHeaders().getResponseCode();
+                String result = response.get();
+                if (responseCode == RequestEncryptionUtils.responseSuccess) {
+                    int resultCode = showSuccesResultMessage(result);
+                    if (resultCode == 0) {
+                        newHttpResponse.OnHttpResponse(what, result);
+                    }
+                }
+            }
+
+            @Override
+            public void onFailed(int what, Response<String> response) {
+
+            }
+        }, true, true);
+    }
+
+    public void joinCommunityActivity(int what,String source_id, String picture_aarr,NewHttpResponse newHttpResponse) {
+        Map<String, Object> params = new HashMap<String, Object>();
+        params.put("source_id", source_id);
+        params.put("picture_aarr", picture_aarr);
+        final Request<String> request = NoHttp.createStringRequest(RequestEncryptionUtils.postCombileMD5(mContext, 17, joinActivityUrl), RequestMethod.POST);
+        request(what, request, params, new HttpListener<String>() {
+            @Override
+            public void onSucceed(int what, Response<String> response) {
+                int responseCode = response.getHeaders().getResponseCode();
+                String result = response.get();
+                if (responseCode == RequestEncryptionUtils.responseSuccess) {
+                    int resultCode = showSuccesResultMessage(result);
+                    if (resultCode == 0) {
+                        newHttpResponse.OnHttpResponse(what, result);
+                    }
+                }
+            }
+
+            @Override
+            public void onFailed(int what, Response<String> response) {
+
+            }
+        }, true, true);
+    }
+
+    public void getActivityComment(int what,String source_id,int page,NewHttpResponse newHttpResponse) {
+        Map<String, Object> params = new HashMap<String, Object>();
+        params.put("source_id", source_id);
+        params.put("page", page);
+        final Request<String> request = NoHttp.createStringRequest(RequestEncryptionUtils.getCombileMD5(mContext, 16, activityCommentUrl,params), RequestMethod.GET);
+        request(what, request, params, new HttpListener<String>() {
+            @Override
+            public void onSucceed(int what, Response<String> response) {
+                int responseCode = response.getHeaders().getResponseCode();
+                String result = response.get();
+                if (responseCode == RequestEncryptionUtils.responseSuccess) {
+                    int resultCode = showSuccesResultMessage(result);
+                    if (resultCode == 0) {
+                        newHttpResponse.OnHttpResponse(what, result);
+                    }
+                }
+            }
+
+            @Override
+            public void onFailed(int what, Response<String> response) {
+
+            }
+        }, true, true);
+    }
+
+
+
+    public void commentCommunityActivity(int what,String source_id, String content,String to_id,NewHttpResponse newHttpResponse) {
+        Map<String, Object> params = new HashMap<String, Object>();
+        params.put("source_id", source_id);
+        params.put("content", content);
+        params.put("to_id", to_id);
+        final Request<String> request = NoHttp.createStringRequest(RequestEncryptionUtils.postCombileMD5(mContext, 17, commentActivityUrl), RequestMethod.POST);
+        request(what, request, params, new HttpListener<String>() {
+            @Override
+            public void onSucceed(int what, Response<String> response) {
+                int responseCode = response.getHeaders().getResponseCode();
+                String result = response.get();
+                if (responseCode == RequestEncryptionUtils.responseSuccess) {
+                    int resultCode = showSuccesResultMessage(result);
+                    if (resultCode == 0) {
+                        newHttpResponse.OnHttpResponse(what, result);
+                    }
+                }
+            }
+
+            @Override
+            public void onFailed(int what, Response<String> response) {
+
+            }
+        }, true, true);
+    }
+
+    public void delActivityComment(int what,String source_id, String comment_id,NewHttpResponse newHttpResponse) {
+        Map<String, Object> params = new HashMap<String, Object>();
+        params.put("source_id", source_id);
+        params.put("comment_id", comment_id);
+        final Request<String> request = NoHttp.createStringRequest(RequestEncryptionUtils.postCombileMD5(mContext, 17, delActivityCommentUrl), RequestMethod.POST);
         request(what, request, params, new HttpListener<String>() {
             @Override
             public void onSucceed(int what, Response<String> response) {

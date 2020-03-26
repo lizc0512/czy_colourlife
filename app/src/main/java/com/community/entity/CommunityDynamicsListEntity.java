@@ -177,6 +177,16 @@ public class CommunityDynamicsListEntity extends BaseContentEntity {
             private String user_id;
             private String user_uuid;
 
+            public int getList_type() {
+                return list_type;
+            }
+
+            public void setList_type(int list_type) {
+                this.list_type = list_type;
+            }
+
+            private int list_type;
+
             public int getIsEnd() {
                 return isEnd;
             }
@@ -207,6 +217,88 @@ public class CommunityDynamicsListEntity extends BaseContentEntity {
             private String avatar;
             private String gender;
             private String mobile;
+            private String ac_banner;
+            private String ac_tag;
+            private String ac_oproperty;
+            private String ac_title;
+
+            public String getAc_banner() {
+                return ac_banner;
+            }
+
+            public void setAc_banner(String ac_banner) {
+                this.ac_banner = ac_banner;
+            }
+
+            public String getAc_tag() {
+                return ac_tag;
+            }
+
+            public void setAc_tag(String ac_tag) {
+                this.ac_tag = ac_tag;
+            }
+
+            public String getAc_oproperty() {
+                return ac_oproperty;
+            }
+
+            public void setAc_oproperty(String ac_oproperty) {
+                this.ac_oproperty = ac_oproperty;
+            }
+
+            public String getAc_title() {
+                return ac_title;
+            }
+
+            public void setAc_title(String ac_title) {
+                this.ac_title = ac_title;
+            }
+
+            public String getAc_address() {
+                return ac_address;
+            }
+
+            public void setAc_address(String ac_address) {
+                this.ac_address = ac_address;
+            }
+
+            public String getAc_status() {
+                return ac_status;
+            }
+
+            public void setAc_status(String ac_status) {
+                this.ac_status = ac_status;
+            }
+
+            public long getStop_apply_time() {
+                return stop_apply_time;
+            }
+
+            public void setStop_apply_time(long stop_apply_time) {
+                this.stop_apply_time = stop_apply_time;
+            }
+
+            public int getJoin_num() {
+                return join_num;
+            }
+
+            public void setJoin_num(int join_num) {
+                this.join_num = join_num;
+            }
+
+            public List<String> getJoin_user() {
+                return join_user;
+            }
+
+            public void setJoin_user(List<String> join_user) {
+                this.join_user = join_user;
+            }
+
+            private String ac_address;
+            private String ac_status;
+            private long stop_apply_time;
+            private int join_num;
+            private List<String> join_user;
 
             public String getIs_zan() {
                 return is_zan;
@@ -219,7 +311,7 @@ public class CommunityDynamicsListEntity extends BaseContentEntity {
             private String is_zan ;
             private int comment_count;
             private int zan_count=0;
-            private List<String> extra;
+            private String extra;
             private List<CommentBean> comment;
             private List<ZanBean> zan;
 
@@ -351,11 +443,11 @@ public class CommunityDynamicsListEntity extends BaseContentEntity {
                 this.zan_count = zan_count;
             }
 
-            public List<String> getExtra() {
+            public String getExtra() {
                 return extra;
             }
 
-            public void setExtra(List<String> extra) {
+            public void setExtra(String extra) {
                 this.extra = extra;
             }
 

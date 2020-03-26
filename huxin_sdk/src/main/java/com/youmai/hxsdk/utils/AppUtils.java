@@ -275,7 +275,7 @@ public class AppUtils {
      */
     public static void setStringSharedPreferences(Context context, String key,
                                                   String value) {
-        if (null!=context){
+        if (null != context) {
             SharedPreferences.Editor editor = context.getSharedPreferences(
                     AppConfig.SHARED_PREFERENCES, Context.MODE_PRIVATE).edit();
             editor.putString(key, value);
@@ -290,9 +290,9 @@ public class AppUtils {
      */
     public static String getStringSharedPreferences(Context context,
                                                     String key, String defaultValue) {
-        if (null==context){
-            return  defaultValue;
-        }else{
+        if (null == context) {
+            return defaultValue;
+        } else {
             SharedPreferences sharedPref = context.getSharedPreferences(
                     AppConfig.SHARED_PREFERENCES, Context.MODE_PRIVATE);
             return sharedPref.getString(key, defaultValue);
@@ -309,10 +309,12 @@ public class AppUtils {
      */
     public static void setBooleanSharedPreferences(Context context, String key,
                                                    boolean value) {
-        SharedPreferences.Editor editor = context.getSharedPreferences(
-                AppConfig.SHARED_PREFERENCES, Context.MODE_PRIVATE).edit();
-        editor.putBoolean(key, value);
-        editor.apply();
+        if (null != context) {
+            SharedPreferences.Editor editor = context.getSharedPreferences(
+                    AppConfig.SHARED_PREFERENCES, Context.MODE_PRIVATE).edit();
+            editor.putBoolean(key, value);
+            editor.apply();
+        }
     }
 
     /**
@@ -322,9 +324,14 @@ public class AppUtils {
      */
     public static boolean getBooleanSharedPreferences(Context context,
                                                       String key, boolean defaultValue) {
-        SharedPreferences sharedPref = context.getSharedPreferences(
-                AppConfig.SHARED_PREFERENCES, Context.MODE_PRIVATE);
-        return sharedPref.getBoolean(key, defaultValue);
+        if (null == context) {
+            return defaultValue;
+        } else {
+            SharedPreferences sharedPref = context.getSharedPreferences(
+                    AppConfig.SHARED_PREFERENCES, Context.MODE_PRIVATE);
+            return sharedPref.getBoolean(key, defaultValue);
+        }
+
     }
 
     /**
@@ -336,10 +343,13 @@ public class AppUtils {
      */
     public static void setIntSharedPreferences(Context context, String key,
                                                int value) {
-        SharedPreferences.Editor editor = context.getSharedPreferences(
-                AppConfig.SHARED_PREFERENCES, Context.MODE_PRIVATE).edit();
-        editor.putInt(key, value);
-        editor.apply();
+        if (null != context) {
+            SharedPreferences.Editor editor = context.getSharedPreferences(
+                    AppConfig.SHARED_PREFERENCES, Context.MODE_PRIVATE).edit();
+            editor.putInt(key, value);
+            editor.apply();
+        }
+
     }
 
     /**
@@ -349,9 +359,14 @@ public class AppUtils {
      */
     public static int getIntSharedPreferences(Context context, String key,
                                               int defaultValue) {
-        SharedPreferences sharedPref = context.getSharedPreferences(
-                AppConfig.SHARED_PREFERENCES, Context.MODE_PRIVATE);
-        return sharedPref.getInt(key, defaultValue);
+        if (null != context) {
+            SharedPreferences sharedPref = context.getSharedPreferences(
+                    AppConfig.SHARED_PREFERENCES, Context.MODE_PRIVATE);
+            return sharedPref.getInt(key, defaultValue);
+        } else {
+            return defaultValue;
+        }
+
     }
 
     /**
@@ -363,10 +378,13 @@ public class AppUtils {
      */
     public static void setLongSharedPreferences(Context context, String key,
                                                 long value) {
-        SharedPreferences.Editor editor = context.getSharedPreferences(
-                AppConfig.SHARED_PREFERENCES, Context.MODE_PRIVATE).edit();
-        editor.putLong(key, value);
-        editor.apply();
+        if (null!=context){
+            SharedPreferences.Editor editor = context.getSharedPreferences(
+                    AppConfig.SHARED_PREFERENCES, Context.MODE_PRIVATE).edit();
+            editor.putLong(key, value);
+            editor.apply();
+        }
+
     }
 
     /**
@@ -376,9 +394,14 @@ public class AppUtils {
      */
     public static long getLongSharedPreferences(Context context, String key,
                                                 long defaultValue) {
-        SharedPreferences sharedPref = context.getSharedPreferences(
-                AppConfig.SHARED_PREFERENCES, Context.MODE_PRIVATE);
-        return sharedPref.getLong(key, defaultValue);
+        if (null!=context){
+            SharedPreferences sharedPref = context.getSharedPreferences(
+                    AppConfig.SHARED_PREFERENCES, Context.MODE_PRIVATE);
+            return sharedPref.getLong(key, defaultValue);
+        }else{
+            return  defaultValue;
+        }
+
     }
 
     /**

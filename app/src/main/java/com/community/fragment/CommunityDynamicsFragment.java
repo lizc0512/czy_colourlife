@@ -30,6 +30,7 @@ import android.widget.TextView;
 
 import com.BeeFramework.Utils.ToastUtil;
 import com.BeeFramework.model.NewHttpResponse;
+import com.community.activity.CommunityActivityDetailsActivity;
 import com.community.activity.CommunityMessageListActivity;
 import com.community.activity.DynamicsDetailsActivity;
 import com.community.activity.PublishDynamicsActivity;
@@ -63,6 +64,7 @@ import cn.net.cyberway.activity.MainActivity;
 import q.rorbin.badgeview.QBadgeView;
 
 import static android.support.v7.widget.RecyclerView.SCROLL_STATE_IDLE;
+import static com.community.activity.CommunityActivityDetailsActivity.ACTIVITY_SOURCE_ID;
 import static com.community.activity.DynamicsDetailsActivity.DYNAMICS_DETAILS;
 import static com.user.UserAppConst.COLOUR_DYNAMICS_NEWLIST_CACHE;
 import static com.user.UserAppConst.COLOUR_DYNAMICS_NOTICE_NUMBER;
@@ -93,6 +95,7 @@ public class CommunityDynamicsFragment extends Fragment implements View.OnClickL
     public static final int CALLBACL_COMMENT_DYNAMIC = 2007;//动态详情操作的回调
     public static final int UPDATE_DYNAMIC_REMINDCOUNT = 2008;//更新动态提醒的数目
     public static final int TIPOFF_OTHER_COMMENT = 2009;//举报评论
+    public static final int CHANGE_ACTIVITY_STATUS = 2010;//活动内容更新
 
     private SwipeRefreshLayout dynamics_refresh_layout;
     private ImageView iv_unRead_message;
@@ -258,8 +261,14 @@ public class CommunityDynamicsFragment extends Fragment implements View.OnClickL
                     switch (recycleState) {
                         case SCROLL_STATE_IDLE:
                             CommunityDynamicsListEntity.ContentBean.DataBean dataBean = dynamicContentList.get(i);
-                            Intent intent = new Intent(getActivity(), DynamicsDetailsActivity.class);
-                            intent.putExtra(DYNAMICS_DETAILS, dataBean);
+                            Intent intent=null;
+                            if (2==dataBean.getList_type()){
+                                intent = new Intent(getActivity(), CommunityActivityDetailsActivity.class);
+                                intent.putExtra(ACTIVITY_SOURCE_ID,dataBean.getSource_id());
+                            }else{
+                                intent = new Intent(getActivity(), DynamicsDetailsActivity.class);
+                                intent.putExtra(DYNAMICS_DETAILS, dataBean);
+                            }
                             startActivity(intent);
                             break;
                     }
@@ -582,6 +591,21 @@ public class CommunityDynamicsFragment extends Fragment implements View.OnClickL
                         saveFristDynamicCache();
                     }
                 }
+                break;
+            case CHANGE_ACTIVITY_STATUS:
+                CommunityDynamicsListEntity.ContentBean.DataBean dataBean;
+                for (int j = 0; j < dynamicContentList.size(); j++) {
+                      dataBean = dynamicContentList.get(j);
+                    if (sourceId.equals(dataBean.getSource_id())) {
+                        position = j;
+                        break;
+                    }
+                }
+                if (position != -1) {  //说明在当前列表有这个活动
+
+
+                }
+
                 break;
             case UPDATE_DYNAMIC_REMINDCOUNT:
                 communityDynamicsModel.getDynamicRemindCount(10, CommunityDynamicsFragment.this);

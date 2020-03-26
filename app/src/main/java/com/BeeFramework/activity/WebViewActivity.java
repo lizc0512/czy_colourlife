@@ -75,6 +75,7 @@ import com.agentweb.WebDefaultSettingsManager;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.target.ImageViewTarget;
 import com.cashier.activity.NewOrderPayActivity;
+import com.community.model.CommunityDynamicsModel;
 import com.customerInfo.activity.CustomerInfoActivity;
 import com.customerInfo.activity.DeliveryAddressListActivity;
 import com.customerInfo.protocol.RealNameTokenEntity;
@@ -396,6 +397,14 @@ public class WebViewActivity extends BaseActivity implements View.OnLongClickLis
                 showShare(this, friend.getName());
                 closeShareLayout();
                 break;
+            case R.id.rl_llq:
+                CommunityDynamicsModel  communityDynamicsModel=new CommunityDynamicsModel(WebViewActivity.this);
+                Map<String,String> shareParams=new HashMap<>();
+                shareParams.put("logo",shareImg);
+                shareParams.put("desc",shareTitle);
+                shareParams.put("logo",shareImg);
+                communityDynamicsModel.publicUserDynamic(5,"","3",GsonUtils.gsonString(shareParams),false,WebViewActivity.this);
+                break;
         }
     }
 
@@ -591,6 +600,9 @@ public class WebViewActivity extends BaseActivity implements View.OnLongClickLis
                 break;
             case 4://实名认成功刷新
                 webView.reload();
+                break;
+            case 5:
+                ToastUtil.toastShow(this, "已成功分享到邻里圈");
                 break;
         }
     }

@@ -10,8 +10,8 @@ android {
         applicationId "cn.net.cyberway"
         minSdkVersion MIN_SDK_VERSION as int
         targetSdkVersion TARGET_SDK_VERSION as int
-        versionCode 99
-        versionName "6.6.24"
+        versionCode 100
+        versionName "6.6.25"
         multiDexEnabled true
         javaCompileOptions {
             annotationProcessorOptions {
@@ -227,7 +227,7 @@ dependencies {
     implementation 'com.tencent.bugly:nativecrashreport:3.3.1'
     //腾讯人脸识别
     implementation(name: 'AuthSdk', ext: 'aar')
-    implementation 'com.tencent.mm.opensdk:wechat-sdk-android-without-mta:5.3.1'
+    implementation 'com.tencent.mm.opensdk:wechat-sdk-android-without-mta:+'
     //乐开
     implementation(name: 'lekai-open-sdk-v3.0.9', ext: 'aar')
     implementation(name: 'mylibrary-release', ext: 'aar')

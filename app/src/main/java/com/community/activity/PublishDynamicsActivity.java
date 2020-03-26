@@ -267,7 +267,7 @@ public class PublishDynamicsActivity extends BaseActivity implements View.OnClic
             }
             FileUtils.delDynamicPicFolder();
             CommunityDynamicsModel communityDynamicsModel = new CommunityDynamicsModel(PublishDynamicsActivity.this);
-            communityDynamicsModel.publicUserDynamic(0, publishContent, "1", GsonUtils.gsonString(uploadObjList), PublishDynamicsActivity.this);
+            communityDynamicsModel.publicUserDynamic(0, publishContent, "1", GsonUtils.gsonString(uploadObjList), true,PublishDynamicsActivity.this);
         } else {
             RealIdentifyDialogUtil.showGoIdentifyDialog(PublishDynamicsActivity.this);
         }

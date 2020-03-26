@@ -19,6 +19,7 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.BeeFramework.Utils.TimeUtil;
@@ -26,7 +27,6 @@ import com.BeeFramework.Utils.ToastUtil;
 import com.BeeFramework.activity.BaseFragmentActivity;
 import com.BeeFramework.model.NewHttpResponse;
 import com.BeeFramework.view.CircleImageView;
-import com.BeeFramework.view.Util;
 import com.cashier.adapter.ViewPagerAdapter;
 import com.community.adapter.CommunityImageAdapter;
 import com.community.adapter.CommunityTipOffAdapter;
@@ -46,16 +46,17 @@ import com.im.activity.IMFriendInforActivity;
 import com.im.activity.IMUserSelfInforActivity;
 import com.im.helper.CacheFriendInforHelper;
 import com.nohttp.utils.GlideImageLoader;
-import com.nohttp.utils.GridSpacingItemDecoration;
 import com.nohttp.utils.GsonUtils;
 import com.user.UserAppConst;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import cn.csh.colourful.life.listener.OnItemClickListener;
 import cn.csh.colourful.life.utils.KeyBoardUtils;
 import cn.net.cyberway.R;
+import cn.net.cyberway.utils.LinkParseUtil;
 
 import static android.view.View.GONE;
 import static com.community.fragment.CommunityDynamicsFragment.CALLBACL_COMMENT_DYNAMIC;
@@ -95,6 +96,14 @@ public class DynamicsDetailsActivity extends BaseFragmentActivity implements Vie
     private TextView tv_dynamics_comment;
     private TextView tv_dynamics_like;
 
+
+    private LinearLayout layout_dynamics_images;
+
+
+    private RelativeLayout layout_share_dynamics;
+    private ImageView iv_share_logo;
+    private TextView tv_share_title;
+
     private LinearLayout ll_comment_input;
     private EditText feed_comment_edittext;
     private TextView feed_comment_submit;
@@ -116,6 +125,7 @@ public class DynamicsDetailsActivity extends BaseFragmentActivity implements Vie
     public String to_nickname;
     public int commentPosition = -1;
     private String content;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -174,6 +184,8 @@ public class DynamicsDetailsActivity extends BaseFragmentActivity implements Vie
         });
         Intent intent = getIntent();
         dataBean = (CommunityDynamicsListEntity.ContentBean.DataBean) intent.getSerializableExtra(DYNAMICS_DETAILS);
+        int extraType = dataBean.getExtra_type();
+        String extra = dataBean.getExtra();
         communityLikeListFragment = new CommunityLikeListFragment();
         fragmentList.add(communityLikeListFragment);
         communityCommentListFragment = new CommunityCommentListFragment();
@@ -212,12 +224,17 @@ public class DynamicsDetailsActivity extends BaseFragmentActivity implements Vie
         GlideImageLoader.loadImageDefaultDisplay(DynamicsDetailsActivity.this, avatar, iv_dynamics_user_pics, R.drawable.icon_default_portrait, R.drawable.icon_default_portrait);
         tv_dynamics_user_name.setText(nick_name);
         tv_dynamics_user_community.setText(community_name);
-        if (!TextUtils.isEmpty(content)) {
-            tv_dynamics_content_details.setVisibility(View.VISIBLE);
-            tv_dynamics_content_details.setText(content);
-        } else {
+        if (extraType == 3) {
             tv_dynamics_content_details.setVisibility(GONE);
+        } else {
+            if (!TextUtils.isEmpty(content)) {
+                tv_dynamics_content_details.setVisibility(View.VISIBLE);
+                tv_dynamics_content_details.setText(content);
+            } else {
+                tv_dynamics_content_details.setVisibility(GONE);
+            }
         }
+
         tv_dynamics_publish_time.setText(TimeUtil.formatHomeTime(create_time));
         if (current_user_uuid.equals(publish_uuid)) {
             tv_del_owner_dynamics.setVisibility(View.VISIBLE);
@@ -226,25 +243,45 @@ public class DynamicsDetailsActivity extends BaseFragmentActivity implements Vie
             tv_del_owner_dynamics.setVisibility(GONE);
             iv_dynamics_user_operate.setVisibility(View.VISIBLE);
         }
-
-        List<String> imgList = dataBean.getExtra();
-        int imgSize = imgList == null ? 0 : imgList.size();
-        if (imgSize == 0) {
-            rv_dynamics_images.setVisibility(GONE);
+        if (extraType == 3) {
+            layout_dynamics_images.setVisibility(GONE);
+            layout_share_dynamics.setVisibility(View.VISIBLE);
+            //设置分享的数据
+            Map<String, String> shareMap = GsonUtils.gsonObjectToMaps(extra);
+            String shareImageLogo = shareMap.get("logo");
+            String shareDesc = shareMap.get("desc");
+            String shareUrl = shareMap.get("url");
+            GlideImageLoader.loadImageDefaultDisplay(DynamicsDetailsActivity.this, shareImageLogo, iv_share_logo, R.drawable.share_default_logo, R.drawable.share_default_logo);
+            tv_share_title.setText(shareDesc);
+            layout_share_dynamics.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    LinkParseUtil.parse(DynamicsDetailsActivity.this, shareUrl, "");
+                }
+            });
         } else {
-            rv_dynamics_images.setVisibility(View.VISIBLE);
-            int extra_type = dataBean.getExtra_type();
-            CommunityImageAdapter communityImageAdapter = new CommunityImageAdapter(DynamicsDetailsActivity.this, (ArrayList<String>) imgList, extra_type, 32);
-            int row = imgSize == 4 ? 2 : 3;//如果4张图片显示2列
-            if (row == 2) {
-                view_dynamics_weight.setVisibility(View.VISIBLE);
+            layout_dynamics_images.setVisibility(View.VISIBLE);
+            layout_share_dynamics.setVisibility(GONE);
+            List<String> imgList = GsonUtils.jsonToList(extra, String.class);
+            int imgSize = imgList == null ? 0 : imgList.size();
+            if (imgSize == 0) {
+                rv_dynamics_images.setVisibility(GONE);
             } else {
-                view_dynamics_weight.setVisibility(GONE);
+                rv_dynamics_images.setVisibility(View.VISIBLE);
+                int extra_type = dataBean.getExtra_type();
+                CommunityImageAdapter communityImageAdapter = new CommunityImageAdapter(DynamicsDetailsActivity.this, (ArrayList<String>) imgList, extra_type, 32);
+                int row = imgSize == 4 ? 2 : 3;//如果4张图片显示2列
+                if (row == 2) {
+                    view_dynamics_weight.setVisibility(View.VISIBLE);
+                } else {
+                    view_dynamics_weight.setVisibility(GONE);
+                }
+                GridLayoutManager gridLayoutManager = new GridLayoutManager(DynamicsDetailsActivity.this, row);
+                rv_dynamics_images.setLayoutManager(gridLayoutManager);
+                rv_dynamics_images.setAdapter(communityImageAdapter);
             }
-            GridLayoutManager gridLayoutManager = new GridLayoutManager(DynamicsDetailsActivity.this, row);
-            rv_dynamics_images.setLayoutManager(gridLayoutManager);
-            rv_dynamics_images.setAdapter(communityImageAdapter);
         }
+
         setZanStatus();
         setCommentCount();
         communityLikeListFragment.showLikeList(zanBeanList);
@@ -490,7 +527,7 @@ public class DynamicsDetailsActivity extends BaseFragmentActivity implements Vie
                 commentBean.setFrom_mobile(shared.getString(UserAppConst.Colour_login_mobile, ""));
                 commentBean.setFrom_id(current_user_id);
                 commentBean.setSource_id(source_id);
-                commentBean.setFrom_avatar(shared.getString(UserAppConst.Colour_head_img,""));
+                commentBean.setFrom_avatar(shared.getString(UserAppConst.Colour_head_img, ""));
                 long currentTime = System.currentTimeMillis() / 1000;
                 commentBean.setCreated_at(currentTime);
                 commentBean.setFrom_nickname(shared.getString(UserAppConst.Colour_NIACKNAME, ""));
@@ -516,14 +553,14 @@ public class DynamicsDetailsActivity extends BaseFragmentActivity implements Vie
                 feed_comment_edittext.setText("");
                 break;
             case 6://点赞
-                int hasZan=0;
-                for (CommunityDynamicsListEntity.ContentBean.DataBean.ZanBean  zanBean:zanBeanList){
+                int hasZan = 0;
+                for (CommunityDynamicsListEntity.ContentBean.DataBean.ZanBean zanBean : zanBeanList) {
                     if (current_user_id.equals(zanBean.getFrom_id())) {
-                        hasZan=1; //已经点赞过了不做处理
+                        hasZan = 1; //已经点赞过了不做处理
                         break;
                     }
                 }
-                if (hasZan==0){
+                if (hasZan == 0) {
                     CommunityDynamicsListEntity.ContentBean.DataBean.ZanBean likeZanBean = new CommunityDynamicsListEntity.ContentBean.DataBean.ZanBean();
                     likeZanBean.setFrom_id(current_user_id);
                     likeZanBean.setFrom_nickname(shared.getString(UserAppConst.Colour_NIACKNAME, ""));
@@ -547,7 +584,7 @@ public class DynamicsDetailsActivity extends BaseFragmentActivity implements Vie
                         break;
                     }
                 }
-                if (delPos!=-1){
+                if (delPos != -1) {
                     zanBeanList.remove(delPos);
                     communityLikeListFragment.cancelLike(delPos);
                     is_zan = "2";

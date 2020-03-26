@@ -26,6 +26,8 @@ import android.webkit.WebStorage;
 import android.webkit.WebView;
 import android.widget.EditText;
 
+import com.BeeFramework.Utils.ToastUtil;
+
 import java.lang.ref.WeakReference;
 import java.util.List;
 
@@ -394,6 +396,7 @@ public class DefaultChromeClient extends WebChromeClientProgressWrapper implemen
             filePathCallback.onReceiveValue(new Uri[]{});
             return;
         }
+
         IFileUploadChooser mIFileUploadChooser = this.mIFileUploadChooser;
         this.mIFileUploadChooser = mIFileUploadChooser = new FileUpLoadChooserImpl.Builder()
                 .setWebView(webView)
