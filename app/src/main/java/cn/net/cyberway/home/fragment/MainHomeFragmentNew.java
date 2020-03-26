@@ -1461,7 +1461,6 @@ public class MainHomeFragmentNew extends Fragment implements NewHttpResponse, Vi
                                 home_rv.addHeaderView(community_view);
                                 community_activity_layout.setOnClickListener(this::onClick);
                             }
-
                             if (is_show == 1) {
                                 String homeManagerCache = mShared.getString(UserAppConst.COLOR_COMMUNITY_ACTIVITY, "");
                                 if (!TextUtils.isEmpty(homeManagerCache) && loadCacheData) {

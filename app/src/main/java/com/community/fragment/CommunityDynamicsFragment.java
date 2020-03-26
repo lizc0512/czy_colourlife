@@ -322,7 +322,7 @@ public class CommunityDynamicsFragment extends Fragment implements View.OnClickL
             }
             saveFristDynamicCache();
         } catch (Exception e) {
-
+            ToastUtil.toastShow(getActivity(),e.getMessage());
         }
     }
 

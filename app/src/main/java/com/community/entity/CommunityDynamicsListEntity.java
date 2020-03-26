@@ -311,7 +311,7 @@ public class CommunityDynamicsListEntity extends BaseContentEntity {
             private String is_zan ;
             private int comment_count;
             private int zan_count=0;
-            private String extra;
+            private List<String> extra;
             private List<CommentBean> comment;
             private List<ZanBean> zan;
 
@@ -443,11 +443,11 @@ public class CommunityDynamicsListEntity extends BaseContentEntity {
                 this.zan_count = zan_count;
             }
 
-            public String getExtra() {
+            public List<String>  getExtra() {
                 return extra;
             }
 
-            public void setExtra(String extra) {
+            public void setExtra(List<String>  extra) {
                 this.extra = extra;
             }
 

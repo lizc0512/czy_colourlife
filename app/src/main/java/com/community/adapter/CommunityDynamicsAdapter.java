@@ -115,7 +115,7 @@ public class CommunityDynamicsAdapter extends RecyclerView.Adapter<RecyclerView.
             if (list_type == 2) {
                 //刷新活动的状态  参与人数等
                 CommunityActivityViewHolder holder = (CommunityActivityViewHolder) viewHolder;
-                showActivityContent(dataBean,holder);
+                showActivityContent(dataBean, holder);
             } else {
                 DefaultViewHolder holder = (DefaultViewHolder) viewHolder;
                 if ("like".equals(loadsValue)) {
@@ -137,6 +137,7 @@ public class CommunityDynamicsAdapter extends RecyclerView.Adapter<RecyclerView.
         String content = dataBean.getContent();
         String source_id = dataBean.getSource_id();
         String is_zan = dataBean.getIs_zan();
+
         if (list_type == 2) {
             CommunityActivityViewHolder holder = (CommunityActivityViewHolder) viewHolder;
             String ac_banner = dataBean.getAc_banner();
@@ -153,27 +154,30 @@ public class CommunityDynamicsAdapter extends RecyclerView.Adapter<RecyclerView.
             holder.tv_activity_title.setText(dataBean.getAc_title());
             holder.tv_activity_address.setText(mContext.getResources().getString(R.string.community_activity_item_address) + dataBean.getAc_address());
             holder.tv_activity_date.setText(mContext.getResources().getString(R.string.community_activity_item_date) + dataBean.getAc_address());
-            showActivityContent(dataBean,holder);
+            showActivityContent(dataBean, holder);
         } else {
             int extra_type = dataBean.getExtra_type();
             DefaultViewHolder holder = (DefaultViewHolder) viewHolder;
-            showHeadContent(dataBean, publish_uuid, holder.iv_dynamics_user_pics, holder.tv_dynamics_user_name,
-                    holder.tv_dynamics_user_community, holder.tv_del_owner_dynamics, holder.tv_dynamics_publish_time, holder.iv_dynamics_user_pics);
-            String extra = dataBean.getExtra();
             if (extra_type == 3) {
                 holder.tv_dynamics_text_content.setVisibility(View.GONE);
                 holder.dynamic_image_layout.setVisibility(GONE);
                 holder.share_activity_layout.setVisibility(View.VISIBLE);
-                Map<String, String> shareMap = GsonUtils.gsonObjectToMaps(extra);
-                String shareImageLogo = shareMap.get("logo");
-                String shareDesc = shareMap.get("desc");
-                String shareUrl = shareMap.get("url");
+                List<String> shareList = dataBean.getExtra();
+                String shareImageLogo="";
+                String shareDesc="";
+                String shareUrl = null;
+                if (shareList.size() >= 3) {
+                    shareImageLogo = shareList.get(0);
+                    shareDesc = shareList.get(1);
+                    shareUrl = shareList.get(2);
+                }
                 GlideImageLoader.loadImageDefaultDisplay(mContext, shareImageLogo, holder.iv_share_logo, R.drawable.share_default_logo, R.drawable.share_default_logo);
                 holder.tv_share_title.setText(shareDesc);
+                String finalShareUrl = shareUrl;
                 holder.share_activity_layout.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        LinkParseUtil.parse(mContext, shareUrl, "");
+                        LinkParseUtil.parse(mContext, finalShareUrl, "");
                     }
                 });
             } else {
@@ -189,7 +193,7 @@ public class CommunityDynamicsAdapter extends RecyclerView.Adapter<RecyclerView.
                 ViewGroup.LayoutParams params = holder.tv_dynamics_text_content.getLayoutParams();
                 params.height = ViewGroup.LayoutParams.WRAP_CONTENT;
                 holder.tv_dynamics_text_content.setLayoutParams(params);
-                List<String> imgList = GsonUtils.jsonToList(extra, String.class);
+                List<String> imgList = dataBean.getExtra();
                 int imgSize = imgList == null ? 0 : imgList.size();
                 if (imgSize == 0) {
                     holder.rv_dynamics_images.setVisibility(GONE);
@@ -208,6 +212,8 @@ public class CommunityDynamicsAdapter extends RecyclerView.Adapter<RecyclerView.
                     holder.rv_dynamics_images.setAdapter(communityImageAdapter);
                 }
             }
+            showHeadContent(dataBean, publish_uuid, holder.iv_dynamics_user_pics, holder.tv_dynamics_user_name,
+                    holder.tv_dynamics_user_community, holder.tv_del_owner_dynamics, holder.tv_dynamics_publish_time, holder.iv_dynamics_user_operate);
             showTipOffContent(source_id, position, holder.iv_dynamics_user_operate, holder.itemView);
             showDelContent(source_id, position, holder.tv_del_owner_dynamics);
             showLikeContent(is_zan, zan_count, source_id, position, holder.tv_dynamics_like);

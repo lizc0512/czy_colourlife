@@ -83,7 +83,7 @@ public class GsonUtils {
                             JsonObject jsonObject = json.getAsJsonObject();
                             Set<Map.Entry<String, JsonElement>> entrySet = jsonObject.entrySet();
                             for (Map.Entry<String, JsonElement> entry : entrySet) {
-                                JsonElement  jsonElement=entry.getValue();
+                                JsonElement jsonElement = entry.getValue();
                                 if (jsonElement.isJsonObject()) {
                                     treeMap.put(entry.getKey(), jsonElement.toString());
                                 } else {

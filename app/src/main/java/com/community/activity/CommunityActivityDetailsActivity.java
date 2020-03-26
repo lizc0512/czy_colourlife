@@ -107,18 +107,18 @@ public class CommunityActivityDetailsActivity extends BaseActivity implements Vi
 
     private ArrayList<CommunityImageView> mUploadImageViews = new ArrayList<CommunityImageView>();
     private CommunityDynamicsModel communityDynamicsModel;
-    private int picSize;
     private String source_id;//活动的id
     private String contact_mobile;//活动的发起人的联系方式
     private String ac_status;//活动的状态
     public Luban.Builder lubanBuilder;
     private ImagePicker imagePicker;
+    private int maxPickImageSize = 2;
     private int page = 1;
     private int delPos;
     private int join_number;//参与人数
     private String activityTitle;//活动的标题
     private String activityUrl;//活动的链接
-    private List<String>  join_user_list; //活动参与人数的头像
+    private List<String> join_user_list; //活动参与人数的头像
 
     private CommunityActivityCommentAdapter communityActivityCommentAdapter;
     private List<CommunityActivityListEntity.ContentBean.DataBean> commentBeanList;
@@ -146,7 +146,7 @@ public class CommunityActivityDetailsActivity extends BaseActivity implements Vi
         imagePicker.setShowCamera(false);  //显示拍照按钮
         imagePicker.setCrop(false);
         imagePicker.setMultiMode(true);
-        imagePicker.setSelectLimit(2);    //选中数量限制
+        imagePicker.setSelectLimit(maxPickImageSize);    //选中数量限制
         imagePicker.setOutPutX(1000);//保存文件的宽度。单位像素
         imagePicker.setOutPutY(1000);//保存文件的高度。单位像素
         lubanBuilder = Luban.with(CommunityActivityDetailsActivity.this);
@@ -243,9 +243,9 @@ public class CommunityActivityDetailsActivity extends BaseActivity implements Vi
                 finish();
                 break;
             case R.id.img_right:
-                ShareActivityDialog shareActivityDialog=new ShareActivityDialog(CommunityActivityDetailsActivity.this,R.style.custom_dialog_theme);
+                ShareActivityDialog shareActivityDialog = new ShareActivityDialog(CommunityActivityDetailsActivity.this, R.style.custom_dialog_theme);
                 shareActivityDialog.show();
-                shareActivityDialog.setShareContent(activityTitle,activityTitle,activityUrl);
+                shareActivityDialog.setShareContent(activityTitle, activityTitle, activityUrl);
                 break;
             case R.id.contact_person_layout:
                 PermissionUtils.showPhonePermission(CommunityActivityDetailsActivity.this, contact_mobile);
@@ -331,7 +331,7 @@ public class CommunityActivityDetailsActivity extends BaseActivity implements Vi
 
             @Override
             public void onClick(View v) {
-                imagePicker.setSelectLimit(2 - mUploadImageViews.size());
+                imagePicker.setSelectLimit(maxPickImageSize - mUploadImageViews.size());
                 imagePicker.clearSelectedImages();
                 Intent intent = new Intent(CommunityActivityDetailsActivity.this, ImageGridActivity.class);
                 startActivityForResult(intent, REQUEST_PHOTO);
@@ -346,7 +346,7 @@ public class CommunityActivityDetailsActivity extends BaseActivity implements Vi
             public void onClick(View v) {
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                     if (AndPermission.hasPermission(getApplicationContext(), Manifest.permission.CAMERA)) {
-                        imagePicker.setSelectLimit(2 - mUploadImageViews.size());
+                        imagePicker.setSelectLimit(maxPickImageSize - mUploadImageViews.size());
                         imagePicker.clearSelectedImages();
                         Intent intent = new Intent(CommunityActivityDetailsActivity.this, ImageGridActivity.class);
                         intent.putExtra(ImageGridActivity.EXTRAS_TAKE_PICKERS, true); // 是否是直接打开相机
@@ -355,7 +355,7 @@ public class CommunityActivityDetailsActivity extends BaseActivity implements Vi
                         ToastUtil.toastShow(getApplicationContext(), "相机权限未开启，请去开启该权限");
                     }
                 } else {
-                    imagePicker.setSelectLimit(2 - mUploadImageViews.size());
+                    imagePicker.setSelectLimit(maxPickImageSize - mUploadImageViews.size());
                     imagePicker.clearSelectedImages();
                     Intent intent = new Intent(CommunityActivityDetailsActivity.this, ImageGridActivity.class);
                     intent.putExtra(ImageGridActivity.EXTRAS_TAKE_PICKERS, true); // 是否是直接打开相机
@@ -422,8 +422,8 @@ public class CommunityActivityDetailsActivity extends BaseActivity implements Vi
         joinActivityGridLayout.addView(uploadImageView, joinActivityGridLayout.getChildCount() - 1);
         mUploadImageViews.add(uploadImageView);
         uploadImageView.setImageWithFilePath(imagePath, BitmapFactory.decodeFile(imagePath));
-        picSize = joinActivityGridLayout.getChildCount();
-        if (picSize > 2 || picSize == 0) {
+        int picSize = joinActivityGridLayout.getChildCount();
+        if (picSize > maxPickImageSize || picSize == 0) {
             add_ImageView.setVisibility(View.GONE);
         } else {
             add_ImageView.setVisibility(View.VISIBLE);
@@ -452,20 +452,22 @@ public class CommunityActivityDetailsActivity extends BaseActivity implements Vi
     }
 
     private void joinCommunityActivity() {
-        List<String> uploadObjList = new ArrayList<>();
-        if (picSize > 0) {
+        if (mUploadImageViews.size() < maxPickImageSize) {
+            ToastUtil.toastShow(this, "图片数量不够");
+        } else {
+            List<String> uploadObjList = new ArrayList<>();
             for (CommunityImageView communityImageView : mUploadImageViews) {
                 if (!TextUtils.isEmpty(communityImageView.mUploadPhotoId)) {
                     uploadObjList.add(communityImageView.mUploadPhotoId);
                 }
             }
-            if (picSize != uploadObjList.size()) {
+            if (maxPickImageSize != uploadObjList.size()) {
                 ToastUtil.toastShow(this, "请等待图片上传完成后发布");
                 return;
             }
+            FileUtils.delDynamicPicFolder();
+            communityDynamicsModel.joinCommunityActivity(2, source_id, GsonUtils.gsonString(uploadObjList), CommunityActivityDetailsActivity.this);
         }
-        FileUtils.delDynamicPicFolder();
-        communityDynamicsModel.joinCommunityActivity(2, source_id, GsonUtils.gsonString(uploadObjList), CommunityActivityDetailsActivity.this);
     }
 
     private Dialog inputDialog;
@@ -540,12 +542,12 @@ public class CommunityActivityDetailsActivity extends BaseActivity implements Vi
 
 
     public void setDelCommentId(String comment_id, int position) {
-        delPos=position;
+        delPos = position;
         DeleteNoticeDialog deleteNoticeDialog = new DeleteNoticeDialog(CommunityActivityDetailsActivity.this, R.style.custom_dialog_theme);
         deleteNoticeDialog.show();
         deleteNoticeDialog.btn_define.setOnClickListener(v -> {
             //删除评论
-            communityDynamicsModel.delActivityComment(4,source_id,comment_id,CommunityActivityDetailsActivity.this);
+            communityDynamicsModel.delActivityComment(4, source_id, comment_id, CommunityActivityDetailsActivity.this);
             deleteNoticeDialog.dismiss();
         });
     }
@@ -605,10 +607,10 @@ public class CommunityActivityDetailsActivity extends BaseActivity implements Vi
                         tv_fee_price.setVisibility(View.VISIBLE);
                         tv_fee_price.setText(contentBean.getAc_fee());
                     }
-                    activityTitle=contentBean.getAc_title();
+                    activityTitle = contentBean.getAc_title();
                     tv_activity_title.setText(activityTitle);
                     join_number = contentBean.getJoin_num();
-                    join_user_list=contentBean.getJoin_user();
+                    join_user_list = contentBean.getJoin_user();
                     showCommunityActivity(CommunityActivityDetailsActivity.this, join_number, join_user_list, iv_first_photo, iv_second_photo, iv_third_photo, tv_join_person);
                     tv_activity_starttime.setText(TimeUtil.getDateToString(contentBean.getBegin_time()) + "-" + TimeUtil.getDateToString(contentBean.getEnd_time()));
                     tv_activity_address.setText(contentBean.getAc_address());
@@ -656,7 +658,7 @@ public class CommunityActivityDetailsActivity extends BaseActivity implements Vi
                     if ("5".equals(ac_status)) {
                         ToastUtil.toastJoinActivity(CommunityActivityDetailsActivity.this);
                         join_number++;
-                        if (join_number<=3){
+                        if (join_number <= 3) {
                             join_user_list.add(shared.getString(UserAppConst.Colour_head_img, ""));
                         }
                         updateActivityStatus();
@@ -676,7 +678,7 @@ public class CommunityActivityDetailsActivity extends BaseActivity implements Vi
                 } catch (Exception e) {
 
                 }
-                CommunityActivityListEntity.ContentBean.DataBean  commentBean = new CommunityActivityListEntity.ContentBean.DataBean();
+                CommunityActivityListEntity.ContentBean.DataBean commentBean = new CommunityActivityListEntity.ContentBean.DataBean();
                 commentBean.setContent(content);
                 commentBean.setId(commentId);
                 commentBean.setSource_id(source_id);
@@ -691,14 +693,14 @@ public class CommunityActivityDetailsActivity extends BaseActivity implements Vi
                 if (TextUtils.isEmpty(toUserId)) {
                     ToastUtil.toastShow(CommunityActivityDetailsActivity.this, "留言成功");
                 } else {
-                    //回复别人的评论
+                    //评论别人的留言
                     ToastUtil.toastShow(CommunityActivityDetailsActivity.this, "评论成功");
                     commentBean.setTo_nickname(fromNickName);
                     commentBean.setTo_id(toUserId);
                 }
                 commentBeanList.add(commentBean);
                 communityActivityCommentAdapter.notifyDataSetChanged();
-                toUserId="";
+                toUserId = "";
                 break;
             case 4://删除留言
                 commentBeanList.remove(delPos);
@@ -739,18 +741,18 @@ public class CommunityActivityDetailsActivity extends BaseActivity implements Vi
         updateActivityStatus();
     }
 
-
-    private void updateActivityStatus(){
-        EventBus eventBus=EventBus.getDefault();
-        Message message=Message.obtain();
-        Bundle bundle=new Bundle();
-        bundle.putString("ac_status",ac_status);
-        bundle.putString("sourceId",source_id);
-        bundle.putInt("join_number",join_number);
-        bundle.putInt("position",-1);
+    /***社区活动状态的更新*/
+    private void updateActivityStatus() {
+        EventBus eventBus = EventBus.getDefault();
+        Message message = Message.obtain();
+        Bundle bundle = new Bundle();
+        bundle.putString("ac_status", ac_status);
+        bundle.putString("sourceId", source_id);
+        bundle.putInt("join_number", join_number);
+        bundle.putInt("position", -1);
         message.setData(bundle);
-        message.obj=join_user_list;
-        message.what=CHANGE_ACTIVITY_STATUS;
+        message.obj = join_user_list;
+        message.what = CHANGE_ACTIVITY_STATUS;
         eventBus.post(message);
     }
 }

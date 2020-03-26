@@ -185,7 +185,6 @@ public class DynamicsDetailsActivity extends BaseFragmentActivity implements Vie
         Intent intent = getIntent();
         dataBean = (CommunityDynamicsListEntity.ContentBean.DataBean) intent.getSerializableExtra(DYNAMICS_DETAILS);
         int extraType = dataBean.getExtra_type();
-        String extra = dataBean.getExtra();
         communityLikeListFragment = new CommunityLikeListFragment();
         fragmentList.add(communityLikeListFragment);
         communityCommentListFragment = new CommunityCommentListFragment();
@@ -247,22 +246,28 @@ public class DynamicsDetailsActivity extends BaseFragmentActivity implements Vie
             layout_dynamics_images.setVisibility(GONE);
             layout_share_dynamics.setVisibility(View.VISIBLE);
             //设置分享的数据
-            Map<String, String> shareMap = GsonUtils.gsonObjectToMaps(extra);
-            String shareImageLogo = shareMap.get("logo");
-            String shareDesc = shareMap.get("desc");
-            String shareUrl = shareMap.get("url");
+            List<String> shareList = dataBean.getExtra();
+            String shareImageLogo="";
+            String shareDesc="";
+            String shareUrl = null;
+            if (shareList.size() >= 3) {
+                shareImageLogo = shareList.get(0);
+                shareDesc = shareList.get(1);
+                shareUrl = shareList.get(2);
+            }
             GlideImageLoader.loadImageDefaultDisplay(DynamicsDetailsActivity.this, shareImageLogo, iv_share_logo, R.drawable.share_default_logo, R.drawable.share_default_logo);
             tv_share_title.setText(shareDesc);
+            String finalShareUrl = shareUrl;
             layout_share_dynamics.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    LinkParseUtil.parse(DynamicsDetailsActivity.this, shareUrl, "");
+                    LinkParseUtil.parse(DynamicsDetailsActivity.this, finalShareUrl, "");
                 }
             });
         } else {
             layout_dynamics_images.setVisibility(View.VISIBLE);
             layout_share_dynamics.setVisibility(GONE);
-            List<String> imgList = GsonUtils.jsonToList(extra, String.class);
+            List<String> imgList  = dataBean.getExtra();
             int imgSize = imgList == null ? 0 : imgList.size();
             if (imgSize == 0) {
                 rv_dynamics_images.setVisibility(GONE);

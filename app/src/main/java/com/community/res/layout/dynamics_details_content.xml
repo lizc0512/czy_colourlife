@@ -109,6 +109,7 @@
             android:id="@+id/tv_share_title"
             android:layout_width="wrap_content"
             android:layout_marginLeft="12dp"
+            android:layout_toRightOf="@id/iv_share_logo"
             android:textColor="@color/color_25282e"
             android:singleLine="true"
             android:textSize="14sp"
