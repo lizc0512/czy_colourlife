@@ -399,11 +399,11 @@ public class WebViewActivity extends BaseActivity implements View.OnLongClickLis
                 break;
             case R.id.rl_llq:
                 CommunityDynamicsModel  communityDynamicsModel=new CommunityDynamicsModel(WebViewActivity.this);
-                Map<String,String> shareParams=new HashMap<>();
-                shareParams.put("logo",shareImg);
-                shareParams.put("desc",webTitle);
-                shareParams.put("url",shareUrl);
-                communityDynamicsModel.publicUserDynamic(5,"","3",GsonUtils.gsonString(shareParams),false,WebViewActivity.this);
+                List<String> shareList=new ArrayList<>();
+                shareList.add(shareImg);
+                shareList.add(webTitle);
+                shareList.add(shareUrl);
+                communityDynamicsModel.publicUserDynamic(5,"","3",GsonUtils.gsonString(shareList),false,WebViewActivity.this);
                 closeShareLayout();
                 break;
         }

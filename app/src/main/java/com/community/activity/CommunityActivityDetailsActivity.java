@@ -728,8 +728,8 @@ public class CommunityActivityDetailsActivity extends BaseActivity implements Vi
                 break;
             case 4://删除留言
                 commentBeanList.remove(delPos);
-                communityActivityCommentAdapter.notifyItemRemoved(delPos);
-                communityActivityCommentAdapter.notifyItemRangeChanged(delPos, commentBeanList.size());
+                communityActivityCommentAdapter. notifyItemRemoved(delPos);
+                communityActivityCommentAdapter.notifyItemRangeChanged(delPos, commentBeanList.size()-delPos);
                 break;
         }
     }
