@@ -2,6 +2,7 @@ package com.community.activity;
 
 import android.Manifest;
 import android.app.Dialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.BitmapFactory;
 import android.graphics.Rect;
@@ -113,6 +114,8 @@ public class CommunityActivityDetailsActivity extends BaseActivity implements Vi
     public Luban.Builder lubanBuilder;
     private ImagePicker imagePicker;
     private int maxPickImageSize = 2;
+    private String pickerPrompt;
+    private String pickRequire;
     private int page = 1;
     private int delPos;
     private int join_number;//参与人数
@@ -161,8 +164,6 @@ public class CommunityActivityDetailsActivity extends BaseActivity implements Vi
         iv_second_photo = headView.findViewById(R.id.iv_second_photo);
         iv_third_photo = headView.findViewById(R.id.iv_third_photo);
         tv_join_person = headView.findViewById(R.id.tv_join_person);
-
-
         tv_fee_price = headView.findViewById(R.id.tv_fee_price);
         tv_activity_starttime = headView.findViewById(R.id.tv_activity_starttime);
         tv_activity_address = headView.findViewById(R.id.tv_activity_address);
@@ -172,7 +173,9 @@ public class CommunityActivityDetailsActivity extends BaseActivity implements Vi
         iv_contact_header = headView.findViewById(R.id.iv_contact_header);
         tv_contact_name = headView.findViewById(R.id.tv_contact_name);
         webview = headView.findViewById(R.id.webview);
+        no_data_layout = findViewById(R.id.no_data_layout);
         rv_message.addHeaderView(headView);
+        contact_person_layout.setOnClickListener(this::onClick);
     }
 
 
@@ -181,15 +184,14 @@ public class CommunityActivityDetailsActivity extends BaseActivity implements Vi
         user_top_view_title = findViewById(R.id.user_top_view_title);
         img_right = findViewById(R.id.img_right);
         img_right.setVisibility(View.VISIBLE);
+        img_right.setPadding(20,20,20,20);
         img_right.setImageResource(R.drawable.community_activity_share);
         rv_message = findViewById(R.id.rv_message);
-        no_data_layout = findViewById(R.id.no_data_layout);
         rv_message.useDefaultLoadMore();
         send_message_layout = findViewById(R.id.send_message_layout);
         tv_join_activity = findViewById(R.id.tv_join_activity);
         user_top_view_back.setOnClickListener(this);
         img_right.setOnClickListener(this);
-        contact_person_layout.setOnClickListener(this);
         send_message_layout.setOnClickListener(this);
         tv_join_activity.setOnClickListener(this);
         user_top_view_title.setText(getResources().getString(R.string.community_activity_details));
@@ -250,20 +252,28 @@ public class CommunityActivityDetailsActivity extends BaseActivity implements Vi
             case R.id.contact_person_layout:
                 PermissionUtils.showPhonePermission(CommunityActivityDetailsActivity.this, contact_mobile);
                 break;
-            case R.id.send_message_layout:
-                showInputCommentDialog(rv_message.getChildAt(commentBeanList.size() - 1), source_id, "", "");
+            case R.id.send_message_layout://因为addheadviw了
+               int size= commentBeanList.size();
+               if (size==0){
+                   showInputCommentDialog(null, source_id, "", "");
+               }else{
+                   showInputCommentDialog(rv_message.getChildAt(size), source_id, "", "");
+               }
                 break;
             case R.id.tv_join_activity:
                 if ("5".equals(ac_status)) { //活动已参与
                     ToastUtil.toastShow(CommunityActivityDetailsActivity.this, getResources().getString(R.string.community_activity_joined_notice));
                 } else {
-                    if (null == joinActivityDialog) {
-                        joinActivityDialog = new JoinActivityDialog(CommunityActivityDetailsActivity.this, R.style.custom_dialog_theme);
+                    if ("1".equals(pickRequire)) {
+                        if (null == joinActivityDialog) {
+                            joinActivityDialog = new JoinActivityDialog(CommunityActivityDetailsActivity.this, R.style.custom_dialog_theme);
+                        }
+                        joinActivityDialog.show();
+                        showAddPicView();
+                    } else {
+                        communityDynamicsModel.joinCommunityActivity(2, source_id, "", CommunityActivityDetailsActivity.this);
                     }
-                    joinActivityDialog.show();
-                    showAddPicView();
                 }
-
                 break;
             case R.id.tv_define_join:
                 if (null != joinActivityDialog) {
@@ -286,6 +296,7 @@ public class CommunityActivityDetailsActivity extends BaseActivity implements Vi
     private void showAddPicView() {
         joinActivityGridLayout = joinActivityDialog.join_activity_photo;
         joinActivityDialog.join_activity_photo.removeAllViews();
+        joinActivityDialog.tv_join_notice.setText("参与此活动，请上传" + maxPickImageSize + "张" + pickerPrompt);
         joinActivityDialog.tv_define_join.setOnClickListener(this::onClick);
         joinActivityDialog.tv_cancel_join.setOnClickListener(this::onClick);
         add_ImageView = new ImageView(this);
@@ -507,14 +518,16 @@ public class CommunityActivityDetailsActivity extends BaseActivity implements Vi
         });
         inputDialog.show();
         int finalItemBottomY = itemBottomY;
-        itemView.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                LinearLayout llCommentInput = inputDialog.findViewById(R.id.ll_comment_input);
-                int y = getCoordinateY(llCommentInput);
-                rv_message.smoothScrollBy(0, finalItemBottomY - y);
-            }
-        }, 300);
+        if (null!=itemView){
+            itemView.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    LinearLayout llCommentInput = inputDialog.findViewById(R.id.ll_comment_input);
+                    int y = getCoordinateY(llCommentInput);
+                    rv_message.smoothScrollBy(0, finalItemBottomY - y);
+                }
+            }, 300);
+        }
         getWindow().getDecorView().getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
             @Override
             public void onGlobalLayout() {
@@ -531,13 +544,20 @@ public class CommunityActivityDetailsActivity extends BaseActivity implements Vi
                     } else {
                         KeyBoardUtils.closeKeybord(feed_comment_edittext, CommunityActivityDetailsActivity.this);
                         inputDialog.dismiss();
-                        communityDynamicsModel.commentCommunityActivity(3, content, sourceId, toUserId, CommunityActivityDetailsActivity.this::OnHttpResponse);
+                        communityDynamicsModel.commentCommunityActivity(3, sourceId, content, toUserId, CommunityActivityDetailsActivity.this::OnHttpResponse);
                     }
                 } else {
                     ToastUtil.toastShow(CommunityActivityDetailsActivity.this, "输入的内容不能为空");
                 }
             }
         });
+        inputDialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
+            @Override
+            public void onDismiss(DialogInterface dialog) {
+                tv_join_activity.setBackgroundResource(R.color.color_3282fa);
+            }
+        });
+        tv_join_activity.setBackgroundResource(R.color.white);
     }
 
 
@@ -597,13 +617,13 @@ public class CommunityActivityDetailsActivity extends BaseActivity implements Vi
                     CommunityActivityDetailsEntity communityActivityDetailsEntity = GsonUtils.gsonToBean(result, CommunityActivityDetailsEntity.class);
                     CommunityActivityDetailsEntity.ContentBean contentBean = communityActivityDetailsEntity.getContent();
                     GlideImageLoader.loadImageDisplay(CommunityActivityDetailsActivity.this, contentBean.getAc_banner(), iv_activity_head);
-                    String oproperty = contentBean.getAc_oproperty();
-                    if ("免费".equals(oproperty)) {
-                        tv_fee_status.setVisibility(View.GONE);
-                        tv_fee_price.setVisibility(View.GONE);
-                    } else {
+                    String ac_tag = contentBean.getAc_tag();
+                    if ("免费".equals(ac_tag)) {
                         tv_fee_status.setVisibility(View.VISIBLE);
-                        tv_fee_status.setText(oproperty);
+                        tv_fee_price.setVisibility(View.GONE);
+                        tv_fee_status.setText(ac_tag);
+                    } else {
+                        tv_fee_status.setVisibility(View.GONE);
                         tv_fee_price.setVisibility(View.VISIBLE);
                         tv_fee_price.setText(contentBean.getAc_fee());
                     }
@@ -612,14 +632,17 @@ public class CommunityActivityDetailsActivity extends BaseActivity implements Vi
                     join_number = contentBean.getJoin_num();
                     join_user_list = contentBean.getJoin_user();
                     showCommunityActivity(CommunityActivityDetailsActivity.this, join_number, join_user_list, iv_first_photo, iv_second_photo, iv_third_photo, tv_join_person);
-                    tv_activity_starttime.setText(TimeUtil.getDateToString(contentBean.getBegin_time()) + "-" + TimeUtil.getDateToString(contentBean.getEnd_time()));
+                    tv_activity_starttime.setText(TimeUtil.getYearTime(contentBean.getBegin_time()*1000 , "yyyy-MM-dd") + "-" + TimeUtil.getYearTime(contentBean.getEnd_time()*1000, "yyyy-MM-dd"));
                     tv_activity_address.setText(contentBean.getAc_address());
-                    tv_activity_endtime.setText(TimeUtil.getDateToString(contentBean.getApply_time()));
+                    tv_activity_endtime.setText(TimeUtil.getYearTime(contentBean.getStop_apply_time()*1000, "yyyy-MM-dd"));
                     tv_activity_person.setText(join_number + "人");
                     GlideImageLoader.loadImageDisplay(CommunityActivityDetailsActivity.this, contentBean.getContact_user_avatar(), iv_contact_header);
                     tv_contact_name.setText(contentBean.getContact_user_name());
                     contact_mobile = contentBean.getContact_user_mobile();
                     ac_status = contentBean.getAc_status();
+                    maxPickImageSize = contentBean.getPicture_num();
+                    pickerPrompt = contentBean.getPicture_prompt();
+                    pickRequire = contentBean.getPicture_require();
                     showAcStatus();
                 } catch (Exception e) {
 
@@ -642,9 +665,9 @@ public class CommunityActivityDetailsActivity extends BaseActivity implements Vi
                     }
                     communityActivityCommentAdapter.notifyDataSetChanged();
                     if (total == 0) {
-                        no_data_layout.setVisibility(View.GONE);
-                    } else {
                         no_data_layout.setVisibility(View.VISIBLE);
+                    } else {
+                        no_data_layout.setVisibility(View.GONE);
                         rv_message.loadMoreFinish(dataEmpty, hasMore);
                     }
                 } catch (Exception e) {
@@ -689,7 +712,7 @@ public class CommunityActivityDetailsActivity extends BaseActivity implements Vi
                 commentBean.setFrom_id(fromSourceId);
                 commentBean.setFrom_nickname(shared.getString(UserAppConst.Colour_NIACKNAME, ""));
                 long currentTime = System.currentTimeMillis() / 1000;
-                commentBean.setCreated_at(currentTime);
+                commentBean.setUpdated_at(currentTime);
                 if (TextUtils.isEmpty(toUserId)) {
                     ToastUtil.toastShow(CommunityActivityDetailsActivity.this, "留言成功");
                 } else {
@@ -699,7 +722,8 @@ public class CommunityActivityDetailsActivity extends BaseActivity implements Vi
                     commentBean.setTo_id(toUserId);
                 }
                 commentBeanList.add(commentBean);
-                communityActivityCommentAdapter.notifyDataSetChanged();
+                communityActivityCommentAdapter.notifyItemInserted(communityActivityCommentAdapter.getItemCount());
+                communityActivityCommentAdapter.notifyItemChanged(communityActivityCommentAdapter.getItemCount());
                 toUserId = "";
                 break;
             case 4://删除留言
@@ -730,7 +754,7 @@ public class CommunityActivityDetailsActivity extends BaseActivity implements Vi
             case "5":
                 tv_join_activity.setEnabled(true);
                 tv_join_activity.setBackgroundColor(getResources().getColor(R.color.color_3282fa));
-                tv_join_activity.setText(getResources().getString(R.string.community_activity_finished));
+                tv_join_activity.setText(getResources().getString(R.string.community_activity_joined));
                 break;
             default:
                 tv_join_activity.setEnabled(true);

@@ -587,7 +587,7 @@ public class CommunityDynamicsModel extends BaseModel {
             public void onFailed(int what, Response<String> response) {
 
             }
-        }, true, true);
+        }, true, false);
     }
 
     public void delActivityComment(int what,String source_id, String comment_id,NewHttpResponse newHttpResponse) {
@@ -612,6 +612,6 @@ public class CommunityDynamicsModel extends BaseModel {
             public void onFailed(int what, Response<String> response) {
 
             }
-        }, true, true);
+        }, true, false);
     }
 }

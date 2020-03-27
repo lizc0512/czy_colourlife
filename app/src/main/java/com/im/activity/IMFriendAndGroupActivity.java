@@ -64,6 +64,7 @@ public class IMFriendAndGroupActivity extends BaseActivity implements View.OnCli
         sortListView = (ListView) findViewById(R.id.phone_lv);
         user_top_view_title.setText("通讯录");
         img_right.setVisibility(View.VISIBLE);
+        img_right.setPadding(20,20,20,20);
         img_right.setImageResource(R.drawable.im_icon_nav_friends);
         sortListView = (ListView) findViewById(R.id.phone_lv);
         user_top_view_back.setOnClickListener(this);

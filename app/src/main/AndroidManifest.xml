@@ -776,6 +776,7 @@
 
         <activity
             android:name="com.community.activity.CommunityActivityDetailsActivity"
+            android:windowSoftInputMode="stateHidden|adjustResize"
             android:screenOrientation="portrait" />
 
         <activity

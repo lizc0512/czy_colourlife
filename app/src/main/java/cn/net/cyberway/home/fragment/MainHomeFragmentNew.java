@@ -1467,7 +1467,7 @@ public class MainHomeFragmentNew extends Fragment implements NewHttpResponse, Vi
                                     homeCommunityActivityShow(homeManagerCache);
                                 }
                                 if (!loadCacheData) {
-                                    handler.sendEmptyMessageDelayed(5, 7000);
+                                    handler.sendEmptyMessageDelayed(8, 7000);
                                 }
                             } else {
                                 community_activity_layout.setVisibility(View.GONE);
@@ -1512,7 +1512,7 @@ public class MainHomeFragmentNew extends Fragment implements NewHttpResponse, Vi
             CommunityActivityEntity communityActivityEntity = GsonUtils.gsonToBean(homeCommunityActivity, CommunityActivityEntity.class);
             CommunityActivityEntity.ContentBean contentBean = communityActivityEntity.getContent();
             source_id = contentBean.getSource_id();
-            GlideImageLoader.loadImageDisplay(getActivity(), contentBean.getAc_banner(), iv_activity_image);
+            GlideImageLoader.loadTopRightCornerImageView(getActivity(), contentBean.getAc_banner(), iv_activity_image);
             String oproperty = contentBean.getAc_oproperty();
             if (oproperty.length() <= 4) {
                 iv_activity_type.setText(oproperty);

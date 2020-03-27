@@ -11,8 +11,9 @@ import java.util.List;
  **/
 public class CommunityActivityDetailsEntity extends BaseContentEntity {
 
+
     /**
-     * content : {"id":1,"source_id":"2020_1","list_type":2,"ac_banner":"https://pics-czy-cdn.colourlife.com/dev-5ccec537ddda7439048.jpg","ac_tag":"免费","ac_fee":0,"ac_oproperty":"官方活动","ac_title":"最美宠物摄影图片活动","ac_address":"七星小区","ac_status":1,"apply_time":1585932055,"begin_time":1585942055,"end_time":1586942055,"contact_user_id":111515,"contact_user_name":"张锡旺","contact_user_mobile":"18617194368","contact_user_avatar":"https://pics-czy-cdn.colourlife.com/dev-5ccec537ddda7439048.jpg","is_join":1,"join_num":10,"join_user":["https://nczy-user-avatar.oss-cn-shenzhen.aliyuncs.com/czy-Portrait/pro-5e719b79f3100478546.jpg","https://nczy-user-avatar.oss-cn-shenzhen.aliyuncs.com/czy-Portrait/pro-5e4737866af4e327676.jpg","https://nczy-user-avatar.oss-cn-shenzhen.aliyuncs.com/czy-Portrait/pro-5e5e3c3b1fb37332374.jpg"]}
+     * content : {"id":4,"ac_type":"普适性活动","ac_title":"一起来春游呀，哈哈哈","ac_category":"春节活动","ac_status":5,"operator":"","operator_id":1002646939,"operator_oa":"","ac_tag":"免费","ac_fee":0,"ac_address":"七星小区门口","limit_num":10,"stop_apply_time":1586016000,"begin_time":1586102400,"end_time":1586448000,"contact_user_id":21541,"picture_require":1,"picture_num":3,"picture_prompt":"","ac_banner":"https://pics-czy-cdn.colourlife.com/dev-5ccec537ddda7439048.jpg","ac_detail":"","created_at":"1585227490","updated_at":"1585227490","contact_user_name":"张锡旺","contact_user_mobile":"18617194368","contact_user_avatar":"https://nczy-user-avatar.oss-cn-shenzhen.aliyuncs.com/czy-Portrait/dev-5e6736ae6eb6e384325.jpg","source_id":"2020_4","join_num":0,"join_user":[]}
      * contentEncrypt :
      */
 
@@ -37,79 +38,129 @@ public class CommunityActivityDetailsEntity extends BaseContentEntity {
 
     public static class ContentBean {
         /**
-         * id : 1
-         * source_id : 2020_1
-         * list_type : 2
-         * ac_banner : https://pics-czy-cdn.colourlife.com/dev-5ccec537ddda7439048.jpg
+         * id : 4
+         * ac_type : 普适性活动
+         * ac_title : 一起来春游呀，哈哈哈
+         * ac_category : 春节活动
+         * ac_status : 5
+         * operator :
+         * operator_id : 1002646939
+         * operator_oa :
          * ac_tag : 免费
          * ac_fee : 0
-         * ac_oproperty : 官方活动
-         * ac_title : 最美宠物摄影图片活动
-         * ac_address : 七星小区
-         * ac_status : 1
-         * apply_time : 1585932055
-         * begin_time : 1585942055
-         * end_time : 1586942055
-         * contact_user_id : 111515
+         * ac_address : 七星小区门口
+         * limit_num : 10
+         * stop_apply_time : 1586016000
+         * begin_time : 1586102400
+         * end_time : 1586448000
+         * contact_user_id : 21541
+         * picture_require : 1
+         * picture_num : 3
+         * picture_prompt :
+         * ac_banner : https://pics-czy-cdn.colourlife.com/dev-5ccec537ddda7439048.jpg
+         * ac_detail :
+         * created_at : 1585227490
+         * updated_at : 1585227490
          * contact_user_name : 张锡旺
          * contact_user_mobile : 18617194368
-         * contact_user_avatar : https://pics-czy-cdn.colourlife.com/dev-5ccec537ddda7439048.jpg
-         * is_join : 1
-         * join_num : 10
-         * join_user : ["https://nczy-user-avatar.oss-cn-shenzhen.aliyuncs.com/czy-Portrait/pro-5e719b79f3100478546.jpg","https://nczy-user-avatar.oss-cn-shenzhen.aliyuncs.com/czy-Portrait/pro-5e4737866af4e327676.jpg","https://nczy-user-avatar.oss-cn-shenzhen.aliyuncs.com/czy-Portrait/pro-5e5e3c3b1fb37332374.jpg"]
+         * contact_user_avatar : https://nczy-user-avatar.oss-cn-shenzhen.aliyuncs.com/czy-Portrait/dev-5e6736ae6eb6e384325.jpg
+         * source_id : 2020_4
+         * join_num : 0
+         * join_user : []
          */
 
-        private String id;
-        private String source_id;
-        private String list_type;
-        private String ac_banner;
+        private int id;
+        private String ac_type;
+        private String ac_title;
+        private String ac_category;
+        private String ac_status;
+        private String operator;
+        private String operator_id;
+        private String operator_oa;
         private String ac_tag;
         private String ac_fee;
-        private String ac_oproperty;
-        private String ac_title;
         private String ac_address;
-        private String ac_status;
-        private int apply_time;
-        private int begin_time;
-        private int end_time;
+        private int limit_num;
+        private long stop_apply_time;
+        private long begin_time;
+        private long end_time;
         private String contact_user_id;
+        private String picture_require;
+        private int picture_num;
+        private String picture_prompt;
+        private String ac_banner;
+        private String ac_detail;
+        private String created_at;
+        private String updated_at;
         private String contact_user_name;
         private String contact_user_mobile;
         private String contact_user_avatar;
-        private String is_join;
+        private String source_id;
         private int join_num;
         private List<String> join_user;
 
-        public String getId() {
+        public int getId() {
             return id;
         }
 
-        public void setId(String id) {
+        public void setId(int id) {
             this.id = id;
         }
 
-        public String getSource_id() {
-            return source_id;
+        public String getAc_type() {
+            return ac_type;
         }
 
-        public void setSource_id(String source_id) {
-            this.source_id = source_id;
+        public void setAc_type(String ac_type) {
+            this.ac_type = ac_type;
         }
 
-        public String getList_type() {
-            return list_type;
+        public String getAc_title() {
+            return ac_title;
         }
 
-        public void setList_type(String list_type) {
-            this.list_type = list_type;
+        public void setAc_title(String ac_title) {
+            this.ac_title = ac_title;
         }
 
-        public String getAc_banner() {
-            return ac_banner;
+        public String getAc_category() {
+            return ac_category;
         }
 
-        public void setAc_banner(String ac_banner) {
-            this.ac_banner = ac_banner;
+        public void setAc_category(String ac_category) {
+            this.ac_category = ac_category;
+        }
+
+        public String getAc_status() {
+            return ac_status;
+        }
+
+        public void setAc_status(String ac_status) {
+            this.ac_status = ac_status;
+        }
+
+        public String getOperator() {
+            return operator;
+        }
+
+        public void setOperator(String operator) {
+            this.operator = operator;
+        }
+
+        public String getOperator_id() {
+            return operator_id;
+        }
+
+        public void setOperator_id(String operator_id) {
+            this.operator_id = operator_id;
+        }
+
+        public String getOperator_oa() {
+            return operator_oa;
+        }
+
+        public void setOperator_oa(String operator_oa) {
+            this.operator_oa = operator_oa;
         }
 
         public String getAc_tag() {
@@ -128,22 +179,6 @@ public class CommunityActivityDetailsEntity extends BaseContentEntity {
             this.ac_fee = ac_fee;
         }
 
-        public String getAc_oproperty() {
-            return ac_oproperty;
-        }
-
-        public void setAc_oproperty(String ac_oproperty) {
-            this.ac_oproperty = ac_oproperty;
-        }
-
-        public String getAc_title() {
-            return ac_title;
-        }
-
-        public void setAc_title(String ac_title) {
-            this.ac_title = ac_title;
-        }
-
         public String getAc_address() {
             return ac_address;
         }
@@ -152,35 +187,35 @@ public class CommunityActivityDetailsEntity extends BaseContentEntity {
             this.ac_address = ac_address;
         }
 
-        public String getAc_status() {
-            return ac_status;
+        public int getLimit_num() {
+            return limit_num;
         }
 
-        public void setAc_status(String ac_status) {
-            this.ac_status = ac_status;
+        public void setLimit_num(int limit_num) {
+            this.limit_num = limit_num;
         }
 
-        public int getApply_time() {
-            return apply_time;
+        public long getStop_apply_time() {
+            return stop_apply_time;
         }
 
-        public void setApply_time(int apply_time) {
-            this.apply_time = apply_time;
+        public void setStop_apply_time(long stop_apply_time) {
+            this.stop_apply_time = stop_apply_time;
         }
 
-        public int getBegin_time() {
+        public long getBegin_time() {
             return begin_time;
         }
 
-        public void setBegin_time(int begin_time) {
+        public void setBegin_time(long begin_time) {
             this.begin_time = begin_time;
         }
 
-        public int getEnd_time() {
+        public long getEnd_time() {
             return end_time;
         }
 
-        public void setEnd_time(int end_time) {
+        public void setEnd_time(long end_time) {
             this.end_time = end_time;
         }
 
@@ -190,6 +225,62 @@ public class CommunityActivityDetailsEntity extends BaseContentEntity {
 
         public void setContact_user_id(String contact_user_id) {
             this.contact_user_id = contact_user_id;
+        }
+
+        public String getPicture_require() {
+            return picture_require;
+        }
+
+        public void setPicture_require(String picture_require) {
+            this.picture_require = picture_require;
+        }
+
+        public int getPicture_num() {
+            return picture_num;
+        }
+
+        public void setPicture_num(int picture_num) {
+            this.picture_num = picture_num;
+        }
+
+        public String getPicture_prompt() {
+            return picture_prompt;
+        }
+
+        public void setPicture_prompt(String picture_prompt) {
+            this.picture_prompt = picture_prompt;
+        }
+
+        public String getAc_banner() {
+            return ac_banner;
+        }
+
+        public void setAc_banner(String ac_banner) {
+            this.ac_banner = ac_banner;
+        }
+
+        public String getAc_detail() {
+            return ac_detail;
+        }
+
+        public void setAc_detail(String ac_detail) {
+            this.ac_detail = ac_detail;
+        }
+
+        public String getCreated_at() {
+            return created_at;
+        }
+
+        public void setCreated_at(String created_at) {
+            this.created_at = created_at;
+        }
+
+        public String getUpdated_at() {
+            return updated_at;
+        }
+
+        public void setUpdated_at(String updated_at) {
+            this.updated_at = updated_at;
         }
 
         public String getContact_user_name() {
@@ -216,12 +307,12 @@ public class CommunityActivityDetailsEntity extends BaseContentEntity {
             this.contact_user_avatar = contact_user_avatar;
         }
 
-        public String getIs_join() {
-            return is_join;
+        public String getSource_id() {
+            return source_id;
         }
 
-        public void setIs_join(String is_join) {
-            this.is_join = is_join;
+        public void setSource_id(String source_id) {
+            this.source_id = source_id;
         }
 
         public int getJoin_num() {

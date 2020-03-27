@@ -77,7 +77,7 @@ public class CommunityActivityCommentAdapter extends RecyclerView.Adapter<Commun
         }
         stringBuffer.append(dataBean.getContent());
         holder.tv_dynamics_comment_content.setText(stringBuffer.toString());
-        holder.tv_dynamics_comment_times.setText(TimeUtil.noticeTime(dataBean.getCreated_at()));
+        holder.tv_dynamics_comment_times.setText(TimeUtil.noticeTime(dataBean.getUpdated_at()));
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

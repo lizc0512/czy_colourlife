@@ -401,9 +401,10 @@ public class WebViewActivity extends BaseActivity implements View.OnLongClickLis
                 CommunityDynamicsModel  communityDynamicsModel=new CommunityDynamicsModel(WebViewActivity.this);
                 Map<String,String> shareParams=new HashMap<>();
                 shareParams.put("logo",shareImg);
-                shareParams.put("desc",shareTitle);
-                shareParams.put("logo",shareImg);
+                shareParams.put("desc",webTitle);
+                shareParams.put("url",shareUrl);
                 communityDynamicsModel.publicUserDynamic(5,"","3",GsonUtils.gsonString(shareParams),false,WebViewActivity.this);
+                closeShareLayout();
                 break;
         }
     }

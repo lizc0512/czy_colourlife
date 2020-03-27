@@ -52,7 +52,7 @@ public class ShareActivityDialog extends Dialog {
         window.setBackgroundDrawableResource(R.color.transparent);
         WindowManager.LayoutParams params = window.getAttributes();
         int density = getWidthPixels(context);
-        params.width = density - 40;
+        params.width = density;
         params.gravity = Gravity.BOTTOM;
         window.setAttributes(params);
         this.setCanceledOnTouchOutside(true);

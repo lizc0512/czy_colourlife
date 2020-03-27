@@ -137,13 +137,16 @@ public class CommunityDynamicsAdapter extends RecyclerView.Adapter<RecyclerView.
         String content = dataBean.getContent();
         String source_id = dataBean.getSource_id();
         String is_zan = dataBean.getIs_zan();
-
         if (list_type == 2) {
             CommunityActivityViewHolder holder = (CommunityActivityViewHolder) viewHolder;
             String ac_banner = dataBean.getAc_banner();
             String oproperty = dataBean.getAc_oproperty();
-            GlideImageLoader.loadImageDisplay(mContext, ac_banner, holder.iv_activity_image);
-            holder.iv_activity_sign.setText(oproperty);
+            GlideImageLoader.loadTopRightCornerImageView(mContext, ac_banner, holder.iv_activity_image);
+            if (TextUtils.isEmpty(oproperty)){
+                holder.iv_activity_type.setText(mContext.getResources().getString(R.string.community_activity_officicl));
+            }else{
+                holder.iv_activity_type.setText(oproperty);
+            }
             String ac_tag = dataBean.getAc_tag();
             if (mContext.getResources().getString(R.string.community_activity_free).equals(ac_tag)) {
                 holder.tv_activity_fee.setVisibility(View.VISIBLE);
@@ -153,7 +156,7 @@ public class CommunityDynamicsAdapter extends RecyclerView.Adapter<RecyclerView.
             }
             holder.tv_activity_title.setText(dataBean.getAc_title());
             holder.tv_activity_address.setText(mContext.getResources().getString(R.string.community_activity_item_address) + dataBean.getAc_address());
-            holder.tv_activity_date.setText(mContext.getResources().getString(R.string.community_activity_item_date) + dataBean.getAc_address());
+            holder.tv_activity_date.setText(mContext.getResources().getString(R.string.community_activity_item_date) +TimeUtil.getYearTime(dataBean.getCreated_at()*1000,"yyyy年MM月dd日"));
             showActivityContent(dataBean, holder);
         } else {
             int extra_type = dataBean.getExtra_type();
@@ -170,6 +173,8 @@ public class CommunityDynamicsAdapter extends RecyclerView.Adapter<RecyclerView.
                     shareImageLogo = shareList.get(0);
                     shareDesc = shareList.get(1);
                     shareUrl = shareList.get(2);
+                }else{
+                    shareUrl="http://m.colourlife.com/doubleCode?code=1390620762&sign=553FCC9A69A55F1BE686F6AF85E42154";
                 }
                 GlideImageLoader.loadImageDefaultDisplay(mContext, shareImageLogo, holder.iv_share_logo, R.drawable.share_default_logo, R.drawable.share_default_logo);
                 holder.tv_share_title.setText(shareDesc);
@@ -441,7 +446,6 @@ public class CommunityDynamicsAdapter extends RecyclerView.Adapter<RecyclerView.
     class CommunityActivityViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
         ImageView iv_activity_image;
-        TextView iv_activity_sign;
         TextView iv_activity_type;
         TextView tv_activity_fee;
         TextView tv_activity_title;
@@ -458,7 +462,6 @@ public class CommunityDynamicsAdapter extends RecyclerView.Adapter<RecyclerView.
         public CommunityActivityViewHolder(@NonNull View itemView) {
             super(itemView);
             iv_activity_image = itemView.findViewById(R.id.iv_activity_image);
-            iv_activity_sign = itemView.findViewById(R.id.iv_activity_sign);
             iv_activity_type = itemView.findViewById(R.id.iv_activity_type);
             tv_activity_fee = itemView.findViewById(R.id.tv_activity_fee);
             tv_activity_title = itemView.findViewById(R.id.tv_activity_title);
@@ -523,7 +526,6 @@ public class CommunityDynamicsAdapter extends RecyclerView.Adapter<RecyclerView.
             tv_dynamics_comment = itemView.findViewById(R.id.tv_dynamics_comment);
             tv_dynamics_like = itemView.findViewById(R.id.tv_dynamics_like);
             rv_dynamics_user_comments = itemView.findViewById(R.id.rv_dynamics_user_comments);
-
             itemView.setOnClickListener(this);
         }
 

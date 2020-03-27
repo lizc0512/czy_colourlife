@@ -42,6 +42,7 @@
     <string name="community_activity_finished">已结束</string>
     <string name="community_activity_joined">已参与</string>
     <string name="community_activity_free">免费</string>
+    <string name="community_activity_officicl">官方\n活动</string>
     <string name="community_activity_joined_notice">您已经参与此活动啦～</string>
 
     <string name="community_activity_item_address">地址:</string>

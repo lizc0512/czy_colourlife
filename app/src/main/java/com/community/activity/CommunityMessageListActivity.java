@@ -127,6 +127,7 @@ public class CommunityMessageListActivity extends BaseActivity implements View.O
         message_rv.setSwipeMenuItemClickListener(mMenuItemClickListener);
         message_rv.setAdapter(mMessageAdapter);
         user_top_view_back.setOnClickListener(this::onClick);
+        img_right.setPadding(20,20,20,20);
         img_right.setOnClickListener(this::onClick);
         img_right.setVisibility(View.VISIBLE);
         img_right.setImageResource(R.drawable.im_icon_nav_friends);

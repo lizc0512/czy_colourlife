@@ -9,6 +9,7 @@
     <ImageView
         android:id="@+id/iv_activity_head"
         android:layout_width="match_parent"
+        android:scaleType="fitXY"
         android:layout_height="110dp" />
 
     <LinearLayout
@@ -32,6 +33,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="8dp"
+            android:textStyle="bold"
             android:textColor="@color/color_000000"
             android:textSize="16sp"
             tools:text="最美宠物摄影图片活动ggggarr" />
@@ -40,7 +42,8 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="10dp">
+        android:layout_marginBottom="12dp"
+        android:layout_marginTop="8dp">
 
 
         <LinearLayout
@@ -103,8 +106,7 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="40dp"
-        android:layout_marginTop="25dp">
+        android:layout_height="40dp">
 
         <TextView
             android:layout_width="wrap_content"
@@ -272,6 +274,7 @@
         android:layout_marginLeft="20dp"
         android:gravity="center_vertical"
         android:text="@string/community_activity_details"
+        android:textStyle="bold"
         android:textColor="@color/color_000000"
         android:textSize="16sp" />
 
@@ -289,6 +292,7 @@
         android:layout_width="match_parent"
         android:layout_height="40dp"
         android:layout_marginLeft="20dp"
+        android:textStyle="bold"
         android:gravity="center_vertical"
         android:text="@string/community_activity_message"
         android:textColor="@color/color_000000"
@@ -298,5 +302,30 @@
         android:layout_width="match_parent"
         android:layout_height="1px"
         android:background="@color/color_ebedf0" />
+
+    <LinearLayout
+        android:id="@+id/no_data_layout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="30dp"
+        android:orientation="vertical"
+        android:visibility="gone">
+
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:src="@drawable/community_comment_empty" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:text="@string/community_no_message"
+            android:textColor="@color/color_a9afb8"
+            android:textSize="14sp" />
+    </LinearLayout>
 
 </LinearLayout>

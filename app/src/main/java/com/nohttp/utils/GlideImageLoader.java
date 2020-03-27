@@ -11,6 +11,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 
 import com.BeeFramework.Utils.Utils;
+import com.BeeFramework.view.Util;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
@@ -172,6 +173,13 @@ public class GlideImageLoader {
         } catch (Exception e) {
 
         }
+    }
+
+    public static void loadTopRightCornerImageView(Context mContext, String path, ImageView mImageView) {
+        RoundedCornersTransform transform = new RoundedCornersTransform(mContext, Util.DensityUtil.dip2px(mContext, 3));
+        transform.setNeedCorner(true, true, false, false);
+        RequestOptions options = new RequestOptions().placeholder(R.drawable.icon_style_four).transform(transform).diskCacheStrategy(DiskCacheStrategy.ALL);
+        Glide.with(mContext).load(path).apply(options).into(mImageView);
     }
 
     public static DisplayImageOptions optionsImage;        // DisplayImageOptions是用于设置图片显示的类

@@ -61,7 +61,7 @@ public class CommunityActivityEntity extends BaseContentEntity {
         private String ac_title;
         private String ac_address;
         private String ac_status;
-        private int stop_apply_time;
+        private long stop_apply_time;
         private int join_num;
         private List<String> join_user;
 
@@ -137,11 +137,11 @@ public class CommunityActivityEntity extends BaseContentEntity {
             this.ac_status = ac_status;
         }
 
-        public int getStop_apply_time() {
+        public long getStop_apply_time() {
             return stop_apply_time;
         }
 
-        public void setStop_apply_time(int stop_apply_time) {
+        public void setStop_apply_time(long stop_apply_time) {
             this.stop_apply_time = stop_apply_time;
         }
 
