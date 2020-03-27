@@ -729,7 +729,7 @@ public class CommunityActivityDetailsActivity extends BaseActivity implements Vi
             case 4://删除留言
                 commentBeanList.remove(delPos);
                 communityActivityCommentAdapter. notifyItemRemoved(delPos);
-                communityActivityCommentAdapter.notifyItemRangeChanged(delPos, commentBeanList.size()-delPos);
+                communityActivityCommentAdapter.notifyItemRangeChanged(delPos, communityActivityCommentAdapter.getItemCount()-delPos);
                 break;
         }
     }
