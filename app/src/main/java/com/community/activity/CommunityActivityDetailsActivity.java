@@ -284,6 +284,7 @@ public class CommunityActivityDetailsActivity extends BaseActivity implements Vi
     private ImageView add_ImageView;
 
     private void showAddPicView() {
+        mUploadImageViews.clear();
         joinActivityGridLayout = joinActivityDialog.join_activity_photo;
         joinActivityDialog.join_activity_photo.removeAllViews();
         joinActivityDialog.tv_join_notice.setText("参与此活动，请上传" + maxPickImageSize + "张" + pickerPrompt);
@@ -649,7 +650,9 @@ public class CommunityActivityDetailsActivity extends BaseActivity implements Vi
                 } catch (Exception e) {
 
                 }
-                showAcStatus();
+                if (!TextUtils.isEmpty(ac_status)){
+                    showAcStatus();
+                }
                 break;
             case 3://添加留言
                 String commentId = "";

@@ -4,10 +4,12 @@
     android:layout_height="match_parent"
     android:orientation="horizontal">
 
-    <RelativeLayout
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="250dp"
+        android:layout_height="wrap_content"
         android:layout_gravity="bottom"
+        android:minHeight="250dp"
+        android:orientation="vertical"
         android:background="@drawable/community_activity_share_bg">
 
         <TextView
@@ -19,14 +21,26 @@
             android:gravity="center"
             android:text="@string/community_share_notice"
             android:textColor="@color/color_a9afb8"
-            android:textSize="18sp" />
+            android:textSize="13sp" />
 
+        <GridLayout
+            android:id="@+id/join_activity_photo"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:layout_marginTop="24dp"
+            android:layout_marginBottom="10dp"
+            android:columnCount="3"
+            android:horizontalSpacing="12dp"
+            android:listSelector="#00000000"
+            android:orientation="horizontal"
+            android:verticalSpacing="12dp">
 
+        </GridLayout>
         <LinearLayout
             android:id="@+id/join_operate_layout"
             android:layout_width="match_parent"
             android:layout_height="48dp"
-            android:layout_alignParentBottom="true"
             android:orientation="horizontal">
 
             <TextView
@@ -53,25 +67,9 @@
 
         </LinearLayout>
 
-        <GridLayout
-            android:id="@+id/join_activity_photo"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_above="@id/join_operate_layout"
-            android:layout_below="@id/tv_join_notice"
-            android:layout_marginLeft="20dp"
-            android:layout_marginTop="24dp"
-            android:layout_marginRight="20dp"
-            android:layout_marginBottom="10dp"
-            android:columnCount="3"
-            android:horizontalSpacing="12dp"
-            android:listSelector="#00000000"
-            android:orientation="horizontal"
-            android:verticalSpacing="12dp">
-
-        </GridLayout>
 
 
-    </RelativeLayout>
+
+    </LinearLayout>
 
 </LinearLayout>

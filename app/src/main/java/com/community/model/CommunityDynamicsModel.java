@@ -512,10 +512,10 @@ public class CommunityDynamicsModel extends BaseModel {
         }, true, true);
     }
 
-    public void joinCommunityActivity(int what,String source_id, String picture_aarr,NewHttpResponse newHttpResponse) {
+    public void joinCommunityActivity(int what,String source_id, String picture_arr,NewHttpResponse newHttpResponse) {
         Map<String, Object> params = new HashMap<String, Object>();
         params.put("source_id", source_id);
-        params.put("picture_aarr", picture_aarr);
+        params.put("picture_arr", picture_arr);
         final Request<String> request = NoHttp.createStringRequest(RequestEncryptionUtils.postCombileMD5(mContext, 17, joinActivityUrl), RequestMethod.POST);
         request(what, request, params, new HttpListener<String>() {
             @Override
