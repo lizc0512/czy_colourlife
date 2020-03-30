@@ -113,8 +113,10 @@ public class AdsWebViewActivity extends BaseActivity implements View.OnClickList
 
     private void jumpByUrls(String urls) {
         try {
-            Intent intent = Intent.parseUri(urls, Intent.URI_INTENT_SCHEME);
-            intent.addCategory("android.intent.category.BROWSABLE");
+            Intent intent = Intent.parseUri(urls,
+                    Intent.URI_INTENT_SCHEME);
+            intent.setAction(Intent.ACTION_VIEW);
+            intent.addCategory(Intent.CATEGORY_BROWSABLE);
             intent.setComponent(null);
             startActivityForResult(intent, GUANGCAIPAY);
         } catch (Exception e) {
@@ -124,7 +126,8 @@ public class AdsWebViewActivity extends BaseActivity implements View.OnClickList
 
     /***跳转到支付宝**/
     public boolean parseScheme(String url) {
-        if (url.contains("alipays://platformapi")) {
+        //alipays://platformapi
+        if (url.contains("alipay")) {
             return true;
         } else if ((Build.VERSION.SDK_INT > Build.VERSION_CODES.M)
                 && (url.contains("platformapi") && url.contains("startapp"))) {
@@ -149,7 +152,7 @@ public class AdsWebViewActivity extends BaseActivity implements View.OnClickList
         Message message = Message.obtain();
         if ("2".equals(finishStatus)) {
             message.what = 101010;
-        }else{
+        } else {
             message.what = UserMessageConstant.GUANGCAI_PAY_MSG;
         }
         EventBus.getDefault().post(message);

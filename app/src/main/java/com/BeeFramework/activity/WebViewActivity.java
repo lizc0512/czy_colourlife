@@ -1600,7 +1600,7 @@ public class WebViewActivity extends BaseActivity implements View.OnLongClickLis
 
     /***跳转到支付宝**/
     public boolean parseScheme(String url) {
-        if (url.contains("alipays://platformapi")) {
+        if (url.contains("alipay")) {
             return true;
         } else if ((Build.VERSION.SDK_INT > Build.VERSION_CODES.M)
                 && (url.contains("platformapi") && url.contains("startapp"))) {
@@ -1738,22 +1738,6 @@ public class WebViewActivity extends BaseActivity implements View.OnLongClickLis
             isQR = true;
         }
         return isQR;
-    }
-
-    /***加载二维码的Url 扫码***/
-    private void loadQrCodeUrl(final String loadUrl) {
-        Glide.with(WebViewActivity.this).load(loadUrl).into(new ImageViewTarget<Drawable>(null) {
-            @Override
-            protected void setResource(@Nullable Drawable resource) {
-                BitmapDrawable bd = (BitmapDrawable) resource;
-                Result loadResult = DecodeImage.handleQRCodeFormBitmap(bd.getBitmap());
-                if (null != loadResult) {
-                    webView.loadUrl(loadResult.getText());
-                } else {
-                    webView.loadUrl(loadUrl);
-                }
-            }
-        });
     }
 
 
