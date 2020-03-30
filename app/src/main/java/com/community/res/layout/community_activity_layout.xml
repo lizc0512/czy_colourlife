@@ -122,14 +122,15 @@
             android:layout_height="1px"
             android:background="@color/line_color" />
 
-        <Button
+        <TextView
             android:id="@+id/tv_once_join"
             android:layout_width="100dp"
             android:layout_height="28dp"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
+            android:gravity="center"
             android:background="@drawable/commuity_activity_join"
-            android:text="@string/community_activity_join"
+            tools:text="@string/community_activity_join"
             android:textColor="@color/color_ff6d50"
             android:textSize="13sp" />
 

@@ -177,41 +177,39 @@ public class Constants {
      * 首页默认的功能模块
      **/
     public static String defaultLayout = "{\n" +
-            "    \"code\":0,\n" +
-            "    \"message\":\"success\",\n" +
-            "    \"content\":[\n" +
+            "    \"code\": 0,\n" +
+            "    \"message\": \"success\",\n" +
+            "    \"content\": [\n" +
             "        {\n" +
-            "            \"app_code\":1001,\n" +
-            "            \"app_name\":\"recently_module\",\n" +
-            "            \"is_show\":1\n" +
+            "            \"app_code\": \"1001\",\n" +
+            "            \"is_show\": \"1\"\n" +
             "        },\n" +
             "        {\n" +
-            "            \"app_code\":1002,\n" +
-            "            \"app_name\":\"open_door\",\n" +
-            "            \"is_show\":1\n" +
+            "            \"app_code\": \"1002\",\n" +
+            "            \"is_show\": \"1\"\n" +
             "        },\n" +
             "        {\n" +
-            "            \"app_code\":1003,\n" +
-            "            \"app_name\":\"community_notify\",\n" +
-            "            \"is_show\":1\n" +
+            "            \"app_code\": \"1003\",\n" +
+            "            \"is_show\": \"1\"\n" +
             "        },\n" +
             "        {\n" +
-            "            \"app_code\":1004,\n" +
-            "            \"app_name\":\"mannger\",\n" +
-            "            \"is_show\":1\n" +
+            "            \"app_code\": \"1004\",\n" +
+            "            \"is_show\": \"1\"\n" +
             "        },\n" +
             "        {\n" +
-            "            \"app_code\":1005,\n" +
-            "            \"app_name\":\"banner\",\n" +
-            "            \"is_show\":1\n" +
+            "            \"app_code\": \"1005\",\n" +
+            "            \"is_show\": \"1\"\n" +
             "        },\n" +
             "        {\n" +
-            "            \"app_code\":1006,\n" +
-            "            \"app_name\":\"ad\",\n" +
-            "            \"is_show\":1\n" +
+            "            \"app_code\": \"1007\",\n" +
+            "            \"is_show\": 1\n" +
+            "        },\n" +
+            "        {\n" +
+            "            \"app_code\": \"1006\",\n" +
+            "            \"is_show\": \"1\"\n" +
             "        }\n" +
             "    ],\n" +
-            "    \"contentEncrypt\":\"\"\n" +
+            "    \"contentEncrypt\": \"\"\n" +
             "}";
     public static String defaultHomeFunc = "{\n" +
             "    \"code\": 0,\n" +

@@ -304,10 +304,10 @@ public class MainActivity extends BaseFragmentActivity implements View.OnClickLi
                 String doorid = intent.getStringExtra("shortcut");
                 String qrcode = intent.getStringExtra("qrcode");
                 if (!TextUtils.isEmpty(qrcode)) {
-                    qrCodeDoorOpern(qrcode);
+                    qrCodeDoorOpen(qrcode);
                 }
                 if (!TextUtils.isEmpty(doorid)) {
-                    qrCodeDoorOpern(doorid);
+                    qrCodeDoorOpen(doorid);
                 }
             }
         }
@@ -316,7 +316,7 @@ public class MainActivity extends BaseFragmentActivity implements View.OnClickLi
     private void jpushJumpPage(Intent intent) {
         String doorId = intent.getStringExtra("shortcut");
         if (!TextUtils.isEmpty(doorId)) {//快捷开门的
-            qrCodeDoorOpern(doorId);
+            qrCodeDoorOpen(doorId);
         }
         String linkURl = intent.getStringExtra(JUMPOTHERURL);//通知栏推送的url
         Bundle bundle = intent.getExtras();
@@ -364,7 +364,7 @@ public class MainActivity extends BaseFragmentActivity implements View.OnClickLi
         jpushJumpPage(intent);
     }
 
-    public void qrCodeDoorOpern(String door_id) {
+    public void qrCodeDoorOpen(String door_id) {
         openModel.openDoor(2, door_id, true, MainActivity.this);
     }
 

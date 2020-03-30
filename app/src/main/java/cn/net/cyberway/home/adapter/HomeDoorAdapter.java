@@ -78,7 +78,7 @@ public class HomeDoorAdapter extends PagerAdapter {
                         mContext.startActivity(intent);
                     } else {
                         if (!TextUtils.isEmpty(doorQrcode)) {  //远程门禁
-                            ((MainActivity) mContext).qrCodeDoorOpern(doorQrcode);
+                            ((MainActivity) mContext).qrCodeDoorOpen(doorQrcode);
                         } else {
                             ToastUtil.toastShow(mContext, "打开蓝牙靠近门禁设备即可感应开门哦～");
                         }

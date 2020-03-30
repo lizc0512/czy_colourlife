@@ -2,7 +2,6 @@ package com.community.activity;
 
 import android.Manifest;
 import android.app.Dialog;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.BitmapFactory;
 import android.graphics.Rect;
@@ -36,7 +35,6 @@ import com.community.adapter.CommunityActivityCommentAdapter;
 import com.community.entity.CommunityActivityDetailsEntity;
 import com.community.entity.CommunityActivityListEntity;
 import com.community.entity.CommunityDynamicIdEntity;
-import com.community.entity.CommunityDynamicsListEntity;
 import com.community.entity.CommunityStatusEntity;
 import com.community.model.CommunityDynamicsModel;
 import com.community.utils.ImagePickerLoader;
@@ -173,7 +171,7 @@ public class CommunityActivityDetailsActivity extends BaseActivity implements Vi
         iv_contact_header = headView.findViewById(R.id.iv_contact_header);
         tv_contact_name = headView.findViewById(R.id.tv_contact_name);
         webview = headView.findViewById(R.id.webview);
-        no_data_layout = findViewById(R.id.no_data_layout);
+        no_data_layout = headView.findViewById(R.id.no_data_layout);
         rv_message.addHeaderView(headView);
         contact_person_layout.setOnClickListener(this::onClick);
     }
@@ -184,7 +182,7 @@ public class CommunityActivityDetailsActivity extends BaseActivity implements Vi
         user_top_view_title = findViewById(R.id.user_top_view_title);
         img_right = findViewById(R.id.img_right);
         img_right.setVisibility(View.VISIBLE);
-        img_right.setPadding(20,20,20,20);
+        img_right.setPadding(20, 20, 20, 20);
         img_right.setImageResource(R.drawable.community_activity_share);
         rv_message = findViewById(R.id.rv_message);
         rv_message.useDefaultLoadMore();
@@ -200,12 +198,9 @@ public class CommunityActivityDetailsActivity extends BaseActivity implements Vi
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(CommunityActivityDetailsActivity.this, LinearLayoutManager.VERTICAL, false);
         rv_message.setLayoutManager(linearLayoutManager);
         rv_message.setAdapter(communityActivityCommentAdapter);
-        rv_message.setLoadMoreListener(new SwipeMenuRecyclerView.LoadMoreListener() {
-            @Override
-            public void onLoadMore() {
-                page++;
-                communityDynamicsModel.getActivityComment(1, source_id, page, CommunityActivityDetailsActivity.this);
-            }
+        rv_message.setLoadMoreListener(() -> {
+            page++;
+            communityDynamicsModel.getActivityComment(1, source_id, page, CommunityActivityDetailsActivity.this);
         });
     }
 
@@ -253,12 +248,7 @@ public class CommunityActivityDetailsActivity extends BaseActivity implements Vi
                 PermissionUtils.showPhonePermission(CommunityActivityDetailsActivity.this, contact_mobile);
                 break;
             case R.id.send_message_layout://因为addheadviw了
-               int size= commentBeanList.size();
-               if (size==0){
-                   showInputCommentDialog(null, source_id, "", "");
-               }else{
-                   showInputCommentDialog(rv_message.getChildAt(size), source_id, "", "");
-               }
+                showInputCommentDialog(null, source_id, "", "");
                 break;
             case R.id.tv_join_activity:
                 if ("5".equals(ac_status)) { //活动已参与
@@ -333,63 +323,43 @@ public class CommunityActivityDetailsActivity extends BaseActivity implements Vi
         dialog.getWindow().setWindowAnimations(R.style.dialogWindowAnim); // 设置窗口弹出动画
         dialog.show();
 
-        TextView album = (TextView) dialog.findViewById(R.id.avatar_album);
-        TextView photograph = (TextView) dialog.findViewById(R.id.avatar_photograph);
-        TextView cancel = (TextView) dialog.findViewById(R.id.avatar_cancel);
+        TextView album = dialog.findViewById(R.id.avatar_album);
+        TextView photograph = dialog.findViewById(R.id.avatar_photograph);
+        TextView cancel = dialog.findViewById(R.id.avatar_cancel);
 
         //从相册选择上传
-        album.setOnClickListener(new View.OnClickListener() {
-
-            @Override
-            public void onClick(View v) {
-                imagePicker.setSelectLimit(maxPickImageSize - mUploadImageViews.size());
-                imagePicker.clearSelectedImages();
-                Intent intent = new Intent(CommunityActivityDetailsActivity.this, ImageGridActivity.class);
-                startActivityForResult(intent, REQUEST_PHOTO);
-                dialog.dismiss();
-            }
+        album.setOnClickListener(v -> {
+            imagePicker.setSelectLimit(maxPickImageSize - mUploadImageViews.size());
+            imagePicker.clearSelectedImages();
+            Intent intent = new Intent(CommunityActivityDetailsActivity.this, ImageGridActivity.class);
+            startActivityForResult(intent, REQUEST_PHOTO);
+            dialog.dismiss();
         });
 
         //拍照上传
-        photograph.setOnClickListener(new View.OnClickListener() {
-
-            @Override
-            public void onClick(View v) {
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                    if (AndPermission.hasPermission(getApplicationContext(), Manifest.permission.CAMERA)) {
-                        imagePicker.setSelectLimit(maxPickImageSize - mUploadImageViews.size());
-                        imagePicker.clearSelectedImages();
-                        Intent intent = new Intent(CommunityActivityDetailsActivity.this, ImageGridActivity.class);
-                        intent.putExtra(ImageGridActivity.EXTRAS_TAKE_PICKERS, true); // 是否是直接打开相机
-                        startActivityForResult(intent, REQUEST_PHOTO);
-                    } else {
-                        ToastUtil.toastShow(getApplicationContext(), "相机权限未开启，请去开启该权限");
-                    }
-                } else {
+        photograph.setOnClickListener(v -> {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                if (AndPermission.hasPermission(getApplicationContext(), Manifest.permission.CAMERA)) {
                     imagePicker.setSelectLimit(maxPickImageSize - mUploadImageViews.size());
                     imagePicker.clearSelectedImages();
                     Intent intent = new Intent(CommunityActivityDetailsActivity.this, ImageGridActivity.class);
                     intent.putExtra(ImageGridActivity.EXTRAS_TAKE_PICKERS, true); // 是否是直接打开相机
                     startActivityForResult(intent, REQUEST_PHOTO);
+                } else {
+                    ToastUtil.toastShow(getApplicationContext(), "相机权限未开启，请去开启该权限");
                 }
-                dialog.dismiss();
+            } else {
+                imagePicker.setSelectLimit(maxPickImageSize - mUploadImageViews.size());
+                imagePicker.clearSelectedImages();
+                Intent intent = new Intent(CommunityActivityDetailsActivity.this, ImageGridActivity.class);
+                intent.putExtra(ImageGridActivity.EXTRAS_TAKE_PICKERS, true); // 是否是直接打开相机
+                startActivityForResult(intent, REQUEST_PHOTO);
             }
+            dialog.dismiss();
         });
         //取消
-        cancel.setOnClickListener(new View.OnClickListener() {
-
-            @Override
-            public void onClick(View v) {
-
-                dialog.dismiss();
-            }
-        });
-        contentView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                dialog.dismiss();
-            }
-        });
+        cancel.setOnClickListener(v -> dialog.dismiss());
+        contentView.setOnClickListener(v -> dialog.dismiss());
     }
 
     /***选择完图片或删除图片之后的处理***/
@@ -507,25 +477,19 @@ public class CommunityActivityDetailsActivity extends BaseActivity implements Vi
         }
         TextView feed_comment_submit = view.findViewById(R.id.feed_comment_submit);
         //scrollView 点击事件，点击时将 dialog dismiss，设置 onClick 监听无效
-        inputDialog.findViewById(R.id.scrollView).setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                if (event.getAction() == MotionEvent.ACTION_UP)
-                    inputDialog.dismiss();
-                KeyBoardUtils.closeKeybord(feed_comment_edittext, CommunityActivityDetailsActivity.this);
-                return true;
-            }
+        inputDialog.findViewById(R.id.scrollView).setOnTouchListener((v, event) -> {
+            if (event.getAction() == MotionEvent.ACTION_UP)
+                inputDialog.dismiss();
+            KeyBoardUtils.closeKeybord(feed_comment_edittext, CommunityActivityDetailsActivity.this);
+            return true;
         });
         inputDialog.show();
         int finalItemBottomY = itemBottomY;
-        if (null!=itemView){
-            itemView.postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    LinearLayout llCommentInput = inputDialog.findViewById(R.id.ll_comment_input);
-                    int y = getCoordinateY(llCommentInput);
-                    rv_message.smoothScrollBy(0, finalItemBottomY - y);
-                }
+        if (null != itemView) {
+            itemView.postDelayed(() -> {
+                LinearLayout llCommentInput = inputDialog.findViewById(R.id.ll_comment_input);
+                int y = getCoordinateY(llCommentInput);
+                rv_message.smoothScrollBy(0, finalItemBottomY - y);
             }, 300);
         }
         getWindow().getDecorView().getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
@@ -534,29 +498,21 @@ public class CommunityActivityDetailsActivity extends BaseActivity implements Vi
                 handleWindowChange();
             }
         });
-        feed_comment_submit.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                content = feed_comment_edittext.getText().toString().trim();
-                if (!TextUtils.isEmpty(content)) {
-                    if (content.length() > 300) {
-                        ToastUtil.toastShow(CommunityActivityDetailsActivity.this, "输入的内容长度不能超过300字");
-                    } else {
-                        KeyBoardUtils.closeKeybord(feed_comment_edittext, CommunityActivityDetailsActivity.this);
-                        inputDialog.dismiss();
-                        communityDynamicsModel.commentCommunityActivity(3, sourceId, content, toUserId, CommunityActivityDetailsActivity.this::OnHttpResponse);
-                    }
+        feed_comment_submit.setOnClickListener(v -> {
+            content = feed_comment_edittext.getText().toString().trim();
+            if (!TextUtils.isEmpty(content)) {
+                if (content.length() > 300) {
+                    ToastUtil.toastShow(CommunityActivityDetailsActivity.this, "输入的内容长度不能超过300字");
                 } else {
-                    ToastUtil.toastShow(CommunityActivityDetailsActivity.this, "输入的内容不能为空");
+                    KeyBoardUtils.closeKeybord(feed_comment_edittext, CommunityActivityDetailsActivity.this);
+                    inputDialog.dismiss();
+                    communityDynamicsModel.commentCommunityActivity(3, sourceId, content, toUserId, CommunityActivityDetailsActivity.this::OnHttpResponse);
                 }
+            } else {
+                ToastUtil.toastShow(CommunityActivityDetailsActivity.this, "输入的内容不能为空");
             }
         });
-        inputDialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
-            @Override
-            public void onDismiss(DialogInterface dialog) {
-                tv_join_activity.setBackgroundResource(R.color.color_3282fa);
-            }
-        });
+        inputDialog.setOnDismissListener(dialog -> tv_join_activity.setBackgroundResource(R.color.color_3282fa));
         tv_join_activity.setBackgroundResource(R.color.white);
     }
 
@@ -632,9 +588,9 @@ public class CommunityActivityDetailsActivity extends BaseActivity implements Vi
                     join_number = contentBean.getJoin_num();
                     join_user_list = contentBean.getJoin_user();
                     showCommunityActivity(CommunityActivityDetailsActivity.this, join_number, join_user_list, iv_first_photo, iv_second_photo, iv_third_photo, tv_join_person);
-                    tv_activity_starttime.setText(TimeUtil.getYearTime(contentBean.getBegin_time()*1000 , "yyyy-MM-dd") + "-" + TimeUtil.getYearTime(contentBean.getEnd_time()*1000, "yyyy-MM-dd"));
+                    tv_activity_starttime.setText(TimeUtil.getYearTime(contentBean.getBegin_time() * 1000, "yyyy-MM-dd") + "-" + TimeUtil.getYearTime(contentBean.getEnd_time() * 1000, "yyyy-MM-dd"));
                     tv_activity_address.setText(contentBean.getAc_address());
-                    tv_activity_endtime.setText(TimeUtil.getYearTime(contentBean.getStop_apply_time()*1000, "yyyy-MM-dd"));
+                    tv_activity_endtime.setText(TimeUtil.getYearTime(contentBean.getStop_apply_time() * 1000, "yyyy-MM-dd"));
                     tv_activity_person.setText(join_number + "人");
                     GlideImageLoader.loadImageDisplay(CommunityActivityDetailsActivity.this, contentBean.getContact_user_avatar(), iv_contact_header);
                     tv_contact_name.setText(contentBean.getContact_user_name());
@@ -652,7 +608,9 @@ public class CommunityActivityDetailsActivity extends BaseActivity implements Vi
                 try {
                     CommunityActivityListEntity communityActivityListEntity = GsonUtils.gsonToBean(result, CommunityActivityListEntity.class);
                     CommunityActivityListEntity.ContentBean contentBean = communityActivityListEntity.getContent();
-                    commentBeanList.clear();
+                    if (page == 1) {
+                        commentBeanList.clear();
+                    }
                     List<CommunityActivityListEntity.ContentBean.DataBean> pageContentList = contentBean.getData();
                     boolean dataEmpty = pageContentList == null || pageContentList.size() == 0;
                     commentBeanList.addAll(contentBean.getData());
@@ -728,8 +686,8 @@ public class CommunityActivityDetailsActivity extends BaseActivity implements Vi
                 break;
             case 4://删除留言
                 commentBeanList.remove(delPos);
-                communityActivityCommentAdapter. notifyItemRemoved(delPos);
-                communityActivityCommentAdapter.notifyItemRangeChanged(delPos, communityActivityCommentAdapter.getItemCount()-delPos);
+                communityActivityCommentAdapter.notifyItemRemoved(delPos);
+                communityActivityCommentAdapter.notifyItemRangeChanged(delPos, communityActivityCommentAdapter.getItemCount() - delPos);
                 break;
         }
     }

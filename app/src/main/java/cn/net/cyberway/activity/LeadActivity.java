@@ -38,6 +38,7 @@ public class LeadActivity extends BaseActivity implements View.OnClickListener {
         setContentView(R.layout.activity_lead);
         //不清除缓存
         editor.putString(UserAppConst.APKNAME, "");
+        editor.putString(UserAppConst.COLOR_HOME_LAYOUT, "");
         editor.apply();
         SharedPreferences walletShare = getSharedPreferences("cache", 0);
         walletShare.edit().clear().apply();
@@ -74,10 +75,10 @@ public class LeadActivity extends BaseActivity implements View.OnClickListener {
             public void onPageScrollStateChanged(int arg0) {
             }
         });
-        int currentSDK_INT=Build.VERSION.SDK_INT;
-        if (currentSDK_INT>= Build.VERSION_CODES.M) {
+        int currentSDK_INT = Build.VERSION.SDK_INT;
+        if (currentSDK_INT >= Build.VERSION_CODES.M) {
             List<String> permissionList = new ArrayList<>();
-            if (currentSDK_INT<29){
+            if (currentSDK_INT < 29) {
                 permissionList.add(Manifest.permission.READ_PHONE_STATE);
             }
             permissionList.add(Manifest.permission.ACCESS_FINE_LOCATION);
@@ -87,12 +88,12 @@ public class LeadActivity extends BaseActivity implements View.OnClickListener {
             if (AndPermission.hasPermission(LeadActivity.this, permissionList)) {
 
             } else {
-                if (currentSDK_INT<29){  //android10.0以下
+                if (currentSDK_INT < 29) {  //android10.0以下
                     AndPermission.with(this)
                             .permission(Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.READ_PHONE_STATE,
                                     Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.CAMERA, Manifest.permission.RECORD_AUDIO)
                             .start();
-                }else{
+                } else {
                     AndPermission.with(this)
                             .permission(Manifest.permission.ACCESS_FINE_LOCATION,
                                     Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.CAMERA, Manifest.permission.RECORD_AUDIO)

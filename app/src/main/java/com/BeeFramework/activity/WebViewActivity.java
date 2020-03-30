@@ -149,7 +149,9 @@ import cn.sharesdk.wechat.moments.WechatMoments;
 import static cn.net.cyberway.utils.BuryingPointUtils.ENTER_TIME;
 import static cn.net.cyberway.utils.BuryingPointUtils.LEAVE_TIME;
 import static cn.net.cyberway.utils.BuryingPointUtils.UPLOAD_DETAILS;
+import static com.community.fragment.CommunityDynamicsFragment.CHANGE_ACTIVITY_STATUS;
 import static com.BeeFramework.Utils.Utils.getAuthPublicParams;
+import static com.user.UserMessageConstant.CHANGE_COMMUNITY;
 
 @SuppressLint("SetJavaScriptEnabled")
 public class WebViewActivity extends BaseActivity implements View.OnLongClickListener, OnClickListener, NewHttpResponse, LekaiParkLockController.OnScanParkLockChangeListener {
@@ -398,12 +400,12 @@ public class WebViewActivity extends BaseActivity implements View.OnLongClickLis
                 closeShareLayout();
                 break;
             case R.id.rl_llq:
-                CommunityDynamicsModel  communityDynamicsModel=new CommunityDynamicsModel(WebViewActivity.this);
-                List<String> shareList=new ArrayList<>();
+                CommunityDynamicsModel communityDynamicsModel = new CommunityDynamicsModel(WebViewActivity.this);
+                List<String> shareList = new ArrayList<>();
                 shareList.add("https://cc.colourlife.com/common/v30/logo/app_logo_v30.png");
                 shareList.add(webTitle);
                 shareList.add(shareUrl);
-                communityDynamicsModel.publicUserDynamic(5,"","3",GsonUtils.gsonString(shareList),false,WebViewActivity.this);
+                communityDynamicsModel.publicUserDynamic(5, "", "3", GsonUtils.gsonString(shareList), false, WebViewActivity.this);
                 closeShareLayout();
                 break;
         }
@@ -604,6 +606,9 @@ public class WebViewActivity extends BaseActivity implements View.OnLongClickLis
                 break;
             case 5:
                 ToastUtil.toastShow(this, "已成功分享到邻里圈");
+                Message message = Message.obtain();
+                message.what =UserMessageConstant.SHARE_UPDATE_DYNAMIC;
+                EventBus.getDefault().post(message);
                 break;
         }
     }
@@ -1626,7 +1631,7 @@ public class WebViewActivity extends BaseActivity implements View.OnLongClickLis
     }
 
     private void jumpByUrls(String urls) {
-        urls+="&fromAppUrlScheme=colourlifePay";
+        urls += "&fromAppUrlScheme=colourlifePay";
         try {
             Intent intent = Intent.parseUri(urls, Intent.URI_INTENT_SCHEME);
             intent.addCategory("android.intent.category.BROWSABLE");

@@ -157,7 +157,7 @@ public class CommunityDynamicsAdapter extends RecyclerView.Adapter<RecyclerView.
             }
             holder.tv_activity_title.setText(dataBean.getAc_title());
             holder.tv_activity_address.setText(mContext.getResources().getString(R.string.community_activity_item_address) + dataBean.getAc_address());
-            holder.tv_activity_date.setText(mContext.getResources().getString(R.string.community_activity_item_date) +TimeUtil.getYearTime(dataBean.getCreated_at()*1000,"yyyy年MM月dd日"));
+            holder.tv_activity_date.setText(mContext.getResources().getString(R.string.community_activity_item_date) +TimeUtil.getYearTime(dataBean.getStop_apply_time()*1000,"yyyy年MM月dd日"));
             showActivityContent(dataBean, holder);
         } else {
             int extra_type = dataBean.getExtra_type();
@@ -453,7 +453,7 @@ public class CommunityDynamicsAdapter extends RecyclerView.Adapter<RecyclerView.
         TextView tv_activity_address;
         TextView tv_activity_date;
         ImageView iv_activity_status;
-        Button tv_once_join;
+        TextView tv_once_join;
         ImageView iv_first_photo;
         ImageView iv_second_photo;
         ImageView iv_third_photo;

@@ -54,7 +54,6 @@ import com.yanzhenjie.recyclerview.swipe.SwipeMenuRecyclerView;
 import com.youmai.hxsdk.HuxinSdkManager;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 import cn.csh.colourful.life.listener.OnItemClickListener;
@@ -261,11 +260,11 @@ public class CommunityDynamicsFragment extends Fragment implements View.OnClickL
                     switch (recycleState) {
                         case SCROLL_STATE_IDLE:
                             CommunityDynamicsListEntity.ContentBean.DataBean dataBean = dynamicContentList.get(i);
-                            Intent intent=null;
-                            if (2==dataBean.getList_type()){
+                            Intent intent = null;
+                            if (2 == dataBean.getList_type()) {
                                 intent = new Intent(getActivity(), CommunityActivityDetailsActivity.class);
-                                intent.putExtra(ACTIVITY_SOURCE_ID,dataBean.getSource_id());
-                            }else{
+                                intent.putExtra(ACTIVITY_SOURCE_ID, dataBean.getSource_id());
+                            } else {
                                 intent = new Intent(getActivity(), DynamicsDetailsActivity.class);
                                 intent.putExtra(DYNAMICS_DETAILS, dataBean);
                             }
@@ -322,7 +321,7 @@ public class CommunityDynamicsFragment extends Fragment implements View.OnClickL
             }
             saveFristDynamicCache();
         } catch (Exception e) {
-            ToastUtil.toastShow(getActivity(),e.getMessage());
+            ToastUtil.toastShow(getActivity(), e.getMessage());
         }
     }
 
@@ -553,6 +552,7 @@ public class CommunityDynamicsFragment extends Fragment implements View.OnClickL
                 }
                 break;
             case CHANGE_COMMUNITY:
+            case UserMessageConstant.SHARE_UPDATE_DYNAMIC:
                 year = "";
                 page = 1;
                 communityDynamicsModel.getCommunityDynamicList(0, page, year, false, CommunityDynamicsFragment.this);
@@ -593,19 +593,28 @@ public class CommunityDynamicsFragment extends Fragment implements View.OnClickL
                 }
                 break;
             case CHANGE_ACTIVITY_STATUS:
-                CommunityDynamicsListEntity.ContentBean.DataBean dataBean;
+                CommunityDynamicsListEntity.ContentBean.DataBean dataBean=null;
                 for (int j = 0; j < dynamicContentList.size(); j++) {
-                      dataBean = dynamicContentList.get(j);
+                    dataBean = dynamicContentList.get(j);
                     if (sourceId.equals(dataBean.getSource_id())) {
                         position = j;
                         break;
                     }
                 }
-                if (position != -1) {  //说明在当前列表有这个活动
-
-
+                if (position != -1) {  //说明在当前列表有这个活动 更新活动状态
+                    Bundle activityBundle = message.getData();
+                    int join_number = activityBundle.getInt("join_number");
+                    String ac_status = activityBundle.getString("ac_status");
+                    List<String> join_user_list = (List<String>) message.obj;
+                    if (null!=dataBean){
+                        dataBean.setAc_status(ac_status);
+                        dataBean.setJoin_user(join_user_list);
+                        dataBean.setJoin_num(join_number);
+                        dynamicContentList.set(position, dataBean);
+                        communityDynamicsAdapter.notifyItemChanged(position);
+                        saveFristDynamicCache();
+                    }
                 }
-
                 break;
             case UPDATE_DYNAMIC_REMINDCOUNT:
                 communityDynamicsModel.getDynamicRemindCount(10, CommunityDynamicsFragment.this);
@@ -639,7 +648,7 @@ public class CommunityDynamicsFragment extends Fragment implements View.OnClickL
             public boolean onTouch(View v, MotionEvent event) {
                 if (event.getAction() == MotionEvent.ACTION_UP)
                     inputDialog.dismiss();
-                   KeyBoardUtils.closeKeybord(feed_comment_edittext, getActivity());
+                KeyBoardUtils.closeKeybord(feed_comment_edittext, getActivity());
                 return true;
             }
         });

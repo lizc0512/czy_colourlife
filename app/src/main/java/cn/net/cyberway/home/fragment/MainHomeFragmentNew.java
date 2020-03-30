@@ -25,6 +25,7 @@ import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -116,6 +117,7 @@ import static cn.net.cyberway.home.view.HomeViewUtils.setTextColor;
 import static cn.net.cyberway.home.view.HomeViewUtils.showCommunityActivity;
 import static cn.net.cyberway.home.view.HomeViewUtils.smoothScrollTop;
 import static com.community.activity.CommunityActivityDetailsActivity.ACTIVITY_SOURCE_ID;
+import static com.community.fragment.CommunityDynamicsFragment.CHANGE_ACTIVITY_STATUS;
 import static com.user.UserAppConst.COLOR_HOME_USEDOOR;
 import static com.user.UserAppConst.COLOUR_BLUETOOTH_ADVISE;
 import static com.youmai.hxsdk.utils.DisplayUtil.getStatusBarHeight;
@@ -312,7 +314,7 @@ public class MainHomeFragmentNew extends Fragment implements NewHttpResponse, Vi
 
     private LinearLayout community_activity_layout;
     private ImageView iv_activity_image;
-    private TextView iv_activity_type;
+    private TextView tv_activity_type;
     private TextView tv_activity_fee;
     private TextView tv_activity_title;
     private TextView tv_activity_address;
@@ -321,6 +323,7 @@ public class MainHomeFragmentNew extends Fragment implements NewHttpResponse, Vi
     private CircleImageView iv_second_photo;
     private CircleImageView iv_thrid_photo;
     private TextView tv_join_person;
+    private TextView tv_once_join;
 
 
     /*有彩住宅的布局*/
@@ -776,34 +779,26 @@ public class MainHomeFragmentNew extends Fragment implements NewHttpResponse, Vi
 
 
     private void adversizeBannerShow() {
-        head_banner.setAdapter(new BGABanner.Adapter<ImageView, String>() {
-            @Override
-            public void fillBannerItem(BGABanner banner, ImageView itemView, String model, int position) {
-                GlideImageLoader.loadImageDefaultDisplay(getActivity(), model, itemView, R.drawable.icon_style_one, R.drawable.icon_style_one);
-            }
-        });
-        head_banner.setDelegate(new BGABanner.Delegate<ImageView, String>() {
-            @Override
-            public void onBannerItemClick(BGABanner banner, ImageView itemView, String model, int position) {
-                if (position >= 0 && position < bannerUrlList.size()) {
-                    HomeFuncEntity.ContentBean contentBean = bannerDataBeanList.get(position);
-                    initUploadData(contentBean);
-                    funCode = BuryingPointUtils.homeBannnerCode;
-                    if (TextUtils.isEmpty(appCode)) {
-                        LinkParseUtil.parse(getActivity(), contentBean.getRedirect_uri(), appName);
-                    } else {
-                        if ("2".equals(contentBean.getType())) {//type 2视频 1连接
-                            try {
-                                Intent intent = new Intent(getActivity(), BannerVideoActivity.class);
-                                intent.putExtra(BannerVideoActivity.NUM, contentBean.getFilesize());
-                                intent.putExtra(BannerVideoActivity.URI, contentBean.getRedirect_uri());
-                                startActivity(intent);
-                            } catch (Exception e) {
-                                e.printStackTrace();
-                            }
-                        } else {
-                            LinkParseUtil.parse(getActivity(), contentBean.getRedirect_uri(), appCode + BuryingPointUtils.divisionSign + appName + BuryingPointUtils.divisionSign + funCode);
+        head_banner.setAdapter((BGABanner.Adapter<ImageView, String>) (banner, itemView, model, position) -> GlideImageLoader.loadImageDefaultDisplay(getActivity(), model, itemView, R.drawable.icon_style_one, R.drawable.icon_style_one));
+        head_banner.setDelegate((BGABanner.Delegate<ImageView, String>) (banner, itemView, model, position) -> {
+            if (position >= 0 && position < bannerUrlList.size()) {
+                HomeFuncEntity.ContentBean contentBean = bannerDataBeanList.get(position);
+                initUploadData(contentBean);
+                funCode = BuryingPointUtils.homeBannnerCode;
+                if (TextUtils.isEmpty(appCode)) {
+                    LinkParseUtil.parse(getActivity(), contentBean.getRedirect_uri(), appName);
+                } else {
+                    if ("2".equals(contentBean.getType())) {//type 2视频 1连接
+                        try {
+                            Intent intent = new Intent(getActivity(), BannerVideoActivity.class);
+                            intent.putExtra(BannerVideoActivity.NUM, contentBean.getFilesize());
+                            intent.putExtra(BannerVideoActivity.URI, contentBean.getRedirect_uri());
+                            startActivity(intent);
+                        } catch (Exception e) {
+                            e.printStackTrace();
                         }
+                    } else {
+                        LinkParseUtil.parse(getActivity(), contentBean.getRedirect_uri(), appCode + BuryingPointUtils.divisionSign + appName + BuryingPointUtils.divisionSign + funCode);
                     }
                 }
             }
@@ -1070,7 +1065,7 @@ public class MainHomeFragmentNew extends Fragment implements NewHttpResponse, Vi
     }
 
     private void loadCacheData() {
-        String homeLayoutCache = mShared.getString(UserAppConst.COLOR_HOME_LAYOUT, "");
+        String homeLayoutCache = mShared.getString(UserAppConst.COLOR_HOME_LAYOUT, Constants.defaultLayout);
         if (!TextUtils.isEmpty(homeLayoutCache)) {
             showHomeLayout(homeLayoutCache, true);
         }
@@ -1291,6 +1286,16 @@ public class MainHomeFragmentNew extends Fragment implements NewHttpResponse, Vi
             case UserMessageConstant.REAL_SUCCESS_STATE:
                 authItemClick(fromFunc, fromFunc ? homeFuncBean : appBean); //跳转
                 break;
+            case CHANGE_ACTIVITY_STATUS:
+                Bundle bundle = message.getData();
+                String from_source_id = bundle.getString("sourceId");
+                String ac_status = bundle.getString("ac_status");
+                int join_number = bundle.getInt("join_number");
+                List<String> join_user_list = (List<String>) message.obj;
+                if (source_id.equals(from_source_id)) { //详情里面更新首页的状态
+                    updateCommunityStatus(ac_status, join_number, join_user_list);
+                }
+                break;
         }
     }
 
@@ -1380,9 +1385,9 @@ public class MainHomeFragmentNew extends Fragment implements NewHttpResponse, Vi
                                 notification_layout.setOnClickListener(this);
                             }
                             if (is_show == 1) {
-                                String homeNotifiactionCache = mShared.getString(UserAppConst.COLOR_HOME_NOTIFICATION, "");
-                                if (!TextUtils.isEmpty(homeNotifiactionCache) && loadCacheData) {
-                                    homeNotificationShow(homeNotifiactionCache);
+                                String homeNotificationCache = mShared.getString(UserAppConst.COLOR_HOME_NOTIFICATION, "");
+                                if (!TextUtils.isEmpty(homeNotificationCache) && loadCacheData) {
+                                    homeNotificationShow(homeNotificationCache);
                                 }
                                 if (!loadCacheData) {
                                     handler.sendEmptyMessageDelayed(4, 4000);
@@ -1449,7 +1454,7 @@ public class MainHomeFragmentNew extends Fragment implements NewHttpResponse, Vi
                                 community_view = LayoutInflater.from(getActivity()).inflate(R.layout.mhome_community_view, null);
                                 community_activity_layout = community_view.findViewById(R.id.community_activity_layout);
                                 iv_activity_image = community_view.findViewById(R.id.iv_activity_image);
-                                iv_activity_type = community_view.findViewById(R.id.iv_activity_type);
+                                tv_activity_type = community_view.findViewById(R.id.tv_activity_type);
                                 tv_activity_fee = community_view.findViewById(R.id.tv_activity_fee);
                                 tv_activity_title = community_view.findViewById(R.id.tv_activity_title);
                                 tv_activity_address = community_view.findViewById(R.id.tv_activity_address);
@@ -1458,13 +1463,14 @@ public class MainHomeFragmentNew extends Fragment implements NewHttpResponse, Vi
                                 iv_second_photo = community_view.findViewById(R.id.iv_second_photo);
                                 iv_thrid_photo = community_view.findViewById(R.id.iv_thrid_photo);
                                 tv_join_person = community_view.findViewById(R.id.tv_join_person);
+                                tv_once_join = community_view.findViewById(R.id.tv_once_join);
                                 home_rv.addHeaderView(community_view);
                                 community_activity_layout.setOnClickListener(this::onClick);
                             }
                             if (is_show == 1) {
-                                String homeManagerCache = mShared.getString(UserAppConst.COLOR_COMMUNITY_ACTIVITY, "");
-                                if (!TextUtils.isEmpty(homeManagerCache) && loadCacheData) {
-                                    homeCommunityActivityShow(homeManagerCache);
+                                String homeActivityCache = mShared.getString(UserAppConst.COLOR_COMMUNITY_ACTIVITY, "");
+                                if (!TextUtils.isEmpty(homeActivityCache) && loadCacheData) {
+                                    homeCommunityActivityShow(homeActivityCache);
                                 }
                                 if (!loadCacheData) {
                                     handler.sendEmptyMessageDelayed(8, 7000);
@@ -1514,18 +1520,14 @@ public class MainHomeFragmentNew extends Fragment implements NewHttpResponse, Vi
             source_id = contentBean.getSource_id();
             GlideImageLoader.loadTopRightCornerImageView(getActivity(), contentBean.getAc_banner(), iv_activity_image);
             String oproperty = contentBean.getAc_oproperty();
-            if (oproperty.length() <= 4) {
-                iv_activity_type.setText(oproperty);
-            } else {
-                iv_activity_type.setText(oproperty.substring(4));
-            }
-            switch (contentBean.getAc_status()) {
-                case "1":
-                    community_activity_layout.setVisibility(View.VISIBLE);
-                    break;
-                default:
-                    community_activity_layout.setVisibility(View.GONE);
-                    break;
+            if (TextUtils.isEmpty(oproperty)){
+                tv_activity_type.setText(getResources().getString(R.string.community_activity_officicl));
+            }else{
+                if (oproperty.length() <= 4) {
+                    tv_activity_type.setText(oproperty);
+                } else {
+                    tv_activity_type.setText(oproperty.substring(4));
+                }
             }
             tv_activity_fee.setText(contentBean.getAc_tag());
             tv_activity_title.setText(contentBean.getAc_title());
@@ -1533,10 +1535,27 @@ public class MainHomeFragmentNew extends Fragment implements NewHttpResponse, Vi
             tv_activity_date.setText("活动截止:" + TimeUtil.getTime(contentBean.getStop_apply_time() * 1000, "yyyy年MM月dd日"));
             int joinNumber = contentBean.getJoin_num();
             List<String> join_user_pics = contentBean.getJoin_user();
-            showCommunityActivity(getActivity(), joinNumber, join_user_pics, iv_first_photo, iv_second_photo, iv_thrid_photo, tv_join_person);
+            updateCommunityStatus(contentBean.getAc_status(), joinNumber, join_user_pics);
         } catch (Exception e) {
 
         }
+    }
+
+    private void updateCommunityStatus(String ac_status, int join_num, List<String> join_user) {
+        switch (ac_status) {
+            case "1":
+                tv_once_join.setText(getActivity().getResources().getString(R.string.community_activity_join));
+                community_activity_layout.setVisibility(View.VISIBLE);
+                break;
+            case "5":
+                tv_once_join.setText(getActivity().getResources().getString(R.string.community_activity_joined));
+                community_activity_layout.setVisibility(View.VISIBLE);
+                break;
+            default:
+                community_activity_layout.setVisibility(View.GONE);
+                break;
+        }
+        showCommunityActivity(getActivity(), join_num, join_user, iv_first_photo, iv_second_photo, iv_thrid_photo, tv_join_person);
     }
 
     private void showExceptionDoorData() {
@@ -1757,12 +1776,7 @@ public class MainHomeFragmentNew extends Fragment implements NewHttpResponse, Vi
 
 
     private void initHomeClick() {
-        refresh_layout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-            @Override
-            public void onRefresh() {
-                getFristData();
-            }
-        });
+        refresh_layout.setOnRefreshListener(() -> getFristData());
         home_rv.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
             public void onScrollStateChanged(RecyclerView recyclerView, int newState) {

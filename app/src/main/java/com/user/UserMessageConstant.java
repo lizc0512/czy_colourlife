@@ -14,13 +14,8 @@ public class UserMessageConstant {
     public static final int NET_CONN_CHANGE = USER_MESSAGE_BASE + 109;//网络改变
     public static final int CHANGE_DIFF_LANG = USER_MESSAGE_BASE + 110;// 国际化切换语言
     public static final int REGISTER_TYPE_FIAL = USER_MESSAGE_BASE + 1;//注册失败
-    public static final int CREATE_FEED = USER_MESSAGE_BASE + 13;
     public static final int CHANGE_COMMUNITY = USER_MESSAGE_BASE + 16;
-    public static final int DELETE_FEED = USER_MESSAGE_BASE + 18;
-    public static final int DELETE_COMMENT = USER_MESSAGE_BASE + 19;
-    public static final int COMMUNITY_REFRESH = USER_MESSAGE_BASE + 20;
     public static final int LOGOUT = USER_MESSAGE_BASE + 24;
-    public static final int SHAREDOKMESSAGE = USER_MESSAGE_BASE + 56;
     public static final int SUREBTNCHECKET = USER_MESSAGE_BASE + 75;
     public static final int SQUEEZE_OUT = USER_MESSAGE_BASE + 76;
     public static final int WEB_OUT = USER_MESSAGE_BASE + 77;
@@ -41,4 +36,5 @@ public class UserMessageConstant {
     public static final int REAL_CHANGE_STATE = USER_MESSAGE_BASE + 92;//重新实名提交审核
     public static final int REAL_FAIL_STATE = USER_MESSAGE_BASE + 93;//实名认证失败
     public static final int REAL_SUCCESS_STATE = USER_MESSAGE_BASE + 94;//实名认证失败
+    public static final int SHARE_UPDATE_DYNAMIC = USER_MESSAGE_BASE + 95;//分享邻里圈的更新
 }

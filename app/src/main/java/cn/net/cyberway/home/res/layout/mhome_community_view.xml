@@ -33,12 +33,12 @@
                 android:src="@drawable/community_sign" />
 
             <TextView
-                android:id="@+id/iv_activity_type"
+                android:id="@+id/tv_activity_type"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="20dp"
                 android:layout_marginTop="2dp"
-                android:text="@string/community_activity_officicl"
+                tools:text="@string/community_activity_officicl"
                 android:textColor="@color/white"
                 android:textSize="10sp" />
         </RelativeLayout>
@@ -56,7 +56,7 @@
                 android:id="@+id/tv_activity_fee"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="免费"
+                tools:text="免费"
                 android:textColor="@color/color_ff6d50"
                 android:textSize="16sp" />
 
@@ -66,25 +66,12 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="8dp"
                 android:layout_marginRight="16dp"
-                android:text="最美宠物摄影图片活动"
+                tools:text="最美宠物摄影图片活动"
                 android:textColor="@color/color_000000"
                 android:textSize="16sp"
                 android:textStyle="bold" />
 
         </LinearLayout>
-
-        <TextView
-            android:id="@+id/tv_activity_date"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/tv_activity_address"
-            android:layout_marginLeft="16dp"
-            android:layout_marginTop="8dp"
-            android:layout_marginRight="16dp"
-            android:text="活动截止：2020年4月12日"
-            android:textColor="@color/color_000000"
-            android:textSize="12sp" />
-
 
         <TextView
             android:id="@+id/tv_activity_address"
@@ -94,9 +81,23 @@
             android:layout_marginLeft="16dp"
             android:layout_marginTop="8dp"
             android:layout_marginRight="16dp"
-            android:text="地址：七星小区"
+            tools:text="地址：七星小区"
             android:textColor="@color/color_000000"
             android:textSize="12sp" />
+
+
+        <TextView
+            android:id="@+id/tv_activity_date"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/tv_activity_address"
+            android:layout_marginLeft="16dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginRight="16dp"
+            tools:text="活动截止：2020年4月12日"
+            android:textColor="@color/color_000000"
+            android:textSize="12sp" />
+
 
 
         <RelativeLayout
@@ -106,14 +107,15 @@
             android:layout_marginTop="15dp"
             android:layout_marginRight="16dp">
 
-            <Button
+            <TextView
                 android:id="@+id/tv_once_join"
                 android:layout_width="100dp"
                 android:layout_height="28dp"
                 android:layout_alignParentRight="true"
                 android:layout_centerVertical="true"
+                android:gravity="center"
                 android:background="@drawable/commuity_activity_join"
-                android:text="@string/community_activity_join"
+                tools:text="@string/community_activity_join"
                 android:textColor="@color/color_ff6d50"
                 android:textSize="13sp" />
 
