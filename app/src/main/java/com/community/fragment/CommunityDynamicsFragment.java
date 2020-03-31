@@ -259,16 +259,18 @@ public class CommunityDynamicsFragment extends Fragment implements View.OnClickL
                 public void onItemClick(int i) {
                     switch (recycleState) {
                         case SCROLL_STATE_IDLE:
-                            CommunityDynamicsListEntity.ContentBean.DataBean dataBean = dynamicContentList.get(i);
-                            Intent intent = null;
-                            if (2 == dataBean.getList_type()) {
-                                intent = new Intent(getActivity(), CommunityActivityDetailsActivity.class);
-                                intent.putExtra(ACTIVITY_SOURCE_ID, dataBean.getSource_id());
-                            } else {
-                                intent = new Intent(getActivity(), DynamicsDetailsActivity.class);
-                                intent.putExtra(DYNAMICS_DETAILS, dataBean);
-                            }
-                            startActivity(intent);
+                             if (dynamicContentList.size()>0){
+                                 CommunityDynamicsListEntity.ContentBean.DataBean dataBean = dynamicContentList.get(i);
+                                 Intent intent = null;
+                                 if (2 == dataBean.getList_type()) {
+                                     intent = new Intent(getActivity(), CommunityActivityDetailsActivity.class);
+                                     intent.putExtra(ACTIVITY_SOURCE_ID, dataBean.getSource_id());
+                                 } else {
+                                     intent = new Intent(getActivity(), DynamicsDetailsActivity.class);
+                                     intent.putExtra(DYNAMICS_DETAILS, dataBean);
+                                 }
+                                 startActivity(intent);
+                             }
                             break;
                     }
                 }
@@ -573,7 +575,8 @@ public class CommunityDynamicsFragment extends Fragment implements View.OnClickL
                     }
                 }
                 if (position != -1) {  //说明在当前列表有这条动态
-                    if (message.arg1 == 1) {
+                    int operate_type=message.arg1;
+                    if (operate_type == 1) { //详情里面删除
                         dynamicContentList.remove(position);
                         communityDynamicsAdapter.notifyItemRemoved(position);
                         communityDynamicsAdapter.notifyItemChanged(position, "");
@@ -587,7 +590,11 @@ public class CommunityDynamicsFragment extends Fragment implements View.OnClickL
                     } else {
                         CommunityDynamicsListEntity.ContentBean.DataBean dataBean = (CommunityDynamicsListEntity.ContentBean.DataBean) message.obj;
                         dynamicContentList.set(position, dataBean);
-                        communityDynamicsAdapter.notifyItemChanged(position);
+                        if (operate_type==2){ //详情里面评论
+                            communityDynamicsAdapter.notifyItemChanged(position,"comment");
+                        }else{//详情里面点赞
+                            communityDynamicsAdapter.notifyItemChanged(position,"like");
+                        }
                         saveFristDynamicCache();
                     }
                 }
@@ -608,10 +615,12 @@ public class CommunityDynamicsFragment extends Fragment implements View.OnClickL
                     List<String> join_user_list = (List<String>) message.obj;
                     if (null!=dataBean){
                         dataBean.setAc_status(ac_status);
-                        dataBean.setJoin_user(join_user_list);
+                        if (null!=join_user_list){
+                            dataBean.setJoin_user(join_user_list);
+                        }
                         dataBean.setJoin_num(join_number);
                         dynamicContentList.set(position, dataBean);
-                        communityDynamicsAdapter.notifyItemChanged(position);
+                        communityDynamicsAdapter.notifyItemChanged(position,"activity");
                         saveFristDynamicCache();
                     }
                 }

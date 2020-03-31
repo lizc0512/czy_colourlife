@@ -261,6 +261,7 @@ public class DynamicsDetailsActivity extends BaseFragmentActivity implements Vie
             }
             GlideImageLoader.loadImageDefaultDisplay(DynamicsDetailsActivity.this, shareImageLogo, iv_share_logo, R.drawable.share_default_logo, R.drawable.share_default_logo);
             tv_share_title.setText(shareDesc);
+            tv_share_title.setFocusable(true);
             String finalShareUrl = shareUrl;
             layout_share_dynamics.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -275,6 +276,7 @@ public class DynamicsDetailsActivity extends BaseFragmentActivity implements Vie
             int imgSize = imgList == null ? 0 : imgList.size();
             if (imgSize == 0) {
                 rv_dynamics_images.setVisibility(GONE);
+                tv_dynamics_content_details.setFocusable(true);
             } else {
                 rv_dynamics_images.setVisibility(View.VISIBLE);
                 int extra_type = dataBean.getExtra_type();
@@ -290,7 +292,6 @@ public class DynamicsDetailsActivity extends BaseFragmentActivity implements Vie
                 rv_dynamics_images.setAdapter(communityImageAdapter);
             }
         }
-
         setZanStatus();
         setCommentCount();
         communityLikeListFragment.showLikeList(zanBeanList);
@@ -581,7 +582,7 @@ public class DynamicsDetailsActivity extends BaseFragmentActivity implements Vie
                     dataBean.setZan_count(++zan_count);
                     setZanStatus();
                     communityLikeListFragment.clickZan(likeZanBean);
-                    callBackDynamicList(2);
+                    callBackDynamicList(3);
                 }
                 break;
             case 7://取消点赞
@@ -601,7 +602,7 @@ public class DynamicsDetailsActivity extends BaseFragmentActivity implements Vie
                     dataBean.setIs_zan(is_zan);
                     dataBean.setZan(zanBeanList);
                     setZanStatus();
-                    callBackDynamicList(2);
+                    callBackDynamicList(3);
                 }
                 break;
         }

@@ -115,8 +115,12 @@ public class CommunityDynamicsAdapter extends RecyclerView.Adapter<RecyclerView.
             String source_id = dataBean.getSource_id();
             if (list_type == 2) {
                 //刷新活动的状态  参与人数等
-                CommunityActivityViewHolder holder = (CommunityActivityViewHolder) viewHolder;
-                showActivityContent(dataBean, holder);
+                if ("activity".equals(loadsValue)){
+                    CommunityActivityViewHolder holder = (CommunityActivityViewHolder) viewHolder;
+                    showActivityContent(dataBean, holder);
+                }else{
+                    onBindViewHolder(viewHolder, position);
+                }
             } else {
                 DefaultViewHolder holder = (DefaultViewHolder) viewHolder;
                 if ("like".equals(loadsValue)) {

@@ -269,6 +269,7 @@
         android:layout_height="10dp"
         android:background="@color/color_fafafa" />
 
+
     <TextView
         android:layout_width="match_parent"
         android:layout_height="40dp"
@@ -278,6 +279,11 @@
         android:textStyle="bold"
         android:textColor="@color/color_000000"
         android:textSize="16sp" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1px"
+        android:background="@color/color_ebedf0" />
 
     <com.community.view.WrapWebView
         android:id="@+id/webview"

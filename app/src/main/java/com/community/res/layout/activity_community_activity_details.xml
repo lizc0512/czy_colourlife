@@ -2,6 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/white"
     android:fitsSystemWindows="true"
     android:orientation="vertical">
 
@@ -11,7 +12,7 @@
     <com.yanzhenjie.recyclerview.swipe.SwipeMenuRecyclerView
         android:id="@+id/rv_message"
         android:layout_width="match_parent"
-        android:background="@color/white"
+        android:layout_marginTop="18dp"
         android:layout_weight="1"
         android:layout_height="0dp" />
 

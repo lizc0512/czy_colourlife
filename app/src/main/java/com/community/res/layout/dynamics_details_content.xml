@@ -110,8 +110,9 @@
             android:layout_width="wrap_content"
             android:layout_marginLeft="12dp"
             android:layout_toRightOf="@id/iv_share_logo"
+            android:layout_centerVertical="true"
             android:textColor="@color/color_25282e"
-            android:singleLine="true"
+            android:maxLines="2"
             android:textSize="14sp"
             android:layout_marginRight="8dp"
             android:layout_height="wrap_content"/>

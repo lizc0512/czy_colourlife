@@ -119,7 +119,7 @@ public class CommunityActivityDetailsActivity extends BaseActivity implements Vi
     private int join_number;//参与人数
     private String activityTitle;//活动的标题
     private String activityUrl;//活动的链接
-    private List<String> join_user_list; //活动参与人数的头像
+    private List<String> join_user_list=new ArrayList<>(); //活动参与人数的头像
 
     private CommunityActivityCommentAdapter communityActivityCommentAdapter;
     private List<CommunityActivityListEntity.ContentBean.DataBean> commentBeanList;
@@ -182,7 +182,7 @@ public class CommunityActivityDetailsActivity extends BaseActivity implements Vi
         user_top_view_title = findViewById(R.id.user_top_view_title);
         img_right = findViewById(R.id.img_right);
         img_right.setVisibility(View.VISIBLE);
-        img_right.setPadding(20, 20, 20, 20);
+        img_right.setPadding(25, 25, 25, 25);
         img_right.setImageResource(R.drawable.community_activity_share);
         rv_message = findViewById(R.id.rv_message);
         rv_message.useDefaultLoadMore();
@@ -587,7 +587,10 @@ public class CommunityActivityDetailsActivity extends BaseActivity implements Vi
                     activityTitle = contentBean.getAc_title();
                     tv_activity_title.setText(activityTitle);
                     join_number = contentBean.getJoin_num();
-                    join_user_list = contentBean.getJoin_user();
+                    if (null!=contentBean.getJoin_user()){
+                        join_user_list.clear();
+                        join_user_list.addAll(contentBean.getJoin_user());
+                    }
                     showCommunityActivity(CommunityActivityDetailsActivity.this, join_number, join_user_list, iv_first_photo, iv_second_photo, iv_third_photo, tv_join_person);
                     tv_activity_starttime.setText(TimeUtil.getYearTime(contentBean.getBegin_time() * 1000, "yyyy-MM-dd") + "-" + TimeUtil.getYearTime(contentBean.getEnd_time() * 1000, "yyyy-MM-dd"));
                     tv_activity_address.setText(contentBean.getAc_address());
