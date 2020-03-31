@@ -70,7 +70,6 @@ public class CommunityImageAdapter extends RecyclerView.Adapter<CommunityImageAd
         LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(itemWidth, itemWidth);
         layoutParams.setMargins(0, 0, 0, marginPx);
         holder.iv_dynamic_publish.setLayoutParams(layoutParams);
-//        holder.iv_dynamic_publish.setScaleType(ImageView.ScaleType.CENTER_CROP);
         GlideImageLoader.loadCenterCropImageDisplay(mContext, imageUrl, holder.iv_dynamic_publish, R.drawable.default_image, R.drawable.default_image);
     }
 

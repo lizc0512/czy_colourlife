@@ -9,7 +9,7 @@
         android:configChanges="locale"
         android:hardwareAccelerated="true"
         android:icon="@drawable/icon"
-        android:label="@string/app_name_test"
+        android:label="@string/app_name"
         android:largeHeap="true"
         android:resizeableActivity="false"
         android:screenOrientation="portrait"
@@ -226,11 +226,6 @@
                 <data android:scheme="tencent1101958589" />
             </intent-filter>
         </activity>
-
-        <activity
-            android:name="com.BeeFramework.activity.AdsWebViewActivity"
-            android:screenOrientation="portrait"
-            android:theme="@android:style/Theme.Translucent.NoTitleBar" />
         <!--手势密码相关-->
         <activity
             android:name="com.setting.activity.GesturePwdMainActivity"

@@ -607,7 +607,7 @@ public class WebViewActivity extends BaseActivity implements View.OnLongClickLis
             case 5:
                 ToastUtil.toastShow(this, "已成功分享到邻里圈");
                 Message message = Message.obtain();
-                message.what =UserMessageConstant.SHARE_UPDATE_DYNAMIC;
+                message.what = UserMessageConstant.SHARE_UPDATE_DYNAMIC;
                 EventBus.getDefault().post(message);
                 break;
         }
@@ -1252,11 +1252,6 @@ public class WebViewActivity extends BaseActivity implements View.OnLongClickLis
             }
         }
 
-        @JavascriptInterface
-        public void ColourlifeWalletAuth(String authJson) {//彩钱包实名认证
-
-        }
-
 
         @JavascriptInterface
         public void ColourlifeSmartService(String goodsJson) {
@@ -1481,7 +1476,9 @@ public class WebViewActivity extends BaseActivity implements View.OnLongClickLis
 
     @Override
     protected void onDestroy() {
-        mAgentWeb.clearWebCache();
+        if (!url.startsWith("https://qr.alipay.com")) {
+            mAgentWeb.clearWebCache();
+        }
         mAgentWeb.getWebLifeCycle().onDestroy();
         if (EventBus.getDefault().isregister(WebViewActivity.this)) {
             EventBus.getDefault().unregister(WebViewActivity.this);
@@ -1504,6 +1501,9 @@ public class WebViewActivity extends BaseActivity implements View.OnLongClickLis
                 adapter.notifyDataSetChanged();
             } else if (code == 1) {
                 webView.loadUrl("javascript:window.galleryActivityHandler('" + msg.obj.toString() + "')");
+            } else if (code == 2) {
+                String loadUrl = (String) msg.obj;
+                goAlipayPay(loadUrl);
             }
         }
     };
@@ -1600,13 +1600,21 @@ public class WebViewActivity extends BaseActivity implements View.OnLongClickLis
 
     /***跳转到支付宝**/
     public boolean parseScheme(String url) {
-        if (url.contains("alipay")) {
-            return true;
-        } else if ((Build.VERSION.SDK_INT > Build.VERSION_CODES.M)
-                && (url.contains("platformapi") && url.contains("startapp"))) {
+        if (url.contains("alipays://platformapi")) {
+            handler.removeMessages(2);
             return true;
         } else {
-            return false;
+            if ((Build.VERSION.SDK_INT > Build.VERSION_CODES.M) && (url.contains("platformapi") && url.contains("startapp"))) {
+                //https://render.alipay.com/p/s/i?scheme=alipays%3A%2F%2Fplatformapi%2Fstartapp%3FsaId%3D10000007%26qrcode%3Dhttps%253A%252F%252Fqr.alipay.com%252Fbax04473mquqgnbq761s20d3%253F_s%253Dweb-other
+                //解决部分手机 去加载url不返回intent意图跳转到支付宝的问题
+                Message message = Message.obtain();
+                message.what = 2;
+                message.obj = url;
+                handler.sendMessageDelayed(message, 8000);
+                return false;
+            } else {
+                return false;
+            }
         }
     }
 
@@ -1627,14 +1635,9 @@ public class WebViewActivity extends BaseActivity implements View.OnLongClickLis
 
 
     private void goAlipayPay(String urls) {
-        jumpByUrls(urls);
-    }
-
-    private void jumpByUrls(String urls) {
-        urls += "&fromAppUrlScheme=colourlifePay";
         try {
             Intent intent = Intent.parseUri(urls, Intent.URI_INTENT_SCHEME);
-            intent.addCategory("android.intent.category.BROWSABLE");
+            intent.addCategory(Intent.CATEGORY_BROWSABLE);
             intent.setComponent(null);
             startActivityForResult(intent, GUANGCAIPAY);
         } catch (Exception e) {
