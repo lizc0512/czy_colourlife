@@ -22,6 +22,7 @@ import android.os.Looper;
 import android.os.Message;
 import android.util.Log;
 
+import com.BeeFramework.Utils.ToastUtil;
 import com.google.zxing.BinaryBitmap;
 import com.google.zxing.DecodeHintType;
 import com.google.zxing.MultiFormatReader;
@@ -83,11 +84,11 @@ final class DecodeHandler extends Handler {
     Result rawResult = null;
     PlanarYUVLuminanceSource source = activity.getCameraManager().buildLuminanceSource(data, width, height);
     if (source != null) {
-      BinaryBitmap bitmap = new BinaryBitmap(new HybridBinarizer(source));
+         BinaryBitmap bitmap = new BinaryBitmap(new HybridBinarizer(source));
       try {
         rawResult = multiFormatReader.decodeWithState(bitmap);
       } catch (ReaderException re) {
-        // continue
+
       } finally {
         multiFormatReader.reset();
       }
@@ -95,7 +96,6 @@ final class DecodeHandler extends Handler {
 
     Handler handler = activity.getHandler();
     if (rawResult != null) {
-      // Don't log the barcode contents for security.
       long end = System.currentTimeMillis();
       Log.d(TAG, "Found barcode in " + (end - start) + " ms");
       if (handler != null) {

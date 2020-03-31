@@ -97,13 +97,13 @@ public class CommunityDynamicsFragment extends Fragment implements View.OnClickL
     public static final int CHANGE_ACTIVITY_STATUS = 2010;//活动内容更新
 
     private SwipeRefreshLayout dynamics_refresh_layout;
-    private ImageView iv_unRead_message;
+    private ImageView iv_unRead_message;//未读的消息数
     private RelativeLayout dynamics_data_layout;
-    private SwipeMenuRecyclerView rv_community_dynamics;
+    private SwipeMenuRecyclerView rv_community_dynamics;//动态列表
     private ImageView iv_publish_dynamics;
     private View community_tabbar_view;
     private QBadgeView unReadBadgeView;
-    private RelativeLayout dynamics_empty_layout;
+    private RelativeLayout dynamics_empty_layout;  //动态列表为空时的状态
     private TextView tv_send_dynamics;
     private CommunityDynamicsModel communityDynamicsModel;
     private NewUserModel newUserModel;
@@ -545,7 +545,7 @@ public class CommunityDynamicsFragment extends Fragment implements View.OnClickL
                     RealIdentifyDialogUtil.showGoIdentifyDialog(getActivity());
                 }
                 break;
-            case TIPOFF_OTHER_COMMENT:
+            case TIPOFF_OTHER_COMMENT://举报评论 动态
                 if ("1".equals(is_identity)) {
                     String tipOffCommentId = bundle.getString("commentId");
                     showTipCommentDelDialog(sourceId, tipOffCommentId);
@@ -553,12 +553,12 @@ public class CommunityDynamicsFragment extends Fragment implements View.OnClickL
                     RealIdentifyDialogUtil.showGoIdentifyDialog(getActivity());
                 }
                 break;
-            case CHANGE_COMMUNITY:
-            case UserMessageConstant.SHARE_UPDATE_DYNAMIC:
+            case CHANGE_COMMUNITY://切换小区
+            case UserMessageConstant.SHARE_UPDATE_DYNAMIC://成功分享彩之云h5到动态列表
                 year = "";
                 page = 1;
                 communityDynamicsModel.getCommunityDynamicList(0, page, year, false, CommunityDynamicsFragment.this);
-            case SIGN_IN_SUCCESS:
+            case SIGN_IN_SUCCESS://登录成功
                 if (isFirst) {
                     year = "";
                     page = 1;
@@ -566,7 +566,7 @@ public class CommunityDynamicsFragment extends Fragment implements View.OnClickL
                     newUserModel.getIsRealName(1, false, CommunityDynamicsFragment.this);
                 }
                 break;
-            case CALLBACL_COMMENT_DYNAMIC:
+            case CALLBACL_COMMENT_DYNAMIC://动态详情里面对动态的操作
                 for (int j = 0; j < dynamicContentList.size(); j++) {
                     CommunityDynamicsListEntity.ContentBean.DataBean dataBean = dynamicContentList.get(j);
                     if (sourceId.equals(dataBean.getSource_id())) {
@@ -599,7 +599,7 @@ public class CommunityDynamicsFragment extends Fragment implements View.OnClickL
                     }
                 }
                 break;
-            case CHANGE_ACTIVITY_STATUS:
+            case CHANGE_ACTIVITY_STATUS://活动详情里面更新活动状态的同步
                 CommunityDynamicsListEntity.ContentBean.DataBean dataBean=null;
                 for (int j = 0; j < dynamicContentList.size(); j++) {
                     dataBean = dynamicContentList.get(j);
@@ -625,7 +625,7 @@ public class CommunityDynamicsFragment extends Fragment implements View.OnClickL
                     }
                 }
                 break;
-            case UPDATE_DYNAMIC_REMINDCOUNT:
+            case UPDATE_DYNAMIC_REMINDCOUNT://
                 communityDynamicsModel.getDynamicRemindCount(10, CommunityDynamicsFragment.this);
                 break;
             case UserMessageConstant.GET_APPLY_NUMBER://申请好友的通知

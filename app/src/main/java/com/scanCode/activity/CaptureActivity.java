@@ -491,16 +491,14 @@ public final class CaptureActivity extends BaseActivity implements
     private void initCamera(SurfaceHolder surfaceHolder) {
         try {
             cameraManager.openDriver(surfaceHolder);
-            // Creating the handler starts the preview, which can also throw a
-            // RuntimeException.
             if (handler == null) {
+                characterSet="utf-8";
                 handler = new CaptureActivityHandler(this, decodeFormats,
                         characterSet, cameraManager);
             }
             decodeOrStoreSavedBitmap(null, null);
         } catch (IOException ioe) {
             Log.w(TAG, ioe);
-            // displayFrameworkBugMessageAndExit();
         } catch (RuntimeException e) {
             Log.w(TAG, "Unexpected error initializing camera", e);
             ToastUtil.toastShow(getApplicationContext(), getResources().getString(R.string.user_camerapermission_notice));
@@ -530,7 +528,7 @@ public final class CaptureActivity extends BaseActivity implements
                 Bitmap bitmap = CompressHelper.getDefault(this).compressToBitmap(new File(path));
                 Result result = DecodeImage.handleQRCodeFormBitmap(bitmap);
                 if (result == null) {
-                    ToastUtil.toastShow(CaptureActivity.this, "请选择是二维码的图片");
+                    ToastUtil.toastShow(CaptureActivity.this, "请选择是二维码或条形码的图片");
                 } else {
                     handleDecode(result, bitmap);
                 }

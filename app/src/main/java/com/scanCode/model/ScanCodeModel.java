@@ -44,6 +44,8 @@ public class ScanCodeModel extends BaseModel {
                     int resultCode = showSuccesResultMessage(result);
                     if (resultCode == 0) {
                         newHttpResponse.OnHttpResponse(what, result);
+                    }else{
+                        newHttpResponse.OnHttpResponse(what, "");
                     }
                 } else {
                     showErrorCodeMessage(responseCode, response);

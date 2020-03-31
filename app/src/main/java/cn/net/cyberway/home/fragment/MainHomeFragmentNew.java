@@ -1465,6 +1465,7 @@ public class MainHomeFragmentNew extends Fragment implements NewHttpResponse, Vi
                                 tv_join_person = community_view.findViewById(R.id.tv_join_person);
                                 tv_once_join = community_view.findViewById(R.id.tv_once_join);
                                 home_rv.addHeaderView(community_view);
+                                community_activity_layout.setVisibility(View.GONE);
                                 community_activity_layout.setOnClickListener(this::onClick);
                             }
                             if (is_show == 1) {

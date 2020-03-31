@@ -178,7 +178,7 @@ public class GlideImageLoader {
     public static void loadTopRightCornerImageView(Context mContext, String path, ImageView mImageView) {
         RoundedCornersTransform transform = new RoundedCornersTransform(mContext, Util.DensityUtil.dip2px(mContext, 3));
         transform.setNeedCorner(true, true, false, false);
-        RequestOptions options = new RequestOptions().placeholder(R.drawable.icon_style_four).transform(transform).diskCacheStrategy(DiskCacheStrategy.ALL);
+        RequestOptions options = new RequestOptions().placeholder(R.drawable.icon_style_four).transform(transform).diskCacheStrategy(DiskCacheStrategy.ALL).skipMemoryCache(false).dontAnimate();
         Glide.with(mContext).load(path).apply(options).into(mImageView);
     }
 

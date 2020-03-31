@@ -1,11 +1,13 @@
 package com.BeeFramework.activity;
 
 import android.content.Intent;
+import android.net.http.SslError;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Message;
 import android.text.TextUtils;
 import android.view.View;
+import android.webkit.SslErrorHandler;
 import android.webkit.WebChromeClient;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
@@ -109,6 +111,9 @@ public class AdsWebViewActivity extends BaseActivity implements View.OnClickList
                 return false;
             }
         }
+        public void onReceivedSslError(WebView view, SslErrorHandler handler, SslError error) {
+            handler.proceed(); // 兼容https
+        }
     }
 
     private void jumpByUrls(String urls) {
@@ -126,16 +131,18 @@ public class AdsWebViewActivity extends BaseActivity implements View.OnClickList
 
     /***跳转到支付宝**/
     public boolean parseScheme(String url) {
-        //alipays://platformapi
+        //https://mobilecodec.alipay.com/client_download.htm?qrcode=bax071441o63h7rx9lv40045
         if (url.contains("alipay")) {
             return true;
         } else if ((Build.VERSION.SDK_INT > Build.VERSION_CODES.M)
                 && (url.contains("platformapi") && url.contains("startapp"))) {
             return true;
+        } else if (url.contains("web-other")) {
+            return true;
         } else {
+            oauth_webView.loadUrl(url);
             return false;
         }
-        //  return startIntentUrl(var0, "intent://platformapi/startapp?saId=10000007&clientVersion=3.7.0.0718&qrcode=https%3A%2F%2Fqr.alipay.com%2F{urlCode}%3F_s%3Dweb-other&_t=1472443966571#Intent;scheme=alipayqr;package=com.eg.android.AlipayGphone;end".replace("{urlCode}", var1));
     }
 
     @Override
