@@ -445,7 +445,7 @@ public class WebViewActivity extends BaseActivity implements View.OnLongClickLis
         } else {
             oks.setTitle(webTitle);
             oks.setText(webTitle);
-            oks.setImageUrl("https://cc.colourlife.com/common/v30/logo/app_logo_v30.png");
+            oks.setImageData(BitmapFactory.decodeResource(getResources(), R.drawable.share_default_logo));
         }
         oks.setUrl(shareUrl);
         // 将快捷分享的操作结果将通过OneKeyShareCallback回调

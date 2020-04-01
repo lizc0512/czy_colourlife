@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.res.Resources;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.util.DisplayMetrics;
 import android.view.Gravity;
 import android.view.Window;
@@ -74,10 +75,10 @@ public class ShareActivityDialog extends Dialog {
     private String shareText;
     private String shareUrl;
 
-    public void  setShareContent(String shareTitle,String shareText,String shareUrl){
-        this.shareTitle=shareTitle;
-        this.shareText=shareText;
-        this.shareUrl=shareUrl;
+    public void setShareContent(String shareTitle, String shareText, String shareUrl) {
+        this.shareTitle = shareTitle;
+        this.shareText = shareText;
+        this.shareUrl = shareUrl;
     }
 
     private void showShare(String platformToShare) {
@@ -90,7 +91,10 @@ public class ShareActivityDialog extends Dialog {
         oks.disableSSOWhenAuthorize();
         oks.setTitle(shareTitle);
         oks.setText(shareText);
-        oks.setImageData(BitmapFactory.decodeResource(getContext().getResources(),R.drawable.share_default_logo));
+        oks.setImageData(BitmapFactory.decodeResource(getContext().getResources(), R.drawable.share_default_logo));
+        if (TextUtils.isEmpty(shareUrl)) {
+            shareUrl = "http://m.colourlife.com/doubleCode?code=1390620762&sign=553FCC9A69A55F1BE686F6AF85E42154";
+        }
         oks.setUrl(shareUrl);
         // 将快捷分享的操作结果将通过OneKeyShareCallback回调
         oks.setCallback(new PlatformActionListener() {
