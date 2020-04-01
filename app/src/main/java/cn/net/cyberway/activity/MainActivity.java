@@ -178,7 +178,12 @@ public class MainActivity extends BaseFragmentActivity implements View.OnClickLi
         String themeCache = shared.getString(UserAppConst.THEME, "");
         themeAdapter(themeCache);
         fragmentManager = getSupportFragmentManager();
-        onTabSelected(FLAG_TAB_ONE);
+        if (null != savedInstanceState) {
+            choiceType = savedInstanceState.getInt("currentPageFragment", 0);
+            getResotreFragment();
+        } else {
+            onTabSelected(FLAG_TAB_ONE);
+        }
         if (shared.getBoolean(UserAppConst.IS_CHECK_UPDATE, false)) {//为TURE，说明第二次进入才检测更新
             mUpdateVerSion.getNewVerSion(MainActivity.this, true, false);
         }
@@ -715,18 +720,12 @@ public class MainActivity extends BaseFragmentActivity implements View.OnClickLi
         outState.putInt("currentPageFragment", choiceType);
     }
 
-    @Override
-    protected void onRestoreInstanceState(Bundle savedInstanceState) {
-        super.onRestoreInstanceState(savedInstanceState);
-        if (null == fragmentManager) {
-            fragmentManager = getSupportFragmentManager();
-        }
+    private void getResotreFragment() {
         mHomeFragment = (MainHomeFragmentNew) fragmentManager.findFragmentByTag("homeFragment");
         nologinHomeFragment = (NologinHomeFragment) fragmentManager.findFragmentByTag("noLoginFragment");
         benefitFragment = (BenefitFragment) fragmentManager.findFragmentByTag("benefitFragment");
         communityDynamicsFragment = (CommunityDynamicsFragment) fragmentManager.findFragmentByTag("communityFragment");
         profileFragment = (ProfileFragment) fragmentManager.findFragmentByTag("profileFragment");
-        choiceType = savedInstanceState.getInt("currentPageFragment", 0);
         switch (choiceType) {
             case 0:
                 onTabSelected(FLAG_TAB_ONE);
@@ -742,6 +741,7 @@ public class MainActivity extends BaseFragmentActivity implements View.OnClickLi
                 break;
         }
     }
+
 
     /**
      * 隐藏页面
