@@ -121,7 +121,10 @@ final class CameraConfigurationManager {
         if (focusMode != null) {
             parameters.setFocusMode(focusMode);
         }
-
+//        if (parameters.isZoomSupported()) {
+//            // 设置成最大倍数的1/10，基本符合远近需求
+//            parameters.setZoom(parameters.getMaxZoom() / 10);
+//        }
         parameters.setPreviewSize(cameraResolution.x, cameraResolution.y);
         camera.setDisplayOrientation(90);
         camera.setParameters(parameters);

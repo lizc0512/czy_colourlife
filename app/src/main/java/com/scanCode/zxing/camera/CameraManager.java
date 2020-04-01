@@ -233,7 +233,8 @@ public final class CameraManager {
             Rect rect = new Rect(framingRect);
             Point cameraResolution = configManager.getCameraResolution();
             Point screenResolution = configManager.getScreenResolution();
-            if (screenResolution.x < screenResolution.y) {// 下面为竖屏模式
+            if (screenResolution.x < screenResolution.y) {
+                //下面为竖屏模式
                 rect.left = framingRect.left * cameraResolution.y / screenResolution.x;
                 rect.right = framingRect.right * cameraResolution.y / screenResolution.x;
                 rect.top = framingRect.top * cameraResolution.x / screenResolution.y;
@@ -293,7 +294,7 @@ public final class CameraManager {
         }
         PlanarYUVLuminanceSource source;
         Point point = configManager.getScreenResolution();
-        if (point.x < point.y) {//竖屏
+        if (point.x < point.y) {
             byte[] rotatedData = new byte[data.length];
             int newWidth = height;
             int newHeight = width;
@@ -302,10 +303,11 @@ public final class CameraManager {
                     rotatedData[x * newWidth + newWidth - 1 - y] = data[x + y * width];
             }
             source = new PlanarYUVLuminanceSource(rotatedData, newWidth, newHeight,
-                    rect.left, rect.top, rect.width(), rect.height(), reverseImage);
+                    0, 0, rect.width(), rect.height(), reverseImage);
         } else {
+
             source = new PlanarYUVLuminanceSource(data, width, height,
-                    rect.left, rect.top, rect.width(), rect.height(), reverseImage);
+                   0, 0, rect.width(), rect.height(), reverseImage);
         }
         return source;
     }

@@ -763,6 +763,7 @@ public class NewOrderPayActivity extends BaseActivity implements View.OnClickLis
                 }
                 break;
             case WEIXIN_PAY_MSG: //微信支付回调
+                showPayResultDialog=0;
                 int payCode = message.arg1;
                 if (payCode == 0) {
                     payResultQuery();

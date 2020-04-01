@@ -212,7 +212,7 @@ public final class CaptureActivity extends BaseActivity implements
     }
 
     private void initCamera() {
-        cameraManager = new CameraManager(getApplication());
+        cameraManager = new CameraManager(CaptureActivity.this);
 
         viewfinderView = (ViewfinderView) findViewById(R.id.viewfinder_view);
         viewfinderView.setCameraManager(cameraManager);
