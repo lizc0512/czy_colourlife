@@ -296,6 +296,10 @@ public class CommunityDynamicsListEntity extends BaseContentEntity {
 
             private String ac_address;
             private String ac_status;
+
+
+
+            private String is_join;
             private long stop_apply_time;
             private int join_num;
             private List<String> join_user;
@@ -315,6 +319,13 @@ public class CommunityDynamicsListEntity extends BaseContentEntity {
             private List<CommentBean> comment;
             private List<ZanBean> zan;
 
+            public String getIs_join() {
+                return is_join;
+            }
+
+            public void setIs_join(String is_join) {
+                this.is_join = is_join;
+            }
             public int getId() {
                 return id;
             }

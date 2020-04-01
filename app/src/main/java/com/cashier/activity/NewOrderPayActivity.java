@@ -731,7 +731,6 @@ public class NewOrderPayActivity extends BaseActivity implements View.OnClickLis
         if (!EventBus.getDefault().isregister(NewOrderPayActivity.this)) {
             EventBus.getDefault().register(NewOrderPayActivity.this);
         }
-
         if (showPayResultDialog == 1) {
             showH5PayResultDialog();
             showPayResultDialog = 0;
@@ -755,6 +754,7 @@ public class NewOrderPayActivity extends BaseActivity implements View.OnClickLis
         final Message message = (Message) event;
         switch (message.what) {
             case UserMessageConstant.GUANGCAI_PAY_MSG:
+                showPayResultDialog = 0;
                 showH5PayResultDialog();
                 break;
             case UserMessageConstant.NET_CONN_CHANGE:

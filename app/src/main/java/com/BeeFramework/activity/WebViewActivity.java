@@ -402,7 +402,11 @@ public class WebViewActivity extends BaseActivity implements View.OnLongClickLis
             case R.id.rl_llq:
                 CommunityDynamicsModel communityDynamicsModel = new CommunityDynamicsModel(WebViewActivity.this);
                 List<String> shareList = new ArrayList<>();
-                shareList.add("https://cc.colourlife.com/common/v30/logo/app_logo_v30.png");
+                if (!TextUtils.isEmpty(shareImg)){
+                    shareList.add(shareImg);
+                }else{
+                    shareList.add("");
+                }
                 shareList.add(webTitle);
                 shareList.add(shareUrl);
                 communityDynamicsModel.publicUserDynamic(5, "", "3", GsonUtils.gsonString(shareList), false, WebViewActivity.this);

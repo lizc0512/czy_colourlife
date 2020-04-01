@@ -612,6 +612,7 @@ public class CommunityDynamicsFragment extends Fragment implements View.OnClickL
                     Bundle activityBundle = message.getData();
                     int join_number = activityBundle.getInt("join_number");
                     String ac_status = activityBundle.getString("ac_status");
+                    String is_join = activityBundle.getString("is_join");
                     List<String> join_user_list = (List<String>) message.obj;
                     if (null!=dataBean){
                         dataBean.setAc_status(ac_status);
@@ -619,6 +620,7 @@ public class CommunityDynamicsFragment extends Fragment implements View.OnClickL
                             dataBean.setJoin_user(join_user_list);
                         }
                         dataBean.setJoin_num(join_number);
+                        dataBean.setIs_join(is_join);
                         dynamicContentList.set(position, dataBean);
                         communityDynamicsAdapter.notifyItemChanged(position,"activity");
                         saveFristDynamicCache();

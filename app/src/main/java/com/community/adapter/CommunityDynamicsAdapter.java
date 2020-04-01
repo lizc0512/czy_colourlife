@@ -14,16 +14,13 @@ import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.ListAdapter;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.BeeFramework.Utils.TimeUtil;
 import com.BeeFramework.view.CircleImageView;
-import com.community.activity.CommunityActivityDetailsActivity;
 import com.community.entity.CommunityDynamicsListEntity;
 import com.community.view.MoreTextView;
 import com.external.eventbus.EventBus;
@@ -32,11 +29,9 @@ import com.im.activity.IMFriendInforActivity;
 import com.im.activity.IMUserSelfInforActivity;
 import com.im.helper.CacheFriendInforHelper;
 import com.nohttp.utils.GlideImageLoader;
-import com.nohttp.utils.GsonUtils;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 import cn.csh.colourful.life.listener.OnItemClickListener;
 import cn.net.cyberway.R;
@@ -115,10 +110,10 @@ public class CommunityDynamicsAdapter extends RecyclerView.Adapter<RecyclerView.
             String source_id = dataBean.getSource_id();
             if (list_type == 2) {
                 //刷新活动的状态  参与人数等
-                if ("activity".equals(loadsValue)){
+                if ("activity".equals(loadsValue)) {
                     CommunityActivityViewHolder holder = (CommunityActivityViewHolder) viewHolder;
                     showActivityContent(dataBean, holder);
-                }else{
+                } else {
                     onBindViewHolder(viewHolder, position);
                 }
             } else {
@@ -147,9 +142,9 @@ public class CommunityDynamicsAdapter extends RecyclerView.Adapter<RecyclerView.
             String ac_banner = dataBean.getAc_banner();
             String oproperty = dataBean.getAc_oproperty();
             GlideImageLoader.loadTopRightCornerImageView(mContext, ac_banner, holder.iv_activity_image);
-            if (TextUtils.isEmpty(oproperty)){
+            if (TextUtils.isEmpty(oproperty)) {
                 holder.iv_activity_type.setText(mContext.getResources().getString(R.string.community_activity_officicl));
-            }else{
+            } else {
                 holder.iv_activity_type.setText(oproperty);
             }
             String ac_tag = dataBean.getAc_tag();
@@ -161,7 +156,7 @@ public class CommunityDynamicsAdapter extends RecyclerView.Adapter<RecyclerView.
             }
             holder.tv_activity_title.setText(dataBean.getAc_title());
             holder.tv_activity_address.setText(mContext.getResources().getString(R.string.community_activity_item_address) + dataBean.getAc_address());
-            holder.tv_activity_date.setText(mContext.getResources().getString(R.string.community_activity_item_date) +TimeUtil.getYearTime(dataBean.getStop_apply_time()*1000,"yyyy年MM月dd日"));
+            holder.tv_activity_date.setText(mContext.getResources().getString(R.string.community_activity_item_date) + TimeUtil.getYearTime(dataBean.getStop_apply_time() * 1000, "yyyy年MM月dd日"));
             showActivityContent(dataBean, holder);
         } else {
             int extra_type = dataBean.getExtra_type();
@@ -171,15 +166,15 @@ public class CommunityDynamicsAdapter extends RecyclerView.Adapter<RecyclerView.
                 holder.dynamic_image_layout.setVisibility(GONE);
                 holder.share_activity_layout.setVisibility(View.VISIBLE);
                 List<String> shareList = dataBean.getExtra();
-                String shareImageLogo="";
-                String shareDesc="";
+                String shareImageLogo = "";
+                String shareDesc = "";
                 String shareUrl = null;
                 if (shareList.size() >= 3) {
                     shareImageLogo = shareList.get(0);
                     shareDesc = shareList.get(1);
                     shareUrl = shareList.get(2);
-                }else{
-                    shareUrl="http://m.colourlife.com/doubleCode?code=1390620762&sign=553FCC9A69A55F1BE686F6AF85E42154";
+                } else {
+                    shareUrl = "http://m.colourlife.com/doubleCode?code=1390620762&sign=553FCC9A69A55F1BE686F6AF85E42154";
                 }
                 GlideImageLoader.loadImageDefaultDisplay(mContext, shareImageLogo, holder.iv_share_logo, R.drawable.share_default_logo, R.drawable.share_default_logo);
                 holder.tv_share_title.setText(shareDesc);
@@ -275,37 +270,40 @@ public class CommunityDynamicsAdapter extends RecyclerView.Adapter<RecyclerView.
     }
 
     public void showActivityContent(CommunityDynamicsListEntity.ContentBean.DataBean dataBean, CommunityActivityViewHolder holder) {
-        //1正在进行，
-        //2人数已满，
-        //3报名截止，
-        //4已结束
-        //5已参与
         String ac_status = dataBean.getAc_status();
-        switch (ac_status) {
-            case "2":
-                holder.iv_activity_status.setVisibility(View.VISIBLE);
-                holder.iv_activity_status.setImageResource(R.drawable.community_number_full);
-                holder.tv_once_join.setText(mContext.getResources().getString(R.string.community_activity_round));
-                break;
-            case "3":
-                holder.iv_activity_status.setVisibility(View.VISIBLE);
-                holder.iv_activity_status.setImageResource(R.drawable.community_enroll_end);
-                holder.tv_once_join.setText(mContext.getResources().getString(R.string.community_activity_round));
-                break;
-            case "4":
-                holder.iv_activity_status.setVisibility(View.VISIBLE);
-                holder.iv_activity_status.setImageResource(R.drawable.community_time_end);
-                holder.tv_once_join.setText(mContext.getResources().getString(R.string.community_activity_round));
-                break;
-            case "5":
-                holder.tv_once_join.setText(mContext.getResources().getString(R.string.community_activity_joined));
-                holder.iv_activity_status.setVisibility(View.INVISIBLE);
-                break;
-            default:
-                holder.tv_once_join.setText(mContext.getResources().getString(R.string.community_activity_join));
-                holder.iv_activity_status.setVisibility(View.INVISIBLE);
-                break;
+        String is_join = dataBean.getIs_join();
+        if ("1".equals(is_join)) {
+            //表示已参与活动
+            holder.tv_once_join.setText(mContext.getResources().getString(R.string.community_activity_joined));
+            holder.iv_activity_status.setVisibility(View.INVISIBLE);
+        } else {
+            //1正在进行，
+            //2人数已满，
+            //3报名截止，
+            //4已结束
+            switch (ac_status) {
+                case "2":
+                    holder.iv_activity_status.setVisibility(View.VISIBLE);
+                    holder.iv_activity_status.setImageResource(R.drawable.community_number_full);
+                    holder.tv_once_join.setText(mContext.getResources().getString(R.string.community_activity_round));
+                    break;
+                case "3":
+                    holder.iv_activity_status.setVisibility(View.VISIBLE);
+                    holder.iv_activity_status.setImageResource(R.drawable.community_enroll_end);
+                    holder.tv_once_join.setText(mContext.getResources().getString(R.string.community_activity_round));
+                    break;
+                case "4":
+                    holder.iv_activity_status.setVisibility(View.VISIBLE);
+                    holder.iv_activity_status.setImageResource(R.drawable.community_time_end);
+                    holder.tv_once_join.setText(mContext.getResources().getString(R.string.community_activity_round));
+                    break;
+                default:
+                    holder.tv_once_join.setText(mContext.getResources().getString(R.string.community_activity_join));
+                    holder.iv_activity_status.setVisibility(View.INVISIBLE);
+                    break;
+            }
         }
+
         showCommunityActivity(mContext, dataBean.getJoin_num(), dataBean.getJoin_user(), holder.iv_first_photo, holder.iv_second_photo, holder.iv_third_photo, holder.tv_join_person);
     }
 

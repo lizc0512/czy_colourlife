@@ -1290,10 +1290,11 @@ public class MainHomeFragmentNew extends Fragment implements NewHttpResponse, Vi
                 Bundle bundle = message.getData();
                 String from_source_id = bundle.getString("sourceId");
                 String ac_status = bundle.getString("ac_status");
+                String is_join = bundle.getString("is_join");
                 int join_number = bundle.getInt("join_number");
                 List<String> join_user_list = (List<String>) message.obj;
                 if (source_id.equals(from_source_id)) { //详情里面更新首页的状态
-                    updateCommunityStatus(ac_status, join_number, join_user_list);
+                    updateCommunityStatus(ac_status, is_join,join_number, join_user_list);
                 }
                 break;
         }
@@ -1521,9 +1522,9 @@ public class MainHomeFragmentNew extends Fragment implements NewHttpResponse, Vi
             source_id = contentBean.getSource_id();
             GlideImageLoader.loadTopRightCornerImageView(getActivity(), contentBean.getAc_banner(), iv_activity_image);
             String oproperty = contentBean.getAc_oproperty();
-            if (TextUtils.isEmpty(oproperty)){
+            if (TextUtils.isEmpty(oproperty)) {
                 tv_activity_type.setText(getResources().getString(R.string.community_activity_officicl));
-            }else{
+            } else {
                 if (oproperty.length() <= 4) {
                     tv_activity_type.setText(oproperty);
                 } else {
@@ -1536,25 +1537,26 @@ public class MainHomeFragmentNew extends Fragment implements NewHttpResponse, Vi
             tv_activity_date.setText("活动截止:" + TimeUtil.getTime(contentBean.getStop_apply_time() * 1000, "yyyy年MM月dd日"));
             int joinNumber = contentBean.getJoin_num();
             List<String> join_user_pics = contentBean.getJoin_user();
-            updateCommunityStatus(contentBean.getAc_status(), joinNumber, join_user_pics);
+            updateCommunityStatus(contentBean.getAc_status(), contentBean.getIs_join(), joinNumber, join_user_pics);
         } catch (Exception e) {
 
         }
     }
 
-    private void updateCommunityStatus(String ac_status, int join_num, List<String> join_user) {
-        switch (ac_status) {
-            case "1":
-                tv_once_join.setText(getActivity().getResources().getString(R.string.community_activity_join));
-                community_activity_layout.setVisibility(View.VISIBLE);
-                break;
-            case "5":
-                tv_once_join.setText(getActivity().getResources().getString(R.string.community_activity_joined));
-                community_activity_layout.setVisibility(View.VISIBLE);
-                break;
-            default:
-                community_activity_layout.setVisibility(View.GONE);
-                break;
+    private void updateCommunityStatus(String ac_status, String is_join, int join_num, List<String> join_user) {
+        if ("1".equals(is_join)) {
+            tv_once_join.setText(getActivity().getResources().getString(R.string.community_activity_joined));
+            community_activity_layout.setVisibility(View.VISIBLE);
+        } else {
+            switch (ac_status) {
+                case "1":
+                    tv_once_join.setText(getActivity().getResources().getString(R.string.community_activity_join));
+                    community_activity_layout.setVisibility(View.VISIBLE);
+                    break;
+                default:
+                    community_activity_layout.setVisibility(View.GONE);
+                    break;
+            }
         }
         showCommunityActivity(getActivity(), join_num, join_user, iv_first_photo, iv_second_photo, iv_thrid_photo, tv_join_person);
     }

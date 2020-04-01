@@ -74,6 +74,9 @@ public class CommunityActivityDetailsEntity extends BaseContentEntity {
         private String ac_title;
         private String ac_category;
         private String ac_status;
+
+
+        private String is_join;
         private String operator;
         private String operator_id;
         private String operator_oa;
@@ -90,12 +93,17 @@ public class CommunityActivityDetailsEntity extends BaseContentEntity {
         private String picture_prompt;
         private String ac_banner;
         private String ac_detail;
+
+
+
+        private String ac_sharelink;
         private String created_at;
         private String updated_at;
         private String contact_user_name;
         private String contact_user_mobile;
         private String contact_user_avatar;
         private String source_id;
+
         private int join_num;
         private List<String> join_user;
 
@@ -106,6 +114,15 @@ public class CommunityActivityDetailsEntity extends BaseContentEntity {
         public void setId(int id) {
             this.id = id;
         }
+
+        public String getIs_join() {
+            return is_join;
+        }
+
+        public void setIs_join(String is_join) {
+            this.is_join = is_join;
+        }
+
 
         public String getAc_type() {
             return ac_type;
@@ -259,6 +276,13 @@ public class CommunityActivityDetailsEntity extends BaseContentEntity {
             this.ac_banner = ac_banner;
         }
 
+        public String getAc_sharelink() {
+            return ac_sharelink;
+        }
+
+        public void setAc_sharelink(String ac_sharelink) {
+            this.ac_sharelink = ac_sharelink;
+        }
         public String getAc_detail() {
             return ac_detail;
         }

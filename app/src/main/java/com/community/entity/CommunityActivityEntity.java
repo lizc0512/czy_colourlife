@@ -61,6 +61,16 @@ public class CommunityActivityEntity extends BaseContentEntity {
         private String ac_title;
         private String ac_address;
         private String ac_status;
+
+        public String getIs_join() {
+            return is_join;
+        }
+
+        public void setIs_join(String is_join) {
+            this.is_join = is_join;
+        }
+
+        private String is_join;
         private long stop_apply_time;
         private int join_num;
         private List<String> join_user;

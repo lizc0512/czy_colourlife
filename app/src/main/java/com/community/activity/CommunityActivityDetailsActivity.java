@@ -109,6 +109,7 @@ public class CommunityActivityDetailsActivity extends BaseActivity implements Vi
     private String source_id;//活动的id
     private String contact_mobile;//活动的发起人的联系方式
     private String ac_status;//活动的状态
+    private String is_join;//用户是否已参加
     public Luban.Builder lubanBuilder;
     private ImagePicker imagePicker;
     private int maxPickImageSize = 2;
@@ -212,8 +213,6 @@ public class CommunityActivityDetailsActivity extends BaseActivity implements Vi
         webview.setOnContentChangeListener(() -> {
             jsObject.onGetWebContentHeight();
         });
-        String loadurl = "https://www.baidu.com/";
-        webview.loadUrl(loadurl);
     }
 
     private class JSObject {
@@ -251,7 +250,7 @@ public class CommunityActivityDetailsActivity extends BaseActivity implements Vi
                 showInputCommentDialog(null, source_id, "", "");
                 break;
             case R.id.tv_join_activity:
-                if ("5".equals(ac_status)) { //活动已参与
+                if ("1".equals(is_join)) { //活动已参与
                     ToastUtil.toastShow(CommunityActivityDetailsActivity.this, getResources().getString(R.string.community_activity_joined_notice));
                 } else {
                     if ("1".equals(pickRequire)) {
@@ -603,6 +602,8 @@ public class CommunityActivityDetailsActivity extends BaseActivity implements Vi
                     maxPickImageSize = contentBean.getPicture_num();
                     pickerPrompt = contentBean.getPicture_prompt();
                     pickRequire = contentBean.getPicture_require();
+                    activityUrl=contentBean.getAc_sharelink();
+                    webview.loadUrl(contentBean.getAc_detail());
                     showAcStatus();
                 } catch (Exception e) {
 
@@ -641,6 +642,7 @@ public class CommunityActivityDetailsActivity extends BaseActivity implements Vi
                     CommunityStatusEntity communityStatusEntity = GsonUtils.gsonToBean(result, CommunityStatusEntity.class);
                     ac_status = communityStatusEntity.getContent().getAc_status();
                     if ("5".equals(ac_status)) {
+                        is_join="1";
                         ToastUtil.toastJoinActivity(CommunityActivityDetailsActivity.this);
                         join_number++;
                         if (join_number <= 3) {
@@ -699,32 +701,33 @@ public class CommunityActivityDetailsActivity extends BaseActivity implements Vi
     }
 
     private void showAcStatus() {
-        switch (ac_status) {
-            case "2":
-                tv_join_activity.setEnabled(false);
-                tv_join_activity.setBackgroundColor(getResources().getColor(R.color.color_8d9299));
-                tv_join_activity.setText(getResources().getString(R.string.community_activity_numberfull));
-                break;
-            case "3":
-                tv_join_activity.setEnabled(false);
-                tv_join_activity.setBackgroundColor(getResources().getColor(R.color.color_8d9299));
-                tv_join_activity.setText(getResources().getString(R.string.community_activity_endtime));
-                break;
-            case "4":
-                tv_join_activity.setEnabled(false);
-                tv_join_activity.setBackgroundColor(getResources().getColor(R.color.color_8d9299));
-                tv_join_activity.setText(getResources().getString(R.string.community_activity_finished));
-                break;
-            case "5":
-                tv_join_activity.setEnabled(true);
-                tv_join_activity.setBackgroundColor(getResources().getColor(R.color.color_3282fa));
-                tv_join_activity.setText(getResources().getString(R.string.community_activity_joined));
-                break;
-            default:
-                tv_join_activity.setEnabled(true);
-                tv_join_activity.setBackgroundColor(getResources().getColor(R.color.color_3282fa));
-                tv_join_activity.setText(getResources().getString(R.string.community_activity_join));
-                break;
+        if ("1".equals(is_join)){ //表示已参加
+            tv_join_activity.setEnabled(true);
+            tv_join_activity.setBackgroundColor(getResources().getColor(R.color.color_3282fa));
+            tv_join_activity.setText(getResources().getString(R.string.community_activity_joined));
+        }else{
+            switch (ac_status) {
+                case "2":
+                    tv_join_activity.setEnabled(false);
+                    tv_join_activity.setBackgroundColor(getResources().getColor(R.color.color_8d9299));
+                    tv_join_activity.setText(getResources().getString(R.string.community_activity_numberfull));
+                    break;
+                case "3":
+                    tv_join_activity.setEnabled(false);
+                    tv_join_activity.setBackgroundColor(getResources().getColor(R.color.color_8d9299));
+                    tv_join_activity.setText(getResources().getString(R.string.community_activity_endtime));
+                    break;
+                case "4":
+                    tv_join_activity.setEnabled(false);
+                    tv_join_activity.setBackgroundColor(getResources().getColor(R.color.color_8d9299));
+                    tv_join_activity.setText(getResources().getString(R.string.community_activity_finished));
+                    break;
+                default:
+                    tv_join_activity.setEnabled(true);
+                    tv_join_activity.setBackgroundColor(getResources().getColor(R.color.color_3282fa));
+                    tv_join_activity.setText(getResources().getString(R.string.community_activity_join));
+                    break;
+            }
         }
         updateActivityStatus();
     }
@@ -737,6 +740,7 @@ public class CommunityActivityDetailsActivity extends BaseActivity implements Vi
         bundle.putString("ac_status", ac_status);
         bundle.putString("sourceId", source_id);
         bundle.putInt("join_number", join_number);
+        bundle.putString("is_join", is_join);
         bundle.putInt("position", -1);
         message.setData(bundle);
         message.obj = join_user_list;
