@@ -15,7 +15,9 @@ import com.bumptech.glide.load.Transformation;
 import com.bumptech.glide.load.engine.Resource;
 import com.bumptech.glide.load.engine.bitmap_recycle.BitmapPool;
 import com.bumptech.glide.load.resource.bitmap.BitmapResource;
+import com.bumptech.glide.util.Util;
 
+import java.nio.ByteBuffer;
 import java.security.MessageDigest;
 
 /**
@@ -23,10 +25,12 @@ import java.security.MessageDigest;
  * 创建者:yuansongkai
  * 邮箱:827194927@qq.com
  * 创建日期:
- * 描述:
+ * 描述:加载自定义圆角大小的图片  解决刷新闪烁问题
  **/
 public class RoundedCornersTransform implements Transformation<Bitmap> {
     private BitmapPool mBitmapPool;
+    private static final String ID = "com.bumptech.glide.load.resource.bitmap.FillSpace";
+    private static final byte[] ID_BYTES = ID.getBytes(CHARSET);
 
     private float radius;
 
@@ -148,6 +152,26 @@ public class RoundedCornersTransform implements Transformation<Bitmap> {
 
     @Override
     public void updateDiskCacheKey(@NonNull MessageDigest messageDigest) {
+        messageDigest.update(ID_BYTES);
+
+        byte[] radiusData = ByteBuffer.allocate(4).putFloat(radius).array();
+        messageDigest.update(radiusData);
 
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (o instanceof RoundedCornersTransform) {
+            RoundedCornersTransform other = (RoundedCornersTransform) o;
+            return radius == other.radius;
+        }
+        return false;
+    }
+
+    @Override
+    public int hashCode() {
+        return Util.hashCode(ID.hashCode(),
+                Util.hashCode(radius));
+    }
+
 }

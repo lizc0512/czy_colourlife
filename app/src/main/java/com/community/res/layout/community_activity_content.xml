@@ -51,12 +51,13 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
-            android:layout_marginLeft="16dp"
+            android:layout_marginLeft="8dp"
             android:orientation="horizontal">
 
             <com.BeeFramework.view.CircleImageView
                 android:id="@+id/iv_first_photo"
                 android:layout_width="18dp"
+                android:layout_marginLeft="8dp"
                 android:layout_height="18dp"
                 android:layout_gravity="center_vertical"
                 tools:src="@drawable/icon_default" />
@@ -75,12 +76,12 @@
                 android:layout_height="18dp"
                 android:layout_gravity="center_vertical"
                 android:layout_marginLeft="-9dp"
-                android:layout_marginRight="8dp"
                 tools:src="@drawable/icon_default" />
 
             <TextView
                 android:id="@+id/tv_join_person"
                 android:layout_width="wrap_content"
+                android:layout_marginLeft="8dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
                 android:textColor="@color/color_666666"
@@ -269,31 +270,39 @@
         android:layout_height="10dp"
         android:background="@color/color_fafafa" />
 
-
-    <TextView
+    <LinearLayout
+        android:id="@+id/web_content_layout"
         android:layout_width="match_parent"
-        android:layout_height="40dp"
-        android:layout_marginLeft="20dp"
-        android:gravity="center_vertical"
-        android:text="@string/community_activity_details"
-        android:textStyle="bold"
-        android:textColor="@color/color_000000"
-        android:textSize="16sp" />
+        android:orientation="vertical"
+        android:layout_height="wrap_content">
 
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="1px"
-        android:background="@color/color_ebedf0" />
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_marginLeft="20dp"
+            android:gravity="center_vertical"
+            android:text="@string/community_activity_details"
+            android:textStyle="bold"
+            android:textColor="@color/color_000000"
+            android:textSize="16sp" />
 
-    <com.community.view.WrapWebView
-        android:id="@+id/webview"
-        android:layout_width="match_parent"
-        android:layout_height="100dp" />
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1px"
+            android:background="@color/color_ebedf0" />
 
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="1px"
-        android:background="@color/color_ebedf0" />
+        <com.community.view.WrapWebView
+            android:id="@+id/webview"
+            android:layout_width="match_parent"
+            android:layout_height="100dp" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1px"
+            android:background="@color/color_ebedf0" />
+
+    </LinearLayout>
+
 
     <TextView
         android:layout_width="match_parent"

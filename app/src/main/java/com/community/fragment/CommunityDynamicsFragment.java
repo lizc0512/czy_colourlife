@@ -259,18 +259,18 @@ public class CommunityDynamicsFragment extends Fragment implements View.OnClickL
                 public void onItemClick(int i) {
                     switch (recycleState) {
                         case SCROLL_STATE_IDLE:
-                             if (dynamicContentList.size()>0){
-                                 CommunityDynamicsListEntity.ContentBean.DataBean dataBean = dynamicContentList.get(i);
-                                 Intent intent = null;
-                                 if (2 == dataBean.getList_type()) {
-                                     intent = new Intent(getActivity(), CommunityActivityDetailsActivity.class);
-                                     intent.putExtra(ACTIVITY_SOURCE_ID, dataBean.getSource_id());
-                                 } else {
-                                     intent = new Intent(getActivity(), DynamicsDetailsActivity.class);
-                                     intent.putExtra(DYNAMICS_DETAILS, dataBean);
-                                 }
-                                 startActivity(intent);
-                             }
+                            if (dynamicContentList.size() > 0) {
+                                CommunityDynamicsListEntity.ContentBean.DataBean dataBean = dynamicContentList.get(i);
+                                Intent intent = null;
+                                if (2 == dataBean.getList_type()) {
+                                    intent = new Intent(getActivity(), CommunityActivityDetailsActivity.class);
+                                    intent.putExtra(ACTIVITY_SOURCE_ID, dataBean.getSource_id());
+                                } else {
+                                    intent = new Intent(getActivity(), DynamicsDetailsActivity.class);
+                                    intent.putExtra(DYNAMICS_DETAILS, dataBean);
+                                }
+                                startActivity(intent);
+                            }
                             break;
                     }
                 }
@@ -281,50 +281,54 @@ public class CommunityDynamicsFragment extends Fragment implements View.OnClickL
     private List<CommunityDynamicsListEntity.ContentBean.DataBean> dynamicContentList = new ArrayList<>();
 
     private void showDynamicList(String result) {
+        boolean dataEmpty = true;
+        String resultYear = "";
+        int resultTotal = 0;
         try {
-            boolean dataEmpty = true;
-            String resultYear = "";
-            int resultTotal = 0;
             if (!TextUtils.isEmpty(result)) {
                 CommunityDynamicsListEntity communityDynamicsListEntity = GsonUtils.gsonToBean(result, CommunityDynamicsListEntity.class);
                 CommunityDynamicsListEntity.ContentBean contentBean = communityDynamicsListEntity.getContent();
-                resultTotal = contentBean.getTotal();
-                resultYear = contentBean.getYear();
-                List<CommunityDynamicsListEntity.ContentBean.DataBean> pageContentList = contentBean.getData();
-                dataEmpty = pageContentList == null || pageContentList.size() == 0;
-                dynamicContentList.addAll(pageContentList);
-            }
-            if (dynamicContentList.size() == 0) {
-                dynamics_data_layout.setVisibility(View.GONE);
-                dynamics_empty_layout.setVisibility(View.VISIBLE);
-                //用户没有动态
-            } else {
-                dynamics_data_layout.setVisibility(View.VISIBLE);
-                dynamics_empty_layout.setVisibility(View.GONE);
-                boolean hasMore = false;
-                if (!TextUtils.isEmpty(resultYear)) {
-                    if (year.equals(resultYear)) { //2次请求的时间一样
-                        total = resultTotal;
-                    } else {
-                        year = resultYear;
-                        total += resultTotal;
-                    }
-                } else {
-                    total = resultTotal;
+                if (null!=contentBean){
+                    resultTotal = contentBean.getTotal();
+                    resultYear = contentBean.getYear();
+                    List<CommunityDynamicsListEntity.ContentBean.DataBean> pageContentList = contentBean.getData();
+                    dataEmpty = pageContentList == null || pageContentList.size() == 0;
+                    dynamicContentList.addAll(pageContentList);
+                }else{
+                    ToastUtil.toastShow(getActivity(),communityDynamicsListEntity.getMessage());
                 }
-                if (total > dynamicContentList.size()) {
-                    hasMore = true;
-                } else {
-                    hasMore = false;
-                }
-                showDynamicData();
-                //进行数据适配器的展示
-                rv_community_dynamics.loadMoreFinish(dataEmpty, hasMore);
             }
-            saveFristDynamicCache();
         } catch (Exception e) {
             ToastUtil.toastShow(getActivity(), e.getMessage());
         }
+        if (dynamicContentList.size() == 0) {
+            dynamics_data_layout.setVisibility(View.GONE);
+            dynamics_empty_layout.setVisibility(View.VISIBLE);
+            //用户没有动态
+        } else {
+            dynamics_data_layout.setVisibility(View.VISIBLE);
+            dynamics_empty_layout.setVisibility(View.GONE);
+            boolean hasMore = false;
+            if (!TextUtils.isEmpty(resultYear)) {
+                if (year.equals(resultYear)) { //2次请求的时间一样
+                    total = resultTotal;
+                } else {
+                    year = resultYear;
+                    total += resultTotal;
+                }
+            } else {
+                total = resultTotal;
+            }
+            if (total > dynamicContentList.size()) {
+                hasMore = true;
+            } else {
+                hasMore = false;
+            }
+            showDynamicData();
+            //进行数据适配器的展示
+            rv_community_dynamics.loadMoreFinish(dataEmpty, hasMore);
+        }
+        saveFristDynamicCache();
     }
 
     private void showDynamicData() {
@@ -343,13 +347,9 @@ public class CommunityDynamicsFragment extends Fragment implements View.OnClickL
     }
 
     private void saveFristDynamicCache() {
-        try {
-            if (TextUtils.isEmpty(year) && page == 1) {  //值缓存第一页的数据
-                String fristPageCache = GsonUtils.gsonString(dynamicContentList);
-                editor.putString(COLOUR_DYNAMICS_NEWLIST_CACHE, fristPageCache).apply();
-            }
-        } catch (Exception e) {
-
+        if (TextUtils.isEmpty(year) && page == 1 && dynamicContentList.size() > 0) {  //值缓存第一页的数据
+            String fristPageCache = GsonUtils.gsonString(dynamicContentList);
+            editor.putString(COLOUR_DYNAMICS_NEWLIST_CACHE, fristPageCache).apply();
         }
     }
 
@@ -575,7 +575,7 @@ public class CommunityDynamicsFragment extends Fragment implements View.OnClickL
                     }
                 }
                 if (position != -1) {  //说明在当前列表有这条动态
-                    int operate_type=message.arg1;
+                    int operate_type = message.arg1;
                     if (operate_type == 1) { //详情里面删除
                         dynamicContentList.remove(position);
                         communityDynamicsAdapter.notifyItemRemoved(position);
@@ -590,17 +590,17 @@ public class CommunityDynamicsFragment extends Fragment implements View.OnClickL
                     } else {
                         CommunityDynamicsListEntity.ContentBean.DataBean dataBean = (CommunityDynamicsListEntity.ContentBean.DataBean) message.obj;
                         dynamicContentList.set(position, dataBean);
-                        if (operate_type==2){ //详情里面评论
-                            communityDynamicsAdapter.notifyItemChanged(position,"comment");
-                        }else{//详情里面点赞
-                            communityDynamicsAdapter.notifyItemChanged(position,"like");
+                        if (operate_type == 2) { //详情里面评论
+                            communityDynamicsAdapter.notifyItemChanged(position, "comment");
+                        } else {//详情里面点赞
+                            communityDynamicsAdapter.notifyItemChanged(position, "like");
                         }
                         saveFristDynamicCache();
                     }
                 }
                 break;
             case CHANGE_ACTIVITY_STATUS://活动详情里面更新活动状态的同步
-                CommunityDynamicsListEntity.ContentBean.DataBean dataBean=null;
+                CommunityDynamicsListEntity.ContentBean.DataBean dataBean = null;
                 for (int j = 0; j < dynamicContentList.size(); j++) {
                     dataBean = dynamicContentList.get(j);
                     if (sourceId.equals(dataBean.getSource_id())) {
@@ -614,15 +614,15 @@ public class CommunityDynamicsFragment extends Fragment implements View.OnClickL
                     String ac_status = activityBundle.getString("ac_status");
                     String is_join = activityBundle.getString("is_join");
                     List<String> join_user_list = (List<String>) message.obj;
-                    if (null!=dataBean){
+                    if (null != dataBean) {
                         dataBean.setAc_status(ac_status);
-                        if (null!=join_user_list){
+                        if (null != join_user_list) {
                             dataBean.setJoin_user(join_user_list);
                         }
                         dataBean.setJoin_num(join_number);
                         dataBean.setIs_join(is_join);
                         dynamicContentList.set(position, dataBean);
-                        communityDynamicsAdapter.notifyItemChanged(position,"activity");
+                        communityDynamicsAdapter.notifyItemChanged(position, "activity");
                         saveFristDynamicCache();
                     }
                 }

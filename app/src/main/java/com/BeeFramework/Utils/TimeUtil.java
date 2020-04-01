@@ -186,8 +186,6 @@ public class TimeUtil {
             int todayMonth = todayCalendar.get(Calendar.MONTH);
             int otherMonth = otherCalendar.get(Calendar.MONTH);
             if (todayMonth == otherMonth) {//表示是同一个月
-                int week = otherCalendar.get(Calendar.DAY_OF_WEEK);
-                String weekStr = "";
                 /*星期日:Calendar.SUNDAY=1
                  *星期一:Calendar.MONDAY=2
                  *星期二:Calendar.TUESDAY=3

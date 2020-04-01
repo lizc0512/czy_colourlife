@@ -82,29 +82,30 @@ public class CommunityActivityDetailsActivity extends BaseActivity implements Vi
     private ImageView img_right;
 
     private ImageView iv_activity_head;
-    private TextView tv_fee_status;
+    private TextView tv_fee_status; //活动是否收费
     private TextView tv_activity_title;
     private CircleImageView iv_first_photo;
     private CircleImageView iv_second_photo;
     private CircleImageView iv_third_photo;
-    private TextView tv_join_person;
+    private TextView tv_join_person; //活动的参与人数
     private TextView tv_fee_price;
-    private TextView tv_activity_starttime;
+    private TextView tv_activity_starttime;//活动的时间段
     private TextView tv_activity_address;
-    private TextView tv_activity_endtime;
+    private TextView tv_activity_endtime;//活动的截止时间
     private TextView tv_activity_person;
     private LinearLayout contact_person_layout;
     private CircleImageView iv_contact_header;
     private TextView tv_contact_name;
-    private WrapWebView webview;
+    private LinearLayout web_content_layout;
+    private WrapWebView webview; //活动详情介绍
 
-    private SwipeMenuRecyclerView rv_message;
+    private SwipeMenuRecyclerView rv_message; //活动留言列表
     private LinearLayout no_data_layout;
     private RelativeLayout send_message_layout;
     private TextView tv_join_activity;
 
 
-    private ArrayList<CommunityImageView> mUploadImageViews = new ArrayList<CommunityImageView>();
+    private ArrayList<CommunityImageView> mUploadImageViews = new ArrayList<CommunityImageView>();//参与活动 上传的图片集
     private CommunityDynamicsModel communityDynamicsModel;
     private String source_id;//活动的id
     private String contact_mobile;//活动的发起人的联系方式
@@ -120,7 +121,7 @@ public class CommunityActivityDetailsActivity extends BaseActivity implements Vi
     private int join_number;//参与人数
     private String activityTitle;//活动的标题
     private String activityUrl;//活动的链接
-    private List<String> join_user_list=new ArrayList<>(); //活动参与人数的头像
+    private List<String> join_user_list = new ArrayList<>(); //活动参与人数的头像
 
     private CommunityActivityCommentAdapter communityActivityCommentAdapter;
     private List<CommunityActivityListEntity.ContentBean.DataBean> commentBeanList;
@@ -171,6 +172,7 @@ public class CommunityActivityDetailsActivity extends BaseActivity implements Vi
         contact_person_layout = headView.findViewById(R.id.contact_person_layout);
         iv_contact_header = headView.findViewById(R.id.iv_contact_header);
         tv_contact_name = headView.findViewById(R.id.tv_contact_name);
+        web_content_layout = headView.findViewById(R.id.web_content_layout);
         webview = headView.findViewById(R.id.webview);
         no_data_layout = headView.findViewById(R.id.no_data_layout);
         rv_message.addHeaderView(headView);
@@ -238,7 +240,7 @@ public class CommunityActivityDetailsActivity extends BaseActivity implements Vi
             case R.id.user_top_view_back:
                 finish();
                 break;
-            case R.id.img_right:
+            case R.id.img_right: //分享活动
                 ShareActivityDialog shareActivityDialog = new ShareActivityDialog(CommunityActivityDetailsActivity.this, R.style.custom_dialog_theme);
                 shareActivityDialog.show();
                 shareActivityDialog.setShareContent(activityTitle, activityTitle, activityUrl);
@@ -249,7 +251,7 @@ public class CommunityActivityDetailsActivity extends BaseActivity implements Vi
             case R.id.send_message_layout://因为addheadviw了
                 showInputCommentDialog(null, source_id, "", "");
                 break;
-            case R.id.tv_join_activity:
+            case R.id.tv_join_activity://参与活动
                 if ("1".equals(is_join)) { //活动已参与
                     ToastUtil.toastShow(CommunityActivityDetailsActivity.this, getResources().getString(R.string.community_activity_joined_notice));
                 } else {
@@ -264,13 +266,10 @@ public class CommunityActivityDetailsActivity extends BaseActivity implements Vi
                     }
                 }
                 break;
-            case R.id.tv_define_join:
-                if (null != joinActivityDialog) {
-                    joinActivityDialog.dismiss();
-                }
+            case R.id.tv_define_join://确定参与活动
                 joinCommunityActivity();
                 break;
-            case R.id.tv_cancel_join:
+            case R.id.tv_cancel_join://取消参与
                 if (null != joinActivityDialog) {
                     joinActivityDialog.dismiss();
                 }
@@ -435,6 +434,7 @@ public class CommunityActivityDetailsActivity extends BaseActivity implements Vi
     private void joinCommunityActivity() {
         if (mUploadImageViews.size() < maxPickImageSize) {
             ToastUtil.toastShow(this, "图片数量不够");
+            return;
         } else {
             List<String> uploadObjList = new ArrayList<>();
             for (CommunityImageView communityImageView : mUploadImageViews) {
@@ -446,8 +446,11 @@ public class CommunityActivityDetailsActivity extends BaseActivity implements Vi
                 ToastUtil.toastShow(this, "请等待图片上传完成后发布");
                 return;
             }
-            FileUtils.delDynamicPicFolder();
+            if (null != joinActivityDialog) {
+                joinActivityDialog.dismiss();
+            }
             communityDynamicsModel.joinCommunityActivity(2, source_id, GsonUtils.gsonString(uploadObjList), CommunityActivityDetailsActivity.this);
+            FileUtils.delDynamicPicFolder();
         }
     }
 
@@ -456,6 +459,7 @@ public class CommunityActivityDetailsActivity extends BaseActivity implements Vi
     private String toUserId;
     private String content;
 
+    /***新增留言或评论留言***/
     public void showInputCommentDialog(View itemView, String sourceId, String fromNickName, String toUserId) {
         this.fromNickName = fromNickName;
         this.toUserId = toUserId;
@@ -522,7 +526,7 @@ public class CommunityActivityDetailsActivity extends BaseActivity implements Vi
         DeleteNoticeDialog deleteNoticeDialog = new DeleteNoticeDialog(CommunityActivityDetailsActivity.this, R.style.custom_dialog_theme);
         deleteNoticeDialog.show();
         deleteNoticeDialog.btn_define.setOnClickListener(v -> {
-            //删除评论
+            //删除评论或留言
             communityDynamicsModel.delActivityComment(4, source_id, comment_id, CommunityActivityDetailsActivity.this);
             deleteNoticeDialog.dismiss();
         });
@@ -586,7 +590,7 @@ public class CommunityActivityDetailsActivity extends BaseActivity implements Vi
                     activityTitle = contentBean.getAc_title();
                     tv_activity_title.setText(activityTitle);
                     join_number = contentBean.getJoin_num();
-                    if (null!=contentBean.getJoin_user()){
+                    if (null != contentBean.getJoin_user()) {
                         join_user_list.clear();
                         join_user_list.addAll(contentBean.getJoin_user());
                     }
@@ -602,8 +606,15 @@ public class CommunityActivityDetailsActivity extends BaseActivity implements Vi
                     maxPickImageSize = contentBean.getPicture_num();
                     pickerPrompt = contentBean.getPicture_prompt();
                     pickRequire = contentBean.getPicture_require();
-                    activityUrl=contentBean.getAc_sharelink();
-                    webview.loadUrl(contentBean.getAc_detail());
+                    activityUrl = contentBean.getAc_sharelink();
+                    String ac_detail = contentBean.getAc_detail();
+                    if (TextUtils.isEmpty(ac_detail)) {
+                        web_content_layout.setVisibility(View.GONE);
+                    } else {
+                        web_content_layout.setVisibility(View.VISIBLE);
+                        webview.loadUrl(ac_detail);
+                    }
+                    is_join = contentBean.getIs_join();
                     showAcStatus();
                 } catch (Exception e) {
 
@@ -642,7 +653,7 @@ public class CommunityActivityDetailsActivity extends BaseActivity implements Vi
                     CommunityStatusEntity communityStatusEntity = GsonUtils.gsonToBean(result, CommunityStatusEntity.class);
                     ac_status = communityStatusEntity.getContent().getAc_status();
                     if ("5".equals(ac_status)) {
-                        is_join="1";
+                        is_join = "1";
                         ToastUtil.toastJoinActivity(CommunityActivityDetailsActivity.this);
                         join_number++;
                         if (join_number <= 3) {
@@ -655,7 +666,7 @@ public class CommunityActivityDetailsActivity extends BaseActivity implements Vi
                 } catch (Exception e) {
 
                 }
-                if (!TextUtils.isEmpty(ac_status)){
+                if (!TextUtils.isEmpty(ac_status)) {
                     showAcStatus();
                 }
                 break;
@@ -701,12 +712,16 @@ public class CommunityActivityDetailsActivity extends BaseActivity implements Vi
     }
 
     private void showAcStatus() {
-        if ("1".equals(is_join)){ //表示已参加
+        if ("1".equals(is_join)) { //表示已参加
             tv_join_activity.setEnabled(true);
             tv_join_activity.setBackgroundColor(getResources().getColor(R.color.color_3282fa));
             tv_join_activity.setText(getResources().getString(R.string.community_activity_joined));
-        }else{
+        } else {
             switch (ac_status) {
+                //1正在进行，
+                //2人数已满，
+                //3报名截止，
+                //4已结束
                 case "2":
                     tv_join_activity.setEnabled(false);
                     tv_join_activity.setBackgroundColor(getResources().getColor(R.color.color_8d9299));

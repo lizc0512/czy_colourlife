@@ -11,17 +11,22 @@ import android.support.annotation.NonNull;
 
 import com.bumptech.glide.load.engine.bitmap_recycle.BitmapPool;
 import com.bumptech.glide.load.resource.bitmap.BitmapTransformation;
+import com.bumptech.glide.util.Util;
 
+import java.nio.ByteBuffer;
 import java.security.MessageDigest;
 
 /**
  * Created by Administrator on 2018/2/2.
- *Glide圆角自定义View
+ * Glide圆角自定义View
+ *
  * @Description
  */
 
 public class GlideRoundTransform extends BitmapTransformation {
     private static float radius = 0f;
+    private static final String ID = "com.bumptech.glide.load.resource.bitmap.FillSpace";
+    private static final byte[] ID_BYTES = ID.getBytes(CHARSET);
 
     public GlideRoundTransform(Context context) {
         this(context, 4);
@@ -30,6 +35,7 @@ public class GlideRoundTransform extends BitmapTransformation {
     public GlideRoundTransform(Context context, int dp) {
         this.radius = Resources.getSystem().getDisplayMetrics().density * dp;
     }
+
     private static Bitmap roundCrop(BitmapPool pool, Bitmap source) {
         if (source == null) return null;
 
@@ -54,6 +60,25 @@ public class GlideRoundTransform extends BitmapTransformation {
 
     @Override
     public void updateDiskCacheKey(@NonNull MessageDigest messageDigest) {
+        messageDigest.update(ID_BYTES);
 
+        byte[] radiusData = ByteBuffer.allocate(4).putFloat(radius).array();
+        messageDigest.update(radiusData);
+
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (o instanceof GlideRoundTransform) {
+            GlideRoundTransform other = (GlideRoundTransform) o;
+            return radius == other.radius;
+        }
+        return false;
+    }
+
+    @Override
+    public int hashCode() {
+        return Util.hashCode(ID.hashCode(),
+                Util.hashCode(radius));
     }
 }
