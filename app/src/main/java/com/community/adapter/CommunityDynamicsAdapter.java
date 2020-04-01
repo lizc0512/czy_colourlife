@@ -145,7 +145,15 @@ public class CommunityDynamicsAdapter extends RecyclerView.Adapter<RecyclerView.
             if (TextUtils.isEmpty(oproperty)) {
                 holder.iv_activity_type.setText(mContext.getResources().getString(R.string.community_activity_officicl));
             } else {
-                holder.iv_activity_type.setText(oproperty);
+                if (oproperty.length() < 4) {
+                    holder.iv_activity_type.setText(oproperty);
+                } else {
+                    StringBuffer stringBuffer=new StringBuffer();
+                    stringBuffer.append(oproperty.substring(0,2));
+                    stringBuffer.append("\n");
+                    stringBuffer.append(oproperty.substring(2,4));
+                    holder.iv_activity_type.setText(stringBuffer.toString());
+                }
             }
             String ac_tag = dataBean.getAc_tag();
             if (mContext.getResources().getString(R.string.community_activity_free).equals(ac_tag)) {

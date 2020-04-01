@@ -1525,10 +1525,14 @@ public class MainHomeFragmentNew extends Fragment implements NewHttpResponse, Vi
             if (TextUtils.isEmpty(oproperty)) {
                 tv_activity_type.setText(getResources().getString(R.string.community_activity_officicl));
             } else {
-                if (oproperty.length() <= 4) {
+                if (oproperty.length() < 4) {
                     tv_activity_type.setText(oproperty);
                 } else {
-                    tv_activity_type.setText(oproperty.substring(4));
+                    StringBuffer stringBuffer=new StringBuffer();
+                    stringBuffer.append(oproperty.substring(0,2));
+                    stringBuffer.append("\n");
+                    stringBuffer.append(oproperty.substring(2,4));
+                    tv_activity_type.setText(stringBuffer.toString());
                 }
             }
             tv_activity_fee.setText(contentBean.getAc_tag());
