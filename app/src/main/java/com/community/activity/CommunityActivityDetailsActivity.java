@@ -547,7 +547,7 @@ public class CommunityActivityDetailsActivity extends BaseActivity implements Vi
                 ToastUtil.toastShow(CommunityActivityDetailsActivity.this, "输入的内容不能为空");
             }
         });
-        inputDialog.setOnDismissListener(dialog -> tv_join_activity.setBackgroundResource(R.color.color_3282fa));
+        inputDialog.setOnDismissListener(dialog -> showAcStatus());
         tv_join_activity.setBackgroundResource(R.color.white);
     }
 
@@ -616,7 +616,7 @@ public class CommunityActivityDetailsActivity extends BaseActivity implements Vi
                     } else {
                         tv_fee_status.setVisibility(View.GONE);
                         tv_fee_price.setVisibility(View.VISIBLE);
-                        tv_fee_price.setText(contentBean.getAc_fee());
+                        tv_fee_price.setText("￥"+contentBean.getAc_fee());
                     }
                     activityTitle = contentBean.getAc_title();
                     tv_activity_title.setText(activityTitle);
@@ -733,12 +733,22 @@ public class CommunityActivityDetailsActivity extends BaseActivity implements Vi
                 commentBeanList.add(commentBean);
                 communityActivityCommentAdapter.notifyItemInserted(communityActivityCommentAdapter.getItemCount());
                 communityActivityCommentAdapter.notifyItemChanged(communityActivityCommentAdapter.getItemCount());
+                if (commentBeanList.size() == 0) {
+                    no_data_layout.setVisibility(View.VISIBLE);
+                } else {
+                    no_data_layout.setVisibility(View.GONE);
+                }
                 toUserId = "";
                 break;
             case 4://删除留言
                 commentBeanList.remove(delPos);
                 communityActivityCommentAdapter.notifyItemRemoved(delPos);
                 communityActivityCommentAdapter.notifyItemRangeChanged(delPos, communityActivityCommentAdapter.getItemCount() - delPos);
+                if (commentBeanList.size() == 0) {
+                    no_data_layout.setVisibility(View.VISIBLE);
+                } else {
+                    no_data_layout.setVisibility(View.GONE);
+                }
                 break;
         }
     }
