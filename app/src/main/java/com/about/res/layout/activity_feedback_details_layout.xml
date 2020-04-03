@@ -84,7 +84,7 @@
                             android:textSize="15dp" />
                     </RelativeLayout>
 
-                    <com.feed.view.NoScrollGridView
+                    <com.BeeFramework.view.NoScrollGridView
                         android:layout_marginLeft="8dp"
                         android:layout_marginRight="8dp"
                         android:paddingTop="2dp"
@@ -101,7 +101,7 @@
                         android:visibility="gone"
                         android:overScrollMode="never"
                         android:scrollbars="none">
-                    </com.feed.view.NoScrollGridView>
+                    </com.BeeFramework.view.NoScrollGridView>
                 </LinearLayout>
             </LinearLayout>
 

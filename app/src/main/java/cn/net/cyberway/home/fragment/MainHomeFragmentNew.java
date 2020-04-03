@@ -1535,7 +1535,11 @@ public class MainHomeFragmentNew extends Fragment implements NewHttpResponse, Vi
                     tv_activity_type.setText(stringBuffer.toString());
                 }
             }
-            tv_activity_fee.setText(contentBean.getAc_tag());
+            if ("2".equals(contentBean.getAc_tag())){
+                tv_activity_fee.setText(getResources().getString(R.string.community_activity_free));
+            }else{
+                tv_activity_fee.setText(getResources().getString(R.string.community_activity_award));
+            }
             tv_activity_title.setText(contentBean.getAc_title());
             tv_activity_address.setText("地址:" + contentBean.getAc_address());
             tv_activity_date.setText("活动截止:" + TimeUtil.getTime(contentBean.getStop_apply_time() * 1000, "yyyy年MM月dd日"));

@@ -277,7 +277,7 @@ public class CommunityActivityDetailsActivity extends BaseActivity implements Vi
                 break;
             case R.id.contact_person_layout://联系活动发起人
 //                jumpUserInfor();
-                PermissionUtils.showPhonePermission(CommunityActivityDetailsActivity.this,contact_mobile);
+                PermissionUtils.showPhonePermission(CommunityActivityDetailsActivity.this, contact_mobile);
                 break;
             case R.id.send_message_layout://因为addheadviw了
                 showInputCommentDialog(null, source_id, "", "");
@@ -609,14 +609,14 @@ public class CommunityActivityDetailsActivity extends BaseActivity implements Vi
                     CommunityActivityDetailsEntity.ContentBean contentBean = communityActivityDetailsEntity.getContent();
                     GlideImageLoader.loadImageDisplay(CommunityActivityDetailsActivity.this, contentBean.getAc_banner(), iv_activity_head);
                     String ac_tag = contentBean.getAc_tag();
-                    if ("免费".equals(ac_tag)) {
+                    if ("2".equals(ac_tag)) {
                         tv_fee_status.setVisibility(View.VISIBLE);
                         tv_fee_price.setVisibility(View.GONE);
-                        tv_fee_status.setText(ac_tag);
+                        tv_fee_status.setText(getResources().getString(R.string.community_activity_free));
                     } else {
                         tv_fee_status.setVisibility(View.GONE);
                         tv_fee_price.setVisibility(View.VISIBLE);
-                        tv_fee_price.setText("￥"+contentBean.getAc_fee());
+                        tv_fee_price.setText("￥" + contentBean.getAc_fee());
                     }
                     activityTitle = contentBean.getAc_title();
                     tv_activity_title.setText(activityTitle);

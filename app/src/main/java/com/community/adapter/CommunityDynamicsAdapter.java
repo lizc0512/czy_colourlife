@@ -156,9 +156,9 @@ public class CommunityDynamicsAdapter extends RecyclerView.Adapter<RecyclerView.
                 }
             }
             String ac_tag = dataBean.getAc_tag();
-            if (mContext.getResources().getString(R.string.community_activity_free).equals(ac_tag)) {
+            if ("2".equals(ac_tag)) {
                 holder.tv_activity_fee.setVisibility(View.VISIBLE);
-                holder.tv_activity_fee.setText(ac_tag);
+                holder.tv_activity_fee.setText(mContext.getResources().getString(R.string.community_activity_free));
             } else {
                 holder.tv_activity_fee.setVisibility(GONE);
             }
