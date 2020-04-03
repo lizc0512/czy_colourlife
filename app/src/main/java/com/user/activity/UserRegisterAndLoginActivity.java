@@ -733,8 +733,15 @@ public class UserRegisterAndLoginActivity extends BaseActivity implements OnClic
 
             @Override
             public void onError(Platform platform, int i, Throwable throwable) {
-                ToastUtil.toastShow(UserRegisterAndLoginActivity.this, "授权失败:" + throwable.getMessage());
+                UserRegisterAndLoginActivity.this.runOnUiThread(new Runnable() {
+
+                    @Override
+                    public void run() {
+                        ToastUtil.toastShow(UserRegisterAndLoginActivity.this, "授权失败:" + throwable.getMessage());
+                    }
+                });
             }
+
 
             @Override
             public void onCancel(Platform platform, int i) {

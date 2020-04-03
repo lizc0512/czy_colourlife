@@ -7,10 +7,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.BeeFramework.BeeFrameworkApp;
 import com.BeeFramework.view.TouchImageView;
 import com.nohttp.utils.GlideImageLoader;
-import com.nostra13.universalimageloader.core.ImageLoader;
 
 import java.util.List;
 

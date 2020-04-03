@@ -12,8 +12,6 @@ import com.BeeFramework.activity.BaseActivity;
 import com.BeeFramework.view.CircleImageView;
 import com.external.eventbus.EventBus;
 import com.nohttp.utils.GlideImageLoader;
-import com.nostra13.universalimageloader.core.ImageLoader;
-import com.point.activity.ChangePawdOneStepActivity;
 import com.user.UserAppConst;
 import com.user.UserMessageConstant;
 
@@ -60,14 +58,14 @@ public class RealNameInforActivity extends BaseActivity implements View.OnClickL
         String realName = intent.getStringExtra(REALNAME);
         String realNumber = intent.getStringExtra(REALNUMBER);
         String headImgUrl = intent.getStringExtra(REALFACEIMAGE);
-        if (TextUtils.isEmpty(headImgUrl)||"null".equalsIgnoreCase(headImgUrl)){
-            headImgUrl= shared.getString(UserAppConst.Colour_head_img, "");
+        if (TextUtils.isEmpty(headImgUrl) || "null".equalsIgnoreCase(headImgUrl)) {
+            headImgUrl = shared.getString(UserAppConst.Colour_head_img, "");
         }
-        GlideImageLoader.loadImageDisplay(RealNameInforActivity.this,headImgUrl,iv_user_photo);
+        GlideImageLoader.loadImageDisplay(RealNameInforActivity.this, headImgUrl, iv_user_photo);
         tv_user_name.setText(realName);
-        int  length=realNumber.length();
-        if (realNumber.length()>0){
-            tv_user_number.setText(getResources().getString(R.string.real_text_idcard)+realNumber.substring(0, 1) + "*** **** **** **** *" + realNumber.substring(length - 1));
+        int length = null == realName ? 0 : realNumber.length();
+        if (realNumber.length() > 0) {
+            tv_user_number.setText(getResources().getString(R.string.real_text_idcard) + realNumber.substring(0, 1) + "*** **** **** **** *" + realNumber.substring(length - 1));
         }
         if (!EventBus.getDefault().isregister(RealNameInforActivity.this)) {
             EventBus.getDefault().register(RealNameInforActivity.this);

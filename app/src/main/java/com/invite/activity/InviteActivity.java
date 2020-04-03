@@ -4,7 +4,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
-import android.os.Message;
 import android.text.TextUtils;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -24,11 +23,9 @@ import com.BeeFramework.Utils.ToastUtil;
 import com.BeeFramework.Utils.Utils;
 import com.BeeFramework.activity.BaseActivity;
 import com.BeeFramework.model.NewHttpResponse;
-import com.external.eventbus.EventBus;
 import com.mob.MobSDK;
 import com.nohttp.utils.GsonUtils;
 import com.user.UserAppConst;
-import com.user.UserMessageConstant;
 import com.user.entity.InviteCodeEntity;
 import com.user.entity.InviteEntity;
 import com.user.model.NewUserModel;
@@ -162,18 +159,6 @@ public class InviteActivity extends BaseActivity implements View.OnClickListener
         }
     }
 
-    public void onResume() {
-        super.onResume();
-        if (!EventBus.getDefault().isregister(this)) {
-            EventBus.getDefault().register(this);
-        }
-    }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        EventBus.getDefault().unregister(this);
-    }
 
     private void initPopup() {
         View contentview = LayoutInflater.from(this).inflate(R.layout.activity_invite_share, null);

@@ -180,9 +180,13 @@ public class GsonUtils {
     public static <T> List<T> jsonToList(String json, Class<T> cls) {
         Gson gson = new Gson();
         List<T> list = new ArrayList<T>();
-        JsonArray array = new JsonParser().parse(json).getAsJsonArray();
-        for (final JsonElement elem : array) {
-            list.add(gson.fromJson(elem, cls));
+        try {
+            JsonArray array = new JsonParser().parse(json).getAsJsonArray();
+            for (final JsonElement elem : array) {
+                list.add(gson.fromJson(elem, cls));
+            }
+        }catch (Exception e){
+
         }
         return list;
     }

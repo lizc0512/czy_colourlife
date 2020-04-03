@@ -45,6 +45,10 @@ import com.community.view.ShareActivityDialog;
 import com.community.view.WrapWebView;
 import com.eparking.helper.PermissionUtils;
 import com.external.eventbus.EventBus;
+import com.im.activity.IMCustomerInforActivity;
+import com.im.activity.IMFriendInforActivity;
+import com.im.activity.IMUserSelfInforActivity;
+import com.im.helper.CacheFriendInforHelper;
 import com.lzy.imagepicker.ImagePicker;
 import com.lzy.imagepicker.bean.ImageItem;
 import com.lzy.imagepicker.ui.ImageGridActivity;
@@ -66,6 +70,7 @@ import top.zibin.luban.OnCompressListener;
 
 import static cn.net.cyberway.home.view.HomeViewUtils.showCommunityActivity;
 import static com.community.fragment.CommunityDynamicsFragment.CHANGE_ACTIVITY_STATUS;
+import static com.im.activity.IMFriendInforActivity.USERIDTYPE;
 
 /**
  * author:yuansk
@@ -108,7 +113,8 @@ public class CommunityActivityDetailsActivity extends BaseActivity implements Vi
     private ArrayList<CommunityImageView> mUploadImageViews = new ArrayList<CommunityImageView>();//参与活动 上传的图片集
     private CommunityDynamicsModel communityDynamicsModel;
     private String source_id;//活动的id
-    private String contact_mobile;//活动的发起人的联系方式
+    private String contact_id;//活动的发起人的用户id
+    private String contact_mobile;//活动的发起人的手机号码
     private String ac_status;//活动的状态
     private String is_join;//用户是否已参加
     public Luban.Builder lubanBuilder;
@@ -234,6 +240,30 @@ public class CommunityActivityDetailsActivity extends BaseActivity implements Vi
 
     JSObject jsObject = new JSObject();
 
+
+    /*****跳转到活动发起人的个人信息页面****/
+    private void jumpUserInfor() {
+        String current_user_id = String.valueOf(shared.getInt(UserAppConst.Colour_User_id, 0));
+        Intent intent = null;
+        if (current_user_id.equals(contact_id)) {
+            intent = new Intent(CommunityActivityDetailsActivity.this, IMUserSelfInforActivity.class);
+        } else {
+            List<String> friendUserIdList = CacheFriendInforHelper.instance().toQueryFriendUserIdList(CommunityActivityDetailsActivity.this);
+            if (friendUserIdList.contains(contact_id)) {
+                intent = new Intent(CommunityActivityDetailsActivity.this, IMFriendInforActivity.class);
+            } else {
+                intent = new Intent(CommunityActivityDetailsActivity.this, IMCustomerInforActivity.class);
+            }
+        }
+        intent.putExtra(USERIDTYPE, 1);
+        intent.putExtra(IMFriendInforActivity.USERUUID, contact_id);
+        startActivity(intent);
+//        FriendInforEntity  friendInforEntity= CacheFriendInforHelper.instance().toQueryFriendnforByMobile(CommunityActivityDetailsActivity.this,contact_mobile);
+//        HuxinSdkManager.instance().entryChatSingle(CommunityActivityDetailsActivity.this,
+//                friendInforEntity.getUuid(), friendInforEntity.getNickname(), friendInforEntity.getPortrait(),
+//                friendInforEntity.getUsername(), contact_mobile);
+    }
+
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
@@ -245,8 +275,9 @@ public class CommunityActivityDetailsActivity extends BaseActivity implements Vi
                 shareActivityDialog.show();
                 shareActivityDialog.setShareContent(activityTitle, activityTitle, activityUrl);
                 break;
-            case R.id.contact_person_layout:
-                PermissionUtils.showPhonePermission(CommunityActivityDetailsActivity.this, contact_mobile);
+            case R.id.contact_person_layout://联系活动发起人
+//                jumpUserInfor();
+                PermissionUtils.showPhonePermission(CommunityActivityDetailsActivity.this,contact_mobile);
                 break;
             case R.id.send_message_layout://因为addheadviw了
                 showInputCommentDialog(null, source_id, "", "");
@@ -601,6 +632,7 @@ public class CommunityActivityDetailsActivity extends BaseActivity implements Vi
                     tv_activity_person.setText(join_number + "人");
                     GlideImageLoader.loadImageDisplay(CommunityActivityDetailsActivity.this, contentBean.getContact_user_avatar(), iv_contact_header);
                     tv_contact_name.setText(contentBean.getContact_user_name());
+                    contact_id = contentBean.getContact_user_id();
                     contact_mobile = contentBean.getContact_user_mobile();
                     ac_status = contentBean.getAc_status();
                     maxPickImageSize = contentBean.getPicture_num();

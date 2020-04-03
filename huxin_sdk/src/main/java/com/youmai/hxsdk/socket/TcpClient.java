@@ -221,7 +221,7 @@ public class TcpClient extends PduUtil implements Runnable {
         tcpStatus = TCP_STATUS.IDLE;
         isLogin = false;
         try {
-            if (socketChannel != null) {
+            if (null != socketChannel) {
                 socketChannel.close();
             }
             if (mSender != null) {
@@ -256,7 +256,7 @@ public class TcpClient extends PduUtil implements Runnable {
      * @return 是否连接
      */
     public boolean isConnect() {
-        return tcpStatus == TCP_STATUS.CONNECTED && socketChannel != null && socketChannel.isConnected();
+        return tcpStatus == TCP_STATUS.CONNECTED && null != socketChannel && socketChannel.isConnected();
     }
 
     public boolean isIdle() {
@@ -465,7 +465,7 @@ public class TcpClient extends PduUtil implements Runnable {
         try {
             Log.v(TAG, "tcp is Blocking model read buffer");
             receiveBuffer.clear();
-            while (socketChannel != null && socketChannel.isConnected()
+            while ( null!= socketChannel && socketChannel.isConnected()
                     && (socketChannel.read(receiveBuffer)) > 0) {
                 receiveBuffer.flip();
                 Log.v(TAG, "tcp read buffer");
@@ -534,7 +534,7 @@ public class TcpClient extends PduUtil implements Runnable {
 
                 synchronized (mSendQueue) {
                     while (!mSendQueue.isEmpty()
-                            && socketChannel != null
+                            && null != socketChannel
                             && socketChannel.isConnected()) {
                         ByteBuffer buffer = mSendQueue.poll();
                         if (buffer == null) {

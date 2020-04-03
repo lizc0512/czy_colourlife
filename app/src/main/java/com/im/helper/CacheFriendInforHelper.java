@@ -92,6 +92,21 @@ public class CacheFriendInforHelper {
         return bean;
     }
 
+    public FriendInforEntity toQueryFriendnforByMobile(Context context, String mobile) {
+        FriendInforEntity bean = null;
+        if (!TextUtils.isEmpty(mobile)) {
+            FriendInforEntityDao dao = IMGreenDaoManager.instance(context).getFriendInforEntityDao();
+            QueryBuilder<FriendInforEntity> qb = dao.queryBuilder();
+            List<FriendInforEntity> list = qb.where(FriendInforEntityDao.Properties.Mobile.eq(mobile)).list();
+            if (list != null && list.size() > 0) {
+                bean = list.get(0);
+            }
+        } else {
+            bean = new FriendInforEntity();
+        }
+        return bean;
+    }
+
 
     /**
      * 删除某个好友

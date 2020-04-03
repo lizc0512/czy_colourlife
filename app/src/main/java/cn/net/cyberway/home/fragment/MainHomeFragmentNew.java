@@ -1543,7 +1543,7 @@ public class MainHomeFragmentNew extends Fragment implements NewHttpResponse, Vi
             List<String> join_user_pics = contentBean.getJoin_user();
             updateCommunityStatus(contentBean.getAc_status(), contentBean.getIs_join(), joinNumber, join_user_pics);
         } catch (Exception e) {
-
+            community_activity_layout.setVisibility(View.GONE);
         }
     }
 

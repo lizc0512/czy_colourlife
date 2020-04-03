@@ -27,6 +27,7 @@ import com.community.utils.ImagePickerLoader;
 import com.customerInfo.protocol.IdentityStateEntity;
 import com.customerInfo.view.CustomerInfoDialog;
 import com.external.eventbus.EventBus;
+import com.gesturepwd.activity.UnlockGesturePasswordActivity;
 import com.lzy.imagepicker.ImagePicker;
 import com.lzy.imagepicker.bean.ImageItem;
 import com.lzy.imagepicker.ui.ImageGridActivity;
@@ -106,8 +107,8 @@ public class CustomerInfoActivity extends BaseActivity implements View.OnClickLi
     private int customer_id;
     private boolean fromWeb;
     private String identifyState;
-    private String idCardNumber;
-    private String faceImage;
+    private String idCardNumber="";
+    private String faceImage="";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -196,6 +197,9 @@ public class CustomerInfoActivity extends BaseActivity implements View.OnClickLi
 
     private void initPhoto() {
         String headImgUrl = shared.getString(UserAppConst.Colour_head_img, "");
+        if (!ImageLoader.getInstance().isInited()) {
+            GlideImageLoader.initImageLoader(CustomerInfoActivity.this);
+        }
         ImageLoader.getInstance().displayImage(headImgUrl, photo_img, GlideImageLoader.optionsImage);
     }
 

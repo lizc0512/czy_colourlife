@@ -50,7 +50,7 @@ public class PreviewImageActivity extends SdkBaseActivity {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_image_preview);
+        setContentView(R.layout.activity_image_previews);
         mContext = this;
         initView();
     }
@@ -58,13 +58,14 @@ public class PreviewImageActivity extends SdkBaseActivity {
     private void initView() {
         tv_title = (TextView) findViewById(R.id.tv_title);
         img_back = (ImageView) findViewById(R.id.img_back);
-        img_back.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                onBackPressed();
-            }
-        });
-
+        if (null!=img_back){
+            img_back.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    onBackPressed();
+                }
+            });
+        }
 
         cb_item = (CheckBox) findViewById(R.id.cb_item);
 

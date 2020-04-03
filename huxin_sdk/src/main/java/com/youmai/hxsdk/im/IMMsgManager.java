@@ -1431,14 +1431,15 @@ public class IMMsgManager {
     }
 
     public void cancelPushMsg() {
-        NotificationManager notificationManager = (NotificationManager) mContext
-                .getSystemService(Context.NOTIFICATION_SERVICE);
-        if (pushMsgNotifyIdList.size() > 0) {
-            for (Integer item : pushMsgNotifyIdList) {
-                notificationManager.cancel(item);
+        if (null!=mContext){
+            NotificationManager notificationManager = (NotificationManager) mContext.getSystemService(Context.NOTIFICATION_SERVICE);
+            if (pushMsgNotifyIdList.size() > 0) {
+                for (Integer item : pushMsgNotifyIdList) {
+                    notificationManager.cancel(item);
+                }
             }
+            pushMsgNotifyIdList.clear();
         }
-        pushMsgNotifyIdList.clear();
     }
 
 

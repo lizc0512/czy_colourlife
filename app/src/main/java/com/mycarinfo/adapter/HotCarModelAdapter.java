@@ -7,11 +7,9 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.BeeFramework.BeeFrameworkApp;
 import com.BeeFramework.adapter.BeeBaseAdapter;
 import com.mycarinfo.protocol.COLOURTICKETHOTCARINFOLIST;
 import com.nohttp.utils.GlideImageLoader;
-import com.nostra13.universalimageloader.core.ImageLoader;
 
 import java.util.List;
 
