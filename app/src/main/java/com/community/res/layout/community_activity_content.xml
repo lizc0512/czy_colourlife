@@ -26,6 +26,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textColor="@color/color_ff6d50"
+            android:layout_marginRight="8dp"
             android:textSize="16sp"
             tools:text="免费" />
 
@@ -33,7 +34,6 @@
             android:id="@+id/tv_activity_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="8dp"
             android:textStyle="bold"
             android:textColor="@color/color_000000"
             android:textSize="16sp"

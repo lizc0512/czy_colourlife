@@ -60,6 +60,8 @@ import com.user.UserAppConst;
 import com.yanzhenjie.recyclerview.swipe.SwipeMenuRecyclerView;
 
 import java.io.File;
+import java.math.RoundingMode;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -601,20 +603,12 @@ public class CommunityActivityDetailsActivity extends BaseActivity implements Vi
     }
 
     /***格式化金额的显示**/
-    public double getFormatMoney(String money) {
-        double formatMoney = 0;
-        if (TextUtils.isEmpty(money)) {
-            return formatMoney;
-        }
-        try {
-            java.math.BigDecimal bigDec = new java.math.BigDecimal(money.trim());
-            formatMoney = bigDec.setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
-        } catch (NumberFormatException e) {
-            formatMoney = Double.valueOf(money);
-        } catch (Exception e) {
-            formatMoney = 0;
-        }
-        return formatMoney;
+    public String getFormatMoney(double price,boolean halfUp) {
+        DecimalFormat formater = new DecimalFormat("0.00");
+        formater.setMaximumFractionDigits(2);
+        formater.setGroupingSize(3);
+        formater.setRoundingMode(halfUp ? RoundingMode.HALF_UP:RoundingMode.FLOOR);
+        return formater.format(price);
     }
 
     @Override
@@ -634,7 +628,7 @@ public class CommunityActivityDetailsActivity extends BaseActivity implements Vi
                     } else {
                         tv_fee_status.setVisibility(View.GONE);
                         tv_fee_price.setVisibility(View.VISIBLE);
-                        tv_fee_price.setText("￥" + getFormatMoney(ac_fee));
+                        tv_fee_price.setText("￥" + getFormatMoney(Double.valueOf(ac_fee),true));
                     }
                     activityTitle = contentBean.getAc_title();
                     tv_activity_title.setText(activityTitle);
