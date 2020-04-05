@@ -5,6 +5,7 @@ import android.app.Dialog;
 import android.content.Intent;
 import android.graphics.BitmapFactory;
 import android.graphics.Rect;
+import android.icu.math.BigDecimal;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Message;
@@ -599,6 +600,22 @@ public class CommunityActivityDetailsActivity extends BaseActivity implements Vi
         }
     }
 
+    /***格式化金额的显示**/
+    public double getFormatMoney(String money) {
+        double formatMoney = 0;
+        if (TextUtils.isEmpty(money)) {
+            return formatMoney;
+        }
+        try {
+            java.math.BigDecimal bigDec = new java.math.BigDecimal(money.trim());
+            formatMoney = bigDec.setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
+        } catch (NumberFormatException e) {
+            formatMoney = Double.valueOf(money);
+        } catch (Exception e) {
+            formatMoney = 0;
+        }
+        return formatMoney;
+    }
 
     @Override
     public void OnHttpResponse(int what, String result) {
@@ -609,14 +626,15 @@ public class CommunityActivityDetailsActivity extends BaseActivity implements Vi
                     CommunityActivityDetailsEntity.ContentBean contentBean = communityActivityDetailsEntity.getContent();
                     GlideImageLoader.loadImageDisplay(CommunityActivityDetailsActivity.this, contentBean.getAc_banner(), iv_activity_head);
                     String ac_tag = contentBean.getAc_tag();
-                    if ("2".equals(ac_tag)) {
+                    tv_fee_status.setText(ac_tag);
+                    String ac_fee = contentBean.getAc_fee();
+                    if ("0".equals(ac_fee) || "0.0".equals(ac_fee) || "0.00".equals(ac_fee)) {
                         tv_fee_status.setVisibility(View.VISIBLE);
                         tv_fee_price.setVisibility(View.GONE);
-                        tv_fee_status.setText(getResources().getString(R.string.community_activity_free));
                     } else {
                         tv_fee_status.setVisibility(View.GONE);
                         tv_fee_price.setVisibility(View.VISIBLE);
-                        tv_fee_price.setText("￥" + contentBean.getAc_fee());
+                        tv_fee_price.setText("￥" + getFormatMoney(ac_fee));
                     }
                     activityTitle = contentBean.getAc_title();
                     tv_activity_title.setText(activityTitle);
@@ -626,7 +644,7 @@ public class CommunityActivityDetailsActivity extends BaseActivity implements Vi
                         join_user_list.addAll(contentBean.getJoin_user());
                     }
                     showCommunityActivity(CommunityActivityDetailsActivity.this, join_number, join_user_list, iv_first_photo, iv_second_photo, iv_third_photo, tv_join_person);
-                    tv_activity_starttime.setText(TimeUtil.getYearTime(contentBean.getBegin_time() * 1000, "yyyy-MM-dd") + "-" + TimeUtil.getYearTime(contentBean.getEnd_time() * 1000, "yyyy-MM-dd"));
+                    tv_activity_starttime.setText(TimeUtil.getYearTime(contentBean.getBegin_time() * 1000, "yyyy-MM-dd") + "～" + TimeUtil.getYearTime(contentBean.getEnd_time() * 1000, "yyyy-MM-dd"));
                     tv_activity_address.setText(contentBean.getAc_address());
                     tv_activity_endtime.setText(TimeUtil.getYearTime(contentBean.getStop_apply_time() * 1000, "yyyy-MM-dd"));
                     tv_activity_person.setText(join_number + "人");
@@ -755,8 +773,8 @@ public class CommunityActivityDetailsActivity extends BaseActivity implements Vi
 
     private void showAcStatus() {
         if ("1".equals(is_join)) { //表示已参加
-            tv_join_activity.setEnabled(true);
-            tv_join_activity.setBackgroundColor(getResources().getColor(R.color.color_3282fa));
+            tv_join_activity.setEnabled(false);
+            tv_join_activity.setBackgroundColor(getResources().getColor(R.color.color_8d9299));
             tv_join_activity.setText(getResources().getString(R.string.community_activity_joined));
         } else {
             switch (ac_status) {

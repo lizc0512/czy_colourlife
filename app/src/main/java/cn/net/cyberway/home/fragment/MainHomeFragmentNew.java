@@ -1360,6 +1360,7 @@ public class MainHomeFragmentNew extends Fragment implements NewHttpResponse, Vi
                                 iv_left_arrow.setOnClickListener(this);
                                 iv_right_arrow.setOnClickListener(this);
                                 open_door_layout.setOnClickListener(this);
+                                door_root_layout.setVisibility(View.GONE);
                             }
                             if (is_show == 1) {
                                 door_root_layout.setVisibility(View.VISIBLE);
@@ -1384,6 +1385,8 @@ public class MainHomeFragmentNew extends Fragment implements NewHttpResponse, Vi
                                 tv_no_message = notification_view.findViewById(R.id.tv_no_message);
                                 bottom_empty_view = notification_view.findViewById(R.id.bottom_empty_view);
                                 notification_layout.setOnClickListener(this);
+                                notification_layout.setVisibility(View.GONE);
+                                bottom_empty_view.setVisibility(View.GONE);
                             }
                             if (is_show == 1) {
                                 String homeNotificationCache = mShared.getString(UserAppConst.COLOR_HOME_NOTIFICATION, "");
@@ -1437,6 +1440,7 @@ public class MainHomeFragmentNew extends Fragment implements NewHttpResponse, Vi
                                 bga_banner = bga_view.findViewById(R.id.bga_banner);
                                 rl_banner = bga_view.findViewById(R.id.rl_banner);
                                 iv_video = bga_view.findViewById(R.id.iv_video);
+                                rl_banner.setVisibility(View.GONE);
                             }
                             if (is_show == 1) {
                                 String homeBannerCache = mShared.getString(UserAppConst.COLOR_HOME_BANNER, "");
@@ -1535,11 +1539,7 @@ public class MainHomeFragmentNew extends Fragment implements NewHttpResponse, Vi
                     tv_activity_type.setText(stringBuffer.toString());
                 }
             }
-            if ("2".equals(contentBean.getAc_tag())){
-                tv_activity_fee.setText(getResources().getString(R.string.community_activity_free));
-            }else{
-                tv_activity_fee.setText(getResources().getString(R.string.community_activity_award));
-            }
+            tv_activity_fee.setText(contentBean.getAc_tag());
             tv_activity_title.setText(contentBean.getAc_title());
             tv_activity_address.setText("地址:" + contentBean.getAc_address());
             tv_activity_date.setText("活动截止:" + TimeUtil.getTime(contentBean.getStop_apply_time() * 1000, "yyyy年MM月dd日"));

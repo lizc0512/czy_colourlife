@@ -568,7 +568,9 @@ public class CommunityDynamicsModel extends BaseModel {
         Map<String, Object> params = new HashMap<String, Object>();
         params.put("source_id", source_id);
         params.put("content", content);
-        params.put("to_id", to_id);
+        if(!TextUtils.isEmpty(to_id)){
+            params.put("to_id", to_id);
+        }
         final Request<String> request = NoHttp.createStringRequest(RequestEncryptionUtils.postCombileMD5(mContext, 17, commentActivityUrl), RequestMethod.POST);
         request(what, request, params, new HttpListener<String>() {
             @Override
