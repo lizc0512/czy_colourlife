@@ -623,8 +623,9 @@ public class CommunityActivityDetailsActivity extends BaseActivity implements Vi
                     tv_fee_status.setText(ac_tag);
                     String ac_fee = contentBean.getAc_fee();
                     if ("0".equals(ac_fee) || "0.0".equals(ac_fee) || "0.00".equals(ac_fee)) {
-                        tv_fee_status.setVisibility(View.VISIBLE);
-                        tv_fee_price.setVisibility(View.GONE);
+                        tv_fee_status.setVisibility(View.GONE);
+                        tv_fee_price.setVisibility(View.VISIBLE);
+                        tv_fee_price.setText(getResources().getString(R.string.community_activity_free));
                     } else {
                         tv_fee_status.setVisibility(View.GONE);
                         tv_fee_price.setVisibility(View.VISIBLE);
