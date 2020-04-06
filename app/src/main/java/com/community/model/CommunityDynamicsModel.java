@@ -2,6 +2,7 @@ package com.community.model;
 
 import android.content.Context;
 import android.text.TextUtils;
+import android.widget.TextView;
 
 import com.BeeFramework.model.BaseModel;
 import com.BeeFramework.model.NewHttpResponse;
@@ -515,7 +516,9 @@ public class CommunityDynamicsModel extends BaseModel {
     public void joinCommunityActivity(int what,String source_id, String picture_arr,NewHttpResponse newHttpResponse) {
         Map<String, Object> params = new HashMap<String, Object>();
         params.put("source_id", source_id);
-        params.put("picture_arr", picture_arr);
+        if (!TextUtils.isEmpty(picture_arr)){
+            params.put("picture_arr", picture_arr);
+        }
         final Request<String> request = NoHttp.createStringRequest(RequestEncryptionUtils.postCombileMD5(mContext, 17, joinActivityUrl), RequestMethod.POST);
         request(what, request, params, new HttpListener<String>() {
             @Override
