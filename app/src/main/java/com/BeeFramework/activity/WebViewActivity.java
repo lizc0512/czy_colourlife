@@ -76,6 +76,7 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.target.ImageViewTarget;
 import com.cashier.activity.NewOrderPayActivity;
 import com.community.model.CommunityDynamicsModel;
+import com.community.utils.RealIdentifyDialogUtil;
 import com.customerInfo.activity.CustomerInfoActivity;
 import com.customerInfo.activity.DeliveryAddressListActivity;
 import com.customerInfo.protocol.RealNameTokenEntity;
@@ -400,16 +401,21 @@ public class WebViewActivity extends BaseActivity implements View.OnLongClickLis
                 closeShareLayout();
                 break;
             case R.id.rl_llq:
-                CommunityDynamicsModel communityDynamicsModel = new CommunityDynamicsModel(WebViewActivity.this);
-                List<String> shareList = new ArrayList<>();
-                if (!TextUtils.isEmpty(shareImg)){
-                    shareList.add(shareImg);
-                }else{
-                    shareList.add("");
+                String is_identity = shared.getString(UserAppConst.COLOUR_DYNAMICS_REAL_IDENTITY, "0");
+                if ("1".equals(is_identity)) {
+                    CommunityDynamicsModel communityDynamicsModel = new CommunityDynamicsModel(WebViewActivity.this);
+                    List<String> shareList = new ArrayList<>();
+                    if (!TextUtils.isEmpty(shareImg)) {
+                        shareList.add(shareImg);
+                    } else {
+                        shareList.add("");
+                    }
+                    shareList.add(webTitle);
+                    shareList.add(shareUrl);
+                    communityDynamicsModel.publicUserDynamic(5, "", "3", GsonUtils.gsonString(shareList), false, WebViewActivity.this);
+                } else {
+                    RealIdentifyDialogUtil.showGoIdentifyDialog(WebViewActivity.this);
                 }
-                shareList.add(webTitle);
-                shareList.add(shareUrl);
-                communityDynamicsModel.publicUserDynamic(5, "", "3", GsonUtils.gsonString(shareList), false, WebViewActivity.this);
                 closeShareLayout();
                 break;
         }
