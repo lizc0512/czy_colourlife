@@ -5,7 +5,6 @@ import android.app.Dialog;
 import android.content.Intent;
 import android.graphics.BitmapFactory;
 import android.graphics.Rect;
-import android.icu.math.BigDecimal;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Message;
@@ -90,7 +89,6 @@ public class CommunityActivityDetailsActivity extends BaseActivity implements Vi
     private ImageView img_right;
 
     private ImageView iv_activity_head;
-    private TextView tv_fee_status; //活动是否收费
     private TextView tv_activity_title;
     private CircleImageView iv_first_photo;
     private CircleImageView iv_second_photo;
@@ -167,7 +165,6 @@ public class CommunityActivityDetailsActivity extends BaseActivity implements Vi
     private void initHeadView() {
         View headView = LayoutInflater.from(CommunityActivityDetailsActivity.this).inflate(R.layout.community_activity_content, null);
         iv_activity_head = headView.findViewById(R.id.iv_activity_head);
-        tv_fee_status = headView.findViewById(R.id.tv_fee_status);
         tv_activity_title = headView.findViewById(R.id.tv_activity_title);
         iv_first_photo = headView.findViewById(R.id.iv_first_photo);
         iv_second_photo = headView.findViewById(R.id.iv_second_photo);
@@ -243,30 +240,6 @@ public class CommunityActivityDetailsActivity extends BaseActivity implements Vi
 
     JSObject jsObject = new JSObject();
 
-
-    /*****跳转到活动发起人的个人信息页面****/
-    private void jumpUserInfor() {
-        String current_user_id = String.valueOf(shared.getInt(UserAppConst.Colour_User_id, 0));
-        Intent intent = null;
-        if (current_user_id.equals(contact_id)) {
-            intent = new Intent(CommunityActivityDetailsActivity.this, IMUserSelfInforActivity.class);
-        } else {
-            List<String> friendUserIdList = CacheFriendInforHelper.instance().toQueryFriendUserIdList(CommunityActivityDetailsActivity.this);
-            if (friendUserIdList.contains(contact_id)) {
-                intent = new Intent(CommunityActivityDetailsActivity.this, IMFriendInforActivity.class);
-            } else {
-                intent = new Intent(CommunityActivityDetailsActivity.this, IMCustomerInforActivity.class);
-            }
-        }
-        intent.putExtra(USERIDTYPE, 1);
-        intent.putExtra(IMFriendInforActivity.USERUUID, contact_id);
-        startActivity(intent);
-//        FriendInforEntity  friendInforEntity= CacheFriendInforHelper.instance().toQueryFriendnforByMobile(CommunityActivityDetailsActivity.this,contact_mobile);
-//        HuxinSdkManager.instance().entryChatSingle(CommunityActivityDetailsActivity.this,
-//                friendInforEntity.getUuid(), friendInforEntity.getNickname(), friendInforEntity.getPortrait(),
-//                friendInforEntity.getUsername(), contact_mobile);
-    }
-
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
@@ -279,7 +252,6 @@ public class CommunityActivityDetailsActivity extends BaseActivity implements Vi
                 shareActivityDialog.setShareContent(activityTitle, activityTitle, activityUrl);
                 break;
             case R.id.contact_person_layout://联系活动发起人
-//                jumpUserInfor();
                 PermissionUtils.showPhonePermission(CommunityActivityDetailsActivity.this, contact_mobile);
                 break;
             case R.id.send_message_layout://因为addheadviw了
@@ -620,15 +592,10 @@ public class CommunityActivityDetailsActivity extends BaseActivity implements Vi
                     CommunityActivityDetailsEntity.ContentBean contentBean = communityActivityDetailsEntity.getContent();
                     GlideImageLoader.loadImageDisplay(CommunityActivityDetailsActivity.this, contentBean.getAc_banner(), iv_activity_head);
                     String ac_tag = contentBean.getAc_tag();
-                    tv_fee_status.setText(ac_tag);
                     String ac_fee = contentBean.getAc_fee();
                     if ("0".equals(ac_fee) || "0.0".equals(ac_fee) || "0.00".equals(ac_fee)) {
-                        tv_fee_status.setVisibility(View.GONE);
-                        tv_fee_price.setVisibility(View.VISIBLE);
                         tv_fee_price.setText(getResources().getString(R.string.community_activity_free));
                     } else {
-                        tv_fee_status.setVisibility(View.GONE);
-                        tv_fee_price.setVisibility(View.VISIBLE);
                         tv_fee_price.setText("￥" + getFormatMoney(Double.valueOf(ac_fee),true));
                     }
                     activityTitle = contentBean.getAc_title();
