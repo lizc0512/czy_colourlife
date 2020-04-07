@@ -148,10 +148,10 @@ public class CommunityDynamicsAdapter extends RecyclerView.Adapter<RecyclerView.
                 if (oproperty.length() < 4) {
                     holder.iv_activity_type.setText(oproperty);
                 } else {
-                    StringBuffer stringBuffer=new StringBuffer();
-                    stringBuffer.append(oproperty.substring(0,2));
+                    StringBuffer stringBuffer = new StringBuffer();
+                    stringBuffer.append(oproperty.substring(0, 2));
                     stringBuffer.append("\n");
-                    stringBuffer.append(oproperty.substring(2,4));
+                    stringBuffer.append(oproperty.substring(2, 4));
                     holder.iv_activity_type.setText(stringBuffer.toString());
                 }
             }
@@ -278,7 +278,21 @@ public class CommunityDynamicsAdapter extends RecyclerView.Adapter<RecyclerView.
         if ("1".equals(is_join)) {
             //表示已参与活动
             holder.tv_once_join.setText(mContext.getResources().getString(R.string.community_activity_joined));
-            holder.iv_activity_status.setVisibility(View.INVISIBLE);
+            holder.iv_activity_status.setVisibility(View.VISIBLE);
+            switch (ac_status) {
+                case "2":
+                    holder.iv_activity_status.setImageResource(R.drawable.community_number_full);
+                    break;
+                case "3":
+                    holder.iv_activity_status.setImageResource(R.drawable.community_enroll_end);
+                    break;
+                case "4":
+                    holder.iv_activity_status.setImageResource(R.drawable.community_time_end);
+                    break;
+                default:
+                    holder.iv_activity_status.setVisibility(View.INVISIBLE);
+                    break;
+            }
         } else {
             //1正在进行，
             //2人数已满，
