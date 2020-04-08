@@ -14,7 +14,7 @@ import cn.sharesdk.wechat.utils.WechatHandlerActivity;
 /**
  * 微信客户端回调activity示例
  */
-public class WXEntryActivity extends WechatHandlerActivity  {
+public class WXEntryActivity extends WechatHandlerActivity {
 
     /**
      * 处理微信发出的向第三方应用请求app message
@@ -24,6 +24,7 @@ public class WXEntryActivity extends WechatHandlerActivity  {
      * 做点其他的事情，包括根本不打开任何页面
      */
     public void onGetMessageFromWXReq(WXMediaMessage msg) {
+        String minMsg = msg.wxminiprogram_ext_msg;
         Message message = Message.obtain();
         message.what = UserMessageConstant.GUANGCAI_PAY_MSG;
         EventBus.getDefault().post(message);
