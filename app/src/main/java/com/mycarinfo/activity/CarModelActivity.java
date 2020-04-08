@@ -17,6 +17,7 @@ import com.BeeFramework.Utils.ThemeStyleHelper;
 import com.BeeFramework.activity.BaseActivity;
 import com.BeeFramework.model.HttpApi;
 import com.BeeFramework.model.HttpApiResponse;
+import com.im.view.SideBar;
 import com.mycarinfo.adapter.AllCarAdapter;
 import com.mycarinfo.adapter.CarColurAdapter;
 import com.mycarinfo.adapter.CarModelAdapter;

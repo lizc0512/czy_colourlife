@@ -10,7 +10,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
-import android.graphics.Point;
 import android.os.Build;
 import android.os.Message;
 import android.support.multidex.MultiDex;
@@ -18,8 +17,6 @@ import android.support.multidex.MultiDexApplication;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.app.TaskStackBuilder;
 import android.text.TextUtils;
-import android.view.Display;
-import android.view.WindowManager;
 
 import com.appsafekb.safekeyboard.NKeyBoardTextField;
 import com.chuanglan.shanyan_sdk.OneKeyLoginManager;
@@ -38,7 +35,6 @@ import com.yanzhenjie.nohttp.InitializationConfig;
 import com.yanzhenjie.nohttp.NoHttp;
 import com.yanzhenjie.nohttp.URLConnectionNetworkExecutor;
 import com.youmai.hxsdk.HuxinSdkManager;
-import com.youmai.hxsdk.ProtoCallback;
 import com.youmai.hxsdk.proto.YouMaiBuddy;
 
 import java.lang.reflect.Constructor;
@@ -72,34 +68,31 @@ public class BeeFrameworkApp extends MultiDexApplication {
                 // 全局连接服务器超时时间，单位毫秒，默认10s。
                 .connectionTimeout(20 * 1000)
                 // 全局等待服务器响应超时时间，单位毫秒，默认10s。
-                .readTimeout(15 * 1000)
+                .readTimeout(20 * 1000)
                 .networkExecutor(new URLConnectionNetworkExecutor())
                 .sslSocketFactory(sslContext.getSocketFactory()) // 全局SSLSocketFactory。
                 .retry(1)
                 .build();
         NoHttp.initialize(config);
-        ColourLifeSDK.init(getApplicationContext());
         try {
             CrashHandler crashHandler = CrashHandler.getInstance();
             crashHandler.init(getApplicationContext());
-            NKeyBoardTextField.setNlicenseKey(UserAppConst.IJIAMINLICENSEKEY);
-            Intent initialIntent = new Intent(this, InitializeService.class);
-            startService(initialIntent);
             HuxinSdkManager.instance().init(getApplicationContext());
             HuxinSdkManager.instance().setHomeAct(MainActivity.class);
             IMGreenDaoManager.instance(getApplicationContext());
-            HuxinSdkManager.instance().regeditCommonPushMsg(new ProtoCallback.BuddyNotify() {
-                @Override
-                public void result(YouMaiBuddy.IMOptBuddyNotify notify) {
-                    String srcUuid = notify.getSrcUserId();
-                    String dstUuid = notify.getDestUserId();
-                    String optRemark = notify.getOptRemark();
-                    String nickName = notify.getNickname();
-                    String userName = notify.getUsername();
-                    String avatar = notify.getAvatar();
-                    YouMaiBuddy.BuddyOptType type = notify.getOptType();
-                    addFriendNotify(srcUuid, dstUuid, optRemark, nickName, userName, avatar, type);
-                }
+            NKeyBoardTextField.setNlicenseKey(UserAppConst.IJIAMINLICENSEKEY);
+            Intent initialIntent = new Intent(this, InitializeService.class);
+            startService(initialIntent);
+            ColourLifeSDK.init(getApplicationContext());
+            HuxinSdkManager.instance().regeditCommonPushMsg(notify -> {
+                String srcUuid = notify.getSrcUserId();
+                String dstUuid = notify.getDestUserId();
+                String optRemark = notify.getOptRemark();
+                String nickName = notify.getNickname();
+                String userName = notify.getUsername();
+                String avatar = notify.getAvatar();
+                YouMaiBuddy.BuddyOptType type = notify.getOptType();
+                addFriendNotify(srcUuid, dstUuid, optRemark, nickName, userName, avatar, type);
             });
             OneKeyLoginManager.getInstance().init(getApplicationContext(), "DbBj26Nj", "DOMYqkZR", new InitListener() {
                 @Override
@@ -234,16 +227,6 @@ public class BeeFrameworkApp extends MultiDexApplication {
         }
     }
 
-    //获取当前屏幕高度
-    public static int getDeviceHeight(Context context) {
-        WindowManager wm = (WindowManager) context
-                .getSystemService(Context.WINDOW_SERVICE);
-        Display display = wm.getDefaultDisplay();
-        Point size = new Point();
-        display.getSize(size);
-        int height = size.y;
-        return height;
-    }
 
     private void closeAndroidPDialog() {
         if (Build.VERSION.SDK_INT < 28) return;

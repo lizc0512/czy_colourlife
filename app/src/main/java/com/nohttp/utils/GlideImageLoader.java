@@ -18,15 +18,8 @@ import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
 import com.bumptech.glide.request.RequestOptions;
 import com.bumptech.glide.request.target.ViewTarget;
 import com.bumptech.glide.request.transition.Transition;
-import com.nostra13.universalimageloader.cache.disc.naming.Md5FileNameGenerator;
-import com.nostra13.universalimageloader.cache.memory.impl.WeakMemoryCache;
-import com.nostra13.universalimageloader.core.DisplayImageOptions;
-import com.nostra13.universalimageloader.core.ImageLoader;
-import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
-import com.nostra13.universalimageloader.core.assist.QueueProcessingType;
 
 import cn.net.cyberway.R;
-import cn.net.cyberway.view.GlideRoundTransform;
 
 /**
  * @name ${yuansk}
@@ -164,47 +157,11 @@ public class GlideImageLoader {
         }
     }
 
-    //加载指定大小
-    public static void loadImageSizeDisplay(Context mContext, String path, int width, int height, int radius, ImageView mImageView, int lodingImage, int errorImageView) {
-        try {
-            Glide.with(mContext).load(path).apply(new RequestOptions().override(width, height).diskCacheStrategy(DiskCacheStrategy.ALL).error(errorImageView)
-                    .placeholder(lodingImage).transform(new GlideRoundTransform(mContext, radius))
-            ).into(mImageView);
-        } catch (Exception e) {
-
-        }
-    }
 
     public static void loadTopRightCornerImageView(Context mContext, String path, ImageView mImageView) {
         RoundedCornersTransform transform = new RoundedCornersTransform(mContext, Util.DensityUtil.dip2px(mContext, 3));
         transform.setNeedCorner(true, true, false, false);
         RequestOptions options = new RequestOptions().placeholder(R.drawable.icon_style_four).transform(transform).diskCacheStrategy(DiskCacheStrategy.ALL).skipMemoryCache(false).dontAnimate();
         Glide.with(mContext).load(path).apply(options).into(mImageView);
-    }
-
-    public static DisplayImageOptions optionsImage;        // DisplayImageOptions是用于设置图片显示的类
-
-    public static void initImageLoader(Context context) {
-        if (!ImageLoader.getInstance().isInited()) {
-            ImageLoaderConfiguration config = new ImageLoaderConfiguration.Builder(context)
-                    .threadPriority(Thread.NORM_PRIORITY - 2)//设置线程的优先级
-                    .threadPoolSize(3)
-                    .denyCacheImageMultipleSizesInMemory()//当同一个Uri获取不同大小的图片，缓存到内存时，只缓存一个。默认会缓存多个不同的大小的相同图片
-                    .diskCacheFileNameGenerator(new Md5FileNameGenerator())//设置缓存文件的名字
-                    .tasksProcessingOrder(QueueProcessingType.FIFO)// 设置图片下载和显示的工作队列排序
-                    .memoryCache(new WeakMemoryCache())
-                    .build();
-            ImageLoader.getInstance().init(config);
-        }
-        if (optionsImage == null) {
-            optionsImage = new DisplayImageOptions.Builder()
-                    .showImageOnLoading(R.drawable.default_image)            // 设置图片下载期间显示的图片
-                    .showImageForEmptyUri(R.drawable.default_image)    // 设置图片Uri为空或是错误的时候显示的图片
-                    .showImageOnFail(R.drawable.default_image)        // 设置图片加载或解码过程中发生错误显示的图片
-                    .cacheInMemory(true)                        // 设置下载的图片是否缓存在内存中*
-                    .cacheOnDisk(true)                            // 设置下载的图片是否缓存在SD卡中
-                    .bitmapConfig(Bitmap.Config.RGB_565)
-                    .build();
-        }
     }
 }

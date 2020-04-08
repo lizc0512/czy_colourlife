@@ -25,7 +25,7 @@ import cn.net.cyberway.R;
 
 public class NotificationAllInfoAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     private Context mContext;
-    private List<NotificationAllEntity.ContentBean.ItemsBean> list = new ArrayList<>();
+    private List<NotificationAllEntity.ContentBean.ItemsBean> list ;
     private OnItemClickListener onClickListener;
     public NotificationAllInfoAdapter(Context context, List<NotificationAllEntity.ContentBean.ItemsBean> mlist) {
         this.mContext = context;

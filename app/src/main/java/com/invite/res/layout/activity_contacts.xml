@@ -23,7 +23,7 @@
             android:scrollbars="none">
         </ListView>
 
-        <com.invite.adapter.SideBar
+        <com.im.view.SideBar
             android:id="@+id/side_bar"
             android:layout_width="40dp"
             android:layout_height="match_parent"

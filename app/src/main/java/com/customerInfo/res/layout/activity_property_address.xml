@@ -139,7 +139,7 @@
                     android:textSize="30sp"
                     android:visibility="invisible" />
 
-                <com.invite.adapter.SideBar
+                <com.im.view.SideBar
                     android:id="@+id/sidebar"
                     android:layout_width="32dp"
                     android:layout_height="match_parent"

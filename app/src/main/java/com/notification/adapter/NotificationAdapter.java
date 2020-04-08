@@ -38,7 +38,7 @@ import cn.net.cyberway.utils.LinkParseUtil;
 
 public class NotificationAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     private Context mContext;
-    private List<NotificationListEntity.ContentBean.UnReadBean> list = new ArrayList<>();
+    private List<NotificationListEntity.ContentBean.UnReadBean> list;
     private NotificationModel notificationModel;
     private HashMap<String, Integer> showMap = new HashMap<>();
 

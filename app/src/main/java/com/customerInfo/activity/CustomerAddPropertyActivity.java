@@ -35,7 +35,7 @@ import com.door.activity.NewDoorApplyActivity;
 import com.door.entity.DoorSupportTypeEntity;
 import com.door.model.NewDoorAuthorModel;
 import com.external.eventbus.EventBus;
-import com.invite.adapter.SideBar;
+import com.im.view.SideBar;
 import com.myproperty.activity.PropertyChangeActivity;
 import com.myproperty.activity.PropertyRealNameActivity;
 import com.nohttp.utils.GsonUtils;

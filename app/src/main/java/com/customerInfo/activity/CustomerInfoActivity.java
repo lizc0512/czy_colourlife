@@ -27,7 +27,6 @@ import com.community.utils.ImagePickerLoader;
 import com.customerInfo.protocol.IdentityStateEntity;
 import com.customerInfo.view.CustomerInfoDialog;
 import com.external.eventbus.EventBus;
-import com.gesturepwd.activity.UnlockGesturePasswordActivity;
 import com.lzy.imagepicker.ImagePicker;
 import com.lzy.imagepicker.bean.ImageItem;
 import com.lzy.imagepicker.ui.ImageGridActivity;
@@ -35,7 +34,6 @@ import com.lzy.imagepicker.view.CropImageView;
 import com.myproperty.activity.MyPropertyActivity;
 import com.nohttp.utils.GlideImageLoader;
 import com.nohttp.utils.GsonUtils;
-import com.nostra13.universalimageloader.core.ImageLoader;
 import com.permission.AndPermission;
 import com.realaudit.activity.RealCheckResultActivity;
 import com.realaudit.activity.RealCheckWaitingActivity;
@@ -197,10 +195,8 @@ public class CustomerInfoActivity extends BaseActivity implements View.OnClickLi
 
     private void initPhoto() {
         String headImgUrl = shared.getString(UserAppConst.Colour_head_img, "");
-        if (!ImageLoader.getInstance().isInited()) {
-            GlideImageLoader.initImageLoader(CustomerInfoActivity.this);
-        }
-        ImageLoader.getInstance().displayImage(headImgUrl, photo_img, GlideImageLoader.optionsImage);
+        GlideImageLoader.loadImageDefaultDisplay(CustomerInfoActivity.this,headImgUrl,photo_img,
+                R.drawable.icon_default_portrait,R.drawable.icon_default_portrait);
     }
 
     private void initData() {

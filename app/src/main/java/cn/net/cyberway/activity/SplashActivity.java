@@ -68,32 +68,23 @@ public class SplashActivity extends Activity implements HttpApiResponse, NewHttp
                 linkUrl = jsonObject.optString("url");
                 if (!TextUtils.isEmpty(startImage)) {
                     cancel.setVisibility(View.VISIBLE);//显示加载的广告显示页面
-//                    File splashDir = new File(UserAppConst.FILEPATH + "splash");
-//                    File splashFile = new File(splashDir + startImage.substring(startImage.lastIndexOf("/")));
-//                    Glide.with(SplashActivity.this).load(splashFile).into(ad);
                     GlideImageLoader.loadImageDisplay(getApplicationContext(), startImage, ad);
                 }
             } catch (JSONException e) {
                 e.printStackTrace();
             }
         }
-        ad.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (!TextUtils.isEmpty(linkUrl)) {
-                    autoJump = false;
-                    timeCount.cancel();
-                    redirectto(linkUrl);
-                }
-            }
-        });
-        cancel.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+        ad.setOnClickListener(v -> {
+            if (!TextUtils.isEmpty(linkUrl)) {
                 autoJump = false;
                 timeCount.cancel();
-                redirectto("");
+                redirectto(linkUrl);
             }
+        });
+        cancel.setOnClickListener(v -> {
+            autoJump = false;
+            timeCount.cancel();
+            redirectto("");
         });
         timeCount = new TimeCount(delayTime, 1000);
         timeCount.start();

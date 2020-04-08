@@ -32,9 +32,7 @@ import cn.net.cyberway.utils.LinkParseUtil;
 
 public class NotificationAllAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     private Context mContext;
-    private List<NotificationAllEntity.ContentBean> mlist = new ArrayList<>();
-    private List<NotificationAllEntity.ContentBean.ItemsBean> mitemlist = new ArrayList<>();
-    private List<NotificationAllEntity.ContentBean.ItemsBean> mitemlist2 = new ArrayList<>();
+    private List<NotificationAllEntity.ContentBean> mlist;
     private NotificationAllInfoAdapter notificationAllInfoAdapter;
     private NotificationAllInfoTwoAdapter notificationAllInfoTwoAdapter;
 
@@ -115,7 +113,7 @@ public class NotificationAllAdapter extends RecyclerView.Adapter<RecyclerView.Vi
                     }
                 }
             });
-            mitemlist = contentBean.getItems();
+            List<NotificationAllEntity.ContentBean.ItemsBean> mitemlist = contentBean.getItems();
             notificationAllInfoAdapter = new NotificationAllInfoAdapter(mContext, mitemlist);
             holder.rv_notice_all.setAdapter(notificationAllInfoAdapter);
             notificationAllInfoAdapter.setOnItemClickListener(new OnItemClickListener() {
@@ -157,7 +155,7 @@ public class NotificationAllAdapter extends RecyclerView.Adapter<RecyclerView.Vi
                     }
                 }
             });
-            mitemlist2 = mlist.get(i).getItems();
+            List<NotificationAllEntity.ContentBean.ItemsBean> mitemlist2 = mlist.get(i).getItems();
             notificationAllInfoTwoAdapter = new NotificationAllInfoTwoAdapter(mContext, mitemlist2);
             holderTwo.rv_notice_all_two.setAdapter(notificationAllInfoTwoAdapter);
         }

@@ -2,8 +2,6 @@ package com.gesturepwd.activity;
 
 import android.Manifest;
 import android.content.Intent;
-import android.content.SharedPreferences;
-import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Build;
@@ -37,8 +35,6 @@ import com.gesturepwd.view.LockPatternView;
 import com.jpush.Constant;
 import com.nohttp.utils.GlideImageLoader;
 import com.nohttp.utils.GsonUtils;
-import com.nostra13.universalimageloader.core.DisplayImageOptions;
-import com.nostra13.universalimageloader.core.ImageLoader;
 import com.permission.AndPermission;
 import com.permission.PermissionListener;
 import com.user.UserAppConst;
@@ -73,7 +69,6 @@ public class UnlockGesturePasswordActivity extends BaseActivity implements NewHt
     private TextView function;      //订单记录
     private ImageView back;
     private TextView tv_phone;
-    private SharedPreferences mShared;
     protected List<LockPatternView.Cell> mChosenPattern = null;
     private String mobile;
     public static final int LOCLGESTURE_CODE = 1;
@@ -83,7 +78,6 @@ public class UnlockGesturePasswordActivity extends BaseActivity implements NewHt
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.gesturepassword_unlock);
-        mShared = getSharedPreferences(UserAppConst.USERINFO, 0);
         mTokenModel = new TokenModel(this);
         mUserModel = new NewUserModel(this);
         czy_title_layout = (FrameLayout) findViewById(R.id.czy_title_layout);
@@ -94,7 +88,7 @@ public class UnlockGesturePasswordActivity extends BaseActivity implements NewHt
         function = (TextView) findViewById(R.id.user_top_view_right);
         function.setVisibility(View.VISIBLE);
         tv_phone = (TextView) findViewById(R.id.tv_phone);
-        mobile = mShared.getString(UserAppConst.Colour_login_mobile, "");
+        mobile = shared.getString(UserAppConst.Colour_login_mobile, "");
         tv_phone.setText(mobile);
         tv_phone.setOnClickListener(new OnClickListener() {
             @Override
@@ -127,21 +121,9 @@ public class UnlockGesturePasswordActivity extends BaseActivity implements NewHt
         mShakeAnim = AnimationUtils.loadAnimation(this, R.anim.shake_x);
         //设置头像
         CircleImageView img_head = (CircleImageView) findViewById(R.id.gesturepwd_unlock_face);
-        String url = mShared.getString(UserAppConst.Colour_head_img, "");
-        if (!TextUtils.isEmpty(url)) {
-            DisplayImageOptions displayImageOptions = new DisplayImageOptions.Builder()
-                    .showImageOnLoading(R.drawable.head_default)
-                    .showImageForEmptyUri(R.drawable.head_default)    // 设置图片Uri为空或是错误的时候显示的图片
-                    .showImageOnFail(R.drawable.head_default)        // 设置图片加载或解码过程中发生错误显示的图片
-                    .cacheInMemory(true)                        // 设置下载的图片是否缓存在内存中
-                    .cacheOnDisk(true)                            // 设置下载的图片是否缓存在SD卡中
-                    .bitmapConfig(Bitmap.Config.RGB_565)
-                    .build();
-            if (!ImageLoader.getInstance().isInited()) {
-                GlideImageLoader.initImageLoader(UnlockGesturePasswordActivity.this);
-            }
-            ImageLoader.getInstance().displayImage(url, img_head, displayImageOptions);
-        }
+        String url = shared.getString(UserAppConst.Colour_head_img, "");
+        GlideImageLoader.loadImageDefaultDisplay(UnlockGesturePasswordActivity.this,url,img_head,
+                R.drawable.icon_default_portrait,R.drawable.icon_default_portrait);
         ThemeStyleHelper.onlyFrameTitileBar(getApplicationContext(), czy_title_layout, back, tv_title);
     }
 
@@ -226,7 +208,7 @@ public class UnlockGesturePasswordActivity extends BaseActivity implements NewHt
     private void getOauth2() {
         //type:登录的类型 1=>传统登录方式，提交手机号和密码认证；2=>手势密码；3=>短信密码
         //username为手机号
-        String username = mShared.getString(UserAppConst.Colour_login_mobile, "0");
+        String username = shared.getString(UserAppConst.Colour_login_mobile, "0");
         if (null != mChosenPattern) {
             mUserModel.getAuthToken(4, username, LockPatternUtils.convertToString(mChosenPattern), "2", true, this);
         }

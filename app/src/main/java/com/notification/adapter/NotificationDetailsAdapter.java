@@ -29,7 +29,7 @@ import cn.net.cyberway.utils.LinkParseUtil;
 
 public class NotificationDetailsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     private Context mContext;
-    private List<NotificationDetailsEntity.ContentBean.ItemsBean> list = new ArrayList<>();
+    private List<NotificationDetailsEntity.ContentBean.ItemsBean> list;
 
     public NotificationDetailsAdapter(Context context, List<NotificationDetailsEntity.ContentBean.ItemsBean> mlist) {
         this.mContext = context;

@@ -1,11 +1,7 @@
 package com.user;
 
-import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Environment;
-import android.text.TextUtils;
-
-import com.user.protocol.USER;
 
 
 public class UserAppConst {
@@ -155,22 +151,22 @@ public class UserAppConst {
     public static final String COLOUR_AUTH_REAL_NAME = "colour_auth_real_name";//腾讯实名认证
     public static final String COLOUR_INTELLIGENCE_DOOR = "colour_intelligence_door";//智能门禁
     public static final String COLOUR_BLUETOOTH_ADVISE = "COLOUR_BLUETOOTH_ADVISE";//蓝牙开门的广告banner
-    public static final String COLOUR_DOOR_AUTHOUR_APPLY= "colour_door_authour_apply";//门禁授权和申请记录
+    public static final String COLOUR_DOOR_AUTHOUR_APPLY = "colour_door_authour_apply";//门禁授权和申请记录
 
 
-   //新版彩钱包
-    public static final String COLOUR_WALLET_KEYWORD_SIGN ="colour_wallet_keyword_sign";//彩钱包显示饭票还是积分的标识
-    public static final String COLOUR_WALLET_ACCOUNT_LIST ="colour_wallet_account_list";//彩钱包的账户列表
-    public static final String COLOUR_OLD_WALLET_DIALOG="colour_old_wallet_dialog";//旧版钱包的弹窗提示
-    public static final String COLOUR_POINT_PASSWORD_DIALOG="colour_point_password_dialog";//积分密码的指引弹窗
-    public static final String COLOUR_POINT_ACCOUNT_DIALOG="colour_point_account_dialog";//账户安全的指引
+    //新版彩钱包
+    public static final String COLOUR_WALLET_KEYWORD_SIGN = "colour_wallet_keyword_sign";//彩钱包显示饭票还是积分的标识
+    public static final String COLOUR_WALLET_ACCOUNT_LIST = "colour_wallet_account_list";//彩钱包的账户列表
+    public static final String COLOUR_OLD_WALLET_DIALOG = "colour_old_wallet_dialog";//旧版钱包的弹窗提示
+    public static final String COLOUR_POINT_PASSWORD_DIALOG = "colour_point_password_dialog";//积分密码的指引弹窗
+    public static final String COLOUR_POINT_ACCOUNT_DIALOG = "colour_point_account_dialog";//账户安全的指引
 
 
     //社区动态
-    public static final String COLOUR_DYNAMICS_REAL_IDENTITY="colour_dynamics_real_identity";//用户是否实名的
-    public static final String COLOUR_DYNAMICS_TIPOFF_LIST="colour_dynamics_tipoff_list";//举报列表
-    public static final String COLOUR_DYNAMICS_NOTICE_NUMBER="colour_dynamics_notice_number";//消息提醒数量
-    public static final String COLOUR_DYNAMICS_NEWLIST_CACHE="colour_dynamics_newlist_cache";//动态提醒列表的首页缓存
+    public static final String COLOUR_DYNAMICS_REAL_IDENTITY = "colour_dynamics_real_identity";//用户是否实名的
+    public static final String COLOUR_DYNAMICS_TIPOFF_LIST = "colour_dynamics_tipoff_list";//举报列表
+    public static final String COLOUR_DYNAMICS_NOTICE_NUMBER = "colour_dynamics_notice_number";//消息提醒数量
+    public static final String COLOUR_DYNAMICS_NEWLIST_CACHE = "colour_dynamics_newlist_cache";//动态提醒列表的首页缓存
 
     /**
      * 彩惠人生
@@ -202,23 +198,5 @@ public class UserAppConst {
      */
     public static final String INVITE_FRIEND = "invite_friend";//邀请好友数据
     public static final String INVITE_INVITE = "invite_invite";//我的邀请
-
-    public static com.user.protocol.USER getUser(Context context) {
-        USER user = new USER();
-        if (null != context) {
-            shared = context.getSharedPreferences(UserAppConst.USERINFO, 0);
-            String name = shared.getString(Colour_NAME, "");
-            String nickname = shared.getString(Colour_NIACKNAME, "");
-            user.id = shared.getInt(Colour_User_id, 0);
-            if (!TextUtils.isEmpty(name)) {
-                user.nickname = name;
-            } else if (!TextUtils.isEmpty(nickname)) {
-                user.nickname = nickname;
-            } else {
-                user.nickname = "彩多多";
-            }
-        }
-        return user;
-    }
 
 }

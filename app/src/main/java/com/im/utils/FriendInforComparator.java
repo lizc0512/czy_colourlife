@@ -1,7 +1,6 @@
 package com.im.utils;
 
 import com.im.entity.FriendInforEntity;
-import com.im.entity.MobileBookEntity;
 
 import java.util.Comparator;
 

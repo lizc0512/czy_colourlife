@@ -5,8 +5,6 @@ import android.content.Context;
 import com.BeeFramework.Utils.Utils;
 import com.BeeFramework.model.BaseModel;
 import com.BeeFramework.model.HttpApiResponse;
-import com.myproperty.protocol.HouseaddressDeletehousePostApi;
-import com.myproperty.protocol.HouseaddressGetmyhouseGetApi;
 import com.myproperty.protocol.HouseaddressPropretyifyPostApi;
 import com.myproperty.protocol.ImageuploadPostApi;
 import com.nohttp.utils.HttpListener;
@@ -38,111 +36,9 @@ public class PropertyInfoModel extends BaseModel {
         super(context);
     }
 
-    private HouseaddressGetmyhouseGetApi houseaddressGetmyhouseGetApi;
-    private HouseaddressDeletehousePostApi houseaddressDeletehousePostApi;
     private ImageuploadPostApi imageuploadPostApi;
     private HouseaddressPropretyifyPostApi houseaddressPropretyifyPostApi;
 
-    /**
-     * 获取用户房产列表
-     */
-    public void getMyHouse(HttpApiResponse businessResponse, boolean isLoading) {
-        houseaddressGetmyhouseGetApi = new HouseaddressGetmyhouseGetApi();
-        houseaddressGetmyhouseGetApi.httpApiResponse = businessResponse;
-        int customer_id = shared.getInt(UserAppConst.Colour_User_id, 0);
-        houseaddressGetmyhouseGetApi.request.customer_id = customer_id + "";
-        String basePath = houseaddressGetmyhouseGetApi.apiURI;
-        Map<String, Object> params = new HashMap<String, Object>();
-        try {
-            params = Utils.transformJsonToMap(houseaddressGetmyhouseGetApi.request.toJson());
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-        final Request<String> request_oauthRegister = NoHttp.createStringRequest(
-                RequestEncryptionUtils.getCombileMD5(mContext, 6, basePath, params), RequestMethod.GET);
-        request(0, request_oauthRegister, params, new HttpListener<String>() {
-            @Override
-            public void onSucceed(int what, Response<String> response) {
-                int responseCode = response.getHeaders().getResponseCode();
-                String result = response.get();
-                if (responseCode == RequestEncryptionUtils.responseSuccess) {
-                    JSONObject jsonObject = showSuccesCodeMessage(result);
-                    if (null != jsonObject) {
-                        try {
-                            houseaddressGetmyhouseGetApi.response.fromJson(jsonObject);
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
-                    }
-                } else if (responseCode == RequestEncryptionUtils.responseRequest) {
-                    showErrorCodeMessage(responseCode, response);
-                } else {
-                    showErrorCodeMessage(responseCode, response);
-                }
-                houseaddressGetmyhouseGetApi.httpApiResponse.OnHttpResponse(houseaddressGetmyhouseGetApi);
-            }
-
-            @Override
-            public void onFailed(int what, Response<String> response) {
-                houseaddressGetmyhouseGetApi.httpApiResponse.OnHttpResponse(houseaddressGetmyhouseGetApi);
-            }
-        }, true, isLoading);
-
-    }
-
-    /**
-     * 删除房产
-     *
-     * @param businessResponse
-     * @param position
-     */
-    public void postdeleteHouse(HttpApiResponse businessResponse, int position, boolean isLoading) {
-        houseaddressDeletehousePostApi = new HouseaddressDeletehousePostApi();
-        houseaddressDeletehousePostApi.httpApiResponse = businessResponse;
-        int customer_id = shared.getInt(UserAppConst.Colour_User_id, 0);
-        houseaddressDeletehousePostApi.request.house_id = String.valueOf(position);
-        houseaddressDeletehousePostApi.request.customer_id = String.valueOf(customer_id);
-        Map<String, Object> params = new HashMap<String, Object>();
-        try {
-            params = Utils.transformJsonToMap(houseaddressDeletehousePostApi.request.toJson());
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-        String basePath = houseaddressDeletehousePostApi.apiURI;
-        final Request<String> request_oauthRegister = NoHttp.createStringRequest(
-                RequestEncryptionUtils.postCombileMD5(mContext, 9, basePath), RequestMethod.POST);
-        request(0, request_oauthRegister, params, new HttpListener<String>() {
-            @Override
-            public void onSucceed(int what, Response<String> response) {
-                int responseCode = response.getHeaders().getResponseCode();
-                String result = response.get();
-                if (responseCode == RequestEncryptionUtils.responseSuccess) {
-                    JSONObject jsonObject = showSuccesCodeMessage(result);
-                    if (null != jsonObject) {
-                        try {
-                            houseaddressDeletehousePostApi.response.fromJson(jsonObject);
-                            if (houseaddressDeletehousePostApi.response.code == 0) {
-                                houseaddressDeletehousePostApi.httpApiResponse.OnHttpResponse(houseaddressDeletehousePostApi);
-                            } else {
-                                callback(houseaddressDeletehousePostApi.response.message);
-                            }
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
-                    }
-                } else if (responseCode == RequestEncryptionUtils.responseRequest) {
-                    showErrorCodeMessage(responseCode, response);
-                } else {
-                    showErrorCodeMessage(responseCode, response);
-                }
-            }
-
-            @Override
-            public void onFailed(int what, Response<String> response) {
-                showExceptionMessage(what, response);
-            }
-        }, true, isLoading);
-    }
 
     /**
      * 上传图片
@@ -155,7 +51,7 @@ public class PropertyInfoModel extends BaseModel {
         File uploadFile = new File(file);
         BasicBinary binary = new FileBinary(uploadFile);
         Map<String, Object> params = new HashMap<>();
-        params.put("type",types);
+        params.put("type", types);
         String basePath = imageuploadPostApi.apiURI;
         final Request<String> request = NoHttp.createStringRequest(
                 RequestEncryptionUtils.postCombileMD5(mContext, 10, basePath), RequestMethod.POST);

@@ -4,6 +4,7 @@ import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,12 +18,13 @@ import com.BeeFramework.activity.BaseActivity;
 import com.BeeFramework.model.NewHttpResponse;
 import com.BeeFramework.view.CircleImageView;
 import com.BeeFramework.view.Util;
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.DataSource;
+import com.bumptech.glide.load.engine.GlideException;
+import com.bumptech.glide.request.RequestListener;
+import com.bumptech.glide.request.target.Target;
 import com.external.maxwin.view.XListView;
-import com.nohttp.utils.GlideImageLoader;
 import com.nohttp.utils.GsonUtils;
-import com.nostra13.universalimageloader.core.ImageLoader;
-import com.nostra13.universalimageloader.core.assist.FailReason;
-import com.nostra13.universalimageloader.core.listener.ImageLoadingListener;
 import com.user.UserAppConst;
 import com.user.entity.QrCodeEntity;
 import com.user.model.NewUserModel;
@@ -118,43 +120,39 @@ public class CustomerMakeZXingActivity extends BaseActivity implements NewHttpRe
     public void initQRcode(final String url) {
         String headImgUrl = mShared.getString(UserAppConst.Colour_head_img, "");
         int size = Util.DensityUtil.dip2px(CustomerMakeZXingActivity.this, 200);
-        ImageLoader.getInstance().displayImage(headImgUrl, imgAvatar, GlideImageLoader.optionsImage, new ImageLoadingListener() {
-            @Override
-            public void onLoadingStarted(String s, View view) {
+        Glide.with(CustomerMakeZXingActivity.this)
+                .asBitmap()
+                .load(headImgUrl)
+                .listener(new RequestListener<Bitmap>() {
 
-            }
-
-            @Override
-            public void onLoadingFailed(String s, View view, FailReason failReason) {
-                if (TextUtils.isEmpty(url)) {
-                    ivQrCode.setImageResource(R.drawable.colourlife_download);
-                } else {
-                    Bitmap showQrBitmap = QRCodeUtil.createQRImage(url, size, size, BitmapFactory.decodeResource(getResources(), R.drawable.icon_qrcode_center));
-                    ivQrCode.setImageBitmap(showQrBitmap);
-                }
-                imgAvatar.setImageResource(R.drawable.icon_default_portrait);
-            }
-
-            @Override
-            public void onLoadingComplete(String s, View view, Bitmap bitmap) {
-                if (TextUtils.isEmpty(url)) {
-                    ivQrCode.setImageResource(R.drawable.colourlife_download);
-                } else {
-                    if (bitmap != null) {
-                        Bitmap showQrBitmap = QRCodeUtil.createQRImage(url, size, size, bitmap);
-                        ivQrCode.setImageBitmap(showQrBitmap);
-                    } else {
-                        Bitmap showQrBitmap = QRCodeUtil.createQRImage(url, size, size, BitmapFactory.decodeResource(getResources(), R.drawable.icon_qrcode_center));
-                        ivQrCode.setImageBitmap(showQrBitmap);
+                    @Override
+                    public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Bitmap> target, boolean isFirstResource) {
+                        if (TextUtils.isEmpty(url)) {
+                            ivQrCode.setImageResource(R.drawable.colourlife_download);
+                        } else {
+                            Bitmap showQrBitmap = QRCodeUtil.createQRImage(url, size, size, BitmapFactory.decodeResource(getResources(), R.drawable.icon_qrcode_center));
+                            ivQrCode.setImageBitmap(showQrBitmap);
+                        }
+                        imgAvatar.setImageResource(R.drawable.icon_default_portrait);
+                        return false;
                     }
-                }
-            }
 
-            @Override
-            public void onLoadingCancelled(String s, View view) {
-
-            }
-        });
+                    @Override
+                    public boolean onResourceReady(Bitmap resource, Object model, Target<Bitmap> target, DataSource dataSource, boolean isFirstResource) {
+                        if (TextUtils.isEmpty(url)) {
+                            ivQrCode.setImageResource(R.drawable.colourlife_download);
+                        } else {
+                            if (resource != null) {
+                                Bitmap showQrBitmap = QRCodeUtil.createQRImage(url, size, size, resource);
+                                ivQrCode.setImageBitmap(showQrBitmap);
+                            } else {
+                                Bitmap showQrBitmap = QRCodeUtil.createQRImage(url, size, size, BitmapFactory.decodeResource(getResources(), R.drawable.icon_qrcode_center));
+                                ivQrCode.setImageBitmap(showQrBitmap);
+                            }
+                        }
+                        return false;
+                    }
+                }).into(imgAvatar);
     }
 
     @Override
