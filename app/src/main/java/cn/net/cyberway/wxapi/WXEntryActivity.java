@@ -27,6 +27,7 @@ public class WXEntryActivity extends WechatHandlerActivity {
         String minMsg = msg.wxminiprogram_ext_msg;
         Message message = Message.obtain();
         message.what = UserMessageConstant.GUANGCAI_PAY_MSG;
+        message.arg1=1;
         EventBus.getDefault().post(message);
         finish();
     }

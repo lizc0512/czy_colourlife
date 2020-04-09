@@ -17,6 +17,7 @@ public class HtmlPayDialog {
     public TextView tv_content;
     public TextView   tv_finish_pay;
     public TextView   tv_again_pay;
+    public TextView   tv_jump_alipay;
     public TextView   tv_cancel_pay;
 
     public HtmlPayDialog(Context context) {
@@ -29,6 +30,7 @@ public class HtmlPayDialog {
 
         tv_content              = (TextView) view.findViewById(R.id.tv_content);
         tv_finish_pay     = (TextView) view.findViewById(R.id.tv_finish_pay);
+        tv_jump_alipay     = (TextView) view.findViewById(R.id.tv_jump_alipay);
         tv_again_pay    = (TextView) view.findViewById(R.id.tv_again_pay);
         tv_cancel_pay    = (TextView) view.findViewById(R.id.tv_cancel_pay);
 

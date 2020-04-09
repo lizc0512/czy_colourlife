@@ -65,6 +65,7 @@ import com.user.model.RequestFailModel;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
@@ -682,6 +683,8 @@ public class NewOrderPayActivity extends BaseActivity implements View.OnClickLis
                 e.printStackTrace();
             }
 
+        } else if (requestCode == 3000) {
+            showH5PayResultDialog(2);
         }
     }
 
@@ -721,6 +724,7 @@ public class NewOrderPayActivity extends BaseActivity implements View.OnClickLis
 
     private BroadcastReceiverActivity broadcast;
     private int showPayResultDialog = 0;
+
     @Override
     protected void onResume() {
         super.onResume();
@@ -732,7 +736,7 @@ public class NewOrderPayActivity extends BaseActivity implements View.OnClickLis
             EventBus.getDefault().register(NewOrderPayActivity.this);
         }
         if (showPayResultDialog == 1) {
-            showH5PayResultDialog();
+            showH5PayResultDialog(2);
             showPayResultDialog = 0;
         }
     }
@@ -755,7 +759,8 @@ public class NewOrderPayActivity extends BaseActivity implements View.OnClickLis
         switch (message.what) {
             case UserMessageConstant.GUANGCAI_PAY_MSG:
                 showPayResultDialog = 0;
-                showH5PayResultDialog();
+                int showAlipay = message.arg1;
+                showH5PayResultDialog(showAlipay);
                 break;
             case UserMessageConstant.NET_CONN_CHANGE:
                 if (NetworkUtil.isConnect(getApplicationContext())) {
@@ -763,7 +768,6 @@ public class NewOrderPayActivity extends BaseActivity implements View.OnClickLis
                 }
                 break;
             case WEIXIN_PAY_MSG: //微信支付回调
-                showPayResultDialog=0;
                 int payCode = message.arg1;
                 if (payCode == 0) {
                     payResultQuery();
@@ -821,7 +825,7 @@ public class NewOrderPayActivity extends BaseActivity implements View.OnClickLis
     }
 
     /***光彩支付的结果**/
-    private void showH5PayResultDialog() {
+    private void showH5PayResultDialog(int showAlipay) {
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
@@ -831,26 +835,33 @@ public class NewOrderPayActivity extends BaseActivity implements View.OnClickLis
                     if (!TextUtils.isEmpty(dialogTitle)) {
                         htmlPayDialog.setContent("请确认" + dialogTitle + "支付是否完成");
                     }
-                    htmlPayDialog.tv_again_pay.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            htmlPayDialog.dismiss();
-                            newOrderPayModel.getPayOrderStatus(3, sn, NewOrderPayActivity.this);
-                        }
+                    htmlPayDialog.tv_again_pay.setOnClickListener(v -> {
+                        htmlPayDialog.dismiss();
+                        newOrderPayModel.getPayOrderStatus(3, sn, NewOrderPayActivity.this);
                     });
-                    htmlPayDialog.tv_finish_pay.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            htmlPayDialog.dismiss();
-                            payResultQuery();
+                    if (showAlipay == 2) {
+                        htmlPayDialog.tv_jump_alipay.setVisibility(View.VISIBLE);
+                    } else {
+                        htmlPayDialog.tv_jump_alipay.setVisibility(View.GONE);
+                    }
+                    htmlPayDialog.tv_jump_alipay.setOnClickListener(v -> {
+                        htmlPayDialog.dismiss();
+                        Intent intent = null;
+                        try {
+                            intent = Intent.parseUri("alipays://platformapi/startapp?appId=20000003", Intent.URI_INTENT_SCHEME);
+                            intent.addCategory(Intent.CATEGORY_BROWSABLE);
+                            intent.setComponent(null);
+                            startActivityForResult(intent, 3000);
+                        } catch (URISyntaxException e) {
+                            e.printStackTrace();
                         }
+
                     });
-                    htmlPayDialog.tv_cancel_pay.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            htmlPayDialog.dismiss();
-                        }
+                    htmlPayDialog.tv_finish_pay.setOnClickListener(v -> {
+                        htmlPayDialog.dismiss();
+                        payResultQuery();
                     });
+                    htmlPayDialog.tv_cancel_pay.setOnClickListener(v -> htmlPayDialog.dismiss());
                 } catch (Exception e) {
 
                 }
@@ -907,14 +918,18 @@ public class NewOrderPayActivity extends BaseActivity implements View.OnClickLis
     }
 
     //银联聚合支付
-    private void unionPayOrder(Map<String, String> resultMap,String  payChannel) {
+    private void unionPayOrder(Map<String, String> resultMap, String payChannel) {
         UnifyPayRequest msg = new UnifyPayRequest();
         msg.payChannel = payChannel;
         if (!resultMap.containsKey("appPayRequest")) {
             ToastUtil.toastShow(NewOrderPayActivity.this, "服务器返回数据格式有问题，缺少“appPayRequest”字段");
             return;
         } else {
-            showPayResultDialog = 1;
+            if (UnifyPayRequest.CHANNEL_ALIPAY == payChannel) {
+                showPayResultDialog = 1;
+            } else {
+                showPayResultDialog = 0;
+            }
             msg.payData = resultMap.get("appPayRequest");
             UnifyPayPlugin unifyPayPlugin = UnifyPayPlugin.getInstance(this);
             unifyPayPlugin.setListener(this);
@@ -965,18 +980,18 @@ public class NewOrderPayActivity extends BaseActivity implements View.OnClickLis
                             } else if (payChannelId.endsWith("7")) {
                                 //工行微信
                                 wexinPayOrder(resultMap);
+                            } else if (payChannelId.endsWith("12")) {
+                                //银联微信
+                                unionPayOrder(resultMap, UnifyPayRequest.CHANNEL_WEIXIN);
+                            } else if (payChannelId.endsWith("9")) {
+                                //银联支付宝
+                                unionPayOrder(resultMap, UnifyPayRequest.CHANNEL_ALIPAY);
                             } else if (payChannelId.endsWith("2")) { //彩之云积分支付
                                 if (resultMap != null && resultMap.containsKey("encrypt")) {
                                     encrypt = resultMap.get("encrypt");
                                 }
                                 pointPayOrder();
-                            } else if (payChannelId.endsWith("9")) {
-                                //银联支付宝
-                                unionPayOrder(resultMap,UnifyPayRequest.CHANNEL_ALIPAY);
-                            } else if (payChannelId.endsWith("12")){
-                                //银联微信
-                                unionPayOrder(resultMap,UnifyPayRequest.CHANNEL_WEIXIN);
-                            }else {
+                            } else {
                                 //彩钱包支付
                                 LinkedHashMap<String, Object> publicParams = new LinkedHashMap<String, Object>();
                                 publicParams.putAll(resultMap);

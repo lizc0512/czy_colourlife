@@ -49,12 +49,13 @@ public class CommunityDynamicsModel extends BaseModel {
     private String joinActivityUrl = "neighbour/joinActivity";//参与活动接口
     private String commentActivityUrl = "neighbour/commentActivity";//添加活动留言
     private String delActivityCommentUrl = "neighbour/delActivityComment";//删除活动留言
+    private String addPageViewUrl = "neighbour/addPageView";//添加活动浏览次数
 
     public CommunityDynamicsModel(Context context) {
         super(context);
     }
 
-    public void publicUserDynamic(int what, String content, String extra_type, String extra,boolean isLoading, NewHttpResponse newHttpResponse) {
+    public void publicUserDynamic(int what, String content, String extra_type, String extra, boolean isLoading, NewHttpResponse newHttpResponse) {
         Map<String, Object> params = new HashMap<String, Object>();
         params.put("content", content);
         params.put("extra_type", extra_type);
@@ -467,7 +468,7 @@ public class CommunityDynamicsModel extends BaseModel {
     }
 
     public void getCommunityActivityInfor(int what, NewHttpResponse newHttpResponse) {
-        final Request<String> request = NoHttp.createStringRequest(RequestEncryptionUtils.getCombileMD5(mContext, 16, homeCommunityActivityUrl,null), RequestMethod.GET);
+        final Request<String> request = NoHttp.createStringRequest(RequestEncryptionUtils.getCombileMD5(mContext, 16, homeCommunityActivityUrl, null), RequestMethod.GET);
         request(what, request, null, new HttpListener<String>() {
             @Override
             public void onSucceed(int what, Response<String> response) {
@@ -489,10 +490,10 @@ public class CommunityDynamicsModel extends BaseModel {
         }, true, false);
     }
 
-    public void getCommunityActivityDetails(int what,String source_id, NewHttpResponse newHttpResponse) {
+    public void getCommunityActivityDetails(int what, String source_id, NewHttpResponse newHttpResponse) {
         Map<String, Object> params = new HashMap<String, Object>();
         params.put("source_id", source_id);
-        final Request<String> request = NoHttp.createStringRequest(RequestEncryptionUtils.getCombileMD5(mContext, 16, homeActivityDetailUrl,params), RequestMethod.GET);
+        final Request<String> request = NoHttp.createStringRequest(RequestEncryptionUtils.getCombileMD5(mContext, 16, homeActivityDetailUrl, params), RequestMethod.GET);
         request(what, request, params, new HttpListener<String>() {
             @Override
             public void onSucceed(int what, Response<String> response) {
@@ -513,10 +514,10 @@ public class CommunityDynamicsModel extends BaseModel {
         }, true, true);
     }
 
-    public void joinCommunityActivity(int what,String source_id, String picture_arr,NewHttpResponse newHttpResponse) {
+    public void joinCommunityActivity(int what, String source_id, String picture_arr, NewHttpResponse newHttpResponse) {
         Map<String, Object> params = new HashMap<String, Object>();
         params.put("source_id", source_id);
-        if (!TextUtils.isEmpty(picture_arr)){
+        if (!TextUtils.isEmpty(picture_arr)) {
             params.put("picture_arr", picture_arr);
         }
         final Request<String> request = NoHttp.createStringRequest(RequestEncryptionUtils.postCombileMD5(mContext, 17, joinActivityUrl), RequestMethod.POST);
@@ -540,11 +541,11 @@ public class CommunityDynamicsModel extends BaseModel {
         }, true, true);
     }
 
-    public void getActivityComment(int what,String source_id,int page,NewHttpResponse newHttpResponse) {
+    public void getActivityComment(int what, String source_id, int page, NewHttpResponse newHttpResponse) {
         Map<String, Object> params = new HashMap<String, Object>();
         params.put("source_id", source_id);
         params.put("page", page);
-        final Request<String> request = NoHttp.createStringRequest(RequestEncryptionUtils.getCombileMD5(mContext, 16, activityCommentUrl,params), RequestMethod.GET);
+        final Request<String> request = NoHttp.createStringRequest(RequestEncryptionUtils.getCombileMD5(mContext, 16, activityCommentUrl, params), RequestMethod.GET);
         request(what, request, params, new HttpListener<String>() {
             @Override
             public void onSucceed(int what, Response<String> response) {
@@ -566,12 +567,11 @@ public class CommunityDynamicsModel extends BaseModel {
     }
 
 
-
-    public void commentCommunityActivity(int what,String source_id, String content,String to_id,NewHttpResponse newHttpResponse) {
+    public void commentCommunityActivity(int what, String source_id, String content, String to_id, NewHttpResponse newHttpResponse) {
         Map<String, Object> params = new HashMap<String, Object>();
         params.put("source_id", source_id);
         params.put("content", content);
-        if(!TextUtils.isEmpty(to_id)){
+        if (!TextUtils.isEmpty(to_id)) {
             params.put("to_id", to_id);
         }
         final Request<String> request = NoHttp.createStringRequest(RequestEncryptionUtils.postCombileMD5(mContext, 17, commentActivityUrl), RequestMethod.POST);
@@ -595,7 +595,7 @@ public class CommunityDynamicsModel extends BaseModel {
         }, true, false);
     }
 
-    public void delActivityComment(int what,String source_id, String comment_id,NewHttpResponse newHttpResponse) {
+    public void delActivityComment(int what, String source_id, String comment_id, NewHttpResponse newHttpResponse) {
         Map<String, Object> params = new HashMap<String, Object>();
         params.put("source_id", source_id);
         params.put("comment_id", comment_id);
@@ -611,6 +611,23 @@ public class CommunityDynamicsModel extends BaseModel {
                         newHttpResponse.OnHttpResponse(what, result);
                     }
                 }
+            }
+
+            @Override
+            public void onFailed(int what, Response<String> response) {
+
+            }
+        }, true, false);
+    }
+
+    public void addCommunityActivityViews(int what, String source_id, NewHttpResponse newHttpResponse) {
+        Map<String, Object> params = new HashMap<String, Object>();
+        params.put("source_id", source_id);
+        final Request<String> request = NoHttp.createStringRequest(RequestEncryptionUtils.postCombileMD5(mContext, 17, addPageViewUrl), RequestMethod.POST);
+        request(what, request, params, new HttpListener<String>() {
+            @Override
+            public void onSucceed(int what, Response<String> response) {
+
             }
 
             @Override

@@ -147,6 +147,7 @@ public class CommunityActivityDetailsActivity extends BaseActivity implements Vi
         communityDynamicsModel = new CommunityDynamicsModel(CommunityActivityDetailsActivity.this);
         communityDynamicsModel.getCommunityActivityDetails(0, source_id, CommunityActivityDetailsActivity.this);
         communityDynamicsModel.getActivityComment(1, source_id, page, CommunityActivityDetailsActivity.this);
+        communityDynamicsModel.addCommunityActivityViews(5, source_id, CommunityActivityDetailsActivity.this);
     }
 
 
@@ -575,11 +576,11 @@ public class CommunityActivityDetailsActivity extends BaseActivity implements Vi
     }
 
     /***格式化金额的显示**/
-    public String getFormatMoney(double price,boolean halfUp) {
+    public String getFormatMoney(double price, boolean halfUp) {
         DecimalFormat formater = new DecimalFormat("0.00");
         formater.setMaximumFractionDigits(2);
         formater.setGroupingSize(3);
-        formater.setRoundingMode(halfUp ? RoundingMode.HALF_UP:RoundingMode.FLOOR);
+        formater.setRoundingMode(halfUp ? RoundingMode.HALF_UP : RoundingMode.FLOOR);
         return formater.format(price);
     }
 
@@ -596,7 +597,7 @@ public class CommunityActivityDetailsActivity extends BaseActivity implements Vi
                     if ("0".equals(ac_fee) || "0.0".equals(ac_fee) || "0.00".equals(ac_fee)) {
                         tv_fee_price.setText(getResources().getString(R.string.community_activity_free));
                     } else {
-                        tv_fee_price.setText("￥" + getFormatMoney(Double.valueOf(ac_fee),true));
+                        tv_fee_price.setText("￥" + getFormatMoney(Double.valueOf(ac_fee), true));
                     }
                     activityTitle = contentBean.getAc_title();
                     tv_activity_title.setText(activityTitle);

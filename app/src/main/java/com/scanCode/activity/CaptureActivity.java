@@ -22,6 +22,7 @@ import android.content.DialogInterface;
 import android.content.DialogInterface.OnClickListener;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.drawable.BitmapDrawable;
@@ -525,7 +526,7 @@ public final class CaptureActivity extends BaseActivity implements
             if (resultCode == ImagePicker.RESULT_CODE_ITEMS) {
                 ArrayList<ImageItem> images = (ArrayList<ImageItem>) data.getSerializableExtra(ImagePicker.EXTRA_RESULT_ITEMS);
                 String path = images.get(0).path;
-                Bitmap bitmap = CompressHelper.getDefault(this).compressToBitmap(new File(path));
+                Bitmap bitmap = BitmapFactory.decodeFile(path);
                 Result result = DecodeImage.handleQRCodeFormBitmap(bitmap);
                 if (result == null) {
                     ToastUtil.toastShow(CaptureActivity.this, "请选择是二维码或条形码的图片");

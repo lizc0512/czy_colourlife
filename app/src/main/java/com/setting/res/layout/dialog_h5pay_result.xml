@@ -50,6 +50,19 @@
             android:text="支付遇到问题,重新支付"
             android:textColor="@color/color_a3aaae"
             android:textSize="16sp" />
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1px"
+            android:background="@color/color_bfc7cc" />
+
+        <TextView
+            android:id="@+id/tv_jump_alipay"
+            android:layout_width="match_parent"
+            android:layout_height="66dp"
+            android:gravity="center"
+            android:text="支付遇到问题,无法输入支付密码\n 点击前往支付宝账单进行支付"
+            android:textColor="@color/color_a3aaae"
+            android:textSize="16sp" />
 
         <View
             android:layout_width="match_parent"

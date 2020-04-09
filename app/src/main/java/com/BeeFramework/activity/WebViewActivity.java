@@ -3,7 +3,6 @@ package com.BeeFramework.activity;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.bluetooth.BluetoothAdapter;
 import android.content.ComponentName;
@@ -16,8 +15,6 @@ import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
-import android.graphics.drawable.BitmapDrawable;
-import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.net.http.SslError;
 import android.os.AsyncTask;
@@ -28,7 +25,6 @@ import android.os.Handler;
 import android.os.Message;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.support.v4.content.FileProvider;
 import android.text.TextUtils;
 import android.view.KeyEvent;
@@ -72,8 +68,6 @@ import com.agentweb.ChromeClientCallbackManager;
 import com.agentweb.ILoader;
 import com.agentweb.PermissionInterceptor;
 import com.agentweb.WebDefaultSettingsManager;
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.request.target.ImageViewTarget;
 import com.cashier.activity.NewOrderPayActivity;
 import com.community.model.CommunityDynamicsModel;
 import com.community.utils.RealIdentifyDialogUtil;
@@ -150,9 +144,7 @@ import cn.sharesdk.wechat.moments.WechatMoments;
 import static cn.net.cyberway.utils.BuryingPointUtils.ENTER_TIME;
 import static cn.net.cyberway.utils.BuryingPointUtils.LEAVE_TIME;
 import static cn.net.cyberway.utils.BuryingPointUtils.UPLOAD_DETAILS;
-import static com.community.fragment.CommunityDynamicsFragment.CHANGE_ACTIVITY_STATUS;
 import static com.BeeFramework.Utils.Utils.getAuthPublicParams;
-import static com.user.UserMessageConstant.CHANGE_COMMUNITY;
 
 @SuppressLint("SetJavaScriptEnabled")
 public class WebViewActivity extends BaseActivity implements View.OnLongClickListener, OnClickListener, NewHttpResponse, LekaiParkLockController.OnScanParkLockChangeListener {
@@ -276,24 +268,21 @@ public class WebViewActivity extends BaseActivity implements View.OnLongClickLis
         }
     }
 
-    private PermissionInterceptor permissionInterceptor = new PermissionInterceptor() {
-        @Override
-        public boolean intercept(String url, String[] permissions, String action) {
-            if (permissions.length > 0) {
-                String permission = permissions[0].replace("Manifest", "android");
-                if (!AndPermission.hasPermission(WebViewActivity.this, permission)) {
-                    if (permission.contains("CAMERA")) {
-                        ToastUtil.toastShow(WebViewActivity.this, "未开启相机权限,请开启后再使用此功能");
-                    } else {
-                        ToastUtil.toastShow(WebViewActivity.this, "未开启" + action + "权限,请开启后再使用此功能");
-                    }
-                    return true;
+    private PermissionInterceptor permissionInterceptor = (url, permissions, action) -> {
+        if (permissions.length > 0) {
+            String permission = permissions[0].replace("Manifest", "android");
+            if (!AndPermission.hasPermission(WebViewActivity.this, permission)) {
+                if (permission.contains("CAMERA")) {
+                    ToastUtil.toastShow(WebViewActivity.this, "未开启相机权限,请开启后再使用此功能");
                 } else {
-                    return false;
+                    ToastUtil.toastShow(WebViewActivity.this, "未开启" + action + "权限,请开启后再使用此功能");
                 }
+                return true;
+            } else {
+                return false;
             }
-            return false;
         }
+        return false;
     };
     private ChromeClientCallbackManager.ReceivedTitleCallback receivedTitleCallback = new ChromeClientCallbackManager.ReceivedTitleCallback() {
         @Override
@@ -342,22 +331,6 @@ public class WebViewActivity extends BaseActivity implements View.OnLongClickLis
         ThemeStyleHelper.webviewTitileBar(getApplicationContext(), czy_title_layout, imageback, imageClose, mTitle, img_right);
     }
 
-    /**
-     * 打开WebView
-     *
-     * @param context context
-     * @param url     网址
-     * @param title   标题
-     * @param data    用WebView查看的数据
-     */
-    public static void actionStart(Context context, String url, String title, String data) {
-        Intent intent = new Intent(context, WebViewActivity.class);
-        intent.putExtra(WEBURL, url);
-        intent.putExtra(WEBTITLE, title);
-        intent.putExtra(WEBDATA, data);
-        context.startActivity(intent);
-        ((Activity) context).overridePendingTransition(R.anim.push_right_in, R.anim.push_right_out);
-    }
 
     private void finishActivity() {
         Intent intent = new Intent();
@@ -1428,6 +1401,11 @@ public class WebViewActivity extends BaseActivity implements View.OnLongClickLis
                 } else {
                     Message message = Message.obtain();
                     message.what = UserMessageConstant.GUANGCAI_PAY_MSG;
+                    if (url.startsWith("https://qr.alipay.com")){
+                        message.arg1=2;
+                    }else{
+                        message.arg1=1;
+                    }
                     EventBus.getDefault().post(message);
                     finish();
                 }
