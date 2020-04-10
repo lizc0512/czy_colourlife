@@ -90,7 +90,7 @@ public class ShareActivityDialog extends Dialog {
         }
         oks.disableSSOWhenAuthorize();
         oks.setTitle(shareTitle);
-        oks.setText(shareText);
+        oks.setText("【快来参加活动吧】".trim());
         oks.setImageData(BitmapFactory.decodeResource(getContext().getResources(), R.drawable.share_default_logo));
         if (TextUtils.isEmpty(shareUrl)) {
             shareUrl = "http://m.colourlife.com/doubleCode?code=1390620762&sign=553FCC9A69A55F1BE686F6AF85E42154";

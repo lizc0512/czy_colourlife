@@ -32,9 +32,9 @@ public class ChangePawdByOldFragment extends BaseFragment implements View.OnClic
     private NewUserModel newUserModel;
     private NKeyBoardTextField password_et;
     private NKeyBoardTextField new_password_et;
-    private String oldPawd;
-    private String newPawd;
-    private String savePawd;
+    private String oldPawd="";
+    private String newPawd="";
+    private String savePawd="";
 
     @Override
     protected int getLayoutResource() {
@@ -99,6 +99,7 @@ public class ChangePawdByOldFragment extends BaseFragment implements View.OnClic
             }
         });
         newUserModel = new NewUserModel(getActivity());
+        changeBtnStatus();
     }
 
     private void changeBtnStatus() {
