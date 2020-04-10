@@ -197,24 +197,44 @@ public class HomeViewUtils {
             tv_join_person.setText("快来参与活动吧");
         }else{
             if (null!=join_user_pics){
-                if(joinNumber==1){
-                    GlideImageLoader.loadImageDisplay(activity,join_user_pics.get(0),iv_first_photo);
-                    iv_first_photo.setVisibility(View.VISIBLE);
-                    iv_second_photo.setVisibility(View.GONE);
-                    iv_thrid_photo.setVisibility(View.GONE);
-                }else if (joinNumber==2){
-                    GlideImageLoader.loadImageDisplay(activity,join_user_pics.get(0),iv_first_photo);
-                    GlideImageLoader.loadImageDisplay(activity,join_user_pics.get(1),iv_second_photo);
-                    iv_first_photo.setVisibility(View.VISIBLE);
-                    iv_second_photo.setVisibility(View.VISIBLE);
-                    iv_thrid_photo.setVisibility(View.GONE);
+                int joinNumberSize=join_user_pics.size();
+                if (joinNumberSize>0){
+                    if(joinNumberSize==1){
+                        GlideImageLoader.loadImageDisplay(activity,join_user_pics.get(0),iv_first_photo);
+                        iv_first_photo.setVisibility(View.VISIBLE);
+                        iv_second_photo.setVisibility(View.GONE);
+                        iv_thrid_photo.setVisibility(View.GONE);
+                    }else if (joinNumberSize==2){
+                        GlideImageLoader.loadImageDisplay(activity,join_user_pics.get(0),iv_first_photo);
+                        GlideImageLoader.loadImageDisplay(activity,join_user_pics.get(1),iv_second_photo);
+                        iv_first_photo.setVisibility(View.VISIBLE);
+                        iv_second_photo.setVisibility(View.VISIBLE);
+                        iv_thrid_photo.setVisibility(View.GONE);
+                    }else{
+                        iv_first_photo.setVisibility(View.VISIBLE);
+                        iv_second_photo.setVisibility(View.VISIBLE);
+                        iv_thrid_photo.setVisibility(View.VISIBLE);
+                        GlideImageLoader.loadImageDisplay(activity,join_user_pics.get(0),iv_first_photo);
+                        GlideImageLoader.loadImageDisplay(activity,join_user_pics.get(1),iv_second_photo);
+                        GlideImageLoader.loadImageDisplay(activity,join_user_pics.get(2),iv_thrid_photo);
+                    }
                 }else{
-                    iv_first_photo.setVisibility(View.VISIBLE);
-                    iv_second_photo.setVisibility(View.VISIBLE);
-                    iv_thrid_photo.setVisibility(View.VISIBLE);
-                    GlideImageLoader.loadImageDisplay(activity,join_user_pics.get(0),iv_first_photo);
-                    GlideImageLoader.loadImageDisplay(activity,join_user_pics.get(1),iv_second_photo);
-                    GlideImageLoader.loadImageDisplay(activity,join_user_pics.get(2),iv_thrid_photo);
+                    GlideImageLoader.loadImageDefaultDisplay(activity,"",iv_first_photo,R.drawable.icon_default_portrait,R.drawable.icon_default_portrait);
+                    GlideImageLoader.loadImageDefaultDisplay(activity,"",iv_second_photo,R.drawable.icon_default_portrait,R.drawable.icon_default_portrait);
+                    GlideImageLoader.loadImageDefaultDisplay(activity,"",iv_thrid_photo,R.drawable.icon_default_portrait,R.drawable.icon_default_portrait);
+                    if(joinNumber==1){
+                        iv_first_photo.setVisibility(View.VISIBLE);
+                        iv_second_photo.setVisibility(View.GONE);
+                        iv_thrid_photo.setVisibility(View.GONE);
+                     }else if (joinNumber==2){
+                        iv_first_photo.setVisibility(View.VISIBLE);
+                        iv_second_photo.setVisibility(View.VISIBLE);
+                        iv_thrid_photo.setVisibility(View.GONE);
+                    }else{
+                        iv_first_photo.setVisibility(View.VISIBLE);
+                        iv_second_photo.setVisibility(View.VISIBLE);
+                        iv_thrid_photo.setVisibility(View.VISIBLE);
+                    }
                 }
             }
             tv_join_person.setText(joinNumber+"个邻居参与");

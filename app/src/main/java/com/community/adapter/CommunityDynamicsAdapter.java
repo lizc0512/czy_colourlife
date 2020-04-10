@@ -320,8 +320,7 @@ public class CommunityDynamicsAdapter extends RecyclerView.Adapter<RecyclerView.
                     break;
             }
         }
-
-        showCommunityActivity(mContext, dataBean.getJoin_num(), dataBean.getJoin_user(), holder.iv_first_photo, holder.iv_second_photo, holder.iv_third_photo, holder.tv_join_person);
+      showCommunityActivity(mContext, dataBean.getJoin_num(), dataBean.getJoin_user(), holder.iv_first_photo, holder.iv_second_photo, holder.iv_third_photo, holder.tv_join_person);
     }
 
 

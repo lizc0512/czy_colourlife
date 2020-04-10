@@ -80,7 +80,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
-            android:layout_marginRight="56dp"
+            android:layout_marginRight="16dp"
             android:textColor="@color/color_ff6d50"
             android:textSize="16sp"
             tools:text="￥3.00" />

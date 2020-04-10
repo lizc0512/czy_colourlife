@@ -155,9 +155,7 @@ public class CommunityDynamicsFragment extends Fragment implements View.OnClickL
         SimpleItemAnimator simpleItemAnimator = ((SimpleItemAnimator) rv_community_dynamics.getItemAnimator());
         simpleItemAnimator.setSupportsChangeAnimations(false);
         simpleItemAnimator.setChangeDuration(0);
-        rv_community_dynamics.setItemViewSwipeEnabled(false);
-        rv_community_dynamics.setLongPressDragEnabled(false);
-        rv_community_dynamics.setAutoLoadMore(false);
+        rv_community_dynamics.setAutoLoadMore(true);
         rv_community_dynamics.useDefaultLoadMore();
         rv_community_dynamics.setLoadMoreListener(new SwipeMenuRecyclerView.LoadMoreListener() {
             @Override

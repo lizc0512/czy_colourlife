@@ -686,7 +686,7 @@ public class MainHomeFragmentNew extends Fragment implements NewHttpResponse, Vi
 
     private void uploadAppClickLister(String appId) {
         AllAppModel allAppModel = new AllAppModel(getActivity());
-        allAppModel.uploadAppClick(9, appId, this);
+        allAppModel.uploadAppClick(10, appId, this);
     }
 
 
