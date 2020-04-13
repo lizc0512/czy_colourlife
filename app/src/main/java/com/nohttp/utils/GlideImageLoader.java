@@ -100,15 +100,6 @@ public class GlideImageLoader {
     }
 
 
-    //加载指定大小
-    public static void loadImageSizeDisplay(Context mContext, String path, int width, int height, ImageView mImageView) {
-        try {
-            Glide.with(mContext).load(path).apply(new RequestOptions().override(width, height)).into(mImageView);
-        } catch (Exception e) {
-
-        }
-    }
-
     //设置加载中以及加载失败图片
     public static void loadImageDefaultDisplay(Context mContext, String path, ImageView mImageView, int lodingImage, int errorImageView) {
         try {
@@ -128,15 +119,6 @@ public class GlideImageLoader {
         }
     }
 
-    //设置加载中图片
-    public static void loadImagePlaceHolderDisplay(Context mContext, String path, ImageView mImageView, int lodingImage) {
-        try {
-            Glide.with(mContext).load(path).apply(new RequestOptions().placeholder(lodingImage)).into(mImageView);
-        } catch (Exception e) {
-
-        }
-
-    }
 
     //设置加载中图片
     public static void loadActiveImageDisplay(Context mContext, String path, ImageView mImageView, int lodingImage, int errorImageView) {
@@ -151,7 +133,7 @@ public class GlideImageLoader {
     public static void loadCenterCropImageDisplay(Context mContext, String path, ImageView mImageView, int lodingImage, int errorImageView) {
         try {
             Glide.with(mContext).load(path).apply(new RequestOptions().diskCacheStrategy(DiskCacheStrategy.ALL).error(errorImageView)
-                    .placeholder(lodingImage).skipMemoryCache(false).dontAnimate().centerCrop()).into(mImageView);
+                    .placeholder(lodingImage).skipMemoryCache(false).dontAnimate()).into(mImageView);
         } catch (Exception e) {
 
         }
@@ -159,7 +141,7 @@ public class GlideImageLoader {
 
 
     public static void loadTopRightCornerImageView(Context mContext, String path, ImageView mImageView) {
-        RoundedCornersTransform transform = new RoundedCornersTransform(mContext, Util.DensityUtil.dip2px(mContext, 3));
+        RoundedCornersTransform transform = new RoundedCornersTransform(Util.DensityUtil.dip2px(mContext, 3));
         transform.setNeedCorner(true, true, false, false);
         RequestOptions options = new RequestOptions().placeholder(R.drawable.icon_style_four).transform(transform).diskCacheStrategy(DiskCacheStrategy.ALL).skipMemoryCache(false).dontAnimate();
         Glide.with(mContext).load(path).apply(options).into(mImageView);

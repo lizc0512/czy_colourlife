@@ -1524,7 +1524,7 @@ public class MainHomeFragmentNew extends Fragment implements NewHttpResponse, Vi
             CommunityActivityEntity communityActivityEntity = GsonUtils.gsonToBean(homeCommunityActivity, CommunityActivityEntity.class);
             CommunityActivityEntity.ContentBean contentBean = communityActivityEntity.getContent();
             source_id = contentBean.getSource_id();
-            GlideImageLoader.loadTopRightCornerImageView(getActivity(), contentBean.getAc_banner(), iv_activity_image);
+            GlideImageLoader.loadImageDisplay(getActivity(), contentBean.getAc_banner(), iv_activity_image);
             String oproperty = contentBean.getAc_oproperty();
             if (TextUtils.isEmpty(oproperty)) {
                 tv_activity_type.setText(getResources().getString(R.string.community_activity_officicl));

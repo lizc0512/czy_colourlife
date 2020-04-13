@@ -11,6 +11,7 @@
         android:id="@+id/iv_activity_head"
         android:layout_width="match_parent"
         android:scaleType="fitXY"
+        android:adjustViewBounds="true"
         android:layout_height="110dp" />
 
     <TextView

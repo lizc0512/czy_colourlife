@@ -141,7 +141,7 @@ public class CommunityDynamicsAdapter extends RecyclerView.Adapter<RecyclerView.
             CommunityActivityViewHolder holder = (CommunityActivityViewHolder) viewHolder;
             String ac_banner = dataBean.getAc_banner();
             String oproperty = dataBean.getAc_oproperty();
-            GlideImageLoader.loadTopRightCornerImageView(mContext, ac_banner, holder.iv_activity_image);
+            GlideImageLoader.loadImageDisplay(mContext, ac_banner, holder.iv_activity_image);
             if (TextUtils.isEmpty(oproperty)) {
                 holder.iv_activity_type.setText(mContext.getResources().getString(R.string.community_activity_officicl));
             } else {

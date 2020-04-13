@@ -833,7 +833,11 @@ public class NewOrderPayActivity extends BaseActivity implements View.OnClickLis
                     final HtmlPayDialog htmlPayDialog = new HtmlPayDialog(NewOrderPayActivity.this);
                     htmlPayDialog.show();
                     if (!TextUtils.isEmpty(dialogTitle)) {
-                        htmlPayDialog.setContent("请确认" + dialogTitle + "支付是否完成");
+                        if (dialogTitle.contains("支付")){
+                            htmlPayDialog.setContent("请确认" + dialogTitle + "是否完成");
+                        }else{
+                            htmlPayDialog.setContent("请确认" + dialogTitle + "支付是否完成");
+                        }
                     }
                     htmlPayDialog.tv_again_pay.setOnClickListener(v -> {
                         htmlPayDialog.dismiss();
