@@ -24,10 +24,11 @@ public class WXEntryActivity extends WechatHandlerActivity {
      * 做点其他的事情，包括根本不打开任何页面
      */
     public void onGetMessageFromWXReq(WXMediaMessage msg) {
+        //{"errCode":"0000","errStr":"支付成功"}
         String minMsg = msg.wxminiprogram_ext_msg;
         Message message = Message.obtain();
-        message.what = UserMessageConstant.GUANGCAI_PAY_MSG;
-        message.arg1=1;
+        message.what = UserMessageConstant.WEIXINMIN_PAY_MSG;
+        message.obj=minMsg;
         EventBus.getDefault().post(message);
         finish();
     }

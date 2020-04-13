@@ -82,6 +82,7 @@ import static com.user.UserMessageConstant.POINT_INPUT_CODE;
 import static com.user.UserMessageConstant.POINT_INPUT_PAYPAWD;
 import static com.user.UserMessageConstant.POINT_SHOW_CODE;
 import static com.user.UserMessageConstant.REAL_FAIL_STATE;
+import static com.user.UserMessageConstant.WEIXINMIN_PAY_MSG;
 import static com.user.UserMessageConstant.WEIXIN_PAY_MSG;
 
 
@@ -777,6 +778,29 @@ public class NewOrderPayActivity extends BaseActivity implements View.OnClickLis
                     ToastUtil.toastShow(NewOrderPayActivity.this, "用户取消支付");
                 }
                 break;
+            case WEIXINMIN_PAY_MSG:
+                String minPayResult = (String) message.obj;
+//              {"errCode":"0000","errStr":"支付成功"}  返回调用的是微信支付的回调
+                 if (TextUtils.isEmpty(minPayResult)){//支付没有返回来小程序支付的信息
+                     showH5PayResultDialog(1);
+                     showPayResultDialog = 0;
+                 }else{
+                     try {
+                         JSONObject resultJson = new JSONObject(minPayResult);
+                         String errCode = resultJson.optString("errCode");
+                         String errStr = resultJson.optString("errStr");
+                         if ("0000".equals(errCode)) {
+                             payResultQuery();
+                         } else {
+                             ToastUtil.toastShow(NewOrderPayActivity.this, errStr);
+                         }
+                     } catch (JSONException e) {
+                         e.printStackTrace();
+                         showH5PayResultDialog(1);
+                         showPayResultDialog = 0;
+                     }
+                 }
+                break;
             case POINT_INPUT_PAYPAWD://积分支付 设置密码成功后的回调
                 String password = (String) message.obj;
                 newOrderPayModel.goOrderPayByPoint(8, encrypt, password, token, NewOrderPayActivity.this);
@@ -833,9 +857,9 @@ public class NewOrderPayActivity extends BaseActivity implements View.OnClickLis
                     final HtmlPayDialog htmlPayDialog = new HtmlPayDialog(NewOrderPayActivity.this);
                     htmlPayDialog.show();
                     if (!TextUtils.isEmpty(dialogTitle)) {
-                        if (dialogTitle.contains("支付")){
+                        if (dialogTitle.contains("支付")) {
                             htmlPayDialog.setContent("请确认" + dialogTitle + "是否完成");
-                        }else{
+                        } else {
                             htmlPayDialog.setContent("请确认" + dialogTitle + "支付是否完成");
                         }
                     }

@@ -737,7 +737,7 @@ public class CommunityActivityDetailsActivity extends BaseActivity implements Vi
     private void showAcStatus() {
         if ("1".equals(is_join)) { //表示已参加
             tv_join_activity.setEnabled(false);
-            tv_join_activity.setBackgroundColor(getResources().getColor(R.color.color_8d9299));
+            tv_join_activity.setBackgroundColor(getResources().getColor(R.color.color_d1d1d1));
             tv_join_activity.setText(getResources().getString(R.string.community_activity_joined));
         } else {
             switch (ac_status) {
@@ -747,17 +747,17 @@ public class CommunityActivityDetailsActivity extends BaseActivity implements Vi
                 //4已结束
                 case "2":
                     tv_join_activity.setEnabled(false);
-                    tv_join_activity.setBackgroundColor(getResources().getColor(R.color.color_8d9299));
+                    tv_join_activity.setBackgroundColor(getResources().getColor(R.color.color_d1d1d1));
                     tv_join_activity.setText(getResources().getString(R.string.community_activity_numberfull));
                     break;
                 case "3":
                     tv_join_activity.setEnabled(false);
-                    tv_join_activity.setBackgroundColor(getResources().getColor(R.color.color_8d9299));
+                    tv_join_activity.setBackgroundColor(getResources().getColor(R.color.color_d1d1d1));
                     tv_join_activity.setText(getResources().getString(R.string.community_activity_endtime));
                     break;
                 case "4":
                     tv_join_activity.setEnabled(false);
-                    tv_join_activity.setBackgroundColor(getResources().getColor(R.color.color_8d9299));
+                    tv_join_activity.setBackgroundColor(getResources().getColor(R.color.color_d1d1d1));
                     tv_join_activity.setText(getResources().getString(R.string.community_activity_finished));
                     break;
                 default:
