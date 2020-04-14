@@ -541,7 +541,7 @@ public class CommunityDynamicsModel extends BaseModel {
         }, true, true);
     }
 
-    public void getActivityComment(int what, String source_id, int page, NewHttpResponse newHttpResponse) {
+    public void getActivityComment(int what, String source_id, int page,boolean loading, NewHttpResponse newHttpResponse) {
         Map<String, Object> params = new HashMap<String, Object>();
         params.put("source_id", source_id);
         params.put("page", page);
@@ -563,7 +563,7 @@ public class CommunityDynamicsModel extends BaseModel {
             public void onFailed(int what, Response<String> response) {
 
             }
-        }, true, true);
+        }, true, loading);
     }
 
 

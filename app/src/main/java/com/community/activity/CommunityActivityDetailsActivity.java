@@ -146,7 +146,7 @@ public class CommunityActivityDetailsActivity extends BaseActivity implements Vi
         source_id = getIntent().getStringExtra(ACTIVITY_SOURCE_ID);
         communityDynamicsModel = new CommunityDynamicsModel(CommunityActivityDetailsActivity.this);
         communityDynamicsModel.getCommunityActivityDetails(0, source_id, CommunityActivityDetailsActivity.this);
-        communityDynamicsModel.getActivityComment(1, source_id, page, CommunityActivityDetailsActivity.this);
+        communityDynamicsModel.getActivityComment(1, source_id, page, true, CommunityActivityDetailsActivity.this);
         communityDynamicsModel.addCommunityActivityViews(5, source_id, CommunityActivityDetailsActivity.this);
     }
 
@@ -210,7 +210,7 @@ public class CommunityActivityDetailsActivity extends BaseActivity implements Vi
         rv_message.setAdapter(communityActivityCommentAdapter);
         rv_message.setLoadMoreListener(() -> {
             page++;
-            communityDynamicsModel.getActivityComment(1, source_id, page, CommunityActivityDetailsActivity.this);
+            communityDynamicsModel.getActivityComment(1, source_id, page, false, CommunityActivityDetailsActivity.this);
         });
     }
 
@@ -292,6 +292,9 @@ public class CommunityActivityDetailsActivity extends BaseActivity implements Vi
         mUploadImageViews.clear();
         joinActivityGridLayout = joinActivityDialog.join_activity_photo;
         joinActivityDialog.join_activity_photo.removeAllViews();
+        if (TextUtils.isEmpty(pickerPrompt)){
+            pickerPrompt="图片";
+        }
         joinActivityDialog.tv_join_notice.setText("参与此活动，请上传" + maxPickImageSize + "张" + pickerPrompt);
         joinActivityDialog.tv_define_join.setOnClickListener(this::onClick);
         joinActivityDialog.tv_cancel_join.setOnClickListener(this::onClick);
