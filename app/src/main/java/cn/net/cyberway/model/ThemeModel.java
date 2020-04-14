@@ -8,7 +8,6 @@ import com.BeeFramework.model.NewHttpResponse;
 import com.nohttp.utils.GsonUtils;
 import com.nohttp.utils.HttpListener;
 import com.nohttp.utils.RequestEncryptionUtils;
-import com.update.activity.UpdateVerSion;
 import com.user.UserAppConst;
 import com.yanzhenjie.nohttp.NoHttp;
 import com.yanzhenjie.nohttp.RequestMethod;

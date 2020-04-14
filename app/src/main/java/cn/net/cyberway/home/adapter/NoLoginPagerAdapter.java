@@ -16,7 +16,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.TextView;
 
 import cn.net.cyberway.R;
 import cn.net.cyberway.utils.LinkParseUtil;

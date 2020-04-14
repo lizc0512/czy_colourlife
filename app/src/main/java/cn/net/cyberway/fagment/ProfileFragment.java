@@ -19,6 +19,7 @@ import android.widget.TextView;
 
 import com.BeeFramework.model.Constants;
 import com.BeeFramework.model.NewHttpResponse;
+import com.BeeFramework.view.CircleImageView;
 import com.customerInfo.activity.CustomerInfoActivity;
 import com.customerInfo.activity.CustomerMakeZXingActivity;
 import com.external.eventbus.EventBus;
@@ -44,7 +45,6 @@ import cn.net.cyberway.home.entity.HomeBottomAdviseEntity;
 import cn.net.cyberway.home.protocol.MyOptionsGetResponse;
 import cn.net.cyberway.home.protocol.OPTIONSCONTENT;
 import cn.net.cyberway.home.protocol.OPTIONSDATA;
-import cn.net.cyberway.home.view.CircleImageView;
 import cn.net.cyberway.model.MyListModel;
 import cn.net.cyberway.utils.LinkParseUtil;
 import cn.net.cyberway.utils.WrapLinearLayoutManager;

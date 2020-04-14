@@ -57,30 +57,9 @@ public class TimeUtil {
     }
 
 
-    public static long getTimeStamp(String s) {
-        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        Date date = null;
-        long ts = 0;
-        try {
-            date = formatter.parse(s);
-            ts = date.getTime();
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
-        return ts / 1000;
-    }
 
-    public static int getCurrentMonthLastDay() {
-        Calendar a = Calendar.getInstance();
-        a.set(Calendar.DATE, 1);//把日期设置为当月第一天
-        a.roll(Calendar.DATE, -1);//日期回滚一天，也就是最后一天
-        int maxDate = a.get(Calendar.DATE);
-        return maxDate;
-    }
-
-
-    public static String timeAgoInt(int timeStr) {
-        Date date = new Date((long) timeStr * 1000);
+    public static String timeAgoInt(int timeMills) {
+        Date date = new Date((long) timeMills * 1000);
         long timeStamp = date.getTime();
 
         Date currentTime = new Date();
@@ -270,18 +249,6 @@ public class TimeUtil {
     }
 
 
-    public static String dateDiff(String begin_time, String end_time) {
-        DateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        try {
-            Date d1 = df.parse(begin_time);
-            Date d2 = df.parse(end_time);
-            return dateDiff(d1.getTime(), d2.getTime());
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
-        return "";
-    }
-
     public static String getToday() {
         SimpleDateFormat formatter = new SimpleDateFormat("yyyy年MM月dd日");
         String dateString = formatter.format(new Date());
@@ -293,35 +260,6 @@ public class TimeUtil {
         return df.format(new Date());
     }
 
-    /**
-     * @param timeStr
-     * @return yyyy-MM-dd HH:mm
-     */
-    public static String formatTime(String timeStr, String formatRule) {
-        Date date = null;
-        try {
-            SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-            date = format.parse(timeStr);
-        } catch (ParseException e) {
-            e.printStackTrace();
-            return "";
-        }
-        SimpleDateFormat formatter = new SimpleDateFormat(formatRule);
-        String dateString = formatter.format(date);
-        return dateString;
-    }
-
-    public static long formatContractCostTime(String timeStr) {
-        Date date = null;
-        try {
-            SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-            date = format.parse(timeStr);
-        } catch (ParseException e) {
-            e.printStackTrace();
-            return System.currentTimeMillis() / 1000;
-        }
-        return date.getTime() / 1000;
-    }
 
     /**
      * return XX月XX日

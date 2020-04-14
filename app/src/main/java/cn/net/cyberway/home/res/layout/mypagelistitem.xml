@@ -15,8 +15,7 @@
             android:layout_width="40dp"
             android:layout_height="25dp"
             android:layout_centerVertical="true"
-            android:layout_marginLeft="15dp"
-            android:src="@drawable/icon_home_myfp" />
+            android:layout_marginLeft="15dp" />
 
         <TextView
             android:id="@+id/tv_mypage_nickname"

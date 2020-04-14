@@ -898,7 +898,7 @@ public class NewOrderPayActivity extends BaseActivity implements View.OnClickLis
     }
 
 
-    //彩之云微信支付
+    //彩之云工行微信支付
     private void wexinPayOrder(Map<String, String> resultMap) {
         if (resultMap.containsKey("wxPayInfo")) {
             String wxPayInfo = resultMap.get("wxPayInfo");

@@ -41,7 +41,6 @@ import com.door.activity.NoRightDoorActivity;
 import com.door.entity.OpenDoorResultEntity;
 import com.door.model.NewDoorModel;
 import com.door.view.ShowOpenDoorDialog;
-import com.door.view.ShowReportHealthyDialog;
 import com.external.eventbus.EventBus;
 import com.im.helper.CacheApplyRecorderHelper;
 import com.im.model.IMUploadPhoneModel;
@@ -983,7 +982,7 @@ public class MainActivity extends BaseFragmentActivity implements View.OnClickLi
                     if (isRegister == 0) {
                         clearUserData("");
                         ToastUtil.toastTime(getApplicationContext(), getResources().getString(R.string.use_newaccount__login), 5000);
-                        jumpLoginPage(MainActivity.this, shared, 3000);
+                        jumpLoginPage(MainActivity.this);
                     }
                 }
                 break;

@@ -37,7 +37,7 @@ public class NewOrderPayModel extends BaseModel {
     private final String orderCheck = "pay/ordercheck";//取消订单
     private final String orderStatus = "pay/checkorder";//查询订单是否支付成功
     private final String payBannerUrl = "app/home/utility/getPayBanner";//获取支付完成的banner(4.0的接口)
-    private final String payPopupUrl = "app/home/utility/getPayPopup";//获取支付完成的banner(4.0的接口)
+    private final String payPopupUrl = "app/home/utility/getPayPopup";//获取有关支付更新提示之类的弹窗(4.0的接口)
 
     public NewOrderPayModel(Context context) {
         super(context);

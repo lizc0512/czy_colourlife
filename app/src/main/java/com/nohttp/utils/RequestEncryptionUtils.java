@@ -5,7 +5,6 @@ import android.content.SharedPreferences;
 import android.text.TextUtils;
 
 import com.BeeFramework.model.Constants;
-import com.eparking.view.cardcamera.global.Constant;
 import com.update.activity.UpdateVerSion;
 import com.user.UserAppConst;
 import com.user.Utils.TokenUtils;
@@ -14,7 +13,6 @@ import java.net.URLEncoder;
 import java.security.MessageDigest;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;

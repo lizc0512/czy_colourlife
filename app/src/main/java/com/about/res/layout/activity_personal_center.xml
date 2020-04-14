@@ -79,15 +79,13 @@
                 android:textSize="14dp" />
 
 
-            <cn.net.cyberway.home.view.CircleImageView
+            <com.BeeFramework.view.CircleImageView
                 android:id="@+id/profile_head_img"
                 android:layout_width="45dp"
                 android:layout_height="45dp"
                 android:layout_centerVertical="true"
                 android:layout_marginLeft="18dp"
-                android:src="@drawable/icon_my_tx"
-                app:civ_border_color="@color/white"
-                app:civ_border_width="1dp" />
+                android:src="@drawable/icon_my_tx" />
 
         </RelativeLayout>
 

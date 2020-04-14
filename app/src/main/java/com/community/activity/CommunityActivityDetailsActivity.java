@@ -610,7 +610,12 @@ public class CommunityActivityDetailsActivity extends BaseActivity implements Vi
                     tv_activity_starttime.setText(TimeUtil.getYearTime(contentBean.getBegin_time() * 1000, "yyyy-MM-dd") + "～" + TimeUtil.getYearTime(contentBean.getEnd_time() * 1000, "yyyy-MM-dd"));
                     tv_activity_address.setText(contentBean.getAc_address());
                     tv_activity_endtime.setText(TimeUtil.getYearTime(contentBean.getStop_apply_time() * 1000, "yyyy-MM-dd"));
-                    tv_activity_person.setText(join_number + "人");
+                    int limit_number = contentBean.getLimit_num();
+                    if (limit_number == 0) {
+                        tv_activity_person.setText("不限");
+                    } else {
+                        tv_activity_person.setText(limit_number + "人");
+                    }
                     GlideImageLoader.loadImageDisplay(CommunityActivityDetailsActivity.this, contentBean.getContact_user_avatar(), iv_contact_header);
                     tv_contact_name.setText(contentBean.getContact_user_name());
                     contact_id = contentBean.getContact_user_id();

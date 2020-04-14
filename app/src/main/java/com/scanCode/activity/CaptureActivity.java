@@ -33,10 +33,8 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.support.annotation.NonNull;
-import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.util.Log;
-import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
@@ -47,14 +45,11 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.BeeFramework.Utils.CompressHelper;
 import com.BeeFramework.Utils.DecodeImage;
 import com.BeeFramework.Utils.ThemeStyleHelper;
 import com.BeeFramework.Utils.ToastUtil;
-import com.BeeFramework.Utils.Utils;
 import com.BeeFramework.activity.BaseActivity;
 import com.BeeFramework.model.NewHttpResponse;
-import com.BeeFramework.view.Util;
 import com.community.utils.ImagePickerLoader;
 import com.google.zxing.BarcodeFormat;
 import com.google.zxing.Result;
@@ -76,7 +71,6 @@ import com.scanCode.zxing.ViewfinderView;
 import com.scanCode.zxing.camera.CameraManager;
 import com.scanCode.zxing.result.URIResultHandler;
 
-import java.io.File;
 import java.io.IOException;
 import java.text.DateFormat;
 import java.util.ArrayList;
@@ -88,8 +82,6 @@ import java.util.regex.Pattern;
 import cn.net.cyberway.R;
 import cn.net.cyberway.activity.MainActivity;
 import cn.net.cyberway.utils.LinkParseUtil;
-import cn.net.cyberway.view.BottomShareDialogFragment;
-import cn.net.cyberway.view.adapter.BaseRecyclerAdapter;
 
 
 /**
@@ -160,13 +152,8 @@ public final class CaptureActivity extends BaseActivity implements
         title = (TextView) findViewById(R.id.user_top_view_title);
         title.setText(getResources().getString(R.string.title_scanner));
         back = (ImageView) findViewById(R.id.user_top_view_back);
-        ImageView img_right = (ImageView) findViewById(R.id.img_right);
-        img_right.setVisibility(View.GONE);
-        img_right.setImageResource(R.drawable.img_home_more);
         mFlashLight = (ImageView) findViewById(R.id.flashlight);
         open_picture = (ImageView) findViewById(R.id.open_picture);
-        back.setOnClickListener(this);
-        img_right.setOnClickListener(this);
         hasSurface = false;
         beepManager = new BeepManager(this);
         mFlashLight.setOnClickListener(this);
@@ -544,24 +531,6 @@ public final class CaptureActivity extends BaseActivity implements
         switch (v.getId()) {
             case R.id.user_top_view_back:
                 finish();
-                break;
-            case R.id.img_right:
-                final BottomShareDialogFragment bottomShareDialogFragment = new BottomShareDialogFragment(CaptureActivity.this);
-                if (null != bottomShareDialogFragment.adapter) {
-                    bottomShareDialogFragment.adapter.setOnItemClickListener(new BaseRecyclerAdapter.OnItemClickListener() {
-                        @Override
-                        public void onItemClick(RecyclerView parent, View view, int position) {
-                            if (position == 0) {
-                                Intent intent = new Intent(CaptureActivity.this, ImageGridActivity.class);
-                                startActivityForResult(intent, 5000);
-                            }
-                            bottomShareDialogFragment.dismissDialog();
-                        }
-                    });
-                }
-                bottomShareDialogFragment.setWidth(Utils.getDeviceWith(getApplicationContext()));
-                bottomShareDialogFragment.setHeight(Util.DensityUtil.dip2px(getApplicationContext(), 50));
-                bottomShareDialogFragment.showAtLocation(findViewById(R.id.viewfinder_view), Gravity.BOTTOM, 0, 0);
                 break;
             case R.id.open_picture:
                 Intent intent = new Intent(CaptureActivity.this, ImageGridActivity.class);

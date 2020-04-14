@@ -31,7 +31,6 @@ import com.door.adapter.NewNotEditDoorRVAdapter;
 import com.door.entity.DoorBaseEntity;
 import com.door.entity.DoorOftenCallBack;
 import com.door.entity.EditDoorOftenCallBack;
-import com.door.entity.OnRecyclerItemClickListener;
 import com.door.entity.SingleCommunityEntity;
 import com.door.model.NewDoorModel;
 import com.door.view.DoorRenameDialog;
@@ -433,16 +432,6 @@ public class NewDoorEditActivity extends BaseActivity implements NewHttpResponse
                         e.printStackTrace();
                     }
                     recyclerView.smoothCloseMenu();
-                    recyclerView.addOnItemTouchListener(new OnRecyclerItemClickListener(recyclerView) {
-                        @Override
-                        public void onItemClick(RecyclerView.ViewHolder vh) {
-
-                        }
-
-                        @Override
-                        public void onItemLongClick(RecyclerView.ViewHolder vh) {
-                        }
-                    });
                 }
                 break;
             case 5:

@@ -38,7 +38,8 @@ import cn.net.cyberway.R;
 
 import static cn.net.cyberway.utils.IMFriendDataUtils.userInitImData;
 
-
+/*
+* 闪验一键登录的相关操作*/
 public class ConfigUtils implements NewHttpResponse {
     private Activity mActivity;
     private NewUserModel newUserModel;

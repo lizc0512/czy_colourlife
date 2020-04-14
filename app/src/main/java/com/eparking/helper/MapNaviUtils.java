@@ -1,27 +1,12 @@
 package com.eparking.helper;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.net.Uri;
-import android.widget.Button;
 
-import com.BeeFramework.AppConst;
 import com.amap.api.maps2d.model.LatLng;
-import com.eparking.view.keyboard.KeyboardInputController;
-import com.eparking.view.keyboard.OnInputChangedListener;
-import com.eparking.view.keyboard.PopupHelper;
-import com.eparking.view.keyboard.PopupKeyboard;
-import com.eparking.view.keyboard.view.InputView;
-import com.nohttp.utils.GsonUtils;
 
 import java.io.File;
-
-import cn.net.cyberway.R;
-import cn.net.cyberway.utils.CityCustomConst;
-
-import static com.eparking.helper.ConstantKey.EPARKINGCITYINFOR;
 
 /**
  * @name ${yuansk}
@@ -191,39 +176,4 @@ public class MapNaviUtils {
     }
 
 
-    public static void initInputView(final Activity activity, InputView input_view, final Button tv_change_cartype, final InputViewInterface  inputViewInterface) {
-        // 创建弹出键盘
-        input_view.setItemBorderSelectedColor(activity.getResources().getColor(R.color.color_64cdff));
-        input_view.setItemBorderTextColor(activity.getResources().getColor(R.color.color_333b46));
-        final PopupKeyboard mPopupKeyboard = new PopupKeyboard(activity);
-        SharedPreferences shared = activity.getSharedPreferences(AppConst.USERINFO, 0);
-        mPopupKeyboard.getKeyboardEngine().setLocalProvinceName(shared.getString(CityCustomConst.LOCATION_PROVINCE, ""));
-        mPopupKeyboard.attach(input_view, activity);
-        mPopupKeyboard.getController()
-                .setDebugEnabled(true)
-                .bindLockTypeProxy(new KeyboardInputController.ButtonProxyImpl(tv_change_cartype) {
-                    @Override
-                    public void onNumberTypeChanged(boolean isNewEnergyType) {
-                        super.onNumberTypeChanged(isNewEnergyType);
-                        if (isNewEnergyType) {
-                            tv_change_cartype.setText(activity.getResources().getString(R.string.switch_normal_car));
-                        } else {
-                            tv_change_cartype.setText(activity.getResources().getString(R.string.switch_new_energy));
-                        }
-                        inputViewInterface.inputViewCallBack(isNewEnergyType);
-                    }
-                }).addOnInputChangedListener(new OnInputChangedListener() {
-            @Override
-            public void onChanged(String number, boolean isCompleted) {
-
-            }
-
-            @Override
-            public void onCompleted(String number, boolean isAutoCompleted) {
-                if (isAutoCompleted) {
-                    PopupHelper.dismissFromActivity(activity);
-                }
-            }
-        });
-    }
 }
