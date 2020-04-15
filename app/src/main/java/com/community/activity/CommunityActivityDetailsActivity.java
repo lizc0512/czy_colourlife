@@ -16,6 +16,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
+import android.webkit.CookieManager;
 import android.webkit.JavascriptInterface;
 import android.webkit.WebSettings;
 import android.widget.EditText;
@@ -181,6 +182,11 @@ public class CommunityActivityDetailsActivity extends BaseActivity implements Vi
         tv_contact_name = headView.findViewById(R.id.tv_contact_name);
         web_content_layout = headView.findViewById(R.id.web_content_layout);
         webview = headView.findViewById(R.id.webview);
+        WebSettings mWebSettings = webview.getSettings();
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            //适配5.0不允许http和https混合使用情况
+            mWebSettings.setMixedContentMode(WebSettings.MIXED_CONTENT_ALWAYS_ALLOW);
+        }
         no_data_layout = headView.findViewById(R.id.no_data_layout);
         rv_message.addHeaderView(headView);
         contact_person_layout.setOnClickListener(this::onClick);
@@ -292,8 +298,8 @@ public class CommunityActivityDetailsActivity extends BaseActivity implements Vi
         mUploadImageViews.clear();
         joinActivityGridLayout = joinActivityDialog.join_activity_photo;
         joinActivityDialog.join_activity_photo.removeAllViews();
-        if (TextUtils.isEmpty(pickerPrompt)){
-            pickerPrompt="图片";
+        if (TextUtils.isEmpty(pickerPrompt)) {
+            pickerPrompt = "图片";
         }
         joinActivityDialog.tv_join_notice.setText("参与此活动，请上传" + maxPickImageSize + "张" + pickerPrompt);
         joinActivityDialog.tv_define_join.setOnClickListener(this::onClick);
