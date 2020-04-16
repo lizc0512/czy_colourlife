@@ -209,11 +209,20 @@ public class CommunityDynamicsAdapter extends RecyclerView.Adapter<RecyclerView.
                     holder.rv_dynamics_images.setVisibility(View.VISIBLE);
                     CommunityImageAdapter communityImageAdapter = new CommunityImageAdapter(mContext, (ArrayList<String>) imgList, extra_type, 40);
                     int row = imgSize == 4 ? 2 : 3;//如果4张图片显示2列
+                    LinearLayout.LayoutParams viewLayoutParams = (LinearLayout.LayoutParams) holder.one_dynamics_weight.getLayoutParams();
                     if (row == 2) {
-                        holder.view_dynamics_weight.setVisibility(View.VISIBLE);
+                        viewLayoutParams.weight = 1;
+                        holder.one_dynamics_weight.setVisibility(View.VISIBLE);
                     } else {
-                        holder.view_dynamics_weight.setVisibility(GONE);
+                        if (imgSize == 1) {
+                            viewLayoutParams.weight = 4;
+                            holder.one_dynamics_weight.setVisibility(View.VISIBLE);
+                        } else {
+                            viewLayoutParams.weight = 0;
+                            holder.one_dynamics_weight.setVisibility(GONE);
+                        }
                     }
+                    holder.one_dynamics_weight.setLayoutParams(viewLayoutParams);
                     GridLayoutManager gridLayoutManager = new GridLayoutManager(mContext, row);
                     ((SimpleItemAnimator) holder.rv_dynamics_images.getItemAnimator()).setSupportsChangeAnimations(false);
                     holder.rv_dynamics_images.setLayoutManager(gridLayoutManager);
@@ -320,7 +329,7 @@ public class CommunityDynamicsAdapter extends RecyclerView.Adapter<RecyclerView.
                     break;
             }
         }
-      showCommunityActivity(mContext, dataBean.getJoin_num(), dataBean.getJoin_user(), holder.iv_first_photo, holder.iv_second_photo, holder.iv_third_photo, holder.tv_join_person);
+        showCommunityActivity(mContext, dataBean.getJoin_num(), dataBean.getJoin_user(), holder.iv_first_photo, holder.iv_second_photo, holder.iv_third_photo, holder.tv_join_person);
     }
 
 
@@ -517,7 +526,7 @@ public class CommunityDynamicsAdapter extends RecyclerView.Adapter<RecyclerView.
         TextView tv_share_title;
         LinearLayout dynamic_image_layout;
         RecyclerView rv_dynamics_images;
-        View view_dynamics_weight;
+        View one_dynamics_weight;
         TextView tv_dynamics_publish_time;
         TextView tv_del_owner_dynamics;
         TextView tv_dynamics_comment;
@@ -539,7 +548,7 @@ public class CommunityDynamicsAdapter extends RecyclerView.Adapter<RecyclerView.
             tv_share_title = itemView.findViewById(R.id.tv_share_title);
             dynamic_image_layout = itemView.findViewById(R.id.dynamic_image_layout);
             rv_dynamics_images = itemView.findViewById(R.id.rv_dynamics_images);
-            view_dynamics_weight = itemView.findViewById(R.id.view_dynamics_weight);
+            one_dynamics_weight = itemView.findViewById(R.id.one_dynamics_weight);
             tv_dynamics_publish_time = itemView.findViewById(R.id.tv_dynamics_publish_time);
             tv_del_owner_dynamics = itemView.findViewById(R.id.tv_del_owner_dynamics);
             tv_dynamics_comment = itemView.findViewById(R.id.tv_dynamics_comment);

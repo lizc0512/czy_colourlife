@@ -688,7 +688,17 @@ public class CommunityActivityDetailsActivity extends BaseActivity implements Vi
                         }
                         updateActivityStatus();
                     } else {
-                        ToastUtil.toastShow(CommunityActivityDetailsActivity.this, communityStatusEntity.getMessage());
+                        switch (ac_status) {
+                            case "2":
+                                ToastUtil.toastShow(CommunityActivityDetailsActivity.this,getResources().getString(R.string.community_activity_numberfull));
+                                break;
+                            case "3":
+                                ToastUtil.toastShow(CommunityActivityDetailsActivity.this,getResources().getString(R.string.community_activity_endtime));
+                                break;
+                            case "4":
+                                ToastUtil.toastShow(CommunityActivityDetailsActivity.this, getResources().getString(R.string.community_activity_finished));
+                                break;
+                        }
                     }
                 } catch (Exception e) {
 
