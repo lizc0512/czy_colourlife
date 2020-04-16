@@ -25,6 +25,7 @@ import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.SurfaceHolder;
 
+import com.google.zxing.ResultPoint;
 import com.scanCode.zxing.PlanarYUVLuminanceSource;
 import com.scanCode.zxing.PreferenceConfig;
 

@@ -40,6 +40,7 @@ import com.community.entity.CommunityDynamicsListEntity;
 import com.community.entity.CommunityTipOffEntity;
 import com.community.model.CommunityDynamicsModel;
 import com.community.utils.RealIdentifyDialogUtil;
+import com.community.utils.WrapContentLinearLayoutManager;
 import com.community.view.DeleteNoticeDialog;
 import com.community.view.TipTypeListDialog;
 import com.community.view.TipoffsCommentDialog;
@@ -260,6 +261,9 @@ public class CommunityDynamicsFragment extends Fragment implements View.OnClickL
                             startActivity(intent);
                         }
                         break;
+                    default:
+                        recycleState=SCROLL_STATE_IDLE;
+                        break;
                 }
             });
         }
@@ -322,7 +326,7 @@ public class CommunityDynamicsFragment extends Fragment implements View.OnClickL
         String current_user_uuid = mShared.getString(UserAppConst.Colour_User_uuid, "");
         if (null == communityDynamicsAdapter) {
             communityDynamicsAdapter = new CommunityDynamicsAdapter(getActivity(), dynamicContentList);
-            LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
+            WrapContentLinearLayoutManager linearLayoutManager = new WrapContentLinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
             rv_community_dynamics.setLayoutManager(linearLayoutManager);
             communityDynamicsAdapter.setUserUUId(current_user_uuid);
             rv_community_dynamics.setAdapter(communityDynamicsAdapter);

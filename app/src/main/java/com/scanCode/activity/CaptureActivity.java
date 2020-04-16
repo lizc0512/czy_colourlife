@@ -229,6 +229,8 @@ public final class CaptureActivity extends BaseActivity implements
         decodeFormats = null;
         characterSet = null;
 
+
+
     }
 
     @Override

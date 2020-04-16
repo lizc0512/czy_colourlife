@@ -105,7 +105,6 @@ public final class ViewfinderView extends View {
         processBitmap2 = BitmapFactory.decodeResource(resources, R.drawable.b0_scanning_2);
 
         bgBitmap = BitmapFactory.decodeResource(resources, R.drawable.b0_scanning_bg);
-
     }
 
     public void setCameraManager(CameraManager cameraManager) {

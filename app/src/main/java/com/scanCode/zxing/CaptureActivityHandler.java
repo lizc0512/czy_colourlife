@@ -126,6 +126,7 @@ public final class CaptureActivityHandler extends Handler {
     } catch (InterruptedException e) {
       // continue
     }
+    //ResultPoint
 
     // Be absolutely sure we don't send any queued up messages
     removeMessages(R.id.decode_succeeded);
