@@ -597,54 +597,58 @@ public class CommunityActivityDetailsActivity extends BaseActivity implements Vi
     public void OnHttpResponse(int what, String result) {
         switch (what) {
             case 0://活动详情
-                try {
-                    CommunityActivityDetailsEntity communityActivityDetailsEntity = GsonUtils.gsonToBean(result, CommunityActivityDetailsEntity.class);
-                    CommunityActivityDetailsEntity.ContentBean contentBean = communityActivityDetailsEntity.getContent();
-                    GlideImageLoader.loadImageDisplay(CommunityActivityDetailsActivity.this, contentBean.getAc_banner(), iv_activity_head);
-                    String ac_tag = contentBean.getAc_tag();
-                    String ac_fee = contentBean.getAc_fee();
-                    if ("0".equals(ac_fee) || "0.0".equals(ac_fee) || "0.00".equals(ac_fee)) {
-                        tv_fee_price.setText(getResources().getString(R.string.community_activity_free));
-                    } else {
-                        tv_fee_price.setText("￥" + getFormatMoney(Double.valueOf(ac_fee), true));
-                    }
-                    activityTitle = contentBean.getAc_title();
-                    tv_activity_title.setText(activityTitle);
-                    join_number = contentBean.getJoin_num();
-                    if (null != contentBean.getJoin_user()) {
-                        join_user_list.clear();
-                        join_user_list.addAll(contentBean.getJoin_user());
-                    }
-                    showCommunityActivity(CommunityActivityDetailsActivity.this, join_number, join_user_list, iv_first_photo, iv_second_photo, iv_third_photo, tv_join_person);
-                    tv_activity_starttime.setText(TimeUtil.getYearTime(contentBean.getBegin_time() * 1000, "yyyy-MM-dd") + "～" + TimeUtil.getYearTime(contentBean.getEnd_time() * 1000, "yyyy-MM-dd"));
-                    tv_activity_address.setText(contentBean.getAc_address());
-                    tv_activity_endtime.setText(TimeUtil.getYearTime(contentBean.getStop_apply_time() * 1000, "yyyy-MM-dd"));
-                    int limit_number = contentBean.getLimit_num();
-                    if (limit_number == 0) {
-                        tv_activity_person.setText("不限");
-                    } else {
-                        tv_activity_person.setText(limit_number + "人");
-                    }
-                    GlideImageLoader.loadImageDisplay(CommunityActivityDetailsActivity.this, contentBean.getContact_user_avatar(), iv_contact_header);
-                    tv_contact_name.setText(contentBean.getContact_user_name());
-                    contact_id = contentBean.getContact_user_id();
-                    contact_mobile = contentBean.getContact_user_mobile();
-                    ac_status = contentBean.getAc_status();
-                    maxPickImageSize = contentBean.getPicture_num();
-                    pickerPrompt = contentBean.getPicture_prompt();
-                    pickRequire = contentBean.getPicture_require();
-                    activityUrl = contentBean.getAc_sharelink();
-                    String ac_detail = contentBean.getAc_detail();
-                    if (TextUtils.isEmpty(ac_detail)) {
-                        web_content_layout.setVisibility(View.GONE);
-                    } else {
-                        web_content_layout.setVisibility(View.VISIBLE);
-                        webview.loadUrl(ac_detail);
-                    }
-                    is_join = contentBean.getIs_join();
-                    showAcStatus();
-                } catch (Exception e) {
+                if (TextUtils.isEmpty(result)) {
+                    finish();
+                } else {
+                    try {
+                        CommunityActivityDetailsEntity communityActivityDetailsEntity = GsonUtils.gsonToBean(result, CommunityActivityDetailsEntity.class);
+                        CommunityActivityDetailsEntity.ContentBean contentBean = communityActivityDetailsEntity.getContent();
+                        GlideImageLoader.loadImageDisplay(CommunityActivityDetailsActivity.this, contentBean.getAc_banner(), iv_activity_head);
+                        String ac_tag = contentBean.getAc_tag();
+                        String ac_fee = contentBean.getAc_fee();
+                        if ("0".equals(ac_fee) || "0.0".equals(ac_fee) || "0.00".equals(ac_fee)) {
+                            tv_fee_price.setText(getResources().getString(R.string.community_activity_free));
+                        } else {
+                            tv_fee_price.setText("￥" + getFormatMoney(Double.valueOf(ac_fee), true));
+                        }
+                        activityTitle = contentBean.getAc_title();
+                        tv_activity_title.setText(activityTitle);
+                        join_number = contentBean.getJoin_num();
+                        if (null != contentBean.getJoin_user()) {
+                            join_user_list.clear();
+                            join_user_list.addAll(contentBean.getJoin_user());
+                        }
+                        showCommunityActivity(CommunityActivityDetailsActivity.this, join_number, join_user_list, iv_first_photo, iv_second_photo, iv_third_photo, tv_join_person);
+                        tv_activity_starttime.setText(TimeUtil.getYearTime(contentBean.getBegin_time() * 1000, "yyyy-MM-dd") + "～" + TimeUtil.getYearTime(contentBean.getEnd_time() * 1000, "yyyy-MM-dd"));
+                        tv_activity_address.setText(contentBean.getAc_address());
+                        tv_activity_endtime.setText(TimeUtil.getYearTime(contentBean.getStop_apply_time() * 1000, "yyyy-MM-dd"));
+                        int limit_number = contentBean.getLimit_num();
+                        if (limit_number == 0) {
+                            tv_activity_person.setText("不限");
+                        } else {
+                            tv_activity_person.setText(limit_number + "人");
+                        }
+                        GlideImageLoader.loadImageDisplay(CommunityActivityDetailsActivity.this, contentBean.getContact_user_avatar(), iv_contact_header);
+                        tv_contact_name.setText(contentBean.getContact_user_name());
+                        contact_id = contentBean.getContact_user_id();
+                        contact_mobile = contentBean.getContact_user_mobile();
+                        ac_status = contentBean.getAc_status();
+                        maxPickImageSize = contentBean.getPicture_num();
+                        pickerPrompt = contentBean.getPicture_prompt();
+                        pickRequire = contentBean.getPicture_require();
+                        activityUrl = contentBean.getAc_sharelink();
+                        String ac_detail = contentBean.getAc_detail();
+                        if (TextUtils.isEmpty(ac_detail)) {
+                            web_content_layout.setVisibility(View.GONE);
+                        } else {
+                            web_content_layout.setVisibility(View.VISIBLE);
+                            webview.loadUrl(ac_detail);
+                        }
+                        is_join = contentBean.getIs_join();
+                        showAcStatus();
+                    } catch (Exception e) {
 
+                    }
                 }
                 break;
             case 1://留言列表
@@ -690,10 +694,10 @@ public class CommunityActivityDetailsActivity extends BaseActivity implements Vi
                     } else {
                         switch (ac_status) {
                             case "2":
-                                ToastUtil.toastShow(CommunityActivityDetailsActivity.this,getResources().getString(R.string.community_activity_numberfull));
+                                ToastUtil.toastShow(CommunityActivityDetailsActivity.this, getResources().getString(R.string.community_activity_numberfull));
                                 break;
                             case "3":
-                                ToastUtil.toastShow(CommunityActivityDetailsActivity.this,getResources().getString(R.string.community_activity_endtime));
+                                ToastUtil.toastShow(CommunityActivityDetailsActivity.this, getResources().getString(R.string.community_activity_endtime));
                                 break;
                             case "4":
                                 ToastUtil.toastShow(CommunityActivityDetailsActivity.this, getResources().getString(R.string.community_activity_finished));
