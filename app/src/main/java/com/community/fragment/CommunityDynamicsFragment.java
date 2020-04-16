@@ -21,7 +21,6 @@ import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.ViewTreeObserver;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -56,7 +55,6 @@ import com.youmai.hxsdk.HuxinSdkManager;
 import java.util.ArrayList;
 import java.util.List;
 
-import cn.csh.colourful.life.listener.OnItemClickListener;
 import cn.csh.colourful.life.utils.KeyBoardUtils;
 import cn.net.cyberway.R;
 import cn.net.cyberway.activity.MainActivity;
@@ -143,13 +141,10 @@ public class CommunityDynamicsFragment extends Fragment implements View.OnClickL
         dynamics_empty_layout = rootView.findViewById(R.id.dynamics_empty_layout);
         tv_send_dynamics = rootView.findViewById(R.id.tv_send_dynamics);
 
-        dynamics_refresh_layout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-            @Override
-            public void onRefresh() {
-                year = "";
-                page = 1;
-                communityDynamicsModel.getCommunityDynamicList(0, page, year, false, CommunityDynamicsFragment.this);
-            }
+        dynamics_refresh_layout.setOnRefreshListener(() -> {
+            year = "";
+            page = 1;
+            communityDynamicsModel.getCommunityDynamicList(0, page, year, false, CommunityDynamicsFragment.this);
         });
 
         SimpleItemAnimator simpleItemAnimator = ((SimpleItemAnimator) rv_community_dynamics.getItemAnimator());
@@ -157,16 +152,13 @@ public class CommunityDynamicsFragment extends Fragment implements View.OnClickL
         simpleItemAnimator.setChangeDuration(0);
         rv_community_dynamics.setAutoLoadMore(true);
         rv_community_dynamics.useDefaultLoadMore();
-        rv_community_dynamics.setLoadMoreListener(new SwipeMenuRecyclerView.LoadMoreListener() {
-            @Override
-            public void onLoadMore() {
-                if (!TextUtils.isEmpty(year) && total < 10) {
-                    page = 1;
-                } else {
-                    page++;
-                }
-                communityDynamicsModel.getCommunityDynamicList(0, page, year, false, CommunityDynamicsFragment.this);
+        rv_community_dynamics.setLoadMoreListener(() -> {
+            if (!TextUtils.isEmpty(year) && total < 10) {
+                page = 1;
+            } else {
+                page++;
             }
+            communityDynamicsModel.getCommunityDynamicList(0, page, year, false, CommunityDynamicsFragment.this);
         });
         rv_community_dynamics.addOnScrollListener(new RecyclerView.OnScrollListener() {
             View firstChild;
@@ -252,25 +244,22 @@ public class CommunityDynamicsFragment extends Fragment implements View.OnClickL
 
     private void setDynamicsListener() {
         if (null != communityDynamicsAdapter) {
-            communityDynamicsAdapter.setOnItemClickListener(new OnItemClickListener() {
-                @Override
-                public void onItemClick(int i) {
-                    switch (recycleState) {
-                        case SCROLL_STATE_IDLE:
-                            if (dynamicContentList.size() > 0) {
-                                CommunityDynamicsListEntity.ContentBean.DataBean dataBean = dynamicContentList.get(i);
-                                Intent intent = null;
-                                if (2 == dataBean.getList_type()) {
-                                    intent = new Intent(getActivity(), CommunityActivityDetailsActivity.class);
-                                    intent.putExtra(ACTIVITY_SOURCE_ID, dataBean.getSource_id());
-                                } else {
-                                    intent = new Intent(getActivity(), DynamicsDetailsActivity.class);
-                                    intent.putExtra(DYNAMICS_DETAILS, dataBean);
-                                }
-                                startActivity(intent);
+            communityDynamicsAdapter.setOnItemClickListener(i -> {
+                switch (recycleState) {
+                    case SCROLL_STATE_IDLE:
+                        if (i >= 0) {
+                            CommunityDynamicsListEntity.ContentBean.DataBean dataBean = dynamicContentList.get(i);
+                            Intent intent = null;
+                            if (2 == dataBean.getList_type()) {
+                                intent = new Intent(getActivity(), CommunityActivityDetailsActivity.class);
+                                intent.putExtra(ACTIVITY_SOURCE_ID, dataBean.getSource_id());
+                            } else {
+                                intent = new Intent(getActivity(), DynamicsDetailsActivity.class);
+                                intent.putExtra(DYNAMICS_DETAILS, dataBean);
                             }
-                            break;
-                    }
+                            startActivity(intent);
+                        }
+                        break;
                 }
             });
         }
@@ -286,14 +275,14 @@ public class CommunityDynamicsFragment extends Fragment implements View.OnClickL
             if (!TextUtils.isEmpty(result)) {
                 CommunityDynamicsListEntity communityDynamicsListEntity = GsonUtils.gsonToBean(result, CommunityDynamicsListEntity.class);
                 CommunityDynamicsListEntity.ContentBean contentBean = communityDynamicsListEntity.getContent();
-                if (null!=contentBean){
+                if (null != contentBean) {
                     resultTotal = contentBean.getTotal();
                     resultYear = contentBean.getYear();
                     List<CommunityDynamicsListEntity.ContentBean.DataBean> pageContentList = contentBean.getData();
                     dataEmpty = pageContentList == null || pageContentList.size() == 0;
                     dynamicContentList.addAll(pageContentList);
-                }else{
-                    ToastUtil.toastShow(getActivity(),communityDynamicsListEntity.getMessage());
+                } else {
+                    ToastUtil.toastShow(getActivity(), communityDynamicsListEntity.getMessage());
                 }
             }
         } catch (Exception e) {
@@ -652,14 +641,11 @@ public class CommunityDynamicsFragment extends Fragment implements View.OnClickL
         }
         TextView feed_comment_submit = view.findViewById(R.id.feed_comment_submit);
         //scrollView 点击事件，点击时将 dialog dismiss，设置 onClick 监听无效
-        inputDialog.findViewById(R.id.scrollView).setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                if (event.getAction() == MotionEvent.ACTION_UP)
-                    inputDialog.dismiss();
-                KeyBoardUtils.closeKeybord(feed_comment_edittext, getActivity());
-                return true;
-            }
+        inputDialog.findViewById(R.id.scrollView).setOnTouchListener((v, event) -> {
+            if (event.getAction() == MotionEvent.ACTION_UP)
+                inputDialog.dismiss();
+            KeyBoardUtils.closeKeybord(feed_comment_edittext, getActivity());
+            return true;
         });
         inputDialog.show();
         itemView.postDelayed(new Runnable() {
@@ -670,27 +656,19 @@ public class CommunityDynamicsFragment extends Fragment implements View.OnClickL
                 rv_community_dynamics.smoothScrollBy(0, itemBottomY - y);
             }
         }, 300);
-        getActivity().getWindow().getDecorView().getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
-            @Override
-            public void onGlobalLayout() {
-                handleWindowChange();
-            }
-        });
-        feed_comment_submit.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                content = feed_comment_edittext.getText().toString().trim();
-                if (!TextUtils.isEmpty(content)) {
-                    if (content.length() > 300) {
-                        ToastUtil.toastShow(getActivity(), "输入的内容长度不能超过300字");
-                    } else {
-                        KeyBoardUtils.closeKeybord(feed_comment_edittext, getActivity());
-                        inputDialog.dismiss();
-                        communityDynamicsModel.commentDynamic(9, content, sourceId, toUserId, CommunityDynamicsFragment.this::OnHttpResponse);
-                    }
+        getActivity().getWindow().getDecorView().getViewTreeObserver().addOnGlobalLayoutListener(() -> handleWindowChange());
+        feed_comment_submit.setOnClickListener(v -> {
+            content = feed_comment_edittext.getText().toString().trim();
+            if (!TextUtils.isEmpty(content)) {
+                if (content.length() > 300) {
+                    ToastUtil.toastShow(getActivity(), "输入的内容长度不能超过300字");
                 } else {
-                    ToastUtil.toastShow(getActivity(), "输入的内容不能为空");
+                    KeyBoardUtils.closeKeybord(feed_comment_edittext, getActivity());
+                    inputDialog.dismiss();
+                    communityDynamicsModel.commentDynamic(9, content, sourceId, toUserId, CommunityDynamicsFragment.this::OnHttpResponse);
                 }
+            } else {
+                ToastUtil.toastShow(getActivity(), "输入的内容不能为空");
             }
         });
     }
@@ -720,13 +698,10 @@ public class CommunityDynamicsFragment extends Fragment implements View.OnClickL
     private void showTipCommentDelDialog(String sourceId, String commentId) {
         TipoffsCommentDialog tipoffsCommentDialog = new TipoffsCommentDialog(getActivity(), R.style.custom_dialog_theme);
         tipoffsCommentDialog.show();
-        tipoffsCommentDialog.tv_dynamics_tipoffs.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                //显示举报列表的dialog
-                tipoffsCommentDialog.dismiss();
-                showTipOffDialog(sourceId, commentId);
-            }
+        tipoffsCommentDialog.tv_dynamics_tipoffs.setOnClickListener(v -> {
+            //显示举报列表的dialog
+            tipoffsCommentDialog.dismiss();
+            showTipOffDialog(sourceId, commentId);
         });
     }
 
@@ -771,16 +746,13 @@ public class CommunityDynamicsFragment extends Fragment implements View.OnClickL
                 LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
                 tipTypeListDialog.rv_tipoffs_type.setLayoutManager(linearLayoutManager);
                 tipTypeListDialog.rv_tipoffs_type.setAdapter(communityTipOffAdapter);
-                communityTipOffAdapter.setOnItemClickListener(new OnItemClickListener() {
-                    @Override
-                    public void onItemClick(int i) {
-                        if (TextUtils.isEmpty(commentId)) {
-                            communityDynamicsModel.reportViolationDynamic(3, sourceId, tipOffContentList.get(i).getReport_type(), CommunityDynamicsFragment.this::OnHttpResponse);
-                        } else {
-                            communityDynamicsModel.reportViolationComment(4, sourceId, commentId, tipOffContentList.get(i).getReport_type(), CommunityDynamicsFragment.this::OnHttpResponse);
-                        }
-                        tipTypeListDialog.dismiss();
+                communityTipOffAdapter.setOnItemClickListener(i -> {
+                    if (TextUtils.isEmpty(commentId)) {
+                        communityDynamicsModel.reportViolationDynamic(3, sourceId, tipOffContentList.get(i).getReport_type(), CommunityDynamicsFragment.this::OnHttpResponse);
+                    } else {
+                        communityDynamicsModel.reportViolationComment(4, sourceId, commentId, tipOffContentList.get(i).getReport_type(), CommunityDynamicsFragment.this::OnHttpResponse);
                     }
+                    tipTypeListDialog.dismiss();
                 });
             } catch (Exception e) {
 
