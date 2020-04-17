@@ -189,7 +189,7 @@ dependencies {
     implementation project(':sobotsdk')
     implementation(name: 'iJMSafeKeyboard', ext: 'aar')
     implementation(name: 'OldiJMSafeKeyboard', ext: 'aar')
-    implementation(name: 'shanyan_sdk_v2.2.0.5', ext: 'aar')
+    implementation(name: 'shanyan_sdk_v2.2.0.7', ext: 'aar')
     implementation(name: 'jdPaySDK_Android_JdMall', ext: 'aar')
     implementation(name: 'PayChannel-release', ext: 'aar')
     compileOnly files('sdknec/classes.jar')

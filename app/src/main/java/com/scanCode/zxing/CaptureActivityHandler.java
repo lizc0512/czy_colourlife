@@ -30,6 +30,7 @@ import com.google.zxing.Result;
 import com.scanCode.activity.CaptureActivity;
 import com.scanCode.zxing.camera.CameraManager;
 
+
 import java.util.Collection;
 
 import cn.net.cyberway.R;
