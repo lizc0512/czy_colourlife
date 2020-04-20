@@ -17,10 +17,6 @@ import android.widget.LinearLayout;
 
 import com.BeeFramework.activity.BaseActivity;
 import com.external.viewpagerindicator.CirclePageIndicator;
-import com.facebook.rebound.SimpleSpringListener;
-import com.facebook.rebound.Spring;
-import com.facebook.rebound.SpringConfig;
-import com.facebook.rebound.SpringSystem;
 import com.popupScreen.adapter.ImagePagerAdapter;
 import com.user.UserAppConst;
 
@@ -39,7 +35,6 @@ public class PopupActivity extends BaseActivity {
 
     private ViewPager viewpager;
     private ImageView btn1;
-    private LinearLayout llContainer;
     private LinearLayout llRoot;
     private FrameLayout fl_indicator;
     private CirclePageIndicator indicator;
@@ -56,14 +51,12 @@ public class PopupActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_popup);
         mShared = getSharedPreferences(UserAppConst.USERINFO, 0);
-        viewpager = (ViewPager) findViewById(R.id.viewpager);
-        btn1 = (ImageView) findViewById(R.id.btn1);
-        llContainer = (LinearLayout) findViewById(R.id.ll_container);
-        llRoot = (LinearLayout) findViewById(R.id.ll_all_container);
-        fl_indicator = (FrameLayout) findViewById(R.id.fl_indicator);
-        indicator = (CirclePageIndicator) findViewById(R.id.indicator);
+        viewpager = findViewById(R.id.viewpager);
+        btn1 = findViewById(R.id.btn1);
+        llRoot = findViewById(R.id.ll_all_container);
+        fl_indicator = findViewById(R.id.fl_indicator);
+        indicator = findViewById(R.id.indicator);
         getIntentData();
-        initEnterAnim(-500);
         iniData();
         initListener();
     }
@@ -88,28 +81,20 @@ public class PopupActivity extends BaseActivity {
         viewpager.setAdapter(adapter);
         adapter.notifyDataSetChanged();
 
-        adapter.setOnImgClickListener(new ImagePagerAdapter.OnImgClickListener() {
-            @Override
-            public void OnImgClick(int pos, String url, String name) {
-                if (url != null) {
-                    if (mShared.getBoolean(UserAppConst.IS_LOGIN, false)) {
-                        LinkParseUtil.parse(PopupActivity.this, url, name);
-                        PopupActivity.this.finish();
-                    } else {
-                        LinkParseUtil.parse(PopupActivity.this, "", "");
-                    }
+        adapter.setOnImgClickListener((pos, url, name) -> {
+            if (url != null) {
+                if (mShared.getBoolean(UserAppConst.IS_LOGIN, false)) {
+                    LinkParseUtil.parse(PopupActivity.this, url, name);
+                    PopupActivity.this.finish();
+                } else {
+                    LinkParseUtil.parse(PopupActivity.this, "", "");
                 }
             }
         });
     }
 
     private void initListener() {
-        btn1.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                initExitAnim(0f);
-            }
-        });
+        btn1.setOnClickListener(v -> initExitAnim());
 
         indicator.setViewPager(viewpager, 0);
         indicator.requestLayout();
@@ -130,36 +115,14 @@ public class PopupActivity extends BaseActivity {
             }
         });
 
-        llRoot.setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                initExitAnim(0f);
-                return false;
-            }
+        llRoot.setOnTouchListener((v, event) -> {
+            initExitAnim();
+            return false;
         });
     }
 
-    private void initEnterAnim(double values) {
-        Spring spring = getSpring();
-        spring.setSpringConfig(SpringConfig.fromOrigamiTensionAndFriction(50, 6));
-        spring.setCurrentValue(values);
-        spring.addListener(new SimpleSpringListener() {
-            @Override
-            public void onSpringUpdate(Spring spring) {
-                super.onSpringUpdate(spring);
-                llContainer.setTranslationY((float) spring.getCurrentValue());
-            }
 
-            @Override
-            public void onSpringAtRest(Spring spring) {
-                super.onSpringAtRest(spring);
-                isShowpop = true;
-            }
-        });
-        spring.setEndValue(1f);
-    }
-
-    private void initExitAnim(double values) {
+    private void initExitAnim() {
         if (isShowpop) {
             finishThis();
         }
@@ -183,15 +146,10 @@ public class PopupActivity extends BaseActivity {
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         if (keyCode == KeyEvent.KEYCODE_BACK) {
-            initExitAnim(0f);
+            initExitAnim();
             return false;
         } else {
             return super.onKeyDown(keyCode, event);
         }
-    }
-
-    private Spring getSpring() {
-        SpringSystem system = SpringSystem.create();
-        return system.createSpring();
     }
 }
