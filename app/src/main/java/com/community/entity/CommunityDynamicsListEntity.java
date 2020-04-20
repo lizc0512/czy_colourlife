@@ -210,6 +210,16 @@ public class CommunityDynamicsListEntity extends BaseContentEntity {
             private int extra_type;
             private int status;
             private long created_at;
+
+            public long getEnd_time() {
+                return end_time;
+            }
+
+            public void setEnd_time(long end_time) {
+                this.end_time = end_time;
+            }
+
+            private long end_time;
             private String updated_at;
             private String community_uuid;
             private String community_name;

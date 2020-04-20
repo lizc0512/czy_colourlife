@@ -72,6 +72,16 @@ public class CommunityActivityEntity extends BaseContentEntity {
 
         private String is_join;
         private long stop_apply_time;
+
+        public long getEnd_time() {
+            return end_time;
+        }
+
+        public void setEnd_time(long end_time) {
+            this.end_time = end_time;
+        }
+
+        private long end_time;
         private int join_num;
         private List<String> join_user;
 

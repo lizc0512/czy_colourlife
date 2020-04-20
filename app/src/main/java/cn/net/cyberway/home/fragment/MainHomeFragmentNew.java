@@ -1542,7 +1542,7 @@ public class MainHomeFragmentNew extends Fragment implements NewHttpResponse, Vi
             tv_activity_fee.setText(contentBean.getAc_tag());
             tv_activity_title.setText(contentBean.getAc_title());
             tv_activity_address.setText("地址:" + contentBean.getAc_address());
-            tv_activity_date.setText("活动截止:" + TimeUtil.getTime(contentBean.getStop_apply_time() * 1000, "yyyy年MM月dd日"));
+            tv_activity_date.setText("活动截止:" + TimeUtil.getTime(contentBean.getEnd_time() * 1000, "yyyy年MM月dd日"));
             int joinNumber = contentBean.getJoin_num();
             List<String> join_user_pics = contentBean.getJoin_user();
             updateCommunityStatus(contentBean.getAc_status(), contentBean.getIs_join(), joinNumber, join_user_pics);
