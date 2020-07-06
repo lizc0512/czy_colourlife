@@ -321,32 +321,32 @@ public class NewUserModel extends BaseModel {
                                 editor.putLong(UserAppConst.Colour_expires_in, Long.valueOf(authTokenResponse.expires_in));
                                 editor.putString(UserAppConst.Colour_token_type, authTokenResponse.token_type);
                                 editor.putLong(UserAppConst.Colour_get_time, System.currentTimeMillis());
-                                editor.commit();
+                                editor.apply();
                                 newHttpResponse.OnHttpResponse(what, result);
                             } else {
                                 editor.putBoolean(UserAppConst.IS_LOGIN, false);
-                                editor.commit();
+                                editor.apply();
                                 newHttpResponse.OnHttpResponse(what, "");
                             }
                         } catch (JSONException e) {
                             e.printStackTrace();
                             editor.putBoolean(UserAppConst.IS_LOGIN, false);
-                            editor.commit();
+                            editor.apply();
                             newHttpResponse.OnHttpResponse(what, "");
                         }
                     } else {
                         editor.putBoolean(UserAppConst.IS_LOGIN, false);
-                        editor.commit();
+                        editor.apply();
                         newHttpResponse.OnHttpResponse(what, "");
                     }
                 } else if (responseCode == RequestEncryptionUtils.responseRequest) {
                     editor.putBoolean(UserAppConst.IS_LOGIN, false);
-                    editor.commit();
+                    editor.apply();
                     showErrorCodeMessage(responseCode, response);
                     newHttpResponse.OnHttpResponse(what, "");
                 } else {
                     editor.putBoolean(UserAppConst.IS_LOGIN, false);
-                    editor.commit();
+                    editor.apply();
                     showErrorCodeMessage(responseCode, response);
                     newHttpResponse.OnHttpResponse(what, "");
                 }

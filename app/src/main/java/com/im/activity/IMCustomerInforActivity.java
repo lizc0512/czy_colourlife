@@ -134,6 +134,9 @@ public class IMCustomerInforActivity extends BaseActivity implements View.OnClic
                     startActivity(transfer_intent);
                 }
                 break;
+            case R.id.details_community_layout://个人邻里圈
+
+                break;
         }
     }
 

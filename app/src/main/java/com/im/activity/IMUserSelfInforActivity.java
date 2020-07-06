@@ -110,6 +110,9 @@ public class IMUserSelfInforActivity extends BaseActivity implements View.OnClic
             case R.id.btn_send_msg:  //发送消息
                 HuxinSdkManager.instance().entryChatSingle(IMUserSelfInforActivity.this, useruuid, nickname, portrait, username, mobilePhone);
                 break;
+            case R.id.details_community_layout://个人邻里圈
+
+                break;
         }
     }
 

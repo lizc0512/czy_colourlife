@@ -850,49 +850,46 @@ public class NewOrderPayActivity extends BaseActivity implements View.OnClickLis
 
     /***光彩支付的结果**/
     private void showH5PayResultDialog(int showAlipay) {
-        new Handler().postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    final HtmlPayDialog htmlPayDialog = new HtmlPayDialog(NewOrderPayActivity.this);
-                    htmlPayDialog.show();
-                    if (!TextUtils.isEmpty(dialogTitle)) {
-                        if (dialogTitle.contains("支付")) {
-                            htmlPayDialog.setContent("请确认" + dialogTitle + "是否完成");
-                        } else {
-                            htmlPayDialog.setContent("请确认" + dialogTitle + "支付是否完成");
-                        }
-                    }
-                    htmlPayDialog.tv_again_pay.setOnClickListener(v -> {
-                        htmlPayDialog.dismiss();
-                        newOrderPayModel.getPayOrderStatus(3, sn, NewOrderPayActivity.this);
-                    });
-                    if (showAlipay == 2) {
-                        htmlPayDialog.tv_jump_alipay.setVisibility(View.VISIBLE);
+        new Handler().postDelayed(() -> {
+            try {
+                final HtmlPayDialog htmlPayDialog = new HtmlPayDialog(NewOrderPayActivity.this);
+                htmlPayDialog.show();
+                if (!TextUtils.isEmpty(dialogTitle)) {
+                    if (dialogTitle.contains("支付")) {
+                        htmlPayDialog.setContent("请确认" + dialogTitle + "是否完成");
                     } else {
-                        htmlPayDialog.tv_jump_alipay.setVisibility(View.GONE);
+                        htmlPayDialog.setContent("请确认" + dialogTitle + "支付是否完成");
                     }
-                    htmlPayDialog.tv_jump_alipay.setOnClickListener(v -> {
-                        htmlPayDialog.dismiss();
-                        Intent intent = null;
-                        try {
-                            intent = Intent.parseUri("alipays://platformapi/startapp?appId=20000003", Intent.URI_INTENT_SCHEME);
-                            intent.addCategory(Intent.CATEGORY_BROWSABLE);
-                            intent.setComponent(null);
-                            startActivityForResult(intent, 3000);
-                        } catch (URISyntaxException e) {
-                            e.printStackTrace();
-                        }
-
-                    });
-                    htmlPayDialog.tv_finish_pay.setOnClickListener(v -> {
-                        htmlPayDialog.dismiss();
-                        payResultQuery();
-                    });
-                    htmlPayDialog.tv_cancel_pay.setOnClickListener(v -> htmlPayDialog.dismiss());
-                } catch (Exception e) {
-
                 }
+                htmlPayDialog.tv_again_pay.setOnClickListener(v -> {
+                    htmlPayDialog.dismiss();
+                    newOrderPayModel.getPayOrderStatus(3, sn, NewOrderPayActivity.this);
+                });
+                if (showAlipay == 2) {
+                    htmlPayDialog.tv_jump_alipay.setVisibility(View.VISIBLE);
+                } else {
+                    htmlPayDialog.tv_jump_alipay.setVisibility(View.GONE);
+                }
+                htmlPayDialog.tv_jump_alipay.setOnClickListener(v -> {
+                    htmlPayDialog.dismiss();
+                    Intent intent = null;
+                    try {
+                        intent = Intent.parseUri("alipays://platformapi/startapp?appId=20000003", Intent.URI_INTENT_SCHEME);
+                        intent.addCategory(Intent.CATEGORY_BROWSABLE);
+                        intent.setComponent(null);
+                        startActivityForResult(intent, 3000);
+                    } catch (URISyntaxException e) {
+                        e.printStackTrace();
+                    }
+
+                });
+                htmlPayDialog.tv_finish_pay.setOnClickListener(v -> {
+                    htmlPayDialog.dismiss();
+                    payResultQuery();
+                });
+                htmlPayDialog.tv_cancel_pay.setOnClickListener(v -> htmlPayDialog.dismiss());
+            } catch (Exception e) {
+
             }
         }, 500);
     }

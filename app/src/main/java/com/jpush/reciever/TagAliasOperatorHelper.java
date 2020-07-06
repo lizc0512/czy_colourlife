@@ -6,6 +6,7 @@ import android.os.Message;
 import android.util.SparseArray;
 
 import com.BeeFramework.Utils.NetworkUtil;
+import com.BeeFramework.Utils.ToastUtil;
 
 import java.util.Locale;
 import java.util.Set;
@@ -244,6 +245,7 @@ public class TagAliasOperatorHelper {
         }
     }
     public void onAliasOperatorResult(Context context, JPushMessage jPushMessage) {
+        ToastUtil.toastShow(context,"别名推送的回调");
         int sequence = jPushMessage.getSequence();
         init(context);
         //根据sequence从之前操作缓存中获取缓存记录
@@ -257,15 +259,21 @@ public class TagAliasOperatorHelper {
     }
     //设置手机号码回调
     public void onMobileNumberOperatorResult(Context context, JPushMessage jPushMessage) {
-        int sequence = jPushMessage.getSequence();
-        init(context);
-        if(jPushMessage.getErrorCode() == 0){
-            setActionCache.remove(sequence);
-        }else{
-            String logs = "Failed to set mobile number, errorCode:" + jPushMessage.getErrorCode();
-            if(!RetrySetMObileNumberActionIfNeeded(jPushMessage.getErrorCode(),jPushMessage.getMobileNumber())){
+        if (null!=jPushMessage){
+            int sequence = jPushMessage.getSequence();
+            init(context);
+            if(jPushMessage.getErrorCode() == 0){
+                ToastUtil.toastShow(context,"shexzzz");
+                setActionCache.remove(sequence);
+            }else{
+                String logs = "Failed to set mobile number, errorCode:" + jPushMessage.getErrorCode();
+                if(!RetrySetMObileNumberActionIfNeeded(jPushMessage.getErrorCode(),jPushMessage.getMobileNumber())){
+                }
             }
+        }else{
+            ToastUtil.toastShow(context,"888888888888");
         }
+
     }
     public static class TagAliasBean{
         int action;

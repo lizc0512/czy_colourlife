@@ -9,7 +9,7 @@
         android:configChanges="locale"
         android:hardwareAccelerated="true"
         android:icon="@drawable/icon"
-        android:label="@string/app_name_test"
+        android:label="@string/app_name"
         android:largeHeap="true"
         android:resizeableActivity="false"
         android:screenOrientation="portrait"
@@ -26,9 +26,7 @@
             android:theme="@style/Theme.AppCompat"
             android:windowSoftInputMode="adjustPan|stateHidden">
             <intent-filter>
-                <action android:name="cn.net.cyberway.jpush.openactivity" />
                 <action android:name="android.intent.action.VIEW" />
-
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
@@ -54,7 +52,7 @@
             android:theme="@style/popupTransparent" />
         <activity
             android:name=".OauthWebviewActivity"
-            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:configChanges="keyboardHidden|screenSize"
             android:exported="true"
             android:theme="@style/activityTheme" />
         <activity
@@ -92,25 +90,6 @@
         <activity
             android:name="com.imagepicker.activity.ReviewImageActivity"
             android:screenOrientation="portrait" />
-        <activity
-            android:name="com.tencent.tauth.AuthActivity"
-            android:launchMode="singleTask"
-            android:noHistory="true">
-            <intent-filter>
-                <action android:name="android.intent.action.VIEW" />
-
-                <category android:name="android.intent.category.DEFAULT" />
-                <category android:name="android.intent.category.BROWSABLE" />
-
-                <data android:scheme="tencent1104988970" />
-                <!-- 100380359 100381104 222222 -->
-            </intent-filter>
-        </activity>
-        <activity
-            android:name="com.tencent.connect.common.AssistActivity"
-            android:configChanges="orientation|keyboardHidden"
-            android:theme="@android:style/Theme.Translucent.NoTitleBar" />
-
 
         <!-- 门禁授权-->
         <activity
@@ -310,23 +289,21 @@
         <!--微信支付-->
         <activity
             android:name=".wxapi.WXPayEntryActivity"
-            android:configChanges="keyboardHidden|orientation|screenSize"
+            android:configChanges="keyboardHidden|screenSize"
             android:exported="true"
             android:label="@string/app_name"
             android:launchMode="singleTask"
-            android:screenOrientation="portrait"
             android:theme="@style/shareDialog" />
 
 
         <!--微信小程序-->
         <activity
             android:name=".wxapi.WXEntryActivity"
-            android:configChanges="keyboardHidden|orientation|screenSize"
+            android:configChanges="keyboardHidden|screenSize"
             android:enabled="true"
             android:exported="true"
             android:label="@string/app_name"
             android:launchMode="singleTask"
-            android:screenOrientation="portrait"
             android:theme="@android:style/Theme.Translucent.NoTitleBar">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
@@ -382,7 +359,10 @@
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan" />
 
-        <activity android:name="com.notification.activity.NotificationAllInfoActivity"></activity>
+        <activity
+            android:name="com.notification.activity.NotificationAllInfoActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustPan" />
         <!--消息通知-->
 
         <!--房产 收货地址-->
@@ -742,9 +722,8 @@
 
         <activity
             android:name="com.realaudit.activity.RealCommonSubmitActivity"
-            android:configChanges="keyboardHidden|orientation|screenSize"
+            android:configChanges="keyboardHidden|screenSize"
             android:launchMode="singleTask"
-            android:screenOrientation="portrait"
             android:theme="@style/activityTheme" />
 
         <!--实名认证信息修改-->
@@ -780,51 +759,11 @@
         <!--社区邻里-->
 
 
-        <!--极光推送-->
-        <activity
-            android:name="cn.jpush.android.ui.PopWinActivity"
-            android:exported="true"
-            android:theme="@style/MyDialogStyle"
-            tools:node="replace">
-            <intent-filter>
-                <action android:name="cn.jpush.android.ui.PopWinActivity" />
-
-                <category android:name="android.intent.category.DEFAULT" />
-                <category android:name="${applicationId}" />
-            </intent-filter>
-        </activity>
-
-        <activity
-            android:name="cn.jpush.android.ui.PushActivity"
-            android:configChanges="orientation|keyboardHidden"
-            android:exported="true"
-            android:theme="@android:style/Theme.NoTitleBar"
-            tools:node="replace">
-            <intent-filter>
-
-                <action android:name="cn.jpush.android.ui.PushActivity" />
-
-                <category android:name="android.intent.category.DEFAULT" />
-                <category android:name="${applicationId}" />
-            </intent-filter>
-        </activity>
-
-
         <meta-data
             android:name="com.baidu.lbsapi.API_KEY"
             android:value="B0433f7d882de0c20433e36fabe2269c"
             tools:replace="android:value" />
 
-
-        <!--极光推送-->
-        <meta-data
-            android:name="JPUSH_CHANNEL"
-            android:value="developer-default" />
-
-
-        <meta-data
-            android:name="JPUSH_APPKEY"
-            android:value="85850e81bcaba45af4f4b6a6" />
 
         <!--高德sdk-->
         <meta-data
@@ -857,12 +796,6 @@
         </provider>
 
 
-        <provider
-            android:name="com.huawei.hms.update.provider.UpdateProvider"
-            android:authorities="cn.net.cyberway.hms.update.provider"
-            android:exported="false"
-            android:grantUriPermissions="true"></provider>
-
         <receiver
             android:name="com.pay.Activity.AppRegister"
             android:permission="com.tencent.mm.plugin.permission.SEND">
@@ -870,6 +803,34 @@
                 <action android:name="com.tencent.mm.plugin.openapi.Intent.ACTION_REFRESH_WXAPP" />
             </intent-filter>
         </receiver>
+
+
+
+
+        <service
+            android:name="com.baidu.location.f"
+            android:enabled="true"
+            android:process=":remote" />
+
+
+        <!--门禁的改造-->
+        <service android:name="com.BeeFramework.InitializeService" />
+
+
+
+        <service android:name="com.update.service.UpdateService" />
+
+
+        <service android:name="com.amap.api.location.APSService" />
+
+
+        <service
+            android:name="com.intelspace.library.service.BleService"
+            android:exported="false" />
+
+
+        <service android:name="cn.net.cyberway.home.service.LekaiService" />
+
 
         <receiver
             android:name="com.jpush.reciever.MyReceiver"
@@ -887,38 +848,6 @@
             </intent-filter>
         </receiver>
 
-
-        <service
-            android:name="com.baidu.location.f"
-            android:enabled="true"
-            android:process=":remote" />
-
-
-        <!--门禁的改造-->
-        <service android:name="com.BeeFramework.InitializeService" />
-
-
-        <!--极光推送配置-->
-        <!-- 若您的业务中有使用极光富媒体功能，或者极光早上好功能，需要把此 Activity 的 exported 修改成 true 覆盖 jcenter 上的组件。 -->
-        <service android:name="com.update.service.UpdateService" />
-
-        <!-- 若您的业务中有使用极光富媒体功能，或者极光早上好功能，需要把此 Activity 的 exported 修改成 true 覆盖 jcenter 上的组件。 -->
-        <service android:name="com.amap.api.location.APSService" />
-
-        <!-- Since JCore2.0.0 Required SDK核心功能-->
-        <!-- 可配置android:process参数将Service放在其他进程中；android:enabled属性不能是false -->
-        <!-- 这个是自定义Service，要继承极光JCommonService，可以在更多手机平台上使得推送通道保持的更稳定 -->
-        <service
-            android:name="com.intelspace.library.service.BleService"
-            android:exported="false" />
-
-        <!-- Required since 3.0.7 -->
-        <!-- 新的 tag/alias 接口结果返回需要开发者配置一个自定的广播 -->
-        <!-- 3.3.0开始所有事件将通过该类回调 -->
-        <!-- 该广播需要继承 JPush 提供的 JPushMessageReceiver 类, 并如下新增一个 Intent-Filter -->
-        <service android:name="cn.net.cyberway.home.service.LekaiService" />
-
-
         <service
             android:name="com.jpush.reciever.MyJPushService"
             android:enabled="true"
@@ -928,8 +857,13 @@
                 <action android:name="cn.jiguang.user.service.action" />
             </intent-filter>
         </service>
-        <!--极光推送-->
 
+        <receiver android:name="com.jpush.reciever.MyJPushMessageReceiver">
+            <intent-filter>
+                <action android:name="cn.jpush.android.intent.RECEIVE_MESSAGE" />
+                <category android:name="cn.net.cyberway"></category>
+            </intent-filter>
+        </receiver>
 
     </application>
 

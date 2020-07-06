@@ -13,6 +13,7 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.BeeFramework.Utils.NetworkUtil;
 import com.BeeFramework.Utils.ThemeStyleHelper;
 import com.BeeFramework.Utils.ToastUtil;
 import com.BeeFramework.activity.BaseActivity;
@@ -135,7 +136,11 @@ public class UserSafetyVerficationActivity extends BaseActivity implements View.
 
             @Override
             public void onError(String errorCode, String error) {
-                showVerficationError(error);
+                if (NetworkUtil.isConnect(UserSafetyVerficationActivity.this)) {
+                    showVerficationError(error);
+                } else {
+                    ToastUtil.toastInterShow(UserSafetyVerficationActivity.this, getResources().getString(R.string.app_network_error));
+                }
             }
 
             /**

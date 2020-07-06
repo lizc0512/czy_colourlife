@@ -1,6 +1,8 @@
 package com.user.Utils;
 
 import android.Manifest;
+import android.bluetooth.BluetoothAdapter;
+import android.bluetooth.BluetoothProfile;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
@@ -607,4 +609,13 @@ public class TokenUtils {
         return new UUID(m_szDevIDShort.hashCode(), serial.hashCode()).toString();
     }
 
+    public static boolean isBTConnected() {
+        BluetoothAdapter blueadapter = BluetoothAdapter.getDefaultAdapter();
+        int a2dp = blueadapter.getProfileConnectionState(BluetoothProfile.A2DP);              //可操控蓝牙设备，如带播放暂停功能的蓝牙耳机
+        int headset = blueadapter.getProfileConnectionState(BluetoothProfile.HEADSET);        //蓝牙头戴式耳机，支持语音输入输出
+        int health = blueadapter.getProfileConnectionState(BluetoothProfile.HEALTH);
+        return blueadapter != null && (a2dp == BluetoothAdapter.STATE_CONNECTED ||
+                headset == BluetoothAdapter.STATE_CONNECTED ||
+                health == BluetoothAdapter.STATE_CONNECTED);
+    }
 }

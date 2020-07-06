@@ -1,5 +1,6 @@
 package cn.net.cyberway.home.fragment;
 
+import android.bluetooth.BluetoothAdapter;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -25,13 +26,13 @@ import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.BeeFramework.AppConst;
 import com.BeeFramework.Utils.TimeUtil;
 import com.BeeFramework.Utils.ToastUtil;
 import com.BeeFramework.Utils.Utils;
@@ -51,6 +52,7 @@ import com.door.entity.SingleCommunityEntity;
 import com.door.model.NewDoorModel;
 import com.eparking.helper.PermissionUtils;
 import com.external.eventbus.EventBus;
+import com.intelspace.library.EdenApi;
 import com.myproperty.activity.MyPropertyActivity;
 import com.nohttp.utils.GlideImageLoader;
 import com.nohttp.utils.GridSpacingItemDecoration;
@@ -120,6 +122,7 @@ import static com.community.activity.CommunityActivityDetailsActivity.ACTIVITY_S
 import static com.community.fragment.CommunityDynamicsFragment.CHANGE_ACTIVITY_STATUS;
 import static com.user.UserAppConst.COLOR_HOME_USEDOOR;
 import static com.user.UserAppConst.COLOUR_BLUETOOTH_ADVISE;
+import static com.user.Utils.TokenUtils.isBTConnected;
 import static com.youmai.hxsdk.utils.DisplayUtil.getStatusBarHeight;
 
 /**
@@ -162,7 +165,17 @@ public class MainHomeFragmentNew extends Fragment implements NewHttpResponse, Vi
         newUserModel = new NewUserModel(getActivity());
         communityDynamicsModel = new CommunityDynamicsModel(getActivity());
         initNetWorkListener();
-        LekaiHelper.init(getActivity());
+        if (isBTConnected()) {
+            LekaiHelper.init(getActivity());
+        }else{
+            EdenApi mEdenApi = EdenApi.getInstance(getActivity(), AppConst.APP_KEY, false);
+            mEdenApi.init(() -> { });
+            mEdenApi.setOnBluetoothStateCallback((i, s) -> {
+                if (i == BluetoothAdapter.STATE_ON) {
+                    LekaiHelper.noticeOpenPermission(getActivity());
+                }
+            });
+        }
     }
 
     @Override
@@ -1294,7 +1307,7 @@ public class MainHomeFragmentNew extends Fragment implements NewHttpResponse, Vi
                 int join_number = bundle.getInt("join_number");
                 List<String> join_user_list = (List<String>) message.obj;
                 if (source_id.equals(from_source_id)) { //详情里面更新首页的状态
-                    updateCommunityStatus(ac_status, is_join,join_number, join_user_list);
+                    updateCommunityStatus(ac_status, is_join, join_number, join_user_list);
                 }
                 break;
         }
@@ -1532,10 +1545,10 @@ public class MainHomeFragmentNew extends Fragment implements NewHttpResponse, Vi
                 if (oproperty.length() < 4) {
                     tv_activity_type.setText(oproperty);
                 } else {
-                    StringBuffer stringBuffer=new StringBuffer();
-                    stringBuffer.append(oproperty.substring(0,2));
+                    StringBuffer stringBuffer = new StringBuffer();
+                    stringBuffer.append(oproperty.substring(0, 2));
                     stringBuffer.append("\n");
-                    stringBuffer.append(oproperty.substring(2,4));
+                    stringBuffer.append(oproperty.substring(2, 4));
                     tv_activity_type.setText(stringBuffer.toString());
                 }
             }

@@ -6,14 +6,12 @@ import android.os.Environment;
 
 public class UserAppConst {
 
-    public static String FILEPATH = Environment.getExternalStorageDirectory() + "/.YiChao/.cache/";
 
     public static final String USERINFO = "user_info";
     public static final String UPDATE = "update";
     public static final String APKNAME = "apkname";
     public static final String DOWNLOADERVERSION = "downloaderversion";
     public static final String IS_LOGIN = "isLogin";
-    public static final String USER = "user";
     public static final String ADDRESSLISTCACHE = "addresslistcache";//改版地址的缓存
     public static final String MYPAGELIST = "mypagelist";
     public static final String MYPAGESUBMENU = "mypagesubmenu";
@@ -27,8 +25,6 @@ public class UserAppConst {
     public static final int INTERVAL = 1000;
 
 
-    public static final String PHOTO_PATH = "photo_path";
-
     public static final String Colour_Diff = "Colour_Diff";
     /****auth2.0的参数*** **/
     public static final String Colour_access_token = "colorLifeAccessToken";
@@ -39,23 +35,18 @@ public class UserAppConst {
     public static final String COLOUR_ONEKEY_SHOW = "colour_onekey_show";
 
     /****auth2.0的参数*****/
-    public static final String Colour_mDeviceID = "Colour_mDeviceID";   //极光推送唯一码
     public static final String Colour_token = "Colour_token";   //检验登录的唯一性时用到的token
     public static final String Colour_login_info = "Colour_login_info";
     public static final String Colour_login_mobile = "Colour_login_mobile";
     public static final String Colour_set_password = "Colour_set_password";//是否设置登录密码
     public static final String Colour_login_password = "Colour_login_password";
     public static final String Colour_login_gesture_password = "Colour_login_password";//手势密码
-//    public static final String COLOUR_ACTIVITY_DIALOG = "colour_is_dialog";//首页是否有弹窗
-//    public static final String COLOUR_BEAN_SIGN_POINT = "colour_bean_sign_point";//我的任务（彩豆）是否有小红点  UserAppConst.COLOUR_BEAN_SIGN_POINT + customer_id
 
     public static final String Colour_login_key = "Colour_login_key";
     public static final String Colour_user_login = "Colour_user_login";//判断是不是用户操作登录(手动登录不是静默登录)
     public static final String Colour_login_secret = "Colour_login_secret";
     public static final String Colour_login_community_uuid = "Colour_login_community_uuid";
     public static final String Colour_login_community_name = "Colour_login_community_name";
-    public static final String Colour_login_community_address = "Colour_login_community_address";
-    public static final String Colour_location_permission = "Colour_location_permission";
     public static final String Colour_NAME = "Colour_NAME";
     public static final String Colour_NIACKNAME = "Colour_NIACKNAME";
     public static final String Colour_GENDER = "Colour_GENDER";
@@ -65,7 +56,6 @@ public class UserAppConst {
     public static final String Colour_SPLASH_CACHE = "colour_splash_cache";
     public static final String COLOUR_LIFEUSERECORD = "lifeUseRecord"; //生活页面最近使用
 
-    public static final String Colour_REGION_ID = "Colour_REGION_ID";
 
     public static final String COLOUR_BEAN_SIGN_POINT = "colour_bean_sign_point";//我的任务（彩豆）是否有小红点
     public static final String Colour_head_img = "Colour_head_img";
@@ -88,8 +78,6 @@ public class UserAppConst {
      */
 
     public static final String LIFECATEGORY = "lifecategory";  //生活页面的
-    public static final String FINDPROPERTY = "findproperty";
-    public static final String FINDNOTIFY = "findnotify";
     public static final String LINLISHOWPOP = "linlishowpop";
     public static final String DOOREDITSHOWPOP = "dooreditshowpop";
     public static final String JOINCOMMUNITY = "joincommunity";
@@ -97,7 +85,6 @@ public class UserAppConst {
     public static final String THEMEUPDATETIME = "themeupdatetime";
     public static final String DELIVERYOAUTHCACHE = "deliveryoauthcache";
     public static final String HOMEDOOROFTEN = "homedooroften";
-    public static final String SHOWSHORTCUTTIPS = "showshortcuttips";
     public static final String HAVADOORGRANTED = "havedoorgranted";
     public static final String EDITDOORCOMMUNITYUUID = "editdoorcommunityuuid";
     public static final String EDITDOORCOMMUNITYNAME = "editdoorcommunityname";

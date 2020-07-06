@@ -73,12 +73,23 @@ public class LekaiHelper {
         }
     }
 
+    public static void noticeOpenPermission(Activity activity) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            // 检查该权限是否已经获取
+            int i = ContextCompat.checkSelfPermission(activity, permissions[0]);
+            if (i != PackageManager.PERMISSION_GRANTED) {
+                // 如果没有授予该权限，就去提示用户请求
+                showDialogTipUserRequestPermission(activity);
+            }
+        }
+    }
+
     private static void showDialogTipUserRequestPermission(Activity activity) {
         new AlertDialog.Builder(activity)
                 .setTitle("定位权限不可用")
-                .setMessage("由于蓝牙扫描需要定位权限，所以在使用前请授予定位权限；\n否则，您将无法正常使用")
+                .setMessage("由于蓝牙扫描需要定位权限，所以在使用前请授予定位权限；\n否则，蓝牙开门无法正常使用")
                 .setPositiveButton("立即开启", (dialog, which) -> startRequestPermission(activity))
-                .setNegativeButton("取消", (dialog, which) -> activity.finish()).setCancelable(false).show();
+                .setNegativeButton("取消", (dialog, which) -> dialog.dismiss());
     }
 
     /**

@@ -96,7 +96,7 @@ public class UpdateVerSion implements NewHttpResponse {
             }
         }
 
-        return result;
+        return "4.6.25";
     }
 
     public static String showVersionName(String versionName) {
@@ -122,7 +122,7 @@ public class UpdateVerSion implements NewHttpResponse {
                 }
             }
         }
-        return result;
+        return versionName;
     }
 
 

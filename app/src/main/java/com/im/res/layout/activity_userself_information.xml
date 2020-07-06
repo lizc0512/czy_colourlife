@@ -61,8 +61,8 @@
     <RelativeLayout
         android:id="@+id/details_community_layout"
         android:layout_width="match_parent"
-        android:visibility="gone"
         android:layout_height="44dp"
+        android:visibility="gone"
         android:background="@color/white">
 
         <View

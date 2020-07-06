@@ -161,6 +161,9 @@ public class MainActivity extends BaseFragmentActivity implements View.OnClickLi
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        if (!EventBus.getDefault().isregister(MainActivity.this)) {
+            EventBus.getDefault().register(MainActivity.this);
+        }
         myManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
         ScreenManager.getScreenManager().pushActivity(this);
         registerNotice();
@@ -214,13 +217,6 @@ public class MainActivity extends BaseFragmentActivity implements View.OnClickLi
         }
     }
 
-    @Override
-    protected void onResume() {
-        super.onResume();
-        if (!EventBus.getDefault().isregister(MainActivity.this)) {
-            EventBus.getDefault().register(MainActivity.this);
-        }
-    }
 
     @Override
     public void onPause() {
@@ -317,45 +313,21 @@ public class MainActivity extends BaseFragmentActivity implements View.OnClickLi
     }
 
     private void jpushJumpPage(Intent intent) {
-        String doorId = intent.getStringExtra("shortcut");
-        if (!TextUtils.isEmpty(doorId)) {//快捷开门的
-            qrCodeDoorOpen(doorId);
+        String doorid = intent.getStringExtra("shortcut");
+        if (!TextUtils.isEmpty(doorid)) {
+            openModel.openDoor(2, doorid, true, MainActivity.this);
         }
-        String linkURl = intent.getStringExtra(JUMPOTHERURL);//通知栏推送的url
-        Bundle bundle = intent.getExtras();
-        String messageExtra = null;
-        if (null != bundle) {
-            messageExtra = bundle.getString("JMessageExtra");//oppo和fcm的处理
-        }
-        if (TextUtils.isEmpty(messageExtra)) {
-            messageExtra = intent.getDataString(); //处理小米和华为
-        }
-        if (!TextUtils.isEmpty(messageExtra)) {
-            int whichPushSDK = 0;
-            if (!TextUtils.isEmpty(messageExtra)) {
-                try {
-                    JSONObject jsonObject = new JSONObject(messageExtra);
-                    //byte类型的整数，0为极光，1为小米，2为华为，3为魅族，4为OPPO，8为FCM。
-                    whichPushSDK = jsonObject.optInt("rom_type");
-//                    通知附加字段
-                    JSONObject extrasJson = jsonObject.optJSONObject("n_extras");
-                    linkURl = extrasJson.optString("url");
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-            }
-        }
-
-        if (!TextUtils.isEmpty(linkURl)) {
-            if ("colourlifeCaiHui".equals(linkURl)) {
+        String jumpUrl = intent.getStringExtra(JUMPOTHERURL);
+        if (!TextUtils.isEmpty(jumpUrl)) {
+            if ("colourlifeCaiHui".equals(jumpUrl)) {
                 onTabSelected(FLAG_TAB_TWO);
-            } else if ("ColourlifeBackHome".equals(linkURl)) {
+            } else if ("ColourlifeBackHome".equals(jumpUrl)) {
                 onTabSelected(FLAG_TAB_ONE);
                 Message message = Message.obtain();
                 message.what = UserMessageConstant.CHANGE_COMMUNITY;
                 EventBus.getDefault().post(message);
             } else {
-                LinkParseUtil.parse(MainActivity.this, linkURl, "");
+                LinkParseUtil.parse(MainActivity.this, jumpUrl, "");
             }
         }
     }
@@ -444,7 +416,7 @@ public class MainActivity extends BaseFragmentActivity implements View.OnClickLi
         clearUserCache(MainActivity.this);
         myManager.cancel(NOTIFICATION_ID_1);
         JPushInterface.stopPush(getApplicationContext());
-        JPushInterface.setAlias(getApplicationContext(), userId, "");
+        JPushInterface.deleteAlias(getApplicationContext(), userId);
         JPushInterface.cleanTags(getApplicationContext(), userId);
         if (!TextUtils.isEmpty(notice)) {
             ToastUtil.toastShow(getApplicationContext(), notice);
@@ -459,6 +431,7 @@ public class MainActivity extends BaseFragmentActivity implements View.OnClickLi
         if (JPushInterface.isPushStopped(MainActivity.this)) {
             JPushInterface.resumePush(MainActivity.this);
         }
+        String  registerId=JPushInterface.getRegistrationID(MainActivity.this);
         mPhoneStr = shared.getString(UserAppConst.Colour_login_mobile, "");
         String community_uuid = shared.getString(UserAppConst.Colour_login_community_uuid, "03b98def-b5bd-400b-995f-a9af82be01da");
         Set<String> tags = new HashSet<>();
@@ -467,9 +440,14 @@ public class MainActivity extends BaseFragmentActivity implements View.OnClickLi
         }
         tags.add(shared.getString(UserAppConst.Colour_User_uuid, "03b98def-b5bd-400b-995f-a9af82be01da"));
         userId = shared.getInt(UserAppConst.Colour_User_id, 0);
-        JPushInterface.setAlias(getApplicationContext(), userId, mPhoneStr);
-        JPushInterface.setTags(getApplicationContext(), userId, tags);
-        JPushInterface.setMobileNumber(getApplicationContext(), userId, mPhoneStr);
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                JPushInterface.setTags(MainActivity.this, userId, tags);
+                JPushInterface.setMobileNumber(MainActivity.this, userId, mPhoneStr);
+                JPushInterface.setAlias(MainActivity.this, userId, mPhoneStr);
+            }
+        });
     }
 
 
@@ -627,7 +605,7 @@ public class MainActivity extends BaseFragmentActivity implements View.OnClickLi
             hideFragments(transaction);
             boolean isLogin = shared.getBoolean(UserAppConst.IS_LOGIN, false);
             if (isLogin) {
-                if (mHomeFragment == null) {
+                if (null==  mHomeFragment) {
                     mHomeFragment = new MainHomeFragmentNew();
                     transaction.add(R.id.main_fragment_container, mHomeFragment, "homeFragment");
                 } else {

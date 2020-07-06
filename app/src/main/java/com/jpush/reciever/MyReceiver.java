@@ -310,8 +310,9 @@ public class MyReceiver extends JPushMessageReceiver {
 
     @Override
     public void onMobileNumberOperatorResult(Context context, JPushMessage jPushMessage) {
-        TagAliasOperatorHelper.getInstance().onMobileNumberOperatorResult(context, jPushMessage);
         super.onMobileNumberOperatorResult(context, jPushMessage);
+        TagAliasOperatorHelper.getInstance().onMobileNumberOperatorResult(context, jPushMessage);
+
     }
 
     // 判断本应用是否正在前台运行（前台运行的activity以此应用的包名开头）

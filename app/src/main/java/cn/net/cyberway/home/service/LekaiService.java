@@ -58,7 +58,6 @@ public class LekaiService extends Service {
     private String deviceCipherId;
 
 
-
     @Nullable
     @Override
     public IBinder onBind(Intent intent) {
@@ -125,6 +124,7 @@ public class LekaiService extends Service {
                     if (null != mBluetoothStateCallback) {
                         mBluetoothStateCallback.onBluetoothStateOff();
                     }
+                    mEdenApi.stopScanDevice();
                 }
             } catch (Exception e) {
                 e.printStackTrace();

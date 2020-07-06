@@ -269,6 +269,9 @@ public class IMFriendInforActivity extends BaseActivity implements View.OnClickL
                     startActivity(transfer_intent);
                 }
                 break;
+            case R.id.details_community_layout://个人邻里圈
+
+                break;
         }
     }
 

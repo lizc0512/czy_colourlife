@@ -35,7 +35,7 @@ public class InitializeService extends IntentService {
             MobSDK.init(getApplicationContext());
             SobotApi.initSobotSDK(getApplicationContext(), Constants.SMART_SERVICE_KEY, "");
             JPushInterface.setDebugMode(false); // 设置开启日志,发布时请关闭日志
-            JPushInterface.init(this);
+            JPushInterface.init(getApplicationContext());
             //开始定位
             CityManager.getInstance(getApplicationContext()).initLocation();
             QNRTCEnv.init(getApplicationContext());
